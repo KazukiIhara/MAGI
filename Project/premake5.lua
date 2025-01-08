@@ -1,4 +1,4 @@
-workspace "MAGIEngine"
+workspace "MAGI"
    configurations { "Debug", "Release" }
    platforms { "x64" }
    startproject "MAGI" -- デフォルトのスタートプロジェクトを指定
@@ -15,18 +15,20 @@ project "MAGI" -- プロジェクト名
    language "C++"
    cppdialect "C++20" -- 言語の設定
 
+   -- プロジェクトに含むファイル
    files { 
       "*.cpp",
       "*.h",
       "Engine/**.cpp",
       "Engine/**.h",
    }
-      
+   
+   -- 追加のインクルードパス
    includedirs { 
    "Engine",
    "App",
    "Externals/assimp/include",
-    } -- 追加のインクルードパス
+    } 
 
    warnings "High" -- 警告レベル3を設定
 
@@ -50,5 +52,3 @@ project "MAGI" -- プロジェクト名
       linkoptions { "/IGNORE:4049", "/IGNORE:4099" } -- 指定したリンカーの警告を無視
       libdirs { "Externals/assimp/lib/Release" } -- リリース用追加のライブラリディレクトリ
       links { "assimp-vc143-mt" } -- リリース用ライブラリ
-
-
