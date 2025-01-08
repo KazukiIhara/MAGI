@@ -16,6 +16,9 @@
 # Mono auto generated filesmono_crash.*
 
 # Build results
+*.sln
+*.vcxproj
+*.filters
 generated/
 
 # Visual Studio 2015/2017 cache/options directory
