@@ -7,6 +7,13 @@ workspace "MAGI"
    targetdir "../generated/bin/%{cfg.buildcfg}/%{cfg.platform}"  -- 実行ファイルの出力先
    objdir "../generated/obj/%{cfg.buildcfg}/%{cfg.platform}"     -- 中間ファイルの出力先
 
+   -- DirectXTexを外部プロジェクトとして登録
+   externalproject "DirectXTex"
+      location "Externals/DirectXTex"           -- フォルダパス（.vcxprojがある場所）
+      filename "DirectXTex_Desktop_2022_Win10"  -- 実際のプロジェクトファイル名 (拡張子は不要)
+      uuid "12345678-ABCD-4321-DCBA-1234567890AB" -- 適宜修正
+      kind "StaticLib"
+      language "C++"
 
 -- MAGIの設定
 
