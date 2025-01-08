@@ -17,8 +17,7 @@
 
 # Build results
 *.sln
-*.vcxproj
-*.filters
+#*.vcxproj
 generated/
 
 # Visual Studio 2015/2017 cache/options directory
