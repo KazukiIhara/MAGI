@@ -37,6 +37,10 @@ project "MAGI" -- プロジェクト名
    "Externals/assimp/include",
     } 
 
+   dependson { "DirectXTex" } -- DirectXTexに依存していることを指定
+
+   links { "DirectXTex" }  -- リンク対象のプロジェクト
+
    warnings "High" -- 警告レベル3を設定
 
    buildoptions { "/utf-8" } -- UTF-8でビルドする設定
