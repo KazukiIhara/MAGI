@@ -12,11 +12,15 @@
     <ClInclude Include="Engine\Logger\Logger.h">
       <Filter>Engine\Logger</Filter>
     </ClInclude>
+    <ClInclude Include="Engine\Framework\MAGI.h" />
+    <ClInclude Include="Engine\WindowApp\WindowApp.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine\Logger\Logger.cpp">
       <Filter>Engine\Logger</Filter>
     </ClCompile>
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Engine\Framework\MAGI.cpp" />
+    <ClCompile Include="Engine\WindowApp\WindowApp.cpp" />
   </ItemGroup>
 </Project>

@@ -104,10 +104,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Engine\Framework\MAGI.h" />
     <ClInclude Include="Engine\Logger\Logger.h" />
+    <ClInclude Include="Engine\WindowApp\WindowApp.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Engine\Framework\MAGI.cpp" />
     <ClCompile Include="Engine\Logger\Logger.cpp" />
+    <ClCompile Include="Engine\WindowApp\WindowApp.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
