@@ -104,12 +104,16 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="App\Game\Game.h" />
     <ClInclude Include="Engine\Framework\MAGI.h" />
+    <ClInclude Include="Engine\LeakChecker\D3DResourceLeakChecker.h" />
     <ClInclude Include="Engine\Logger\Logger.h" />
     <ClInclude Include="Engine\WindowApp\WindowApp.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="App\Game\Game.cpp" />
     <ClCompile Include="Engine\Framework\MAGI.cpp" />
+    <ClCompile Include="Engine\LeakChecker\D3DResourceLeakChecker.cpp" />
     <ClCompile Include="Engine\Logger\Logger.cpp" />
     <ClCompile Include="Engine\WindowApp\WindowApp.cpp" />
     <ClCompile Include="main.cpp" />
