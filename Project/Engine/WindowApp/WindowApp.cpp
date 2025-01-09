@@ -8,7 +8,7 @@ int64_t WindowApp::wheelDelta_ = 0;
 
 void WindowApp::Initialize() {
 	// 開始ログ
-	Logger::Log("WindowApp Initialize");
+	Logger::Log("WindowApp Initialize\n");
 
 	// システムタイマー分解能をあげる
 	timeBeginPeriod(1);
@@ -23,7 +23,7 @@ void WindowApp::Finalize() {
 	TerminateGameWindow();
 
 	// 終了ログ
-	Logger::Log("WindowApp Finalize");
+	Logger::Log("WindowApp Finalize\n");
 }
 
 void WindowApp::Update() {
