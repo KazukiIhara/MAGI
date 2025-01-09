@@ -4,8 +4,8 @@ workspace "MAGI"
    startproject "MAGI" -- デフォルトのスタートプロジェクトを指定
 
    -- 出力ディレクトリの設定
-   targetdir "../generated/bin/%{cfg.buildcfg}/%{cfg.platform}"  -- 実行ファイルの出力先
-   objdir "../generated/obj/%{cfg.buildcfg}/%{cfg.platform}"     -- 中間ファイルの出力先
+   targetdir "../generated/outputs/%{cfg.buildcfg}/%{cfg.platform}"  -- 実行ファイルの出力先
+   objdir "../generated/obj/%{prj.name}/%{cfg.buildcfg}"     -- 中間ファイルの出力先
 
    -- DirectXTexを外部プロジェクトとして登録
    externalproject "DirectXTex"
