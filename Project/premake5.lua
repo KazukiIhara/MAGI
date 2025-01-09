@@ -14,6 +14,14 @@ workspace "MAGI"
       uuid "12345678-ABCD-4321-DCBA-1234567890AB" -- 適宜修正
       kind "StaticLib"
       language "C++"
+   
+   -- imguiを外部プロジェクトとして登録
+   externalproject "imgui"
+      location "Externals/imgui"
+      filename "imgui"
+      uuid "22345678-ABCD-4321-DCBA-1234567890AB"
+      kind "StaticLib"
+      language "C++"
 
 -- MAGIの設定
 
@@ -37,9 +45,9 @@ project "MAGI" -- プロジェクト名
    "Externals/assimp/include",
     } 
 
-   dependson { "DirectXTex" } -- DirectXTexに依存していることを指定
+   dependson { "DirectXTex","imgui" } -- 依存していることを指定
 
-   links { "DirectXTex" }  -- リンク対象のプロジェクト
+   links { "DirectXTex","imgui" }  -- リンク対象のプロジェクト
 
    warnings "High" -- 警告レベル3を設定
 
