@@ -40,6 +40,12 @@ void MAGISYSTEM::Initialize() {
 
 void MAGISYSTEM::Finalize() {
 
+
+	// Fence
+	if (fence_) {
+		fence_.reset();
+	}
+
 	// DirectXCommand
 	if (directXCommand_) {
 		directXCommand_.reset();
