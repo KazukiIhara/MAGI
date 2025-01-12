@@ -19,8 +19,6 @@ public:
 	void Initialize();
 	// 終了
 	void Finalize();
-	// 終了チェック
-	bool IsEndRequest() const;
 	// 更新
 	virtual void Update();
 	// 描画
@@ -31,6 +29,9 @@ public:
 	void PostDraw();
 	// 実行
 	void Run();
+
+	// 終了チェック
+	bool IsEndRequest() const;
 
 public: // エンジンの機能
 

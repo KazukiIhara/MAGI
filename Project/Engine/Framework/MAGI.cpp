@@ -43,10 +43,6 @@ void MAGISYSTEM::Finalize() {
 	Logger::Log("MAGISYSTEM Finalize\n");
 }
 
-bool MAGISYSTEM::IsEndRequest() const {
-	return endRequest_;
-}
-
 void MAGISYSTEM::Update() {
 	// ウィンドウにメッセージが来ていたら最優先で処理
 	if (windowApp_->Update()) {
@@ -99,6 +95,10 @@ void MAGISYSTEM::Run() {
 
 	// 終了
 	Finalize();
+}
+
+bool MAGISYSTEM::IsEndRequest() const {
+	return endRequest_;
 }
 
 HWND MAGISYSTEM::GetWindowHandle() {

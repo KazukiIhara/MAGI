@@ -36,6 +36,8 @@ project "MAGI" -- プロジェクト名
       "*.h",
       "Engine/**.cpp",
       "Engine/**.h",
+      "Game/**.cpp",
+      "Game/**.h",
    }
    
    -- 追加のインクルードパス
