@@ -107,7 +107,9 @@
     <ClInclude Include="App\Game\Game.h" />
     <ClInclude Include="Engine\ComPtr\ComPtr.h" />
     <ClInclude Include="Engine\DirectInput\DirectInput.h" />
+    <ClInclude Include="Engine\DirectX\DirectXCommand\DirectXCommand.h" />
     <ClInclude Include="Engine\DirectX\DXGI\DXGI.h" />
+    <ClInclude Include="Engine\DirectX\Fence\Fence.h" />
     <ClInclude Include="Engine\Enums\MouseInputEnum.h" />
     <ClInclude Include="Engine\Enums\XInputEnum.h" />
     <ClInclude Include="Engine\FPSController\FPSController.h" />
@@ -121,7 +123,9 @@
   <ItemGroup>
     <ClCompile Include="App\Game\Game.cpp" />
     <ClCompile Include="Engine\DirectInput\DirectInput.cpp" />
+    <ClCompile Include="Engine\DirectX\DirectXCommand\DirectXCommand.cpp" />
     <ClCompile Include="Engine\DirectX\DXGI\DXGI.cpp" />
+    <ClCompile Include="Engine\DirectX\Fence\Fence.cpp" />
     <ClCompile Include="Engine\FPSController\FPSController.cpp" />
     <ClCompile Include="Engine\Framework\MAGI.cpp" />
     <ClCompile Include="Engine\GUI\GUI.cpp" />

@@ -5,6 +5,10 @@
 #include "Logger/Logger.h"
 #include "WindowApp/WindowApp.h"
 
+DirectInput::DirectInput(WindowApp* windowApp) {
+	Initialize(windowApp);
+}
+
 void DirectInput::Initialize(WindowApp* windowApp) {
 	// 開始ログ
 	Logger::Log("DirectInput Initialize");

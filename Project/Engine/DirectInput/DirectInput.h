@@ -13,6 +13,9 @@ class WindowApp;
 // DirectInputクラス
 class DirectInput {
 public:
+	// コンストラクタ
+	DirectInput(WindowApp* windowApp);
+
 	// 初期化
 	void Initialize(WindowApp* windowApp);
 	// 更新

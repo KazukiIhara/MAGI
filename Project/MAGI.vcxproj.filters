@@ -87,6 +87,8 @@
     <ClInclude Include="Engine\WindowApp\WindowApp.h">
       <Filter>Engine\WindowApp</Filter>
     </ClInclude>
+    <ClInclude Include="Engine\DirectX\DirectXCommand\DirectXCommand.h" />
+    <ClInclude Include="Engine\DirectX\Fence\Fence.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="App\Game\Game.cpp">
@@ -120,5 +122,7 @@
       <Filter>Engine\WindowApp</Filter>
     </ClCompile>
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Engine\DirectX\DirectXCommand\DirectXCommand.cpp" />
+    <ClCompile Include="Engine\DirectX\Fence\Fence.cpp" />
   </ItemGroup>
 </Project>

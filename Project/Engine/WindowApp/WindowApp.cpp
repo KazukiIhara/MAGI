@@ -4,6 +4,10 @@
 
 #include "Logger/Logger.h"
 
+WindowApp::WindowApp() {
+	Initialize();
+}
+
 void WindowApp::Initialize() {
 	// 開始ログ
 	Logger::Log("WindowApp Initialize\n");

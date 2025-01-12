@@ -11,6 +11,9 @@
 
 class DXGI {
 public:
+	// コンストラクタ
+	DXGI();
+
 	// 初期化
 	void Initialize();
 
