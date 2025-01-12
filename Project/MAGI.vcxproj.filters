@@ -21,6 +21,7 @@
     <ClInclude Include="Engine\ComPtr\ComPtr.h" />
     <ClInclude Include="Engine\Enums\MouseInputEnum.h" />
     <ClInclude Include="Engine\GUI\GUI.h" />
+    <ClInclude Include="Engine\ImGuiController\ImGuiController.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine\Logger\Logger.cpp">
@@ -33,5 +34,6 @@
     <ClCompile Include="Engine\LeakChecker\D3DResourceLeakChecker.cpp" />
     <ClCompile Include="Engine\DirectInput\DirectInput.cpp" />
     <ClCompile Include="Engine\GUI\GUI.cpp" />
+    <ClCompile Include="Engine\ImGuiController\ImGuiContoller.cpp" />
   </ItemGroup>
 </Project>

@@ -111,6 +111,7 @@
     <ClInclude Include="Engine\Enums\XInputEnum.h" />
     <ClInclude Include="Engine\Framework\MAGI.h" />
     <ClInclude Include="Engine\GUI\GUI.h" />
+    <ClInclude Include="Engine\ImGuiController\ImGuiController.h" />
     <ClInclude Include="Engine\LeakChecker\D3DResourceLeakChecker.h" />
     <ClInclude Include="Engine\Logger\Logger.h" />
     <ClInclude Include="Engine\WindowApp\WindowApp.h" />
@@ -120,6 +121,7 @@
     <ClCompile Include="Engine\DirectInput\DirectInput.cpp" />
     <ClCompile Include="Engine\Framework\MAGI.cpp" />
     <ClCompile Include="Engine\GUI\GUI.cpp" />
+    <ClCompile Include="Engine\ImGuiController\ImGuiContoller.cpp" />
     <ClCompile Include="Engine\LeakChecker\D3DResourceLeakChecker.cpp" />
     <ClCompile Include="Engine\Logger\Logger.cpp" />
     <ClCompile Include="Engine\WindowApp\WindowApp.cpp" />

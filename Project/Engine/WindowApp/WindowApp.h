@@ -7,8 +7,8 @@
 class WindowApp {
 public:
 	// クライアント領域
-	static const uint32_t kClientWidth = 1920; // クライアント領域の横幅
-	static const uint32_t kClientHeight = 1080; // クライアント領域の縦幅
+	static const uint32_t kClientWidth = 1280; // クライアント領域の横幅
+	static const uint32_t kClientHeight = 720; // クライアント領域の縦幅
 public:
 	// 初期化
 	void Initialize();
