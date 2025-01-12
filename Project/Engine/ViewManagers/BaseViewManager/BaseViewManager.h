@@ -18,9 +18,9 @@ public:
 	virtual ~BaseViewManager() = default;
 
 	// 初期化
-	void Initialize(DXGI* dxgi);
+	void Initialize();
 	// ディスクリプタヒープの作成
-	virtual void CreateDescriptorHeap() {};
+	virtual void CreateDescriptorHeap() = 0;
 	// 割り当て関数
 	uint32_t Allocate();
 	// CPUの特定のインデックスハンドルを取得

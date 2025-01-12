@@ -6,12 +6,13 @@
 #include "DirectX/DirectXCommand/DirectXCommand.h"
 
 BaseViewManager::BaseViewManager(DXGI* dxgi) {
-	Initialize(dxgi);
-}
-
-void BaseViewManager::Initialize(DXGI* dxgi) {
 	// DXGIのセット
 	SetDXGI(dxgi);
+}
+
+void BaseViewManager::Initialize() {
+	// ディスクリプタヒープ作成
+	CreateDescriptorHeap();
 }
 
 uint32_t BaseViewManager::Allocate() {

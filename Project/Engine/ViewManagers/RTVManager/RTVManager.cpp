@@ -4,8 +4,8 @@
 
 #include "Logger/Logger.h"
 
-RTVManager::RTVManager(DXGI* dxgi) : BaseViewManager(dxgi) {
-	CreateDescriptorHeap();
+RTVManager::RTVManager(DXGI* dxgi) :BaseViewManager(dxgi) {
+	BaseViewManager::Initialize();
 	Logger::Log("RTVManager Initialize\n");
 }
 RTVManager::~RTVManager() {
