@@ -4,40 +4,109 @@
     <Filter Include="Engine">
       <UniqueIdentifier>{DBC7D3B0-C769-FE86-B024-12DB9C6585D7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Engine\ComPtr">
+      <UniqueIdentifier>{FF958F34-6B56-0B6B-3491-54E8A0105047}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\DirectInput">
+      <UniqueIdentifier>{35AACD4B-218E-8EA1-8AEE-88F476F17823}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\DirectX">
+      <UniqueIdentifier>{9D55E305-8923-D70B-72B7-47325E24B370}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\DirectX\DXGI">
+      <UniqueIdentifier>{F8A8F3E3-640A-D1F1-ED77-17A459D807B1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Enums">
+      <UniqueIdentifier>{52622095-3EC5-AF39-E74A-E8EFD38C7BBC}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\FPSController">
+      <UniqueIdentifier>{F7CFC980-E35E-534A-8C7D-674578EB63F0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Framework">
+      <UniqueIdentifier>{18128A39-040B-A98B-2D3D-8E1019958897}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\GUI">
+      <UniqueIdentifier>{6F3CF502-5BF4-3650-C4FB-0FACB0D2D140}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\ImGuiController">
+      <UniqueIdentifier>{2954621B-154E-8B6D-FEBA-217EEA53F1D9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\LeakChecker">
+      <UniqueIdentifier>{DC9A7F7A-C87E-40D0-31DF-3A231DE22A52}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Engine\Logger">
       <UniqueIdentifier>{4A198B49-B6D9-0680-7F14-50FDEB934B5C}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Engine\WindowApp">
+      <UniqueIdentifier>{83F0E77B-6FE9-06CE-981B-EC528473E6D9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Engine\ComPtr\ComPtr.h">
+      <Filter>Engine\ComPtr</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\DirectInput\DirectInput.h">
+      <Filter>Engine\DirectInput</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\DirectX\DXGI\DXGI.h">
+      <Filter>Engine\DirectX\DXGI</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Enums\MouseInputEnum.h">
+      <Filter>Engine\Enums</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Enums\XInputEnum.h">
+      <Filter>Engine\Enums</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\FPSController\FPSController.h">
+      <Filter>Engine\FPSController</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Framework\MAGI.h">
+      <Filter>Engine\Framework</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\GUI\GUI.h">
+      <Filter>Engine\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\ImGuiController\ImGuiController.h">
+      <Filter>Engine\ImGuiController</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\LeakChecker\D3DResourceLeakChecker.h">
+      <Filter>Engine\LeakChecker</Filter>
+    </ClInclude>
     <ClInclude Include="Engine\Logger\Logger.h">
       <Filter>Engine\Logger</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\Framework\MAGI.h" />
-    <ClInclude Include="Engine\WindowApp\WindowApp.h" />
-    <ClInclude Include="App\Game\Game.h" />
-    <ClInclude Include="Engine\LeakChecker\D3DResourceLeakChecker.h" />
-    <ClInclude Include="Engine\DirectInput\DirectInput.h" />
-    <ClInclude Include="Engine\Enums\XInputEnum.h" />
-    <ClInclude Include="Engine\ComPtr\ComPtr.h" />
-    <ClInclude Include="Engine\Enums\MouseInputEnum.h" />
-    <ClInclude Include="Engine\GUI\GUI.h" />
-    <ClInclude Include="Engine\ImGuiController\ImGuiController.h" />
-    <ClInclude Include="Engine\FPSController\FPSController.h" />
-    <ClInclude Include="Engine\DirectX\DXGI\DXGI.h" />
+    <ClInclude Include="Engine\WindowApp\WindowApp.h">
+      <Filter>Engine\WindowApp</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Engine\DirectInput\DirectInput.cpp">
+      <Filter>Engine\DirectInput</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\DirectX\DXGI\DXGI.cpp">
+      <Filter>Engine\DirectX\DXGI</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\FPSController\FPSController.cpp">
+      <Filter>Engine\FPSController</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Framework\MAGI.cpp">
+      <Filter>Engine\Framework</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\GUI\GUI.cpp">
+      <Filter>Engine\GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\ImGuiController\ImGuiContoller.cpp">
+      <Filter>Engine\ImGuiController</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\LeakChecker\D3DResourceLeakChecker.cpp">
+      <Filter>Engine\LeakChecker</Filter>
+    </ClCompile>
     <ClCompile Include="Engine\Logger\Logger.cpp">
       <Filter>Engine\Logger</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\WindowApp\WindowApp.cpp">
+      <Filter>Engine\WindowApp</Filter>
+    </ClCompile>
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="Engine\Framework\MAGI.cpp" />
-    <ClCompile Include="Engine\WindowApp\WindowApp.cpp" />
-    <ClCompile Include="App\Game\Game.cpp" />
-    <ClCompile Include="Engine\LeakChecker\D3DResourceLeakChecker.cpp" />
-    <ClCompile Include="Engine\DirectInput\DirectInput.cpp" />
-    <ClCompile Include="Engine\GUI\GUI.cpp" />
-    <ClCompile Include="Engine\ImGuiController\ImGuiContoller.cpp" />
-    <ClCompile Include="Engine\FPSController\FPSController.cpp" />
-    <ClCompile Include="Engine\DirectX\DXGI\DXGI.cpp" />
   </ItemGroup>
 </Project>
