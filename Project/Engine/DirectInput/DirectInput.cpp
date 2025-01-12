@@ -61,7 +61,7 @@ bool DirectInput::ReleaseMouseButton(MouseButton mouseButton) const {
 		!(mouseState_.rgbButtons[static_cast<int>(mouseButton)] & 0x80);
 }
 
-int64_t DirectInput::MouseWheelDelta() const {
+int64_t DirectInput::GetMouseWheelDelta() const {
 	// マウスのホイール回転量を取得（DIMOUSESTATEのz軸移動量がホイール回転に対応）
 	return static_cast<int64_t>(mouseState_.lZ);
 }

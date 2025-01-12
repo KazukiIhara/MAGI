@@ -137,3 +137,7 @@ bool MAGISYSTEM::ReleaseMouseButton(MouseButton mouseButton) {
 	return directInput_->ReleaseMouseButton(mouseButton);
 }
 
+int64_t MAGISYSTEM::GetMouseWheelDelta() {
+	return directInput_->GetMouseWheelDelta();
+}
+
