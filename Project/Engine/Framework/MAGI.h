@@ -24,13 +24,12 @@ public:
 	virtual void Update();
 	// 描画
 	virtual void Draw();
-public:
-	// 実行
-	void Run();
 	// 描画前処理
 	void PreDraw();
 	// 描画後処理
 	void PostDraw();
+	// 実行
+	void Run();
 private: // メンバ変数
 	// 終了リクエスト
 	bool endRequest_ = false;

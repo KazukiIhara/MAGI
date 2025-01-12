@@ -47,10 +47,18 @@ void MAGISYSTEM::Update() {
 	if (windowApp_->ProcessMessage()) {
 		endRequest_ = true;
 	}
-	
+
 }
 
 void MAGISYSTEM::Draw() {
+
+}
+
+void MAGISYSTEM::PreDraw() {
+
+}
+
+void MAGISYSTEM::PostDraw() {
 
 }
 
@@ -75,8 +83,3 @@ void MAGISYSTEM::Run() {
 	Finalize();
 }
 
-void MAGISYSTEM::PreDraw() {
-}
-
-void MAGISYSTEM::PostDraw() {
-}
