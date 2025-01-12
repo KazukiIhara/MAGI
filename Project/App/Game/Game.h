@@ -2,7 +2,7 @@
 
 #include "Framework/MAGI.h"
 
-// ゲームクラス
+// 実行するゲームクラス
 class Game :public MAGISYSTEM {
 public:
 	~Game();
@@ -10,6 +10,5 @@ public:
 	void Update()override;
 	// 描画
 	void Draw()override;
-private:
 
 };

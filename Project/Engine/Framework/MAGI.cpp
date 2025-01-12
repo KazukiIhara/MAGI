@@ -9,7 +9,7 @@ std::unique_ptr<D3DResourceLeakChecker> MAGISYSTEM::leakCheck_ = nullptr;
 
 // Staticメンバ変数の初期化
 std::unique_ptr<WindowApp> MAGISYSTEM::windowApp_ = nullptr;
-
+std::unique_ptr<DirectInput> MAGISYSTEM::directInput_ = nullptr;
 
 void MAGISYSTEM::Initialize() {
 	// 開始ログ
@@ -18,12 +18,20 @@ void MAGISYSTEM::Initialize() {
 	// WindowApp
 	windowApp_ = std::make_unique<WindowApp>();
 	windowApp_->Initialize();
+	// DirectInput
+	directInput_ = std::make_unique<DirectInput>();
+	directInput_->Initialize(windowApp_.get());
 
 }
 
 void MAGISYSTEM::Finalize() {
 
 
+
+	// DirectInput
+	if (directInput_) {
+		directInput_.reset();
+	}
 
 	// WindowApp
 	if (windowApp_) {
@@ -40,17 +48,35 @@ bool MAGISYSTEM::IsEndRequest() const {
 }
 
 void MAGISYSTEM::Update() {
-	// WindowAppの更新処理
-	windowApp_->Update();
-
 	// ウィンドウにメッセージが来ていたら最優先で処理
-	if (windowApp_->ProcessMessage()) {
+	if (windowApp_->Update()) {
 		endRequest_ = true;
 	}
-	
+
+	// 入力の更新
+	directInput_->Update();
+
+	// F11キーでフルスクリーンの切り替え処理
+	if (directInput_->TriggerKey(DIK_F11)) {
+		windowApp_->ToggleFullScreen();
+	}
+
+	// escキーが入力されたらアプリケーションを終了
+	if (directInput_->PushKey(DIK_ESCAPE)) {
+		endRequest_ = true;
+	}
+
 }
 
 void MAGISYSTEM::Draw() {
+
+}
+
+void MAGISYSTEM::PreDraw() {
+
+}
+
+void MAGISYSTEM::PostDraw() {
 
 }
 
@@ -75,8 +101,39 @@ void MAGISYSTEM::Run() {
 	Finalize();
 }
 
-void MAGISYSTEM::PreDraw() {
+HWND MAGISYSTEM::GetWindowHandle() {
+	return windowApp_->GetHwnd();
 }
 
-void MAGISYSTEM::PostDraw() {
+bool MAGISYSTEM::PushKey(BYTE keyNumber) {
+	return directInput_->PushKey(keyNumber);
 }
+
+bool MAGISYSTEM::TriggerKey(BYTE keyNumber) {
+	return directInput_->TriggerKey(keyNumber);
+}
+
+bool MAGISYSTEM::HoldKey(BYTE keyNumber) {
+	return directInput_->HoldKey(keyNumber);
+}
+
+bool MAGISYSTEM::ReleaseKey(BYTE keyNumber) {
+	return directInput_->ReleaseKey(keyNumber);
+}
+
+bool MAGISYSTEM::PushMouseButton(MouseButton mouseButton) {
+	return directInput_->PushMouseButton(mouseButton);
+}
+
+bool MAGISYSTEM::TriggerMouseButton(MouseButton mouseButton) {
+	return directInput_->TriggerMouseButton(mouseButton);
+}
+
+bool MAGISYSTEM::HoldMouseButton(MouseButton mouseButton) {
+	return directInput_->HoldMouseButton(mouseButton);
+}
+
+bool MAGISYSTEM::ReleaseMouseButton(MouseButton mouseButton) {
+	return directInput_->ReleaseMouseButton(mouseButton);
+}
+

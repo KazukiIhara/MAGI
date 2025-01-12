@@ -4,8 +4,6 @@
 
 #include "Logger/Logger.h"
 
-int64_t WindowApp::wheelDelta_ = 0;
-
 void WindowApp::Initialize() {
 	// 開始ログ
 	Logger::Log("WindowApp Initialize\n");
@@ -26,9 +24,8 @@ void WindowApp::Finalize() {
 	Logger::Log("WindowApp Finalize\n");
 }
 
-void WindowApp::Update() {
-	// マウスホイールの値をリセット
-	wheelDelta_ = 0;
+bool WindowApp::Update() {
+	return ProcessMessage();
 }
 
 bool WindowApp::ProcessMessage() {
@@ -88,10 +85,6 @@ HWND WindowApp::GetHwnd() const {
 
 WNDCLASS WindowApp::GetWndClass() const {
 	return wc_;
-}
-
-int64_t WindowApp::GetMouseWheelDelta() {
-	return wheelDelta_;
 }
 
 void WindowApp::CreateGameWindow(const wchar_t* title, UINT windowStyle, int32_t clientWidth, int32_t clientHeight) {
@@ -157,10 +150,6 @@ LRESULT WindowApp::WindowProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam)
 	case WM_DESTROY:
 		// OSに対してアプリの終了を伝える
 		PostQuitMessage(0);
-		return 0;
-	case WM_MOUSEWHEEL:
-		// マウスホイールの回転量を取得
-		wheelDelta_ = GET_WHEEL_DELTA_WPARAM(wparam);
 		return 0;
 	}
 

@@ -4,8 +4,7 @@ Game::~Game() {}
 
 void Game::Update() {
 	// 基底システムの更新
-	MAGISYSTEM::Update();
-	
+	MAGISYSTEM::Update();	
 }
 
 void Game::Draw() {
