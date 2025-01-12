@@ -3,8 +3,15 @@
 #include "DirectX/DXGI/DXGI.h"
 #include "DirectX/DirectXCommand/DirectXCommand.h"
 
+#include "Logger/Logger.h"
+
 Fence::Fence(DXGI* dxgi, DirectXCommand* directXCommand) {
 	Initialize(dxgi, directXCommand);
+	Logger::Log("Fence Initialize\n");
+}
+
+Fence::~Fence() {
+	Logger::Log("Fence Finalize\n");
 }
 
 void Fence::Initialize(DXGI* dxgi, DirectXCommand* directXCommand) {

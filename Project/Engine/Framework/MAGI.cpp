@@ -15,6 +15,8 @@ std::unique_ptr<DXGI> MAGISYSTEM::dxgi_ = nullptr;
 std::unique_ptr<DirectXCommand> MAGISYSTEM::directXCommand_ = nullptr;
 std::unique_ptr<Fence> MAGISYSTEM::fence_ = nullptr;
 
+std::unique_ptr<RTVManager> MAGISYSTEM::rtvManager_ = nullptr;
+
 void MAGISYSTEM::Initialize() {
 #ifdef _DEBUG
 	// リークチェッカ
@@ -36,10 +38,20 @@ void MAGISYSTEM::Initialize() {
 	// Fence
 	fence_ = std::make_unique<Fence>(dxgi_.get(), directXCommand_.get());
 
+	// RTVManager
+	rtvManager_ = std::make_unique<RTVManager>(dxgi_.get());
+
+
+
+	endRequest_ = false;
 }
 
 void MAGISYSTEM::Finalize() {
 
+	// RTVManager
+	if (rtvManager_) {
+		rtvManager_.reset();
+	}
 
 	// Fence
 	if (fence_) {

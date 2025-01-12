@@ -4,8 +4,15 @@
 
 #include "DirectX/DXGI/DXGI.h"
 
+#include "Logger/Logger.h"
+
 DirectXCommand::DirectXCommand(DXGI* dxgi) {
 	Initialize(dxgi);
+	Logger::Log("DirectXCommand Initialize\n");
+}
+
+DirectXCommand::~DirectXCommand() {
+	Logger::Log("DirectXCommand Finalize\n");
 }
 
 void DirectXCommand::Initialize(DXGI* dxgi) {

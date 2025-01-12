@@ -15,8 +15,8 @@ class DirectXCommand;
 
 class Fence {
 public:
-	// コンストラクタ
 	Fence(DXGI* dxgi, DirectXCommand* directXCommand);
+	~Fence();
 
 	// 初期化
 	void Initialize(DXGI* dxgi, DirectXCommand* directXCommand);

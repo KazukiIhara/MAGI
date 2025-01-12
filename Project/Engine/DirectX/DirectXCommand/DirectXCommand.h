@@ -17,8 +17,8 @@ class DXGI;
 
 class DirectXCommand {
 public:
-	// コンストラクタ
 	DirectXCommand(DXGI* dxgi);
+	~DirectXCommand();
 
 	// 初期化
 	void Initialize(DXGI* dxgi);

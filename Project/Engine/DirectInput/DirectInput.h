@@ -13,16 +13,15 @@ class WindowApp;
 // DirectInputクラス
 class DirectInput {
 public:
-	// コンストラクタ
 	DirectInput(WindowApp* windowApp);
-
+	~DirectInput();
 	// 初期化
 	void Initialize(WindowApp* windowApp);
 	// 更新
 	void Update();
 
 	// キー入力
-	bool PushKey(BYTE keyNumber) const;
+	bool PushKey(BYTE keyNumber)const;
 	bool TriggerKey(BYTE keyNumber) const;
 	bool HoldKey(BYTE keyNumber) const;
 	bool ReleaseKey(BYTE keyNumber) const;
@@ -64,9 +63,9 @@ private:
 	ComPtr <IDirectInputDevice8> mouse_ = nullptr;
 
 	// 現在フレームのキー入力
-	BYTE key[256];
+	BYTE keys_[256];
 	// 1フレーム前のキー入力
-	BYTE preKey[256];
+	BYTE preKeys_[256];
 
 	// マウスの現在のボタン状態（DIMOUSESTATE で相対移動量 & ボタンの押下状態を保持）
 	DIMOUSESTATE mouseState_{};

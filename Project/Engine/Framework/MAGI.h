@@ -14,6 +14,8 @@
 #include "DirectX/DirectXCommand/DirectXCommand.h"
 #include "DirectX/Fence/Fence.h"
 
+#include "ViewManagers/RTVManager/RTVManager.h"
+
 // エンジンの全機能を持つクラス
 class MAGISYSTEM {
 public:
@@ -96,6 +98,9 @@ private:
 	static std::unique_ptr<DirectXCommand> directXCommand_;
 	// Fence
 	static std::unique_ptr<Fence> fence_;
+
+	// RTVManager
+	static std::unique_ptr<RTVManager> rtvManager_;
 
 };
 

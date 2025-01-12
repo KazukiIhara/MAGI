@@ -89,6 +89,8 @@
     </ClInclude>
     <ClInclude Include="Engine\DirectX\DirectXCommand\DirectXCommand.h" />
     <ClInclude Include="Engine\DirectX\Fence\Fence.h" />
+    <ClInclude Include="Engine\ViewManagers\RTVManager\RTVManager.h" />
+    <ClInclude Include="Engine\ViewManagers\BaseViewManager\BaseViewManager.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="App\Game\Game.cpp">
@@ -124,5 +126,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Engine\DirectX\DirectXCommand\DirectXCommand.cpp" />
     <ClCompile Include="Engine\DirectX\Fence\Fence.cpp" />
+    <ClCompile Include="Engine\ViewManagers\RTVManager\RTVManager.cpp" />
+    <ClCompile Include="Engine\ViewManagers\BaseViewManager\BaseViewManager.cpp" />
   </ItemGroup>
 </Project>

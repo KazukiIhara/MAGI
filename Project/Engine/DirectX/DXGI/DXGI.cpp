@@ -6,6 +6,11 @@
 
 DXGI::DXGI() {
 	Initialize();
+	Logger::Log("DXGI Initialize\n");
+}
+
+DXGI::~DXGI() {
+	Logger::Log("DXGI Finalize\n");
 }
 
 void DXGI::Initialize() {

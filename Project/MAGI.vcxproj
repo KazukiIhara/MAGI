@@ -118,6 +118,8 @@
     <ClInclude Include="Engine\ImGuiController\ImGuiController.h" />
     <ClInclude Include="Engine\LeakChecker\D3DResourceLeakChecker.h" />
     <ClInclude Include="Engine\Logger\Logger.h" />
+    <ClInclude Include="Engine\ViewManagers\BaseViewManager\BaseViewManager.h" />
+    <ClInclude Include="Engine\ViewManagers\RTVManager\RTVManager.h" />
     <ClInclude Include="Engine\WindowApp\WindowApp.h" />
   </ItemGroup>
   <ItemGroup>
@@ -132,6 +134,8 @@
     <ClCompile Include="Engine\ImGuiController\ImGuiContoller.cpp" />
     <ClCompile Include="Engine\LeakChecker\D3DResourceLeakChecker.cpp" />
     <ClCompile Include="Engine\Logger\Logger.cpp" />
+    <ClCompile Include="Engine\ViewManagers\BaseViewManager\BaseViewManager.cpp" />
+    <ClCompile Include="Engine\ViewManagers\RTVManager\RTVManager.cpp" />
     <ClCompile Include="Engine\WindowApp\WindowApp.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
