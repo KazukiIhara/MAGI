@@ -16,6 +16,10 @@
     <ClInclude Include="Engine\WindowApp\WindowApp.h" />
     <ClInclude Include="App\Game\Game.h" />
     <ClInclude Include="Engine\LeakChecker\D3DResourceLeakChecker.h" />
+    <ClInclude Include="Engine\DirectInput\DirectInput.h" />
+    <ClInclude Include="Engine\Enums\XInputEnum.h" />
+    <ClInclude Include="Engine\ComPtr\ComPtr.h" />
+    <ClInclude Include="Engine\Enums\MouseInputEnum.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine\Logger\Logger.cpp">
@@ -26,5 +30,6 @@
     <ClCompile Include="Engine\WindowApp\WindowApp.cpp" />
     <ClCompile Include="App\Game\Game.cpp" />
     <ClCompile Include="Engine\LeakChecker\D3DResourceLeakChecker.cpp" />
+    <ClCompile Include="Engine\DirectInput\DirectInput.cpp" />
   </ItemGroup>
 </Project>
