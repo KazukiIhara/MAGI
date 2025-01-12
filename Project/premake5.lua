@@ -40,9 +40,10 @@ project "MAGI" -- プロジェクト名
    
    -- 追加のインクルードパス
    includedirs { 
-   "Engine",
-   "App",
-   "Externals/assimp/include",
+      "Engine",
+      "App",
+      "Externals/assimp/include",
+      "Externals/imgui"
     } 
 
    dependson { "DirectXTex","imgui" } -- 依存していることを指定
