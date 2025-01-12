@@ -9,7 +9,7 @@ std::unique_ptr<D3DResourceLeakChecker> MAGISYSTEM::leakCheck_ = nullptr;
 
 // Staticメンバ変数の初期化
 std::unique_ptr<WindowApp> MAGISYSTEM::windowApp_ = nullptr;
-
+std::unique_ptr<DirectInput> MAGISYSTEM::directInput_ = nullptr;
 
 void MAGISYSTEM::Initialize() {
 	// 開始ログ
@@ -18,12 +18,20 @@ void MAGISYSTEM::Initialize() {
 	// WindowApp
 	windowApp_ = std::make_unique<WindowApp>();
 	windowApp_->Initialize();
+	// DirectInput
+	directInput_ = std::make_unique<DirectInput>();
+	directInput_->Initialize(windowApp_.get());
 
 }
 
 void MAGISYSTEM::Finalize() {
 
 
+
+	// DirectInput
+	if (directInput_) {
+		directInput_.reset();
+	}
 
 	// WindowApp
 	if (windowApp_) {
@@ -40,13 +48,13 @@ bool MAGISYSTEM::IsEndRequest() const {
 }
 
 void MAGISYSTEM::Update() {
-	// WindowAppの更新処理
-	windowApp_->Update();
-
 	// ウィンドウにメッセージが来ていたら最優先で処理
-	if (windowApp_->ProcessMessage()) {
+	if (windowApp_->Update()) {
 		endRequest_ = true;
 	}
+
+	// 入力の更新
+	directInput_->Update();
 
 }
 

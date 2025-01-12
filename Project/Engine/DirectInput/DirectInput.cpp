@@ -2,9 +2,13 @@
 
 #include <cassert>
 
+#include "Logger/Logger.h"
 #include "WindowApp/WindowApp.h"
 
 void DirectInput::Initialize(WindowApp* windowApp) {
+	// 開始ログ
+	Logger::Log("DirectInput Initialize");
+
 	SetWindowApp(windowApp);
 	InitializeDirectInput();
 	InitializeKeybord();
@@ -36,30 +40,50 @@ bool DirectInput::ReleaseKey(BYTE keyNumber) const {
 
 bool DirectInput::PushMouseButton(MouseButton mouseButton) const {
     // 現在のフレームでマウスボタンが押されているかを判定
-    return (mouseState_.rgbButtons[static_cast<int>(mouseButton)] & 0x80) != 0;
+    bool isPushed = (mouseState_.rgbButtons[static_cast<int>(mouseButton)] & 0x80) != 0;
+    if (isPushed) {
+        Logger::Log("PushMouseButton: Button " + std::to_string(static_cast<int>(mouseButton)) + " is pushed.\n");
+    }
+    return isPushed;
 }
 
 bool DirectInput::TriggerMouseButton(MouseButton mouseButton) const {
     // 前フレームでは押されておらず、現在フレームで押されたかを判定
-    return !(prevMouseState_.rgbButtons[static_cast<int>(mouseButton)] & 0x80) &&
-           (mouseState_.rgbButtons[static_cast<int>(mouseButton)] & 0x80);
+    bool isTriggered = !(prevMouseState_.rgbButtons[static_cast<int>(mouseButton)] & 0x80) &&
+                        (mouseState_.rgbButtons[static_cast<int>(mouseButton)] & 0x80);
+    if (isTriggered) {
+        Logger::Log("TriggerMouseButton: Button " + std::to_string(static_cast<int>(mouseButton)) + " is triggered.\n");
+    }
+    return isTriggered;
 }
 
 bool DirectInput::HoldMouseButton(MouseButton mouseButton) const {
     // 前フレームでも現在フレームでも押され続けているかを判定
-    return (prevMouseState_.rgbButtons[static_cast<int>(mouseButton)] & 0x80) &&
-           (mouseState_.rgbButtons[static_cast<int>(mouseButton)] & 0x80);
+    bool isHeld = (prevMouseState_.rgbButtons[static_cast<int>(mouseButton)] & 0x80) &&
+                  (mouseState_.rgbButtons[static_cast<int>(mouseButton)] & 0x80);
+    if (isHeld) {
+        Logger::Log("HoldMouseButton: Button " + std::to_string(static_cast<int>(mouseButton)) + " is held.\n");
+    }
+    return isHeld;
 }
 
 bool DirectInput::ReleaseMouseButton(MouseButton mouseButton) const {
     // 前フレームでは押されており、現在フレームで離されたかを判定
-    return (prevMouseState_.rgbButtons[static_cast<int>(mouseButton)] & 0x80) &&
-           !(mouseState_.rgbButtons[static_cast<int>(mouseButton)] & 0x80);
+    bool isReleased = (prevMouseState_.rgbButtons[static_cast<int>(mouseButton)] & 0x80) &&
+                      !(mouseState_.rgbButtons[static_cast<int>(mouseButton)] & 0x80);
+    if (isReleased) {
+        Logger::Log("ReleaseMouseButton: Button " + std::to_string(static_cast<int>(mouseButton)) + " is released.\n");
+    }
+    return isReleased;
 }
 
-int64_t DirectInput::MouseWheelDelta() {
+int64_t DirectInput::MouseWheelDelta() const {
     // マウスのホイール回転量を取得（DIMOUSESTATEのz軸移動量がホイール回転に対応）
-    return static_cast<int64_t>(mouseState_.lZ);
+    int64_t delta = static_cast<int64_t>(mouseState_.lZ);
+    if (delta != 0) {
+        Logger::Log("MouseWheelDelta: Wheel moved by " + std::to_string(delta) + " units.\n");
+    }
+    return delta;
 }
 
 void DirectInput::InitializeDirectInput() {

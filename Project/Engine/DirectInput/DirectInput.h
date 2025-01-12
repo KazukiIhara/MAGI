@@ -31,7 +31,7 @@ public:
 	bool ReleaseMouseButton(MouseButton mouseButton)const;
 
 	// ホイールの回転量を取得
-	int64_t MouseWheelDelta();
+	int64_t MouseWheelDelta() const;
 
 private:
 	// DirectInputの初期化

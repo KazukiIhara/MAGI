@@ -8,6 +8,7 @@
 #endif // _DEBUG
 
 #include "WindowApp/WindowApp.h"
+#include "DirectInput/DirectInput.h"
 
 // エンジンの全機能を持つ
 class MAGISYSTEM {
@@ -39,6 +40,8 @@ private:
 #endif // _DEBUG
 	// WindowApp
 	static std::unique_ptr<WindowApp> windowApp_;
+	// DirectInput
+	static std::unique_ptr<DirectInput> directInput_;
 
 };
 
