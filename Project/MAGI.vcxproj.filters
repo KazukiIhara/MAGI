@@ -22,6 +22,8 @@
     <ClInclude Include="Engine\Enums\MouseInputEnum.h" />
     <ClInclude Include="Engine\GUI\GUI.h" />
     <ClInclude Include="Engine\ImGuiController\ImGuiController.h" />
+    <ClInclude Include="Engine\FPSController\FPSController.h" />
+    <ClInclude Include="Engine\DirectX\DXGI\DXGI.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine\Logger\Logger.cpp">
@@ -35,5 +37,7 @@
     <ClCompile Include="Engine\DirectInput\DirectInput.cpp" />
     <ClCompile Include="Engine\GUI\GUI.cpp" />
     <ClCompile Include="Engine\ImGuiController\ImGuiContoller.cpp" />
+    <ClCompile Include="Engine\FPSController\FPSController.cpp" />
+    <ClCompile Include="Engine\DirectX\DXGI\DXGI.cpp" />
   </ItemGroup>
 </Project>

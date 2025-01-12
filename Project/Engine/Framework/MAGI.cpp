@@ -56,6 +56,16 @@ void MAGISYSTEM::Update() {
 	// 入力の更新
 	directInput_->Update();
 
+	// F11キーでフルスクリーンの切り替え処理
+	if (directInput_->TriggerKey(DIK_F11)) {
+		windowApp_->ToggleFullScreen();
+	}
+
+	// escキーが入力されたらアプリケーションを終了
+	if (directInput_->PushKey(DIK_ESCAPE)) {
+		endRequest_ = true;
+	}
+
 }
 
 void MAGISYSTEM::Draw() {
@@ -89,5 +99,41 @@ void MAGISYSTEM::Run() {
 
 	// 終了
 	Finalize();
+}
+
+HWND MAGISYSTEM::GetWindowHandle() {
+	return windowApp_->GetHwnd();
+}
+
+bool MAGISYSTEM::PushKey(BYTE keyNumber) {
+	return directInput_->PushKey(keyNumber);
+}
+
+bool MAGISYSTEM::TriggerKey(BYTE keyNumber) {
+	return directInput_->TriggerKey(keyNumber);
+}
+
+bool MAGISYSTEM::HoldKey(BYTE keyNumber) {
+	return directInput_->HoldKey(keyNumber);
+}
+
+bool MAGISYSTEM::ReleaseKey(BYTE keyNumber) {
+	return directInput_->ReleaseKey(keyNumber);
+}
+
+bool MAGISYSTEM::PushMouseButton(MouseButton mouseButton) {
+	return directInput_->PushMouseButton(mouseButton);
+}
+
+bool MAGISYSTEM::TriggerMouseButton(MouseButton mouseButton) {
+	return directInput_->TriggerMouseButton(mouseButton);
+}
+
+bool MAGISYSTEM::HoldMouseButton(MouseButton mouseButton) {
+	return directInput_->HoldMouseButton(mouseButton);
+}
+
+bool MAGISYSTEM::ReleaseMouseButton(MouseButton mouseButton) {
+	return directInput_->ReleaseMouseButton(mouseButton);
 }
 

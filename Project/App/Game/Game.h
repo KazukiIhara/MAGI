@@ -2,7 +2,7 @@
 
 #include "Framework/MAGI.h"
 
-// ゲームクラス
+// 実行するゲームクラス
 class Game :public MAGISYSTEM {
 public:
 	~Game();
