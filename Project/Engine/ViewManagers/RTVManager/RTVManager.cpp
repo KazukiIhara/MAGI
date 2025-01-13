@@ -5,6 +5,7 @@
 #include "Logger/Logger.h"
 
 RTVManager::RTVManager(DXGI* dxgi) :BaseViewManager(dxgi) {
+	// 基底クラスの初期化処理
 	BaseViewManager::Initialize();
 	Logger::Log("RTVManager Initialize\n");
 }

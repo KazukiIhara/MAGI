@@ -41,7 +41,6 @@ void MAGISYSTEM::Initialize() {
 	// RTVManager
 	rtvManager_ = std::make_unique<RTVManager>(dxgi_.get());
 
-	endRequest_ = false;
 }
 
 void MAGISYSTEM::Finalize() {
