@@ -52,7 +52,7 @@ project "MAGI" -- プロジェクト名
 
    links { "DirectXTex","imgui" }  -- リンク対象のプロジェクト
 
-   warnings "High" -- 警告レベル3を設定
+   warnings "High" -- 警告レベル4を設定
 
    buildoptions { "/utf-8" } -- UTF-8でビルドする設定
 
