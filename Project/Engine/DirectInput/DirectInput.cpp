@@ -5,10 +5,16 @@
 #include "Logger/Logger.h"
 #include "WindowApp/WindowApp.h"
 
-void DirectInput::Initialize(WindowApp* windowApp) {
-	// 開始ログ
-	Logger::Log("DirectInput Initialize");
+DirectInput::DirectInput(WindowApp* windowApp) {
+	Initialize(windowApp);
+	Logger::Log("DirectInput Initialize\n");
+}
 
+DirectInput::~DirectInput() {
+	Logger::Log("DirectInput Finalize\n");
+}
+
+void DirectInput::Initialize(WindowApp* windowApp) {
 	SetWindowApp(windowApp);
 	InitializeDirectInput();
 	InitializeKeybord();
@@ -23,19 +29,19 @@ void DirectInput::Update() {
 }
 
 bool DirectInput::PushKey(BYTE keyNumber) const {
-	return key[keyNumber] != 0;
+	return keys_[keyNumber] != 0;
 }
 
 bool DirectInput::TriggerKey(BYTE keyNumber) const {
-	return !preKey[keyNumber] && key[keyNumber];
+	return !preKeys_[keyNumber] && keys_[keyNumber];
 }
 
 bool DirectInput::HoldKey(BYTE keyNumber) const {
-	return preKey[keyNumber] && key[keyNumber];
+	return preKeys_[keyNumber] && keys_[keyNumber];
 }
 
 bool DirectInput::ReleaseKey(BYTE keyNumber) const {
-	return preKey[keyNumber] && !key[keyNumber];
+	return preKeys_[keyNumber] && !keys_[keyNumber];
 }
 
 bool DirectInput::PushMouseButton(MouseButton mouseButton) const {
@@ -61,7 +67,7 @@ bool DirectInput::ReleaseMouseButton(MouseButton mouseButton) const {
 		!(mouseState_.rgbButtons[static_cast<int>(mouseButton)] & 0x80);
 }
 
-int64_t DirectInput::MouseWheelDelta() const {
+int64_t DirectInput::GetMouseWheelDelta() const {
 	// マウスのホイール回転量を取得（DIMOUSESTATEのz軸移動量がホイール回転に対応）
 	return static_cast<int64_t>(mouseState_.lZ);
 }
@@ -91,6 +97,10 @@ void DirectInput::InitializeKeybord() {
 	assert(SUCCEEDED(result));
 	result = keybord_->SetCooperativeLevel(windowApp_->GetHwnd(), DISCL_FOREGROUND | DISCL_NONEXCLUSIVE | DISCL_NOWINKEY);
 	assert(SUCCEEDED(result));
+
+	// キーの状態をリセット
+	memset(keys_, 0, sizeof(keys_));
+	memset(preKeys_, 0, sizeof(preKeys_));
 }
 
 void DirectInput::InitializeMouse() {
@@ -113,22 +123,12 @@ void DirectInput::InitializeMouse() {
 }
 
 void DirectInput::UpdateKeybord() {
-	// キーボードがない場合早期リターン
-	if (!keybord_) {
-		return;
-	}
 	// デバイスを取得 (Acquire)
 	keybord_->Acquire();
 	// 前フレームの状態を保存
-	memcpy(preKey, key, sizeof(key));
+	memcpy(preKeys_, keys_, sizeof(keys_));
 	// 現在のキーボード状態を取得
-	HRESULT hr = keybord_->GetDeviceState(sizeof(key), key);
-	if (FAILED(hr)) {
-		// 取得失敗時は再度Acquire
-		if (hr == DIERR_INPUTLOST || hr == DIERR_NOTACQUIRED) {
-			keybord_->Acquire();
-		}
-	}
+	keybord_->GetDeviceState(sizeof(keys_), keys_);
 }
 
 void DirectInput::UpdateMouse() {
@@ -138,14 +138,7 @@ void DirectInput::UpdateMouse() {
 	prevMouseState_ = mouseState_;
 
 	// 今フレームの状態取得
-	HRESULT hr = mouse_->GetDeviceState(sizeof(DIMOUSESTATE), &mouseState_);
-	if (FAILED(hr)) {
-		// 取得失敗時は再度Acquireを試みる
-		if (hr == DIERR_INPUTLOST || hr == DIERR_NOTACQUIRED) {
-			mouse_->Acquire();
-		}
-		return;
-	}
+	mouse_->GetDeviceState(sizeof(DIMOUSESTATE), &mouseState_);
 }
 
 void DirectInput::SetWindowApp(WindowApp* windowApp) {

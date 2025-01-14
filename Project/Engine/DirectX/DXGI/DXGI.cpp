@@ -4,9 +4,18 @@
 
 #include "Logger/Logger.h"
 
+DXGI::DXGI() {
+	Initialize();
+	Logger::Log("DXGI Initialize\n");
+}
+
+DXGI::~DXGI() {
+	Logger::Log("DXGI Finalize\n");
+}
+
 void DXGI::Initialize() {
 #ifdef _DEBUG
-	Microsoft::WRL::ComPtr<ID3D12Debug1> debugController = nullptr;
+	ComPtr<ID3D12Debug1> debugController = nullptr;
 	if (SUCCEEDED(D3D12GetDebugInterface(IID_PPV_ARGS(&debugController)))) {
 		// デバッグコントローラを有効化する
 		debugController->EnableDebugLayer();
@@ -17,7 +26,6 @@ void DXGI::Initialize() {
 
 	// DXGIファクトリーの生成
 	hr_ = CreateDXGIFactory(IID_PPV_ARGS(&dxgiFactory_));
-	// 初期化の根本的な部分なので、うまくいかないならassert
 	assert(SUCCEEDED(hr_));
 
 	// 使用するアダプタ(GPU)を決定する
@@ -28,8 +36,8 @@ void DXGI::Initialize() {
 		// アダプターの情報を取得する
 		DXGI_ADAPTER_DESC3 adapterDesc{};
 		hr_ = useAdapter_->GetDesc3(&adapterDesc);
-		// 取得できぬのならとまれ
 		assert(SUCCEEDED(hr_));
+
 		// ソフトウェアアダプタでなければ採用
 		if (!(adapterDesc.Flags & DXGI_ADAPTER_FLAG3_SOFTWARE)) {
 			// 採用したアダプタの情報をログに出力。
@@ -60,11 +68,11 @@ void DXGI::Initialize() {
 	// デバイスの生成がうまくいかなかったので起動できない
 	assert(device_ != nullptr);
 	// 初期化完了ログ
-	Logger::Log("Complete Create D3D12DDevice!\n omdetou/(^ v ^)/\n");
+	Logger::Log("Complete Create D3D12DDevice\n");
 
 
 #ifdef _DEBUG
-	Microsoft::WRL::ComPtr<ID3D12InfoQueue> infoQueue = nullptr;
+	ComPtr<ID3D12InfoQueue> infoQueue = nullptr;
 	if (SUCCEEDED(device_->QueryInterface(IID_PPV_ARGS(&infoQueue)))) {
 		// やばいエラー時に止まる
 		infoQueue->SetBreakOnSeverity(D3D12_MESSAGE_SEVERITY_CORRUPTION, true);

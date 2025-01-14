@@ -4,10 +4,16 @@
 
 #include "Logger/Logger.h"
 
-void WindowApp::Initialize() {
-	// 開始ログ
+WindowApp::WindowApp() {
+	Initialize();
 	Logger::Log("WindowApp Initialize\n");
+}
 
+WindowApp::~WindowApp() {
+	Logger::Log("WindowApp Finalize\n");
+}
+
+void WindowApp::Initialize() {
 	// システムタイマー分解能をあげる
 	timeBeginPeriod(1);
 	// ゲームウィンドウの作成
@@ -20,8 +26,6 @@ void WindowApp::Finalize() {
 	// ウィンドウを破棄
 	TerminateGameWindow();
 
-	// 終了ログ
-	Logger::Log("WindowApp Finalize\n");
 }
 
 bool WindowApp::Update() {
@@ -147,10 +151,10 @@ LRESULT WindowApp::WindowProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam)
 	// メッセージに応じてゲーム固有の処理を行う
 	switch (msg) {
 		// ウィンドウが破棄された
-	case WM_DESTROY:
-		// OSに対してアプリの終了を伝える
-		PostQuitMessage(0);
-		return 0;
+		case WM_DESTROY:
+			// OSに対してアプリの終了を伝える
+			PostQuitMessage(0);
+			return 0;
 	}
 
 	// 標準のメッセージ処理を行う

@@ -10,6 +10,12 @@
 #include "WindowApp/WindowApp.h"
 #include "DirectInput/DirectInput.h"
 
+#include "DirectX/DXGI/DXGI.h"
+#include "DirectX/DirectXCommand/DirectXCommand.h"
+#include "DirectX/Fence/Fence.h"
+
+#include "ViewManagers/RTVManager/RTVManager.h"
+
 // エンジンの全機能を持つクラス
 class MAGISYSTEM {
 public:
@@ -68,8 +74,8 @@ public: // エンジンの機能
 	static bool HoldMouseButton(MouseButton mouseButton);
 	// マウスボタンを離した
 	static bool ReleaseMouseButton(MouseButton mouseButton);
-
-
+	// マウスホイールの入力を取得
+	static int64_t GetMouseWheelDelta();
 #pragma endregion
 
 
@@ -85,6 +91,16 @@ private:
 	static std::unique_ptr<WindowApp> windowApp_;
 	// DirectInput
 	static std::unique_ptr<DirectInput> directInput_;
+
+	// DXGI
+	static std::unique_ptr<DXGI> dxgi_;
+	// DirectXCommand
+	static std::unique_ptr<DirectXCommand> directXCommand_;
+	// Fence
+	static std::unique_ptr<Fence> fence_;
+
+	// RTVManager
+	static std::unique_ptr<RTVManager> rtvManager_;
 
 };
 

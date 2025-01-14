@@ -2,31 +2,68 @@
 
 #include "Logger/Logger.h"
 
-// Staticメンバ変数
+
+// Staticメンバ変数の初期化
 #ifdef _DEBUG
 std::unique_ptr<D3DResourceLeakChecker> MAGISYSTEM::leakCheck_ = nullptr;
 #endif // _DEBUG
 
-// Staticメンバ変数の初期化
 std::unique_ptr<WindowApp> MAGISYSTEM::windowApp_ = nullptr;
 std::unique_ptr<DirectInput> MAGISYSTEM::directInput_ = nullptr;
 
+std::unique_ptr<DXGI> MAGISYSTEM::dxgi_ = nullptr;
+std::unique_ptr<DirectXCommand> MAGISYSTEM::directXCommand_ = nullptr;
+std::unique_ptr<Fence> MAGISYSTEM::fence_ = nullptr;
+
+std::unique_ptr<RTVManager> MAGISYSTEM::rtvManager_ = nullptr;
+
 void MAGISYSTEM::Initialize() {
+#ifdef _DEBUG
+	// リークチェッカ
+	leakCheck_ = std::make_unique<D3DResourceLeakChecker>();
+#endif // _DEBUG
+
 	// 開始ログ
 	Logger::Log("MAGISYSTEM Initialize\n");
 
 	// WindowApp
 	windowApp_ = std::make_unique<WindowApp>();
-	windowApp_->Initialize();
 	// DirectInput
-	directInput_ = std::make_unique<DirectInput>();
-	directInput_->Initialize(windowApp_.get());
+	directInput_ = std::make_unique<DirectInput>(windowApp_.get());
+
+	// DXGI
+	dxgi_ = std::make_unique<DXGI>();
+	// DirectXCommand
+	directXCommand_ = std::make_unique<DirectXCommand>(dxgi_.get());
+	// Fence
+	fence_ = std::make_unique<Fence>(dxgi_.get(), directXCommand_.get());
+
+	// RTVManager
+	rtvManager_ = std::make_unique<RTVManager>(dxgi_.get());
 
 }
 
 void MAGISYSTEM::Finalize() {
 
+	// RTVManager
+	if (rtvManager_) {
+		rtvManager_.reset();
+	}
 
+	// Fence
+	if (fence_) {
+		fence_.reset();
+	}
+
+	// DirectXCommand
+	if (directXCommand_) {
+		directXCommand_.reset();
+	}
+
+	// DXGI
+	if (dxgi_) {
+		dxgi_.reset();
+	}
 
 	// DirectInput
 	if (directInput_) {
@@ -135,5 +172,9 @@ bool MAGISYSTEM::HoldMouseButton(MouseButton mouseButton) {
 
 bool MAGISYSTEM::ReleaseMouseButton(MouseButton mouseButton) {
 	return directInput_->ReleaseMouseButton(mouseButton);
+}
+
+int64_t MAGISYSTEM::GetMouseWheelDelta() {
+	return directInput_->GetMouseWheelDelta();
 }
 

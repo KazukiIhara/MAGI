@@ -10,6 +10,8 @@ public:
 	static const uint32_t kClientWidth = 1280; // クライアント領域の横幅
 	static const uint32_t kClientHeight = 720; // クライアント領域の縦幅
 public:
+	WindowApp();
+	~WindowApp();
 	// 初期化
 	void Initialize();
 	// 終了処理
