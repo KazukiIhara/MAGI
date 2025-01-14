@@ -118,6 +118,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Engine\DirectX\DXGI\DXGI.h" />
     <ClInclude Include="Engine\DirectX\DirectXCommand\DirectXCommand.h" />
     <ClInclude Include="Engine\DirectX\Fence\Fence.h" />
+    <ClInclude Include="Engine\DirectX\SwapChain\SwapChain.h" />
     <ClInclude Include="Engine\Enums\MouseInputEnum.h" />
     <ClInclude Include="Engine\Enums\XInputEnum.h" />
     <ClInclude Include="Engine\FPSController\FPSController.h" />
@@ -138,6 +139,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Engine\DirectX\DXGI\DXGI.cpp" />
     <ClCompile Include="Engine\DirectX\DirectXCommand\DirectXCommand.cpp" />
     <ClCompile Include="Engine\DirectX\Fence\Fence.cpp" />
+    <ClCompile Include="Engine\DirectX\SwapChain\SwapChain.cpp" />
     <ClCompile Include="Engine\FPSController\FPSController.cpp" />
     <ClCompile Include="Engine\Framework\MAGI.cpp" />
     <ClCompile Include="Engine\GUI\GUI.cpp" />
