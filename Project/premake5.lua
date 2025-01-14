@@ -58,6 +58,11 @@ project "MAGI" -- プロジェクト名
 
    flags { "MultiProcessorCompile" } -- 複数プロセッサでのコンパイルを有効化
 
+   postbuildcommands {
+      'copy "$(WindowsSdkDir)bin\\$(TargetPlatformVersion)\\x64\\dxcompiler.dll" "$(TargetDir)dxcompiler.dll"',
+      'copy "$(WindowsSdkDir)bin\\$(TargetPlatformVersion)\\x64\\dxil.dll" "$(TargetDir)dxil.dll"'
+   }
+
    filter "configurations:Debug"
       defines { "DEBUG" }
       symbols "On"
