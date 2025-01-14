@@ -36,7 +36,7 @@ private:
 	void SetDXGI(DXGI* dxgi);
 protected:
 	// DescriptorHeap
-	Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> descriptorHeap_ = nullptr;
+	ComPtr<ID3D12DescriptorHeap> descriptorHeap_ = nullptr;
 	// Discriptorのサイズ
 	uint32_t descriptorSize_ = 0u;
 	// 使用しているviewのインデックス

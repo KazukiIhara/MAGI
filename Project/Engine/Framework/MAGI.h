@@ -15,6 +15,8 @@
 #include "DirectX/Fence/Fence.h"
 
 #include "ViewManagers/RTVManager/RTVManager.h"
+#include "ViewManagers/DSVManager/DSVManager.h"
+#include "ViewManagers/SRVUAVManager/SRVUAVManager.h"
 
 // エンジンの全機能を持つクラス
 class MAGISYSTEM {
@@ -101,6 +103,10 @@ private:
 
 	// RTVManager
 	static std::unique_ptr<RTVManager> rtvManager_;
+	// DSVManager
+	static std::unique_ptr<DSVManager> dsvManager_;
+	// SRVUAVManager
+	static std::unique_ptr<SRVUAVManager> srvuavManager_;
 
 };
 

@@ -16,6 +16,8 @@ std::unique_ptr<DirectXCommand> MAGISYSTEM::directXCommand_ = nullptr;
 std::unique_ptr<Fence> MAGISYSTEM::fence_ = nullptr;
 
 std::unique_ptr<RTVManager> MAGISYSTEM::rtvManager_ = nullptr;
+std::unique_ptr<DSVManager> MAGISYSTEM::dsvManager_ = nullptr;
+std::unique_ptr<SRVUAVManager> MAGISYSTEM::srvuavManager_ = nullptr;
 
 void MAGISYSTEM::Initialize() {
 #ifdef _DEBUG
@@ -40,10 +42,24 @@ void MAGISYSTEM::Initialize() {
 
 	// RTVManager
 	rtvManager_ = std::make_unique<RTVManager>(dxgi_.get());
+	// DSVManager
+	dsvManager_ = std::make_unique<DSVManager>(dxgi_.get());
+	// SRVUAVmanager
+	srvuavManager_ = std::make_unique<SRVUAVManager>(dxgi_.get());
 
 }
 
 void MAGISYSTEM::Finalize() {
+
+	// SRVUAVManager
+	if (srvuavManager_) {
+		srvuavManager_.reset();
+	}
+
+	// DSVManager
+	if (dsvManager_) {
+		dsvManager_.reset();
+	}
 
 	// RTVManager
 	if (rtvManager_) {
