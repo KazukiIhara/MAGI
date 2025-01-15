@@ -8,7 +8,7 @@
 #include <d3d12.h>
 
 // ComPtr
-#include "ComPtr/ComPtr.h"
+#include "DirectX/ComPtr/ComPtr.h"
 
 class DXGI;
 class DirectXCommand;

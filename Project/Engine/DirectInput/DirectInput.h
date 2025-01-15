@@ -4,7 +4,7 @@
 #include <dinput.h>
 #include <cstdint>
 
-#include "ComPtr/ComPtr.h"
+#include "DirectX/ComPtr/ComPtr.h"
 #include "Enums/MouseInputEnum.h"
 
 // 前方宣言

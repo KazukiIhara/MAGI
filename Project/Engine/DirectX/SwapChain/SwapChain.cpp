@@ -8,21 +8,12 @@
 #include "ViewManagers/RTVManager/RTVManager.h"
 
 SwapChain::SwapChain(WindowApp* windowApp, DXGI* dxgi, DirectXCommand* command, RTVManager* rtvManager) {
-	SetWindowApp(windowApp);
-	SetDXGI(dxgi);
-	SetCommand(command);
-	SetRTVManager(rtvManager);
-
-	// スワップチェーン作成
-	CreateSwapChain();
-	// リソースを作成
-	CreateResources();
-	// RTVを作成
-	CreateRTV();
+	Initialize(windowApp, dxgi, command, rtvManager);
+	Logger::Log("SwapChain Initialize\n");
 }
 
 SwapChain::~SwapChain() {
-	Logger::Log("SwapChain Finalize");
+	Logger::Log("SwapChain Finalize\n");
 }
 
 void SwapChain::Initialize(WindowApp* windowApp, DXGI* dxgi, DirectXCommand* command, RTVManager* rtvManager) {
@@ -66,7 +57,7 @@ void SwapChain::CreateSwapChain() {
 	swapChainDesc_.BufferCount = 2;								// ダブルバッファ
 	swapChainDesc_.SwapEffect = DXGI_SWAP_EFFECT_FLIP_DISCARD;	// モニタにうつしたら、中身を破棄
 	// コマンドキュー、ウィンドウハンドル、設定を渡して生成する
-	hr_ = dxgi_->GetFactory()->CreateSwapChainForHwnd(command_->GetQueue(), windowApp_->GetHwnd(), &swapChainDesc_,
+	hr_ = dxgi_->GetFactory()->CreateSwapChainForHwnd(directXCommand_->GetQueue(), windowApp_->GetHwnd(), &swapChainDesc_,
 		nullptr, nullptr, reinterpret_cast<IDXGISwapChain1**>(swapChain_.GetAddressOf()));
 	assert(SUCCEEDED(hr_));
 }
@@ -101,7 +92,7 @@ void SwapChain::SetDXGI(DXGI* dxgi) {
 
 void SwapChain::SetCommand(DirectXCommand* command) {
 	assert(command);
-	command_ = command;
+	directXCommand_ = command;
 }
 
 void SwapChain::SetRTVManager(RTVManager* rtvManager) {

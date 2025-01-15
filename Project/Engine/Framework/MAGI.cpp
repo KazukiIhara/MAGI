@@ -2,7 +2,6 @@
 
 #include "Logger/Logger.h"
 
-
 // Staticメンバ変数の初期化
 #ifdef _DEBUG
 std::unique_ptr<D3DResourceLeakChecker> MAGISYSTEM::leakCheck_ = nullptr;
@@ -20,15 +19,19 @@ std::unique_ptr<DSVManager> MAGISYSTEM::dsvManager_ = nullptr;
 std::unique_ptr<SRVUAVManager> MAGISYSTEM::srvuavManager_ = nullptr;
 
 std::unique_ptr<SwapChain> MAGISYSTEM::swapChain_ = nullptr;
+std::unique_ptr<DepthStencil> MAGISYSTEM::depthStencil_ = nullptr;
+std::unique_ptr<ResourceBarrier> MAGISYSTEM::resourceBarrier_ = nullptr;
+std::unique_ptr<RenderTarget> MAGISYSTEM::renderTarget_ = nullptr;
 
 void MAGISYSTEM::Initialize() {
+
+	// 開始ログ
+	Logger::Log("MAGISYSTEM Start\n");
+
 #ifdef _DEBUG
 	// リークチェッカ
 	leakCheck_ = std::make_unique<D3DResourceLeakChecker>();
 #endif // _DEBUG
-
-	// 開始ログ
-	Logger::Log("MAGISYSTEM Initialize\n");
 
 	// WindowApp
 	windowApp_ = std::make_unique<WindowApp>();
@@ -51,9 +54,31 @@ void MAGISYSTEM::Initialize() {
 
 	// SwapChain
 	swapChain_ = std::make_unique<SwapChain>(windowApp_.get(), dxgi_.get(), directXCommand_.get(), rtvManager_.get());
+	// DepthStencil
+	depthStencil_ = std::make_unique<DepthStencil>(dxgi_.get(), directXCommand_.get(), dsvManager_.get());
+	// ResouceBarrier
+	resourceBarrier_ = std::make_unique<ResourceBarrier>(directXCommand_.get(), swapChain_.get());
+
+	// 初期化完了ログ
+	Logger::Log("MAGISYSTEM Initialize\n");
 }
 
 void MAGISYSTEM::Finalize() {
+
+	// ResourceBarrier
+	if (resourceBarrier_) {
+		resourceBarrier_.reset();
+	}
+
+	// DepthStencil
+	if (depthStencil_) {
+		depthStencil_.reset();
+	}
+
+	// SwapChain
+	if (swapChain_) {
+		swapChain_.reset();
+	}
 
 	// SRVUAVManager
 	if (srvuavManager_) {

@@ -2,7 +2,9 @@
 
 #include <XInput.h>
 
-// 対応するパッドのボタン
+/// <summary>
+/// パッドのボタン
+/// </summary>
 enum class PadNumber {
 	ButtonA = XINPUT_GAMEPAD_A,
 	ButtonB = XINPUT_GAMEPAD_B,

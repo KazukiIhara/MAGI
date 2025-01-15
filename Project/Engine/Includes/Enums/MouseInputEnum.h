@@ -1,6 +1,8 @@
 #pragma once
 
-// マウスボタン
+/// <summary>
+/// マウスボタン
+/// </summary>
 enum class MouseButton {
 	Left,
 	Right,

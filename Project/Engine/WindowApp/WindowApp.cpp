@@ -25,7 +25,6 @@ void WindowApp::Finalize() {
 	CloseWindow(hwnd_);
 	// ウィンドウを破棄
 	TerminateGameWindow();
-
 }
 
 bool WindowApp::Update() {

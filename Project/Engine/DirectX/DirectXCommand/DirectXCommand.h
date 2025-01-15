@@ -10,7 +10,7 @@
 #include <dxcapi.h>
 
 // ComPtr
-#include "ComPtr/ComPtr.h"
+#include "DirectX/ComPtr/ComPtr.h"
 
 // 前方宣言
 class DXGI;
