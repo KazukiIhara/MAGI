@@ -180,6 +180,8 @@
     <ClInclude Include="Engine\WindowApp\WindowApp.h">
       <Filter>Engine\WindowApp</Filter>
     </ClInclude>
+    <ClInclude Include="Engine\DirectX\Viewport\Viewport.h" />
+    <ClInclude Include="Engine\DirectX\ScissorRect\ScissorRect.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="App\Game\Game.cpp">
@@ -252,5 +254,7 @@
       <Filter>Engine\WindowApp</Filter>
     </ClCompile>
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Engine\DirectX\Viewport\Viewport.cpp" />
+    <ClCompile Include="Engine\DirectX\ScissorRect\ScissorRect.cpp" />
   </ItemGroup>
 </Project>

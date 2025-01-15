@@ -2,7 +2,6 @@
 
 #include "Logger/Logger.h"
 
-
 // Staticメンバ変数の初期化
 #ifdef _DEBUG
 std::unique_ptr<D3DResourceLeakChecker> MAGISYSTEM::leakCheck_ = nullptr;
@@ -22,15 +21,17 @@ std::unique_ptr<SRVUAVManager> MAGISYSTEM::srvuavManager_ = nullptr;
 std::unique_ptr<SwapChain> MAGISYSTEM::swapChain_ = nullptr;
 std::unique_ptr<DepthStencil> MAGISYSTEM::depthStencil_ = nullptr;
 std::unique_ptr<ResourceBarrier> MAGISYSTEM::resourceBarrier_ = nullptr;
+std::unique_ptr<RenderTarget> MAGISYSTEM::renderTarget_ = nullptr;
 
 void MAGISYSTEM::Initialize() {
+
+	// 開始ログ
+	Logger::Log("MAGISYSTEM Start\n");
+
 #ifdef _DEBUG
 	// リークチェッカ
 	leakCheck_ = std::make_unique<D3DResourceLeakChecker>();
 #endif // _DEBUG
-
-	// 開始ログ
-	Logger::Log("MAGISYSTEM Initialize\n");
 
 	// WindowApp
 	windowApp_ = std::make_unique<WindowApp>();
@@ -58,6 +59,8 @@ void MAGISYSTEM::Initialize() {
 	// ResouceBarrier
 	resourceBarrier_ = std::make_unique<ResourceBarrier>(directXCommand_.get(), swapChain_.get());
 
+	// 初期化完了ログ
+	Logger::Log("MAGISYSTEM Initialize\n");
 }
 
 void MAGISYSTEM::Finalize() {

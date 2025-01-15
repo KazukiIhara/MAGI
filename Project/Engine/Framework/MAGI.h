@@ -122,6 +122,7 @@ private:
 	static std::unique_ptr<SwapChain> swapChain_;
 	static std::unique_ptr<DepthStencil> depthStencil_;
 	static std::unique_ptr<ResourceBarrier> resourceBarrier_;
+	static std::unique_ptr<RenderTarget> renderTarget_;
 
 };
 
