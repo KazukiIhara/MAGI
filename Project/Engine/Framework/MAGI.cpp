@@ -20,6 +20,8 @@ std::unique_ptr<DSVManager> MAGISYSTEM::dsvManager_ = nullptr;
 std::unique_ptr<SRVUAVManager> MAGISYSTEM::srvuavManager_ = nullptr;
 
 std::unique_ptr<SwapChain> MAGISYSTEM::swapChain_ = nullptr;
+std::unique_ptr<DepthStencil> MAGISYSTEM::depthStencil_ = nullptr;
+
 
 void MAGISYSTEM::Initialize() {
 #ifdef _DEBUG

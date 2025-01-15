@@ -64,7 +64,7 @@ private:
 	// dxgiのインスタンスを受け取る箱
 	DXGI* dxgi_ = nullptr;
 	// Commandのインスタンスを受け取る箱
-	DirectXCommand* command_ = nullptr;
+	DirectXCommand* directXCommand_ = nullptr;
 	// RTVmanagerのインスタンスを受け取る箱
 	RTVManager* rtvManager_ = nullptr;
 };

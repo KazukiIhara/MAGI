@@ -19,6 +19,7 @@
 #include "ViewManagers/SRVUAVManager/SRVUAVManager.h"
 
 #include "DirectX/SwapChain/SwapChain.h"
+#include "DirectX/DepthStencil/DepthStencil.h"
 
 
 // エンジンの全機能を持つクラス
@@ -117,6 +118,8 @@ private:
 	// DirectXRenderSystems
 	// 
 	static std::unique_ptr<SwapChain> swapChain_;
+	static std::unique_ptr<DepthStencil> depthStencil_;
+
 };
 
 // シーンで使う一部の機能を持つクラス

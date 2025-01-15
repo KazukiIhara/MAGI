@@ -66,7 +66,7 @@ void SwapChain::CreateSwapChain() {
 	swapChainDesc_.BufferCount = 2;								// ダブルバッファ
 	swapChainDesc_.SwapEffect = DXGI_SWAP_EFFECT_FLIP_DISCARD;	// モニタにうつしたら、中身を破棄
 	// コマンドキュー、ウィンドウハンドル、設定を渡して生成する
-	hr_ = dxgi_->GetFactory()->CreateSwapChainForHwnd(command_->GetQueue(), windowApp_->GetHwnd(), &swapChainDesc_,
+	hr_ = dxgi_->GetFactory()->CreateSwapChainForHwnd(directXCommand_->GetQueue(), windowApp_->GetHwnd(), &swapChainDesc_,
 		nullptr, nullptr, reinterpret_cast<IDXGISwapChain1**>(swapChain_.GetAddressOf()));
 	assert(SUCCEEDED(hr_));
 }
@@ -101,7 +101,7 @@ void SwapChain::SetDXGI(DXGI* dxgi) {
 
 void SwapChain::SetCommand(DirectXCommand* command) {
 	assert(command);
-	command_ = command;
+	directXCommand_ = command;
 }
 
 void SwapChain::SetRTVManager(RTVManager* rtvManager) {
