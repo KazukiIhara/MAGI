@@ -113,6 +113,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="App\Game\Game.h" />
+    <ClInclude Include="Engine\3D\Mesh\Mesh.h" />
     <ClInclude Include="Engine\AssetContainers\ModelContainer\ModelContainer.h" />
     <ClInclude Include="Engine\AssetContainers\SoundContainer\SoundContainer.h" />
     <ClInclude Include="Engine\AssetContainers\TextureContainer\TextureContainer.h" />
@@ -134,7 +135,16 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Engine\Includes\Enums\MouseInputEnum.h" />
     <ClInclude Include="Engine\Includes\Enums\RenderTargetEnumh.h" />
     <ClInclude Include="Engine\Includes\Enums\XInputEnum.h" />
+    <ClInclude Include="Engine\Includes\Math\Types\Matrix2x2.h" />
+    <ClInclude Include="Engine\Includes\Math\Types\Matrix3x3.h" />
+    <ClInclude Include="Engine\Includes\Math\Types\Matrix4x4.h" />
+    <ClInclude Include="Engine\Includes\Math\Types\Quaternion.h" />
+    <ClInclude Include="Engine\Includes\Math\Types\Vector2.h" />
+    <ClInclude Include="Engine\Includes\Math\Types\Vector3.h" />
+    <ClInclude Include="Engine\Includes\Math\Types\Vector4.h" />
+    <ClInclude Include="Engine\Includes\Math\Utility\MathUtility.h" />
     <ClInclude Include="Engine\Includes\Structs\ColorStruct.h" />
+    <ClInclude Include="Engine\Includes\Structs\MeshStruct.h" />
     <ClInclude Include="Engine\LeakChecker\D3DResourceLeakChecker.h" />
     <ClInclude Include="Engine\Logger\Logger.h" />
     <ClInclude Include="Engine\ViewManagers\BaseViewManager\BaseViewManager.h" />
@@ -145,6 +155,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="App\Game\Game.cpp" />
+    <ClCompile Include="Engine\3D\Mesh\Mesh.cpp" />
     <ClCompile Include="Engine\AssetContainers\ModelContainer\ModelContainer.cpp" />
     <ClCompile Include="Engine\AssetContainers\SoundContainer\SoundContainer.cpp" />
     <ClCompile Include="Engine\AssetContainers\TextureContainer\TextureContainer.cpp" />

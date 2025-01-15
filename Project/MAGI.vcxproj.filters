@@ -10,6 +10,12 @@
     <Filter Include="Engine">
       <UniqueIdentifier>{DBC7D3B0-C769-FE86-B024-12DB9C6585D7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Engine\3D">
+      <UniqueIdentifier>{C14C8BD1-2DB7-3F48-76F5-F0EDE29E1D9D}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\3D\Mesh">
+      <UniqueIdentifier>{1DE32C8E-09B1-2094-F244-91BADEB1FCF8}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Engine\AssetContainers">
       <UniqueIdentifier>{C08CB08C-AC86-D9DE-95F3-6FEF818C3F4B}</UniqueIdentifier>
     </Filter>
@@ -76,6 +82,15 @@
     <Filter Include="Engine\Includes\Enums">
       <UniqueIdentifier>{58AF6D6C-C41B-2967-8D0F-C1C4F93A4BCF}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Engine\Includes\Math">
+      <UniqueIdentifier>{DA115522-C6A0-DEEB-6FBF-F2E65B2DEF91}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Includes\Math\Types">
+      <UniqueIdentifier>{FE500C6D-EA60-B83D-531A-1D5C3F49A7D6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Includes\Math\Utility">
+      <UniqueIdentifier>{1D0A3A22-09C5-29CE-B27C-A2189E16745E}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Engine\Includes\Structs">
       <UniqueIdentifier>{88101382-F447-5B19-FD51-BF3C69088212}</UniqueIdentifier>
     </Filter>
@@ -107,6 +122,9 @@
   <ItemGroup>
     <ClInclude Include="App\Game\Game.h">
       <Filter>App\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\3D\Mesh\Mesh.h">
+      <Filter>Engine\3D\Mesh</Filter>
     </ClInclude>
     <ClInclude Include="Engine\AssetContainers\ModelContainer\ModelContainer.h">
       <Filter>Engine\AssetContainers\ModelContainer</Filter>
@@ -171,7 +189,34 @@
     <ClInclude Include="Engine\Includes\Enums\XInputEnum.h">
       <Filter>Engine\Includes\Enums</Filter>
     </ClInclude>
+    <ClInclude Include="Engine\Includes\Math\Types\Matrix2x2.h">
+      <Filter>Engine\Includes\Math\Types</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Includes\Math\Types\Matrix3x3.h">
+      <Filter>Engine\Includes\Math\Types</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Includes\Math\Types\Matrix4x4.h">
+      <Filter>Engine\Includes\Math\Types</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Includes\Math\Types\Quaternion.h">
+      <Filter>Engine\Includes\Math\Types</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Includes\Math\Types\Vector2.h">
+      <Filter>Engine\Includes\Math\Types</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Includes\Math\Types\Vector3.h">
+      <Filter>Engine\Includes\Math\Types</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Includes\Math\Types\Vector4.h">
+      <Filter>Engine\Includes\Math\Types</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Includes\Math\Utility\MathUtility.h">
+      <Filter>Engine\Includes\Math\Utility</Filter>
+    </ClInclude>
     <ClInclude Include="Engine\Includes\Structs\ColorStruct.h">
+      <Filter>Engine\Includes\Structs</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Includes\Structs\MeshStruct.h">
       <Filter>Engine\Includes\Structs</Filter>
     </ClInclude>
     <ClInclude Include="Engine\LeakChecker\D3DResourceLeakChecker.h">
@@ -199,6 +244,9 @@
   <ItemGroup>
     <ClCompile Include="App\Game\Game.cpp">
       <Filter>App\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\3D\Mesh\Mesh.cpp">
+      <Filter>Engine\3D\Mesh</Filter>
     </ClCompile>
     <ClCompile Include="Engine\AssetContainers\ModelContainer\ModelContainer.cpp">
       <Filter>Engine\AssetContainers\ModelContainer</Filter>
