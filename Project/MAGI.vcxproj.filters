@@ -22,6 +22,12 @@
     <Filter Include="Engine\DirectX\DXGI">
       <UniqueIdentifier>{F8A8F3E3-640A-D1F1-ED77-17A459D807B1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Engine\DirectX\DirectXCommand">
+      <UniqueIdentifier>{3E48408C-AA60-27B6-730D-B74FDFE4BB4F}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\DirectX\Fence">
+      <UniqueIdentifier>{8DC39462-7952-1E2C-2271-32270EDF2ED2}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Engine\Enums">
       <UniqueIdentifier>{52622095-3EC5-AF39-E74A-E8EFD38C7BBC}</UniqueIdentifier>
     </Filter>
@@ -43,6 +49,15 @@
     <Filter Include="Engine\Logger">
       <UniqueIdentifier>{4A198B49-B6D9-0680-7F14-50FDEB934B5C}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Engine\ViewManagers">
+      <UniqueIdentifier>{D3B4F983-3F16-D791-C883-1D4434E40D51}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\ViewManagers\BaseViewManager">
+      <UniqueIdentifier>{534861A2-BF01-CC4C-4861-E626B41982BC}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\ViewManagers\RTVManager">
+      <UniqueIdentifier>{39AD775C-25D3-41C3-0E19-C78EFADD668F}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Engine\WindowApp">
       <UniqueIdentifier>{83F0E77B-6FE9-06CE-981B-EC528473E6D9}</UniqueIdentifier>
     </Filter>
@@ -59,6 +74,12 @@
     </ClInclude>
     <ClInclude Include="Engine\DirectX\DXGI\DXGI.h">
       <Filter>Engine\DirectX\DXGI</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\DirectX\DirectXCommand\DirectXCommand.h">
+      <Filter>Engine\DirectX\DirectXCommand</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\DirectX\Fence\Fence.h">
+      <Filter>Engine\DirectX\Fence</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Enums\MouseInputEnum.h">
       <Filter>Engine\Enums</Filter>
@@ -84,13 +105,18 @@
     <ClInclude Include="Engine\Logger\Logger.h">
       <Filter>Engine\Logger</Filter>
     </ClInclude>
+    <ClInclude Include="Engine\ViewManagers\BaseViewManager\BaseViewManager.h">
+      <Filter>Engine\ViewManagers\BaseViewManager</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\ViewManagers\RTVManager\RTVManager.h">
+      <Filter>Engine\ViewManagers\RTVManager</Filter>
+    </ClInclude>
     <ClInclude Include="Engine\WindowApp\WindowApp.h">
       <Filter>Engine\WindowApp</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\DirectX\DirectXCommand\DirectXCommand.h" />
-    <ClInclude Include="Engine\DirectX\Fence\Fence.h" />
-    <ClInclude Include="Engine\ViewManagers\RTVManager\RTVManager.h" />
-    <ClInclude Include="Engine\ViewManagers\BaseViewManager\BaseViewManager.h" />
+    <ClInclude Include="Engine\ViewManagers\DSVManager\DSVManager.h" />
+    <ClInclude Include="Engine\ViewManagers\SRVUAVManager\SRVUAVManager.h" />
+    <ClInclude Include="Engine\DirectX\SwapChain\SwapChain.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="App\Game\Game.cpp">
@@ -101,6 +127,12 @@
     </ClCompile>
     <ClCompile Include="Engine\DirectX\DXGI\DXGI.cpp">
       <Filter>Engine\DirectX\DXGI</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\DirectX\DirectXCommand\DirectXCommand.cpp">
+      <Filter>Engine\DirectX\DirectXCommand</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\DirectX\Fence\Fence.cpp">
+      <Filter>Engine\DirectX\Fence</Filter>
     </ClCompile>
     <ClCompile Include="Engine\FPSController\FPSController.cpp">
       <Filter>Engine\FPSController</Filter>
@@ -120,13 +152,18 @@
     <ClCompile Include="Engine\Logger\Logger.cpp">
       <Filter>Engine\Logger</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\ViewManagers\BaseViewManager\BaseViewManager.cpp">
+      <Filter>Engine\ViewManagers\BaseViewManager</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\ViewManagers\RTVManager\RTVManager.cpp">
+      <Filter>Engine\ViewManagers\RTVManager</Filter>
+    </ClCompile>
     <ClCompile Include="Engine\WindowApp\WindowApp.cpp">
       <Filter>Engine\WindowApp</Filter>
     </ClCompile>
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="Engine\DirectX\DirectXCommand\DirectXCommand.cpp" />
-    <ClCompile Include="Engine\DirectX\Fence\Fence.cpp" />
-    <ClCompile Include="Engine\ViewManagers\RTVManager\RTVManager.cpp" />
-    <ClCompile Include="Engine\ViewManagers\BaseViewManager\BaseViewManager.cpp" />
+    <ClCompile Include="Engine\ViewManagers\DSVManager\DSVManager.cpp" />
+    <ClCompile Include="Engine\ViewManagers\SRVUAVManager\SRVUAVManager.cpp" />
+    <ClCompile Include="Engine\DirectX\SwapChain\SwapChain.cpp" />
   </ItemGroup>
 </Project>

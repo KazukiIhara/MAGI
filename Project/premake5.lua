@@ -52,11 +52,17 @@ project "MAGI" -- プロジェクト名
 
    links { "DirectXTex","imgui" }  -- リンク対象のプロジェクト
 
-   warnings "High" -- 警告レベル3を設定
+   warnings "High" -- 警告レベル4を設定
 
    buildoptions { "/utf-8" } -- UTF-8でビルドする設定
 
    flags { "MultiProcessorCompile" } -- 複数プロセッサでのコンパイルを有効化
+
+   -- ビルド後イベントのコマンド
+   postbuildcommands {
+      'copy "$(WindowsSdkDir)bin\\$(TargetPlatformVersion)\\x64\\dxcompiler.dll" "$(TargetDir)dxcompiler.dll"',
+      'copy "$(WindowsSdkDir)bin\\$(TargetPlatformVersion)\\x64\\dxil.dll" "$(TargetDir)dxil.dll"'
+   }
 
    filter "configurations:Debug"
       defines { "DEBUG" }
