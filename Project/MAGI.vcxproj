@@ -59,7 +59,7 @@
       <WarningLevel>Level4</WarningLevel>
       <TreatWarningAsError>true</TreatWarningAsError>
       <PreprocessorDefinitions>DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>Engine;App;Externals\assimp\include;Externals\imgui;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>Engine;Engine\Includes;App;Externals\assimp\include;Externals\imgui;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
       <MinimalRebuild>false</MinimalRebuild>
@@ -86,7 +86,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level4</WarningLevel>
       <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>Engine;App;Externals\assimp\include;Externals\imgui;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>Engine;Engine\Includes;App;Externals\assimp\include;Externals\imgui;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -116,8 +116,8 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Engine\AssetContainers\ModelContainer\ModelContainer.h" />
     <ClInclude Include="Engine\AssetContainers\SoundContainer\SoundContainer.h" />
     <ClInclude Include="Engine\AssetContainers\TextureContainer\TextureContainer.h" />
-    <ClInclude Include="Engine\DirectX\ComPtr\ComPtr.h" />
     <ClInclude Include="Engine\DirectInput\DirectInput.h" />
+    <ClInclude Include="Engine\DirectX\ComPtr\ComPtr.h" />
     <ClInclude Include="Engine\DirectX\DXGI\DXGI.h" />
     <ClInclude Include="Engine\DirectX\DepthStencil\DepthStencil.h" />
     <ClInclude Include="Engine\DirectX\DirectXCommand\DirectXCommand.h" />
@@ -127,16 +127,16 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Engine\DirectX\ScissorRect\ScissorRect.h" />
     <ClInclude Include="Engine\DirectX\SwapChain\SwapChain.h" />
     <ClInclude Include="Engine\DirectX\Viewport\Viewport.h" />
-    <ClInclude Include="Engine\Includes\Enums\MouseInputEnum.h" />
-    <ClInclude Include="Engine\Includes\Enums\RenderTargetEnumh.h" />
-    <ClInclude Include="Engine\Includes\Enums\XInputEnum.h" />
     <ClInclude Include="Engine\FPSController\FPSController.h" />
     <ClInclude Include="Engine\Framework\MAGI.h" />
     <ClInclude Include="Engine\GUI\GUI.h" />
     <ClInclude Include="Engine\ImGuiController\ImGuiController.h" />
+    <ClInclude Include="Engine\Includes\Enums\MouseInputEnum.h" />
+    <ClInclude Include="Engine\Includes\Enums\RenderTargetEnumh.h" />
+    <ClInclude Include="Engine\Includes\Enums\XInputEnum.h" />
+    <ClInclude Include="Engine\Includes\Structs\ColorStruct.h" />
     <ClInclude Include="Engine\LeakChecker\D3DResourceLeakChecker.h" />
     <ClInclude Include="Engine\Logger\Logger.h" />
-    <ClInclude Include="Engine\Includes\Structs\ColorStruct.h" />
     <ClInclude Include="Engine\ViewManagers\BaseViewManager\BaseViewManager.h" />
     <ClInclude Include="Engine\ViewManagers\DSVManager\DSVManager.h" />
     <ClInclude Include="Engine\ViewManagers\RTVManager\RTVManager.h" />

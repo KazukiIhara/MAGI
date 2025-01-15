@@ -43,6 +43,7 @@ project "MAGI" -- プロジェクト名
    -- 追加のインクルードパス
    includedirs { 
       "Engine",
+      "Engine/Includes",
       "App",
       "Externals/assimp/include",
       "Externals/imgui"
