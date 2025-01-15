@@ -20,6 +20,4 @@ private:
 private:
 	// コマンドのインスタンスを受け取る箱
 	DirectXCommand* directXCommand_ = nullptr;
-
-
 };
