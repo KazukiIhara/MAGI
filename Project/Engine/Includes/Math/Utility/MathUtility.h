@@ -118,37 +118,5 @@ Quaternion operator-(const Quaternion& q1, const Quaternion& q2);
 /// </summary>
 namespace MAGIMath {
 
-	// 線形補完
-	float Lerp(float a, float b, float t);
-
-	// 度数法をラジアンに変換
-	float DegreesToRadians(const float& degrees);
-
-	// 内積
-	float Dot(const Vector3& a, const Vector3& b);
-
-	// ベクトルの長さ
-	float Length(const Vector3& a);
-
-	// 正規化
-	Vector3 Normalize(const Vector3& a);
-
-	// 度数法をラジアンに変換
-	Vector3 DegreesToRadians(const Vector3& degrees);
-
-	// ワールド行列からワールド座標取得
-	Vector3 ExtractionWorldPos(const Matrix4x4& m);
-
-	// スプライン曲線補間
-	Vector3 CatmullRomSpline(const std::vector<Vector3>& controlPoints, float t);
-
-	// 線形補完
-	Vector3 Lerp(const Vector3& v1, const Vector3& v2, float t);
-
-	// クロス積
-	Vector3 Cross(const Vector3& a, const Vector3& b);
-
-	// トランスフォーム
-	Vector3 Transform(const Vector3& vector, const Matrix4x4& matrix);
 
 }
