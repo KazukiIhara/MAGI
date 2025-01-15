@@ -118,12 +118,12 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Engine\AssetContainers\TextureContainer\TextureContainer.h" />
     <ClInclude Include="Engine\ComPtr\ComPtr.h" />
     <ClInclude Include="Engine\DirectInput\DirectInput.h" />
-    <ClInclude Include="Engine\DirectX\RenderTarget\RenderTarget.h" />
-    <ClInclude Include="Engine\DirectX\ResourceBarrier\ResourceBarrier.h" />
-    <ClInclude Include="Engine\DirectX\DepthStencil\DepthStencil.h" />
     <ClInclude Include="Engine\DirectX\DXGI\DXGI.h" />
+    <ClInclude Include="Engine\DirectX\DepthStencil\DepthStencil.h" />
     <ClInclude Include="Engine\DirectX\DirectXCommand\DirectXCommand.h" />
     <ClInclude Include="Engine\DirectX\Fence\Fence.h" />
+    <ClInclude Include="Engine\DirectX\RenderTarget\RenderTarget.h" />
+    <ClInclude Include="Engine\DirectX\ResourceBarrier\ResourceBarrier.h" />
     <ClInclude Include="Engine\DirectX\SwapChain\SwapChain.h" />
     <ClInclude Include="Engine\Enums\MouseInputEnum.h" />
     <ClInclude Include="Engine\Enums\RenderTargetEnumh.h" />
@@ -147,8 +147,8 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Engine\AssetContainers\SoundContainer\SoundContainer.cpp" />
     <ClCompile Include="Engine\AssetContainers\TextureContainer\TextureContainer.cpp" />
     <ClCompile Include="Engine\DirectInput\DirectInput.cpp" />
-    <ClCompile Include="Engine\DirectX\DepthStencil\DepthStencil.cpp" />
     <ClCompile Include="Engine\DirectX\DXGI\DXGI.cpp" />
+    <ClCompile Include="Engine\DirectX\DepthStencil\DepthStencil.cpp" />
     <ClCompile Include="Engine\DirectX\DirectXCommand\DirectXCommand.cpp" />
     <ClCompile Include="Engine\DirectX\Fence\Fence.cpp" />
     <ClCompile Include="Engine\DirectX\RenderTarget\RenderTarget.cpp" />
