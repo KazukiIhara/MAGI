@@ -9,11 +9,11 @@
 
 SwapChain::SwapChain(WindowApp* windowApp, DXGI* dxgi, DirectXCommand* command, RTVManager* rtvManager) {
 	Initialize(windowApp, dxgi, command, rtvManager);
-	Logger::Log("SwapChain Initialize");
+	Logger::Log("SwapChain Initialize\n");
 }
 
 SwapChain::~SwapChain() {
-	Logger::Log("SwapChain Finalize");
+	Logger::Log("SwapChain Finalize\n");
 }
 
 void SwapChain::Initialize(WindowApp* windowApp, DXGI* dxgi, DirectXCommand* command, RTVManager* rtvManager) {

@@ -9,11 +9,11 @@
 
 ResourceBarrier::ResourceBarrier(DirectXCommand* directXCommand, SwapChain* swapChain) {
 	Initialize(directXCommand, swapChain);
-	Logger::Log("ResourceBarrier Initialize");
+	Logger::Log("ResourceBarrier Initialize\n");
 }
 
 ResourceBarrier::~ResourceBarrier() {
-	Logger::Log("ResourceBarrier Finalize");
+	Logger::Log("ResourceBarrier Finalize\n");
 }
 
 void ResourceBarrier::Initialize(DirectXCommand* directXCommand, SwapChain* swapChain) {

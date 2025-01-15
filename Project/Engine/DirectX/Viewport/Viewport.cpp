@@ -8,11 +8,11 @@
 
 Viewport::Viewport(DirectXCommand* directXCommand) {
 	Initialize(directXCommand);
-	Logger::Log("Viewport Initialize");
+	Logger::Log("Viewport Initialize\n");
 }
 
 Viewport::~Viewport() {
-	Logger::Log("Viewport Finalize");
+	Logger::Log("Viewport Finalize\n");
 }
 
 void Viewport::Initialize(DirectXCommand* directXCommand) {

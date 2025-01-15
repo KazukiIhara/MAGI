@@ -10,11 +10,11 @@
 
 RenderTarget::RenderTarget(DirectXCommand* command, SwapChain* swapChain, DepthStencil* depthStencil) {
 	Initialize(command, swapChain, depthStencil);
-	Logger::Log("RenderTarget Initialize");
+	Logger::Log("RenderTarget Initialize\n");
 }
 
 RenderTarget::~RenderTarget() {
-	Logger::Log("RenderTarget Finalize");
+	Logger::Log("RenderTarget Finalize\n");
 }
 
 void RenderTarget::Initialize(DirectXCommand* command, SwapChain* swapChain, DepthStencil* depthStencil) {

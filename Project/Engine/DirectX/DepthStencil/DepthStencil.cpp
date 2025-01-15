@@ -11,11 +11,11 @@
 
 DepthStencil::DepthStencil(DXGI* dxgi, DirectXCommand* command, DSVManager* dsvManager) {
 	Initialize(dxgi, command, dsvManager);
-	Logger::Log("DepthStencil Initialize");
+	Logger::Log("DepthStencil Initialize\n");
 }
 
 DepthStencil::~DepthStencil() {
-	Logger::Log("DepthStencil Finalize");
+	Logger::Log("DepthStencil Finalize\n");
 }
 
 void DepthStencil::Initialize(DXGI* dxgi, DirectXCommand* command, DSVManager* dsvManager) {
