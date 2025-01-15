@@ -18,6 +18,9 @@
 #include "ViewManagers/DSVManager/DSVManager.h"
 #include "ViewManagers/SRVUAVManager/SRVUAVManager.h"
 
+#include "DirectX/SwapChain/SwapChain.h"
+
+
 // エンジンの全機能を持つクラス
 class MAGISYSTEM {
 public:
@@ -89,25 +92,31 @@ private:
 #ifdef _DEBUG
 	static std::unique_ptr<D3DResourceLeakChecker> leakCheck_;
 #endif // _DEBUG
-	// WindowApp
+
+	// 
+	// WindowAppBaseSystems
+	// 
 	static std::unique_ptr<WindowApp> windowApp_;
-	// DirectInput
 	static std::unique_ptr<DirectInput> directInput_;
 
-	// DXGI
+	// 
+	// DirectXBaseSystems
+	// 
 	static std::unique_ptr<DXGI> dxgi_;
-	// DirectXCommand
 	static std::unique_ptr<DirectXCommand> directXCommand_;
-	// Fence
 	static std::unique_ptr<Fence> fence_;
 
-	// RTVManager
+	// 
+	// ViewManagers
+	// 
 	static std::unique_ptr<RTVManager> rtvManager_;
-	// DSVManager
 	static std::unique_ptr<DSVManager> dsvManager_;
-	// SRVUAVManager
 	static std::unique_ptr<SRVUAVManager> srvuavManager_;
 
+	// 
+	// DirectXRenderSystems
+	// 
+	static std::unique_ptr<SwapChain> swapChain_;
 };
 
 // シーンで使う一部の機能を持つクラス

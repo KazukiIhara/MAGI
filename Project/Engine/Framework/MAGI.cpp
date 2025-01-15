@@ -19,6 +19,8 @@ std::unique_ptr<RTVManager> MAGISYSTEM::rtvManager_ = nullptr;
 std::unique_ptr<DSVManager> MAGISYSTEM::dsvManager_ = nullptr;
 std::unique_ptr<SRVUAVManager> MAGISYSTEM::srvuavManager_ = nullptr;
 
+std::unique_ptr<SwapChain> MAGISYSTEM::swapChain_ = nullptr;
+
 void MAGISYSTEM::Initialize() {
 #ifdef _DEBUG
 	// リークチェッカ
@@ -47,6 +49,8 @@ void MAGISYSTEM::Initialize() {
 	// SRVUAVmanager
 	srvuavManager_ = std::make_unique<SRVUAVManager>(dxgi_.get());
 
+	// SwapChain
+	swapChain_ = std::make_unique<SwapChain>(windowApp_.get(), dxgi_.get(), directXCommand_.get(), rtvManager_.get());
 }
 
 void MAGISYSTEM::Finalize() {
