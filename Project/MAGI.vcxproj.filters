@@ -119,6 +119,9 @@
     <ClInclude Include="Engine\DirectX\SwapChain\SwapChain.h" />
     <ClInclude Include="Engine\DirectX\DepthStencil\DepthStencil.h" />
     <ClInclude Include="Engine\DirectX\ResourceBarrier\ResourceBarrier.h" />
+    <ClInclude Include="Engine\AssetContainers\ModelContainer\ModelContainer.h" />
+    <ClInclude Include="Engine\AssetContainers\SoundContainer\SoundContainer.h" />
+    <ClInclude Include="Engine\AssetContainers\TextureContainer\TextureContainer.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="App\Game\Game.cpp">
@@ -169,5 +172,8 @@
     <ClCompile Include="Engine\DirectX\SwapChain\SwapChain.cpp" />
     <ClCompile Include="Engine\DirectX\DepthStencil\DepthStencil.cpp" />
     <ClCompile Include="Engine\DirectX\ResourceBarrier\ResourceBarrier.cpp" />
+    <ClCompile Include="Engine\AssetContainers\TextureContainer\TextureContainer.cpp" />
+    <ClCompile Include="Engine\AssetContainers\SoundContainer\SoundContainer.cpp" />
+    <ClCompile Include="Engine\AssetContainers\ModelContainer\ModelContainer.cpp" />
   </ItemGroup>
 </Project>
