@@ -8,17 +8,8 @@
 #include "ViewManagers/RTVManager/RTVManager.h"
 
 SwapChain::SwapChain(WindowApp* windowApp, DXGI* dxgi, DirectXCommand* command, RTVManager* rtvManager) {
-	SetWindowApp(windowApp);
-	SetDXGI(dxgi);
-	SetCommand(command);
-	SetRTVManager(rtvManager);
-
-	// スワップチェーン作成
-	CreateSwapChain();
-	// リソースを作成
-	CreateResources();
-	// RTVを作成
-	CreateRTV();
+	Initialize(windowApp, dxgi, command, rtvManager);
+	Logger::Log("SwapChain Initialize");
 }
 
 SwapChain::~SwapChain() {

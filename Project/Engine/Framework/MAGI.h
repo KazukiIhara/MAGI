@@ -20,6 +20,8 @@
 
 #include "DirectX/SwapChain/SwapChain.h"
 #include "DirectX/DepthStencil/DepthStencil.h"
+#include "DirectX/ResourceBarrier/ResourceBarrier.h"
+#include "DirectX/RenderTarget/RenderTarget.h"
 
 
 // エンジンの全機能を持つクラス
@@ -119,6 +121,7 @@ private:
 	// 
 	static std::unique_ptr<SwapChain> swapChain_;
 	static std::unique_ptr<DepthStencil> depthStencil_;
+	static std::unique_ptr<ResourceBarrier> resourceBarrier_;
 
 };
 

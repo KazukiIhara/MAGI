@@ -21,7 +21,7 @@ std::unique_ptr<SRVUAVManager> MAGISYSTEM::srvuavManager_ = nullptr;
 
 std::unique_ptr<SwapChain> MAGISYSTEM::swapChain_ = nullptr;
 std::unique_ptr<DepthStencil> MAGISYSTEM::depthStencil_ = nullptr;
-
+std::unique_ptr<ResourceBarrier> MAGISYSTEM::resourceBarrier_ = nullptr;
 
 void MAGISYSTEM::Initialize() {
 #ifdef _DEBUG
@@ -53,9 +53,29 @@ void MAGISYSTEM::Initialize() {
 
 	// SwapChain
 	swapChain_ = std::make_unique<SwapChain>(windowApp_.get(), dxgi_.get(), directXCommand_.get(), rtvManager_.get());
+	// DepthStencil
+	depthStencil_ = std::make_unique<DepthStencil>(dxgi_.get(), directXCommand_.get(), dsvManager_.get());
+	// ResouceBarrier
+	resourceBarrier_ = std::make_unique<ResourceBarrier>(directXCommand_.get(), swapChain_.get());
+
 }
 
 void MAGISYSTEM::Finalize() {
+
+	// ResourceBarrier
+	if (resourceBarrier_) {
+		resourceBarrier_.reset();
+	}
+
+	// DepthStencil
+	if (depthStencil_) {
+		depthStencil_.reset();
+	}
+
+	// SwapChain
+	if (swapChain_) {
+		swapChain_.reset();
+	}
 
 	// SRVUAVManager
 	if (srvuavManager_) {

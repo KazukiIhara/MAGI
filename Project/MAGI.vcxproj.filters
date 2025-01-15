@@ -122,6 +122,9 @@
     <ClInclude Include="Engine\AssetContainers\ModelContainer\ModelContainer.h" />
     <ClInclude Include="Engine\AssetContainers\SoundContainer\SoundContainer.h" />
     <ClInclude Include="Engine\AssetContainers\TextureContainer\TextureContainer.h" />
+    <ClInclude Include="Engine\DirectX\RenderTarget\RenderTarget.h" />
+    <ClInclude Include="Engine\Enums\RenderTargetEnumh.h" />
+    <ClInclude Include="Engine\Structs\ColorStruct.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="App\Game\Game.cpp">
@@ -175,5 +178,6 @@
     <ClCompile Include="Engine\AssetContainers\TextureContainer\TextureContainer.cpp" />
     <ClCompile Include="Engine\AssetContainers\SoundContainer\SoundContainer.cpp" />
     <ClCompile Include="Engine\AssetContainers\ModelContainer\ModelContainer.cpp" />
+    <ClCompile Include="Engine\DirectX\RenderTarget\RenderTarget.cpp" />
   </ItemGroup>
 </Project>
