@@ -321,5 +321,6 @@
       <Filter>Engine\WindowApp</Filter>
     </ClCompile>
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Engine\Includes\Math\Utility\MathUtility.cpp" />
   </ItemGroup>
 </Project>

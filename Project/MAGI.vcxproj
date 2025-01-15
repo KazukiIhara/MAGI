@@ -173,6 +173,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Engine\Framework\MAGI.cpp" />
     <ClCompile Include="Engine\GUI\GUI.cpp" />
     <ClCompile Include="Engine\ImGuiController\ImGuiContoller.cpp" />
+    <ClCompile Include="Engine\Includes\Math\Utility\MathUtility.cpp" />
     <ClCompile Include="Engine\LeakChecker\D3DResourceLeakChecker.cpp" />
     <ClCompile Include="Engine\Logger\Logger.cpp" />
     <ClCompile Include="Engine\ViewManagers\BaseViewManager\BaseViewManager.cpp" />
