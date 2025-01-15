@@ -8,10 +8,6 @@ void Game::Update() {
 }
 
 void Game::Draw() {
-	// 描画前処理
-	MAGISYSTEM::PreDraw();
 	// 描画
 	MAGISYSTEM::Draw();
-	// 描画後処理
-	MAGISYSTEM::PostDraw();
 }

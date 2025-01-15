@@ -22,9 +22,10 @@ std::unique_ptr<SwapChain> MAGISYSTEM::swapChain_ = nullptr;
 std::unique_ptr<DepthStencil> MAGISYSTEM::depthStencil_ = nullptr;
 std::unique_ptr<ResourceBarrier> MAGISYSTEM::resourceBarrier_ = nullptr;
 std::unique_ptr<RenderTarget> MAGISYSTEM::renderTarget_ = nullptr;
+std::unique_ptr<Viewport> MAGISYSTEM::viewport_ = nullptr;
+std::unique_ptr<ScissorRect> MAGISYSTEM::scissorRect_ = nullptr;
 
 void MAGISYSTEM::Initialize() {
-
 	// 開始ログ
 	Logger::Log("MAGISYSTEM Start\n");
 
@@ -58,12 +59,28 @@ void MAGISYSTEM::Initialize() {
 	depthStencil_ = std::make_unique<DepthStencil>(dxgi_.get(), directXCommand_.get(), dsvManager_.get());
 	// ResouceBarrier
 	resourceBarrier_ = std::make_unique<ResourceBarrier>(directXCommand_.get(), swapChain_.get());
+	// RenderTarget
+	renderTarget_ = std::make_unique<RenderTarget>(directXCommand_.get(), swapChain_.get(), depthStencil_.get());
+	// Viewport
+	viewport_ = std::make_unique<Viewport>(directXCommand_.get());
+	// Scissor
+	scissorRect_ = std::make_unique<ScissorRect>(directXCommand_.get());
 
 	// 初期化完了ログ
 	Logger::Log("MAGISYSTEM Initialize\n");
 }
 
 void MAGISYSTEM::Finalize() {
+
+	// Scissor
+	if (scissorRect_) {
+		scissorRect_.reset();
+	}
+
+	// Viewport
+	if (viewport_) {
+		viewport_.reset();
+	}
 
 	// ResourceBarrier
 	if (resourceBarrier_) {
@@ -148,14 +165,52 @@ void MAGISYSTEM::Update() {
 
 void MAGISYSTEM::Draw() {
 
-}
+	// 
+	// DirectX描画前処理
+	// 
 
-void MAGISYSTEM::PreDraw() {
+	// リソースバリアを設定
+	resourceBarrier_->PreDrawSwapChainResourceBarrierTransition();
+	// レンダーターゲットをスワップチェーンに設定
+	renderTarget_->SetRenderTarget(RenderTargetType::SwapChain);
+	// 深度をクリア
+	depthStencil_->ClearDepthView();
+	// レンダーターゲットをクリア
+	renderTarget_->ClearRenderTarget(RenderTargetType::SwapChain);
+	// ビューポートの設定
+	viewport_->SettingViewport();
+	// シザー矩形の設定
+	scissorRect_->SettingScissorRect();
 
-}
+	// SRVUAVのディスクリプタヒープを設定
+	ComPtr<ID3D12DescriptorHeap> descriptorHeaps[] = { srvuavManager_->GetDescriptorHeap() };
+	directXCommand_->GetList()->SetDescriptorHeaps(1, descriptorHeaps->GetAddressOf());
 
-void MAGISYSTEM::PostDraw() {
+	// 
+	// 描画処理
+	// 
 
+
+
+
+	// 
+	// DirectX描画後処理
+	// 
+
+	// リソースバリアを描画後の状態にする
+	resourceBarrier_->PostDrawSwapChainResourceBarrierTransition();
+
+	// コマンドを閉じて実行
+	directXCommand_->KickCommand();
+
+	// GPUとOSに画面の交換を行うように通知
+	swapChain_->Present();
+
+	// Fenceによる待機
+	fence_->WaitGPU();
+
+	// 次のフレーム用にコマンドをリセット
+	directXCommand_->ResetCommand();
 }
 
 void MAGISYSTEM::Run() {
