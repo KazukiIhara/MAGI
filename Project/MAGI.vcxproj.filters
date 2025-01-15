@@ -108,7 +108,7 @@
     <ClInclude Include="Engine\AssetContainers\TextureContainer\TextureContainer.h">
       <Filter>Engine\AssetContainers\TextureContainer</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\ComPtr\ComPtr.h">
+    <ClInclude Include="Engine\DirectX\ComPtr\ComPtr.h">
       <Filter>Engine\ComPtr</Filter>
     </ClInclude>
     <ClInclude Include="Engine\DirectInput\DirectInput.h">
@@ -135,13 +135,13 @@
     <ClInclude Include="Engine\DirectX\SwapChain\SwapChain.h">
       <Filter>Engine\DirectX\SwapChain</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\Enums\MouseInputEnum.h">
+    <ClInclude Include="Engine\Includes\Enums\MouseInputEnum.h">
       <Filter>Engine\Enums</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\Enums\RenderTargetEnumh.h">
+    <ClInclude Include="Engine\Includes\Enums\RenderTargetEnumh.h">
       <Filter>Engine\Enums</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\Enums\XInputEnum.h">
+    <ClInclude Include="Engine\Includes\Enums\XInputEnum.h">
       <Filter>Engine\Enums</Filter>
     </ClInclude>
     <ClInclude Include="Engine\FPSController\FPSController.h">
@@ -162,7 +162,7 @@
     <ClInclude Include="Engine\Logger\Logger.h">
       <Filter>Engine\Logger</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\Structs\ColorStruct.h">
+    <ClInclude Include="Engine\Includes\Structs\ColorStruct.h">
       <Filter>Engine\Structs</Filter>
     </ClInclude>
     <ClInclude Include="Engine\ViewManagers\BaseViewManager\BaseViewManager.h">
