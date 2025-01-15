@@ -10,7 +10,7 @@
 #include <dxgi1_6.h>
 
 // 自作ファイル
-#include "ComPtr/ComPtr.h"
+#include "DirectX/ComPtr/ComPtr.h"
 
 // 前方宣言
 class WindowApp;
