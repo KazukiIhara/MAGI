@@ -48,7 +48,7 @@ void ResourceBarrier::PostDrawSwapChainResourceBarrierTransition() {
 
 void ResourceBarrier::SetDirectXCommand(DirectXCommand* directXCommand) {
 	assert(directXCommand);
-	directXCommand_ = directXCommand_;
+	directXCommand_ = directXCommand;
 }
 
 void ResourceBarrier::SetSwapChain(SwapChain* swapChain) {

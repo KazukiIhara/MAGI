@@ -22,6 +22,8 @@
 #include "DirectX/DepthStencil/DepthStencil.h"
 #include "DirectX/ResourceBarrier/ResourceBarrier.h"
 #include "DirectX/RenderTarget/RenderTarget.h"
+#include "DirectX/Viewport/Viewport.h"
+#include "DirectX/ScissorRect/ScissorRect.h"
 
 
 // エンジンの全機能を持つクラス
@@ -37,10 +39,7 @@ public:
 	virtual void Update();
 	// 描画
 	virtual void Draw();
-	// 描画前処理
-	void PreDraw();
-	// 描画後処理
-	void PostDraw();
+
 	// 実行
 	void Run();
 
@@ -123,6 +122,8 @@ private:
 	static std::unique_ptr<DepthStencil> depthStencil_;
 	static std::unique_ptr<ResourceBarrier> resourceBarrier_;
 	static std::unique_ptr<RenderTarget> renderTarget_;
+	static std::unique_ptr<Viewport> viewport_;
+	static std::unique_ptr<ScissorRect> scissorRect_;
 
 };
 

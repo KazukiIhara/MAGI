@@ -31,7 +31,6 @@ void RenderTarget::SetRenderTarget(const RenderTargetType& type) {
 		// SwapChainの現在のバックバッファのRTVハンドルを取得
 		rtvHandle = swapChain_->GetCurrentBackBufferRTVHandle();
 		break;
-
 	}
 	// デプスステンシルのDSVハンドルを取得
 	D3D12_CPU_DESCRIPTOR_HANDLE dsvhandle = depthStencil_->GetDepthStencilResorceCPUHandle();
