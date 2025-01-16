@@ -27,24 +27,23 @@ public:
 	// シーン変更
 	void ChangeScene(const std::string& sceneName);
 
-	// 共有データへのアクセサ
-	std::shared_ptr<Data> GetData() const {
-		return data_;
-	}
-	void SetData(const std::shared_ptr<Data>& data) {
-		data_ = data;
-	}
+	// 共有データの取得
+	std::shared_ptr<Data> GetData() const;
+	// 共有データのセット
+	void SetData(const std::shared_ptr<Data>& data);
 private:
 	// シーン変更処理
 	void SwitchScene();
 private:
+	// シーンファクトリ関数
 	using SceneFactoryFunc = std::function<std::unique_ptr<IScene<Data>>()>;
-
+	// シーンファクトリ
 	std::unordered_map<std::string, SceneFactoryFunc> factory_;
-
+	// 現在シーン
 	std::unique_ptr<IScene<Data>> currentScene_;
+	// 次のシーン
 	std::unique_ptr<IScene<Data>> nextScene_;
-
+	// 教諭データ
 	std::shared_ptr<Data> data_;
 
 };

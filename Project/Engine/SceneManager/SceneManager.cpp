@@ -53,6 +53,16 @@ void SceneManager<Data>::ChangeScene(const std::string& sceneName) {
 	nextScene_ = it->second();
 }
 
+template<typename Data>
+std::shared_ptr<Data> SceneManager<Data>::GetData() const {
+	return data_;
+}
+
+template<typename Data>
+void SceneManager<Data>::SetData(const std::shared_ptr<Data>& data) {
+	data_ = data;
+}
+
 template <typename Data>
 void SceneManager<Data>::SwitchScene() {
 	if (nextScene_) {
