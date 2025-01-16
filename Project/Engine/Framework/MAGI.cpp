@@ -25,6 +25,8 @@ std::unique_ptr<RenderTarget> MAGISYSTEM::renderTarget_ = nullptr;
 std::unique_ptr<Viewport> MAGISYSTEM::viewport_ = nullptr;
 std::unique_ptr<ScissorRect> MAGISYSTEM::scissorRect_ = nullptr;
 
+std::unique_ptr<SceneManager<GameData>> MAGISYSTEM::sceneManager_ = nullptr;
+
 void MAGISYSTEM::Initialize() {
 	// 開始ログ
 	Logger::Log("MAGISYSTEM Start\n");
@@ -66,11 +68,19 @@ void MAGISYSTEM::Initialize() {
 	// Scissor
 	scissorRect_ = std::make_unique<ScissorRect>(directXCommand_.get());
 
+	// SceneManager
+	sceneManager_ = std::make_unique<SceneManager<GameData>>();
+
 	// 初期化完了ログ
 	Logger::Log("MAGISYSTEM Initialize\n");
 }
 
 void MAGISYSTEM::Finalize() {
+
+	// SceneManager
+	if (sceneManager_) {
+		sceneManager_.reset();
+	}
 
 	// Scissor
 	if (scissorRect_) {
@@ -161,6 +171,8 @@ void MAGISYSTEM::Update() {
 		endRequest_ = true;
 	}
 
+	// シーンの更新処理
+	sceneManager_->Update();
 }
 
 void MAGISYSTEM::Draw() {
@@ -190,8 +202,8 @@ void MAGISYSTEM::Draw() {
 	// 描画処理
 	// 
 
-
-
+	// シーンの描画
+	sceneManager_->Draw();
 
 	// 
 	// DirectX描画後処理

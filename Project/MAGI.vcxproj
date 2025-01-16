@@ -112,11 +112,14 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="App\GameData\GameData.h" />
     <ClInclude Include="App\Game\Game.h" />
+    <ClInclude Include="App\Scene\Sample\SampleScene.h" />
     <ClInclude Include="Engine\3D\Mesh\Mesh.h" />
     <ClInclude Include="Engine\AssetContainers\ModelDataContainer\ModelDataContainer.h" />
     <ClInclude Include="Engine\AssetContainers\SoundContainer\SoundContainer.h" />
     <ClInclude Include="Engine\AssetContainers\TextureContainer\TextureContainer.h" />
+    <ClInclude Include="Engine\BaseScene\BaseScene.h" />
     <ClInclude Include="Engine\DirectInput\DirectInput.h" />
     <ClInclude Include="Engine\DirectX\ComPtr\ComPtr.h" />
     <ClInclude Include="Engine\DirectX\DXGI\DXGI.h" />
@@ -148,6 +151,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Engine\Includes\Structs\ObjectStruct.h" />
     <ClInclude Include="Engine\LeakChecker\D3DResourceLeakChecker.h" />
     <ClInclude Include="Engine\Logger\Logger.h" />
+    <ClInclude Include="Engine\SceneManager\SceneManager.h" />
     <ClInclude Include="Engine\ViewManagers\BaseViewManager\BaseViewManager.h" />
     <ClInclude Include="Engine\ViewManagers\DSVManager\DSVManager.h" />
     <ClInclude Include="Engine\ViewManagers\RTVManager\RTVManager.h" />
@@ -156,10 +160,12 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="App\Game\Game.cpp" />
+    <ClCompile Include="App\Scene\Sample\SampleScene.cpp" />
     <ClCompile Include="Engine\3D\Mesh\Mesh.cpp" />
     <ClCompile Include="Engine\AssetContainers\ModelDataContainer\ModelDataContainer.cpp" />
     <ClCompile Include="Engine\AssetContainers\SoundContainer\SoundContainer.cpp" />
     <ClCompile Include="Engine\AssetContainers\TextureContainer\TextureContainer.cpp" />
+    <ClCompile Include="Engine\BaseScene\BaseScene.cpp" />
     <ClCompile Include="Engine\DirectInput\DirectInput.cpp" />
     <ClCompile Include="Engine\DirectX\DXGI\DXGI.cpp" />
     <ClCompile Include="Engine\DirectX\DepthStencil\DepthStencil.cpp" />
@@ -177,6 +183,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Engine\Includes\Math\Utility\MathUtility.cpp" />
     <ClCompile Include="Engine\LeakChecker\D3DResourceLeakChecker.cpp" />
     <ClCompile Include="Engine\Logger\Logger.cpp" />
+    <ClCompile Include="Engine\SceneManager\SceneManager.cpp" />
     <ClCompile Include="Engine\ViewManagers\BaseViewManager\BaseViewManager.cpp" />
     <ClCompile Include="Engine\ViewManagers\DSVManager\DSVManager.cpp" />
     <ClCompile Include="Engine\ViewManagers\RTVManager\RTVManager.cpp" />
