@@ -115,7 +115,9 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="App\GameData\GameData.h" />
     <ClInclude Include="App\Game\Game.h" />
     <ClInclude Include="App\Scene\Sample\SampleScene.h" />
+    <ClInclude Include="App\Scene\Sample\SampleScene.ipp" />
     <ClInclude Include="App\Scene\TitleScene\TitleScene.h" />
+    <ClInclude Include="App\Scene\TitleScene\TitleScene.ipp" />
     <ClInclude Include="Engine\SceneManager\SceneManager.ipp" />
     <ClInclude Include="Engine\3D\Mesh\Mesh.h" />
     <ClInclude Include="Engine\AssetContainers\ModelDataContainer\ModelDataContainer.h" />
@@ -162,8 +164,6 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="App\Game\Game.cpp" />
-    <ClCompile Include="App\Scene\Sample\SampleScene.cpp" />
-    <ClCompile Include="App\Scene\TitleScene\TitleScene.cpp" />
     <ClCompile Include="Engine\3D\Mesh\Mesh.cpp" />
     <ClCompile Include="Engine\AssetContainers\ModelDataContainer\ModelDataContainer.cpp" />
     <ClCompile Include="Engine\AssetContainers\SoundContainer\SoundContainer.cpp" />
