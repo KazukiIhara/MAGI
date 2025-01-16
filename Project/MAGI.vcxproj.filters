@@ -299,6 +299,9 @@
     <ClCompile Include="Engine\ImGuiController\ImGuiContoller.cpp">
       <Filter>Engine\ImGuiController</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\Includes\Math\Utility\MathUtility.cpp">
+      <Filter>Engine\Includes\Math\Utility</Filter>
+    </ClCompile>
     <ClCompile Include="Engine\LeakChecker\D3DResourceLeakChecker.cpp">
       <Filter>Engine\LeakChecker</Filter>
     </ClCompile>
@@ -321,6 +324,5 @@
       <Filter>Engine\WindowApp</Filter>
     </ClCompile>
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="Engine\Includes\Math\Utility\MathUtility.cpp" />
   </ItemGroup>
 </Project>
