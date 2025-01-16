@@ -1,9 +1,12 @@
-#include "SceneManager/SceneManager.h"
+#pragma once
 
+#include "Logger/Logger.h"
 
 template <typename Data>
 SceneManager<Data>::SceneManager()
-	: data_(std::make_shared<Data>()) {}
+	: data_(std::make_shared<Data>()) {
+	Logger::Log("SceneManager Initialize\n");
+}
 
 template <typename Data>
 SceneManager<Data>::~SceneManager() {
@@ -11,6 +14,7 @@ SceneManager<Data>::~SceneManager() {
 		currentScene_->Finalize();
 		currentScene_.reset();
 	}
+	Logger::Log("SceneManager Finalize\n");
 }
 
 template <typename Data>
@@ -31,12 +35,11 @@ void SceneManager<Data>::Draw() {
 template <typename Data>
 template <template <class> class SceneTemplate>
 void SceneManager<Data>::AddScene(const std::string& sceneName) {
-	// SceneTemplate が「template <class> class」＝ Data を受け取るクラステンプレート前提
-	// ここで実際に「SceneTemplate<Data>」という具体型をエイリアスとして定義
+	// SceneTemplate<Data> 型をエイリアス
 	using SceneType = SceneTemplate<Data>;
 
 	// BaseScene<Data> を継承しているかをチェック
-	static_assert(std::is_base_of<IScene<Data>, SceneType>::value,
+	static_assert(std::is_base_of<BaseScene<Data>, SceneType>::value,
 		"SceneTemplate<Data> must derive from BaseScene<Data>.");
 
 	// ファクトリ関数を登録
@@ -53,12 +56,12 @@ void SceneManager<Data>::ChangeScene(const std::string& sceneName) {
 	nextScene_ = it->second();
 }
 
-template<typename Data>
+template <typename Data>
 std::shared_ptr<Data> SceneManager<Data>::GetData() const {
 	return data_;
 }
 
-template<typename Data>
+template <typename Data>
 void SceneManager<Data>::SetData(const std::shared_ptr<Data>& data) {
 	data_ = data;
 }
@@ -74,6 +77,3 @@ void SceneManager<Data>::SwitchScene() {
 		currentScene_->Initialize();
 	}
 }
-
-// "SceneManager<GameData>" の実体を生成させるための明示的インスタンシエーション
-template class SceneManager<GameData>;

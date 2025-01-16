@@ -5,7 +5,7 @@
 
 // サンプルシーン
 template <typename Data>
-class SampleScene: public BaseScene<Data> {
+class TitleScene: public BaseScene<Data> {
 public:
 	using BaseScene<Data>::BaseScene; // 親クラスのコンストラクタをそのまま継承
 
@@ -14,4 +14,5 @@ public:
 	void Draw() override;
 	void Finalize() override;
 };
+
 

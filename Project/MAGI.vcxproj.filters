@@ -242,9 +242,11 @@
     </ClInclude>
     <ClInclude Include="Engine\Includes\Structs\ObjectStruct.h" />
     <ClInclude Include="Engine\SceneManager\SceneManager.h" />
-    <ClInclude Include="Engine\IScene\IScene.h" />
     <ClInclude Include="App\Scene\Sample\SampleScene.h" />
     <ClInclude Include="App\GameData\GameData.h" />
+    <ClInclude Include="Engine\BaseScene\BaseScene.h" />
+    <ClInclude Include="Engine\SceneManager\SceneManager.ipp" />
+    <ClInclude Include="App\Scene\TitleScene\TitleScene.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="App\Game\Game.cpp">
@@ -327,7 +329,7 @@
     </ClCompile>
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Engine\Includes\Math\Utility\MathUtility.cpp" />
-    <ClCompile Include="Engine\SceneManager\SceneManager.cpp" />
     <ClCompile Include="App\Scene\Sample\SampleScene.cpp" />
+    <ClCompile Include="App\Scene\TitleScene\TitleScene.cpp" />
   </ItemGroup>
 </Project>
