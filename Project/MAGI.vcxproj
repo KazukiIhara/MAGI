@@ -165,7 +165,6 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Engine\AssetContainers\ModelDataContainer\ModelDataContainer.cpp" />
     <ClCompile Include="Engine\AssetContainers\SoundContainer\SoundContainer.cpp" />
     <ClCompile Include="Engine\AssetContainers\TextureContainer\TextureContainer.cpp" />
-    <ClCompile Include="Engine\IScene\IScene.cpp" />
     <ClCompile Include="Engine\DirectInput\DirectInput.cpp" />
     <ClCompile Include="Engine\DirectX\DXGI\DXGI.cpp" />
     <ClCompile Include="Engine\DirectX\DepthStencil\DepthStencil.cpp" />

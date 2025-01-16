@@ -328,7 +328,6 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Engine\Includes\Math\Utility\MathUtility.cpp" />
     <ClCompile Include="Engine\SceneManager\SceneManager.cpp" />
-    <ClCompile Include="Engine\IScene\IScene.cpp" />
     <ClCompile Include="App\Scene\Sample\SampleScene.cpp" />
   </ItemGroup>
 </Project>
