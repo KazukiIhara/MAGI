@@ -28,10 +28,8 @@ public:
 	// シーン変更
 	void ChangeScene(const std::string& sceneName);
 
-	// 共有データの取得
-	std::shared_ptr<Data> GetData() const;
-	// 共有データのセット
-	void SetData(const std::shared_ptr<Data>& data);
+	// 共有データへの参照を取得
+	Data& GetData()const;
 private:
 	// シーン変更処理
 	void SwitchScene();
@@ -44,7 +42,7 @@ private:
 	std::unique_ptr<BaseScene<Data>> currentScene_;
 	// 次のシーン
 	std::unique_ptr<BaseScene<Data>> nextScene_;
-	// 教諭データ
+	// 共有データ
 	std::shared_ptr<Data> data_;
 
 };

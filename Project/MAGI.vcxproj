@@ -114,10 +114,8 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
   <ItemGroup>
     <ClInclude Include="App\GameData\GameData.h" />
     <ClInclude Include="App\Game\Game.h" />
+    <ClInclude Include="App\Scene\Sample2\SampleScene2.h" />
     <ClInclude Include="App\Scene\Sample\SampleScene.h" />
-    <ClInclude Include="App\Scene\Sample\SampleScene.ipp" />
-    <ClInclude Include="App\Scene\TitleScene\TitleScene.h" />
-    <ClInclude Include="App\Scene\TitleScene\TitleScene.ipp" />
     <ClInclude Include="Engine\SceneManager\SceneManager.ipp" />
     <ClInclude Include="Engine\3D\Mesh\Mesh.h" />
     <ClInclude Include="Engine\AssetContainers\ModelDataContainer\ModelDataContainer.h" />

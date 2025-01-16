@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Logger/Logger.h"
+#include "SceneManager.h"
 
 template <typename Data>
 SceneManager<Data>::SceneManager()
@@ -56,14 +57,9 @@ void SceneManager<Data>::ChangeScene(const std::string& sceneName) {
 	nextScene_ = it->second();
 }
 
-template <typename Data>
-std::shared_ptr<Data> SceneManager<Data>::GetData() const {
-	return data_;
-}
-
-template <typename Data>
-void SceneManager<Data>::SetData(const std::shared_ptr<Data>& data) {
-	data_ = data;
+template<typename Data>
+inline Data& SceneManager<Data>::GetData() const {
+	return *data_;
 }
 
 template <typename Data>

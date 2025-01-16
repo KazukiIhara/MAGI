@@ -1,11 +1,10 @@
 #pragma once
 
 #include "BaseScene/BaseScene.h"
-#include "Framework/MAGI.h"
 
 // サンプルシーン
 template <typename Data>
-class SampleScene: public BaseScene<Data> {
+class SampleScene2: public BaseScene<Data> {
 public:
 	using BaseScene<Data>::BaseScene; // 親クラスのコンストラクタをそのまま継承
 
@@ -19,31 +18,26 @@ private:
 };
 
 template<typename Data>
-inline void SampleScene<Data>::Initialize() {
+inline void SampleScene2<Data>::Initialize() {
 
 }
 
 template<typename Data>
-inline void SampleScene<Data>::Update() {
-	Logger::Log("SampleScene Update");
+inline void SampleScene2<Data>::Update() {
+	Logger::Log("SampleScene2 Update");
 	this->GetData().score += 1;
 	int score = this->GetData().score;
 	std::string string = std::to_string(score);
 	Logger::Log(string + "\n");
 
+}
 
-	if (MAGISYSTEM::TriggerKey(DIK_SPACE)) {
-		this->ChangeScene("Sample2");
-	}
+template<typename Data>
+inline void SampleScene2<Data>::Draw() {
 
 }
 
 template<typename Data>
-inline void SampleScene<Data>::Draw() {
-
-}
-
-template<typename Data>
-inline void SampleScene<Data>::Finalize() {
+inline void SampleScene2<Data>::Finalize() {
 
 }

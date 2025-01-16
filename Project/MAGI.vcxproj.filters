@@ -246,9 +246,7 @@
     <ClInclude Include="App\GameData\GameData.h" />
     <ClInclude Include="Engine\BaseScene\BaseScene.h" />
     <ClInclude Include="Engine\SceneManager\SceneManager.ipp" />
-    <ClInclude Include="App\Scene\TitleScene\TitleScene.h" />
-    <ClInclude Include="App\Scene\Sample\SampleScene.ipp" />
-    <ClInclude Include="App\Scene\TitleScene\TitleScene.ipp" />
+    <ClInclude Include="App\Scene\Sample2\SampleScene2.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="App\Game\Game.cpp">
