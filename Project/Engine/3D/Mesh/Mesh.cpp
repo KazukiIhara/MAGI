@@ -1,10 +1,10 @@
 #include "Mesh.h"
 
-Mesh::Mesh(const MeshData& meshData, const std::string& textureFilePath) {
-	Initialize(meshData, textureFilePath);
+Mesh::Mesh(const MeshData& meshData) {
+	Initialize(meshData);
 }
 
-void Mesh::Initialize(const MeshData& meshData, const std::string& textureFilePath) {
+void Mesh::Initialize(const MeshData& meshData) {
 	meshData_ = meshData;
 }
 
@@ -21,33 +21,33 @@ void Mesh::SetTextureFilePath(const std::string& textureFilePath) {
 }
 
 void Mesh::CreateVertexResource() {
-	
+
 }
 
 void Mesh::CreateVertexBufferView() {
-	
+
 }
 
 void Mesh::MapVertexData() {
-	
+
 }
 
 void Mesh::CreateIndexResource() {
-	
+
 }
 
 void Mesh::CreateIndexBufferView() {
-	
+
 }
 
 void Mesh::MapIndexData() {
-	
+
 }
 
 void Mesh::CreateMaterialResource() {
-	
+
 }
 
 void Mesh::MapMaterialData() {
-	
+
 }

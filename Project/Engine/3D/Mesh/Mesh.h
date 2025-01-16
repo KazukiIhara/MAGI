@@ -15,8 +15,8 @@
 /// </summary>
 class Mesh {
 public:
-	Mesh(const MeshData& meshData, const std::string& textureFilePath = "");
-	void Initialize(const MeshData& meshData, const std::string& textureFilePath);
+	Mesh(const MeshData& meshData);
+	void Initialize(const MeshData& meshData);
 	void Update();
 	void Draw();
 
