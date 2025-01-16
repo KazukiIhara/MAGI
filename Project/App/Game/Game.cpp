@@ -1,7 +1,6 @@
 #include "Game.h"
 
 #include "Scene/Sample/SampleScene.h"
-#include "Scene/Sample2/SampleScene2.h"
 
 Game::~Game() {}
 
@@ -11,7 +10,8 @@ void Game::Initialize() {
 
 	// シーンの追加
 	sceneManager_->AddScene<SampleScene>("Sample");
-	sceneManager_->AddScene<SampleScene2>("Sample2");
+
+	// 最初のシーンを設定
 	sceneManager_->ChangeScene("Sample");
 }
 
