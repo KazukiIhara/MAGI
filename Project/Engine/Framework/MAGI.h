@@ -25,6 +25,8 @@
 #include "DirectX/Viewport/Viewport.h"
 #include "DirectX/ScissorRect/ScissorRect.h"
 
+#include "SceneManager/SceneManager.h"
+
 
 // エンジンの全機能を持つクラス
 class MAGISYSTEM {
@@ -32,7 +34,7 @@ public:
 	// 仮想デストラクタ
 	virtual~MAGISYSTEM() = default;
 	// 初期化
-	void Initialize();
+	virtual void Initialize();
 	// 終了
 	void Finalize();
 	// 更新
@@ -90,7 +92,7 @@ public: // エンジンの機能
 private: // メンバ変数
 	// 終了リクエスト
 	bool endRequest_ = false;
-private:
+protected:
 #ifdef _DEBUG
 	static std::unique_ptr<D3DResourceLeakChecker> leakCheck_;
 #endif // _DEBUG
@@ -124,6 +126,12 @@ private:
 	static std::unique_ptr<RenderTarget> renderTarget_;
 	static std::unique_ptr<Viewport> viewport_;
 	static std::unique_ptr<ScissorRect> scissorRect_;
+
+	// 
+	// GameManager
+	// 
+	static std::unique_ptr<SceneManager<GameData>> sceneManager_;
+
 
 };
 
