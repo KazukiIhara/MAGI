@@ -36,7 +36,7 @@ void SceneManager<Data>::AddScene(const std::string& sceneName) {
 	using SceneType = SceneTemplate<Data>;
 
 	// BaseScene<Data> を継承しているかをチェック
-	static_assert(std::is_base_of<BaseScene<Data>, SceneType>::value,
+	static_assert(std::is_base_of<IScene<Data>, SceneType>::value,
 		"SceneTemplate<Data> must derive from BaseScene<Data>.");
 
 	// ファクトリ関数を登録

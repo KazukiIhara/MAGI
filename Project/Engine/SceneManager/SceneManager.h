@@ -5,7 +5,7 @@
 #include <unordered_map>
 #include <functional>
 #include <cassert>
-#include "BaseScene/BaseScene.h"
+#include "IScene/IScene.h"
 #include "GameData/GameData.h"
 
 
@@ -38,12 +38,12 @@ private:
 	// シーン変更処理
 	void SwitchScene();
 private:
-	using SceneFactoryFunc = std::function<std::unique_ptr<BaseScene<Data>>()>;
+	using SceneFactoryFunc = std::function<std::unique_ptr<IScene<Data>>()>;
 
 	std::unordered_map<std::string, SceneFactoryFunc> factory_;
 
-	std::unique_ptr<BaseScene<Data>> currentScene_;
-	std::unique_ptr<BaseScene<Data>> nextScene_;
+	std::unique_ptr<IScene<Data>> currentScene_;
+	std::unique_ptr<IScene<Data>> nextScene_;
 
 	std::shared_ptr<Data> data_;
 

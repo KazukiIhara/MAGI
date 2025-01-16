@@ -119,7 +119,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Engine\AssetContainers\ModelDataContainer\ModelDataContainer.h" />
     <ClInclude Include="Engine\AssetContainers\SoundContainer\SoundContainer.h" />
     <ClInclude Include="Engine\AssetContainers\TextureContainer\TextureContainer.h" />
-    <ClInclude Include="Engine\BaseScene\BaseScene.h" />
+    <ClInclude Include="Engine\IScene\IScene.h" />
     <ClInclude Include="Engine\DirectInput\DirectInput.h" />
     <ClInclude Include="Engine\DirectX\ComPtr\ComPtr.h" />
     <ClInclude Include="Engine\DirectX\DXGI\DXGI.h" />
@@ -165,7 +165,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Engine\AssetContainers\ModelDataContainer\ModelDataContainer.cpp" />
     <ClCompile Include="Engine\AssetContainers\SoundContainer\SoundContainer.cpp" />
     <ClCompile Include="Engine\AssetContainers\TextureContainer\TextureContainer.cpp" />
-    <ClCompile Include="Engine\BaseScene\BaseScene.cpp" />
+    <ClCompile Include="Engine\IScene\IScene.cpp" />
     <ClCompile Include="Engine\DirectInput\DirectInput.cpp" />
     <ClCompile Include="Engine\DirectX\DXGI\DXGI.cpp" />
     <ClCompile Include="Engine\DirectX\DepthStencil\DepthStencil.cpp" />

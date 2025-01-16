@@ -11,23 +11,23 @@ class SceneManager;
 /// すべてのシーンの基底クラス
 /// </summary>
 template <typename Data>
-class BaseScene {
+class IScene {
 public:
 	// コンストラクタで "共有データ" と "シーンマネージャ" を受け取る
-	BaseScene(std::shared_ptr<Data> data, SceneManager<Data>* sceneManager)
+	IScene(std::shared_ptr<Data> data, SceneManager<Data>* sceneManager)
 		: data_(data), sceneManager_(sceneManager) {}
 
-	virtual ~BaseScene() = default;
+	virtual ~IScene() = default;
 
 	// 毎フレームの更新
-	virtual void Update() {};
+	virtual void Update() = 0;
 	// 毎フレームの描画
-	virtual void Draw() {};
+	virtual void Draw() = 0;
 
 	// 初期化
-	virtual void Initialize() {}
+	virtual void Initialize() = 0;
 	// 終了
-	virtual void Finalize() {}
+	virtual void Finalize() = 0;
 
 protected:
 	std::shared_ptr<Data> data_;				// 全シーンで共有するデータ
