@@ -114,7 +114,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
   <ItemGroup>
     <ClInclude Include="App\Game\Game.h" />
     <ClInclude Include="Engine\3D\Mesh\Mesh.h" />
-    <ClInclude Include="Engine\AssetContainers\ModelContainer\ModelContainer.h" />
+    <ClInclude Include="Engine\AssetContainers\ModelDataContainer\ModelDataContainer.h" />
     <ClInclude Include="Engine\AssetContainers\SoundContainer\SoundContainer.h" />
     <ClInclude Include="Engine\AssetContainers\TextureContainer\TextureContainer.h" />
     <ClInclude Include="Engine\DirectInput\DirectInput.h" />
@@ -144,7 +144,8 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Engine\Includes\Math\Types\Vector4.h" />
     <ClInclude Include="Engine\Includes\Math\Utility\MathUtility.h" />
     <ClInclude Include="Engine\Includes\Structs\ColorStruct.h" />
-    <ClInclude Include="Engine\Includes\Structs\MeshStruct.h" />
+    <ClInclude Include="Engine\Includes\Structs\ModelStruct.h" />
+    <ClInclude Include="Engine\Includes\Structs\ObjectStruct.h" />
     <ClInclude Include="Engine\LeakChecker\D3DResourceLeakChecker.h" />
     <ClInclude Include="Engine\Logger\Logger.h" />
     <ClInclude Include="Engine\ViewManagers\BaseViewManager\BaseViewManager.h" />
@@ -156,7 +157,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
   <ItemGroup>
     <ClCompile Include="App\Game\Game.cpp" />
     <ClCompile Include="Engine\3D\Mesh\Mesh.cpp" />
-    <ClCompile Include="Engine\AssetContainers\ModelContainer\ModelContainer.cpp" />
+    <ClCompile Include="Engine\AssetContainers\ModelDataContainer\ModelDataContainer.cpp" />
     <ClCompile Include="Engine\AssetContainers\SoundContainer\SoundContainer.cpp" />
     <ClCompile Include="Engine\AssetContainers\TextureContainer\TextureContainer.cpp" />
     <ClCompile Include="Engine\DirectInput\DirectInput.cpp" />

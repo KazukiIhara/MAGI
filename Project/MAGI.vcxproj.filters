@@ -126,7 +126,7 @@
     <ClInclude Include="Engine\3D\Mesh\Mesh.h">
       <Filter>Engine\3D\Mesh</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\AssetContainers\ModelContainer\ModelContainer.h">
+    <ClInclude Include="Engine\AssetContainers\ModelDataContainer\ModelDataContainer.h">
       <Filter>Engine\AssetContainers\ModelContainer</Filter>
     </ClInclude>
     <ClInclude Include="Engine\AssetContainers\SoundContainer\SoundContainer.h">
@@ -216,7 +216,7 @@
     <ClInclude Include="Engine\Includes\Structs\ColorStruct.h">
       <Filter>Engine\Includes\Structs</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\Includes\Structs\MeshStruct.h">
+    <ClInclude Include="Engine\Includes\Structs\ModelStruct.h">
       <Filter>Engine\Includes\Structs</Filter>
     </ClInclude>
     <ClInclude Include="Engine\LeakChecker\D3DResourceLeakChecker.h">
@@ -240,6 +240,7 @@
     <ClInclude Include="Engine\WindowApp\WindowApp.h">
       <Filter>Engine\WindowApp</Filter>
     </ClInclude>
+    <ClInclude Include="Engine\Includes\Structs\ObjectStruct.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="App\Game\Game.cpp">
@@ -248,7 +249,7 @@
     <ClCompile Include="Engine\3D\Mesh\Mesh.cpp">
       <Filter>Engine\3D\Mesh</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\AssetContainers\ModelContainer\ModelContainer.cpp">
+    <ClCompile Include="Engine\AssetContainers\ModelDataContainer\ModelDataContainer.cpp">
       <Filter>Engine\AssetContainers\ModelContainer</Filter>
     </ClCompile>
     <ClCompile Include="Engine\AssetContainers\SoundContainer\SoundContainer.cpp">
