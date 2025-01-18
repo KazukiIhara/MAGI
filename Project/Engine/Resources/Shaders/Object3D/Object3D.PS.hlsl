@@ -3,6 +3,122 @@
 ConstantBuffer<Material> gMaterial : register(b0);
 ConstantBuffer<Camera> gCamera : register(b2);
 ConstantBuffer<ModelMaterial> gModelMaterial : register(b3);
+ConstantBuffer<LightCount> gLightCount : register(b4);
 Texture2D<float4> gTexture : register(t0);
+StructuredBuffer<PunctualLight> gLights : register(t1);
 SamplerState gSampler : register(s0);
 
+
+PixelShaderOutput main(VertexShaderOutput input)
+{
+    PixelShaderOutput output;
+    output.color = float4(0, 0, 0, 1);
+
+    // 前処理
+    float3 normal = normalize(input.normal);
+    float3 toEye = normalize(gCamera.worldPosition - input.worldPosition);
+
+    // Diffuse,Specularを蓄積するための変数
+    float3 totalDiffuse = 0.0f;
+    float3 totalSpecular = 0.0f;
+
+    // テクスチャサンプリング等
+    float4 textureColor = gTexture.Sample(gSampler, input.texcoord);
+
+    // discardなどのアルファテスト
+    if (textureColor.a <= 0.5f)
+        discard;
+
+    // シーン中のすべてのライトをループ
+    [loop]
+    for (uint i = 0; i < gLightCount.num; i++)
+    {
+        PunctualLight light = gLights[i];
+
+        switch (light.type)
+        {
+            case 0: // Directional
+            {
+                    float3 L = -normalize(light.direction);
+                    float NdotL = saturate(dot(normal, L));
+                    float3 H = normalize(L + toEye);
+                    float NdotH = saturate(dot(normal, H));
+
+                // Diffuse
+                    float3 diffuse = light.color * light.intensity * NdotL;
+                    totalDiffuse += diffuse;
+
+                // Specular
+                    float specPow = (gMaterial.shininess >= 1.0f) ? pow(NdotH, gMaterial.shininess) : 0.0f;
+                    float3 specular = light.color * light.intensity * specPow;
+                    totalSpecular += specular;
+                }
+                break;
+
+            case 1: // Point
+            {
+                    float3 lightDir = light.position - input.worldPosition;
+                    float distance = length(lightDir);
+                    float3 L = normalize(lightDir);
+
+                // 距離減衰
+                    float atten = pow(saturate(-distance / light.radius + 1.0f), light.decay);
+
+                // Diffuse
+                    float NdotL = saturate(dot(normal, L));
+                    float3 diffuse = light.color * light.intensity * NdotL * atten;
+                    totalDiffuse += diffuse;
+
+                // Specular
+                    float3 H = normalize(L + toEye);
+                    float NdotH = saturate(dot(normal, H));
+                    float specPow = (gMaterial.shininess >= 1.0f) ? pow(NdotH, gMaterial.shininess) : 0.0f;
+                    float3 specular = light.color * light.intensity * specPow * atten;
+                    totalSpecular += specular;
+                }
+                break;
+
+            case 2: // Spot
+            {
+                    float3 lightDir = light.position - input.worldPosition;
+                    float distance = length(lightDir);
+                    float3 L = normalize(lightDir);
+
+                // 距離減衰
+                    float atten = pow(saturate(-distance / light.radius + 1.0f), light.decay);
+
+                // スポットライトの角度による減衰
+                    float cosAngle = dot(normalize(lightDir), normalize(light.spotDirection));
+                    float falloff = saturate((cosAngle - light.cosAngle) /
+                                          (light.cosFalloffStart - light.cosAngle));
+
+                // Diffuse
+                    float NdotL = saturate(dot(normal, L));
+                    float3 diffuse = light.color * light.intensity * NdotL * atten * falloff;
+                    totalDiffuse += diffuse;
+
+                // Specular
+                    float3 H = normalize(L + toEye);
+                    float NdotH = saturate(dot(normal, H));
+                    float specPow = (gMaterial.shininess >= 1.0f) ? pow(NdotH, gMaterial.shininess) : 0.0f;
+                    float3 specular = light.color * light.intensity * specPow * atten * falloff;
+                    totalSpecular += specular;
+                }
+                break;
+            
+        }
+    }
+
+    // 累積されたライティングを反映
+    float3 baseColor = gModelMaterial.color.rgb * gMaterial.color.rgb * textureColor.rgb;
+    float alpha = gModelMaterial.color.a * gMaterial.color.a * textureColor.a;
+
+    output.color.rgb = baseColor * totalDiffuse + totalSpecular;
+    output.color.a = alpha;
+
+    // アルファカット
+    if (output.color.a <= 0.0f)
+        discard;
+
+    return output;
+}

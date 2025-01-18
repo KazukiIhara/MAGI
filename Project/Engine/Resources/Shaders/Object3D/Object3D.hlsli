@@ -43,3 +43,32 @@ struct Camera
 {
     float3 worldPosition;
 };
+
+struct PunctualLight
+{
+    // 全ライト共通
+    uint type;
+    float3 color;
+    float intensity;
+    
+    // SpotPoint共通
+    float3 position;
+
+    // DirectionalLight用
+    float3 direction;
+
+    // PointLight用
+    float radius;
+    float decay;
+
+    // SpotLight用
+    float3 spotDirection;
+    float cosAngle;
+    float cosFalloffStart;
+};
+
+struct LightCount
+{
+    // ライトの総数
+    uint num;
+};
