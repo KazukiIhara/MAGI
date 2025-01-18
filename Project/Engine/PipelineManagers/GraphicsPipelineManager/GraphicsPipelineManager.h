@@ -9,8 +9,9 @@
 #include <dxcapi.h>
 
 // MyHedder
-#include "DirectX/ComPtr/ComPtr.h"
 #include "Includes/Enums/GraphicsPipelineEnum.h"
+
+#include "GraphicsPipelines/Object3DGraphicsPipeline/Object3DGraphicsPipeline.h"
 
 // 前方宣言
 class DXGI;
@@ -34,11 +35,6 @@ public:
 	// パイプラインをセット
 	void SetPipelineState(GraphicsPipelineStateType pipelineState);
 
-private: // 静的メンバ変数
-	// パイプラインの種類の数 
-	static const uint32_t kGraphicsPipelineStateNum = static_cast<uint32_t>(GraphicsPipelineStateType::Num);
-	// ブレンドモードの種類の数
-	static const uint32_t kBlendModeNum_ = static_cast<uint32_t>(BlendMode::Num);
 private: // メンバ変数
 	// ルートシグネイチャ
 	ComPtr<ID3D12RootSignature> rootSignatures_[kGraphicsPipelineStateNum];

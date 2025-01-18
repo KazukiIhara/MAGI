@@ -115,6 +115,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="App\GameData\GameData.h" />
     <ClInclude Include="App\Game\Game.h" />
     <ClInclude Include="App\Scenes\Sample\SampleScene.h" />
+    <ClInclude Include="Engine\Includes\Enums\BlendModeEnum.h" />
     <ClInclude Include="Engine\PipelineManagers\GraphicsPipelineManager\GraphicsPipelineManager.h" />
     <ClInclude Include="Engine\GraphicsPipelines\Object3DGraphicsPipeline\Object3DGraphicsPipeline.h" />
     <ClInclude Include="Engine\Includes\Enums\GraphicsPipelineEnum.h" />

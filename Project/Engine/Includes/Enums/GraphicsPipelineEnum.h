@@ -1,5 +1,8 @@
 #pragma once
 
+// C++
+#include <cstdint>
+
 /// <summary>
 /// グラフィックスパイプラインの種類
 /// </summary>
@@ -12,16 +15,5 @@ enum class GraphicsPipelineStateType {
 	Num,
 };
 
-/// <summary>
-/// ブレンドモードの種類
-/// </summary>
-enum class BlendMode {
-	None,
-	Normal,
-	Add,
-	Subtract,
-	Multiply,
-	Screen,
-
-	Num,
-};
+// パイプラインの種類の数 
+inline constexpr uint32_t kGraphicsPipelineStateNum = static_cast<uint32_t>(GraphicsPipelineStateType::Num);
