@@ -30,6 +30,10 @@ ID3D12PipelineState* GraphicsPipelineManager::GetPipelineState(GraphicsPipelineS
 	return nullptr;
 }
 
-void GraphicsPipelineManager::SetRootSignature(GraphicsPipelineStateType pipelineState) {}
+void GraphicsPipelineManager::SetRootSignature(GraphicsPipelineStateType pipelineState) {
 
-void GraphicsPipelineManager::SetPipelineState(GraphicsPipelineStateType pipelineState) {}
+}
+
+void GraphicsPipelineManager::SetPipelineState(GraphicsPipelineStateType pipelineState) {
+
+}

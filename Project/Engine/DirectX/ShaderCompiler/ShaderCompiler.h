@@ -14,25 +14,14 @@ class ShaderCompiler {
 public:
 	ShaderCompiler();
 	~ShaderCompiler();
-
+	// シェーダをコンパイル
+	ComPtr<ID3DBlob> CompileShader(const std::wstring& filePath, const wchar_t* profile);
+private:
 	// 初期化
 	void Initialize();
-
-	// シェーダをコンパイル
-	ComPtr<ID3DBlob> CompileShader(
-		// シェーダーファイルのパス
-		const std::wstring& filePath,
-		// コンパイルに使用するプロファイル
-		const wchar_t* profile,
-		// 初期化で生成したシェーダーコンパイラ関連の3つ
-		IDxcUtils* dxcUtils,
-		IDxcCompiler3* dxcCompiler,
-		IDxcIncludeHandler* includeHandler
-	);
-
 private:
 	// シェーダーコンパイルに使用するオブジェクト
-	IDxcUtils* dxcUtils = nullptr;
-	IDxcCompiler3* dxcCompiler = nullptr;
-	IDxcIncludeHandler* includeHandler = nullptr;
+	IDxcUtils* dxcUtils_ = nullptr;
+	IDxcCompiler3* dxcCompiler_ = nullptr;
+	IDxcIncludeHandler* includeHandler_ = nullptr;
 };
