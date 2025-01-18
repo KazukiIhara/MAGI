@@ -13,6 +13,7 @@ std::unique_ptr<DirectInput> MAGISYSTEM::directInput_ = nullptr;
 std::unique_ptr<DXGI> MAGISYSTEM::dxgi_ = nullptr;
 std::unique_ptr<DirectXCommand> MAGISYSTEM::directXCommand_ = nullptr;
 std::unique_ptr<Fence> MAGISYSTEM::fence_ = nullptr;
+std::unique_ptr<ShaderCompiler> MAGISYSTEM::shaderCompiler_ = nullptr;
 
 std::unique_ptr<RTVManager> MAGISYSTEM::rtvManager_ = nullptr;
 std::unique_ptr<DSVManager> MAGISYSTEM::dsvManager_ = nullptr;
@@ -24,6 +25,8 @@ std::unique_ptr<ResourceBarrier> MAGISYSTEM::resourceBarrier_ = nullptr;
 std::unique_ptr<RenderTarget> MAGISYSTEM::renderTarget_ = nullptr;
 std::unique_ptr<Viewport> MAGISYSTEM::viewport_ = nullptr;
 std::unique_ptr<ScissorRect> MAGISYSTEM::scissorRect_ = nullptr;
+
+std::unique_ptr<GraphicsPipelineManager> MAGISYSTEM::graphicsPipelineManager_ = nullptr;
 
 std::unique_ptr<SceneManager<GameData>> MAGISYSTEM::sceneManager_ = nullptr;
 
@@ -47,6 +50,8 @@ void MAGISYSTEM::Initialize() {
 	directXCommand_ = std::make_unique<DirectXCommand>(dxgi_.get());
 	// Fence
 	fence_ = std::make_unique<Fence>(dxgi_.get(), directXCommand_.get());
+	// ShaderCompiler
+	shaderCompiler_ = std::make_unique<ShaderCompiler>();
 
 	// RTVManager
 	rtvManager_ = std::make_unique<RTVManager>(dxgi_.get());
@@ -68,6 +73,9 @@ void MAGISYSTEM::Initialize() {
 	// Scissor
 	scissorRect_ = std::make_unique<ScissorRect>(directXCommand_.get());
 
+	// GraphicsPipelineManager
+	graphicsPipelineManager_ = std::make_unique<GraphicsPipelineManager>(dxgi_.get(), shaderCompiler_.get());
+
 	// SceneManager
 	sceneManager_ = std::make_unique<SceneManager<GameData>>();
 
@@ -82,6 +90,11 @@ void MAGISYSTEM::Finalize() {
 		sceneManager_.reset();
 	}
 
+	// GraphicsPipelineManager
+	if (graphicsPipelineManager_) {
+		graphicsPipelineManager_.reset();
+	}
+
 	// Scissor
 	if (scissorRect_) {
 		scissorRect_.reset();
@@ -90,6 +103,11 @@ void MAGISYSTEM::Finalize() {
 	// Viewport
 	if (viewport_) {
 		viewport_.reset();
+	}
+
+	// RenderTarget
+	if (renderTarget_) {
+		renderTarget_.reset();
 	}
 
 	// ResourceBarrier
@@ -120,6 +138,11 @@ void MAGISYSTEM::Finalize() {
 	// RTVManager
 	if (rtvManager_) {
 		rtvManager_.reset();
+	}
+
+	// ShaderCompiler
+	if (shaderCompiler_) {
+		shaderCompiler_.reset();
 	}
 
 	// Fence
@@ -202,8 +225,19 @@ void MAGISYSTEM::Draw() {
 	// 描画処理
 	// 
 
+	//
+	// Object3D描画前処理
+	//
+
+	// RootSignatureを設定。PSOに設定しているけど別途設定が必要
+	directXCommand_->GetList()->SetGraphicsRootSignature(graphicsPipelineManager_->GetRootSignature(GraphicsPipelineStateType::Object3D));
+	// 形状を設定。PSOに設定しているものとはまた別。同じものを設定すると考えておけば良い
+	directXCommand_->GetList()->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+
 	// シーンの描画
 	sceneManager_->Draw();
+
+
 
 	// 
 	// DirectX描画後処理

@@ -246,6 +246,11 @@
     <ClInclude Include="App\GameData\GameData.h" />
     <ClInclude Include="Engine\BaseScene\BaseScene.h" />
     <ClInclude Include="Engine\SceneManager\SceneManager.ipp" />
+    <ClInclude Include="Engine\PipelineManagers\GraphicsPipelineManager\GraphicsPipelineManager.h" />
+    <ClInclude Include="Engine\Includes\Enums\GraphicsPipelineEnum.h" />
+    <ClInclude Include="Engine\GraphicsPipelines\Object3DGraphicsPipeline\Object3DGraphicsPipeline.h" />
+    <ClInclude Include="Engine\Includes\Enums\BlendModeEnum.h" />
+    <ClInclude Include="Engine\DirectX\ShaderCompiler\ShaderCompiler.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="App\Game\Game.cpp">
@@ -330,5 +335,15 @@
       <Filter>Engine\WindowApp</Filter>
     </ClCompile>
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Engine\PipelineManagers\GraphicsPipelineManager\GraphicsPipelineManager.cpp" />
+    <ClCompile Include="Engine\GraphicsPipelines\Object3DGraphicsPipeline\Object3DGraphicsPipeline.cpp" />
+    <ClCompile Include="Engine\DirectX\ShaderCompiler\ShaderCompiler.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Engine\Resources\Shaders\Object3D\Object3D.hlsli" />
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="Engine\Resources\Shaders\Object3D\Object3D.PS.hlsl" />
+    <FxCompile Include="Engine\Resources\Shaders\Object3D\Object3D.VS.hlsl" />
   </ItemGroup>
 </Project>

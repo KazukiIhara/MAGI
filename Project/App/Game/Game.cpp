@@ -1,6 +1,6 @@
 #include "Game.h"
 
-#include "Scene/Sample/SampleScene.h"
+#include "Scenes/Sample/SampleScene.h"
 
 Game::~Game() {}
 

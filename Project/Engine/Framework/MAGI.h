@@ -13,6 +13,7 @@
 #include "DirectX/DXGI/DXGI.h"
 #include "DirectX/DirectXCommand/DirectXCommand.h"
 #include "DirectX/Fence/Fence.h"
+#include "DirectX/ShaderCompiler/ShaderCompiler.h"
 
 #include "ViewManagers/RTVManager/RTVManager.h"
 #include "ViewManagers/DSVManager/DSVManager.h"
@@ -24,6 +25,8 @@
 #include "DirectX/RenderTarget/RenderTarget.h"
 #include "DirectX/Viewport/Viewport.h"
 #include "DirectX/ScissorRect/ScissorRect.h"
+
+#include "PipelineManagers/GraphicsPipelineManager/GraphicsPipelineManager.h"
 
 #include "SceneManager/SceneManager.h"
 
@@ -109,6 +112,7 @@ protected:
 	static std::unique_ptr<DXGI> dxgi_;
 	static std::unique_ptr<DirectXCommand> directXCommand_;
 	static std::unique_ptr<Fence> fence_;
+	static std::unique_ptr<ShaderCompiler> shaderCompiler_;
 
 	// 
 	// ViewManagers
@@ -127,9 +131,15 @@ protected:
 	static std::unique_ptr<Viewport> viewport_;
 	static std::unique_ptr<ScissorRect> scissorRect_;
 
+	//
+	// PipelineManager
+	//
+	static std::unique_ptr<GraphicsPipelineManager> graphicsPipelineManager_;
+
 	// 
 	// GameManager
 	// 
+	
 	static std::unique_ptr<SceneManager<GameData>> sceneManager_;
 
 

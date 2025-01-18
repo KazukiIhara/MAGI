@@ -115,6 +115,10 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="App\GameData\GameData.h" />
     <ClInclude Include="App\Game\Game.h" />
     <ClInclude Include="App\Scenes\Sample\SampleScene.h" />
+    <ClInclude Include="Engine\Includes\Enums\BlendModeEnum.h" />
+    <ClInclude Include="Engine\PipelineManagers\GraphicsPipelineManager\GraphicsPipelineManager.h" />
+    <ClInclude Include="Engine\GraphicsPipelines\Object3DGraphicsPipeline\Object3DGraphicsPipeline.h" />
+    <ClInclude Include="Engine\Includes\Enums\GraphicsPipelineEnum.h" />
     <ClInclude Include="Engine\SceneManager\SceneManager.ipp" />
     <ClInclude Include="Engine\3D\Mesh\Mesh.h" />
     <ClInclude Include="Engine\AssetContainers\ModelDataContainer\ModelDataContainer.h" />
@@ -153,6 +157,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Engine\LeakChecker\D3DResourceLeakChecker.h" />
     <ClInclude Include="Engine\Logger\Logger.h" />
     <ClInclude Include="Engine\SceneManager\SceneManager.h" />
+    <ClInclude Include="Engine\DirectX\ShaderCompiler\ShaderCompiler.h" />
     <ClInclude Include="Engine\ViewManagers\BaseViewManager\BaseViewManager.h" />
     <ClInclude Include="Engine\ViewManagers\DSVManager\DSVManager.h" />
     <ClInclude Include="Engine\ViewManagers\RTVManager\RTVManager.h" />
@@ -177,11 +182,14 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Engine\DirectX\Viewport\Viewport.cpp" />
     <ClCompile Include="Engine\FPSController\FPSController.cpp" />
     <ClCompile Include="Engine\Framework\MAGI.cpp" />
+    <ClCompile Include="Engine\PipelineManagers\GraphicsPipelineManager\GraphicsPipelineManager.cpp" />
+    <ClCompile Include="Engine\GraphicsPipelines\Object3DGraphicsPipeline\Object3DGraphicsPipeline.cpp" />
     <ClCompile Include="Engine\GUI\GUI.cpp" />
     <ClCompile Include="Engine\ImGuiController\ImGuiContoller.cpp" />
     <ClCompile Include="Engine\Includes\Math\Utility\MathUtility.cpp" />
     <ClCompile Include="Engine\LeakChecker\D3DResourceLeakChecker.cpp" />
     <ClCompile Include="Engine\Logger\Logger.cpp" />
+    <ClCompile Include="Engine\DirectX\ShaderCompiler\ShaderCompiler.cpp" />
     <ClCompile Include="Engine\ViewManagers\BaseViewManager\BaseViewManager.cpp" />
     <ClCompile Include="Engine\ViewManagers\DSVManager\DSVManager.cpp" />
     <ClCompile Include="Engine\ViewManagers\RTVManager\RTVManager.cpp" />
@@ -196,6 +204,26 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ProjectReference Include="Externals\imgui\imgui.vcxproj">
       <Project>{22345678-ABCD-4321-DCBA-1234567890AB}</Project>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Engine\Resources\Shaders\Object3D\Object3D.hlsli">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="Engine\Resources\Shaders\Object3D\Object3D.PS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </FxCompile>
+    <FxCompile Include="Engine\Resources\Shaders\Object3D\Object3D.VS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </FxCompile>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
