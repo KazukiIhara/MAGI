@@ -1,9 +1,9 @@
 #include "Object3D.hlsli"
 
 ConstantBuffer<Material> gMaterial : register(b0);
-ConstantBuffer<Camera> gCamera : register(b2);
-ConstantBuffer<ModelMaterial> gModelMaterial : register(b3);
-ConstantBuffer<LightCount> gLightCount : register(b4);
+ConstantBuffer<Camera> gCamera : register(b1);
+ConstantBuffer<ModelMaterial> gModelMaterial : register(b2);
+ConstantBuffer<LightCount> gLightCount : register(b3);
 Texture2D<float4> gTexture : register(t0);
 StructuredBuffer<PunctualLight> gLights : register(t1);
 SamplerState gSampler : register(s0);
