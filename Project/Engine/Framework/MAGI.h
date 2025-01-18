@@ -26,6 +26,8 @@
 #include "DirectX/Viewport/Viewport.h"
 #include "DirectX/ScissorRect/ScissorRect.h"
 
+#include "PipelineManagers/GraphicsPipelineManager/GraphicsPipelineManager.h"
+
 #include "SceneManager/SceneManager.h"
 
 
@@ -129,9 +131,15 @@ protected:
 	static std::unique_ptr<Viewport> viewport_;
 	static std::unique_ptr<ScissorRect> scissorRect_;
 
+	//
+	// PipelineManager
+	//
+	static std::unique_ptr<GraphicsPipelineManager> graphicsPipelineManager_;
+
 	// 
 	// GameManager
 	// 
+	
 	static std::unique_ptr<SceneManager<GameData>> sceneManager_;
 
 

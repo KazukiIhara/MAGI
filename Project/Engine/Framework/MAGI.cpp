@@ -26,6 +26,8 @@ std::unique_ptr<RenderTarget> MAGISYSTEM::renderTarget_ = nullptr;
 std::unique_ptr<Viewport> MAGISYSTEM::viewport_ = nullptr;
 std::unique_ptr<ScissorRect> MAGISYSTEM::scissorRect_ = nullptr;
 
+std::unique_ptr<GraphicsPipelineManager> MAGISYSTEM::graphicsPipelineManager_ = nullptr;
+
 std::unique_ptr<SceneManager<GameData>> MAGISYSTEM::sceneManager_ = nullptr;
 
 void MAGISYSTEM::Initialize() {
@@ -71,6 +73,9 @@ void MAGISYSTEM::Initialize() {
 	// Scissor
 	scissorRect_ = std::make_unique<ScissorRect>(directXCommand_.get());
 
+	// GraphicsPipelineManager
+	graphicsPipelineManager_ = std::make_unique<GraphicsPipelineManager>(dxgi_.get(), shaderCompiler_.get());
+
 	// SceneManager
 	sceneManager_ = std::make_unique<SceneManager<GameData>>();
 
@@ -83,6 +88,11 @@ void MAGISYSTEM::Finalize() {
 	// SceneManager
 	if (sceneManager_) {
 		sceneManager_.reset();
+	}
+
+	// GraphicsPipelineManager
+	if (graphicsPipelineManager_) {
+		graphicsPipelineManager_.reset();
 	}
 
 	// Scissor
