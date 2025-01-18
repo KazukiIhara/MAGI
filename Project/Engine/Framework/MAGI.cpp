@@ -225,8 +225,19 @@ void MAGISYSTEM::Draw() {
 	// 描画処理
 	// 
 
+	//
+	// Object3D描画前処理
+	//
+
+	// RootSignatureを設定。PSOに設定しているけど別途設定が必要
+	directXCommand_->GetList()->SetGraphicsRootSignature(graphicsPipelineManager_->GetRootSignature(GraphicsPipelineStateType::Object3D));
+	// 形状を設定。PSOに設定しているものとはまた別。同じものを設定すると考えておけば良い
+	directXCommand_->GetList()->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+
 	// シーンの描画
 	sceneManager_->Draw();
+
+
 
 	// 
 	// DirectX描画後処理
