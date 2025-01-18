@@ -6,11 +6,11 @@
 
 ShaderCompiler::ShaderCompiler() {
 	Initialize();
-	Logger::Log("ShaderCompiler Initialize");
+	Logger::Log("ShaderCompiler Initialize\n");
 }
 
 ShaderCompiler::~ShaderCompiler() {
-	Logger::Log("ShaderCompiler Finalize");
+	Logger::Log("ShaderCompiler Finalize\n");
 }
 
 ComPtr<ID3DBlob> ShaderCompiler::CompileShader(const std::wstring& filePath, const wchar_t* profile) {

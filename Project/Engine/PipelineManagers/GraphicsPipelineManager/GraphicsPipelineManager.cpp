@@ -10,11 +10,11 @@
 
 GraphicsPipelineManager::GraphicsPipelineManager(DXGI* dxgi, ShaderCompiler* shaderCompiler) {
 	Initialize(dxgi, shaderCompiler);
-	Logger::Log("GraphicsPipelineManager Initialize");
+	Logger::Log("GraphicsPipelineManager Initialize\n");
 }
 
 GraphicsPipelineManager::~GraphicsPipelineManager() {
-	Logger::Log("GraphicsPipelineManager Finalize");
+	Logger::Log("GraphicsPipelineManager Finalize\n");
 }
 
 void GraphicsPipelineManager::Initialize(DXGI* dxgi, ShaderCompiler* shaderCompiler) {

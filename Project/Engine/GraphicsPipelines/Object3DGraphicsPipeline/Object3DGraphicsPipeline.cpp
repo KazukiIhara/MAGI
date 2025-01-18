@@ -8,11 +8,11 @@
 
 Object3DGraphicsPipeline::Object3DGraphicsPipeline(DXGI* dxgi, ShaderCompiler* shaderCompiler) {
 	Initialize(dxgi, shaderCompiler);
-	Logger::Log("Object3DGraphicsPipeline Initialize");
+	Logger::Log("Object3DGraphicsPipeline Initialize\n");
 }
 
 Object3DGraphicsPipeline::~Object3DGraphicsPipeline() {
-	Logger::Log("Object3DGraphicsPipeline Finalize");
+	Logger::Log("Object3DGraphicsPipeline Finalize\n");
 }
 
 void Object3DGraphicsPipeline::Initialize(DXGI* dxgi, ShaderCompiler* shaderCompiler) {
@@ -113,11 +113,11 @@ void Object3DGraphicsPipeline::CreateRootSignature() {
 void Object3DGraphicsPipeline::CompileShaders() {
 	// TODO::Shaderの正しいパスを設定する
 	vertexShaderBlob_ = nullptr;
-	vertexShaderBlob_ = shaderCompiler_->CompileShader(L"resources/shaders/objects/3d/object3d.VS.hlsl", L"vs_6_0");
+	vertexShaderBlob_ = shaderCompiler_->CompileShader(L"Engine/Resources/Shaders/Object3D/Object3D.VS.hlsl", L"vs_6_0");
 	assert(vertexShaderBlob_ != nullptr);
 
 	pixelShaderBlob_ = nullptr;
-	pixelShaderBlob_ = shaderCompiler_->CompileShader(L"resources/shaders/objects/3d/object3d.PS.hlsl", L"ps_6_0");
+	pixelShaderBlob_ = shaderCompiler_->CompileShader(L"Engine/Resources/Shaders/Object3D/Object3D.PS.hlsl", L"ps_6_0");
 	assert(pixelShaderBlob_ != nullptr);
 }
 
