@@ -17,6 +17,7 @@ Object3DGraphicsPipeline::~Object3DGraphicsPipeline() {
 
 void Object3DGraphicsPipeline::Initialize(DXGI* dxgi, ShaderCompiler* shaderCompiler) {
 	SetDXGI(dxgi);
+	SetShaderCompiler(shaderCompiler);
 	CreateRootSignature();
 	CompileShaders();
 	CreateGraphicsPipelineObject();
