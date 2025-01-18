@@ -6,9 +6,10 @@
 // MyHedder
 #include "Logger/Logger.h"
 #include "DirectX/DXGI/DXGI.h"
+#include "DirectX/ShaderCompiler/ShaderCompiler.h"
 
-GraphicsPipelineManager::GraphicsPipelineManager(DXGI* dxgi) {
-	Initialize(dxgi);
+GraphicsPipelineManager::GraphicsPipelineManager(DXGI* dxgi, ShaderCompiler* shaderCompiler) {
+	Initialize(dxgi, shaderCompiler);
 	Logger::Log("GraphicsPipelineManager Initialize");
 }
 
@@ -16,9 +17,9 @@ GraphicsPipelineManager::~GraphicsPipelineManager() {
 	Logger::Log("GraphicsPipelineManager Finalize");
 }
 
-void GraphicsPipelineManager::Initialize(DXGI* dxgi) {
+void GraphicsPipelineManager::Initialize(DXGI* dxgi, ShaderCompiler* shaderCompiler) {
 
-	
+
 }
 
 ID3D12RootSignature* GraphicsPipelineManager::GetRootSignature(GraphicsPipelineStateType pipelineState) {

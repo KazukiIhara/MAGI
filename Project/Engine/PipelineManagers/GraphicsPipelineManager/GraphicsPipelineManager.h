@@ -15,13 +15,14 @@
 
 // 前方宣言
 class DXGI;
+class ShaderCompiler;
 
 class GraphicsPipelineManager {
 public:
-	GraphicsPipelineManager(DXGI* dxgi);
+	GraphicsPipelineManager(DXGI* dxgi, ShaderCompiler* shaderCompiler);
 	~GraphicsPipelineManager();
 
-	void Initialize(DXGI* dxgi);
+	void Initialize(DXGI* dxgi, ShaderCompiler* shaderCompiler);
 
 	// ルートシグネイチャのゲッター
 	ID3D12RootSignature* GetRootSignature(GraphicsPipelineStateType pipelineState);

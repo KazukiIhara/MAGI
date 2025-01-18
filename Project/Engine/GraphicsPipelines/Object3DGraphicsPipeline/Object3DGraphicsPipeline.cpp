@@ -4,9 +4,10 @@
 
 #include "Logger/Logger.h"
 #include "DirectX/DXGI/DXGI.h"
+#include "DirectX/ShaderCompiler/ShaderCompiler.h"
 
-Object3DGraphicsPipeline::Object3DGraphicsPipeline(DXGI* dxgi) {
-	Initialize(dxgi);
+Object3DGraphicsPipeline::Object3DGraphicsPipeline(DXGI* dxgi, ShaderCompiler* shaderCompiler) {
+	Initialize(dxgi,shaderCompiler);
 	Logger::Log("Object3DGraphicsPipeline Initialize");
 }
 
@@ -14,7 +15,7 @@ Object3DGraphicsPipeline::~Object3DGraphicsPipeline() {
 	Logger::Log("Object3DGraphicsPipeline Finalize");
 }
 
-void Object3DGraphicsPipeline::Initialize(DXGI* dxgi) {
+void Object3DGraphicsPipeline::Initialize(DXGI* dxgi, ShaderCompiler* shaderCompiler) {
 	SetDXGI(dxgi);
 	CreateRootSignature();
 	CompileShaders();
@@ -169,4 +170,9 @@ D3D12_RASTERIZER_DESC Object3DGraphicsPipeline::RasterizerStateSetting() {
 void Object3DGraphicsPipeline::SetDXGI(DXGI* dxgi) {
 	assert(dxgi);
 	dxgi_ = dxgi;
+}
+
+void Object3DGraphicsPipeline::SetShaderCompiler(ShaderCompiler* shaderCompiler) {
+	assert(shaderCompiler);
+	shaderCompiler_ = shaderCompiler;
 }
