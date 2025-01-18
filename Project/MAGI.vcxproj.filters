@@ -242,7 +242,7 @@
     </ClInclude>
     <ClInclude Include="Engine\Includes\Structs\ObjectStruct.h" />
     <ClInclude Include="Engine\SceneManager\SceneManager.h" />
-    <ClInclude Include="App\Scene\Sample\SampleScene.h" />
+    <ClInclude Include="App\Scenes\Sample\SampleScene.h" />
     <ClInclude Include="App\GameData\GameData.h" />
     <ClInclude Include="Engine\BaseScene\BaseScene.h" />
     <ClInclude Include="Engine\SceneManager\SceneManager.ipp" />
