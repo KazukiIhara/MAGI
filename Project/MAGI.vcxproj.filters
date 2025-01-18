@@ -250,6 +250,7 @@
     <ClInclude Include="Engine\Includes\Enums\GraphicsPipelineEnum.h" />
     <ClInclude Include="Engine\GraphicsPipelines\Object3DGraphicsPipeline\Object3DGraphicsPipeline.h" />
     <ClInclude Include="Engine\Includes\Enums\BlendModeEnum.h" />
+    <ClInclude Include="Engine\ShaderCompiler\ShaderCompiler.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="App\Game\Game.cpp">
@@ -336,5 +337,6 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Engine\PipelineManagers\GraphicsPipelineManager\GraphicsPipelineManager.cpp" />
     <ClCompile Include="Engine\GraphicsPipelines\Object3DGraphicsPipeline\Object3DGraphicsPipeline.cpp" />
+    <ClCompile Include="Engine\ShaderCompiler\ShaderCompiler.cpp" />
   </ItemGroup>
 </Project>
