@@ -34,9 +34,23 @@ ID3D12PipelineState* GraphicsPipelineManager::GetPipelineState(GraphicsPipelineS
 }
 
 void GraphicsPipelineManager::SetRootSignature(GraphicsPipelineStateType pipelineState) {
+	// パイプラインステートごとに対応するルートシグネチャを設定
+	switch (pipelineState) {
+		case GraphicsPipelineStateType::Object3D:
+			// 3Dオブジェクト描画用のルートシグネチャを設定
+			rootSignatures_[static_cast<uint32_t>(pipelineState)] = object3DGraphicsPipeline_->GetRootSignature();
+			break;
 
+			// 他のパイプラインステートが追加された場合はここに追加
+	}
 }
 
 void GraphicsPipelineManager::SetPipelineState(GraphicsPipelineStateType pipelineState) {
-
+	switch (pipelineState) {
+		case GraphicsPipelineStateType::Object3D:
+			for (int mode = static_cast<uint32_t>(BlendMode::None); mode < static_cast<uint32_t>(BlendMode::Num); ++mode) {
+				graphicsPipelineStates_[static_cast<uint32_t>(pipelineState)][mode] = object3DGraphicsPipeline_->GetPipelineState(static_cast<BlendMode>(mode));
+			}
+			break;
+	}
 }

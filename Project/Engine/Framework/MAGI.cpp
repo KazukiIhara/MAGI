@@ -95,6 +95,11 @@ void MAGISYSTEM::Finalize() {
 		viewport_.reset();
 	}
 
+	// RenderTarget
+	if (renderTarget_) {
+		renderTarget_.reset();
+	}
+
 	// ResourceBarrier
 	if (resourceBarrier_) {
 		resourceBarrier_.reset();
