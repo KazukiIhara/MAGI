@@ -13,6 +13,7 @@ std::unique_ptr<DirectInput> MAGISYSTEM::directInput_ = nullptr;
 std::unique_ptr<DXGI> MAGISYSTEM::dxgi_ = nullptr;
 std::unique_ptr<DirectXCommand> MAGISYSTEM::directXCommand_ = nullptr;
 std::unique_ptr<Fence> MAGISYSTEM::fence_ = nullptr;
+std::unique_ptr<ShaderCompiler> MAGISYSTEM::shaderCompiler_ = nullptr;
 
 std::unique_ptr<RTVManager> MAGISYSTEM::rtvManager_ = nullptr;
 std::unique_ptr<DSVManager> MAGISYSTEM::dsvManager_ = nullptr;
@@ -47,6 +48,8 @@ void MAGISYSTEM::Initialize() {
 	directXCommand_ = std::make_unique<DirectXCommand>(dxgi_.get());
 	// Fence
 	fence_ = std::make_unique<Fence>(dxgi_.get(), directXCommand_.get());
+	// ShaderCompiler
+	shaderCompiler_ = std::make_unique<ShaderCompiler>();
 
 	// RTVManager
 	rtvManager_ = std::make_unique<RTVManager>(dxgi_.get());
@@ -120,6 +123,11 @@ void MAGISYSTEM::Finalize() {
 	// RTVManager
 	if (rtvManager_) {
 		rtvManager_.reset();
+	}
+
+	// ShaderCompiler
+	if (shaderCompiler_) {
+		shaderCompiler_.reset();
 	}
 
 	// Fence

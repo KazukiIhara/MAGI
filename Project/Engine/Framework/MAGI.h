@@ -13,6 +13,7 @@
 #include "DirectX/DXGI/DXGI.h"
 #include "DirectX/DirectXCommand/DirectXCommand.h"
 #include "DirectX/Fence/Fence.h"
+#include "DirectX/ShaderCompiler/ShaderCompiler.h"
 
 #include "ViewManagers/RTVManager/RTVManager.h"
 #include "ViewManagers/DSVManager/DSVManager.h"
@@ -109,6 +110,7 @@ protected:
 	static std::unique_ptr<DXGI> dxgi_;
 	static std::unique_ptr<DirectXCommand> directXCommand_;
 	static std::unique_ptr<Fence> fence_;
+	static std::unique_ptr<ShaderCompiler> shaderCompiler_;
 
 	// 
 	// ViewManagers
