@@ -7,6 +7,15 @@
     <Filter Include="App\Game">
       <UniqueIdentifier>{AFCBA12E-9B98-FC39-C4B1-EAE1B0DD31C8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="App\GameData">
+      <UniqueIdentifier>{E90015FD-D563-A4A1-7EE9-DC576A2B7024}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="App\Scenes">
+      <UniqueIdentifier>{B65C617A-A214-A3C7-0B1C-7C23F7F23DB8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="App\Scenes\Sample">
+      <UniqueIdentifier>{8780356D-F396-3303-3C0E-BF24A863048B}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Engine">
       <UniqueIdentifier>{DBC7D3B0-C769-FE86-B024-12DB9C6585D7}</UniqueIdentifier>
     </Filter>
@@ -19,14 +28,23 @@
     <Filter Include="Engine\AssetContainers">
       <UniqueIdentifier>{C08CB08C-AC86-D9DE-95F3-6FEF818C3F4B}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Engine\AssetContainers\ModelContainer">
-      <UniqueIdentifier>{C368500D-2F2D-4FFD-F892-7FC76416EB32}</UniqueIdentifier>
+    <Filter Include="Engine\AssetContainers\AnimationDataContainer">
+      <UniqueIdentifier>{CCE34911-3854-4C8A-0173-C6126DA2848B}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Engine\AssetContainers\SoundContainer">
-      <UniqueIdentifier>{3BCCE840-A790-E730-70F6-17FBDC798366}</UniqueIdentifier>
+    <Filter Include="Engine\AssetContainers\ModelDataContainer">
+      <UniqueIdentifier>{BD6F7B17-298A-DEB8-72AC-EE4CDE0506C0}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Engine\AssetContainers\TextureContainer">
-      <UniqueIdentifier>{E3F8BBBE-4F88-7DA9-5884-5EC1C492B8B5}</UniqueIdentifier>
+    <Filter Include="Engine\AssetContainers\SoundDataContainer">
+      <UniqueIdentifier>{35CF085F-A1E9-6B00-EA0B-7C9456659307}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\AssetContainers\TextureDataContainer">
+      <UniqueIdentifier>{DD0F72B6-4975-053D-D24D-A7153EB2FAAB}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\BaseScene">
+      <UniqueIdentifier>{F34FD70C-DF48-F65E-087B-DBE3F4D2D56A}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\DeltaTimer">
+      <UniqueIdentifier>{B5E83FAE-21FF-3D44-6A76-C965D6CB0ECC}</UniqueIdentifier>
     </Filter>
     <Filter Include="Engine\DirectInput">
       <UniqueIdentifier>{35AACD4B-218E-8EA1-8AEE-88F476F17823}</UniqueIdentifier>
@@ -58,6 +76,9 @@
     <Filter Include="Engine\DirectX\ScissorRect">
       <UniqueIdentifier>{2030D77F-0C40-8350-75F9-E76E612872E9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Engine\DirectX\ShaderCompiler">
+      <UniqueIdentifier>{DEE560E4-4AFE-470E-13AB-D7A77F82DCA7}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Engine\DirectX\SwapChain">
       <UniqueIdentifier>{2AE29919-1607-E999-3F52-CE292BD6E7B7}</UniqueIdentifier>
     </Filter>
@@ -72,6 +93,12 @@
     </Filter>
     <Filter Include="Engine\GUI">
       <UniqueIdentifier>{6F3CF502-5BF4-3650-C4FB-0FACB0D2D140}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\GraphicsPipelines">
+      <UniqueIdentifier>{04191357-F03D-62D7-1989-4767050D61F5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\GraphicsPipelines\Object3DGraphicsPipeline">
+      <UniqueIdentifier>{680091E8-D4C6-ED04-1D22-7C6789275C69}</UniqueIdentifier>
     </Filter>
     <Filter Include="Engine\ImGuiController">
       <UniqueIdentifier>{2954621B-154E-8B6D-FEBA-217EEA53F1D9}</UniqueIdentifier>
@@ -100,6 +127,15 @@
     <Filter Include="Engine\Logger">
       <UniqueIdentifier>{4A198B49-B6D9-0680-7F14-50FDEB934B5C}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Engine\PipelineManagers">
+      <UniqueIdentifier>{0ED9C9FB-7A10-1293-831A-76B6EFD0388C}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\PipelineManagers\GraphicsPipelineManager">
+      <UniqueIdentifier>{5F42992D-CB7D-F9F0-D472-7680402D7E21}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\SceneManager">
+      <UniqueIdentifier>{1385C7BD-7FE6-A4CB-0854-EB7D74B4DB8A}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Engine\ViewManagers">
       <UniqueIdentifier>{D3B4F983-3F16-D791-C883-1D4434E40D51}</UniqueIdentifier>
     </Filter>
@@ -123,17 +159,32 @@
     <ClInclude Include="App\Game\Game.h">
       <Filter>App\Game</Filter>
     </ClInclude>
+    <ClInclude Include="App\GameData\GameData.h">
+      <Filter>App\GameData</Filter>
+    </ClInclude>
+    <ClInclude Include="App\Scenes\Sample\SampleScene.h">
+      <Filter>App\Scenes\Sample</Filter>
+    </ClInclude>
     <ClInclude Include="Engine\3D\Mesh\Mesh.h">
       <Filter>Engine\3D\Mesh</Filter>
     </ClInclude>
+    <ClInclude Include="Engine\AssetContainers\AnimationDataContainer\AnimationDataContainer.h">
+      <Filter>Engine\AssetContainers\AnimationDataContainer</Filter>
+    </ClInclude>
     <ClInclude Include="Engine\AssetContainers\ModelDataContainer\ModelDataContainer.h">
-      <Filter>Engine\AssetContainers\ModelContainer</Filter>
+      <Filter>Engine\AssetContainers\ModelDataContainer</Filter>
     </ClInclude>
     <ClInclude Include="Engine\AssetContainers\SoundDataContainer\SoundDataContainer.h">
-      <Filter>Engine\AssetContainers\SoundContainer</Filter>
+      <Filter>Engine\AssetContainers\SoundDataContainer</Filter>
     </ClInclude>
     <ClInclude Include="Engine\AssetContainers\TextureDataContainer\TextureDataContainer.h">
-      <Filter>Engine\AssetContainers\TextureContainer</Filter>
+      <Filter>Engine\AssetContainers\TextureDataContainer</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\BaseScene\BaseScene.h">
+      <Filter>Engine\BaseScene</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\DeltaTimer\DeltaTimer.h">
+      <Filter>Engine\DeltaTimer</Filter>
     </ClInclude>
     <ClInclude Include="Engine\DirectInput\DirectInput.h">
       <Filter>Engine\DirectInput</Filter>
@@ -162,6 +213,9 @@
     <ClInclude Include="Engine\DirectX\ScissorRect\ScissorRect.h">
       <Filter>Engine\DirectX\ScissorRect</Filter>
     </ClInclude>
+    <ClInclude Include="Engine\DirectX\ShaderCompiler\ShaderCompiler.h">
+      <Filter>Engine\DirectX\ShaderCompiler</Filter>
+    </ClInclude>
     <ClInclude Include="Engine\DirectX\SwapChain\SwapChain.h">
       <Filter>Engine\DirectX\SwapChain</Filter>
     </ClInclude>
@@ -177,8 +231,17 @@
     <ClInclude Include="Engine\GUI\GUI.h">
       <Filter>Engine\GUI</Filter>
     </ClInclude>
+    <ClInclude Include="Engine\GraphicsPipelines\Object3DGraphicsPipeline\Object3DGraphicsPipeline.h">
+      <Filter>Engine\GraphicsPipelines\Object3DGraphicsPipeline</Filter>
+    </ClInclude>
     <ClInclude Include="Engine\ImGuiController\ImGuiController.h">
       <Filter>Engine\ImGuiController</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Includes\Enums\BlendModeEnum.h">
+      <Filter>Engine\Includes\Enums</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Includes\Enums\GraphicsPipelineEnum.h">
+      <Filter>Engine\Includes\Enums</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Includes\Enums\MouseInputEnum.h">
       <Filter>Engine\Includes\Enums</Filter>
@@ -219,11 +282,23 @@
     <ClInclude Include="Engine\Includes\Structs\ModelStruct.h">
       <Filter>Engine\Includes\Structs</Filter>
     </ClInclude>
+    <ClInclude Include="Engine\Includes\Structs\ObjectStruct.h">
+      <Filter>Engine\Includes\Structs</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Includes\Structs\TextureStruct.h">
+      <Filter>Engine\Includes\Structs</Filter>
+    </ClInclude>
     <ClInclude Include="Engine\LeakChecker\D3DResourceLeakChecker.h">
       <Filter>Engine\LeakChecker</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Logger\Logger.h">
       <Filter>Engine\Logger</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\PipelineManagers\GraphicsPipelineManager\GraphicsPipelineManager.h">
+      <Filter>Engine\PipelineManagers\GraphicsPipelineManager</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\SceneManager\SceneManager.h">
+      <Filter>Engine\SceneManager</Filter>
     </ClInclude>
     <ClInclude Include="Engine\ViewManagers\BaseViewManager\BaseViewManager.h">
       <Filter>Engine\ViewManagers\BaseViewManager</Filter>
@@ -240,19 +315,6 @@
     <ClInclude Include="Engine\WindowApp\WindowApp.h">
       <Filter>Engine\WindowApp</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\Includes\Structs\ObjectStruct.h" />
-    <ClInclude Include="Engine\SceneManager\SceneManager.h" />
-    <ClInclude Include="App\Scenes\Sample\SampleScene.h" />
-    <ClInclude Include="App\GameData\GameData.h" />
-    <ClInclude Include="Engine\BaseScene\BaseScene.h" />
-    <ClInclude Include="Engine\SceneManager\SceneManager.ipp" />
-    <ClInclude Include="Engine\PipelineManagers\GraphicsPipelineManager\GraphicsPipelineManager.h" />
-    <ClInclude Include="Engine\Includes\Enums\GraphicsPipelineEnum.h" />
-    <ClInclude Include="Engine\GraphicsPipelines\Object3DGraphicsPipeline\Object3DGraphicsPipeline.h" />
-    <ClInclude Include="Engine\Includes\Enums\BlendModeEnum.h" />
-    <ClInclude Include="Engine\DirectX\ShaderCompiler\ShaderCompiler.h" />
-    <ClInclude Include="Engine\AssetContainers\AnimationDataContainer\AnimationDataContainer.h" />
-    <ClInclude Include="Engine\DeltaTimer\DeltaTimer.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="App\Game\Game.cpp">
@@ -261,14 +323,20 @@
     <ClCompile Include="Engine\3D\Mesh\Mesh.cpp">
       <Filter>Engine\3D\Mesh</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\AssetContainers\AnimationDataContainer\AnimationDataContainer.cpp">
+      <Filter>Engine\AssetContainers\AnimationDataContainer</Filter>
+    </ClCompile>
     <ClCompile Include="Engine\AssetContainers\ModelDataContainer\ModelDataContainer.cpp">
-      <Filter>Engine\AssetContainers\ModelContainer</Filter>
+      <Filter>Engine\AssetContainers\ModelDataContainer</Filter>
     </ClCompile>
     <ClCompile Include="Engine\AssetContainers\SoundDataContainer\SoundDataContainer.cpp">
-      <Filter>Engine\AssetContainers\SoundContainer</Filter>
+      <Filter>Engine\AssetContainers\SoundDataContainer</Filter>
     </ClCompile>
     <ClCompile Include="Engine\AssetContainers\TextureDataContainer\TextureDataContainer.cpp">
-      <Filter>Engine\AssetContainers\TextureContainer</Filter>
+      <Filter>Engine\AssetContainers\TextureDataContainer</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\DeltaTimer\DeltaTimer.cpp">
+      <Filter>Engine\DeltaTimer</Filter>
     </ClCompile>
     <ClCompile Include="Engine\DirectInput\DirectInput.cpp">
       <Filter>Engine\DirectInput</Filter>
@@ -294,6 +362,9 @@
     <ClCompile Include="Engine\DirectX\ScissorRect\ScissorRect.cpp">
       <Filter>Engine\DirectX\ScissorRect</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\DirectX\ShaderCompiler\ShaderCompiler.cpp">
+      <Filter>Engine\DirectX\ShaderCompiler</Filter>
+    </ClCompile>
     <ClCompile Include="Engine\DirectX\SwapChain\SwapChain.cpp">
       <Filter>Engine\DirectX\SwapChain</Filter>
     </ClCompile>
@@ -309,6 +380,12 @@
     <ClCompile Include="Engine\GUI\GUI.cpp">
       <Filter>Engine\GUI</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\GraphicsPipelines\Object3DGraphicsPipeline\Object3DGraphicsPipeline.cpp">
+      <Filter>Engine\GraphicsPipelines\Object3DGraphicsPipeline</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\ImGuiController\ImGuiController.cpp">
+      <Filter>Engine\ImGuiController</Filter>
+    </ClCompile>
     <ClCompile Include="Engine\Includes\Math\Utility\MathUtility.cpp">
       <Filter>Engine\Includes\Math\Utility</Filter>
     </ClCompile>
@@ -317,6 +394,9 @@
     </ClCompile>
     <ClCompile Include="Engine\Logger\Logger.cpp">
       <Filter>Engine\Logger</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\PipelineManagers\GraphicsPipelineManager\GraphicsPipelineManager.cpp">
+      <Filter>Engine\PipelineManagers\GraphicsPipelineManager</Filter>
     </ClCompile>
     <ClCompile Include="Engine\ViewManagers\BaseViewManager\BaseViewManager.cpp">
       <Filter>Engine\ViewManagers\BaseViewManager</Filter>
@@ -334,18 +414,5 @@
       <Filter>Engine\WindowApp</Filter>
     </ClCompile>
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="Engine\PipelineManagers\GraphicsPipelineManager\GraphicsPipelineManager.cpp" />
-    <ClCompile Include="Engine\GraphicsPipelines\Object3DGraphicsPipeline\Object3DGraphicsPipeline.cpp" />
-    <ClCompile Include="Engine\DirectX\ShaderCompiler\ShaderCompiler.cpp" />
-    <ClCompile Include="Engine\ImGuiController\ImGuiController.cpp" />
-    <ClCompile Include="Engine\AssetContainers\AnimationDataContainer\AnimationDataContainer.cpp" />
-    <ClCompile Include="Engine\DeltaTimer\DeltaTimer.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Engine\Resources\Shaders\Object3D\Object3D.hlsli" />
-  </ItemGroup>
-  <ItemGroup>
-    <FxCompile Include="Engine\Resources\Shaders\Object3D\Object3D.PS.hlsl" />
-    <FxCompile Include="Engine\Resources\Shaders\Object3D\Object3D.VS.hlsl" />
   </ItemGroup>
 </Project>

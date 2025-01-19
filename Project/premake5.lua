@@ -45,8 +45,7 @@ project "MAGI" -- プロジェクト名
       "Engine",
       "Engine/Includes",
       "App",
-      "Externals/assimp/include",
-      "Externals/imgui"
+      "Externals",
     } 
 
    dependson { "DirectXTex","imgui" } -- 依存していることを指定
