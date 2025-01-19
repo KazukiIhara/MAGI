@@ -252,6 +252,7 @@
     <ClInclude Include="Engine\Includes\Enums\BlendModeEnum.h" />
     <ClInclude Include="Engine\DirectX\ShaderCompiler\ShaderCompiler.h" />
     <ClInclude Include="Engine\AssetContainers\AnimationDataContainer\AnimationDataContainer.h" />
+    <ClInclude Include="Engine\DeltaTimer\DeltaTimer.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="App\Game\Game.cpp">
@@ -338,6 +339,7 @@
     <ClCompile Include="Engine\DirectX\ShaderCompiler\ShaderCompiler.cpp" />
     <ClCompile Include="Engine\ImGuiController\ImGuiController.cpp" />
     <ClCompile Include="Engine\AssetContainers\AnimationDataContainer\AnimationDataContainer.cpp" />
+    <ClCompile Include="Engine\DeltaTimer\DeltaTimer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Engine\Resources\Shaders\Object3D\Object3D.hlsli" />
