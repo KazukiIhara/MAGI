@@ -115,6 +115,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="App\GameData\GameData.h" />
     <ClInclude Include="App\Game\Game.h" />
     <ClInclude Include="App\Scenes\Sample\SampleScene.h" />
+    <ClInclude Include="Engine\AssetContainers\AnimationDataContainer\AnimationDataContainer.h" />
     <ClInclude Include="Engine\Includes\Enums\BlendModeEnum.h" />
     <ClInclude Include="Engine\PipelineManagers\GraphicsPipelineManager\GraphicsPipelineManager.h" />
     <ClInclude Include="Engine\GraphicsPipelines\Object3DGraphicsPipeline\Object3DGraphicsPipeline.h" />
@@ -122,8 +123,8 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Engine\SceneManager\SceneManager.ipp" />
     <ClInclude Include="Engine\3D\Mesh\Mesh.h" />
     <ClInclude Include="Engine\AssetContainers\ModelDataContainer\ModelDataContainer.h" />
-    <ClInclude Include="Engine\AssetContainers\SoundContainer\SoundContainer.h" />
-    <ClInclude Include="Engine\AssetContainers\TextureContainer\TextureContainer.h" />
+    <ClInclude Include="Engine\AssetContainers\SoundDataContainer\SoundDataContainer.h" />
+    <ClInclude Include="Engine\AssetContainers\TextureDataContainer\TextureDataContainer.h" />
     <ClInclude Include="Engine\BaseScene\BaseScene.h" />
     <ClInclude Include="Engine\DirectInput\DirectInput.h" />
     <ClInclude Include="Engine\DirectX\ComPtr\ComPtr.h" />
@@ -167,9 +168,10 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
   <ItemGroup>
     <ClCompile Include="App\Game\Game.cpp" />
     <ClCompile Include="Engine\3D\Mesh\Mesh.cpp" />
+    <ClCompile Include="Engine\AssetContainers\AnimationDataContainer\AnimationDataContainer.cpp" />
     <ClCompile Include="Engine\AssetContainers\ModelDataContainer\ModelDataContainer.cpp" />
-    <ClCompile Include="Engine\AssetContainers\SoundContainer\SoundContainer.cpp" />
-    <ClCompile Include="Engine\AssetContainers\TextureContainer\TextureContainer.cpp" />
+    <ClCompile Include="Engine\AssetContainers\SoundDataContainer\SoundDataContainer.cpp" />
+    <ClCompile Include="Engine\AssetContainers\TextureDataContainer\TextureDataContainer.cpp" />
     <ClCompile Include="Engine\DirectInput\DirectInput.cpp" />
     <ClCompile Include="Engine\DirectX\DXGI\DXGI.cpp" />
     <ClCompile Include="Engine\DirectX\DepthStencil\DepthStencil.cpp" />
@@ -186,7 +188,6 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Engine\PipelineManagers\GraphicsPipelineManager\GraphicsPipelineManager.cpp" />
     <ClCompile Include="Engine\GraphicsPipelines\Object3DGraphicsPipeline\Object3DGraphicsPipeline.cpp" />
     <ClCompile Include="Engine\GUI\GUI.cpp" />
-    <ClCompile Include="Engine\ImGuiController\ImGuiContoller.cpp" />
     <ClCompile Include="Engine\Includes\Math\Utility\MathUtility.cpp" />
     <ClCompile Include="Engine\LeakChecker\D3DResourceLeakChecker.cpp" />
     <ClCompile Include="Engine\Logger\Logger.cpp" />

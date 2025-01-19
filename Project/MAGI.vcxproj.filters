@@ -129,10 +129,10 @@
     <ClInclude Include="Engine\AssetContainers\ModelDataContainer\ModelDataContainer.h">
       <Filter>Engine\AssetContainers\ModelContainer</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\AssetContainers\SoundContainer\SoundContainer.h">
+    <ClInclude Include="Engine\AssetContainers\SoundDataContainer\SoundDataContainer.h">
       <Filter>Engine\AssetContainers\SoundContainer</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\AssetContainers\TextureContainer\TextureContainer.h">
+    <ClInclude Include="Engine\AssetContainers\TextureDataContainer\TextureDataContainer.h">
       <Filter>Engine\AssetContainers\TextureContainer</Filter>
     </ClInclude>
     <ClInclude Include="Engine\DirectInput\DirectInput.h">
@@ -251,6 +251,7 @@
     <ClInclude Include="Engine\GraphicsPipelines\Object3DGraphicsPipeline\Object3DGraphicsPipeline.h" />
     <ClInclude Include="Engine\Includes\Enums\BlendModeEnum.h" />
     <ClInclude Include="Engine\DirectX\ShaderCompiler\ShaderCompiler.h" />
+    <ClInclude Include="Engine\AssetContainers\AnimationDataContainer\AnimationDataContainer.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="App\Game\Game.cpp">
@@ -262,10 +263,10 @@
     <ClCompile Include="Engine\AssetContainers\ModelDataContainer\ModelDataContainer.cpp">
       <Filter>Engine\AssetContainers\ModelContainer</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\AssetContainers\SoundContainer\SoundContainer.cpp">
+    <ClCompile Include="Engine\AssetContainers\SoundDataContainer\SoundDataContainer.cpp">
       <Filter>Engine\AssetContainers\SoundContainer</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\AssetContainers\TextureContainer\TextureContainer.cpp">
+    <ClCompile Include="Engine\AssetContainers\TextureDataContainer\TextureDataContainer.cpp">
       <Filter>Engine\AssetContainers\TextureContainer</Filter>
     </ClCompile>
     <ClCompile Include="Engine\DirectInput\DirectInput.cpp">
@@ -307,9 +308,6 @@
     <ClCompile Include="Engine\GUI\GUI.cpp">
       <Filter>Engine\GUI</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\ImGuiController\ImGuiContoller.cpp">
-      <Filter>Engine\ImGuiController</Filter>
-    </ClCompile>
     <ClCompile Include="Engine\Includes\Math\Utility\MathUtility.cpp">
       <Filter>Engine\Includes\Math\Utility</Filter>
     </ClCompile>
@@ -339,6 +337,7 @@
     <ClCompile Include="Engine\GraphicsPipelines\Object3DGraphicsPipeline\Object3DGraphicsPipeline.cpp" />
     <ClCompile Include="Engine\DirectX\ShaderCompiler\ShaderCompiler.cpp" />
     <ClCompile Include="Engine\ImGuiController\ImGuiController.cpp" />
+    <ClCompile Include="Engine\AssetContainers\AnimationDataContainer\AnimationDataContainer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Engine\Resources\Shaders\Object3D\Object3D.hlsli" />

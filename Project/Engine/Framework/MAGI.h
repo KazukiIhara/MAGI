@@ -93,8 +93,10 @@ public: // エンジンの機能
 #pragma endregion
 
 #pragma region DXGIの機能
-
-
+	// デバイス取得
+	static ID3D12Device* GetDirectXDevice();
+	// バッファリソースを作成
+	static ComPtr<ID3D12Resource> CreateBufferResource(size_t sizeInBytes, bool isUav = false);
 #pragma endregion
 
 #pragma region DirectXCommandの機能
@@ -156,7 +158,7 @@ protected:
 	// 
 	// GameManager
 	// 
-	
+
 	static std::unique_ptr<SceneManager<GameData>> sceneManager_;
 
 	//

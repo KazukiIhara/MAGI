@@ -349,6 +349,14 @@ int64_t MAGISYSTEM::GetMouseWheelDelta() {
 	return directInput_->GetMouseWheelDelta();
 }
 
+ID3D12Device* MAGISYSTEM::GetDirectXDevice() {
+	return dxgi_->GetDevice();
+}
+
+ComPtr<ID3D12Resource> MAGISYSTEM::CreateBufferResource(size_t sizeInBytes, bool isUav) {
+	return dxgi_->CreateBufferResource(sizeInBytes, isUav);
+}
+
 ID3D12GraphicsCommandList* MAGISYSTEM::GetDirectXCommandList() {
 	return directXCommand_->GetList();
 }

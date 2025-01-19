@@ -2,6 +2,7 @@
 
 // C++
 #include <string>
+#include <cstdint>
 
 // DirectX
 #include <d3d12.h>
@@ -45,18 +46,22 @@ private:
 	MeshData meshData_{};
 
 	// 頂点リソース
-	ComPtr<ID3D12Resource> vertexResources_;
+	ComPtr<ID3D12Resource> vertexResource_;
 	// 頂点データ
-	std::vector<VertexData3D*> vertexData_;
+	VertexData3D* vertexData_;
 	// VBV
-	D3D12_VERTEX_BUFFER_VIEW vertexBufferViews_;
+	D3D12_VERTEX_BUFFER_VIEW vertexBufferView_;
 
 	// インデックスリソース
-	std::vector<ComPtr<ID3D12Resource>> indexResources_;
+	ComPtr<ID3D12Resource> indexResource_;
 	// インデックスデータ
-	std::vector<uint32_t*> indexData_;
+	uint32_t* indexData_;
 	// インデックスバッファビュー
-	std::vector<D3D12_INDEX_BUFFER_VIEW> indexBufferViews_{};
+	D3D12_INDEX_BUFFER_VIEW indexBufferView_{};
 
+	// マテリアルリソース
+	ComPtr<ID3D12Resource> materialResource_;
+	// マテリアルデータ
+	MaterialForGPU* materialData_;
 
 };
