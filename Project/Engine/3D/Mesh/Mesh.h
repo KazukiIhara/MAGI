@@ -2,6 +2,7 @@
 
 // C++
 #include <string>
+#include <cstdint>
 
 // DirectX
 #include <d3d12.h>
@@ -47,14 +48,14 @@ private:
 	// 頂点リソース
 	ComPtr<ID3D12Resource> vertexResource_;
 	// 頂点データ
-	std::vector<VertexData3D*> vertexData_;
+	VertexData3D* vertexData_;
 	// VBV
 	D3D12_VERTEX_BUFFER_VIEW vertexBufferView_;
 
 	// インデックスリソース
 	ComPtr<ID3D12Resource> indexResource_;
 	// インデックスデータ
-	std::vector<uint32_t*> indexData_;
+	uint32_t* indexData_;
 	// インデックスバッファビュー
 	D3D12_INDEX_BUFFER_VIEW indexBufferView_{};
 
