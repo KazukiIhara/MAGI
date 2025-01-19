@@ -253,6 +253,7 @@
     <ClInclude Include="Engine\DirectX\ShaderCompiler\ShaderCompiler.h" />
     <ClInclude Include="Engine\AssetContainers\AnimationDataContainer\AnimationDataContainer.h" />
     <ClInclude Include="Engine\DeltaTimer\DeltaTimer.h" />
+    <ClInclude Include="Engine\Includes\Structs\TextureStruct.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="App\Game\Game.cpp">
