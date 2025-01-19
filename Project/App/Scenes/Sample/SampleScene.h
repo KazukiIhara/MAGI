@@ -25,7 +25,10 @@ inline void SampleScene<Data>::Initialize() {
 
 template<typename Data>
 inline void SampleScene<Data>::Update() {
-
+#ifdef _DEBUG
+	// ImGui確認用デモウィンドウ
+	ImGui::ShowDemoWindow();
+#endif // _DEBUG
 }
 
 template<typename Data>

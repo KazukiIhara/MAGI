@@ -29,9 +29,6 @@ public:
 	// 初期化
 	void Initialize(WindowApp* windowApp, DXGI* dxgi, DirectXCommand* command, SRVUAVManager* srvUavManager);
 
-	// フォント設定
-	void FontSetting();
-
 	// 更新処理の先頭に呼び出す処理
 	void BeginFrame();
 
@@ -43,9 +40,6 @@ public:
 
 	// ImGuiの終了処理
 	void Finalize();
-
-	// ImGuiの配色をダークテーマにする
-	void SetImGuiDarkTheme();
 
 private:
 	void SetWindowApp(WindowApp* windowApp);
