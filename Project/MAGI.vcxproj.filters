@@ -338,6 +338,7 @@
     <ClCompile Include="Engine\PipelineManagers\GraphicsPipelineManager\GraphicsPipelineManager.cpp" />
     <ClCompile Include="Engine\GraphicsPipelines\Object3DGraphicsPipeline\Object3DGraphicsPipeline.cpp" />
     <ClCompile Include="Engine\DirectX\ShaderCompiler\ShaderCompiler.cpp" />
+    <ClCompile Include="Engine\ImGuiController\ImGuiController.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Engine\Resources\Shaders\Object3D\Object3D.hlsli" />
