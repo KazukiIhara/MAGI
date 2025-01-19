@@ -11,7 +11,7 @@ public:
 	void CreateDescriptorHeap()override;
 	// Texture2d用のDSVを作成
 	void CreateDSVTexture2d(uint32_t dsvIndex, ID3D12Resource* pResource, DXGI_FORMAT format);
-public:
+private:
 	// 最大dsv数
-	static const uint32_t kMaxDSVCount_ = 1;
+	const uint32_t kMaxDSVCount_ = 1;
 };

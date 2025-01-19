@@ -12,7 +12,7 @@ public:
 	void CreateDescriptorHeap()override;
 	// Texture2d用のRTVの作成
 	void CreateRTVTexture2d(uint32_t rtvIndex, ID3D12Resource* pResource);
-public:
+private:
 	// 最大RTV数
-	static const uint32_t kMaxRTVCount = 3;
+	const uint32_t kMaxRTVCount = 3;
 };

@@ -6,7 +6,7 @@
 
 DSVManager::DSVManager(DXGI* dxgi) :BaseViewManager(dxgi) {
 	// 基底クラスの初期化処理
-	BaseViewManager::Initialize();
+	BaseViewManager::Initialize(kMaxDSVCount_);
 	Logger::Log("DSVManager Initialize\n");
 }
 
