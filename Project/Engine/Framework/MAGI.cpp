@@ -8,6 +8,7 @@ std::unique_ptr<D3DResourceLeakChecker> MAGISYSTEM::leakCheck_ = nullptr;
 #endif // _DEBUG
 
 std::unique_ptr<WindowApp> MAGISYSTEM::windowApp_ = nullptr;
+std::unique_ptr<DeltaTimer> MAGISYSTEM::deltaTimer_ = nullptr;
 std::unique_ptr<DirectInput> MAGISYSTEM::directInput_ = nullptr;
 
 std::unique_ptr<DXGI> MAGISYSTEM::dxgi_ = nullptr;
@@ -32,6 +33,7 @@ std::unique_ptr<SceneManager<GameData>> MAGISYSTEM::sceneManager_ = nullptr;
 
 
 std::unique_ptr<ImGuiController> MAGISYSTEM::imguiController_ = nullptr;
+std::unique_ptr<GUI> MAGISYSTEM::gui_ = nullptr;
 
 void MAGISYSTEM::Initialize() {
 	// 開始ログ
@@ -44,6 +46,8 @@ void MAGISYSTEM::Initialize() {
 
 	// WindowApp
 	windowApp_ = std::make_unique<WindowApp>();
+	// DeltaTimer
+	deltaTimer_ = std::make_unique<DeltaTimer>();
 	// DirectInput
 	directInput_ = std::make_unique<DirectInput>(windowApp_.get());
 
@@ -87,11 +91,19 @@ void MAGISYSTEM::Initialize() {
 	// ImGuiController
 	imguiController_ = std::make_unique<ImGuiController>(windowApp_.get(), dxgi_.get(), directXCommand_.get(), srvuavManager_.get());
 
+	// GUI
+	gui_ = std::make_unique<GUI>(imguiController_.get());
+
 	// 初期化完了ログ
 	Logger::Log("MAGISYSTEM Initialize\n");
 }
 
 void MAGISYSTEM::Finalize() {
+
+	// GUI
+	if (gui_) {
+		gui_.reset();
+	}
 
 	// ImGuiController
 	if (imguiController_) {
@@ -179,6 +191,11 @@ void MAGISYSTEM::Finalize() {
 		directInput_.reset();
 	}
 
+	// DeltaTimer
+	if(deltaTimer_) {
+		deltaTimer_.reset();
+	}
+
 	// WindowApp
 	if (windowApp_) {
 		windowApp_.reset();
@@ -189,6 +206,9 @@ void MAGISYSTEM::Finalize() {
 }
 
 void MAGISYSTEM::Update() {
+	// デルタタイムクラスを更新
+	deltaTimer_->Update();
+
 	// ウィンドウにメッセージが来ていたら最優先で処理
 	if (windowApp_->Update()) {
 		endRequest_ = true;
@@ -213,6 +233,9 @@ void MAGISYSTEM::Update() {
 
 	// シーンの更新処理
 	sceneManager_->Update();
+
+	// GUI更新処理
+	gui_->Update();
 
 	// ImGui内部コマンド生成
 	imguiController_->EndFrame();
@@ -311,6 +334,10 @@ bool MAGISYSTEM::IsEndRequest() const {
 
 HWND MAGISYSTEM::GetWindowHandle() {
 	return windowApp_->GetHwnd();
+}
+
+float MAGISYSTEM::GetDeltaTime() {
+	return deltaTimer_->GetDeltaTime();
 }
 
 bool MAGISYSTEM::PushKey(BYTE keyNumber) {
