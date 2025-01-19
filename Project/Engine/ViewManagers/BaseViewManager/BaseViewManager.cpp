@@ -13,6 +13,8 @@ BaseViewManager::BaseViewManager(DXGI* dxgi) {
 void BaseViewManager::Initialize(const uint32_t& maxViewCount) {
 	// ディスクリプタヒープ作成
 	CreateDescriptorHeap();
+	// ビューの最大数を設定
+	maxViewCount_ = maxViewCount;
 }
 
 uint32_t BaseViewManager::Allocate() {
