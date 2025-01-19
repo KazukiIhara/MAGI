@@ -349,3 +349,7 @@ int64_t MAGISYSTEM::GetMouseWheelDelta() {
 	return directInput_->GetMouseWheelDelta();
 }
 
+ID3D12GraphicsCommandList* MAGISYSTEM::GetDirectXCommandList() {
+	return directXCommand_->GetList();
+}
+

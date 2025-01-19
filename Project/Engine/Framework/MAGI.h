@@ -56,7 +56,6 @@ public:
 
 public: // エンジンの機能
 
-	// TODO: 関数の説明をGetWindowHandleを参考にきれいに直す
 	// TODO: regionを使わない方法を検討する
 
 #pragma region WindowAppの機能
@@ -93,6 +92,21 @@ public: // エンジンの機能
 	static int64_t GetMouseWheelDelta();
 #pragma endregion
 
+#pragma region DXGIの機能
+
+
+#pragma endregion
+
+#pragma region DirectXCommandの機能
+	// コマンドリストを取得
+	static ID3D12GraphicsCommandList* GetDirectXCommandList();
+
+#pragma endregion
+
+#pragma region Fenceの機能
+
+
+#pragma endregion
 
 
 private: // メンバ変数

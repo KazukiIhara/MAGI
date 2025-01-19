@@ -46,7 +46,17 @@ private:
 
 	// 頂点リソース
 	ComPtr<ID3D12Resource> vertexResources_;
+	// 頂点データ
+	std::vector<VertexData3D*> vertexData_;
 	// VBV
 	D3D12_VERTEX_BUFFER_VIEW vertexBufferViews_;
+
+	// インデックスリソース
+	std::vector<ComPtr<ID3D12Resource>> indexResources_;
+	// インデックスデータ
+	std::vector<uint32_t*> indexData_;
+	// インデックスバッファビュー
+	std::vector<D3D12_INDEX_BUFFER_VIEW> indexBufferViews_{};
+
 
 };

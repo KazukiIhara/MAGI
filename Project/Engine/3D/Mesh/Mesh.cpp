@@ -1,5 +1,7 @@
 #include "Mesh.h"
 
+#include "Framework/MAGI.h"
+
 Mesh::Mesh(const MeshData& meshData) {
 	Initialize(meshData);
 }
@@ -13,6 +15,7 @@ void Mesh::Update() {
 }
 
 void Mesh::Draw() {
+
 
 }
 
