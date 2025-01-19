@@ -30,6 +30,9 @@ std::unique_ptr<GraphicsPipelineManager> MAGISYSTEM::graphicsPipelineManager_ = 
 
 std::unique_ptr<SceneManager<GameData>> MAGISYSTEM::sceneManager_ = nullptr;
 
+
+std::unique_ptr<ImGuiController> MAGISYSTEM::imguiController_ = nullptr;
+
 void MAGISYSTEM::Initialize() {
 	// 開始ログ
 	Logger::Log("MAGISYSTEM Start\n");
@@ -79,11 +82,22 @@ void MAGISYSTEM::Initialize() {
 	// SceneManager
 	sceneManager_ = std::make_unique<SceneManager<GameData>>();
 
+
+
+	// ImGuiController
+	imguiController_ = std::make_unique<ImGuiController>(windowApp_.get(), dxgi_.get(), directXCommand_.get(), srvuavManager_.get());
+
 	// 初期化完了ログ
 	Logger::Log("MAGISYSTEM Initialize\n");
 }
 
 void MAGISYSTEM::Finalize() {
+
+	// ImGuiController
+	if (imguiController_) {
+		imguiController_.reset();
+	}
+
 
 	// SceneManager
 	if (sceneManager_) {
@@ -167,7 +181,6 @@ void MAGISYSTEM::Finalize() {
 
 	// WindowApp
 	if (windowApp_) {
-		windowApp_->Finalize();
 		windowApp_.reset();
 	}
 
@@ -194,8 +207,15 @@ void MAGISYSTEM::Update() {
 		endRequest_ = true;
 	}
 
+	// ImGui開始処理
+	imguiController_->BeginFrame();
+
+
 	// シーンの更新処理
 	sceneManager_->Update();
+
+	// ImGui内部コマンド生成
+	imguiController_->EndFrame();
 }
 
 void MAGISYSTEM::Draw() {
@@ -229,14 +249,23 @@ void MAGISYSTEM::Draw() {
 	// Object3D描画前処理
 	//
 
+
 	// RootSignatureを設定。PSOに設定しているけど別途設定が必要
 	directXCommand_->GetList()->SetGraphicsRootSignature(graphicsPipelineManager_->GetRootSignature(GraphicsPipelineStateType::Object3D));
 	// 形状を設定。PSOに設定しているものとはまた別。同じものを設定すると考えておけば良い
 	directXCommand_->GetList()->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
-	// シーンの描画
+	//
+	// シーンの描画処理
+	//
 	sceneManager_->Draw();
 
+
+	//
+	// ImGui描画処理
+	//
+
+	imguiController_->Draw();
 
 
 	// 
@@ -245,16 +274,12 @@ void MAGISYSTEM::Draw() {
 
 	// リソースバリアを描画後の状態にする
 	resourceBarrier_->PostDrawSwapChainResourceBarrierTransition();
-
 	// コマンドを閉じて実行
 	directXCommand_->KickCommand();
-
 	// GPUとOSに画面の交換を行うように通知
 	swapChain_->Present();
-
 	// Fenceによる待機
 	fence_->WaitGPU();
-
 	// 次のフレーム用にコマンドをリセット
 	directXCommand_->ResetCommand();
 }

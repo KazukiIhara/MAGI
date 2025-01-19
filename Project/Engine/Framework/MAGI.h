@@ -31,6 +31,9 @@
 #include "SceneManager/SceneManager.h"
 
 
+#include "ImGuiController/ImGuiController.h"
+
+
 // エンジンの全機能を持つクラス
 class MAGISYSTEM {
 public:
@@ -142,6 +145,10 @@ protected:
 	
 	static std::unique_ptr<SceneManager<GameData>> sceneManager_;
 
+	//
+	// UIクラス
+	//
+	static std::unique_ptr<ImGuiController> imguiController_;
 
 };
 

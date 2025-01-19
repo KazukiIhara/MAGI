@@ -10,6 +10,7 @@ WindowApp::WindowApp() {
 }
 
 WindowApp::~WindowApp() {
+	Finalize();
 	Logger::Log("WindowApp Finalize\n");
 }
 

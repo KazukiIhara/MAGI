@@ -13,6 +13,7 @@ ImGuiController::ImGuiController(WindowApp* windowApp, DXGI* dxgi, DirectXComman
 }
 
 ImGuiController::~ImGuiController() {
+	Finalize();
 	Logger::Log("ImGuiController Finalize\n");
 }
 
