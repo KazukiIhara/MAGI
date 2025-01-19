@@ -6,7 +6,7 @@
 
 RTVManager::RTVManager(DXGI* dxgi) :BaseViewManager(dxgi) {
 	// 基底クラスの初期化処理
-	BaseViewManager::Initialize();
+	BaseViewManager::Initialize(kMaxRTVCount);
 	Logger::Log("RTVManager Initialize\n");
 }
 RTVManager::~RTVManager() {

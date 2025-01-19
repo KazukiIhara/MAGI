@@ -16,7 +16,7 @@ public:
 	// UAV作成
 	void CreateUavStructuredBuffer(uint32_t viewIndex, ID3D12Resource* pResource, uint32_t numElements, UINT structureByteStride);
 
-public: // 公開メンバ変数
+private:
 	// 最大SRV数
-	static const uint32_t kMaxViewCount_ = 512;
+	const uint32_t kMaxViewCount_ = 512;
 };

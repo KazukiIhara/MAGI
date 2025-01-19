@@ -18,7 +18,7 @@ public:
 	virtual ~BaseViewManager() = default;
 
 	// 初期化
-	void Initialize();
+	void Initialize(const uint32_t& maxViewCount);
 	// ディスクリプタヒープの作成
 	virtual void CreateDescriptorHeap() = 0;
 	// 割り当て関数
@@ -31,6 +31,8 @@ public:
 	ID3D12DescriptorHeap* GetDescriptorHeap() const;
 	// ディスクリプタのサイズを取得
 	uint32_t GetDescriptorSize() const;
+	// Viewの数が最大数を上回っているかどうか
+	bool IsLowerViewMax() const;
 private:
 	// DXGIのセット
 	void SetDXGI(DXGI* dxgi);
@@ -41,6 +43,8 @@ protected:
 	uint32_t descriptorSize_ = 0u;
 	// 使用しているviewのインデックス
 	uint32_t useIndex = 0;
+	// Viewの最大数
+	uint32_t maxViewCount_ = 0;
 protected:
 	// dxgiのインスタンス
 	DXGI* dxgi_ = nullptr;

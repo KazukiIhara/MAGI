@@ -10,7 +10,7 @@ BaseViewManager::BaseViewManager(DXGI* dxgi) {
 	SetDXGI(dxgi);
 }
 
-void BaseViewManager::Initialize() {
+void BaseViewManager::Initialize(const uint32_t& maxViewCount) {
 	// ディスクリプタヒープ作成
 	CreateDescriptorHeap();
 }
@@ -39,6 +39,10 @@ ID3D12DescriptorHeap* BaseViewManager::GetDescriptorHeap() const {
 
 uint32_t BaseViewManager::GetDescriptorSize() const {
 	return descriptorSize_;
+}
+
+bool BaseViewManager::IsLowerViewMax() const {
+	return useIndex < maxViewCount_;
 }
 
 void BaseViewManager::SetDXGI(DXGI* dxgi) {
