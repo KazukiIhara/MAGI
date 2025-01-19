@@ -3,6 +3,7 @@
 #include <cassert>
 
 #include "Logger/Logger.h"
+#include "ImGuiController/ImGuiController.h"
 
 WindowApp::WindowApp() {
 	Initialize();
@@ -10,6 +11,7 @@ WindowApp::WindowApp() {
 }
 
 WindowApp::~WindowApp() {
+	Finalize();
 	Logger::Log("WindowApp Finalize\n");
 }
 
@@ -141,11 +143,10 @@ void WindowApp::TerminateGameWindow() {
 }
 
 LRESULT WindowApp::WindowProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam) {
-	// TODO:
-	//// ImGuiでもマウス操作ができるようになるやつ
-	//if (ImGui_ImplWin32_WndProcHandler(hwnd, msg, wparam, lparam)) {
-	//	return true;
-	//}
+	// ImGuiでもマウス操作ができるようになるやつ
+	if (ImGui_ImplWin32_WndProcHandler(hwnd, msg, wparam, lparam)) {
+		return true;
+	}
 
 	// メッセージに応じてゲーム固有の処理を行う
 	switch (msg) {
