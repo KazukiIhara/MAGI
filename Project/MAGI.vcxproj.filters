@@ -308,9 +308,6 @@
     <ClCompile Include="Engine\GUI\GUI.cpp">
       <Filter>Engine\GUI</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\ImGuiController\ImGuiContoller.cpp">
-      <Filter>Engine\ImGuiController</Filter>
-    </ClCompile>
     <ClCompile Include="Engine\Includes\Math\Utility\MathUtility.cpp">
       <Filter>Engine\Includes\Math\Utility</Filter>
     </ClCompile>
