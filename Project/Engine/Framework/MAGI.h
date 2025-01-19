@@ -8,6 +8,7 @@
 #endif // _DEBUG
 
 #include "WindowApp/WindowApp.h"
+#include "DeltaTimer/DeltaTimer.h"
 #include "DirectInput/DirectInput.h"
 
 #include "DirectX/DXGI/DXGI.h"
@@ -33,6 +34,7 @@
 
 #include "ImGuiController/ImGuiController.h"
 
+#include "GUI/GUI.h"
 
 // エンジンの全機能を持つクラス
 class MAGISYSTEM {
@@ -64,6 +66,15 @@ public: // エンジンの機能
 	/// </summary>
 	/// <returns>ウィンドウハンドル</returns>
 	static HWND GetWindowHandle();
+#pragma endregion
+
+#pragma region DeltaTimerの機能
+	/// <summary>
+	/// デルタタイムを取得
+	/// </summary>
+	/// <returns>デルタタイムを返す</returns>
+	static float GetDeltaTime();
+
 #pragma endregion
 
 #pragma region DirectInputの機能
@@ -120,9 +131,10 @@ protected:
 #endif // _DEBUG
 
 	// 
-	// WindowAppBaseSystems
+	// AppBaseSystems
 	// 
 	static std::unique_ptr<WindowApp> windowApp_;
+	static std::unique_ptr<DeltaTimer> deltaTimer_;
 	static std::unique_ptr<DirectInput> directInput_;
 
 	// 
@@ -165,6 +177,7 @@ protected:
 	// UIクラス
 	//
 	static std::unique_ptr<ImGuiController> imguiController_;
+	static std::unique_ptr<GUI> gui_;
 
 };
 

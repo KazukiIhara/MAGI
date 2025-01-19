@@ -10,12 +10,13 @@ class DeltaTimer {
 public:
 	DeltaTimer();
 	~DeltaTimer();
+
 	void Reset();
 	void Update();
-	double GetDeltaTime() const;
+	float GetDeltaTime() const;
 private:
 	// デルタタイム
-	double deltaTime_;
+	float deltaTime_;
 	int64_t lastTime_;
 	double frequency_;
 };

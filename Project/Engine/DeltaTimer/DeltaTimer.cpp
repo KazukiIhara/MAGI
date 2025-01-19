@@ -29,9 +29,10 @@ void DeltaTimer::Update() {
 	const double deltaTime = static_cast<double>(current - lastTime_) / frequency_;
 
 	lastTime_ = current;
-	deltaTime_ = deltaTime;
+
+	deltaTime_ = static_cast<float>(deltaTime);
 }
 
-double DeltaTimer::GetDeltaTime() const {
+float DeltaTimer::GetDeltaTime() const {
 	return deltaTime_;
 }
