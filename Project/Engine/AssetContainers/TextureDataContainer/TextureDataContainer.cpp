@@ -39,7 +39,7 @@ void TextureDataContainer::Load(const std::string& filePath) {
 	DirectX::ScratchImage mipImage_ = LoadTexture(filePath);
 	texture.metaData = mipImage_.GetMetadata();
 	texture.resource = CreateTextureResource(texture.metaData);
-	Microsoft::WRL::ComPtr<ID3D12Resource> intermediateResource = UploadTextureData(texture.resource.Get(), mipImage_);
+	ComPtr<ID3D12Resource> intermediateResource = UploadTextureData(texture.resource.Get(), mipImage_);
 
 	// コマンドのクローズと実行
 	directXCommand_->KickCommand();
@@ -50,14 +50,19 @@ void TextureDataContainer::Load(const std::string& filePath) {
 	texture.srvIndex = srvUavManager_->Allocate();
 	// srvの作成
 	srvUavManager_->CreateSrvTexture2d(texture.srvIndex, textures_[filePath].resource.Get(), texture.metaData.format, UINT(texture.metaData.mipLevels));
+
+	// テクスチャ枚数上限チェック
+	assert(srvUavManager_->IsLowerViewMax());
 }
 
 std::unordered_map<std::string, Texture>& TextureDataContainer::GetTexture() {
-	// TODO: return ステートメントをここに挿入します
+	return textures_;
 }
 
 const DirectX::TexMetadata& TextureDataContainer::GetMetaData(const std::string& filePath) {
-	// TODO: return ステートメントをここに挿入します
+	assert(&GetTexture()[filePath]);
+	Texture& texture = GetTexture()[filePath];
+	return texture.metaData;
 }
 
 DirectX::ScratchImage TextureDataContainer::LoadTexture(const std::string& filePath) {
@@ -92,7 +97,7 @@ ComPtr<ID3D12Resource> TextureDataContainer::CreateTextureResource(const DirectX
 	heapProperties.Type = D3D12_HEAP_TYPE_DEFAULT;
 
 	// Resourceの作成
-	Microsoft::WRL::ComPtr<ID3D12Resource> resource = nullptr;
+	ComPtr<ID3D12Resource> resource = nullptr;
 	HRESULT hr = dxgi_->GetDevice()->CreateCommittedResource(
 		&heapProperties,// Heapの設定
 		D3D12_HEAP_FLAG_NONE,// Heapの特殊な設定。特になし。
@@ -108,7 +113,7 @@ ComPtr<ID3D12Resource> TextureDataContainer::UploadTextureData(ID3D12Resource* t
 	std::vector<D3D12_SUBRESOURCE_DATA> subresources;
 	DirectX::PrepareUpload(dxgi_->GetDevice(), mipImages.GetImages(), mipImages.GetImageCount(), mipImages.GetMetadata(), subresources);
 	uint64_t intermediateSize = GetRequiredIntermediateSize(texture, 0, UINT(subresources.size()));
-	Microsoft::WRL::ComPtr<ID3D12Resource> intermediateResource = dxgi_->CreateBufferResource(intermediateSize);
+	ComPtr<ID3D12Resource> intermediateResource = dxgi_->CreateBufferResource(intermediateSize);
 	UpdateSubresources(directXCommand_->GetList(), texture, intermediateResource.Get(), 0, 0, UINT(subresources.size()), subresources.data());
 	// Textureへの転送後は利用できるよう、D3D12_RESOURCE_STATE_COPY_DESTからD3D12_RESOURCE_STATE_GENERIC_READへResourceStateを変更する
 	D3D12_RESOURCE_BARRIER barrier{};
