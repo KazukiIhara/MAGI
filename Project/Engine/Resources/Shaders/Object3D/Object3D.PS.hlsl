@@ -25,10 +25,12 @@ PixelShaderOutput main(VertexShaderOutput input)
     // テクスチャサンプリング等
     float4 textureColor = gTexture.Sample(gSampler, input.texcoord);
 
-    // discardなどのアルファテスト
+    // discard処理
     if (textureColor.a <= 0.5f)
+    {
         discard;
-
+    }
+   
     // シーン中のすべてのライトをループ
     [loop]
     for (uint i = 0; i < gLightCount.num; i++)
@@ -118,7 +120,9 @@ PixelShaderOutput main(VertexShaderOutput input)
 
     // アルファカット
     if (output.color.a <= 0.0f)
+    {
         discard;
-
+    }
+       
     return output;
 }
