@@ -27,7 +27,11 @@
 #include "DirectX/Viewport/Viewport.h"
 #include "DirectX/ScissorRect/ScissorRect.h"
 
+#include "AssetContainers/TextureDataContainer/TextureDataContainer.h"
+
+
 #include "PipelineManagers/GraphicsPipelineManager/GraphicsPipelineManager.h"
+
 
 #include "SceneManager/SceneManager.h"
 
@@ -119,8 +123,14 @@ public: // エンジンの機能
 #pragma region Fenceの機能
 
 
+
 #pragma endregion
 
+#pragma region TextureDataContainer
+
+
+
+#pragma endregion
 
 private: // メンバ変数
 	// 終了リクエスト
@@ -168,9 +178,13 @@ protected:
 	static std::unique_ptr<GraphicsPipelineManager> graphicsPipelineManager_;
 
 	// 
+	// AssetContainer
+	// 
+	static std::unique_ptr<TextureDataContainer> textureDataCantainer_;
+
+	// 
 	// GameManager
 	// 
-
 	static std::unique_ptr<SceneManager<GameData>> sceneManager_;
 
 	//
