@@ -32,6 +32,7 @@
 
 #include "PipelineManagers/GraphicsPipelineManager/GraphicsPipelineManager.h"
 
+#include "PunctualLightManager/PunctualLightManager.h"
 
 #include "SceneManager/SceneManager.h"
 
@@ -216,6 +217,11 @@ protected:
 	// 
 	static std::unique_ptr<TextureDataContainer> textureDataCantainer_;
 	static std::unique_ptr<ModelDataContainer> modelDataContainer_;
+
+	//
+	// ObjectManager
+	//
+	static std::unique_ptr<PunctualLightManager> punctualLightManager_;
 
 	// 
 	// GameManager

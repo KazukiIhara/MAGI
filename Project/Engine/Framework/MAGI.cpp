@@ -32,6 +32,8 @@ std::unique_ptr<ModelDataContainer> MAGISYSTEM::modelDataContainer_ = nullptr;
 
 std::unique_ptr<GraphicsPipelineManager> MAGISYSTEM::graphicsPipelineManager_ = nullptr;
 
+std::unique_ptr<PunctualLightManager> MAGISYSTEM::punctualLightManager_ = nullptr;
+
 std::unique_ptr<SceneManager<GameData>> MAGISYSTEM::sceneManager_ = nullptr;
 
 
@@ -92,6 +94,11 @@ void MAGISYSTEM::Initialize() {
 	// GraphicsPipelineManager
 	graphicsPipelineManager_ = std::make_unique<GraphicsPipelineManager>(dxgi_.get(), shaderCompiler_.get());
 
+
+	// PunctualLightManager
+	punctualLightManager_ = std::make_unique<PunctualLightManager>(dxgi_.get(), directXCommand_.get(), srvuavManager_.get());
+
+
 	// SceneManager
 	sceneManager_ = std::make_unique<SceneManager<GameData>>();
 
@@ -125,6 +132,12 @@ void MAGISYSTEM::Finalize() {
 	if (sceneManager_) {
 		sceneManager_.reset();
 	}
+
+	// PunctualLightManager
+	if (punctualLightManager_) {
+		punctualLightManager_.reset();
+	}
+
 
 	// GraphicsPipelineManager
 	if (graphicsPipelineManager_) {
@@ -253,6 +266,9 @@ void MAGISYSTEM::Update() {
 
 	// シーンの更新処理
 	sceneManager_->Update();
+
+	// ライトマネージャの更新
+	punctualLightManager_->Update();
 
 	// GUI更新処理
 	gui_->Update();
