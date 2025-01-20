@@ -117,6 +117,12 @@ Quaternion operator-(const Quaternion& q1, const Quaternion& q2);
 /// 数学関数群　(左手座標系、行ベクトル)
 /// </summary>
 namespace MAGIMath {
+	
+
+	// ゼロベクトルを返す
+	Vector3 MakeZeroVector3();
 
 
+	// 4x4単位行列を返す
+	Matrix4x4 MakeIdentityMatrix4x4();
 }

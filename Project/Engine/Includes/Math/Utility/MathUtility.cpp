@@ -160,3 +160,20 @@ Quaternion operator+(const Quaternion& q1, const Quaternion& q2) {
 Quaternion operator-(const Quaternion& q1, const Quaternion& q2) {
 	return Quaternion(q1.x - q2.x, q1.y - q2.y, q1.z - q2.z, q1.w - q2.w);
 }
+
+Vector3 MAGIMath::MakeZeroVector3() {
+	Vector3 result{};
+	result.x = 0.0f;
+	result.y = 0.0f;
+	result.z = 0.0f;
+	return result;
+}
+
+Matrix4x4 MAGIMath::MakeIdentityMatrix4x4() {
+	Matrix4x4 result{};
+	result.m[0][0] = 1.0f; result.m[0][1] = 0.0f; result.m[0][2] = 0.0f; result.m[0][3] = 0.0f;
+	result.m[1][0] = 0.0f; result.m[1][1] = 1.0f; result.m[1][2] = 0.0f; result.m[1][3] = 0.0f;
+	result.m[2][0] = 0.0f; result.m[2][1] = 0.0f; result.m[2][2] = 1.0f; result.m[2][3] = 0.0f;
+	result.m[3][0] = 0.0f; result.m[3][1] = 0.0f; result.m[3][2] = 0.0f; result.m[3][3] = 1.0f;
+	return result;
+}
