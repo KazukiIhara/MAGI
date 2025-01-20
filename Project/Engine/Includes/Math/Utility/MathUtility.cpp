@@ -169,6 +169,14 @@ Vector3 MAGIMath::MakeZeroVector3() {
 	return result;
 }
 
+Vector3 MAGIMath::ExtractionWorldPos(const Matrix4x4& m) {
+	Vector3 result{};
+	result.x = m.m[3][0];
+	result.y = m.m[3][1];
+	result.z = m.m[3][2];
+	return result;
+}
+
 Matrix4x4 MAGIMath::MakeIdentityMatrix4x4() {
 	Matrix4x4 result{};
 	result.m[0][0] = 1.0f; result.m[0][1] = 0.0f; result.m[0][2] = 0.0f; result.m[0][3] = 0.0f;
@@ -176,4 +184,148 @@ Matrix4x4 MAGIMath::MakeIdentityMatrix4x4() {
 	result.m[2][0] = 0.0f; result.m[2][1] = 0.0f; result.m[2][2] = 1.0f; result.m[2][3] = 0.0f;
 	result.m[3][0] = 0.0f; result.m[3][1] = 0.0f; result.m[3][2] = 0.0f; result.m[3][3] = 1.0f;
 	return result;
+}
+
+Matrix4x4 MAGIMath::MakeScaleMatrix(const Vector3& scale) {
+	Matrix4x4 result = {
+		scale.x, 0.0f, 0.0f, 0.0f,
+		0.0f, scale.y, 0.0f, 0.0f,
+		0.0f, 0.0f, scale.z, 0.0f,
+		0.0f, 0.0f, 0.0f, 1.0f,
+	};
+	return result;
+}
+
+Matrix4x4 MAGIMath::MakeRotateXMatrix(float radian) {
+	Matrix4x4 rotateX{
+		1.0f, 0.0f, 0.0f, 0.0f,
+		0.0f, std::cos(radian), std::sin(radian), 0.0f,
+		0.0f, -std::sin(radian), std::cos(radian), 0.0f,
+		0.0f, 0.0f, 0.0f, 1.0f,
+	};
+	return rotateX;
+}
+
+Matrix4x4 MAGIMath::MakeRotateYMatrix(float radian) {
+	Matrix4x4 rotateY{
+		std::cos(radian), 0.0f, -std::sin(radian), 0.0f,
+		0.0f, 1.0f, 0.0f, 0.0f,
+		std::sin(radian), 0.0f, std::cos(radian), 0.0f,
+		0.0f, 0.0f, 0.0f, 1.0f,
+	};
+	return rotateY;
+}
+
+Matrix4x4 MAGIMath::MakeRotateZMatrix(float radian) {
+	Matrix4x4 rotateZ{
+		std::cos(radian), std::sin(radian), 0.0f, 0.0f,
+		-std::sin(radian), std::cos(radian), 0.0f, 0.0f,
+		0.0f, 0.0f, 1.0f, 0.0f,
+		0.0f, 0.0f, 0.0f, 1.0f,
+	};
+	return rotateZ;
+}
+
+Matrix4x4 MAGIMath::MakeRotateXYZMatrix(const Vector3& rotate) {
+	Matrix4x4 rotateX = MakeRotateXMatrix(rotate.x);
+	Matrix4x4 rotateY = MakeRotateYMatrix(rotate.y);
+	Matrix4x4 rotateZ = MakeRotateZMatrix(rotate.z);
+
+	Matrix4x4 result = rotateX * rotateY * rotateZ;
+	return result;
+}
+
+Matrix4x4 MAGIMath::MakeRotateMatrix(const Quaternion& q) {
+	Matrix4x4 mat{};
+
+	float xx = q.x * q.x;
+	float yy = q.y * q.y;
+	float zz = q.z * q.z;
+	float xy = q.x * q.y;
+	float yz = q.y * q.z;
+	float zx = q.z * q.x;
+	float wx = q.w * q.x;
+	float wy = q.w * q.y;
+	float wz = q.w * q.z;
+
+	// 行 (i), 列 (j) の順で代入
+	// row 0
+	mat.m[0][0] = 1.0f - 2.0f * (yy + zz);
+	mat.m[0][1] = 2.0f * (xy + wz);
+	mat.m[0][2] = 2.0f * (zx - wy);
+	mat.m[0][3] = 0.0f;
+
+	// row 1
+	mat.m[1][0] = 2.0f * (xy - wz);
+	mat.m[1][1] = 1.0f - 2.0f * (xx + zz);
+	mat.m[1][2] = 2.0f * (yz + wx);
+	mat.m[1][3] = 0.0f;
+
+	// row 2
+	mat.m[2][0] = 2.0f * (zx + wy);
+	mat.m[2][1] = 2.0f * (yz - wx);
+	mat.m[2][2] = 1.0f - 2.0f * (xx + yy);
+	mat.m[2][3] = 0.0f;
+
+	// row 3
+	mat.m[3][0] = 0.0f;
+	mat.m[3][1] = 0.0f;
+	mat.m[3][2] = 0.0f;
+	mat.m[3][3] = 1.0f;
+
+	return mat;
+}
+
+Matrix4x4 MAGIMath::MakeTranslateMatrix(const Vector3& translate) {
+	Matrix4x4 result = {
+		1.0f, 0.0f, 0.0f, 0.0f,
+		0.0f, 1.0f, 0.0f, 0.0f,
+		0.0f, 0.0f, 1.0f, 0.0f,
+		translate.x, translate.y, translate.z, 1.0f
+	};
+	return result;
+}
+
+Matrix4x4 MAGIMath::MakeAffineMatrix(const Vector3& scale, const Vector3& rotate, const Vector3& translate) {
+	Matrix4x4 result = MakeScaleMatrix(scale) * MakeRotateXYZMatrix(rotate) * MakeTranslateMatrix(translate);
+	return result;
+}
+
+Matrix4x4 MAGIMath::MakeAffineMatrix(const Vector3& scale, const Quaternion& rotate, const Vector3& translate) {
+	Matrix4x4 result = MakeScaleMatrix(scale) * MakeRotateMatrix(rotate) * MakeTranslateMatrix(translate);
+	return result;
+}
+
+Quaternion MAGIMath::MakeIdentityQuaternion() {
+	Quaternion result{};
+	result.x = 0.0f;
+	result.y = 0.0f;
+	result.z = 0.0f;
+	result.w = 1.0f;
+	return result;
+}
+
+Quaternion MAGIMath::EulerToQuaternion(const Vector3& euler) {
+	// オイラー角を半分にする
+	float halfPitch = euler.x * 0.5f;
+	float halfYaw = euler.y * 0.5f;
+	float halfRoll = euler.z * 0.5f;
+
+	// 三角関数をあらかじめ計算
+	float sinX = std::sin(halfPitch);
+	float cosX = std::cos(halfPitch);
+	float sinY = std::sin(halfYaw);
+	float cosY = std::cos(halfYaw);
+	float sinZ = std::sin(halfRoll);
+	float cosZ = std::cos(halfRoll);
+
+	Quaternion q;
+
+	// X → Y → Z 回転順序に基づくクオータニオンの計算
+	q.w = cosX * cosY * cosZ - sinX * sinY * sinZ;
+	q.x = sinX * cosY * cosZ + cosX * sinY * sinZ;
+	q.y = cosX * sinY * cosZ - sinX * cosY * sinZ;
+	q.z = cosX * cosY * sinZ + sinX * sinY * cosZ;
+
+	return q;
 }

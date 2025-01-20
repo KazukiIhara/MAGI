@@ -126,10 +126,22 @@ public: // エンジンの機能
 
 #pragma endregion
 
+#pragma region SRVUAVManagerの機能
+	// CPUのディスクリプタハンドルを取得
+	static D3D12_CPU_DESCRIPTOR_HANDLE GetSrvDescriptorHandleCPU(uint32_t index);
+	// GPUのディスクリプタハンドルを取得
+	static D3D12_GPU_DESCRIPTOR_HANDLE GetSrvDescriptorHandleGPU(uint32_t index);
+
+#pragma endregion
+
+
 #pragma region TextureDataContainer
-
-
-
+	// 画像読み込み
+	static void LoadTexture(const std::string& filePath);
+	// テクスチャの取得
+	static std::unordered_map<std::string, Texture>& GetTexture();
+	// メタデータ取得
+	static const DirectX::TexMetadata& GetTextureMetaData(const std::string& filePath);
 #pragma endregion
 
 private: // メンバ変数

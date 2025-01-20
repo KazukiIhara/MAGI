@@ -6,7 +6,9 @@
 class WorldEntity {
 public:
 	virtual void Initialize();
-protected:
-	Vector3 worldPosition_{};
+public:
+	// 名前
 	std::string name_;
+	// ワールド座標
+	Vector3 worldPosition_{};
 };

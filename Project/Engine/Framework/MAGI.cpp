@@ -204,7 +204,7 @@ void MAGISYSTEM::Finalize() {
 	}
 
 	// DeltaTimer
-	if(deltaTimer_) {
+	if (deltaTimer_) {
 		deltaTimer_.reset();
 	}
 
@@ -398,5 +398,25 @@ ComPtr<ID3D12Resource> MAGISYSTEM::CreateBufferResource(size_t sizeInBytes, bool
 
 ID3D12GraphicsCommandList* MAGISYSTEM::GetDirectXCommandList() {
 	return directXCommand_->GetList();
+}
+
+D3D12_CPU_DESCRIPTOR_HANDLE MAGISYSTEM::GetSrvDescriptorHandleCPU(uint32_t index) {
+	return srvuavManager_->GetDescriptorHandleCPU(index);
+}
+
+D3D12_GPU_DESCRIPTOR_HANDLE MAGISYSTEM::GetSrvDescriptorHandleGPU(uint32_t index) {
+	return srvuavManager_->GetDescriptorHandleGPU(index);
+}
+
+void MAGISYSTEM::LoadTexture(const std::string& filePath) {
+	textureDataCantainer_->Load(filePath);
+}
+
+std::unordered_map<std::string, Texture>& MAGISYSTEM::GetTexture() {
+	return textureDataCantainer_->GetTexture();
+}
+
+const DirectX::TexMetadata& MAGISYSTEM::GetTextureMetaData(const std::string& filePath) {
+	return textureDataCantainer_->GetMetaData(filePath);
 }
 
