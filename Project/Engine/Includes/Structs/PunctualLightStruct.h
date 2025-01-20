@@ -1,31 +1,29 @@
 #pragma once
 
 #include <cstdint>
-#include "Math/Types/Vector3.h"
+#include "Math/Utility/MathUtility.h"
 
 /// <summary>
 /// ライトのデータ
 /// </summary>
 struct PunctualLightData {
 	// 全ライト共通
-	uint32_t type;
-	Vector3 color;
-	float intensity;
+	uint32_t type = 0;
+	Vector3 color = { 1.0f,1.0f,1.0f };
+	float intensity = 1.0f;
 
-	// SpotPoint共通
-	Vector3 position;
+	// Spot Point共通
+	Vector3 position = { 0.0f,0.0f,0.0f };
+	float radius = 10.0f;
+	float decay = 5.0f;
 
 	// DirectionalLight用
-	Vector3 direction;
-
-	// PointLight用
-	float radius;
-	float decay;
+	Vector3 direction = { 0.0f,-1.0f,0.0f };
 
 	// SpotLight用
-	Vector3 spotDirection;
-	float cosAngle;
-	float cosFalloffStart;
+	Vector3 spotDirection = { 0.0f,-1.0f,0.0f };
+	float cosAngle = std::cos(std::numbers::pi_v<float> / 3.0f);
+	float cosFalloffStart = 0.1f;
 };
 
 /// <summary>

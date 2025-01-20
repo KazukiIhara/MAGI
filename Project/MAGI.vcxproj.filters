@@ -201,7 +201,7 @@
     <ClInclude Include="Engine\3D\Primitive3D\Primitive3D.h">
       <Filter>Engine\3D\Primitive3D</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\3D\PunctualLight\PunctualLight.h">
+    <ClInclude Include="Engine\PunctualLightManager\PunctualLightManager.h">
       <Filter>Engine\3D\PunctualLight</Filter>
     </ClInclude>
     <ClInclude Include="Engine\3D\WorldEntity\WorldEntity.h">
@@ -366,6 +366,7 @@
     <ClInclude Include="Engine\WindowApp\WindowApp.h">
       <Filter>Engine\WindowApp</Filter>
     </ClInclude>
+    <ClInclude Include="Engine\Includes\MAGIUitility\MAGIUtility.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="App\Game\Game.cpp">
@@ -386,7 +387,7 @@
     <ClCompile Include="Engine\3D\Primitive3D\Primitive3D.cpp">
       <Filter>Engine\3D\Primitive3D</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\3D\PunctualLight\PunctualLight.cpp">
+    <ClCompile Include="Engine\PunctualLightManager\PunctualLightManager.cpp">
       <Filter>Engine\3D\PunctualLight</Filter>
     </ClCompile>
     <ClCompile Include="Engine\3D\WorldEntity\WorldEntity.cpp">
@@ -486,6 +487,7 @@
       <Filter>Engine\WindowApp</Filter>
     </ClCompile>
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Engine\Includes\MAGIUitility\MAGIUtility.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Engine\SceneManager\SceneManager.ipp">

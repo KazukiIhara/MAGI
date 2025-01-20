@@ -53,14 +53,12 @@ struct PunctualLight
     
     // SpotPoint共通
     float3 position;
-
-    // DirectionalLight用
-    float3 direction;
-
-    // PointLight用
     float radius;
     float decay;
 
+    // DirectionalLight用
+    float3 direction;
+  
     // SpotLight用
     float3 spotDirection;
     float cosAngle;

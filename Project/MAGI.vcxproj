@@ -120,7 +120,8 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Engine\3D\Model\Model.h" />
     <ClInclude Include="Engine\3D\Object3D\Object3D.h" />
     <ClInclude Include="Engine\3D\Primitive3D\Primitive3D.h" />
-    <ClInclude Include="Engine\3D\PunctualLight\PunctualLight.h" />
+    <ClInclude Include="Engine\Includes\MAGIUitility\MAGIUtility.h" />
+    <ClInclude Include="Engine\PunctualLightManager\PunctualLightManager.h" />
     <ClInclude Include="Engine\3D\WorldEntity\WorldEntity.h" />
     <ClInclude Include="Engine\3D\WorldTransform\WorldTransform.h" />
     <ClInclude Include="Engine\AssetContainers\AnimationDataContainer\AnimationDataContainer.h" />
@@ -183,7 +184,8 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Engine\3D\Model\Model.cpp" />
     <ClCompile Include="Engine\3D\Object3D\Object3D.cpp" />
     <ClCompile Include="Engine\3D\Primitive3D\Primitive3D.cpp" />
-    <ClCompile Include="Engine\3D\PunctualLight\PunctualLight.cpp" />
+    <ClCompile Include="Engine\Includes\MAGIUitility\MAGIUtility.cpp" />
+    <ClCompile Include="Engine\PunctualLightManager\PunctualLightManager.cpp" />
     <ClCompile Include="Engine\3D\WorldEntity\WorldEntity.cpp" />
     <ClCompile Include="Engine\3D\WorldTransform\WorldTransform.cpp" />
     <ClCompile Include="Engine\AssetContainers\AnimationDataContainer\AnimationDataContainer.cpp" />
