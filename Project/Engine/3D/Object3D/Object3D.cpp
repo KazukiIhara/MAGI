@@ -14,7 +14,7 @@ Object3D::~Object3D() {
 
 void Object3D::Initialize(const std::string& modelName) {
 	worldTransform_.Initialize();
-	model_ = std::make_unique<Model>();
+	model_ = std::make_unique<Model>(MAGISYSTEM::FindModel(modelName));
 	assert(model_);
 }
 

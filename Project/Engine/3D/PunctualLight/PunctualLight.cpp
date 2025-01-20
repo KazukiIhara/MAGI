@@ -20,11 +20,13 @@ void PunctualLightManager::TransferLightsData() {
 }
 
 void PunctualLightManager::AddNewLight(const std::string& lightName, const PunctualLightData& lightData) {
-
+	lightName;
+	lightData;
 }
 
 void PunctualLightManager::SetLightData(const std::string& lightName, const PunctualLightData& lightData) {
-
+	lightName;
+	lightData;
 }
 
 void PunctualLightManager::CreateLightsResource() {

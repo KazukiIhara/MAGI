@@ -28,7 +28,7 @@ std::unique_ptr<Viewport> MAGISYSTEM::viewport_ = nullptr;
 std::unique_ptr<ScissorRect> MAGISYSTEM::scissorRect_ = nullptr;
 
 std::unique_ptr<TextureDataContainer> MAGISYSTEM::textureDataCantainer_ = nullptr;
-
+std::unique_ptr<ModelDataContainer> MAGISYSTEM::modelDataContainer_ = nullptr;
 
 std::unique_ptr<GraphicsPipelineManager> MAGISYSTEM::graphicsPipelineManager_ = nullptr;
 
@@ -85,6 +85,9 @@ void MAGISYSTEM::Initialize() {
 
 	// TextureDataContainer
 	textureDataCantainer_ = std::make_unique<TextureDataContainer>(dxgi_.get(), directXCommand_.get(), fence_.get(), srvuavManager_.get());
+	// ModelDataContainer
+	modelDataContainer_ = std::make_unique<ModelDataContainer>(textureDataCantainer_.get());
+
 
 	// GraphicsPipelineManager
 	graphicsPipelineManager_ = std::make_unique<GraphicsPipelineManager>(dxgi_.get(), shaderCompiler_.get());
@@ -126,6 +129,11 @@ void MAGISYSTEM::Finalize() {
 	// GraphicsPipelineManager
 	if (graphicsPipelineManager_) {
 		graphicsPipelineManager_.reset();
+	}
+
+	// ModelDataContainer
+	if (modelDataContainer_) {
+		modelDataContainer_.reset();
 	}
 
 	// TextureDataContainer
@@ -430,6 +438,14 @@ std::unordered_map<std::string, Texture>& MAGISYSTEM::GetTexture() {
 
 const DirectX::TexMetadata& MAGISYSTEM::GetTextureMetaData(const std::string& filePath) {
 	return textureDataCantainer_->GetMetaData(filePath);
+}
+
+void MAGISYSTEM::LoadModel(const std::string& modelName) {
+	modelDataContainer_->Load(modelName);
+}
+
+ModelData MAGISYSTEM::FindModel(const std::string& modelName) {
+	return modelDataContainer_->FindModelData(modelName);
 }
 
 ID3D12PipelineState* MAGISYSTEM::GetGraphicsPipelineState(GraphicsPipelineStateType pipelineState, BlendMode blendMode) {

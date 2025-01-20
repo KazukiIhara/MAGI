@@ -28,7 +28,7 @@
 #include "DirectX/ScissorRect/ScissorRect.h"
 
 #include "AssetContainers/TextureDataContainer/TextureDataContainer.h"
-
+#include "AssetContainers/ModelDataContainer/ModelDataContainer.h"
 
 #include "PipelineManagers/GraphicsPipelineManager/GraphicsPipelineManager.h"
 
@@ -150,6 +150,15 @@ public: // エンジンの機能
 	static const DirectX::TexMetadata& GetTextureMetaData(const std::string& filePath);
 #pragma endregion
 
+#pragma region ModelDataContainer
+	// モデルの読み込み
+	static void LoadModel(const std::string& modelName);
+	// 読み込み済みモデル検索
+	static ModelData FindModel(const std::string& modelName);
+
+#pragma endregion
+
+
 #pragma region GraphicsPipelineManager
 	// パイプライン取得関数
 	static ID3D12PipelineState* GetGraphicsPipelineState(GraphicsPipelineStateType pipelineState, BlendMode blendMode);
@@ -206,6 +215,7 @@ protected:
 	// AssetContainer
 	// 
 	static std::unique_ptr<TextureDataContainer> textureDataCantainer_;
+	static std::unique_ptr<ModelDataContainer> modelDataContainer_;
 
 	// 
 	// GameManager

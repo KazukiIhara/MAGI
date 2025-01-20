@@ -2,7 +2,6 @@
 
 #include <cstdint>
 #include "Math/Types/Vector3.h"
-#include "Math/Types/Vector4.h"
 
 /// <summary>
 /// ライトのデータ
@@ -10,7 +9,7 @@
 struct PunctualLightData {
 	// 全ライト共通
 	uint32_t type;
-	Vector4 color;
+	Vector3 color;
 	float intensity;
 
 	// SpotPoint共通

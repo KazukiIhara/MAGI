@@ -48,7 +48,7 @@ struct PunctualLight
 {
     // ‘Sƒ‰ƒCƒg‹¤’Ê
     uint type;
-    float4 color;
+    float3 color;
     float intensity;
     
     // SpotPoint‹¤’Ê

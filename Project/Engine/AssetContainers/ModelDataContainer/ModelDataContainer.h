@@ -16,22 +16,28 @@
 // MyHedder
 #include "Structs/ModelStruct.h"
 
+// 前方宣言
+class TextureDataContainer;
+
 /// <summary>
 /// モデルデータコンテナ
 /// </summary>
 class ModelDataContainer {
 public:
-	ModelDataContainer();
+	ModelDataContainer(TextureDataContainer* textureDataContainer);
 	~ModelDataContainer();
 
-	void Initialize();
-	void Load(const std::string& fileName);
+	void Initialize(TextureDataContainer* textureDataContainer);
+	void Load(const std::string& modelName);
 
-	ModelData FindModelData(const std::string& fileName)const;
+	ModelData FindModelData(const std::string& modelName)const;
 private:
-	ModelData LoadModel(const std::string& fileName);
-
+	ModelData LoadModel(const std::string& modelName);
+private:
+	void SetTextureDataContainer(TextureDataContainer* textureDataContainer);
 private:
 	// モデルデータコンテナ
 	std::unordered_map<std::string, ModelData> modelDatas_;
+private:
+	TextureDataContainer* textureDataContainer_ = nullptr;
 };

@@ -5,52 +5,56 @@
 #include <filesystem>
 
 #include "Logger/Logger.h"
-#include "Framework/MAGI.h"
+
+#include "AssetContainers/TextureDataContainer/TextureDataContainer.h"
 
 using namespace MAGIMath;
 
-ModelDataContainer::ModelDataContainer() {
-	Initialize();
+ModelDataContainer::ModelDataContainer(TextureDataContainer* textureDataContainer) {
+	Initialize(textureDataContainer);
 	Logger::Log("ModelDataContainer Initialize\n");
+	Load("teapot");
 }
 
 ModelDataContainer::~ModelDataContainer() {
 	Logger::Log("ModelDataContainer Finalize\n");
 }
 
-void ModelDataContainer::Initialize() {
+void ModelDataContainer::Initialize(TextureDataContainer* textureDataContainer) {
+	SetTextureDataContainer(textureDataContainer);
 	// コンテナをクリア
 	modelDatas_.clear();
 }
 
-void ModelDataContainer::Load(const std::string& fileName) {
+void ModelDataContainer::Load(const std::string& modelName) {
 	// 読み込み済みモデルを検索
-	if (modelDatas_.contains(fileName)) {
+	if (modelDatas_.contains(modelName)) {
 		// 読み込み済みなら早期リターン
 		return;
 	}
 	// モデルを読み込みコンテナに挿入
-	modelDatas_.insert(std::make_pair(fileName, LoadModel(fileName)));
+	modelDatas_.insert(std::make_pair(modelName, LoadModel(modelName)));
 }
 
-ModelData ModelDataContainer::FindModelData(const std::string& fileName) const {
+ModelData ModelDataContainer::FindModelData(const std::string& modelName) const {
 	// 読み込み済みモデルを検索
-	if (modelDatas_.contains(fileName)) {
+	if (modelDatas_.contains(modelName)) {
 		// 読み込みモデルを戻り値としてreturn
-		return modelDatas_.at(fileName);
-	} else {
-		assert(false);
-	}
+		return modelDatas_.at(modelName);
+	} 
+	// 見つからなかった場合止める
+	assert(false);
+	return ModelData{};
 }
 
-ModelData ModelDataContainer::LoadModel(const std::string& fileName) {
+ModelData ModelDataContainer::LoadModel(const std::string& modelName) {
 	// 対応する拡張子のリスト
 	std::vector<std::string> supportedExtensions = { ".obj", ".gltf" };
 
 	// ディレクトリ内のファイルを検索
 	std::string directoryPath = "App/Assets/Models";
 	// モデルファイルが入っているディレクトリ
-	std::string fileDirectoryPath = directoryPath + "/" + fileName;
+	std::string fileDirectoryPath = directoryPath + "/" + modelName;
 	// filesystem用
 	std::filesystem::path modelDirectoryPath(fileDirectoryPath);
 
@@ -61,7 +65,7 @@ ModelData ModelDataContainer::LoadModel(const std::string& fileName) {
 			std::string ext = entry.path().extension().string();
 			// 対応する拡張子かチェック
 			if (std::find(supportedExtensions.begin(), supportedExtensions.end(), ext) != supportedExtensions.end()) {
-				if (entry.path().stem().string() == fileName) {
+				if (entry.path().stem().string() == modelName) {
 					modelFilePath = entry.path().string();
 					break;
 				}
@@ -72,10 +76,13 @@ ModelData ModelDataContainer::LoadModel(const std::string& fileName) {
 	// ファイルが見つからなかった場合はエラー
 	if (modelFilePath.empty()) {
 		std::cerr << "Error: Model file not found or unsupported format." << std::endl;
-		return;
 	}
 
+	// 今回追加するモデルのデータ
 	ModelData newModelData{};
+
+	// 名前を設定
+	newModelData.name = modelName;
 
 	Assimp::Importer importer;
 	const aiScene* scene = importer.ReadFile(modelFilePath.c_str(), aiProcess_FlipWindingOrder | aiProcess_FlipUVs | aiProcess_Triangulate);
@@ -92,7 +99,7 @@ ModelData ModelDataContainer::LoadModel(const std::string& fileName) {
 			aiString textureFilePath;
 			material->GetTexture(aiTextureType_DIFFUSE, 0, &textureFilePath);
 			materialData.textureFilePath = fileDirectoryPath + "/" + textureFilePath.C_Str();
-			MAGISYSTEM::LoadTexture(materialData.textureFilePath);
+			textureDataContainer_->Load(materialData.textureFilePath);
 
 			// UVスケール情報の取得
 			aiUVTransform uvTransform;
@@ -165,4 +172,9 @@ ModelData ModelDataContainer::LoadModel(const std::string& fileName) {
 	}
 
 	return newModelData;
+}
+
+void ModelDataContainer::SetTextureDataContainer(TextureDataContainer* textureDataContainer) {
+	assert(textureDataContainer);
+	textureDataContainer_ = textureDataContainer;
 }
