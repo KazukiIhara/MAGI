@@ -17,12 +17,9 @@ public:
 private:
 	// 受け取ったモデルからメッシュを作成
 	void CreateMehes();
-
 private:
 	// 受け取るモデルデータ
 	ModelData modelData_{};
-	// 名前
-	std::string name_ = "";
 	// メッシュ
 	std::vector<Mesh> meshes_;
 };

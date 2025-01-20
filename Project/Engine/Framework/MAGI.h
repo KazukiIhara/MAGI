@@ -144,6 +144,13 @@ public: // エンジンの機能
 	static const DirectX::TexMetadata& GetTextureMetaData(const std::string& filePath);
 #pragma endregion
 
+#pragma region GraphicsPipelineManager
+	// パイプライン取得関数
+	static ID3D12PipelineState* GetGraphicsPipelineState(GraphicsPipelineStateType pipelineState, BlendMode blendMode);
+
+#pragma endregion
+
+
 private: // メンバ変数
 	// 終了リクエスト
 	bool endRequest_ = false;

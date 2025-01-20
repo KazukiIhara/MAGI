@@ -319,6 +319,7 @@
     <ClInclude Include="Engine\3D\WorldTransform\WorldTransform.h" />
     <ClInclude Include="Engine\3D\WorldEntity\WorldEntity.h" />
     <ClInclude Include="Engine\3D\Model\Model.h" />
+    <ClInclude Include="Engine\3D\Primitive3D\Primitive3D.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="App\Game\Game.cpp">
@@ -422,5 +423,6 @@
     <ClCompile Include="Engine\3D\WorldTransform\WorldTransform.cpp" />
     <ClCompile Include="Engine\3D\WorldEntity\WorldEntity.cpp" />
     <ClCompile Include="Engine\3D\Model\Model.cpp" />
+    <ClCompile Include="Engine\3D\Primitive3D\Primitive3D.cpp" />
   </ItemGroup>
 </Project>

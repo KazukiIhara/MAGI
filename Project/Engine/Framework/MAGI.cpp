@@ -420,3 +420,7 @@ const DirectX::TexMetadata& MAGISYSTEM::GetTextureMetaData(const std::string& fi
 	return textureDataCantainer_->GetMetaData(filePath);
 }
 
+ID3D12PipelineState* MAGISYSTEM::GetGraphicsPipelineState(GraphicsPipelineStateType pipelineState, BlendMode blendMode) {
+	return graphicsPipelineManager_->GetPipelineState(pipelineState, blendMode);
+}
+

@@ -12,7 +12,7 @@ void Mesh::Initialize(const MeshData& meshData) {
 
 	// TODO:テクスチャが未設定の場合、デフォルトのテクスチャを割り当てる
 	if (meshData_.material.textureFilePath == "") {
-		meshData_.material.textureFilePath;
+		meshData_.material.textureFilePath = "Engine/Resources/Images/uvChecker.png";
 	}
 
 	// 頂点リソースの作成

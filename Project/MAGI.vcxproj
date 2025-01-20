@@ -118,6 +118,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Engine\3D\Mesh\Mesh.h" />
     <ClInclude Include="Engine\3D\Model\Model.h" />
     <ClInclude Include="Engine\3D\Object3D\Object3D.h" />
+    <ClInclude Include="Engine\3D\Primitive3D\Primitive3D.h" />
     <ClInclude Include="Engine\AssetContainers\AnimationDataContainer\AnimationDataContainer.h" />
     <ClInclude Include="Engine\AssetContainers\ModelDataContainer\ModelDataContainer.h" />
     <ClInclude Include="Engine\AssetContainers\SoundDataContainer\SoundDataContainer.h" />
@@ -175,6 +176,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Engine\3D\Mesh\Mesh.cpp" />
     <ClCompile Include="Engine\3D\Model\Model.cpp" />
     <ClCompile Include="Engine\3D\Object3D\Object3D.cpp" />
+    <ClCompile Include="Engine\3D\Primitive3D\Primitive3D.cpp" />
     <ClCompile Include="Engine\AssetContainers\AnimationDataContainer\AnimationDataContainer.cpp" />
     <ClCompile Include="Engine\AssetContainers\ModelDataContainer\ModelDataContainer.cpp" />
     <ClCompile Include="Engine\AssetContainers\SoundDataContainer\SoundDataContainer.cpp" />
