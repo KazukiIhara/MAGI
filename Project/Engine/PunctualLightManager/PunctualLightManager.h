@@ -27,6 +27,8 @@ public:
 
 	void AddNewLight(const std::string& lightName, const PunctualLightData& lightData);
 
+	void RemoveLight(const std::string& lightName);
+
 	void SetLightData(const std::string& lightName, const PunctualLightData& lightData);
 private:
 	void CreateLightsResource();
@@ -35,8 +37,6 @@ private:
 	void CreateLightCountResource();
 	void MapLightCountData();
 
-	void UpdateLightsData();
-	void UpdateLightCountData();
 private:
 	void SetDXGI(DXGI* dxgi);
 	void SetDirectXCommand(DirectXCommand* directXCommand);
