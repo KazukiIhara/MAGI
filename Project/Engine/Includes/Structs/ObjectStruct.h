@@ -6,3 +6,32 @@
 // MyHedder
 #include "Math/Utility/MathUtility.h"
 
+// オイラー角3DTrasform
+struct EulerTransform3D {
+	Vector3 scale = { 1.0f,1.0f,1.0f };
+	Vector3 rotate = { 0.0f,0.0f,0.0f };
+	Vector3 translate = { 0.0f,0.0f,0.0f };
+};
+
+// クオータニオン角3DTransform
+struct QuaternionTransform3D {
+	Vector3 scale = { 1.0f,1.0f,1.0f };
+	Quaternion rotate = { 0.0f,0.0f,0.0f,0.0f };
+	Vector3 translate = { 0.0f,0.0f,0.0f };
+};
+
+// トランスフォーメーション構造体
+struct TransformationMatrix {
+	Matrix4x4 World;
+	Matrix4x4 ViewProjection;
+	Matrix4x4 WorldInverseTransepose;
+};
+
+// 3D用マテリアル構造体
+struct Material3D {
+	Vector4 color;
+	int32_t enableLighting;
+	float padding[3];
+	Matrix4x4 uvTransformMatrix;
+	float shininess;
+};

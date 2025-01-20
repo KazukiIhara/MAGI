@@ -5,16 +5,16 @@
 #include "Framework/MAGI.h"
 
 Object3D::Object3D(const std::string& modelName) {
-	Initialize();
+	Initialize(modelName);
 }
 
 Object3D::~Object3D() {
-
+	model_.reset();
 }
 
-void Object3D::Initialize() {
+void Object3D::Initialize(const std::string& modelName) {
 	worldTransform_.Initialize();
-	model_ = std::make_unique<Model>(GetModelData(""));
+	model_ = std::make_unique<Model>(GetModelData(modelName));
 	assert(model_);
 }
 
