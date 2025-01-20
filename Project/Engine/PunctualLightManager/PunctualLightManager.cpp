@@ -19,6 +19,8 @@ PunctualLightManager::~PunctualLightManager() {
 }
 
 void PunctualLightManager::Initialize(DXGI* dxgi, DirectXCommand* directXCommand, SRVUAVManager* srvuavManager) {
+	SetDXGI(dxgi);
+	SetDirectXCommand(directXCommand);
 	SetSrvUavManager(srvuavManager);
 
 	CreateLightsResource();
