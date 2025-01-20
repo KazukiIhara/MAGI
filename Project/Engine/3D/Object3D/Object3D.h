@@ -9,6 +9,8 @@
 #include "3D/WorldTransform/WorldTransform.h"
 #include "3D/Model/Model.h"
 
+class Camera;
+
 class Object3D {
 public:
 	Object3D(const std::string& modelName);
@@ -26,6 +28,12 @@ private:
 	void CreateMaterialResource();
 	// マテリアルデータの書き込み
 	void MapMateiralData();
+
+	// WVPデータの更新
+	void UpdateWVPData();
+	// マテリアルデータの更新
+	void UpdateMaterialData();
+
 private:
 	// ワールドトランスフォーム
 	WorldTransform worldTransform_{};
@@ -48,6 +56,7 @@ private:
 	Material3D material_;
 
 	// カメラを受け取る箱
+
 
 	// ライトを受け取る箱
 
