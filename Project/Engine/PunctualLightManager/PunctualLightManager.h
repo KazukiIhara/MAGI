@@ -1,7 +1,7 @@
 #pragma once
 
 // C++
-#include <map>
+#include <unordered_map>
 #include <string>
 
 // DirectX
@@ -13,14 +13,15 @@
 #include "Enums/PunctualLightDataEnum.h"
 
 class DXGI;
+class DirectXCommand;
 class SRVUAVManager;
 
 class PunctualLightManager {
 public:
-	PunctualLightManager(DXGI* dxgi, SRVUAVManager* srvuavManager);
+	PunctualLightManager(DXGI* dxgi, DirectXCommand* directXCommand, SRVUAVManager* srvuavManager);
 	~PunctualLightManager();
 
-	void Initialize(DXGI* dxgi, SRVUAVManager* srvuavManager);
+	void Initialize(DXGI* dxgi, DirectXCommand* directXCommand,SRVUAVManager* srvuavManager);
 	void Update();
 	void TransferLightsData();
 
@@ -38,13 +39,14 @@ private:
 	void UpdateLightCountData();
 private:
 	void SetDXGI(DXGI* dxgi);
+	void SetDirectXCommand(DirectXCommand* directXCommand);
 	void SetSrvUavManager(SRVUAVManager* srvuavManager);
 private:
 	// ライトの最大数
-	const uint32_t kMaxLightNum_ = 4;
+	const uint32_t kMaxLightNum_ = 3;
 
 	// ライト
-	std::map<std::string, PunctualLightData> light_;
+	std::unordered_map<std::string, PunctualLightData> light_;
 
 	// ライトのリソース(instancing用)
 	ComPtr<ID3D12Resource> lightsResource_ = nullptr;
@@ -62,5 +64,6 @@ private:
 
 private:
 	DXGI* dxgi_ = nullptr;
+	DirectXCommand* directXCommand_ = nullptr;
 	SRVUAVManager* srvuavManager_ = nullptr;
 };
