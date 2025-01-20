@@ -37,6 +37,7 @@ struct MeshData {
 /// モデルデータ
 /// </summary>
 struct ModelData {
+	std::string name;
 	std::vector<MeshData> meshes;
 };
 

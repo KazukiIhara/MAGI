@@ -318,6 +318,7 @@
     <ClInclude Include="Engine\3D\Object3D\Object3D.h" />
     <ClInclude Include="Engine\3D\WorldTransform\WorldTransform.h" />
     <ClInclude Include="Engine\3D\WorldEntity\WorldEntity.h" />
+    <ClInclude Include="Engine\3D\Model\Model.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="App\Game\Game.cpp">
@@ -420,5 +421,6 @@
     <ClCompile Include="Engine\3D\Object3D\Object3D.cpp" />
     <ClCompile Include="Engine\3D\WorldTransform\WorldTransform.cpp" />
     <ClCompile Include="Engine\3D\WorldEntity\WorldEntity.cpp" />
+    <ClCompile Include="Engine\3D\Model\Model.cpp" />
   </ItemGroup>
 </Project>
