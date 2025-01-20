@@ -147,6 +147,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Engine\Includes\Enums\BlendModeEnum.h" />
     <ClInclude Include="Engine\Includes\Enums\GraphicsPipelineEnum.h" />
     <ClInclude Include="Engine\Includes\Enums\MouseInputEnum.h" />
+    <ClInclude Include="Engine\Includes\Enums\PunctualLightDataEnum.h" />
     <ClInclude Include="Engine\Includes\Enums\RenderTargetEnumh.h" />
     <ClInclude Include="Engine\Includes\Enums\XInputEnum.h" />
     <ClInclude Include="Engine\Includes\Math\Types\Matrix2x2.h" />

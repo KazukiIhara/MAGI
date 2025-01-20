@@ -408,6 +408,18 @@ D3D12_GPU_DESCRIPTOR_HANDLE MAGISYSTEM::GetSrvDescriptorHandleGPU(uint32_t index
 	return srvuavManager_->GetDescriptorHandleGPU(index);
 }
 
+uint32_t MAGISYSTEM::ViewAllocate() {
+	return srvuavManager_->Allocate();
+}
+
+void MAGISYSTEM::CreateSrvStructuredBuffer(uint32_t viewIndex, ID3D12Resource* pResource, uint32_t numElements, UINT structureByteStride) {
+	srvuavManager_->CreateSrvStructuredBuffer(viewIndex, pResource, numElements, structureByteStride);
+}
+
+void MAGISYSTEM::CreateUavStructuredBuffer(uint32_t viewIndex, ID3D12Resource* pResource, uint32_t numElements, UINT structureByteStride) {
+	srvuavManager_->CreateUavStructuredBuffer(viewIndex, pResource, numElements, structureByteStride);
+}
+
 void MAGISYSTEM::LoadTexture(const std::string& filePath) {
 	textureDataCantainer_->Load(filePath);
 }

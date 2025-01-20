@@ -31,14 +31,14 @@ void TextureDataContainer::Initialize(DXGI* dxgi, DirectXCommand* directXCommand
 
 void TextureDataContainer::Load(const std::string& filePath) {
 	// テクスチャがすでに読み込まれているかチェック
-	auto it = textures_.find(filePath);
-	if (it != textures_.end()) {
+	auto it = textureDatas_.find(filePath);
+	if (it != textureDatas_.end()) {
 		// すでに読み込まれている場合、早期リターン
 		return;
 	}
 
 	// 今回ぶち込むテクスチャーの箱
-	Texture& texture = textures_[filePath];
+	Texture& texture = textureDatas_[filePath];
 	DirectX::ScratchImage mipImage_ = LoadTexture(filePath);
 	texture.metaData = mipImage_.GetMetadata();
 	texture.resource = CreateTextureResource(texture.metaData);
@@ -52,14 +52,14 @@ void TextureDataContainer::Load(const std::string& filePath) {
 	// SRVを作成するDescriptorHeapの場所を決める
 	texture.srvIndex = srvUavManager_->Allocate();
 	// srvの作成
-	srvUavManager_->CreateSrvTexture2d(texture.srvIndex, textures_[filePath].resource.Get(), texture.metaData.format, UINT(texture.metaData.mipLevels));
+	srvUavManager_->CreateSrvTexture2d(texture.srvIndex, textureDatas_[filePath].resource.Get(), texture.metaData.format, UINT(texture.metaData.mipLevels));
 
 	// テクスチャ枚数上限チェック
 	assert(srvUavManager_->IsLowerViewMax());
 }
 
 std::unordered_map<std::string, Texture>& TextureDataContainer::GetTexture() {
-	return textures_;
+	return textureDatas_;
 }
 
 const DirectX::TexMetadata& TextureDataContainer::GetMetaData(const std::string& filePath) {

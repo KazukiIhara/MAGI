@@ -14,7 +14,7 @@ Object3D::~Object3D() {
 
 void Object3D::Initialize(const std::string& modelName) {
 	worldTransform_.Initialize();
-	model_ = std::make_unique<Model>(GetModelData(modelName));
+	model_ = std::make_unique<Model>();
 	assert(model_);
 }
 
@@ -40,10 +40,6 @@ void Object3D::Draw() {
 
 	// 3Dモデル描画
 	model_->Draw();
-}
-
-ModelData Object3D::GetModelData(const std::string& filePath) {
-	return ModelData();
 }
 
 void Object3D::CreateWVPResource() {

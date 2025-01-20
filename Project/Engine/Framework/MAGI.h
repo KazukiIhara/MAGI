@@ -127,10 +127,16 @@ public: // エンジンの機能
 #pragma endregion
 
 #pragma region SRVUAVManagerの機能
-	// CPUのディスクリプタハンドルを取得
+	// SRVのCPUディスクリプタハンドルを取得
 	static D3D12_CPU_DESCRIPTOR_HANDLE GetSrvDescriptorHandleCPU(uint32_t index);
-	// GPUのディスクリプタハンドルを取得
+	// SRVのGPUディスクリプタハンドルを取得
 	static D3D12_GPU_DESCRIPTOR_HANDLE GetSrvDescriptorHandleGPU(uint32_t index);
+	// Allocate
+	static uint32_t ViewAllocate();
+	// StructuredBuffer用のsrv作成
+	static void CreateSrvStructuredBuffer(uint32_t viewIndex, ID3D12Resource* pResource, uint32_t numElements, UINT structureByteStride);
+	// StructuredBuffer用のUAV作成
+	static void CreateUavStructuredBuffer(uint32_t viewIndex, ID3D12Resource* pResource, uint32_t numElements, UINT structureByteStride);
 
 #pragma endregion
 

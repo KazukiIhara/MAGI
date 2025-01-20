@@ -17,8 +17,6 @@ public:
 	void Update();
 	void Draw();
 
-	ModelData GetModelData(const std::string& filePath);
-
 private:
 	// WVP用のリソース作成
 	void CreateWVPResource();

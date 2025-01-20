@@ -1,5 +1,9 @@
 #pragma once
 
+// C++
+#include <unordered_map>
+#include <string>
+
 #include "Structs/TextureStruct.h"
 
 // 前方宣言
@@ -41,8 +45,8 @@ private:
 	// SrvUavManager
 	void SetSrvUavManager(SRVUAVManager* srvUavManager);
 private:
-	// テクスチャコンテナ
-	std::unordered_map<std::string, Texture> textures_;
+	// テクスチャデータコンテナ
+	std::unordered_map<std::string, Texture> textureDatas_;
 private:
 	// DXGI
 	DXGI* dxgi_ = nullptr;

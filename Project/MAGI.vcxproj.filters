@@ -324,6 +324,7 @@
     <ClInclude Include="Engine\3D\PunctualLight\PunctualLight.h" />
     <ClInclude Include="Engine\Includes\Structs\CameraStruct.h" />
     <ClInclude Include="Engine\Includes\Structs\PunctualLightStruct.h" />
+    <ClInclude Include="Engine\Includes\Enums\PunctualLightDataEnum.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="App\Game\Game.cpp">
