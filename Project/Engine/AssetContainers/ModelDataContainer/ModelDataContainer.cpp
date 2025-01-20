@@ -1,22 +1,36 @@
 #include "ModelDataContainer.h"
 
+#include <iostream>
 #include <cassert>
 #include <filesystem>
 
 #include "Logger/Logger.h"
+#include "Framework/MAGI.h"
 
+using namespace MAGIMath;
 
 ModelDataContainer::ModelDataContainer() {
-
+	Initialize();
+	Logger::Log("ModelDataContainer Initialize\n");
 }
 
 ModelDataContainer::~ModelDataContainer() {
+	Logger::Log("ModelDataContainer Finalize\n");
 }
 
 void ModelDataContainer::Initialize() {
+	// コンテナをクリア
+	modelDatas_.clear();
 }
 
 void ModelDataContainer::Load(const std::string& fileName) {
+	// 読み込み済みモデルを検索
+	if (modelDatas_.contains(fileName)) {
+		// 読み込み済みなら早期リターン
+		return;
+	}
+	// モデルを読み込みコンテナに挿入
+	modelDatas_.insert(std::make_pair(fileName, LoadModel(fileName)));
 }
 
 ModelData ModelDataContainer::FindModelData(const std::string& fileName) const {
@@ -29,13 +43,14 @@ ModelData ModelDataContainer::FindModelData(const std::string& fileName) const {
 	}
 }
 
-ModelData ModelDataContainer::LoadModel(const std::string& filePath) {
+ModelData ModelDataContainer::LoadModel(const std::string& fileName) {
 	// 対応する拡張子のリスト
 	std::vector<std::string> supportedExtensions = { ".obj", ".gltf" };
 
 	// ディレクトリ内のファイルを検索
+	std::string directoryPath = "App/Assets/Models";
 	// モデルファイルが入っているディレクトリ
-	std::string fileDirectoryPath = directoryPath + "/" + filename;
+	std::string fileDirectoryPath = directoryPath + "/" + fileName;
 	// filesystem用
 	std::filesystem::path modelDirectoryPath(fileDirectoryPath);
 
@@ -46,7 +61,7 @@ ModelData ModelDataContainer::LoadModel(const std::string& filePath) {
 			std::string ext = entry.path().extension().string();
 			// 対応する拡張子かチェック
 			if (std::find(supportedExtensions.begin(), supportedExtensions.end(), ext) != supportedExtensions.end()) {
-				if (entry.path().stem().string() == filename) {
+				if (entry.path().stem().string() == fileName) {
 					modelFilePath = entry.path().string();
 					break;
 				}
@@ -60,12 +75,11 @@ ModelData ModelDataContainer::LoadModel(const std::string& filePath) {
 		return;
 	}
 
+	ModelData newModelData{};
+
 	Assimp::Importer importer;
 	const aiScene* scene = importer.ReadFile(modelFilePath.c_str(), aiProcess_FlipWindingOrder | aiProcess_FlipUVs | aiProcess_Triangulate);
 	assert(scene && scene->HasMeshes());
-
-	// ノード読み込み
-	modelData_.rootNode = ReadNode(scene->mRootNode);
 
 	std::vector<MaterialData> materials(scene->mNumMaterials);
 
@@ -73,13 +87,12 @@ ModelData ModelDataContainer::LoadModel(const std::string& filePath) {
 		aiMaterial* material = scene->mMaterials[materialIndex];
 		MaterialData materialData;
 
-		// Diffuseテクスチャがある場合の処理
+		// Diffuseテクスチャがある場合
 		if (material->GetTextureCount(aiTextureType_DIFFUSE) != 0) {
 			aiString textureFilePath;
 			material->GetTexture(aiTextureType_DIFFUSE, 0, &textureFilePath);
 			materialData.textureFilePath = fileDirectoryPath + "/" + textureFilePath.C_Str();
-			SUGER::LoadTexture(materialData.textureFilePath);
-			materialData.haveUV_ = true;
+			MAGISYSTEM::LoadTexture(materialData.textureFilePath);
 
 			// UVスケール情報の取得
 			aiUVTransform uvTransform;
@@ -94,8 +107,6 @@ ModelData ModelDataContainer::LoadModel(const std::string& filePath) {
 				// UV変換が見つからない場合は単位行列を設定
 				materialData.uvMatrix = MakeIdentityMatrix4x4();
 			}
-		} else {
-			materialData.haveUV_ = false;
 		}
 
 		aiColor4D baseColor;
@@ -148,47 +159,10 @@ ModelData ModelDataContainer::LoadModel(const std::string& filePath) {
 				}
 			}
 
-			for (uint32_t boneIndex = 0; boneIndex < mesh->mNumBones; ++boneIndex) {
-				aiBone* bone = mesh->mBones[boneIndex];
-				std::string jointName = bone->mName.C_Str();
-				JointWeightData& jointWeightData = modelData_.skinClusterData[jointName];
-
-				aiMatrix4x4 bindPoseMatrixAssimp = bone->mOffsetMatrix.Inverse();
-				aiVector3D scale, translate;
-				aiQuaternion rotate;
-				bindPoseMatrixAssimp.Decompose(scale, rotate, translate);
-				Matrix4x4 bindPoseMatrix = MakeAffineMatrix(
-					{ scale.x,scale.y,scale.z },
-					{ rotate.x,-rotate.y,-rotate.z,rotate.w },
-					{ -translate.x,translate.y,translate.z }
-				);
-				jointWeightData.inverseBindPoseMatrix = Inverse(bindPoseMatrix);
-
-				for (uint32_t weightIndex = 0; weightIndex < bone->mNumWeights; weightIndex++) {
-					jointWeightData.vertexWeights.push_back({ bone->mWeights[weightIndex].mWeight,bone->mWeights[weightIndex].mVertexId });
-				}
-
-			}
-
-		} else { // UVなし
-			for (uint32_t faceIndex = 0; faceIndex < mesh->mNumFaces; ++faceIndex) {
-				aiFace& face = mesh->mFaces[faceIndex];
-				assert(face.mNumIndices == 3);
-
-				for (uint32_t element = 0; element < face.mNumIndices; ++element) {
-					uint32_t vertexIndex = face.mIndices[element];
-					aiVector3D& position = mesh->mVertices[vertexIndex];
-					aiVector3D& normal = mesh->mNormals[vertexIndex];
-					VertexData3DUnUV vertex;
-					vertex.position = { position.x, position.y, position.z, 1.0f };
-					vertex.normal = { normal.x, normal.y, normal.z };
-					vertex.position.x *= -1.0f;
-					vertex.normal.x *= -1.0f;
-					meshData.verticesUnUV.push_back(vertex);
-				}
-			}
 		}
 
-		modelData_.meshes.push_back(meshData);
+		newModelData.meshes.push_back(meshData);
 	}
+
+	return newModelData;
 }

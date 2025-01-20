@@ -137,7 +137,7 @@ namespace MAGIMath {
 	Matrix4x4 MakeRotateZMatrix(float radian); // Z回転
 	Matrix4x4 MakeRotateXYZMatrix(const Vector3& rotate); // XYZ回転
 
-	Matrix4x4 MakeRotateMatrix(const Quaternion& q);
+	Matrix4x4 MakeRotateMatrix(const Quaternion& q);// XYZクオータニオン
 
 	// 平行移動行列作成関数
 	Matrix4x4 MakeTranslateMatrix(const Vector3& translate);
@@ -146,6 +146,9 @@ namespace MAGIMath {
 	Matrix4x4 MakeAffineMatrix(const Vector3& scale, const Vector3& rotate, const Vector3& translate);
 	// アフィン変換(クオータニオン)
 	Matrix4x4 MakeAffineMatrix(const Vector3& scale, const Quaternion& rotate, const Vector3& translate);
+
+	// UV行列を作成
+	Matrix4x4 MakeUVMatrix(const Vector2& scale, const float& rotateZ, const Vector2& translate);
 
 	// 単位クオータニオンを返す
 	Quaternion MakeIdentityQuaternion();
