@@ -141,6 +141,11 @@ public: // エンジンの機能
 
 #pragma endregion
 
+#pragma region GraphicsPipelineManager
+	// パイプライン取得関数
+	static ID3D12PipelineState* GetGraphicsPipelineState(GraphicsPipelineStateType pipelineState, BlendMode blendMode);
+
+#pragma endregion
 
 #pragma region TextureDataContainer
 	// 画像読み込み
@@ -159,10 +164,9 @@ public: // エンジンの機能
 
 #pragma endregion
 
+#pragma region PunctualLightManager
 
-#pragma region GraphicsPipelineManager
-	// パイプライン取得関数
-	static ID3D12PipelineState* GetGraphicsPipelineState(GraphicsPipelineStateType pipelineState, BlendMode blendMode);
+
 
 #pragma endregion
 
