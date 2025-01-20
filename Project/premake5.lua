@@ -34,8 +34,11 @@ project "MAGI" -- プロジェクト名
    files { 
       "*.cpp",
       "*.h",
+
       "Engine/**.cpp",
       "Engine/**.h",
+      "Engine/**.ipp",
+
       "App/**.cpp",
       "App/**.h",
    }
