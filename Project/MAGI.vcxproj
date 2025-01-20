@@ -219,6 +219,9 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Engine\SceneManager\SceneManager.ipp" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="Externals\DirectXTex\DirectXTex_Desktop_2022_Win10.vcxproj">
       <Project>{12345678-ABCD-4321-DCBA-1234567890AB}</Project>
     </ProjectReference>

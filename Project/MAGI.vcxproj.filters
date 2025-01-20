@@ -487,4 +487,9 @@
     </ClCompile>
     <ClCompile Include="main.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Engine\SceneManager\SceneManager.ipp">
+      <Filter>Engine\SceneManager</Filter>
+    </None>
+  </ItemGroup>
 </Project>
