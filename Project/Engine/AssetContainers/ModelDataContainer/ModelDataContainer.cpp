@@ -13,7 +13,6 @@ using namespace MAGIMath;
 ModelDataContainer::ModelDataContainer(TextureDataContainer* textureDataContainer) {
 	Initialize(textureDataContainer);
 	Logger::Log("ModelDataContainer Initialize\n");
-	Load("teapot");
 }
 
 ModelDataContainer::~ModelDataContainer() {
