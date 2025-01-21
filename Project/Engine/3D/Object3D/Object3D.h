@@ -9,7 +9,7 @@
 #include "3D/WorldTransform/WorldTransform.h"
 #include "3D/Model/Model.h"
 
-class Camera;
+class Camera3D;
 
 class Object3D {
 public:
@@ -18,6 +18,10 @@ public:
 	void Initialize(const std::string& modelName);
 	void Update();
 	void Draw();
+
+	void SetCamera(Camera3D* camera) {
+		camera3d_ = camera;
+	}
 
 private:
 	// WVP用のリソース作成
@@ -56,5 +60,5 @@ private:
 	Material3D material_;
 
 	// カメラを受け取る箱
-
+	Camera3D* camera3d_ = nullptr;
 };

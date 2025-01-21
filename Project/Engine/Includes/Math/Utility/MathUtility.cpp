@@ -344,6 +344,36 @@ Matrix4x4 MAGIMath::MakeAffineMatrix(const Vector3& scale, const Quaternion& rot
 	return result;
 }
 
+Matrix4x4 MAGIMath::MakeViewportMatrix(float left, float top, float width, float height, float minDepth, float maxDepth) {
+	Matrix4x4 result =
+	{
+			width / 2.0f, 0.0f, 0.0f, 0.0f, 0.0f, -height / 2.0f, 0.0f, 0.0f, 0.0f, 0.0f, maxDepth - minDepth, 0.0f, left + width / 2.0f, top + height / 2.0f, minDepth, 1.0f,
+	};
+	return result;
+}
+
+Matrix4x4 MAGIMath::MakePerspectiveFovMatrix(float fovY, float aspectRaito, float nearClip, float farClip) {
+	Matrix4x4 result =
+	{
+		(1.0f / aspectRaito) * (1.0f / std::tan(fovY / 2.0f)), 0.0f, 0.0f, 0.0f,
+		0.0f, 1.0f / std::tan(fovY / 2.0f), 0.0f, 0.0f,
+		0.0f, 0.0f, farClip / (farClip - nearClip), 1.0f,
+		0.0f, 0.0f, (-nearClip * farClip) / (farClip - nearClip), 0.0f,
+	};
+	return result;
+}
+
+Matrix4x4 MAGIMath::MakeOrthographicMatrix(float left, float top, float right, float bottom, float nearClip, float farClip) {
+	Matrix4x4 result =
+	{
+		2.0f / (right - left), 0.0f, 0.0f, 0.0f,
+		0.0f, 2.0f / (top - bottom), 0.0f, 0.0f,
+		0.0f, 0.0f, 1.0f / (farClip - nearClip), 0.0f,
+		(left + right) / (left - right), (top + bottom) / (bottom - top), nearClip / (nearClip - farClip), 1.0f,
+	};
+	return result;
+}
+
 Matrix4x4 MAGIMath::MakeUVMatrix(const Vector2& scale, const float& rotateZ, const Vector2& translate) {
 	Matrix4x4 rotateZMatrix = MakeRotateZMatrix(rotateZ);
 	Matrix4x4 scaleMatrix = MakeScaleMatrix(Vector3(scale.x, scale.y, 1.0f));

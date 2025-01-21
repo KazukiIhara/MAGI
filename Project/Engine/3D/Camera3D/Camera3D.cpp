@@ -11,6 +11,7 @@ Camera3D::Camera3D() {
 }
 
 Camera3D::~Camera3D() {
+
 }
 
 void Camera3D::Initialize() {
@@ -20,15 +21,35 @@ void Camera3D::Initialize() {
 	worldTransform_.Update();
 
 	Matrix4x4 viewMatrix = Inverse(worldTransform_.worldMatrix_);
+	projectionMatrix_ = MakePerspectiveFovMatrix(fovY_, aspectRaito_, nearClipRange_, farClipRange_);
+	viewProjectionMatrix_ = viewMatrix * projectionMatrix_;
 
+	backFrontMatrix_ = MakeRotateYMatrix(std::numbers::pi_v<float>);
+
+	CreateCameraResource();
+	MapCameraData();
 }
 
 void Camera3D::Update() {
+	worldTransform_.Update();
+	Matrix4x4 viewMatrix = Inverse(worldTransform_.worldMatrix_);
+	viewProjectionMatrix_ = viewMatrix * projectionMatrix_;
 
+	billboardMatrix_ = backFrontMatrix_ * worldTransform_.worldMatrix_;
+	// 平行移動成分を削除
+	billboardMatrix_.m[3][0] = 0.0f;
+	billboardMatrix_.m[3][1] = 0.0f;
+	billboardMatrix_.m[3][2] = 0.0f;
+
+	UpdateCameraData();
 }
 
 void Camera3D::TransferCamera() {
+	MAGISYSTEM::GetDirectXCommandList()->SetGraphicsRootConstantBufferView(2, cameraResource_->GetGPUVirtualAddress());
+}
 
+Matrix4x4 Camera3D::GetViewProjectionMatrix() const {
+	return viewProjectionMatrix_;
 }
 
 void Camera3D::CreateCameraResource() {

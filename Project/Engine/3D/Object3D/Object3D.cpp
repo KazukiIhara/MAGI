@@ -4,6 +4,8 @@
 
 #include "Framework/MAGI.h"
 
+#include "3D/Camera3D/Camera3D.h"
+
 using namespace MAGIMath;
 
 Object3D::Object3D(const std::string& modelName) {
@@ -63,7 +65,7 @@ void Object3D::Draw() {
 	MAGISYSTEM::TransferPunctualLight();
 
 	// カメラ情報を転送
-
+	camera3d_->TransferCamera();
 	// 3Dモデル描画
 	model_->Draw();
 }
@@ -99,9 +101,9 @@ void Object3D::MapMateiralData() {
 }
 
 void Object3D::UpdateWVPData() {
-	//transformationData_->World = worldTransform_.worldMatrix_;
-	//transformationData_->ViewProjection = camera_->GetViewProjectionMatrix();
-	//transformationData_->WorldInverseTransepose = MakeInverseTransposeMatrix(worldTransform_.worldMatrix_);
+	transformationData_->World = worldTransform_.worldMatrix_;
+	transformationData_->ViewProjection = camera3d_->GetViewProjectionMatrix();
+	transformationData_->WorldInverseTransepose = MakeInverseTransposeMatrix(worldTransform_.worldMatrix_);
 }
 
 void Object3D::UpdateMaterialData() {

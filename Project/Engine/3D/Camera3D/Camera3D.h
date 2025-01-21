@@ -25,6 +25,11 @@ public:
 	void Update();
 	// 定数バッファに転送
 	void TransferCamera();
+
+
+	// ビュープロジェクションマトリックスを送る
+	Matrix4x4 GetViewProjectionMatrix()const;
+
 private:
 	// カメラのリソースを作成
 	void CreateCameraResource();
@@ -40,7 +45,7 @@ private:
 	// ワールドトランスフォーム
 	WorldTransform worldTransform_{};
 	// プロジェクション行列
-	
+	Matrix4x4 projectionMatrix_{};
 	// ビュープロジェクションマトリックス
 	Matrix4x4 viewProjectionMatrix_{};
 	// 水平視野角(度数法)
