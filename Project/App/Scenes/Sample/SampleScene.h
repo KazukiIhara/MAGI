@@ -57,7 +57,7 @@ inline void SampleScene<Data>::Update() {
 
 	if (MAGISYSTEM::PushKey(DIK_Q)) {
 		object3d_->GetRotate().z += 0.01f;
-	}else if (MAGISYSTEM::PushKey(DIK_E)) {
+	} else if (MAGISYSTEM::PushKey(DIK_E)) {
 		object3d_->GetRotate().z -= 0.01f;
 	}
 
