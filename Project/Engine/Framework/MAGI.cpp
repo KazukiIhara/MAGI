@@ -266,6 +266,11 @@ void MAGISYSTEM::Update() {
 		endRequest_ = true;
 	}
 
+	// デバッグモード切替
+	if (directInput_->TriggerKey(DIK_P)) {
+		camera3DManager_->GetIsDebugCamera() = !camera3DManager_->GetIsDebugCamera();
+	}
+
 	// ImGui開始処理
 	imguiController_->BeginFrame();
 

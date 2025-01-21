@@ -17,12 +17,12 @@
 class Camera3D {
 public:
 	Camera3D();
-	~Camera3D();
+	virtual ~Camera3D();
 
 	// 初期化
 	void Initialize();
 	// 更新
-	void Update();
+	virtual void Update();
 	// 定数バッファに転送
 	void TransferCamera();
 
@@ -38,7 +38,7 @@ private:
 	// カメラのデータを更新
 	void UpdateCameraData();
 
-private:
+protected:
 	// カメラの初期トランスフォーム
 	const Vector3 kDefaultCameraRotate_ = { 0.45f,0.0f,0.0f };
 	const Vector3 kDefaultCameraTranslate_ = { 0.0f,1.8f,-2.5f };
