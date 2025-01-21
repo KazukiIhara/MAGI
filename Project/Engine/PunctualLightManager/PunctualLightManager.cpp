@@ -23,6 +23,8 @@ void PunctualLightManager::Initialize(DXGI* dxgi, DirectXCommand* directXCommand
 	SetDirectXCommand(directXCommand);
 	SetSrvUavManager(srvuavManager);
 
+	Clear();
+
 	CreateLightsResource();
 	MapLightsData();
 
@@ -61,6 +63,10 @@ void PunctualLightManager::Update() {
 	}
 }
 
+void PunctualLightManager::Clear() {
+	light_.clear();
+}
+
 void PunctualLightManager::TransferLightsData() {
 	// コマンドリストを取得
 	ID3D12GraphicsCommandList* commandList = directXCommand_->GetList();
@@ -92,7 +98,7 @@ void PunctualLightManager::RemoveLight(const std::string& lightName) {
 	}
 }
 
-void PunctualLightManager::SetLightData(const std::string& lightName, const PunctualLightData& lightData) {
+void PunctualLightManager::OperationLightData(const std::string& lightName, const PunctualLightData& lightData) {
 	// ライト名でライトを検索
 	auto it = light_.find(lightName);
 	if (it != light_.end()) {

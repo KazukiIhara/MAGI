@@ -464,6 +464,22 @@ ModelData MAGISYSTEM::FindModel(const std::string& modelName) {
 	return modelDataContainer_->FindModelData(modelName);
 }
 
+void MAGISYSTEM::AddPunctualLight(const std::string& lightName, const PunctualLightData& lightData) {
+	punctualLightManager_->AddNewLight(lightName, lightData);
+}
+
+void MAGISYSTEM::RemovePunctualLight(const std::string& lightName) {
+	punctualLightManager_->RemoveLight(lightName);
+}
+
+void MAGISYSTEM::OperationPunctualLight(const std::string& lightName, const PunctualLightData& lightData) {
+	punctualLightManager_->OperationLightData(lightName, lightData);
+}
+
+void MAGISYSTEM::TransferPunctualLight() {
+	punctualLightManager_->TransferLightsData();
+}
+
 ID3D12PipelineState* MAGISYSTEM::GetGraphicsPipelineState(GraphicsPipelineStateType pipelineState, BlendMode blendMode) {
 	return graphicsPipelineManager_->GetPipelineState(pipelineState, blendMode);
 }

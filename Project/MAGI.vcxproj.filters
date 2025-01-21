@@ -189,7 +189,7 @@
     <ClInclude Include="App\Scenes\Sample\SampleScene.h">
       <Filter>App\Scenes\Sample</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\3D\Camera\Camera.h">
+    <ClInclude Include="Engine\3D\Camera3D\Camera3D.h">
       <Filter>Engine\3D\Camera</Filter>
     </ClInclude>
     <ClInclude Include="Engine\3D\Mesh\Mesh.h">
@@ -377,7 +377,7 @@
     <ClCompile Include="App\Game\Game.cpp">
       <Filter>App\Game</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\3D\Camera\Camera.cpp">
+    <ClCompile Include="Engine\3D\Camera3D\Camera3D.cpp">
       <Filter>Engine\3D\Camera</Filter>
     </ClCompile>
     <ClCompile Include="Engine\3D\Mesh\Mesh.cpp">

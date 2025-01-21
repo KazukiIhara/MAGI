@@ -23,13 +23,15 @@ public:
 
 	void Initialize(DXGI* dxgi, DirectXCommand* directXCommand,SRVUAVManager* srvuavManager);
 	void Update();
+	void Clear();
+
 	void TransferLightsData();
 
 	void AddNewLight(const std::string& lightName, const PunctualLightData& lightData);
 
 	void RemoveLight(const std::string& lightName);
 
-	void SetLightData(const std::string& lightName, const PunctualLightData& lightData);
+	void OperationLightData(const std::string& lightName, const PunctualLightData& lightData);
 private:
 	void CreateLightsResource();
 	void MapLightsData();
