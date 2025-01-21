@@ -43,14 +43,22 @@ inline void SampleScene<Data>::Initialize() {
 template<typename Data>
 inline void SampleScene<Data>::Update() {
 
-	if (MAGISYSTEM::PushKey(DIK_D)) {
-		object3d_->GetRotate().x += 0.01f;
-	}
 	if (MAGISYSTEM::PushKey(DIK_W)) {
-		object3d_->GetRotate().y += 0.01f;
+		object3d_->GetRotate().x += 0.01f;
+	} else if (MAGISYSTEM::PushKey(DIK_S)) {
+		object3d_->GetRotate().x -= 0.01f;
 	}
-	if (MAGISYSTEM::PushKey(DIK_S)) {
+
+	if (MAGISYSTEM::PushKey(DIK_D)) {
+		object3d_->GetRotate().y += 0.01f;
+	} else if (MAGISYSTEM::PushKey(DIK_A)) {
+		object3d_->GetRotate().y -= 0.01f;
+	}
+
+	if (MAGISYSTEM::PushKey(DIK_Q)) {
 		object3d_->GetRotate().z += 0.01f;
+	}else if (MAGISYSTEM::PushKey(DIK_E)) {
+		object3d_->GetRotate().z -= 0.01f;
 	}
 
 	camera_->Update();
