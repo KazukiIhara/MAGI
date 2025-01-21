@@ -37,24 +37,19 @@ inline void SampleScene<Data>::Initialize() {
 
 	redLight_.type = static_cast<uint32_t>(PunctualLightType::Point);
 	redLight_.color = { 1.0f,0.0f,0.0f };
-	redLight_.position = { 2.0f,0.0f,0.0f };
+	redLight_.position = { 0.5f,1.0f,0.0f };
 
 	blueLight_.type = static_cast<uint32_t>(PunctualLightType::Point);
 	blueLight_.color = { 0.0f,0.0f,1.0f };
-	blueLight_.position = { -2.0f,0.0f,0.0f };
+	blueLight_.position = { -0.5f,1.0f,0.0f };
 
 
 	MAGISYSTEM::AddPunctualLight("redLight", redLight_);
 	MAGISYSTEM::AddPunctualLight("blueLight", blueLight_);
-
 }
 
 template<typename Data>
 inline void SampleScene<Data>::Update() {
-#ifdef _DEBUG
-	// ImGui確認用デモウィンドウ
-	ImGui::ShowDemoWindow();
-#endif // _DEBUG
 	camera_->Update();
 	sample_->Update();
 }
