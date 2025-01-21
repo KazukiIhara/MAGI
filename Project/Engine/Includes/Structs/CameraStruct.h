@@ -6,6 +6,7 @@
 // シェーダーに送るカメラ座標
 struct CameraForGPU {
 	Vector3 worldPosition;
+	Matrix4x4 viewProjection;
 };
 
 struct ViewProjectionForGPU {

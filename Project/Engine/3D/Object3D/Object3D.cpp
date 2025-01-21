@@ -60,8 +60,7 @@ void Object3D::Draw() {
 	// wvp用のCBufferの場所を設定
 	commandList->SetGraphicsRootConstantBufferView(1, transformationResource_->GetGPUVirtualAddress());
 	// ライトを転送
-
-	// ライトの総数を転送
+	MAGISYSTEM::TransferPunctualLight();
 
 	// カメラ情報を転送
 

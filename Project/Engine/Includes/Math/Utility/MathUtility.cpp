@@ -1,5 +1,7 @@
 #include "MathUtility.h"
 
+#include <cassert>
+
 Vector2 operator-(const Vector2& v) {
 	return Vector2(-v.x, -v.y);
 }
@@ -183,6 +185,52 @@ Matrix4x4 MAGIMath::MakeIdentityMatrix4x4() {
 	result.m[1][0] = 0.0f; result.m[1][1] = 1.0f; result.m[1][2] = 0.0f; result.m[1][3] = 0.0f;
 	result.m[2][0] = 0.0f; result.m[2][1] = 0.0f; result.m[2][2] = 1.0f; result.m[2][3] = 0.0f;
 	result.m[3][0] = 0.0f; result.m[3][1] = 0.0f; result.m[3][2] = 0.0f; result.m[3][3] = 1.0f;
+	return result;
+}
+
+Matrix4x4 MAGIMath::Inverse(const Matrix4x4& a) {
+	Matrix4x4 A = a;
+	Matrix4x4 B = MakeIdentityMatrix4x4();
+
+	int i, j, k;
+	for (i = 0; i < 4; ++i) {
+		if (A.m[i][i] == 0) {
+			// ゼロ除算を避ける
+			assert(false && "Zero Divide");
+			return MakeIdentityMatrix4x4();
+		}
+		float scale = 1.0f / A.m[i][i];
+		for (j = 0; j < 4; ++j) {
+			A.m[i][j] *= scale;
+			B.m[i][j] *= scale;
+		}
+		for (k = 0; k < 4; ++k) {
+			if (k != i) {
+				float factor = A.m[k][i];
+				for (j = 0; j < 4; ++j) {
+					A.m[k][j] -= factor * A.m[i][j];
+					B.m[k][j] -= factor * B.m[i][j];
+				}
+			}
+		}
+	}
+
+	return B;
+}
+
+Matrix4x4 MAGIMath::Transpose(const Matrix4x4& a) {
+	Matrix4x4 result{};
+	for (int i = 0; i < 4; ++i) {
+		for (int j = 0; j < 4; ++j) {
+			result.m[i][j] = a.m[j][i];
+		}
+	}
+	return result;
+}
+
+Matrix4x4 MAGIMath::MakeInverseTransposeMatrix(const Matrix4x4& a) {
+	Matrix4x4 result = Inverse(a);
+	result = Transpose(result);
 	return result;
 }
 
