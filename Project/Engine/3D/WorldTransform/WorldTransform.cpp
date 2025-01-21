@@ -29,19 +29,24 @@ void WorldTransform::Update() {
 }
 
 void WorldTransform::Rotate() {
-	// 回転量を取得
-	Vector3 deltaRotate = rotate_ - preRotate_;
-	// 各軸の回転をクォータニオンに変換
-	Quaternion rotationX = MakeRotateAxisAngleQuaternion(MakeRightVector3(), deltaRotate.x);
-	Quaternion rotationY = MakeRotateAxisAngleQuaternion(MakeUpVector3(), deltaRotate.y);
-	Quaternion rotationZ = MakeRotateAxisAngleQuaternion(MakeForwardVector3(), deltaRotate.z);
 
-	// 回転の合成（順序は必要に応じて変更可能）
-	Quaternion deltaRotation = rotationX * rotationY * rotationZ;
+	if (rotate_.x == 0.0f && rotate_.y == 0.0f && rotate_.z == 0.0f) {
+		rotateQuaternion_ = MakeIdentityQuaternion();
+	} else {
+		// 回転量を取得
+		Vector3 deltaRotate = rotate_ - preRotate_;
+		// 各軸の回転をクォータニオンに変換
+		Quaternion rotationX = MakeRotateAxisAngleQuaternion(MakeRightVector3(), deltaRotate.x);
+		Quaternion rotationY = MakeRotateAxisAngleQuaternion(MakeUpVector3(), deltaRotate.y);
+		Quaternion rotationZ = MakeRotateAxisAngleQuaternion(MakeForwardVector3(), deltaRotate.z);
 
-	// 現在の回転に適用
-	rotateQuaternion_ = deltaRotation * rotateQuaternion_;
+		// 回転の合成（順序は必要に応じて変更可能）
+		Quaternion deltaRotation = rotationX * rotationY * rotationZ;
 
-	// クォータニオンを正規化
-	rotateQuaternion_ = Normalize(rotateQuaternion_);
+		// 現在の回転に適用
+		rotateQuaternion_ = deltaRotation * rotateQuaternion_;
+
+		// クォータニオンを正規化
+		rotateQuaternion_ = Normalize(rotateQuaternion_);
+	}
 }

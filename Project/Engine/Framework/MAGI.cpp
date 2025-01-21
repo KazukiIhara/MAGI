@@ -32,6 +32,7 @@ std::unique_ptr<ModelDataContainer> MAGISYSTEM::modelDataContainer_ = nullptr;
 
 std::unique_ptr<GraphicsPipelineManager> MAGISYSTEM::graphicsPipelineManager_ = nullptr;
 
+std::unique_ptr<Camera3DManager> MAGISYSTEM::camera3DManager_ = nullptr;
 std::unique_ptr<PunctualLightManager> MAGISYSTEM::punctualLightManager_ = nullptr;
 
 std::unique_ptr<SceneManager<GameData>> MAGISYSTEM::sceneManager_ = nullptr;
@@ -95,13 +96,14 @@ void MAGISYSTEM::Initialize() {
 	graphicsPipelineManager_ = std::make_unique<GraphicsPipelineManager>(dxgi_.get(), shaderCompiler_.get());
 
 
+	// Camera3DManager
+	camera3DManager_ = std::make_unique<Camera3DManager>();
 	// PunctualLightManager
 	punctualLightManager_ = std::make_unique<PunctualLightManager>(dxgi_.get(), directXCommand_.get(), srvuavManager_.get());
 
 
 	// SceneManager
 	sceneManager_ = std::make_unique<SceneManager<GameData>>();
-
 
 
 	// ImGuiController
@@ -138,6 +140,10 @@ void MAGISYSTEM::Finalize() {
 		punctualLightManager_.reset();
 	}
 
+	// Camera3DManager
+	if (camera3DManager_) {
+		camera3DManager_.reset();
+	}
 
 	// GraphicsPipelineManager
 	if (graphicsPipelineManager_) {
@@ -260,12 +266,20 @@ void MAGISYSTEM::Update() {
 		endRequest_ = true;
 	}
 
+	// デバッグモード切替
+	if (directInput_->TriggerKey(DIK_P)) {
+		camera3DManager_->GetIsDebugCamera() = !camera3DManager_->GetIsDebugCamera();
+	}
+
 	// ImGui開始処理
 	imguiController_->BeginFrame();
 
 
 	// シーンの更新処理
 	sceneManager_->Update();
+
+	// カメラマネージャの更新処理
+	camera3DManager_->Update();
 
 	// ライトマネージャの更新
 	punctualLightManager_->Update();
@@ -464,6 +478,10 @@ ModelData MAGISYSTEM::FindModel(const std::string& modelName) {
 	return modelDataContainer_->FindModelData(modelName);
 }
 
+void MAGISYSTEM::TransferCamera() {
+	camera3DManager_->TransferCamera();
+}
+
 void MAGISYSTEM::AddPunctualLight(const std::string& lightName, const PunctualLightData& lightData) {
 	punctualLightManager_->AddNewLight(lightName, lightData);
 }
@@ -472,9 +490,10 @@ void MAGISYSTEM::RemovePunctualLight(const std::string& lightName) {
 	punctualLightManager_->RemoveLight(lightName);
 }
 
-void MAGISYSTEM::OperationPunctualLight(const std::string& lightName, const PunctualLightData& lightData) {
-	punctualLightManager_->OperationLightData(lightName, lightData);
+PunctualLightData& MAGISYSTEM::GetLightData(const std::string& lightName) {
+	return punctualLightManager_->GetPunctualLight(lightName);
 }
+
 
 void MAGISYSTEM::TransferPunctualLight() {
 	punctualLightManager_->TransferLightsData();

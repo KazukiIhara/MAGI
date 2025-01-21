@@ -7,10 +7,6 @@
 #include "Framework/MAGI.h"
 
 GUI::GUI(ImGuiController* imguiController) {
-	Initialize(imguiController);
-}
-
-void GUI::Initialize(ImGuiController* imguiController) {
 	SetImGuiController(imguiController);
 }
 

@@ -21,7 +21,6 @@ struct PixelShaderOutput
 struct TransformationMatrix
 {
     float4x4 World;
-    float4x4 ViewProjection;
     float4x4 WorldInverseTranspose;
 };
 

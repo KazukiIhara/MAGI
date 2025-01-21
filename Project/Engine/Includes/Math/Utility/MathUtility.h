@@ -130,6 +130,14 @@ namespace MAGIMath {
 	// 前方のベクトル
 	Vector3 MakeForwardVector3();
 
+	// ベクトルの長さ
+	float Length(const Vector3& a);
+
+	// 正規化
+	Vector3 Normalize(const Vector3& a);
+
+	// ベクトルの向きを取得
+	Vector3 Forward(const Vector3& rotate);
 
 	// ワールド行列からワールド座標取得
 	Vector3 ExtractionWorldPos(const Matrix4x4& m);

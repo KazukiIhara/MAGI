@@ -207,6 +207,52 @@ Vector3 MAGIMath::MakeForwardVector3() {
 	return result;
 }
 
+float MAGIMath::Length(const Vector3& a) {
+	return std::sqrt(a.x * a.x + a.y * a.y + a.z * a.z);
+}
+
+Vector3 MAGIMath::Normalize(const Vector3& a) {
+	float length = Length(a);
+	Vector3 normalizedVector{};
+
+	if (length != 0) {
+		normalizedVector.x = a.x / length;
+		normalizedVector.y = a.y / length;
+		normalizedVector.z = a.z / length;
+	} else {
+		normalizedVector.x = 0;
+		normalizedVector.y = 0;
+		normalizedVector.z = 0;
+	}
+
+	return normalizedVector;
+}
+
+Vector3 MAGIMath::Forward(const Vector3& rotate) {
+	// 基準の前方向ベクトル (ワールド座標系の Z 軸正方向)
+	Vector3 baseForward = MakeForwardVector3();
+
+	// XYZ軸の回転行列を作成
+	Matrix4x4 rotationMatrix = MakeRotateXYZMatrix(rotate);
+
+	// 回転行列で基準ベクトルを変換
+	Vector3 forward{};
+	forward.x = rotationMatrix.m[0][0] * baseForward.x +
+		rotationMatrix.m[1][0] * baseForward.y +
+		rotationMatrix.m[2][0] * baseForward.z;
+
+	forward.y = rotationMatrix.m[0][1] * baseForward.x +
+		rotationMatrix.m[1][1] * baseForward.y +
+		rotationMatrix.m[2][1] * baseForward.z;
+
+	forward.z = rotationMatrix.m[0][2] * baseForward.x +
+		rotationMatrix.m[1][2] * baseForward.y +
+		rotationMatrix.m[2][2] * baseForward.z;
+
+	// 単位ベクトル化
+	return Normalize(forward);
+}
+
 Vector3 MAGIMath::ExtractionWorldPos(const Matrix4x4& m) {
 	Vector3 result{};
 	result.x = m.m[3][0];

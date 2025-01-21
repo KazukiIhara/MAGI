@@ -7,7 +7,7 @@ class ImGuiController;
 class GUI {
 public:
 	GUI(ImGuiController* imguiController);
-	void Initialize(ImGuiController* imguiController);
+
 	void Update();
 private:
 	// FPS表示
