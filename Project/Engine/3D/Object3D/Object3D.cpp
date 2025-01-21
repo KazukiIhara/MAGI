@@ -70,6 +70,18 @@ void Object3D::Draw() {
 	model_->Draw();
 }
 
+Vector3& Object3D::GetScale() {
+	return worldTransform_.scale_;
+}
+
+Vector3& Object3D::GetRotate() {
+	return worldTransform_.rotate_;
+}
+
+Vector3& Object3D::GetTranslate() {
+	return worldTransform_.translate_;
+}
+
 void Object3D::CreateWVPResource() {
 	// WVP用のリソースを作る
 	transformationResource_ = MAGISYSTEM::CreateBufferResource(sizeof(TransformationMatrix));

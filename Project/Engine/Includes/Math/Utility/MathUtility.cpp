@@ -196,7 +196,6 @@ Matrix4x4 MAGIMath::Inverse(const Matrix4x4& a) {
 	for (i = 0; i < 4; ++i) {
 		if (A.m[i][i] == 0) {
 			// ゼロ除算を避ける
-			assert(false && "Zero Divide");
 			return MakeIdentityMatrix4x4();
 		}
 		float scale = 1.0f / A.m[i][i];

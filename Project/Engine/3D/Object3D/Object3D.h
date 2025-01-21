@@ -23,6 +23,11 @@ public:
 		camera3d_ = camera;
 	}
 
+
+	Vector3& GetScale();
+	Vector3& GetRotate();
+	Vector3& GetTranslate();
+
 private:
 	// WVP用のリソース作成
 	void CreateWVPResource();
