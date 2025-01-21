@@ -111,6 +111,8 @@ Matrix4x4 operator*(const Matrix4x4& m1, const Matrix4x4& m2);
 
 Quaternion operator+(const Quaternion& q1, const Quaternion& q2);
 Quaternion operator-(const Quaternion& q1, const Quaternion& q2);
+Quaternion operator*(const Quaternion& q1, const Quaternion& q2);
+
 
 
 /// <summary>
@@ -120,6 +122,14 @@ namespace MAGIMath {
 
 	// ゼロベクトルを返す
 	Vector3 MakeZeroVector3();
+
+	// 右方向のベクトル
+	Vector3 MakeRightVector3();
+	// 上方向のベクトル
+	Vector3 MakeUpVector3();
+	// 前方のベクトル
+	Vector3 MakeForwardVector3();
+
 
 	// ワールド行列からワールド座標取得
 	Vector3 ExtractionWorldPos(const Matrix4x4& m);
@@ -172,7 +182,22 @@ namespace MAGIMath {
 	// 単位クオータニオンを返す
 	Quaternion MakeIdentityQuaternion();
 
+	// 協約クオータニオンを返す
+	Quaternion Conjugate(const Quaternion& quaternion);
+
+	// クオータニオンのnormを返す
+	float Norm(const Quaternion& quaternion);
+
 	// オイラー角をクオータニオンに変換
 	Quaternion EulerToQuaternion(const Vector3& euler);
 
+	// 正規化したクオータニオンを返す
+	Quaternion Normalize(const Quaternion& quaternion);
+	// 逆クオータニオンを返す
+	Quaternion Inverse(const Quaternion& quaternion);
+	// 任意回転軸を表すクオータニオンの生成
+	Quaternion MakeRotateAxisAngleQuaternion(const Vector3& axis, float angle);
+
+	// 球面線形補完
+	Quaternion Slerp(Quaternion q1, Quaternion q2, float t);
 }

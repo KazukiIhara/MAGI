@@ -1,6 +1,9 @@
 #include "MathUtility.h"
 
 #include <cassert>
+#include <stdexcept>
+
+static const float EPSILON = 1.0e-6f;
 
 Vector2 operator-(const Vector2& v) {
 	return Vector2(-v.x, -v.y);
@@ -143,7 +146,7 @@ Matrix4x4 operator-(const Matrix4x4& m1, const Matrix4x4& m2) {
 }
 
 Matrix4x4 operator*(const Matrix4x4& m1, const Matrix4x4& m2) {
-	Matrix4x4 result;
+	Matrix4x4 result{};
 	for (int i = 0; i < 4; ++i) {
 		for (int j = 0; j < 4; ++j) {
 			result.m[i][j] = 0;
@@ -163,11 +166,44 @@ Quaternion operator-(const Quaternion& q1, const Quaternion& q2) {
 	return Quaternion(q1.x - q2.x, q1.y - q2.y, q1.z - q2.z, q1.w - q2.w);
 }
 
+Quaternion operator*(const Quaternion& q1, const Quaternion& q2) {
+	return Quaternion(
+		q1.w * q2.x + q1.x * q2.w + q1.y * q2.z - q1.z * q2.y,
+		q1.w * q2.y + q1.y * q2.w + q1.z * q2.x - q1.x * q2.z,
+		q1.w * q2.z + q1.z * q2.w + q1.x * q2.y - q1.y * q2.x,
+		q1.w * q2.w - q1.x * q2.x - q1.y * q2.y - q1.z * q2.z
+	);
+}
+
 Vector3 MAGIMath::MakeZeroVector3() {
 	Vector3 result{};
 	result.x = 0.0f;
 	result.y = 0.0f;
 	result.z = 0.0f;
+	return result;
+}
+
+Vector3 MAGIMath::MakeRightVector3() {
+	Vector3 result{};
+	result.x = 1.0f;
+	result.y = 0.0f;
+	result.z = 0.0f;
+	return result;
+}
+
+Vector3 MAGIMath::MakeUpVector3() {
+	Vector3 result{};
+	result.x = 0.0f;
+	result.y = 1.0f;
+	result.z = 0.0f;
+	return result;
+}
+
+Vector3 MAGIMath::MakeForwardVector3() {
+	Vector3 result{};
+	result.x = 0.0f;
+	result.y = 0.0f;
+	result.z = 1.0f;
 	return result;
 }
 
@@ -192,22 +228,32 @@ Matrix4x4 MAGIMath::Inverse(const Matrix4x4& a) {
 	Matrix4x4 A = a;
 	Matrix4x4 B = MakeIdentityMatrix4x4();
 
-	int i, j, k;
-	for (i = 0; i < 4; ++i) {
-		if (A.m[i][i] == 0) {
-			// ゼロ除算を避ける
-			assert(false && "Zero Divide");
-			return MakeIdentityMatrix4x4();
+	for (int i = 0; i < 4; ++i) {
+		if (std::abs(A.m[i][i]) < 1e-6f) {
+			bool swapped = false;
+			for (int row = i + 1; row < 4; ++row) {
+				if (std::abs(A.m[row][i]) > 1e-6f) {
+					std::swap(A.m[i], A.m[row]);
+					std::swap(B.m[i], B.m[row]);
+					swapped = true;
+					break;
+				}
+			}
+			if (!swapped) {
+				throw std::runtime_error("Matrix is singular and cannot be inverted.");
+			}
 		}
+
 		float scale = 1.0f / A.m[i][i];
-		for (j = 0; j < 4; ++j) {
+		for (int j = 0; j < 4; ++j) {
 			A.m[i][j] *= scale;
 			B.m[i][j] *= scale;
 		}
-		for (k = 0; k < 4; ++k) {
+
+		for (int k = 0; k < 4; ++k) {
 			if (k != i) {
 				float factor = A.m[k][i];
-				for (j = 0; j < 4; ++j) {
+				for (int j = 0; j < 4; ++j) {
 					A.m[k][j] -= factor * A.m[i][j];
 					B.m[k][j] -= factor * B.m[i][j];
 				}
@@ -390,6 +436,24 @@ Quaternion MAGIMath::MakeIdentityQuaternion() {
 	return result;
 }
 
+Quaternion MAGIMath::Conjugate(const Quaternion& quaternion) {
+	Quaternion result{};
+	result.x = -quaternion.x;
+	result.y = -quaternion.y;
+	result.z = -quaternion.z;
+	result.w = quaternion.w;
+	return result;
+}
+
+float MAGIMath::Norm(const Quaternion& quaternion) {
+	return std::sqrt(
+		quaternion.x * quaternion.x +
+		quaternion.y * quaternion.y +
+		quaternion.z * quaternion.z +
+		quaternion.w * quaternion.w
+	);
+}
+
 Quaternion MAGIMath::EulerToQuaternion(const Vector3& euler) {
 	// オイラー角を半分にする
 	float halfPitch = euler.x * 0.5f;
@@ -413,4 +477,127 @@ Quaternion MAGIMath::EulerToQuaternion(const Vector3& euler) {
 	q.z = cosX * cosY * sinZ + sinX * sinY * cosZ;
 
 	return q;
+}
+
+Quaternion MAGIMath::Normalize(const Quaternion& quaternion) {
+	// ノルムを求める
+	float length = Norm(quaternion);
+
+	// ノルムが 0 の場合は正規化できない
+	if (length == 0.0f) {
+		throw std::runtime_error("Cannot normalize a zero-norm quaternion.");
+	}
+
+	// 逆数を計算
+	float inv_length = 1.0f / length;
+
+	// 正規化したクオータニオンを返す
+	Quaternion result;
+	result.x = quaternion.x * inv_length;
+	result.y = quaternion.y * inv_length;
+	result.z = quaternion.z * inv_length;
+	result.w = quaternion.w * inv_length;
+	return result;
+}
+
+Quaternion MAGIMath::Inverse(const Quaternion& quaternion) {
+	float norm_sq =
+		quaternion.x * quaternion.x +
+		quaternion.y * quaternion.y +
+		quaternion.z * quaternion.z +
+		quaternion.w * quaternion.w;
+
+	if (norm_sq == 0.0f) {
+		// ノルムが0の場合は逆が定義できないため例外を投げる
+		throw std::runtime_error("Cannot invert a zero-norm quaternion.");
+	}
+
+	// 協約
+	Quaternion conj = Conjugate(quaternion);
+
+	// 1 / ノルム^2
+	float inv_norm = 1.0f / norm_sq;
+
+	// 結果を格納
+	Quaternion result;
+	result.x = conj.x * inv_norm;
+	result.y = conj.y * inv_norm;
+	result.z = conj.z * inv_norm;
+	result.w = conj.w * inv_norm;
+
+	return result;
+}
+
+Quaternion MAGIMath::MakeRotateAxisAngleQuaternion(const Vector3& axis, float angle) {
+	// 軸ベクトルの長さを求める
+	float axis_len = std::sqrt(axis.x * axis.x + axis.y * axis.y + axis.z * axis.z);
+
+	// 軸ベクトルがゼロ長なら回転を定義できないので、適宜例外を投げる
+	if (axis_len == 0.0f) {
+		throw std::runtime_error("Axis vector has zero length. Cannot create rotation quaternion.");
+	}
+
+	// 正規化した軸ベクトル
+	float inv_len = 1.0f / axis_len;
+	float nx = axis.x * inv_len;
+	float ny = axis.y * inv_len;
+	float nz = axis.z * inv_len;
+
+	// 回転角を2で割った値
+	float half_angle = angle * 0.5f;
+	float s = std::sin(half_angle);
+	float c = std::cos(half_angle);
+
+	// クオータニオン (x, y, z, w) の順で格納
+	Quaternion q{};
+	q.x = nx * s;
+	q.y = ny * s;
+	q.z = nz * s;
+	q.w = c;
+
+	return q;
+}
+
+Quaternion MAGIMath::Slerp(Quaternion q1, Quaternion q2, float t) {
+	// クォータニオンの内積を計算
+	float dot = q1.x * q2.x + q1.y * q2.y + q1.z * q2.z + q1.w * q2.w;
+
+	// ドット積が負の場合、逆の方向に補間するために q1 を反転
+	if (dot < 0.0f) {
+		q1.x = -q1.x;
+		q1.y = -q1.y;
+		q1.z = -q1.z;
+		q1.w = -q1.w;
+		dot = -dot;
+	}
+
+	if (dot >= 1.0f - EPSILON) {
+		Quaternion result{};
+		result.x = (1.0f - t) * q1.x + t * q2.x;
+		result.y = (1.0f - t) * q1.y + t * q2.y;
+		result.z = (1.0f - t) * q1.z + t * q2.z;
+		result.w = (1.0f - t) * q1.w + t * q2.w;
+
+		return Normalize(result);
+	}
+
+	// 角度の計算
+	float theta_0 = std::acos(dot);        // θ0 = q1 と q2 間の角度
+	float theta = theta_0 * t;             // θ = t に対応する角度
+
+	// 係数の計算
+	float sin_theta = std::sin(theta);
+	float sin_theta_0 = std::sin(theta_0);
+
+	float s1 = std::cos(theta) - dot * sin_theta / sin_theta_0;
+	float s2 = sin_theta / sin_theta_0;
+
+	// 補間結果の計算
+	Quaternion result = {
+		s1 * q1.x + s2 * q2.x,
+		s1 * q1.y + s2 * q2.y,
+		s1 * q1.z + s2 * q2.z,
+		s1 * q1.w + s2 * q2.w
+	};
+	return Normalize(result);
 }

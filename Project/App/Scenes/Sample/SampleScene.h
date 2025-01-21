@@ -22,41 +22,52 @@ public:
 
 private:
 	std::unique_ptr<Camera3D> camera_ = nullptr;
-	std::unique_ptr<Object3D> sample_ = nullptr;
-	PunctualLightData redLight_{};
-	PunctualLightData blueLight_{};
+	std::unique_ptr<Object3D> object3d_ = nullptr;
+	PunctualLightData light_{};
 };
 
 template<typename Data>
 inline void SampleScene<Data>::Initialize() {
-	MAGISYSTEM::LoadModel("terrain");
+	MAGISYSTEM::LoadModel("teapot");
 
 	camera_ = std::make_unique<Camera3D>();
-	sample_ = std::make_unique<Object3D>("terrain");
-	sample_->SetCamera(camera_.get());
+	object3d_ = std::make_unique<Object3D>("teapot");
+	object3d_->SetCamera(camera_.get());
 
-	redLight_.type = static_cast<uint32_t>(PunctualLightType::Point);
-	redLight_.color = { 1.0f,0.0f,0.0f };
-	redLight_.position = { 0.5f,1.0f,0.0f };
+	light_.type = static_cast<uint32_t>(PunctualLightType::Directional);
+	light_.color = { 1.0f,1.0f,1.0f };
 
-	blueLight_.type = static_cast<uint32_t>(PunctualLightType::Point);
-	blueLight_.color = { 0.0f,0.0f,1.0f };
-	blueLight_.position = { -0.5f,1.0f,0.0f };
-
-
-	MAGISYSTEM::AddPunctualLight("redLight", redLight_);
-	MAGISYSTEM::AddPunctualLight("blueLight", blueLight_);
+	MAGISYSTEM::AddPunctualLight("sampleLight", light_);
 }
 
 template<typename Data>
 inline void SampleScene<Data>::Update() {
+
+	if (MAGISYSTEM::PushKey(DIK_W)) {
+		object3d_->GetRotate().x += 0.01f;
+	} else if (MAGISYSTEM::PushKey(DIK_S)) {
+		object3d_->GetRotate().x -= 0.01f;
+	}
+
+	if (MAGISYSTEM::PushKey(DIK_D)) {
+		object3d_->GetRotate().y += 0.01f;
+	} else if (MAGISYSTEM::PushKey(DIK_A)) {
+		object3d_->GetRotate().y -= 0.01f;
+	}
+
+	if (MAGISYSTEM::PushKey(DIK_Q)) {
+		object3d_->GetRotate().z += 0.01f;
+	}else if (MAGISYSTEM::PushKey(DIK_E)) {
+		object3d_->GetRotate().z -= 0.01f;
+	}
+
 	camera_->Update();
-	sample_->Update();
+	object3d_->Update();
 }
 
 template<typename Data>
 inline void SampleScene<Data>::Draw() {
-	sample_->Draw();
+	object3d_->Draw();
 }
 
 template<typename Data>

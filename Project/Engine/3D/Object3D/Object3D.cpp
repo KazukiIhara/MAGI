@@ -22,7 +22,7 @@ void Object3D::Initialize(const std::string& modelName) {
 
 	// モデル取得
 	model_ = std::make_unique<Model>(MAGISYSTEM::FindModel(modelName));
-	assert(model_);
+	assert(model_ && "Warning: Not found model");
 
 	// マテリアル初期化
 	material_.color = Vector4(1.0f, 1.0f, 1.0f, 1.0f);
@@ -68,6 +68,18 @@ void Object3D::Draw() {
 	camera3d_->TransferCamera();
 	// 3Dモデル描画
 	model_->Draw();
+}
+
+Vector3& Object3D::GetScale() {
+	return worldTransform_.scale_;
+}
+
+Vector3& Object3D::GetRotate() {
+	return worldTransform_.rotate_;
+}
+
+Vector3& Object3D::GetTranslate() {
+	return worldTransform_.translate_;
 }
 
 void Object3D::CreateWVPResource() {

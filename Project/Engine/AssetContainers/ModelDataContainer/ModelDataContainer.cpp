@@ -40,9 +40,9 @@ ModelData ModelDataContainer::FindModelData(const std::string& modelName) const 
 	if (modelDatas_.contains(modelName)) {
 		// 読み込みモデルを戻り値としてreturn
 		return modelDatas_.at(modelName);
-	} 
+	}
 	// 見つからなかった場合止める
-	assert(false);
+	assert(false && "Warning: Not found model");
 	return ModelData{};
 }
 

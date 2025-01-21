@@ -7,9 +7,11 @@ public:
 	void Initialize()override;
 	void Update();
 public:
+	void Rotate();
 	// ローカルトランスフォーム
 	Vector3 scale_ = { 1.0f,1.0f,1.0f };// 拡縮量
 	Vector3 rotate_ = { 0.0f,0.0f,0.0f };// 回転量(入力用)
+	Vector3 preRotate_ = { 0.0f,0.0f,0.0f };// 回転量(保存用)
 	Vector3 translate_ = { 0.0f,0.0f,0.0f };// 移動量
 
 	// 親
