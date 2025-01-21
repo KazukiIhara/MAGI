@@ -46,8 +46,9 @@ inline void SampleScene<Data>::Initialize() {
 template<typename Data>
 inline void SampleScene<Data>::Update() {
 
-	object3d_->GetRotate().z += 0.01f;
-	object3d_->GetRotate().x += 0.01f;
+	if (MAGISYSTEM::PushKey(DIK_S)) {
+		object3d_->GetRotate().z += 0.01f;
+	}
 
 	camera_->Update();
 	object3d_->Update();
