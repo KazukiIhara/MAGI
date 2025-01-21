@@ -22,7 +22,7 @@ void Object3D::Initialize(const std::string& modelName) {
 
 	// モデル取得
 	model_ = std::make_unique<Model>(MAGISYSTEM::FindModel(modelName));
-	assert(model_);
+	assert(model_ && "Warning: Not found model");
 
 	// マテリアル初期化
 	material_.color = Vector4(1.0f, 1.0f, 1.0f, 1.0f);
