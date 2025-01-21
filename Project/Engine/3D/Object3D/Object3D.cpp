@@ -63,9 +63,8 @@ void Object3D::Draw() {
 	commandList->SetGraphicsRootConstantBufferView(1, transformationResource_->GetGPUVirtualAddress());
 	// ライトを転送
 	MAGISYSTEM::TransferPunctualLight();
-
 	// カメラ情報を転送
-	camera3d_->TransferCamera();
+	MAGISYSTEM::TransferCamera();
 	// 3Dモデル描画
 	model_->Draw();
 }
@@ -94,7 +93,6 @@ void Object3D::MapWVPData() {
 	transformationResource_->Map(0, nullptr, reinterpret_cast<void**>(&transformationData_));
 	// 単位行列を書き込んでおく
 	transformationData_->World = MakeIdentityMatrix4x4();
-	transformationData_->ViewProjection = MakeIdentityMatrix4x4();
 	transformationData_->WorldInverseTransepose = MakeIdentityMatrix4x4();
 }
 
@@ -114,7 +112,6 @@ void Object3D::MapMateiralData() {
 
 void Object3D::UpdateWVPData() {
 	transformationData_->World = worldTransform_.worldMatrix_;
-	transformationData_->ViewProjection = camera3d_->GetViewProjectionMatrix();
 	transformationData_->WorldInverseTransepose = MakeInverseTransposeMatrix(worldTransform_.worldMatrix_);
 }
 

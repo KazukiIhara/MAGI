@@ -21,7 +21,7 @@ public:
 	PunctualLightManager(DXGI* dxgi, DirectXCommand* directXCommand, SRVUAVManager* srvuavManager);
 	~PunctualLightManager();
 
-	void Initialize(DXGI* dxgi, DirectXCommand* directXCommand,SRVUAVManager* srvuavManager);
+	void Initialize(DXGI* dxgi, DirectXCommand* directXCommand, SRVUAVManager* srvuavManager);
 	void Update();
 	void Clear();
 
@@ -31,7 +31,7 @@ public:
 
 	void RemoveLight(const std::string& lightName);
 
-	void OperationLightData(const std::string& lightName, const PunctualLightData& lightData);
+	PunctualLightData& GetPunctualLight(const std::string& lightName);
 private:
 	void CreateLightsResource();
 	void MapLightsData();

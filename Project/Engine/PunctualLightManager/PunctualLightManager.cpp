@@ -98,13 +98,14 @@ void PunctualLightManager::RemoveLight(const std::string& lightName) {
 	}
 }
 
-void PunctualLightManager::OperationLightData(const std::string& lightName, const PunctualLightData& lightData) {
+PunctualLightData& PunctualLightManager::GetPunctualLight(const std::string& lightName) {
 	// ライト名でライトを検索
 	auto it = light_.find(lightName);
 	if (it != light_.end()) {
-		it->second = lightData;
+		return it->second;
 	} else {
 		assert(false && "ライト名が存在しません。");
+		return it->second;
 	}
 }
 

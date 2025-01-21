@@ -23,7 +23,6 @@ struct QuaternionTransform3D {
 // トランスフォーメーション構造体
 struct TransformationMatrix {
 	Matrix4x4 World;
-	Matrix4x4 ViewProjection;
 	Matrix4x4 WorldInverseTransepose;
 };
 

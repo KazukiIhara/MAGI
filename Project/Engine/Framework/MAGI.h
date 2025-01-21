@@ -8,7 +8,7 @@
 #endif // _DEBUG
 
 #include "WindowApp/WindowApp.h"
-#include "DeltaTimer/DeltaTimer.h"
+#include "DeltaTimer/DeltaTimer.h"    
 #include "DirectInput/DirectInput.h"
 
 #include "DirectX/DXGI/DXGI.h"
@@ -32,6 +32,7 @@
 
 #include "PipelineManagers/GraphicsPipelineManager/GraphicsPipelineManager.h"
 
+#include "Camera3DManager/Camera3DManager.h"
 #include "PunctualLightManager/PunctualLightManager.h"
 
 #include "SceneManager/SceneManager.h"
@@ -164,13 +165,20 @@ public: // エンジンの機能
 
 #pragma endregion
 
+#pragma region Camera3DManager
+	// カメラの転送
+	static void TransferCamera();
+
+#pragma endregion
+
+
 #pragma region PunctualLightManager
 	// ライトの追加
 	static void AddPunctualLight(const std::string& lightName, const PunctualLightData& lightData);
 	// ライトの削除
 	static void RemovePunctualLight(const std::string& lightName);
-	// ライトの操作
-	static void OperationPunctualLight(const std::string& lightName, const PunctualLightData& lightData);
+	// ライトの取得
+	static PunctualLightData& GetLightData(const std::string& lightName);
 	// ライトの転送
 	static void TransferPunctualLight();
 #pragma endregion
@@ -230,6 +238,7 @@ protected:
 	//
 	// ObjectManager
 	//
+	static std::unique_ptr<Camera3DManager> camera3DManager_;
 	static std::unique_ptr<PunctualLightManager> punctualLightManager_;
 
 	// 

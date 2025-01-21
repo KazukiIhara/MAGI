@@ -9,7 +9,6 @@
 #include "3D/WorldTransform/WorldTransform.h"
 #include "3D/Model/Model.h"
 
-class Camera3D;
 
 class Object3D {
 public:
@@ -18,10 +17,6 @@ public:
 	void Initialize(const std::string& modelName);
 	void Update();
 	void Draw();
-
-	void SetCamera(Camera3D* camera) {
-		camera3d_ = camera;
-	}
 
 
 	Vector3& GetScale();
@@ -64,6 +59,4 @@ private:
 	// マテリアル
 	Material3D material_;
 
-	// カメラを受け取る箱
-	Camera3D* camera3d_ = nullptr;
 };
