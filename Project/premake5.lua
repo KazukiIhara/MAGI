@@ -34,8 +34,11 @@ project "MAGI" -- プロジェクト名
    files { 
       "*.cpp",
       "*.h",
+
       "Engine/**.cpp",
       "Engine/**.h",
+      "Engine/**.ipp",
+
       "App/**.cpp",
       "App/**.h",
    }
@@ -46,6 +49,7 @@ project "MAGI" -- プロジェクト名
       "Engine/Includes",
       "App",
       "Externals",
+      "Externals/assimp/include"
     } 
 
    dependson { "DirectXTex","imgui" } -- 依存していることを指定

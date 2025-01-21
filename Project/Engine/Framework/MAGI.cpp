@@ -28,9 +28,11 @@ std::unique_ptr<Viewport> MAGISYSTEM::viewport_ = nullptr;
 std::unique_ptr<ScissorRect> MAGISYSTEM::scissorRect_ = nullptr;
 
 std::unique_ptr<TextureDataContainer> MAGISYSTEM::textureDataCantainer_ = nullptr;
-
+std::unique_ptr<ModelDataContainer> MAGISYSTEM::modelDataContainer_ = nullptr;
 
 std::unique_ptr<GraphicsPipelineManager> MAGISYSTEM::graphicsPipelineManager_ = nullptr;
+
+std::unique_ptr<PunctualLightManager> MAGISYSTEM::punctualLightManager_ = nullptr;
 
 std::unique_ptr<SceneManager<GameData>> MAGISYSTEM::sceneManager_ = nullptr;
 
@@ -85,9 +87,17 @@ void MAGISYSTEM::Initialize() {
 
 	// TextureDataContainer
 	textureDataCantainer_ = std::make_unique<TextureDataContainer>(dxgi_.get(), directXCommand_.get(), fence_.get(), srvuavManager_.get());
+	// ModelDataContainer
+	modelDataContainer_ = std::make_unique<ModelDataContainer>(textureDataCantainer_.get());
+
 
 	// GraphicsPipelineManager
 	graphicsPipelineManager_ = std::make_unique<GraphicsPipelineManager>(dxgi_.get(), shaderCompiler_.get());
+
+
+	// PunctualLightManager
+	punctualLightManager_ = std::make_unique<PunctualLightManager>(dxgi_.get(), directXCommand_.get(), srvuavManager_.get());
+
 
 	// SceneManager
 	sceneManager_ = std::make_unique<SceneManager<GameData>>();
@@ -123,9 +133,20 @@ void MAGISYSTEM::Finalize() {
 		sceneManager_.reset();
 	}
 
+	// PunctualLightManager
+	if (punctualLightManager_) {
+		punctualLightManager_.reset();
+	}
+
+
 	// GraphicsPipelineManager
 	if (graphicsPipelineManager_) {
 		graphicsPipelineManager_.reset();
+	}
+
+	// ModelDataContainer
+	if (modelDataContainer_) {
+		modelDataContainer_.reset();
 	}
 
 	// TextureDataContainer
@@ -204,7 +225,7 @@ void MAGISYSTEM::Finalize() {
 	}
 
 	// DeltaTimer
-	if(deltaTimer_) {
+	if (deltaTimer_) {
 		deltaTimer_.reset();
 	}
 
@@ -245,6 +266,9 @@ void MAGISYSTEM::Update() {
 
 	// シーンの更新処理
 	sceneManager_->Update();
+
+	// ライトマネージャの更新
+	punctualLightManager_->Update();
 
 	// GUI更新処理
 	gui_->Update();
@@ -398,5 +422,65 @@ ComPtr<ID3D12Resource> MAGISYSTEM::CreateBufferResource(size_t sizeInBytes, bool
 
 ID3D12GraphicsCommandList* MAGISYSTEM::GetDirectXCommandList() {
 	return directXCommand_->GetList();
+}
+
+D3D12_CPU_DESCRIPTOR_HANDLE MAGISYSTEM::GetSrvDescriptorHandleCPU(uint32_t index) {
+	return srvuavManager_->GetDescriptorHandleCPU(index);
+}
+
+D3D12_GPU_DESCRIPTOR_HANDLE MAGISYSTEM::GetSrvDescriptorHandleGPU(uint32_t index) {
+	return srvuavManager_->GetDescriptorHandleGPU(index);
+}
+
+uint32_t MAGISYSTEM::ViewAllocate() {
+	return srvuavManager_->Allocate();
+}
+
+void MAGISYSTEM::CreateSrvStructuredBuffer(uint32_t viewIndex, ID3D12Resource* pResource, uint32_t numElements, UINT structureByteStride) {
+	srvuavManager_->CreateSrvStructuredBuffer(viewIndex, pResource, numElements, structureByteStride);
+}
+
+void MAGISYSTEM::CreateUavStructuredBuffer(uint32_t viewIndex, ID3D12Resource* pResource, uint32_t numElements, UINT structureByteStride) {
+	srvuavManager_->CreateUavStructuredBuffer(viewIndex, pResource, numElements, structureByteStride);
+}
+
+void MAGISYSTEM::LoadTexture(const std::string& filePath) {
+	textureDataCantainer_->Load(filePath);
+}
+
+std::unordered_map<std::string, Texture>& MAGISYSTEM::GetTexture() {
+	return textureDataCantainer_->GetTexture();
+}
+
+const DirectX::TexMetadata& MAGISYSTEM::GetTextureMetaData(const std::string& filePath) {
+	return textureDataCantainer_->GetMetaData(filePath);
+}
+
+void MAGISYSTEM::LoadModel(const std::string& modelName) {
+	modelDataContainer_->Load(modelName);
+}
+
+ModelData MAGISYSTEM::FindModel(const std::string& modelName) {
+	return modelDataContainer_->FindModelData(modelName);
+}
+
+void MAGISYSTEM::AddPunctualLight(const std::string& lightName, const PunctualLightData& lightData) {
+	punctualLightManager_->AddNewLight(lightName, lightData);
+}
+
+void MAGISYSTEM::RemovePunctualLight(const std::string& lightName) {
+	punctualLightManager_->RemoveLight(lightName);
+}
+
+void MAGISYSTEM::OperationPunctualLight(const std::string& lightName, const PunctualLightData& lightData) {
+	punctualLightManager_->OperationLightData(lightName, lightData);
+}
+
+void MAGISYSTEM::TransferPunctualLight() {
+	punctualLightManager_->TransferLightsData();
+}
+
+ID3D12PipelineState* MAGISYSTEM::GetGraphicsPipelineState(GraphicsPipelineStateType pipelineState, BlendMode blendMode) {
+	return graphicsPipelineManager_->GetPipelineState(pipelineState, blendMode);
 }
 

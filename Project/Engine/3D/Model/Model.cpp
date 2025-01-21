@@ -1,0 +1,33 @@
+#include "Model.h"
+
+Model::Model(const ModelData& modeldata) {
+	Initialize(modeldata);
+}
+
+Model::~Model() {
+
+}
+
+void Model::Initialize(const ModelData& modeldata) {
+	modelData_ = modeldata;
+	CreateMehes();
+}
+
+void Model::Update() {
+	for (Mesh mesh : meshes_) {
+		mesh.Update();
+	}
+}
+
+void Model::Draw() {
+	for (Mesh mesh : meshes_) {
+		mesh.Draw();
+	}
+}
+
+void Model::CreateMehes() {
+	for (uint32_t i = 0; i < modelData_.meshes.size(); i++) {
+		Mesh newMesh(modelData_.meshes[i]);
+		meshes_.push_back(newMesh);
+	}
+}

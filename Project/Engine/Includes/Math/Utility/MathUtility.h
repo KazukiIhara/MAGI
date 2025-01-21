@@ -118,5 +118,61 @@ Quaternion operator-(const Quaternion& q1, const Quaternion& q2);
 /// </summary>
 namespace MAGIMath {
 
+	// ゼロベクトルを返す
+	Vector3 MakeZeroVector3();
+
+	// ワールド行列からワールド座標取得
+	Vector3 ExtractionWorldPos(const Matrix4x4& m);
+
+
+	// 4x4単位行列を返す
+	Matrix4x4 MakeIdentityMatrix4x4();
+
+	// 逆行列作成関数
+	Matrix4x4 Inverse(const Matrix4x4& a);
+
+	// 転置行列
+	Matrix4x4 Transpose(const Matrix4x4& a);
+
+	// 逆転置行列
+	Matrix4x4 MakeInverseTransposeMatrix(const Matrix4x4& a);
+
+
+	// 拡縮行列作成関数
+	Matrix4x4 MakeScaleMatrix(const Vector3& scale);
+
+	// 回転行列作成関数
+	Matrix4x4 MakeRotateXMatrix(float radian); // X回転
+	Matrix4x4 MakeRotateYMatrix(float radian); // Y回転
+	Matrix4x4 MakeRotateZMatrix(float radian); // Z回転
+	Matrix4x4 MakeRotateXYZMatrix(const Vector3& rotate); // XYZ回転
+
+	Matrix4x4 MakeRotateMatrix(const Quaternion& q);// XYZクオータニオン
+
+	// 平行移動行列作成関数
+	Matrix4x4 MakeTranslateMatrix(const Vector3& translate);
+
+	// アフィン変換(オイラー)
+	Matrix4x4 MakeAffineMatrix(const Vector3& scale, const Vector3& rotate, const Vector3& translate);
+	// アフィン変換(クオータニオン)
+	Matrix4x4 MakeAffineMatrix(const Vector3& scale, const Quaternion& rotate, const Vector3& translate);
+
+	// ビューポート行列作成
+	Matrix4x4 MakeViewportMatrix(float left, float top, float width, float height, float minDepth, float maxDepth);
+
+	// 透視投影行列作成
+	Matrix4x4 MakePerspectiveFovMatrix(float fovY, float aspectRaito, float nearClip, float farClip);
+
+	// 正射影行列作成
+	Matrix4x4 MakeOrthographicMatrix(float left, float top, float right, float bottom, float nearClip, float farClip);
+
+	// UV行列を作成
+	Matrix4x4 MakeUVMatrix(const Vector2& scale, const float& rotateZ, const Vector2& translate);
+
+	// 単位クオータニオンを返す
+	Quaternion MakeIdentityQuaternion();
+
+	// オイラー角をクオータニオンに変換
+	Quaternion EulerToQuaternion(const Vector3& euler);
 
 }

@@ -28,10 +28,11 @@
 #include "DirectX/ScissorRect/ScissorRect.h"
 
 #include "AssetContainers/TextureDataContainer/TextureDataContainer.h"
-
+#include "AssetContainers/ModelDataContainer/ModelDataContainer.h"
 
 #include "PipelineManagers/GraphicsPipelineManager/GraphicsPipelineManager.h"
 
+#include "PunctualLightManager/PunctualLightManager.h"
 
 #include "SceneManager/SceneManager.h"
 
@@ -126,11 +127,54 @@ public: // エンジンの機能
 
 #pragma endregion
 
-#pragma region TextureDataContainer
-
-
+#pragma region SRVUAVManagerの機能
+	// SRVのCPUディスクリプタハンドルを取得
+	static D3D12_CPU_DESCRIPTOR_HANDLE GetSrvDescriptorHandleCPU(uint32_t index);
+	// SRVのGPUディスクリプタハンドルを取得
+	static D3D12_GPU_DESCRIPTOR_HANDLE GetSrvDescriptorHandleGPU(uint32_t index);
+	// Allocate
+	static uint32_t ViewAllocate();
+	// StructuredBuffer用のsrv作成
+	static void CreateSrvStructuredBuffer(uint32_t viewIndex, ID3D12Resource* pResource, uint32_t numElements, UINT structureByteStride);
+	// StructuredBuffer用のUAV作成
+	static void CreateUavStructuredBuffer(uint32_t viewIndex, ID3D12Resource* pResource, uint32_t numElements, UINT structureByteStride);
 
 #pragma endregion
+
+#pragma region GraphicsPipelineManager
+	// パイプライン取得関数
+	static ID3D12PipelineState* GetGraphicsPipelineState(GraphicsPipelineStateType pipelineState, BlendMode blendMode);
+
+#pragma endregion
+
+#pragma region TextureDataContainer
+	// 画像読み込み
+	static void LoadTexture(const std::string& filePath);
+	// テクスチャの取得
+	static std::unordered_map<std::string, Texture>& GetTexture();
+	// メタデータ取得
+	static const DirectX::TexMetadata& GetTextureMetaData(const std::string& filePath);
+#pragma endregion
+
+#pragma region ModelDataContainer
+	// モデルの読み込み
+	static void LoadModel(const std::string& modelName);
+	// 読み込み済みモデル検索
+	static ModelData FindModel(const std::string& modelName);
+
+#pragma endregion
+
+#pragma region PunctualLightManager
+	// ライトの追加
+	static void AddPunctualLight(const std::string& lightName, const PunctualLightData& lightData);
+	// ライトの削除
+	static void RemovePunctualLight(const std::string& lightName);
+	// ライトの操作
+	static void OperationPunctualLight(const std::string& lightName, const PunctualLightData& lightData);
+	// ライトの転送
+	static void TransferPunctualLight();
+#pragma endregion
+
 
 private: // メンバ変数
 	// 終了リクエスト
@@ -181,6 +225,12 @@ protected:
 	// AssetContainer
 	// 
 	static std::unique_ptr<TextureDataContainer> textureDataCantainer_;
+	static std::unique_ptr<ModelDataContainer> modelDataContainer_;
+
+	//
+	// ObjectManager
+	//
+	static std::unique_ptr<PunctualLightManager> punctualLightManager_;
 
 	// 
 	// GameManager

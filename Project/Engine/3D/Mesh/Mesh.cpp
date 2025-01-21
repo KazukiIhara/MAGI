@@ -12,7 +12,7 @@ void Mesh::Initialize(const MeshData& meshData) {
 
 	// TODO:テクスチャが未設定の場合、デフォルトのテクスチャを割り当てる
 	if (meshData_.material.textureFilePath == "") {
-		meshData_.material.textureFilePath;
+		meshData_.material.textureFilePath = "Engine/Resources/Images/uvChecker.png";
 	}
 
 	// 頂点リソースの作成
@@ -50,7 +50,8 @@ void Mesh::Draw() {
 	commandList->IASetIndexBuffer(&indexBufferView_);
 
 	// Texture用のSRVをセット
-	// commandList->SetGraphicsRootDescriptorTable();
+	uint32_t textureSrvIndex = MAGISYSTEM::GetTexture()[meshData_.material.textureFilePath].srvIndex;
+	commandList->SetGraphicsRootDescriptorTable(3, MAGISYSTEM::GetSrvDescriptorHandleGPU(textureSrvIndex));
 
 	// ModelMaterial用CBufferの場所を設定
 	commandList->SetGraphicsRootConstantBufferView(4, materialResource_->GetGPUVirtualAddress());

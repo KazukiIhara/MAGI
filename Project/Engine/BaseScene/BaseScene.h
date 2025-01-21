@@ -11,7 +11,10 @@ template <typename Data>
 class BaseScene {
 public:
 	BaseScene(std::shared_ptr<Data> data, SceneManager<Data>* sceneManager)
-		: data_(data), sceneManager_(sceneManager) {}
+		: data_(data), sceneManager_(sceneManager) {
+	}
+
+	virtual ~BaseScene() = default;
 
 	virtual void Initialize() {}
 	virtual void Update() {}
