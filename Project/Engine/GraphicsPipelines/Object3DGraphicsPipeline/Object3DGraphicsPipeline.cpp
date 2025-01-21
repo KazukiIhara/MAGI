@@ -67,7 +67,7 @@ void Object3DGraphicsPipeline::CreateRootSignature() {
 
 	// カメラ
 	rootParameters[2].ParameterType = D3D12_ROOT_PARAMETER_TYPE_CBV;	//CBVを使う
-	rootParameters[2].ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL;	//PixelShaderで使う
+	rootParameters[2].ShaderVisibility = D3D12_SHADER_VISIBILITY_ALL;	//すべてのシェーダーで使える
 	rootParameters[2].Descriptor.ShaderRegister = 1;					//レジスタ番号1とバインド
 
 	// テクスチャ
