@@ -40,7 +40,7 @@ void WorldTransform::Rotate() {
 	Quaternion deltaRotation = rotationX * rotationY * rotationZ;
 
 	// 現在の回転に適用
-	rotateQuaternion_ = rotateQuaternion_ * deltaRotation;
+	rotateQuaternion_ = deltaRotation * rotateQuaternion_;
 
 	// クォータニオンを正規化
 	rotateQuaternion_ = Normalize(rotateQuaternion_);

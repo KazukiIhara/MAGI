@@ -34,9 +34,6 @@ inline void SampleScene<Data>::Initialize() {
 	object3d_ = std::make_unique<Object3D>("teapot");
 	object3d_->SetCamera(camera_.get());
 
-	object3d_->GetRotate().y = std::numbers::pi_v<float> / 2.0f;
-
-
 	light_.type = static_cast<uint32_t>(PunctualLightType::Directional);
 	light_.color = { 1.0f,1.0f,1.0f };
 
@@ -46,6 +43,12 @@ inline void SampleScene<Data>::Initialize() {
 template<typename Data>
 inline void SampleScene<Data>::Update() {
 
+	if (MAGISYSTEM::PushKey(DIK_D)) {
+		object3d_->GetRotate().x += 0.01f;
+	}
+	if (MAGISYSTEM::PushKey(DIK_W)) {
+		object3d_->GetRotate().y += 0.01f;
+	}
 	if (MAGISYSTEM::PushKey(DIK_S)) {
 		object3d_->GetRotate().z += 0.01f;
 	}
