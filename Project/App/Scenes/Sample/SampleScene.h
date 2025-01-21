@@ -43,6 +43,11 @@ inline void SampleScene<Data>::Initialize() {
 template<typename Data>
 inline void SampleScene<Data>::Update() {
 
+
+	if (MAGISYSTEM::TriggerKey(DIK_R)) {
+		object3d_->GetRotate() = { 0.0f,0.0f,0.0f };
+	}
+
 	if (MAGISYSTEM::PushKey(DIK_W)) {
 		object3d_->GetRotate().x += 0.01f;
 	} else if (MAGISYSTEM::PushKey(DIK_S)) {
