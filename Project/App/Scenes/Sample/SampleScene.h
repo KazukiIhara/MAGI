@@ -6,6 +6,7 @@
 #include "Framework/MAGI.h"
 
 #include "3D/Object3D/Object3D.h"
+#include "3D/Primitive3D/Primitive3D.h"
 
 // サンプルシーン
 template <typename Data>
@@ -22,6 +23,7 @@ public:
 private:
 	std::unique_ptr<Object3D> teapot_ = nullptr;
 	std::unique_ptr<Object3D> ground_ = nullptr;
+	std::unique_ptr<Primitive3D> plane_ = nullptr;
 };
 
 template<typename Data>
@@ -31,6 +33,7 @@ inline void SampleScene<Data>::Initialize() {
 
 	teapot_ = std::make_unique<Object3D>("teapot", "teapot");
 	ground_ = std::make_unique<Object3D>("terrain", "terrain");
+	plane_ = std::make_unique<Primitive3D>("plane", Primitive3DType::Plane);
 
 	teapot_->GetTranslate().y = 0.8f;
 
@@ -64,7 +67,7 @@ inline void SampleScene<Data>::Update() {
 	}
 
 	if (MAGISYSTEM::PushKey(DIK_W)) {
-		teapot_->GetRotate().x += 0.01f;
+		plane_->GetRotate().x += 0.01f;
 	} else if (MAGISYSTEM::PushKey(DIK_S)) {
 		teapot_->GetRotate().x -= 0.01f;
 	}
@@ -83,12 +86,14 @@ inline void SampleScene<Data>::Update() {
 
 	ground_->Update();
 	teapot_->Update();
+	plane_->Update();
 }
 
 template<typename Data>
 inline void SampleScene<Data>::Draw() {
 	ground_->Draw();
-	teapot_->Draw();
+	//teapot_->Draw();
+	plane_->Draw();
 }
 
 template<typename Data>
