@@ -193,7 +193,7 @@ protected:
 #endif // _DEBUG
 
 	// 
-	// AppBaseSystems
+	// BaseSystems
 	// 
 	static std::unique_ptr<WindowApp> windowApp_;
 	static std::unique_ptr<DeltaTimer> deltaTimer_;
