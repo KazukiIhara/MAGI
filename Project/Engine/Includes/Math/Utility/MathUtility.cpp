@@ -389,6 +389,33 @@ Matrix4x4 MAGIMath::MakeRotateXYZMatrix(const Vector3& rotate) {
 	return result;
 }
 
+Matrix4x4 MAGIMath::MakeRotateZXYMatrix(const Vector3& rotate) {
+	Matrix4x4 rotateX = MakeRotateXMatrix(rotate.x);
+	Matrix4x4 rotateY = MakeRotateYMatrix(rotate.y);
+	Matrix4x4 rotateZ = MakeRotateZMatrix(rotate.z);
+
+	Matrix4x4 result = rotateZ * rotateX * rotateY;
+	return result;
+}
+
+Matrix4x4 MAGIMath::MakeRotateYXZMatrix(const Vector3& rotate) {
+	Matrix4x4 rotateX = MakeRotateXMatrix(rotate.x);
+	Matrix4x4 rotateY = MakeRotateYMatrix(rotate.y);
+	Matrix4x4 rotateZ = MakeRotateZMatrix(rotate.z);
+
+	Matrix4x4 result = rotateY * rotateX * rotateZ;
+	return result;
+}
+
+Matrix4x4 MAGIMath::MakeRotateXZYMatrix(const Vector3& rotate) {
+	Matrix4x4 rotateX = MakeRotateXMatrix(rotate.x);
+	Matrix4x4 rotateY = MakeRotateYMatrix(rotate.y);
+	Matrix4x4 rotateZ = MakeRotateZMatrix(rotate.z);
+
+	Matrix4x4 result = rotateX * rotateZ * rotateY;
+	return result;
+}
+
 Matrix4x4 MAGIMath::MakeRotateMatrix(const Quaternion& q) {
 	Matrix4x4 mat{};
 
