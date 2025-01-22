@@ -48,6 +48,9 @@ void Object3D::Update() {
 	// ワールド行列更新
 	worldTransform_.Update();
 
+	// 中心座標の更新
+	worldPosition_ = ExtractionWorldPos(worldTransform_.worldMatrix_);
+
 	UpdateWVPData();
 
 	UpdateMaterialData();

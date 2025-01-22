@@ -5,7 +5,11 @@
 
 class WorldEntity {
 public:
-	virtual void Initialize();
+	WorldEntity();
+	virtual ~WorldEntity() = default;
+protected:
+	std::string& GetName();
+
 public:
 	// 名前
 	std::string name_;

@@ -6,18 +6,18 @@
 #include "Structs/ObjectStruct.h"
 #include "Enums/BlendModeEnum.h"
 
+#include "3D/WorldEntity/WorldEntity.h"
 #include "3D/WorldTransform/WorldTransform.h"
 #include "3D/Model/Model.h"
 
 
-class Object3D {
+class Object3D :public WorldEntity {
 public:
 	Object3D(const std::string& modelName);
-	~Object3D();
+	~Object3D()override;
 	void Initialize(const std::string& modelName);
 	void Update();
 	void Draw();
-
 
 	Vector3& GetScale();
 	Vector3& GetRotate();

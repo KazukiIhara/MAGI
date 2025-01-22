@@ -63,6 +63,6 @@ void Camera3D::MapCameraData() {
 }
 
 void Camera3D::UpdateCameraData() {
-	cameraData_->worldPosition = worldTransform_.worldPosition_;
+	cameraData_->worldPosition = worldPosition_;
 	cameraData_->viewProjection = viewProjectionMatrix_;
 }
