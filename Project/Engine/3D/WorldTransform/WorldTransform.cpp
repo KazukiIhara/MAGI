@@ -25,6 +25,22 @@ void WorldTransform::Update() {
 	worldPosition_ = ExtractionWorldPos(worldMatrix_);
 }
 
+void WorldTransform::UpdateEuler() {
+	// アフィン行列作成
+	worldMatrix_ = MakeAffineMatrix(scale_, rotate_, translate_);
+}
+
+void WorldTransform::UpdateQuaternion() {
+	// 回転処理
+	if (rotate_.x != preRotate_.x || rotate_.y != preRotate_.y || rotate_.z != preRotate_.z) {
+		RotateQuaternion();
+	}
+	// アフィン行列作成
+	worldMatrix_ = MakeAffineMatrix(scale_, rotateQuaternion_, translate_);
+	// 回転量計算用変数に挿入
+	preRotate_ = rotate_;
+}
+
 void WorldTransform::RotateQuaternion() {
 	if (rotate_.x == 0.0f && rotate_.y == 0.0f && rotate_.z == 0.0f) {
 		rotateQuaternion_ = MakeIdentityQuaternion();
@@ -45,20 +61,4 @@ void WorldTransform::RotateQuaternion() {
 		// クォータニオンを正規化
 		rotateQuaternion_ = Normalize(rotateQuaternion_);
 	}
-}
-
-void WorldTransform::UpdateEuler() {
-	// アフィン行列作成
-	worldMatrix_ = MakeAffineMatrix(scale_, rotate_, translate_);
-}
-
-void WorldTransform::UpdateQuaternion() {
-	// 回転処理
-	if (rotate_.x != preRotate_.x || rotate_.y != preRotate_.y || rotate_.z != preRotate_.z) {
-		RotateQuaternion();
-	}
-	// アフィン行列作成
-	worldMatrix_ = MakeAffineMatrix(scale_, rotateQuaternion_, translate_);
-	// 回転量計算用変数に挿入
-	preRotate_ = rotate_;
 }
