@@ -32,7 +32,7 @@ inline void SampleScene<Data>::Initialize() {
 	teapot_ = std::make_unique<Object3D>("teapot", "teapot");
 	ground_ = std::make_unique<Object3D>("terrain", "terrain");
 
-	teapot_->GetTranslate().y = 0.5f;
+	teapot_->GetTranslate().y = 0.8f;
 
 	MAGISYSTEM::AddPunctualLight("sampleLight");
 
