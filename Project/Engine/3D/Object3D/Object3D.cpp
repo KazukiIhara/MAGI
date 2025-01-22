@@ -28,7 +28,8 @@ void Object3D::Initialize(const std::string& modelName) {
 	// マテリアル初期化
 	material_.color = Vector4(1.0f, 1.0f, 1.0f, 1.0f);
 	material_.enableLighting = true;
-	material_.shininess = 40.0f;
+	material_.enableSpeculaerRef = false;
+	material_.shininess = 100.0f;
 	material_.uvTransformMatrix = MakeIdentityMatrix4x4();
 
 	// WVP用のリソース作成

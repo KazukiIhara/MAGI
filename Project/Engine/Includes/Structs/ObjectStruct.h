@@ -30,7 +30,8 @@ struct TransformationMatrix {
 struct Material3D {
 	Vector4 color;
 	int32_t enableLighting;
-	float padding[3];
+	int32_t enableSpeculaerRef;
+	float padding[2];
 	Matrix4x4 uvTransformMatrix;
 	float shininess;
 };

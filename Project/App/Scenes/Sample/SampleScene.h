@@ -29,32 +29,34 @@ private:
 template<typename Data>
 inline void SampleScene<Data>::Initialize() {
 	MAGISYSTEM::LoadModel("teapot");
-	MAGISYSTEM::LoadModel("Ground");
+	MAGISYSTEM::LoadModel("terrain");
 
 	camera_ = std::make_unique<Camera3D>();
 	teapot_ = std::make_unique<Object3D>("teapot");
-	ground_ = std::make_unique<Object3D>("Ground");
+	ground_ = std::make_unique<Object3D>("terrain");
 
 	teapot_->GetTranslate().y = 0.5f;
 
 	MAGISYSTEM::AddPunctualLight("sampleLight");
-	MAGISYSTEM::AddPunctualLight("redLight");
-	MAGISYSTEM::AddPunctualLight("blueLight");
 
 	auto& sampleLight = MAGISYSTEM::GetLightData("sampleLight");
-	sampleLight.intensity = 0.1f;
+	sampleLight.intensity = 1.0f;
 
-	auto& redLightData = MAGISYSTEM::GetLightData("redLight");
-	redLightData.type = 2;
-	redLightData.color = { 1.0f,0.0f,0.0f };
-	redLightData.intensity = 7.0f;
-	redLightData.position = { 2.0f,2.0f,0.0f };
 
-	auto& blueLightData = MAGISYSTEM::GetLightData("blueLight");
-	blueLightData.type = 2;
-	blueLightData.color = { 0.0f,0.0f,1.0f };
-	blueLightData.intensity = 7.0f;
-	blueLightData.position = { -2.0f,2.0f,0.0f };
+	//MAGISYSTEM::AddPunctualLight("redLight");
+	//auto& redLightData = MAGISYSTEM::GetLightData("redLight");
+	//redLightData.type = 1;
+	//redLightData.color = { 1.0f,0.0f,0.0f };
+	//redLightData.intensity = 7.0f;
+	//redLightData.position = { 2.0f,2.0f,0.0f };
+
+
+	//MAGISYSTEM::AddPunctualLight("blueLight");
+	//auto& blueLightData = MAGISYSTEM::GetLightData("blueLight");
+	//blueLightData.type = 1;
+	//blueLightData.color = { 0.0f,0.0f,1.0f };
+	//blueLightData.intensity = 7.0f;
+	//blueLightData.position = { -2.0f,2.0f,0.0f };
 }
 
 template<typename Data>

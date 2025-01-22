@@ -59,7 +59,7 @@ PixelShaderOutput main(VertexShaderOutput input)
                         totalDiffuse += diffuse;
 
                         // Specular
-                        float specPow = (gMaterial.shininess >= 1.0f) ? pow(NdotH, gMaterial.shininess) : 0.0f;
+                        float specPow = (gMaterial.shininess >= 1.0f && gMaterial.enableSpeculaerRef) ? pow(NdotH, gMaterial.shininess) : 0.0f;
                         float3 specular = light.color * light.intensity * specPow;
                         totalSpecular += specular;
                     }
@@ -82,7 +82,7 @@ PixelShaderOutput main(VertexShaderOutput input)
                         // Specular
                         float3 H = normalize(L + toEye);
                         float NdotH = saturate(dot(normal, H));
-                        float specPow = (gMaterial.shininess >= 1.0f) ? pow(NdotH, gMaterial.shininess) : 0.0f;
+                        float specPow = (gMaterial.shininess >= 1.0f && gMaterial.enableSpeculaerRef) ? pow(NdotH, gMaterial.shininess) : 0.0f;
                         float3 specular = light.color * light.intensity * specPow * atten;
                         totalSpecular += specular;
                     }
@@ -110,7 +110,7 @@ PixelShaderOutput main(VertexShaderOutput input)
                         // Specular
                         float3 H = normalize(L + toEye);
                         float NdotH = saturate(dot(normal, H));
-                        float specPow = (gMaterial.shininess >= 1.0f) ? pow(NdotH, gMaterial.shininess) : 0.0f;
+                        float specPow = (gMaterial.shininess >= 1.0f && gMaterial.enableSpeculaerRef) ? pow(NdotH, gMaterial.shininess) : 0.0f;
                         float3 specular = light.color * light.intensity * specPow * atten * falloff;
                         totalSpecular += specular;
                     }
