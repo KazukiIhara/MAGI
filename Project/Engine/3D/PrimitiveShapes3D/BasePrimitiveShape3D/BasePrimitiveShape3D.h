@@ -17,7 +17,7 @@
 /// </summary>
 class BasePrimitiveShape3D {
 public:
-	BasePrimitiveShape3D(const std::string& textureFilePath = "");
+	BasePrimitiveShape3D();
 	virtual ~BasePrimitiveShape3D() = default;
 	void Initialize(const std::string& textureFilePath);
 	virtual void Update();
@@ -46,11 +46,13 @@ private:
 	// マテリアルデータの書き込み
 	void MapMaterialData();
 
-private:
+protected:
 	// 形状データ
 	PrimitiveData primitiveData_{};
 	// 貼り付けるテクスチャファイルパス
 	std::string textureFilePath_ = "";
+
+private:
 
 	// 頂点リソース
 	ComPtr<ID3D12Resource> vertexResource_ = nullptr;

@@ -2,8 +2,7 @@
 
 #include "Framework/MAGI.h"
 
-BasePrimitiveShape3D::BasePrimitiveShape3D(const std::string& textureFilePath) {
-	Initialize(textureFilePath);
+BasePrimitiveShape3D::BasePrimitiveShape3D() {
 }
 
 void BasePrimitiveShape3D::Initialize(const std::string& textureFilePath) {
