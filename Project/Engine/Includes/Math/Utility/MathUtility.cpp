@@ -253,6 +253,20 @@ Vector3 MAGIMath::Forward(const Vector3& rotate) {
 	return Normalize(forward);
 }
 
+Vector3 MAGIMath::Transform(const Vector3& vector, const Quaternion& rotation) {
+	// クォータニオンの逆（共役）を計算
+	Quaternion conjugateRotation = Conjugate(rotation);
+
+	// ベクトルをクォータニオン形式に変換（w = 0）
+	Quaternion vectorQuat = { vector.x, vector.y, vector.z, 0.0f };
+
+	// 回転の適用: q * v * q^-1
+	Quaternion rotatedQuat = rotation * vectorQuat * conjugateRotation;
+
+	// 結果をベクトル形式に戻す
+	return { rotatedQuat.x, rotatedQuat.y, rotatedQuat.z };
+}
+
 Vector3 MAGIMath::ExtractionWorldPos(const Matrix4x4& m) {
 	Vector3 result{};
 	result.x = m.m[3][0];
@@ -372,6 +386,33 @@ Matrix4x4 MAGIMath::MakeRotateXYZMatrix(const Vector3& rotate) {
 	Matrix4x4 rotateZ = MakeRotateZMatrix(rotate.z);
 
 	Matrix4x4 result = rotateX * rotateY * rotateZ;
+	return result;
+}
+
+Matrix4x4 MAGIMath::MakeRotateZXYMatrix(const Vector3& rotate) {
+	Matrix4x4 rotateX = MakeRotateXMatrix(rotate.x);
+	Matrix4x4 rotateY = MakeRotateYMatrix(rotate.y);
+	Matrix4x4 rotateZ = MakeRotateZMatrix(rotate.z);
+
+	Matrix4x4 result = rotateZ * rotateX * rotateY;
+	return result;
+}
+
+Matrix4x4 MAGIMath::MakeRotateYXZMatrix(const Vector3& rotate) {
+	Matrix4x4 rotateX = MakeRotateXMatrix(rotate.x);
+	Matrix4x4 rotateY = MakeRotateYMatrix(rotate.y);
+	Matrix4x4 rotateZ = MakeRotateZMatrix(rotate.z);
+
+	Matrix4x4 result = rotateY * rotateX * rotateZ;
+	return result;
+}
+
+Matrix4x4 MAGIMath::MakeRotateXZYMatrix(const Vector3& rotate) {
+	Matrix4x4 rotateX = MakeRotateXMatrix(rotate.x);
+	Matrix4x4 rotateY = MakeRotateYMatrix(rotate.y);
+	Matrix4x4 rotateZ = MakeRotateZMatrix(rotate.z);
+
+	Matrix4x4 result = rotateX * rotateZ * rotateY;
 	return result;
 }
 

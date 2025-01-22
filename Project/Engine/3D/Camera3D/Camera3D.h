@@ -20,7 +20,7 @@ public:
 	virtual ~Camera3D();
 
 	// 初期化
-	void Initialize();
+	virtual void Initialize();
 	// 更新
 	virtual void Update();
 	// 定数バッファに転送

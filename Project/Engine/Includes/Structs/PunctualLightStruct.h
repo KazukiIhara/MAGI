@@ -13,7 +13,7 @@ struct PunctualLightData {
 	float intensity = 1.0f;
 
 	// Spot Point共通
-	Vector3 position = { 0.0f,0.0f,0.0f };
+	Vector3 position = { 0.0f,1.0f,0.0f };
 	float radius = 10.0f;
 	float decay = 5.0f;
 

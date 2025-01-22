@@ -139,6 +139,9 @@ namespace MAGIMath {
 	// ベクトルの向きを取得
 	Vector3 Forward(const Vector3& rotate);
 
+	// クォータニオンを使用してベクトルを回転させる
+	Vector3 Transform(const Vector3& vector, const Quaternion& rotation);
+
 	// ワールド行列からワールド座標取得
 	Vector3 ExtractionWorldPos(const Matrix4x4& m);
 
@@ -163,7 +166,11 @@ namespace MAGIMath {
 	Matrix4x4 MakeRotateXMatrix(float radian); // X回転
 	Matrix4x4 MakeRotateYMatrix(float radian); // Y回転
 	Matrix4x4 MakeRotateZMatrix(float radian); // Z回転
+
 	Matrix4x4 MakeRotateXYZMatrix(const Vector3& rotate); // XYZ回転
+	Matrix4x4 MakeRotateZXYMatrix(const Vector3& rotate); // ZXY回転
+	Matrix4x4 MakeRotateYXZMatrix(const Vector3& rotate); // YXZ回転
+	Matrix4x4 MakeRotateXZYMatrix(const Vector3& rotate); // XZY回転
 
 	Matrix4x4 MakeRotateMatrix(const Quaternion& q);// XYZクオータニオン
 
