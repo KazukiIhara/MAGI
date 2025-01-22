@@ -9,7 +9,7 @@ public:
 private:
 	void UpdateEuler();
 	void UpdateQuaternion();
-	void RotateQuaternion()
+	void RotateQuaternion();
 public:
 	// クオータニオン角を使うかどうか
 	bool isUseQuaternion_ = false;
