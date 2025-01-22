@@ -174,7 +174,7 @@ public: // エンジンの機能
 
 #pragma region PunctualLightManager
 	// ライトの追加
-	static void AddPunctualLight(const std::string& lightName, const PunctualLightData& lightData);
+	static void AddPunctualLight(const std::string& lightName, const PunctualLightData& lightData = PunctualLightData{});
 	// ライトの削除
 	static void RemovePunctualLight(const std::string& lightName);
 	// ライトの取得

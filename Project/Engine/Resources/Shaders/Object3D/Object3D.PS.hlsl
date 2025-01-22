@@ -21,9 +21,11 @@ PixelShaderOutput main(VertexShaderOutput input)
     // Diffuse,Specularを蓄積するための変数
     float3 totalDiffuse = 0.0f;
     float3 totalSpecular = 0.0f;
-
-    // テクスチャサンプリング等
-    float4 textureColor = gTexture.Sample(gSampler, input.texcoord);
+    
+    // UV情報を取得
+    float4 transformedUV = mul(float4(input.texcoord, 0.0f, 1.0f), mul(gMaterial.uvTransform, gModelMaterial.uvTransform));
+    // テクスチャサンプリング
+    float4 textureColor = gTexture.Sample(gSampler, transformedUV.xy);
 
     // discard処理
     if (textureColor.a <= 0.5f)
