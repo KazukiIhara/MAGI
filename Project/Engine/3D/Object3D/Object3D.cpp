@@ -19,7 +19,8 @@ Object3D::~Object3D() {
 void Object3D::Initialize(const std::string& modelName) {
 	// ワールド行列初期化
 	worldTransform_.Initialize();
-
+	// クオータニオン角を使用する
+	worldTransform_.isUseQuaternion_ = true;
 	// モデル取得
 	model_ = std::make_unique<Model>(MAGISYSTEM::FindModel(modelName));
 	assert(model_ && "Warning: Not found model");

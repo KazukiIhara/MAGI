@@ -6,6 +6,8 @@ class DebugCamera3D:public Camera3D {
 public:
 	~DebugCamera3D()override = default;
 
+	void Initialize()override;
+
 	void Update()override;
 
 	void HandleCameraRotation(Vector3& cameraRotate, const POINT& delta);

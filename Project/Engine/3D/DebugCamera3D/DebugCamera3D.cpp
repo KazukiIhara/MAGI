@@ -4,6 +4,12 @@
 
 using namespace MAGIMath;
 
+void DebugCamera3D::Initialize() {
+	Camera3D::Initialize();
+	// クオータニオン角を使用しない
+	worldTransform_.isUseQuaternion_ = false;
+}
+
 void DebugCamera3D::Update() {
 	// マウス入力の取得
 	POINT cursorPos;
