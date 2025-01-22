@@ -47,11 +47,13 @@ inline void SampleScene<Data>::Initialize() {
 	auto& redLightData = MAGISYSTEM::GetLightData("redLight");
 	redLightData.type = 2;
 	redLightData.color = { 1.0f,0.0f,0.0f };
+	redLightData.intensity = 7.0f;
 	redLightData.position = { 2.0f,2.0f,0.0f };
 
 	auto& blueLightData = MAGISYSTEM::GetLightData("blueLight");
 	blueLightData.type = 2;
 	blueLightData.color = { 0.0f,0.0f,1.0f };
+	blueLightData.intensity = 7.0f;
 	blueLightData.position = { -2.0f,2.0f,0.0f };
 }
 

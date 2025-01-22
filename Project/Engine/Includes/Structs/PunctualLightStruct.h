@@ -23,6 +23,7 @@ struct PunctualLightData {
 	// SpotLight用
 	float cosAngle = std::cos(std::numbers::pi_v<float> / 3.0f);
 	float cosFalloffStart = 0.1f;
+
 };
 
 /// <summary>

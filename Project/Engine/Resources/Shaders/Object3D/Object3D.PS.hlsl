@@ -98,7 +98,7 @@ PixelShaderOutput main(VertexShaderOutput input)
                         float atten = pow(saturate(-distance / light.radius + 1.0f), light.decay);
 
                         // スポットライトの角度による減衰
-                        float cosAngle = dot(normalize(lightDir), normalize(light.spotDirection));
+                        float cosAngle = dot(normalize(lightDir), normalize(light.direction));
                         float falloff = saturate((cosAngle - light.cosAngle) /
                                           (light.cosFalloffStart - light.cosAngle));
 
