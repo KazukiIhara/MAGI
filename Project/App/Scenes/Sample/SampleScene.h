@@ -29,8 +29,8 @@ inline void SampleScene<Data>::Initialize() {
 	MAGISYSTEM::LoadModel("teapot");
 	MAGISYSTEM::LoadModel("terrain");
 
-	teapot_ = std::make_unique<Object3D>("teapot");
-	ground_ = std::make_unique<Object3D>("terrain");
+	teapot_ = std::make_unique<Object3D>("teapot", "teapot");
+	ground_ = std::make_unique<Object3D>("terrain", "terrain");
 
 	teapot_->GetTranslate().y = 0.5f;
 
