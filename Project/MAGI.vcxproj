@@ -122,6 +122,8 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Engine\3D\Object3D\Object3D.h" />
     <ClInclude Include="Engine\3D\Primitive3D\Primitive3D.h" />
     <ClInclude Include="Engine\3D\BaseRenderable3D\BaseRenderable3D.h" />
+    <ClInclude Include="Engine\3D\PrimitiveShapes3D\BasePrimitiveShape3D\BasePrimitiveShape3D.h" />
+    <ClInclude Include="Engine\3D\PrimitiveShapes3D\Plane\Plane.h" />
     <ClInclude Include="Engine\3D\WorldEntity\WorldEntity.h" />
     <ClInclude Include="Engine\3D\WorldTransform\WorldTransform.h" />
     <ClInclude Include="Engine\AssetContainers\AnimationDataContainer\AnimationDataContainer.h" />
@@ -151,6 +153,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Engine\Includes\Enums\BlendModeEnum.h" />
     <ClInclude Include="Engine\Includes\Enums\GraphicsPipelineEnum.h" />
     <ClInclude Include="Engine\Includes\Enums\MouseInputEnum.h" />
+    <ClInclude Include="Engine\Includes\Enums\Primitive3DEnum.h" />
     <ClInclude Include="Engine\Includes\Enums\PunctualLightDataEnum.h" />
     <ClInclude Include="Engine\Includes\Enums\RenderTargetEnumh.h" />
     <ClInclude Include="Engine\Includes\Enums\XInputEnum.h" />
@@ -167,6 +170,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Engine\Includes\Structs\ColorStruct.h" />
     <ClInclude Include="Engine\Includes\Structs\ModelStruct.h" />
     <ClInclude Include="Engine\Includes\Structs\ObjectStruct.h" />
+    <ClInclude Include="Engine\Includes\Structs\ShapeStruct.h" />
     <ClInclude Include="Engine\Includes\Structs\PunctualLightStruct.h" />
     <ClInclude Include="Engine\Includes\Structs\TextureStruct.h" />
     <ClInclude Include="Engine\LeakChecker\D3DResourceLeakChecker.h" />
@@ -189,6 +193,8 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Engine\3D\Model\Model.cpp" />
     <ClCompile Include="Engine\3D\Object3D\Object3D.cpp" />
     <ClCompile Include="Engine\3D\Primitive3D\Primitive3D.cpp" />
+    <ClCompile Include="Engine\3D\PrimitiveShapes3D\BasePrimitiveShape3D\BasePrimitiveShape3D.cpp" />
+    <ClCompile Include="Engine\3D\PrimitiveShapes3D\Plane\Plane.cpp" />
     <ClCompile Include="Engine\3D\WorldEntity\WorldEntity.cpp" />
     <ClCompile Include="Engine\3D\WorldTransform\WorldTransform.cpp" />
     <ClCompile Include="Engine\AssetContainers\AnimationDataContainer\AnimationDataContainer.cpp" />

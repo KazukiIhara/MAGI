@@ -6,6 +6,15 @@
 // MyHedder
 #include "Math/Utility/MathUtility.h"
 
+/// <summary>
+/// UVトランスフォーム
+/// </summary>
+struct UVTransform {
+	Vector2 scale;
+	float rotateZ;
+	Vector2 translate;
+};
+
 // オイラー角3DTrasform
 struct EulerTransform3D {
 	Vector3 scale = { 1.0f,1.0f,1.0f };

@@ -8,18 +8,22 @@
 #include <d3d12.h>
 
 // MyHedder
-#include "Structs/ModelStruct.h"
 #include "DirectX/ComPtr/ComPtr.h"
+#include "Structs/ModelStruct.h"
+#include "Enums/Primitive3DEnum.h"
 
 /// <summary>
-/// メッシュクラス
+/// 3Dプリミティブ形状の基底クラス
 /// </summary>
-class Mesh {
+class BasePrimitiveShape3D {
 public:
-	Mesh(const MeshData& meshData);
-	void Initialize(const MeshData& meshData);
-	void Update();
+	BasePrimitiveShape3D(const std::string& textureFilePath = "");
+	virtual ~BasePrimitiveShape3D() = default;
+	void Initialize(const std::string& textureFilePath);
+	virtual void Update();
 	void Draw();
+
+	virtual void CreateShape() = 0;
 
 	void SetTextureFilePath(const std::string& textureFilePath);
 private:
@@ -41,9 +45,12 @@ private:
 	void CreateMaterialResource();
 	// マテリアルデータの書き込み
 	void MapMaterialData();
+
 private:
-	// メッシュデータ
-	MeshData meshData_{};
+	// 形状データ
+	PrimitiveData primitiveData_{};
+	// 貼り付けるテクスチャファイルパス
+	std::string textureFilePath_ = "";
 
 	// 頂点リソース
 	ComPtr<ID3D12Resource> vertexResource_ = nullptr;
@@ -63,5 +70,4 @@ private:
 	ComPtr<ID3D12Resource> materialResource_ = nullptr;
 	// マテリアルデータ
 	MaterialForGPU* materialData_ = nullptr;
-
 };

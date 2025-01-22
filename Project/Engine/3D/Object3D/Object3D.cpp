@@ -6,7 +6,7 @@
 
 using namespace MAGIMath;
 
-Object3D::Object3D(const std::string& modelName, const std::string& objectName)
+Object3D::Object3D(const std::string& objectName, const std::string& modelName)
 	:BaseRenderable3D(objectName) {
 	Initialize(modelName);
 }

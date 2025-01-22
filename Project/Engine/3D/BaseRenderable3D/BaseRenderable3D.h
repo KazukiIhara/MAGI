@@ -42,6 +42,8 @@ protected:
 private:
 	// ワールドトランスフォーム
 	WorldTransform worldTransform_{};
+	// UVトランスフォーム
+	UVTransform uvTransform_{};
 	// ブレンドモード
 	BlendMode blendMode_ = BlendMode::Normal;
 

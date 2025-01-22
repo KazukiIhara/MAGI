@@ -36,12 +36,14 @@ void BaseRenderable3D::Initialize(const std::string& objectName) {
 void BaseRenderable3D::Update() {
 	// ワールド行列更新
 	worldTransform_.Update();
-
 	// 中心座標の更新
 	worldPosition_ = ExtractionWorldPos(worldTransform_.worldMatrix_);
 
-	UpdateWVPData();
+	// uvTransformの更新
+	material_.uvTransformMatrix = MakeUVMatrix(uvTransform_.scale, uvTransform_.rotateZ, uvTransform_.translate);
 
+	// GPUに送るデータの更新
+	UpdateWVPData();
 	UpdateMaterialData();
 }
 

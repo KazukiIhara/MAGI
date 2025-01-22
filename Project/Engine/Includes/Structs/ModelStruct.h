@@ -34,6 +34,16 @@ struct MeshData {
 };
 
 /// <summary>
+/// プリミティブ描画用データ
+/// </summary>
+struct PrimitiveData {
+	std::vector<VertexData3D> vertices;
+	std::vector<uint32_t> indices;
+	Matrix4x4 uvMatrix;
+	Vector4 color;
+};
+
+/// <summary>
 /// モデルデータ
 /// </summary>
 struct ModelData {

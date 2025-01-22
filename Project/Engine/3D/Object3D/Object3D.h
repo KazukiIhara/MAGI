@@ -8,7 +8,7 @@
 
 class Object3D :public BaseRenderable3D {
 public:
-	Object3D(const std::string& modelName, const std::string& objectName);
+	Object3D(const std::string& objectName, const std::string& modelName);
 	~Object3D()override;
 	void Initialize(const std::string& modelName);
 	void Update()override;
@@ -16,5 +16,4 @@ public:
 private:
 	// モデル
 	std::unique_ptr<Model> model_ = nullptr;
-
 };
