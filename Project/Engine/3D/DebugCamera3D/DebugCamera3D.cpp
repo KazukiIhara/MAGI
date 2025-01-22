@@ -12,7 +12,7 @@ void DebugCamera3D::Update() {
 	ScreenToClient(MAGISYSTEM::GetWindowHandle(), &cursorPos);
 
 	static POINT lastCursorPos = cursorPos;
-	POINT delta;
+	POINT delta{};
 	delta.x = cursorPos.x - lastCursorPos.x;
 	delta.y = cursorPos.y - lastCursorPos.y;
 
@@ -46,13 +46,13 @@ void DebugCamera3D::HandleCameraTranslation(Vector3& cameraTranslate, Vector3& c
 	// 中ボタンドラッグで移動
 	if (GetAsyncKeyState(VK_MBUTTON) & 0x8000) {
 		// 回転からカメラの右方向ベクトルを計算
-		Vector3 right;
+		Vector3 right{};
 		right.x = std::cosf(cameraRotate.y);
 		right.y = 0.0f;
 		right.z = -std::sinf(cameraRotate.y);
 
 		// 回転からカメラの上方向ベクトルを計算
-		Vector3 up;
+		Vector3 up{};
 		up.x = std::sinf(cameraRotate.x) * std::sinf(cameraRotate.y);
 		up.y = std::cosf(cameraRotate.x);
 		up.z = std::sinf(cameraRotate.x) * std::cosf(cameraRotate.y);

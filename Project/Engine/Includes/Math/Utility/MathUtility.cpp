@@ -253,6 +253,20 @@ Vector3 MAGIMath::Forward(const Vector3& rotate) {
 	return Normalize(forward);
 }
 
+Vector3 MAGIMath::Transform(const Vector3& vector, const Quaternion& rotation) {
+	// クォータニオンの逆（共役）を計算
+	Quaternion conjugateRotation = Conjugate(rotation);
+
+	// ベクトルをクォータニオン形式に変換（w = 0）
+	Quaternion vectorQuat = { vector.x, vector.y, vector.z, 0.0f };
+
+	// 回転の適用: q * v * q^-1
+	Quaternion rotatedQuat = rotation * vectorQuat * conjugateRotation;
+
+	// 結果をベクトル形式に戻す
+	return { rotatedQuat.x, rotatedQuat.y, rotatedQuat.z };
+}
+
 Vector3 MAGIMath::ExtractionWorldPos(const Matrix4x4& m) {
 	Vector3 result{};
 	result.x = m.m[3][0];

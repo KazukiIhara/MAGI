@@ -35,7 +35,13 @@ inline void SampleScene<Data>::Initialize() {
 	teapot_ = std::make_unique<Object3D>("teapot");
 	ground_ = std::make_unique<Object3D>("Ground");
 
-	MAGISYSTEM::AddPunctualLight("sampleLight");
+	//MAGISYSTEM::AddPunctualLight("sampleLight");
+	MAGISYSTEM::AddPunctualLight("redLight");
+
+
+	auto& lightData = MAGISYSTEM::GetLightData("redLight");
+	lightData.color = { 1.0f,0.0f,0.0f };
+	lightData.type = 2;
 }
 
 template<typename Data>

@@ -13,23 +13,19 @@ void WorldTransform::Initialize() {
 }
 
 void WorldTransform::Update() {
-	// 回転処理
-	if (rotate_.x != preRotate_.x || rotate_.y != preRotate_.y || rotate_.z != preRotate_.z) {
-		Rotate();
-	}
-	// アフィン行列作成
-	worldMatrix_ = MakeAffineMatrix(scale_, rotateQuaternion_, translate_);
+
+	// クオータニオンorオイラー
+	isUseQuaternion_ ? UpdateQuaternion() : UpdateEuler();
+
 	// 親がいる場合の計算
 	if (parent_) {
 		worldMatrix_ = worldMatrix_ * parent_->worldMatrix_;
 	}
 	// ワールド座標を計算
 	worldPosition_ = ExtractionWorldPos(worldMatrix_);
-	preRotate_ = rotate_;
 }
 
-void WorldTransform::Rotate() {
-
+void WorldTransform::RotateQuaternion() {
 	if (rotate_.x == 0.0f && rotate_.y == 0.0f && rotate_.z == 0.0f) {
 		rotateQuaternion_ = MakeIdentityQuaternion();
 	} else {
@@ -49,4 +45,20 @@ void WorldTransform::Rotate() {
 		// クォータニオンを正規化
 		rotateQuaternion_ = Normalize(rotateQuaternion_);
 	}
+}
+
+void WorldTransform::UpdateEuler() {
+	// アフィン行列作成
+	worldMatrix_ = MakeAffineMatrix(scale_, rotate_, translate_);
+}
+
+void WorldTransform::UpdateQuaternion() {
+	// 回転処理
+	if (rotate_.x != preRotate_.x || rotate_.y != preRotate_.y || rotate_.z != preRotate_.z) {
+		RotateQuaternion();
+	}
+	// アフィン行列作成
+	worldMatrix_ = MakeAffineMatrix(scale_, rotateQuaternion_, translate_);
+	// 回転量計算用変数に挿入
+	preRotate_ = rotate_;
 }
