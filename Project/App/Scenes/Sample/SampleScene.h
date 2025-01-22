@@ -6,7 +6,6 @@
 #include "Framework/MAGI.h"
 
 #include "3D/Object3D/Object3D.h"
-#include "3D/Camera3D/Camera3D.h"
 
 // サンプルシーン
 template <typename Data>
@@ -21,7 +20,6 @@ public:
 	void Finalize() override;
 
 private:
-	std::unique_ptr<Camera3D> camera_ = nullptr;
 	std::unique_ptr<Object3D> teapot_ = nullptr;
 	std::unique_ptr<Object3D> ground_ = nullptr;
 };
@@ -31,7 +29,6 @@ inline void SampleScene<Data>::Initialize() {
 	MAGISYSTEM::LoadModel("teapot");
 	MAGISYSTEM::LoadModel("terrain");
 
-	camera_ = std::make_unique<Camera3D>();
 	teapot_ = std::make_unique<Object3D>("teapot");
 	ground_ = std::make_unique<Object3D>("terrain");
 

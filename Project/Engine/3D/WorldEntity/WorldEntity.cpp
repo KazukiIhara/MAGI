@@ -10,3 +10,7 @@ WorldEntity::WorldEntity() {
 std::string& WorldEntity::GetName() {
 	return name_;
 }
+
+Vector3& WorldEntity::GetWorldPosition() {
+	return worldPosition_;
+}

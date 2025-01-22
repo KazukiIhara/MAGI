@@ -7,9 +7,9 @@ class WorldEntity {
 public:
 	WorldEntity();
 	virtual ~WorldEntity() = default;
-protected:
-	std::string& GetName();
 
+	std::string& GetName();
+	Vector3& GetWorldPosition();
 public:
 	// 名前
 	std::string name_;
