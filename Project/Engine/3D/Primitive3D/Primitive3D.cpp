@@ -2,20 +2,20 @@
 
 #include "3D/PrimitiveShapes3D/Plane/Plane.h"
 
-Primitive3D::Primitive3D(const std::string& objectName, const Primitive3DType& primitiveType)
+Primitive3D::Primitive3D(const std::string& objectName, const Primitive3DType& primitiveType, const std::string& textureFilePath)
 	:BaseRenderable3D(objectName) {
-	Initialize(primitiveType);
+	Initialize(primitiveType, textureFilePath);
 }
 
 Primitive3D::~Primitive3D() {
 	primitive_.reset();
 }
 
-void Primitive3D::Initialize(const Primitive3DType& primitiveType) {
+void Primitive3D::Initialize(const Primitive3DType& primitiveType, const std::string& textureFilePath) {
 	primitiveType_ = primitiveType;
 	switch (primitiveType_) {
 		case Primitive3DType::Plane:
-			primitive_ = std::make_unique<Plane>();
+			primitive_ = std::make_unique<Plane>(textureFilePath);
 			break;
 		case Primitive3DType::Sphere:
 			break;

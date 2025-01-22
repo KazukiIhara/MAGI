@@ -9,9 +9,9 @@
 
 class Primitive3D:public BaseRenderable3D {
 public:
-	Primitive3D(const std::string& objectName, const Primitive3DType& primitiveType);
+	Primitive3D(const std::string& objectName, const Primitive3DType& primitiveType, const std::string& textureFilePath = "");
 	~Primitive3D()override;
-	void Initialize(const Primitive3DType& primitiveType);
+	void Initialize(const Primitive3DType& primitiveType, const std::string& textureFilePath);
 	void Update()override;
 	void Draw()override;
 private:
