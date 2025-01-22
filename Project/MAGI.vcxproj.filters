@@ -22,8 +22,11 @@
     <Filter Include="Engine\3D">
       <UniqueIdentifier>{C14C8BD1-2DB7-3F48-76F5-F0EDE29E1D9D}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Engine\3D\Camera">
-      <UniqueIdentifier>{19DE52B5-05D7-7107-2E09-578C1A615113}</UniqueIdentifier>
+    <Filter Include="Engine\3D\Camera3D">
+      <UniqueIdentifier>{30CF8255-1CB3-43AB-8513-3EFE71162E2D}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\3D\DebugCamera3D">
+      <UniqueIdentifier>{17055C86-833C-A41D-8C46-0841F8FCCA16}</UniqueIdentifier>
     </Filter>
     <Filter Include="Engine\3D\Mesh">
       <UniqueIdentifier>{1DE32C8E-09B1-2094-F244-91BADEB1FCF8}</UniqueIdentifier>
@@ -60,6 +63,9 @@
     </Filter>
     <Filter Include="Engine\BaseScene">
       <UniqueIdentifier>{F34FD70C-DF48-F65E-087B-DBE3F4D2D56A}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Camera3DManager">
+      <UniqueIdentifier>{256F4171-1169-6AC3-FAD5-00D4E66ED02F}</UniqueIdentifier>
     </Filter>
     <Filter Include="Engine\DeltaTimer">
       <UniqueIdentifier>{B5E83FAE-21FF-3D44-6A76-C965D6CB0ECC}</UniqueIdentifier>
@@ -190,7 +196,10 @@
       <Filter>App\Scenes\Sample</Filter>
     </ClInclude>
     <ClInclude Include="Engine\3D\Camera3D\Camera3D.h">
-      <Filter>Engine\3D\Camera</Filter>
+      <Filter>Engine\3D\Camera3D</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\3D\DebugCamera3D\DebugCamera3D.h">
+      <Filter>Engine\3D\DebugCamera3D</Filter>
     </ClInclude>
     <ClInclude Include="Engine\3D\Mesh\Mesh.h">
       <Filter>Engine\3D\Mesh</Filter>
@@ -224,6 +233,9 @@
     </ClInclude>
     <ClInclude Include="Engine\BaseScene\BaseScene.h">
       <Filter>Engine\BaseScene</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Camera3DManager\Camera3DManager.h">
+      <Filter>Engine\Camera3DManager</Filter>
     </ClInclude>
     <ClInclude Include="Engine\DeltaTimer\DeltaTimer.h">
       <Filter>Engine\DeltaTimer</Filter>
@@ -372,15 +384,16 @@
     <ClInclude Include="Engine\WindowApp\WindowApp.h">
       <Filter>Engine\WindowApp</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\Camera3DManager\Camera3DManager.h" />
-    <ClInclude Include="Engine\3D\DebugCamera3D\DebugCamera3D.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="App\Game\Game.cpp">
       <Filter>App\Game</Filter>
     </ClCompile>
     <ClCompile Include="Engine\3D\Camera3D\Camera3D.cpp">
-      <Filter>Engine\3D\Camera</Filter>
+      <Filter>Engine\3D\Camera3D</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\3D\DebugCamera3D\DebugCamera3D.cpp">
+      <Filter>Engine\3D\DebugCamera3D</Filter>
     </ClCompile>
     <ClCompile Include="Engine\3D\Mesh\Mesh.cpp">
       <Filter>Engine\3D\Mesh</Filter>
@@ -411,6 +424,9 @@
     </ClCompile>
     <ClCompile Include="Engine\AssetContainers\TextureDataContainer\TextureDataContainer.cpp">
       <Filter>Engine\AssetContainers\TextureDataContainer</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Camera3DManager\Camera3DManager.cpp">
+      <Filter>Engine\Camera3DManager</Filter>
     </ClCompile>
     <ClCompile Include="Engine\DeltaTimer\DeltaTimer.cpp">
       <Filter>Engine\DeltaTimer</Filter>
@@ -497,8 +513,6 @@
       <Filter>Engine\WindowApp</Filter>
     </ClCompile>
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="Engine\Camera3DManager\Camera3DManager.cpp" />
-    <ClCompile Include="Engine\3D\DebugCamera3D\DebugCamera3D.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Engine\SceneManager\SceneManager.ipp">
