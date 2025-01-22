@@ -39,6 +39,7 @@ inline void SampleScene<Data>::Initialize() {
 
 	MAGISYSTEM::AddPunctualLight("sampleLight");
 	MAGISYSTEM::AddPunctualLight("redLight");
+	MAGISYSTEM::AddPunctualLight("blueLight");
 
 	auto& sampleLight = MAGISYSTEM::GetLightData("sampleLight");
 	sampleLight.intensity = 0.1f;
@@ -46,7 +47,12 @@ inline void SampleScene<Data>::Initialize() {
 	auto& redLightData = MAGISYSTEM::GetLightData("redLight");
 	redLightData.type = 2;
 	redLightData.color = { 1.0f,0.0f,0.0f };
-	redLightData.position = { 0.0f,2.0f,0.0f };
+	redLightData.position = { 2.0f,2.0f,0.0f };
+
+	auto& blueLightData = MAGISYSTEM::GetLightData("blueLight");
+	blueLightData.type = 2;
+	blueLightData.color = { 0.0f,0.0f,1.0f };
+	blueLightData.position = { -2.0f,2.0f,0.0f };
 }
 
 template<typename Data>

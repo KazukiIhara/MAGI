@@ -17,11 +17,10 @@ struct PunctualLightData {
 	float radius = 10.0f;
 	float decay = 5.0f;
 
-	// DirectionalLight用
+	// SpotLight DirectionalLight共通
 	Vector3 direction = { 0.0f,-1.0f,0.0f };
 
 	// SpotLight用
-	Vector3 spotDirection = { 0.0f,-1.0f,0.0f };
 	float cosAngle = std::cos(std::numbers::pi_v<float> / 3.0f);
 	float cosFalloffStart = 0.1f;
 };
