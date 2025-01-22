@@ -10,9 +10,9 @@
 /// UVトランスフォーム
 /// </summary>
 struct UVTransform {
-	Vector2 scale;
-	float rotateZ;
-	Vector2 translate;
+	Vector2 scale = { 1.0f,1.0f };
+	float rotateZ = 0.0f;
+	Vector2 translate = { 0.0f,0.0f };
 };
 
 // オイラー角3DTrasform

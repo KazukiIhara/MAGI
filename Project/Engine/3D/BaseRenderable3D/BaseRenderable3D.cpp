@@ -14,6 +14,9 @@ void BaseRenderable3D::Initialize(const std::string& objectName) {
 	name_ = objectName;
 	// ワールド行列初期化
 	worldTransform_.Initialize();
+	// UVトランスフォームを初期化
+	uvTransform_ = {};
+
 	// クオータニオン角を使用する
 	worldTransform_.isUseQuaternion_ = true;
 	// マテリアル初期化
