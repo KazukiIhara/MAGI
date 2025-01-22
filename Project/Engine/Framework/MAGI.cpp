@@ -323,9 +323,9 @@ void MAGISYSTEM::Draw() {
 	//
 
 
-	// RootSignatureを設定。PSOに設定しているけど別途設定が必要
+	// RootSignatureを設定
 	directXCommand_->GetList()->SetGraphicsRootSignature(graphicsPipelineManager_->GetRootSignature(GraphicsPipelineStateType::Object3D));
-	// 形状を設定。PSOに設定しているものとはまた別。同じものを設定すると考えておけば良い
+	// 形状を設定
 	directXCommand_->GetList()->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
 	//

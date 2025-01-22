@@ -3,17 +3,16 @@
 using namespace MAGIMath;
 
 void WorldTransform::Initialize() {
-	WorldEntity::Initialize();
-	rotate_ = { 0.0f,0.0f,0.0f };
-
 	scale_ = { 1.0f,1.0f,1.0f };
-	rotateQuaternion_ = MakeIdentityQuaternion();
+	rotate_ = { 0.0f,0.0f,0.0f };
 	translate_ = { 0.0f,0.0f,0.0f };
+
+	rotateQuaternion_ = MakeIdentityQuaternion();
+
 	worldMatrix_ = MakeIdentityMatrix4x4();
 }
 
 void WorldTransform::Update() {
-
 	// クオータニオンorオイラー
 	isUseQuaternion_ ? UpdateQuaternion() : UpdateEuler();
 
@@ -21,8 +20,6 @@ void WorldTransform::Update() {
 	if (parent_) {
 		worldMatrix_ = worldMatrix_ * parent_->worldMatrix_;
 	}
-	// ワールド座標を計算
-	worldPosition_ = ExtractionWorldPos(worldMatrix_);
 }
 
 void WorldTransform::UpdateEuler() {

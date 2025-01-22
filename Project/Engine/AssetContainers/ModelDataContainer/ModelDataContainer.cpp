@@ -42,6 +42,7 @@ ModelData ModelDataContainer::FindModelData(const std::string& modelName) const 
 		return modelDatas_.at(modelName);
 	}
 	// 見つからなかった場合止める
+	
 	assert(false && "Warning: Not found model");
 	return ModelData{};
 }

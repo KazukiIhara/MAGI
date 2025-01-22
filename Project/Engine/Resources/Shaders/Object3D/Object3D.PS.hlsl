@@ -50,7 +50,7 @@ PixelShaderOutput main(VertexShaderOutput input)
                 case 0: // Directional
             {
                         float3 L = -normalize(light.direction);
-                        float NdotL = saturate(dot(normal, L));
+                        float NdotL = saturate(0.5 * dot(normal, L) + 0.5);
                         float3 H = normalize(L + toEye);
                         float NdotH = saturate(dot(normal, H));
 
@@ -70,12 +70,12 @@ PixelShaderOutput main(VertexShaderOutput input)
                         float3 lightDir = light.position - input.worldPosition;
                         float distance = length(lightDir);
                         float3 L = normalize(lightDir);
-
+                        float NdotL = saturate(0.5 * dot(normal, L) + 0.5);
+                    
                         // ãóó£å∏êä
                         float atten = pow(saturate(-distance / light.radius + 1.0f), light.decay);
 
-                        // Diffuse
-                        float NdotL = saturate(dot(normal, L));
+                        // Diffuse                   
                         float3 diffuse = light.color * light.intensity * NdotL * atten;
                         totalDiffuse += diffuse;
 
@@ -93,7 +93,8 @@ PixelShaderOutput main(VertexShaderOutput input)
                         float3 lightDir = light.position - input.worldPosition;
                         float distance = length(lightDir);
                         float3 L = normalize(lightDir);
-
+                        float NdotL = saturate(0.5 * dot(normal, L) + 0.5);
+                    
                         // ãóó£å∏êä
                         float atten = pow(saturate(-distance / light.radius + 1.0f), light.decay);
 
@@ -102,8 +103,7 @@ PixelShaderOutput main(VertexShaderOutput input)
                         float falloff = saturate((cosAngle - light.cosAngle) /
                                           (light.cosFalloffStart - light.cosAngle));
 
-                        // Diffuse
-                        float NdotL = saturate(dot(normal, L));
+                        // Diffuse                        
                         float3 diffuse = light.color * light.intensity * NdotL * atten * falloff;
                         totalDiffuse += diffuse;
 
