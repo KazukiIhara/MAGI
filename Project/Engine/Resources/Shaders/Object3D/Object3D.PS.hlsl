@@ -136,6 +136,8 @@ PixelShaderOutput main(VertexShaderOutput input)
     {
         discard;
     }
+    
+    output.color.rgb = pow(output.color.rgb, 2.2);
        
     return output;
 }
