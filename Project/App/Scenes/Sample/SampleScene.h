@@ -63,25 +63,25 @@ template<typename Data>
 inline void SampleScene<Data>::Update() {
 
 	if (MAGISYSTEM::TriggerKey(DIK_R)) {
-		teapot_->GetRotate() = { 0.0f,0.0f,0.0f };
+		plane_->GetRotate() = { 0.0f,0.0f,0.0f };
 	}
 
 	if (MAGISYSTEM::PushKey(DIK_W)) {
 		plane_->GetRotate().x += 0.01f;
 	} else if (MAGISYSTEM::PushKey(DIK_S)) {
-		teapot_->GetRotate().x -= 0.01f;
+		plane_->GetRotate().x -= 0.01f;
 	}
 
 	if (MAGISYSTEM::PushKey(DIK_D)) {
-		teapot_->GetRotate().y += 0.01f;
+		plane_->GetRotate().y += 0.01f;
 	} else if (MAGISYSTEM::PushKey(DIK_A)) {
-		teapot_->GetRotate().y -= 0.01f;
+		plane_->GetRotate().y -= 0.01f;
 	}
 
 	if (MAGISYSTEM::PushKey(DIK_Q)) {
-		teapot_->GetRotate().z += 0.01f;
+		plane_->GetRotate().z += 0.01f;
 	} else if (MAGISYSTEM::PushKey(DIK_E)) {
-		teapot_->GetRotate().z -= 0.01f;
+		plane_->GetRotate().z -= 0.01f;
 	}
 
 	ground_->Update();
