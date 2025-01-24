@@ -15,13 +15,7 @@
 	"nodes":[
 		{
 			"mesh":0,
-			"name":"Plane",
-			"rotation":[
-				0.7071068286895752,
-				0,
-				0,
-				0.7071068286895752
-			]
+			"name":"Plane"
 		}
 	],
 	"materials":[
@@ -71,35 +65,35 @@
 		{
 			"bufferView":0,
 			"componentType":5126,
-			"count":1375,
+			"count":1378,
 			"max":[
 				10,
-				10,
-				0
+				3.0012094974517822,
+				10
 			],
 			"min":[
 				-10,
-				-10,
-				-3.001210927963257
+				-2.8212998586241156e-06,
+				-10
 			],
 			"type":"VEC3"
 		},
 		{
 			"bufferView":1,
 			"componentType":5126,
-			"count":1375,
+			"count":1378,
 			"type":"VEC3"
 		},
 		{
 			"bufferView":2,
 			"componentType":5126,
-			"count":1375,
+			"count":1378,
 			"type":"VEC2"
 		},
 		{
 			"bufferView":3,
 			"componentType":5126,
-			"count":1375,
+			"count":1378,
 			"type":"VEC4"
 		},
 		{
@@ -112,32 +106,32 @@
 	"bufferViews":[
 		{
 			"buffer":0,
-			"byteLength":16500,
+			"byteLength":16536,
 			"byteOffset":0,
 			"target":34962
 		},
 		{
 			"buffer":0,
-			"byteLength":16500,
-			"byteOffset":16500,
+			"byteLength":16536,
+			"byteOffset":16536,
 			"target":34962
 		},
 		{
 			"buffer":0,
-			"byteLength":11000,
-			"byteOffset":33000,
+			"byteLength":11024,
+			"byteOffset":33072,
 			"target":34962
 		},
 		{
 			"buffer":0,
-			"byteLength":22000,
-			"byteOffset":44000,
+			"byteLength":22048,
+			"byteOffset":44096,
 			"target":34962
 		},
 		{
 			"buffer":0,
 			"byteLength":5292,
-			"byteOffset":66000,
+			"byteOffset":66144,
 			"target":34963
 		}
 	],
@@ -149,7 +143,7 @@
 	],
 	"buffers":[
 		{
-			"byteLength":71292,
+			"byteLength":71436,
 			"uri":"terrain.bin"
 		}
 	]
