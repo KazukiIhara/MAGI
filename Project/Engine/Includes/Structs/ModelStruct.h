@@ -13,6 +13,7 @@ struct VertexData3D {
 	Vector4 position;
 	Vector2 texcoord;
 	Vector3 normal;
+	Vector3 tangent;
 };
 
 /// <summary>

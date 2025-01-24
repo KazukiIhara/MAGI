@@ -85,7 +85,14 @@ ModelData ModelDataContainer::LoadModel(const std::string& modelName, bool isNor
 	newModelData.name = modelName;
 
 	Assimp::Importer importer;
-	const aiScene* scene = importer.ReadFile(modelFilePath.c_str(), aiProcess_FlipWindingOrder | aiProcess_FlipUVs | aiProcess_Triangulate);
+	const aiScene* scene = importer.ReadFile(
+		modelFilePath.c_str(),
+		aiProcess_FlipWindingOrder |
+		aiProcess_FlipUVs |
+		aiProcess_Triangulate |
+		aiProcess_CalcTangentSpace
+	);
+
 	assert(scene && scene->HasMeshes());
 
 	std::vector<MaterialData> materials(scene->mNumMaterials);
@@ -162,6 +169,15 @@ ModelData ModelDataContainer::LoadModel(const std::string& modelName, bool isNor
 				meshData.vertices[vertexIndex].position = { -position.x,position.y,position.z,1.0f };
 				meshData.vertices[vertexIndex].normal = { -normal.x,normal.y,normal.z };
 				meshData.vertices[vertexIndex].texcoord = { texcoord.x,texcoord.y };
+
+				// Tangentの追加
+				if (mesh->HasTangentsAndBitangents()) {
+					aiVector3D& tangent = mesh->mTangents[vertexIndex];
+					meshData.vertices[vertexIndex].tangent = { -tangent.x, tangent.y, tangent.z };
+				} else {
+					// Tangentがない場合はデフォルト値を設定
+					meshData.vertices[vertexIndex].tangent = { 1.0f, 0.0f, 0.0f };
+				}
 			}
 			// index解析
 			for (uint32_t faceIndex = 0; faceIndex < mesh->mNumFaces; ++faceIndex) {
