@@ -526,5 +526,10 @@
     <None Include="Engine\SceneManager\SceneManager.ipp">
       <Filter>Engine\SceneManager</Filter>
     </None>
+    <None Include="Engine\Resources\Shaders\Object3DNomalMap\Object3DNomalMap.hlsli" />
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="Engine\Resources\Shaders\Object3DNomalMap\Object3DNomalMap.VS.hlsl" />
+    <FxCompile Include="Engine\Resources\Shaders\Object3DNomalMap\Object3DNomalMap.PS.hlsl" />
   </ItemGroup>
 </Project>
