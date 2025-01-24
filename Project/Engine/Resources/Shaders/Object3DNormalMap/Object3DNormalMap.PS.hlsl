@@ -58,7 +58,8 @@ PixelShaderOutput main(VertexShaderOutput input)
     // 元のカラーを保存
     float3 baseColor = gModelMaterial.color.rgb * gMaterial.color.rgb * textureColor.rgb;
     float alpha = gModelMaterial.color.a * gMaterial.color.a * textureColor.a;
-     
+    
+    
     if (gMaterial.enableLighting != 0)
     {
         // シーン中のすべてのライトをループ
@@ -84,6 +85,8 @@ PixelShaderOutput main(VertexShaderOutput input)
                         float specPow = (gMaterial.shininess >= 1.0f && gMaterial.enableSpeculaerRef) ? pow(NdotH, gMaterial.shininess) : 0.0f;
                         float3 specular = light.color * light.intensity * specPow;
                         totalSpecular += specular;
+                  
+                        
                     }
                     break;
 
@@ -158,6 +161,7 @@ PixelShaderOutput main(VertexShaderOutput input)
     {
         discard;
     }
+    
     
     output.color.rgb = pow(output.color.rgb, 2.2);
        
