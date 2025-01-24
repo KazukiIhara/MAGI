@@ -318,15 +318,6 @@ void MAGISYSTEM::Draw() {
 	// 描画処理
 	// 
 
-	//
-	// Object3D描画前処理
-	//
-
-
-	// RootSignatureを設定
-	directXCommand_->GetList()->SetGraphicsRootSignature(graphicsPipelineManager_->GetRootSignature(GraphicsPipelineStateType::Object3DNormalMap));
-	// 形状を設定
-	directXCommand_->GetList()->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
 	//
 	// シーンの描画処理
@@ -497,6 +488,22 @@ PunctualLightData& MAGISYSTEM::GetLightData(const std::string& lightName) {
 
 void MAGISYSTEM::TransferPunctualLight() {
 	punctualLightManager_->TransferLightsData();
+}
+
+void MAGISYSTEM::PreDrawObject3D() {
+	ID3D12GraphicsCommandList* commandList = directXCommand_->GetList();
+	// RootSignatureの設定
+	commandList->SetGraphicsRootSignature(graphicsPipelineManager_->GetRootSignature(GraphicsPipelineStateType::Object3D));
+	// 形状を設定
+	commandList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+}
+
+void MAGISYSTEM::PreDrawObject3DNormalMap() {
+	ID3D12GraphicsCommandList* commandList = directXCommand_->GetList();
+	// RootSignatureの設定
+	commandList->SetGraphicsRootSignature(graphicsPipelineManager_->GetRootSignature(GraphicsPipelineStateType::Object3DNormalMap));
+	// 形状を設定
+	commandList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 }
 
 ID3D12PipelineState* MAGISYSTEM::GetGraphicsPipelineState(GraphicsPipelineStateType pipelineState, BlendMode blendMode) {

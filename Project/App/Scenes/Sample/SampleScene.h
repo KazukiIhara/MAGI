@@ -22,41 +22,41 @@ public:
 
 private:
 	std::unique_ptr<Object3D> teapot_ = nullptr;
-	std::unique_ptr<Object3D> ground_ = nullptr;
+	std::unique_ptr<Object3D> terrain_ = nullptr;
 	std::unique_ptr<Primitive3D> plane_ = nullptr;
 };
 
 template<typename Data>
 inline void SampleScene<Data>::Initialize() {
-	MAGISYSTEM::LoadModel("teapot");
+	MAGISYSTEM::LoadModel("teapot", true);
 	MAGISYSTEM::LoadModel("terrain", true);
 
 	teapot_ = std::make_unique<Object3D>("teapot", "teapot");
-	ground_ = std::make_unique<Object3D>("terrain", "terrain");
+	terrain_ = std::make_unique<Object3D>("terrain", "terrain");
 	plane_ = std::make_unique<Primitive3D>("plane", Primitive3DType::Plane);
 
 	teapot_->GetTranslate().y = 0.8f;
 
-	MAGISYSTEM::AddPunctualLight("sampleLight");
+	//MAGISYSTEM::AddPunctualLight("sampleLight");
 
-	auto& sampleLight = MAGISYSTEM::GetLightData("sampleLight");
-	sampleLight.intensity = 1.0f;
-
-
-	//MAGISYSTEM::AddPunctualLight("redLight");
-	//auto& redLightData = MAGISYSTEM::GetLightData("redLight");
-	//redLightData.type = 1;
-	//redLightData.color = { 1.0f,0.0f,0.0f };
-	//redLightData.intensity = 7.0f;
-	//redLightData.position = { 2.0f,2.0f,0.0f };
+	//auto& sampleLight = MAGISYSTEM::GetLightData("sampleLight");
+	//sampleLight.intensity = 1.0f;
 
 
-	//MAGISYSTEM::AddPunctualLight("blueLight");
-	//auto& blueLightData = MAGISYSTEM::GetLightData("blueLight");
-	//blueLightData.type = 1;
-	//blueLightData.color = { 0.0f,0.0f,1.0f };
-	//blueLightData.intensity = 7.0f;
-	//blueLightData.position = { -2.0f,2.0f,0.0f };
+	MAGISYSTEM::AddPunctualLight("redLight");
+	auto& redLightData = MAGISYSTEM::GetLightData("redLight");
+	redLightData.type = 1;
+	redLightData.color = { 1.0f,0.0f,0.0f };
+	redLightData.intensity = 7.0f;
+	redLightData.position = { 3.0f,2.0f,0.0f };
+
+
+	MAGISYSTEM::AddPunctualLight("blueLight");
+	auto& blueLightData = MAGISYSTEM::GetLightData("blueLight");
+	blueLightData.type = 1;
+	blueLightData.color = { 0.0f,0.0f,1.0f };
+	blueLightData.intensity = 7.0f;
+	blueLightData.position = { -3.0f,2.0f,0.0f };
 }
 
 template<typename Data>
@@ -84,16 +84,20 @@ inline void SampleScene<Data>::Update() {
 		plane_->GetRotate().z -= 0.01f;
 	}
 
-	ground_->Update();
+	terrain_->Update();
 	teapot_->Update();
 	plane_->Update();
 }
 
 template<typename Data>
 inline void SampleScene<Data>::Draw() {
-	ground_->Draw();
-	//teapot_->Draw();
-	//plane_->Draw();
+
+	MAGISYSTEM::PreDrawObject3DNormalMap();
+	teapot_->Draw();
+	terrain_->Draw();
+
+	MAGISYSTEM::PreDrawObject3D();
+	plane_->Draw();
 }
 
 template<typename Data>

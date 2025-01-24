@@ -184,6 +184,16 @@ public: // エンジンの機能
 #pragma endregion
 
 
+#pragma region PreRender
+	// Object3Dの描画前処理
+	static void PreDrawObject3D();
+
+	// NormalMapありObject3Dの描画前処理
+	static void PreDrawObject3DNormalMap();
+
+#pragma endregion
+
+
 private: // メンバ変数
 	// 終了リクエスト
 	bool endRequest_ = false;

@@ -65,6 +65,10 @@ void Mesh::Draw() {
 	commandList->DrawIndexedInstanced(UINT(meshData_.indices.size()), 1, 0, 0, 0);
 }
 
+bool Mesh::IsNormalMap() const {
+	return meshData_.material.normalMapTextureFilePath != "";
+}
+
 void Mesh::CreateVertexResource() {
 	vertexResource_ = MAGISYSTEM::CreateBufferResource(sizeof(VertexData3D) * meshData_.vertices.size());
 }

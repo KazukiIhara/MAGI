@@ -25,6 +25,10 @@ void Model::Draw() {
 	}
 }
 
+bool Model::IsNormalMap() {
+	return meshes_[0].IsNormalMap();
+}
+
 void Model::CreateMehes() {
 	for (uint32_t i = 0; i < modelData_.meshes.size(); i++) {
 		Mesh newMesh(modelData_.meshes[i]);

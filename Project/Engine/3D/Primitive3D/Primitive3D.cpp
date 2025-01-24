@@ -34,8 +34,8 @@ void Primitive3D::Update() {
 }
 
 void Primitive3D::Draw() {
-	// 基底クラスの描画用処理
-	BaseRenderable3D::Draw();
+	// 描画の設定
+	PrepareForRendering();
 	// Primitive描画
 	primitive_->Draw();
 }

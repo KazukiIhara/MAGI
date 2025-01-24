@@ -20,6 +20,8 @@ public:
 	void Initialize(const MeshData& meshData);
 	void Update();
 	void Draw();
+
+	bool IsNormalMap() const;
 private:
 	// 頂点リソースの作成
 	void CreateVertexResource();
