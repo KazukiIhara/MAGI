@@ -106,7 +106,7 @@ ModelData ModelDataContainer::LoadModel(const std::string& modelName, bool isNor
 				// 指定のパスを作成
 				materialData.normalMapTextureFilePath = fileDirectoryPath + "/" + "Normal_" + textureFilePath.C_Str();
 				// 法線マップテクスチャをロード
-				textureDataContainer_->Load(fileDirectoryPath, true);
+				textureDataContainer_->Load(materialData.normalMapTextureFilePath, true);
 			}
 
 			// UVスケール情報の取得

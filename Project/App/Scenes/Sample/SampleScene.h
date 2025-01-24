@@ -10,7 +10,7 @@
 
 // サンプルシーン
 template <typename Data>
-class SampleScene : public BaseScene<Data> {
+class SampleScene: public BaseScene<Data> {
 public:
 	using BaseScene<Data>::BaseScene; // 親クラスのコンストラクタをそのまま継承
 	~SampleScene()override = default;
@@ -29,7 +29,7 @@ private:
 template<typename Data>
 inline void SampleScene<Data>::Initialize() {
 	MAGISYSTEM::LoadModel("teapot");
-	MAGISYSTEM::LoadModel("terrain");
+	MAGISYSTEM::LoadModel("terrain", true);
 
 	teapot_ = std::make_unique<Object3D>("teapot", "teapot");
 	ground_ = std::make_unique<Object3D>("terrain", "terrain");
@@ -93,7 +93,7 @@ template<typename Data>
 inline void SampleScene<Data>::Draw() {
 	ground_->Draw();
 	//teapot_->Draw();
-	plane_->Draw();
+	//plane_->Draw();
 }
 
 template<typename Data>

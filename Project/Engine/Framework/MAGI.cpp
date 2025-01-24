@@ -324,7 +324,7 @@ void MAGISYSTEM::Draw() {
 
 
 	// RootSignatureを設定
-	directXCommand_->GetList()->SetGraphicsRootSignature(graphicsPipelineManager_->GetRootSignature(GraphicsPipelineStateType::Object3D));
+	directXCommand_->GetList()->SetGraphicsRootSignature(graphicsPipelineManager_->GetRootSignature(GraphicsPipelineStateType::Object3DNormalMap));
 	// 形状を設定
 	directXCommand_->GetList()->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
