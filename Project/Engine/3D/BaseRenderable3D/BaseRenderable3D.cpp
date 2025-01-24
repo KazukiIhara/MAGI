@@ -50,21 +50,6 @@ void BaseRenderable3D::Update() {
 	UpdateMaterialData();
 }
 
-void BaseRenderable3D::Draw() {
-	// コマンドリストを取得
-	ID3D12GraphicsCommandList* commandList = MAGISYSTEM::GetDirectXCommandList();
-	// PSOを設定
-	commandList->SetPipelineState(MAGISYSTEM::GetGraphicsPipelineState(GraphicsPipelineStateType::Object3D, blendMode_));
-	// マテリアルCBufferの場所を設定
-	commandList->SetGraphicsRootConstantBufferView(0, materialResource_->GetGPUVirtualAddress());
-	// wvp用のCBufferの場所を設定
-	commandList->SetGraphicsRootConstantBufferView(1, transformationResource_->GetGPUVirtualAddress());
-	// ライトを転送
-	MAGISYSTEM::TransferPunctualLight();
-	// カメラ情報を転送
-	MAGISYSTEM::TransferCamera();
-}
-
 Vector3& BaseRenderable3D::GetScale() {
 	return worldTransform_.scale_;
 }
@@ -75,6 +60,29 @@ Vector3& BaseRenderable3D::GetRotate() {
 
 Vector3& BaseRenderable3D::GetTranslate() {
 	return worldTransform_.translate_;
+}
+
+void BaseRenderable3D::PrepareForRendering(bool isNormalMap) {
+	// コマンドリストを取得
+	ID3D12GraphicsCommandList* commandList = MAGISYSTEM::GetDirectXCommandList();
+
+	// PSOを設定
+	if (isNormalMap) {
+		// NormalMapを使う
+		commandList->SetPipelineState(MAGISYSTEM::GetGraphicsPipelineState(GraphicsPipelineStateType::Object3DNormalMap, blendMode_));
+	} else {
+		// NormalMapを使わない
+		commandList->SetPipelineState(MAGISYSTEM::GetGraphicsPipelineState(GraphicsPipelineStateType::Object3D, blendMode_));
+	}
+
+	// マテリアルCBufferの場所を設定
+	commandList->SetGraphicsRootConstantBufferView(0, materialResource_->GetGPUVirtualAddress());
+	// wvp用のCBufferの場所を設定
+	commandList->SetGraphicsRootConstantBufferView(1, transformationResource_->GetGPUVirtualAddress());
+	// ライトを転送
+	MAGISYSTEM::TransferPunctualLight();
+	// カメラ情報を転送
+	MAGISYSTEM::TransferCamera();
 }
 
 void BaseRenderable3D::CreateWVPResource() {

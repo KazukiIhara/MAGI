@@ -25,14 +25,14 @@ void ModelDataContainer::Initialize(TextureDataContainer* textureDataContainer) 
 	modelDatas_.clear();
 }
 
-void ModelDataContainer::Load(const std::string& modelName) {
+void ModelDataContainer::Load(const std::string& modelName, bool isNormalMap) {
 	// 読み込み済みモデルを検索
 	if (modelDatas_.contains(modelName)) {
 		// 読み込み済みなら早期リターン
 		return;
 	}
 	// モデルを読み込みコンテナに挿入
-	modelDatas_.insert(std::make_pair(modelName, LoadModel(modelName)));
+	modelDatas_.insert(std::make_pair(modelName, LoadModel(modelName, isNormalMap)));
 }
 
 ModelData ModelDataContainer::FindModelData(const std::string& modelName) const {
@@ -42,12 +42,12 @@ ModelData ModelDataContainer::FindModelData(const std::string& modelName) const 
 		return modelDatas_.at(modelName);
 	}
 	// 見つからなかった場合止める
-	
+
 	assert(false && "Warning: Not found model");
 	return ModelData{};
 }
 
-ModelData ModelDataContainer::LoadModel(const std::string& modelName) {
+ModelData ModelDataContainer::LoadModel(const std::string& modelName, bool isNormalMap) {
 	// 対応する拡張子のリスト
 	std::vector<std::string> supportedExtensions = { ".obj", ".gltf" };
 
@@ -85,7 +85,14 @@ ModelData ModelDataContainer::LoadModel(const std::string& modelName) {
 	newModelData.name = modelName;
 
 	Assimp::Importer importer;
-	const aiScene* scene = importer.ReadFile(modelFilePath.c_str(), aiProcess_FlipWindingOrder | aiProcess_FlipUVs | aiProcess_Triangulate);
+	const aiScene* scene = importer.ReadFile(
+		modelFilePath.c_str(),
+		aiProcess_FlipWindingOrder |
+		aiProcess_FlipUVs |
+		aiProcess_Triangulate |
+		aiProcess_CalcTangentSpace
+	);
+
 	assert(scene && scene->HasMeshes());
 
 	std::vector<MaterialData> materials(scene->mNumMaterials);
@@ -100,6 +107,14 @@ ModelData ModelDataContainer::LoadModel(const std::string& modelName) {
 			material->GetTexture(aiTextureType_DIFFUSE, 0, &textureFilePath);
 			materialData.textureFilePath = fileDirectoryPath + "/" + textureFilePath.C_Str();
 			textureDataContainer_->Load(materialData.textureFilePath);
+
+			// 法線マップがある場合の処理
+			if (isNormalMap) {
+				// 指定のパスを作成
+				materialData.normalMapTextureFilePath = fileDirectoryPath + "/" + "Normal_" + textureFilePath.C_Str();
+				// 法線マップテクスチャをロード
+				textureDataContainer_->Load(materialData.normalMapTextureFilePath, true);
+			}
 
 			// UVスケール情報の取得
 			aiUVTransform uvTransform;
@@ -154,6 +169,15 @@ ModelData ModelDataContainer::LoadModel(const std::string& modelName) {
 				meshData.vertices[vertexIndex].position = { -position.x,position.y,position.z,1.0f };
 				meshData.vertices[vertexIndex].normal = { -normal.x,normal.y,normal.z };
 				meshData.vertices[vertexIndex].texcoord = { texcoord.x,texcoord.y };
+
+				// Tangentの追加
+				if (mesh->HasTangentsAndBitangents()) {
+					aiVector3D& tangent = mesh->mTangents[vertexIndex];
+					meshData.vertices[vertexIndex].tangent = { -tangent.x, tangent.y, tangent.z };
+				} else {
+					// Tangentがない場合はデフォルト値を設定
+					meshData.vertices[vertexIndex].tangent = { 1.0f, 0.0f, 0.0f };
+				}
 			}
 			// index解析
 			for (uint32_t faceIndex = 0; faceIndex < mesh->mNumFaces; ++faceIndex) {

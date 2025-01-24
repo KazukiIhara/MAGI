@@ -14,18 +14,20 @@
 #include "3D/WorldEntity/WorldEntity.h"
 #include "3D/WorldTransform/WorldTransform.h"
 
-class BaseRenderable3D :public WorldEntity {
+class BaseRenderable3D:public WorldEntity {
 public:
 	BaseRenderable3D(const std::string& objectName);
 	virtual ~BaseRenderable3D() = default;
 	void Initialize(const std::string& objectName);
 	virtual void Update();
-	virtual void Draw();
+	virtual void Draw() = 0;
 
 	Vector3& GetScale();
 	Vector3& GetRotate();
 	Vector3& GetTranslate();
 protected:
+	void PrepareForRendering(bool isNormalMap = false);
+
 	// WVP用のリソース作成
 	void CreateWVPResource();
 	// データを書き込む

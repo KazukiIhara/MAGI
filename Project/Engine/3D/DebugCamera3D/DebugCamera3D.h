@@ -15,7 +15,4 @@ public:
 	void HandleCameraTranslation(Vector3& cameraTranslate, Vector3& cameraRotate, const POINT& delta);
 
 	void HandleCameraZoom(Vector3& cameraTranslate, Vector3& cameraRotate, int64_t wheelDelta);
-
-private:
-
 };

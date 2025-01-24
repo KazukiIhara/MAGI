@@ -1,4 +1,4 @@
-#include "Object3DGraphicsPipeline.h"
+#include "Object3DGraphicsPipelineNormalMap.h"
 
 #include <cassert>
 
@@ -6,16 +6,16 @@
 #include "DirectX/DXGI/DXGI.h"
 #include "DirectX/ShaderCompiler/ShaderCompiler.h"
 
-Object3DGraphicsPipeline::Object3DGraphicsPipeline(DXGI* dxgi, ShaderCompiler* shaderCompiler) {
+Object3DGraphicsPipelineNormalMap::Object3DGraphicsPipelineNormalMap(DXGI* dxgi, ShaderCompiler* shaderCompiler) {
 	Initialize(dxgi, shaderCompiler);
-	Logger::Log("Object3DGraphicsPipeline Initialize\n");
+	Logger::Log("Object3DNormalTextureGraphicsPipeline Initialize\n");
 }
 
-Object3DGraphicsPipeline::~Object3DGraphicsPipeline() {
-	Logger::Log("Object3DGraphicsPipeline Finalize\n");
+Object3DGraphicsPipelineNormalMap::~Object3DGraphicsPipelineNormalMap() {
+	Logger::Log("Object3DNormalTextureGraphicsPipeline Finalize\n");
 }
 
-void Object3DGraphicsPipeline::Initialize(DXGI* dxgi, ShaderCompiler* shaderCompiler) {
+void Object3DGraphicsPipelineNormalMap::Initialize(DXGI* dxgi, ShaderCompiler* shaderCompiler) {
 	SetDXGI(dxgi);
 	SetShaderCompiler(shaderCompiler);
 	CreateRootSignature();
@@ -23,15 +23,15 @@ void Object3DGraphicsPipeline::Initialize(DXGI* dxgi, ShaderCompiler* shaderComp
 	CreateGraphicsPipelineObject();
 }
 
-ID3D12RootSignature* Object3DGraphicsPipeline::GetRootSignature() {
+ID3D12RootSignature* Object3DGraphicsPipelineNormalMap::GetRootSignature() {
 	return rootSignature_.Get();
 }
 
-ID3D12PipelineState* Object3DGraphicsPipeline::GetPipelineState(BlendMode blendMode) {
+ID3D12PipelineState* Object3DGraphicsPipelineNormalMap::GetPipelineState(BlendMode blendMode) {
 	return pipelineState_[static_cast<uint32_t>(blendMode)].Get();
 }
 
-void Object3DGraphicsPipeline::CreateRootSignature() {
+void Object3DGraphicsPipelineNormalMap::CreateRootSignature() {
 	HRESULT hr = S_FALSE;
 
 	// テクスチャ用
@@ -48,6 +48,12 @@ void Object3DGraphicsPipeline::CreateRootSignature() {
 	descriptorRangeLights[0].RangeType = D3D12_DESCRIPTOR_RANGE_TYPE_SRV;
 	descriptorRangeLights[0].OffsetInDescriptorsFromTableStart = D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND;
 
+	// 法線マップ用
+	D3D12_DESCRIPTOR_RANGE descriptorRangeNormal[1] = {};
+	descriptorRangeNormal[0].BaseShaderRegister = 2; // t2
+	descriptorRangeNormal[0].NumDescriptors = 1;
+	descriptorRangeNormal[0].RangeType = D3D12_DESCRIPTOR_RANGE_TYPE_SRV;
+	descriptorRangeNormal[0].OffsetInDescriptorsFromTableStart = D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND;
 
 	// RootSignature作成
 	D3D12_ROOT_SIGNATURE_DESC descriptionRootSignature{};
@@ -55,7 +61,7 @@ void Object3DGraphicsPipeline::CreateRootSignature() {
 		D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT;
 
 	// RootParameter作成。
-	D3D12_ROOT_PARAMETER rootParameters[7] = {};
+	D3D12_ROOT_PARAMETER rootParameters[8] = {};
 	// オブジェクトのマテリアル
 	rootParameters[0].ParameterType = D3D12_ROOT_PARAMETER_TYPE_CBV;	//CBVを使う
 	rootParameters[0].ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL;	//PixelShaderで使う
@@ -93,6 +99,12 @@ void Object3DGraphicsPipeline::CreateRootSignature() {
 	rootParameters[6].DescriptorTable.pDescriptorRanges = descriptorRangeLights;
 	rootParameters[6].DescriptorTable.NumDescriptorRanges = _countof(descriptorRangeLights);
 
+	// 法線マップ用
+	rootParameters[7].ParameterType = D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE;
+	rootParameters[7].ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL;
+	rootParameters[7].DescriptorTable.pDescriptorRanges = descriptorRangeNormal;
+	rootParameters[7].DescriptorTable.NumDescriptorRanges = 1;
+
 	descriptionRootSignature.pParameters = rootParameters;				//ルートパラメータ配列へのポインタ
 	descriptionRootSignature.NumParameters = _countof(rootParameters);	//配列の長さ
 
@@ -125,17 +137,17 @@ void Object3DGraphicsPipeline::CreateRootSignature() {
 	assert(SUCCEEDED(hr));
 }
 
-void Object3DGraphicsPipeline::CompileShaders() {
+void Object3DGraphicsPipelineNormalMap::CompileShaders() {
 	vertexShaderBlob_ = nullptr;
-	vertexShaderBlob_ = shaderCompiler_->CompileShader(L"Engine/Resources/Shaders/Object3D/Object3D.VS.hlsl", L"vs_6_0");
+	vertexShaderBlob_ = shaderCompiler_->CompileShader(L"Engine/Resources/Shaders/Object3DNormalMap/Object3DNormalMap.VS.hlsl", L"vs_6_0");
 	assert(vertexShaderBlob_ != nullptr);
 
 	pixelShaderBlob_ = nullptr;
-	pixelShaderBlob_ = shaderCompiler_->CompileShader(L"Engine/Resources/Shaders/Object3D/Object3D.PS.hlsl", L"ps_6_0");
+	pixelShaderBlob_ = shaderCompiler_->CompileShader(L"Engine/Resources/Shaders/Object3DNormalMap/Object3DNormalMap.PS.hlsl", L"ps_6_0");
 	assert(pixelShaderBlob_ != nullptr);
 }
 
-void Object3DGraphicsPipeline::CreateGraphicsPipelineObject() {
+void Object3DGraphicsPipelineNormalMap::CreateGraphicsPipelineObject() {
 	HRESULT hr;
 
 	assert(rootSignature_);
@@ -173,7 +185,7 @@ void Object3DGraphicsPipeline::CreateGraphicsPipelineObject() {
 	}
 }
 
-D3D12_BLEND_DESC Object3DGraphicsPipeline::BlendStateSetting(uint32_t blendModeNum) {
+D3D12_BLEND_DESC Object3DGraphicsPipelineNormalMap::BlendStateSetting(uint32_t blendModeNum) {
 	D3D12_BLEND_DESC blendDesc{};
 	switch (blendModeNum) {
 		case 0:// kBlendModeNone
@@ -243,7 +255,7 @@ D3D12_BLEND_DESC Object3DGraphicsPipeline::BlendStateSetting(uint32_t blendModeN
 	return blendDesc;
 }
 
-D3D12_DEPTH_STENCIL_DESC Object3DGraphicsPipeline::DepthStecilDescSetting() {
+D3D12_DEPTH_STENCIL_DESC Object3DGraphicsPipelineNormalMap::DepthStecilDescSetting() {
 	// DepthStencilStateの設定
 	D3D12_DEPTH_STENCIL_DESC depthStencilDesc{};
 	// Depthの機能を有効化する
@@ -256,9 +268,9 @@ D3D12_DEPTH_STENCIL_DESC Object3DGraphicsPipeline::DepthStecilDescSetting() {
 	return depthStencilDesc;
 }
 
-D3D12_INPUT_LAYOUT_DESC Object3DGraphicsPipeline::InputLayoutSetting() {
+D3D12_INPUT_LAYOUT_DESC Object3DGraphicsPipelineNormalMap::InputLayoutSetting() {
 	// InputLayout
-	static D3D12_INPUT_ELEMENT_DESC inputElementDescs[3] = {};
+	static D3D12_INPUT_ELEMENT_DESC inputElementDescs[4] = {};
 	inputElementDescs[0].SemanticName = "POSITION";
 	inputElementDescs[0].SemanticIndex = 0;
 	inputElementDescs[0].Format = DXGI_FORMAT_R32G32B32A32_FLOAT;
@@ -276,6 +288,11 @@ D3D12_INPUT_LAYOUT_DESC Object3DGraphicsPipeline::InputLayoutSetting() {
 	inputElementDescs[2].Format = DXGI_FORMAT_R32G32B32_FLOAT;
 	inputElementDescs[2].AlignedByteOffset = D3D12_APPEND_ALIGNED_ELEMENT;
 
+	inputElementDescs[3].SemanticName = "TANGENT";
+	inputElementDescs[3].SemanticIndex = 0;
+	inputElementDescs[3].Format = DXGI_FORMAT_R32G32B32_FLOAT;
+	inputElementDescs[3].AlignedByteOffset = D3D12_APPEND_ALIGNED_ELEMENT;
+
 	D3D12_INPUT_LAYOUT_DESC inputLayoutDesc{};
 	inputLayoutDesc.pInputElementDescs = inputElementDescs;
 	inputLayoutDesc.NumElements = _countof(inputElementDescs);
@@ -283,7 +300,7 @@ D3D12_INPUT_LAYOUT_DESC Object3DGraphicsPipeline::InputLayoutSetting() {
 	return inputLayoutDesc;
 }
 
-D3D12_RASTERIZER_DESC Object3DGraphicsPipeline::RasterizerStateSetting() {
+D3D12_RASTERIZER_DESC Object3DGraphicsPipelineNormalMap::RasterizerStateSetting() {
 	// RasterizerStateの設定
 	D3D12_RASTERIZER_DESC rasterizerDesc_{};
 	// 裏側(時計回り)を表示しない
@@ -294,12 +311,12 @@ D3D12_RASTERIZER_DESC Object3DGraphicsPipeline::RasterizerStateSetting() {
 	return rasterizerDesc_;
 }
 
-void Object3DGraphicsPipeline::SetDXGI(DXGI* dxgi) {
+void Object3DGraphicsPipelineNormalMap::SetDXGI(DXGI* dxgi) {
 	assert(dxgi);
 	dxgi_ = dxgi;
 }
 
-void Object3DGraphicsPipeline::SetShaderCompiler(ShaderCompiler* shaderCompiler) {
+void Object3DGraphicsPipelineNormalMap::SetShaderCompiler(ShaderCompiler* shaderCompiler) {
 	assert(shaderCompiler);
 	shaderCompiler_ = shaderCompiler;
 }

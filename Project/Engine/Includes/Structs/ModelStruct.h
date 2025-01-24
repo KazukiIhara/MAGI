@@ -13,6 +13,7 @@ struct VertexData3D {
 	Vector4 position;
 	Vector2 texcoord;
 	Vector3 normal;
+	Vector3 tangent;
 };
 
 /// <summary>
@@ -20,6 +21,7 @@ struct VertexData3D {
 /// </summary>
 struct MaterialData {
 	std::string textureFilePath;
+	std::string normalMapTextureFilePath;
 	Matrix4x4 uvMatrix;
 	Vector4 color;
 };

@@ -159,7 +159,7 @@ public: // エンジンの機能
 
 #pragma region ModelDataContainer
 	// モデルの読み込み
-	static void LoadModel(const std::string& modelName);
+	static void LoadModel(const std::string& modelName, bool isNormalMap = false);
 	// 読み込み済みモデル検索
 	static ModelData FindModel(const std::string& modelName);
 
@@ -181,6 +181,16 @@ public: // エンジンの機能
 	static PunctualLightData& GetLightData(const std::string& lightName);
 	// ライトの転送
 	static void TransferPunctualLight();
+#pragma endregion
+
+
+#pragma region PreRender
+	// Object3Dの描画前処理
+	static void PreDrawObject3D();
+
+	// NormalMapありObject3Dの描画前処理
+	static void PreDrawObject3DNormalMap();
+
 #pragma endregion
 
 

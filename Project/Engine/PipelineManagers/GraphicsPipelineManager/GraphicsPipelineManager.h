@@ -12,6 +12,7 @@
 #include "Includes/Enums/GraphicsPipelineEnum.h"
 
 #include "GraphicsPipelines/Object3DGraphicsPipeline/Object3DGraphicsPipeline.h"
+#include "GraphicsPipelines/Object3DGraphicsPipelineNormalMap/Object3DGraphicsPipelineNormalMap.h"
 
 // 前方宣言
 class DXGI;
@@ -44,5 +45,6 @@ private: // メンバ変数
 private:
 	// Object3DGraphicsPipeline
 	std::unique_ptr<Object3DGraphicsPipeline> object3DGraphicsPipeline_ = nullptr;
-
+	// Object3DNormalMapGraphicsPipeline
+	std::unique_ptr<Object3DGraphicsPipelineNormalMap> object3DNormalMapGraphicsPipeline_ = nullptr;
 };

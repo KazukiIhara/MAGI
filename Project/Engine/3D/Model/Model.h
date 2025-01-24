@@ -14,6 +14,8 @@ public:
 	void Initialize(const ModelData& modeldata);
 	void Update();
 	void Draw();
+
+	bool IsNormalMap();
 private:
 	// 受け取ったモデルからメッシュを作成
 	void CreateMehes();

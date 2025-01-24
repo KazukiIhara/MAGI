@@ -27,9 +27,10 @@ void TextureDataContainer::Initialize(DXGI* dxgi, DirectXCommand* directXCommand
 
 	// デフォルトのテクスチャをロード
 	Load("Engine/Resources/Images/uvChecker.png");
+
 }
 
-void TextureDataContainer::Load(const std::string& filePath) {
+void TextureDataContainer::Load(const std::string& filePath, bool isNormalMapTex) {
 	// テクスチャがすでに読み込まれているかチェック
 	auto it = textureDatas_.find(filePath);
 	if (it != textureDatas_.end()) {
@@ -39,10 +40,16 @@ void TextureDataContainer::Load(const std::string& filePath) {
 
 	// 今回ぶち込むテクスチャーの箱
 	Texture& texture = textureDatas_[filePath];
-	DirectX::ScratchImage mipImage_ = LoadTexture(filePath);
-	texture.metaData = mipImage_.GetMetadata();
+	DirectX::ScratchImage mipImage;
+	if (isNormalMapTex) {
+		mipImage = LoadNomalMapTexture(filePath);
+	} else {
+		mipImage = LoadTexture(filePath);
+	}
+
+	texture.metaData = mipImage.GetMetadata();
 	texture.resource = CreateTextureResource(texture.metaData);
-	ComPtr<ID3D12Resource> intermediateResource = UploadTextureData(texture.resource.Get(), mipImage_);
+	ComPtr<ID3D12Resource> intermediateResource = UploadTextureData(texture.resource.Get(), mipImage);
 
 	// コマンドのクローズと実行
 	directXCommand_->KickCommand();
@@ -81,6 +88,33 @@ DirectX::ScratchImage TextureDataContainer::LoadTexture(const std::string& fileP
 	assert(SUCCEEDED(hr));
 
 	//ミップマップ付きのデータを返す
+	return mipImages;
+}
+
+DirectX::ScratchImage TextureDataContainer::LoadNomalMapTexture(const std::string& filePath) {
+	// テクスチャファイルをWICで読む
+	DirectX::ScratchImage image{};
+	std::wstring filePathW = Logger::ConvertString(filePath);
+	HRESULT hr = DirectX::LoadFromWICFile(
+		filePathW.c_str(),
+		DirectX::WIC_FLAGS_IGNORE_SRGB, // ガンマ補正しない
+		nullptr,
+		image
+	);
+	assert(SUCCEEDED(hr));
+
+	// 2) ミップマップを作る
+	DirectX::ScratchImage mipImages{};
+	hr = DirectX::GenerateMipMaps(
+		image.GetImages(),
+		image.GetImageCount(),
+		image.GetMetadata(),
+		DirectX::TEX_FILTER_DEFAULT,
+		0,
+		mipImages
+	);
+	assert(SUCCEEDED(hr));
+
 	return mipImages;
 }
 

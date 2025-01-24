@@ -21,7 +21,7 @@ public:
 	void Update();
 	void Draw();
 
-	void SetTextureFilePath(const std::string& textureFilePath);
+	bool IsNormalMap() const;
 private:
 	// 頂点リソースの作成
 	void CreateVertexResource();

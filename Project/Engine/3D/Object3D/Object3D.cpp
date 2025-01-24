@@ -29,8 +29,8 @@ void Object3D::Update() {
 }
 
 void Object3D::Draw() {
-	// 基底クラスの描画用処理
-	BaseRenderable3D::Draw();
+	// 描画用の設定
+	PrepareForRendering(model_->IsNormalMap());
 	// 3Dモデル描画
 	model_->Draw();
 }

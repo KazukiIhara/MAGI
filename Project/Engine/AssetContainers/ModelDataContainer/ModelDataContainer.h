@@ -28,11 +28,11 @@ public:
 	~ModelDataContainer();
 
 	void Initialize(TextureDataContainer* textureDataContainer);
-	void Load(const std::string& modelName);
+	void Load(const std::string& modelName, bool isNormalMap);
 
 	ModelData FindModelData(const std::string& modelName)const;
 private:
-	ModelData LoadModel(const std::string& modelName);
+	ModelData LoadModel(const std::string& modelName, bool isNormalMap);
 private:
 	void SetTextureDataContainer(TextureDataContainer* textureDataContainer);
 private:
