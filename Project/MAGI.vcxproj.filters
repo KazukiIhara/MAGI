@@ -389,6 +389,7 @@
     <ClInclude Include="Engine\Includes\Structs\ObjectStruct.h" />
     <ClInclude Include="Engine\3D\PrimitiveShapes3D\Plane\Plane.h" />
     <ClInclude Include="Engine\3D\PrimitiveShapes3D\BasePrimitiveShape3D\BasePrimitiveShape3D.h" />
+    <ClInclude Include="Engine\GraphicsPipelines\Object3DGraphicsPipelineNormalMap\Object3DGraphicsPipelineNormalMap.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="App\Game\Game.cpp">
@@ -521,6 +522,7 @@
     <ClCompile Include="Engine\3D\BaseRenderable3D\BaseRenderable3D.cpp" />
     <ClCompile Include="Engine\3D\PrimitiveShapes3D\Plane\Plane.cpp" />
     <ClCompile Include="Engine\3D\PrimitiveShapes3D\BasePrimitiveShape3D\BasePrimitiveShape3D.cpp" />
+    <ClCompile Include="Engine\GraphicsPipelines\Object3DGraphicsPipelineNormalMap\Object3DGraphicsPipelineNormalMap.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Engine\SceneManager\SceneManager.ipp">
