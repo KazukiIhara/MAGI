@@ -25,14 +25,14 @@ void ModelDataContainer::Initialize(TextureDataContainer* textureDataContainer) 
 	modelDatas_.clear();
 }
 
-void ModelDataContainer::Load(const std::string& modelName) {
+void ModelDataContainer::Load(const std::string& modelName, bool isNormalMap) {
 	// 読み込み済みモデルを検索
 	if (modelDatas_.contains(modelName)) {
 		// 読み込み済みなら早期リターン
 		return;
 	}
 	// モデルを読み込みコンテナに挿入
-	modelDatas_.insert(std::make_pair(modelName, LoadModel(modelName)));
+	modelDatas_.insert(std::make_pair(modelName, LoadModel(modelName, isNormalMap)));
 }
 
 ModelData ModelDataContainer::FindModelData(const std::string& modelName) const {
@@ -42,12 +42,12 @@ ModelData ModelDataContainer::FindModelData(const std::string& modelName) const 
 		return modelDatas_.at(modelName);
 	}
 	// 見つからなかった場合止める
-	
+
 	assert(false && "Warning: Not found model");
 	return ModelData{};
 }
 
-ModelData ModelDataContainer::LoadModel(const std::string& modelName) {
+ModelData ModelDataContainer::LoadModel(const std::string& modelName, bool isNormalMap) {
 	// 対応する拡張子のリスト
 	std::vector<std::string> supportedExtensions = { ".obj", ".gltf" };
 
@@ -100,6 +100,14 @@ ModelData ModelDataContainer::LoadModel(const std::string& modelName) {
 			material->GetTexture(aiTextureType_DIFFUSE, 0, &textureFilePath);
 			materialData.textureFilePath = fileDirectoryPath + "/" + textureFilePath.C_Str();
 			textureDataContainer_->Load(materialData.textureFilePath);
+
+			// 法線マップがある場合の処理
+			if (isNormalMap) {
+				// 指定のパスを作成
+				materialData.normalMapTextureFilePath = fileDirectoryPath + "/" + "Normal_" + textureFilePath.C_Str();
+				// 法線マップテクスチャをロード
+				textureDataContainer_->Load(fileDirectoryPath, true);
+			}
 
 			// UVスケール情報の取得
 			aiUVTransform uvTransform;

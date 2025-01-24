@@ -53,14 +53,16 @@ void Mesh::Draw() {
 	uint32_t textureSrvIndex = MAGISYSTEM::GetTexture()[meshData_.material.textureFilePath].srvIndex;
 	commandList->SetGraphicsRootDescriptorTable(3, MAGISYSTEM::GetSrvDescriptorHandleGPU(textureSrvIndex));
 
+	// NormalMap用のSrvをセット
+	if (meshData_.material.normalMapTextureFilePath != "") {
+		uint32_t normalMapTextureSrvIndex = MAGISYSTEM::GetTexture()[meshData_.material.normalMapTextureFilePath].srvIndex;
+		commandList->SetGraphicsRootDescriptorTable(7, MAGISYSTEM::GetSrvDescriptorHandleGPU(normalMapTextureSrvIndex));
+	}
+
 	// ModelMaterial用CBufferの場所を設定
 	commandList->SetGraphicsRootConstantBufferView(4, materialResource_->GetGPUVirtualAddress());
 	// 描画！(DrawCall/ドローコール)。3頂点で1つのインスタンス。インスタンスについては今後
 	commandList->DrawIndexedInstanced(UINT(meshData_.indices.size()), 1, 0, 0, 0);
-}
-
-void Mesh::SetTextureFilePath(const std::string& textureFilePath) {
-	meshData_.material.textureFilePath = textureFilePath;
 }
 
 void Mesh::CreateVertexResource() {

@@ -20,8 +20,6 @@ public:
 	void Initialize(const MeshData& meshData);
 	void Update();
 	void Draw();
-
-	void SetTextureFilePath(const std::string& textureFilePath);
 private:
 	// 頂点リソースの作成
 	void CreateVertexResource();

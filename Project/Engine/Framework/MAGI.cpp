@@ -470,8 +470,8 @@ const DirectX::TexMetadata& MAGISYSTEM::GetTextureMetaData(const std::string& fi
 	return textureDataCantainer_->GetMetaData(filePath);
 }
 
-void MAGISYSTEM::LoadModel(const std::string& modelName) {
-	modelDataContainer_->Load(modelName);
+void MAGISYSTEM::LoadModel(const std::string& modelName, bool isNormalMap) {
+	modelDataContainer_->Load(modelName, isNormalMap);
 }
 
 ModelData MAGISYSTEM::FindModel(const std::string& modelName) {

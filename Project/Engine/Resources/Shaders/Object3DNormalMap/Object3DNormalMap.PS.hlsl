@@ -1,4 +1,4 @@
-#include "Object3DNomalMap.hlsli"
+#include "Object3DNormalMap.hlsli"
 
 ConstantBuffer<Material> gMaterial : register(b0);
 ConstantBuffer<Camera> gCamera : register(b1);
