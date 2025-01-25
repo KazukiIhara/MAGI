@@ -1,12 +1,8 @@
 #pragma once
 
 // C++
-#include <map>
 #include <string>
 #include <unordered_map>
-
-// DirectX
-#include <d3d12.h>
 
 // Assimp
 #include <assimp/include/assimp/Importer.hpp>

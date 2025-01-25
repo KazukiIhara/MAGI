@@ -29,10 +29,7 @@ struct SkinCluster {
 	std::vector<Matrix4x4> inverseBindPoseMatrices;
 	ComPtr<ID3D12Resource> paletteResources;
 	std::span<WellForGPU> mappedPalette;
-	ComPtr<ID3D12Resource> influenceResource;
-	std::span<VertexInfluence> mappedInfluence;
 	uint32_t paletteSrvIndex;
-	uint32_t influenceSrvIndex;
 };
 
 struct SkinningInformationForGPU {

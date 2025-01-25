@@ -11,6 +11,8 @@
 #include "Structs/ModelStruct.h"
 #include "DirectX/ComPtr/ComPtr.h"
 
+#include "Structs/SkinningStruct.h"
+
 /// <summary>
 /// メッシュクラス
 /// </summary>
@@ -56,7 +58,7 @@ private:
 	ComPtr<ID3D12Resource> indexResource_ = nullptr;
 	// インデックスデータ
 	uint32_t* indexData_ = nullptr;
-	// インデックスバッファビュー
+	// IBV
 	D3D12_INDEX_BUFFER_VIEW indexBufferView_{};
 
 	// マテリアルリソース
@@ -64,4 +66,21 @@ private:
 	// マテリアルデータ
 	MaterialForGPU* materialData_ = nullptr;
 
+
+	//
+	// forSkinning
+	//
+
+	// 頂点ごとのスキニング影響度
+	std::vector<VertexInfluence> influences_;
+
+	// スキニング影響度のリソース
+	ComPtr<ID3D12Resource> influenceResource_;
+
+	// スキニングに必要なリソースインデックス
+	uint32_t vertexSrvIndex_;
+	uint32_t vertexUavIndex_;
+	uint32_t influenceSrvIndex;
+
+	std::span<VertexInfluence> mappedInfluence;
 };

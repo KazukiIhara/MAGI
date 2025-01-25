@@ -21,7 +21,7 @@ public:
 	void Finalize() override;
 
 private:
-	std::unique_ptr<Object3D> teapot_ = nullptr;
+	std::unique_ptr<Object3D> sample_ = nullptr;
 	std::unique_ptr<Object3D> terrain_ = nullptr;
 	std::unique_ptr<Primitive3D> plane_ = nullptr;
 };
@@ -30,17 +30,19 @@ template<typename Data>
 inline void SampleScene<Data>::Initialize() {
 	MAGISYSTEM::LoadModel("teapot", true);
 	MAGISYSTEM::LoadModel("terrain", true);
+	MAGISYSTEM::LoadModel("crossMan");
 
-	teapot_ = std::make_unique<Object3D>("teapot", "teapot");
+
+	sample_ = std::make_unique<Object3D>("sample", "crossMan");
 	terrain_ = std::make_unique<Object3D>("terrain", "terrain");
 	plane_ = std::make_unique<Primitive3D>("plane", Primitive3DType::Plane);
 
-	teapot_->GetTranslate().y = 0.8f;
+	sample_->GetTranslate().y = 0.8f;
 
-	//MAGISYSTEM::AddPunctualLight("sampleLight");
+	MAGISYSTEM::AddPunctualLight("sampleLight");
 
-	//auto& sampleLight = MAGISYSTEM::GetLightData("sampleLight");
-	//sampleLight.intensity = 1.0f;
+	auto& sampleLight = MAGISYSTEM::GetLightData("sampleLight");
+	sampleLight.intensity = 1.0f;
 
 
 	MAGISYSTEM::AddPunctualLight("redLight");
@@ -85,7 +87,7 @@ inline void SampleScene<Data>::Update() {
 	}
 
 	terrain_->Update();
-	teapot_->Update();
+	sample_->Update();
 	plane_->Update();
 }
 
@@ -93,10 +95,10 @@ template<typename Data>
 inline void SampleScene<Data>::Draw() {
 
 	MAGISYSTEM::PreDrawObject3DNormalMap();
-	teapot_->Draw();
 	terrain_->Draw();
 
 	MAGISYSTEM::PreDrawObject3D();
+	sample_->Draw();
 	plane_->Draw();
 }
 

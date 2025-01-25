@@ -25,4 +25,13 @@ private:
 	ModelData modelData_{};
 	// メッシュ
 	std::vector<Mesh> meshes_;
+
+	// 
+	// forSkinning
+	// 
+
+	// 
+	SkinCluster skinCluster_;
+	// スキニング用にシェーダーに渡す情報
+	ComPtr<ID3D12Resource> skinningInformationResource_;
 };

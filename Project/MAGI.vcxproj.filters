@@ -394,6 +394,7 @@
     <ClInclude Include="Engine\Includes\Structs\SkinningStruct.h" />
     <ClInclude Include="Engine\Includes\Structs\SkeletonStruct.h" />
     <ClInclude Include="Engine\AssetContainers\SkeletonDataContainer\SkeletonDataContainer.h" />
+    <ClInclude Include="Engine\3D\Skeleton\Skeleton.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="App\Game\Game.cpp">
@@ -528,6 +529,7 @@
     <ClCompile Include="Engine\3D\PrimitiveShapes3D\BasePrimitiveShape3D\BasePrimitiveShape3D.cpp" />
     <ClCompile Include="Engine\GraphicsPipelines\Object3DGraphicsPipelineNormalMap\Object3DGraphicsPipelineNormalMap.cpp" />
     <ClCompile Include="Engine\AssetContainers\SkeletonDataContainer\SkeletonDataContainer.cpp" />
+    <ClCompile Include="Engine\3D\Skeleton\Skeleton.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Engine\SceneManager\SceneManager.ipp">
