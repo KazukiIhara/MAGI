@@ -5,6 +5,7 @@
 #include <vector>
 
 #include "3D/Mesh/Mesh.h"
+#include "Structs/SkinningStruct.h"
 
 class Model {
 public:
