@@ -7,14 +7,6 @@
 // MyHedder
 #include "Structs/ObjectStruct.h"
 
-// ノード
-struct Node {
-	QuaternionTransform3D transform;
-	Matrix4x4 localMatrix;
-	std::string name;
-	std::vector<Node> children;
-};
-
 // ジョイント
 struct Joint {
 	QuaternionTransform3D transform;

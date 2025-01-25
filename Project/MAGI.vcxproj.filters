@@ -219,9 +219,6 @@
     <ClInclude Include="Engine\3D\WorldTransform\WorldTransform.h">
       <Filter>Engine\3D\WorldTransform</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\AssetContainers\AnimationDataContainer\AnimationDataContainer.h">
-      <Filter>Engine\AssetContainers\AnimationDataContainer</Filter>
-    </ClInclude>
     <ClInclude Include="Engine\AssetContainers\ModelDataContainer\ModelDataContainer.h">
       <Filter>Engine\AssetContainers\ModelDataContainer</Filter>
     </ClInclude>
@@ -393,7 +390,6 @@
     <ClInclude Include="Engine\Includes\Structs\AnimationStruct.h" />
     <ClInclude Include="Engine\Includes\Structs\SkinningStruct.h" />
     <ClInclude Include="Engine\Includes\Structs\SkeletonStruct.h" />
-    <ClInclude Include="Engine\AssetContainers\SkeletonDataContainer\SkeletonDataContainer.h" />
     <ClInclude Include="Engine\3D\Skeleton\Skeleton.h" />
   </ItemGroup>
   <ItemGroup>
@@ -423,9 +419,6 @@
     </ClCompile>
     <ClCompile Include="Engine\3D\WorldTransform\WorldTransform.cpp">
       <Filter>Engine\3D\WorldTransform</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\AssetContainers\AnimationDataContainer\AnimationDataContainer.cpp">
-      <Filter>Engine\AssetContainers\AnimationDataContainer</Filter>
     </ClCompile>
     <ClCompile Include="Engine\AssetContainers\ModelDataContainer\ModelDataContainer.cpp">
       <Filter>Engine\AssetContainers\ModelDataContainer</Filter>
@@ -528,7 +521,6 @@
     <ClCompile Include="Engine\3D\PrimitiveShapes3D\Plane\Plane.cpp" />
     <ClCompile Include="Engine\3D\PrimitiveShapes3D\BasePrimitiveShape3D\BasePrimitiveShape3D.cpp" />
     <ClCompile Include="Engine\GraphicsPipelines\Object3DGraphicsPipelineNormalMap\Object3DGraphicsPipelineNormalMap.cpp" />
-    <ClCompile Include="Engine\AssetContainers\SkeletonDataContainer\SkeletonDataContainer.cpp" />
     <ClCompile Include="Engine\3D\Skeleton\Skeleton.cpp" />
   </ItemGroup>
   <ItemGroup>

@@ -6,6 +6,5 @@ public:
 	~Skeleton();
 
 private:
-	Node rootNode;
 
 };
