@@ -8,9 +8,8 @@
 #include <d3d12.h>
 
 // MyHedder
-#include "Structs/ModelStruct.h"
 #include "DirectX/ComPtr/ComPtr.h"
-
+#include "Structs/ModelStruct.h"
 #include "Structs/SkinningStruct.h"
 
 /// <summary>

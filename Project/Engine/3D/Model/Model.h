@@ -5,7 +5,7 @@
 #include <vector>
 
 #include "3D/Mesh/Mesh.h"
-#include "Structs/SkinningStruct.h"
+#include "Structs/AnimationStruct.h"
 
 class Model {
 public:
@@ -30,7 +30,7 @@ private:
 	// forSkinning
 	// 
 
-	// 
+	// スキニング用の情報
 	SkinCluster skinCluster_;
 	// スキニング用にシェーダーに渡す情報
 	ComPtr<ID3D12Resource> skinningInformationResource_;
