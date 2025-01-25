@@ -173,6 +173,9 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Engine\Includes\Structs\ObjectStruct.h" />
     <ClInclude Include="Engine\Includes\Structs\ShapeStruct.h" />
     <ClInclude Include="Engine\Includes\Structs\PunctualLightStruct.h" />
+    <ClInclude Include="Engine\Includes\Structs\AnimationStruct.h" />
+    <ClInclude Include="Engine\Includes\Structs\SkeletonStruct.h" />
+    <ClInclude Include="Engine\Includes\Structs\SkinningStruct.h" />
     <ClInclude Include="Engine\Includes\Structs\TextureStruct.h" />
     <ClInclude Include="Engine\LeakChecker\D3DResourceLeakChecker.h" />
     <ClInclude Include="Engine\Logger\Logger.h" />

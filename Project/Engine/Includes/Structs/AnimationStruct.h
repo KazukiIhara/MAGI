@@ -1,0 +1,40 @@
+#pragma once
+
+// C++
+#include <unordered_map>
+#include <string>
+#include <optional>
+#include <array>
+#include <span>
+
+// C++
+#include <d3d12.h>
+
+#include "Math/Utility/MathUtility.h"
+#include "DirectX/ComPtr/ComPtr.h"
+
+
+// Vector3のアニメーションキーフレーム
+struct KeyframeVector3 {
+	Vector3 value;
+	float time;
+};
+
+// Quaternionのアニメーションキーフレーム
+struct KeyframeQuaternion {
+	Quaternion value;
+	float time;
+};
+
+// Nodeアニメーション
+struct NodeAnimation {
+	std::vector<KeyframeVector3> translate;
+	std::vector<KeyframeQuaternion> rotate;
+	std::vector<KeyframeVector3> scale;
+};
+
+// アニメーション
+struct Animation {
+	float duration;
+	std::unordered_map<std::string, NodeAnimation> nodeAnimations;
+};

@@ -390,6 +390,9 @@
     <ClInclude Include="Engine\3D\PrimitiveShapes3D\Plane\Plane.h" />
     <ClInclude Include="Engine\3D\PrimitiveShapes3D\BasePrimitiveShape3D\BasePrimitiveShape3D.h" />
     <ClInclude Include="Engine\GraphicsPipelines\Object3DGraphicsPipelineNormalMap\Object3DGraphicsPipelineNormalMap.h" />
+    <ClInclude Include="Engine\Includes\Structs\AnimationStruct.h" />
+    <ClInclude Include="Engine\Includes\Structs\SkinningStruct.h" />
+    <ClInclude Include="Engine\Includes\Structs\SkeletonStruct.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="App\Game\Game.cpp">
