@@ -29,6 +29,7 @@ std::unique_ptr<ScissorRect> MAGISYSTEM::scissorRect_ = nullptr;
 
 std::unique_ptr<TextureDataContainer> MAGISYSTEM::textureDataCantainer_ = nullptr;
 std::unique_ptr<ModelDataContainer> MAGISYSTEM::modelDataContainer_ = nullptr;
+std::unique_ptr<AnimationDataContainer> MAGISYSTEM::animationDataContainer_ = nullptr;
 
 std::unique_ptr<GraphicsPipelineManager> MAGISYSTEM::graphicsPipelineManager_ = nullptr;
 
@@ -57,6 +58,7 @@ void MAGISYSTEM::Initialize() {
 	// DirectInput
 	directInput_ = std::make_unique<DirectInput>(windowApp_.get());
 
+
 	// DXGI
 	dxgi_ = std::make_unique<DXGI>();
 	// DirectXCommand
@@ -66,12 +68,14 @@ void MAGISYSTEM::Initialize() {
 	// ShaderCompiler
 	shaderCompiler_ = std::make_unique<ShaderCompiler>();
 
+
 	// RTVManager
 	rtvManager_ = std::make_unique<RTVManager>(dxgi_.get());
 	// DSVManager
 	dsvManager_ = std::make_unique<DSVManager>(dxgi_.get());
 	// SRVUAVmanager
 	srvuavManager_ = std::make_unique<SRVUAVManager>(dxgi_.get());
+
 
 	// SwapChain
 	swapChain_ = std::make_unique<SwapChain>(windowApp_.get(), dxgi_.get(), directXCommand_.get(), rtvManager_.get());
@@ -86,10 +90,13 @@ void MAGISYSTEM::Initialize() {
 	// Scissor
 	scissorRect_ = std::make_unique<ScissorRect>(directXCommand_.get());
 
+
 	// TextureDataContainer
 	textureDataCantainer_ = std::make_unique<TextureDataContainer>(dxgi_.get(), directXCommand_.get(), fence_.get(), srvuavManager_.get());
 	// ModelDataContainer
 	modelDataContainer_ = std::make_unique<ModelDataContainer>(textureDataCantainer_.get());
+	// AnimationDataContainer
+	animationDataContainer_ = std::make_unique<AnimationDataContainer>();
 
 
 	// GraphicsPipelineManager
@@ -148,6 +155,11 @@ void MAGISYSTEM::Finalize() {
 	// GraphicsPipelineManager
 	if (graphicsPipelineManager_) {
 		graphicsPipelineManager_.reset();
+	}
+
+	// AnimationDataContainer
+	if (animationDataContainer_) {
+		animationDataContainer_.reset();
 	}
 
 	// ModelDataContainer
@@ -467,6 +479,14 @@ void MAGISYSTEM::LoadModel(const std::string& modelName, bool isNormalMap) {
 
 ModelData MAGISYSTEM::FindModel(const std::string& modelName) {
 	return modelDataContainer_->FindModelData(modelName);
+}
+
+void MAGISYSTEM::LoadAnimation(const std::string& animationFileName, bool isInSameDirectoryAsModel) {
+	animationDataContainer_->Load(animationFileName, isInSameDirectoryAsModel);
+}
+
+AnimationData MAGISYSTEM::FindAnimation(const std::string& animationName) {
+	return animationDataContainer_->FindAnimationData(animationName);
 }
 
 void MAGISYSTEM::TransferCamera() {

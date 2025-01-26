@@ -16,6 +16,7 @@ ModelDataContainer::ModelDataContainer(TextureDataContainer* textureDataContaine
 }
 
 ModelDataContainer::~ModelDataContainer() {
+	modelDatas_.clear();
 	Logger::Log("ModelDataContainer Finalize\n");
 }
 
@@ -43,7 +44,7 @@ ModelData ModelDataContainer::FindModelData(const std::string& modelName) const 
 	}
 	// 見つからなかった場合止める
 
-	assert(false && "Warning: Not found model");
+	assert(false && "Warning: Not Found Model!!");
 	return ModelData{};
 }
 

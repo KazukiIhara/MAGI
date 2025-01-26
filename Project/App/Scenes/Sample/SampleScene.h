@@ -33,7 +33,7 @@ inline void SampleScene<Data>::Initialize() {
 	MAGISYSTEM::LoadModel("crossMan");
 	MAGISYSTEM::LoadModel("boxMan");
 
-	sample_ = std::make_unique<Object3D>("sample", "boxMan");
+	sample_ = std::make_unique<Object3D>("sample", "teapot");
 	terrain_ = std::make_unique<Object3D>("terrain", "terrain");
 	plane_ = std::make_unique<Primitive3D>("plane", Primitive3DType::Plane);
 
@@ -45,20 +45,20 @@ inline void SampleScene<Data>::Initialize() {
 	sampleLight.intensity = 1.0f;
 
 
-	MAGISYSTEM::AddPunctualLight("redLight");
-	auto& redLightData = MAGISYSTEM::GetLightData("redLight");
-	redLightData.type = 1;
-	redLightData.color = { 1.0f,0.0f,0.0f };
-	redLightData.intensity = 7.0f;
-	redLightData.position = { 3.0f,2.0f,0.0f };
+	//MAGISYSTEM::AddPunctualLight("redLight");
+	//auto& redLightData = MAGISYSTEM::GetLightData("redLight");
+	//redLightData.type = 1;
+	//redLightData.color = { 1.0f,0.0f,0.0f };
+	//redLightData.intensity = 7.0f;
+	//redLightData.position = { 3.0f,2.0f,0.0f };
 
 
-	MAGISYSTEM::AddPunctualLight("blueLight");
-	auto& blueLightData = MAGISYSTEM::GetLightData("blueLight");
-	blueLightData.type = 1;
-	blueLightData.color = { 0.0f,0.0f,1.0f };
-	blueLightData.intensity = 7.0f;
-	blueLightData.position = { -3.0f,2.0f,0.0f };
+	//MAGISYSTEM::AddPunctualLight("blueLight");
+	//auto& blueLightData = MAGISYSTEM::GetLightData("blueLight");
+	//blueLightData.type = 1;
+	//blueLightData.color = { 0.0f,0.0f,1.0f };
+	//blueLightData.intensity = 7.0f;
+	//blueLightData.position = { -3.0f,2.0f,0.0f };
 }
 
 template<typename Data>
@@ -96,9 +96,9 @@ inline void SampleScene<Data>::Draw() {
 
 	MAGISYSTEM::PreDrawObject3DNormalMap();
 	terrain_->Draw();
+	sample_->Draw();
 
 	MAGISYSTEM::PreDrawObject3D();
-	sample_->Draw();
 	plane_->Draw();
 }
 

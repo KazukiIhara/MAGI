@@ -31,5 +31,7 @@ struct NodeAnimation {
 
 // アニメーション
 struct AnimationData {
+	std::string name;
+	float duration;
 	std::unordered_map<std::string, NodeAnimation> nodeAnimations;
 };

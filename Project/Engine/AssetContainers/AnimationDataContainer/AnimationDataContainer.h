@@ -3,6 +3,7 @@
 // C++
 #include <string>
 #include <unordered_map>
+#include <list>
 
 // Assimp
 #include <assimp/include/assimp/Importer.hpp>
@@ -25,8 +26,8 @@ public:
 
 	AnimationData FindAnimationData(const std::string& animationName);
 private:
-	AnimationData LoadAnimation(const std::string& animationFileName, bool isInSameDirectoryAsModel);
-private:
+	// 読み込み済みのファイルコンテナ
+	std::list<std::string> loadedAnimationFileNames_;
 	// アニメーションデータコンテナ
 	std::unordered_map<std::string, AnimationData> animationDatas_;
 };

@@ -29,6 +29,7 @@
 
 #include "AssetContainers/TextureDataContainer/TextureDataContainer.h"
 #include "AssetContainers/ModelDataContainer/ModelDataContainer.h"
+#include "AssetContainers/AnimationDataContainer/AnimationDataContainer.h"
 
 #include "PipelineManagers/GraphicsPipelineManager/GraphicsPipelineManager.h"
 
@@ -165,6 +166,14 @@ public: // エンジンの機能
 
 #pragma endregion
 
+#pragma region AnimationDataContainer
+	// アニメーションの読み込み
+	static void LoadAnimation(const std::string& animationFileName, bool isInSameDirectoryAsModel = true);
+	// 読み込み済みアニメーションの検索
+	static AnimationData FindAnimation(const std::string& animationName);
+#pragma endregion
+
+
 #pragma region Camera3DManager
 	// カメラの転送
 	static void TransferCamera();
@@ -244,6 +253,7 @@ protected:
 	// 
 	static std::unique_ptr<TextureDataContainer> textureDataCantainer_;
 	static std::unique_ptr<ModelDataContainer> modelDataContainer_;
+	static std::unique_ptr<AnimationDataContainer> animationDataContainer_;
 
 	//
 	// ObjectManager
