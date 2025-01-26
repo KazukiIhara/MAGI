@@ -23,8 +23,8 @@ void Object3D::Initialize(const std::string& modelName) {
 
 void Object3D::Update() {
 	animationTime_ += MAGISYSTEM::GetDeltaTime();
-	animationTime_ = std::fmod(animationTime_, MAGISYSTEM::FindAnimation("Action.002").duration);
-	model_->ApplyAnimation(MAGISYSTEM::FindAnimation("Action.002"), animationTime_);
+	animationTime_ = std::fmod(animationTime_, MAGISYSTEM::FindAnimation("ArmatureAction").duration);
+	model_->ApplyAnimation(MAGISYSTEM::FindAnimation("ArmatureAction"), animationTime_);
 
 	// モデル更新
 	model_->Update();

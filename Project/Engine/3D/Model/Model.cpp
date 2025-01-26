@@ -116,7 +116,6 @@ void Model::SettingInfluenceAllMeshes() {
 				}
 			}
 
-
 		}
 
 	}
