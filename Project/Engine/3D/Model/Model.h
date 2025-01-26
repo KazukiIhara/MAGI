@@ -14,7 +14,7 @@ public:
 	Model(const ModelData& modeldata);
 	virtual ~Model();
 
-	void Initialize(const ModelData& modeldata);
+	virtual void Initialize();
 	virtual void Update();
 	void Draw();
 
@@ -22,11 +22,11 @@ public:
 
 private:
 	// 受け取ったモデルからメッシュを作成
-	void CreateMehes();
+	virtual void CreateMeshes();
 
 protected:
 	// 受け取るモデルデータ
 	ModelData modelData_{};
 	// メッシュ
-	std::vector<Mesh> meshes_;
+	std::vector<std::unique_ptr<Mesh>> meshes_;
 };

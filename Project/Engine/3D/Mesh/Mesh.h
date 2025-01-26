@@ -19,20 +19,15 @@
 class Mesh {
 public:
 	Mesh(const MeshData& meshData);
-	void Initialize(const MeshData& meshData);
+	virtual ~Mesh() = default;
+	virtual void Initialize();
 	void Update();
-	void Draw();
-
-	// スキニング
-	void Skinning(const uint32_t& paletteSrvIndex);
-
-	// 影響度の参照を渡す
-	std::span<VertexInfluence>& GetMappdInfluence();
+	virtual void Draw();
 
 	bool IsNormalMap() const;
-private:
+protected:
 	// 頂点リソースの作成
-	void CreateVertexResource();
+	virtual void CreateVertexResource();
 	// 頂点バッファービューの作成
 	void CreateVertexBufferView();
 	// 頂点データの書き込み
@@ -50,23 +45,7 @@ private:
 	// マテリアルデータの書き込み
 	void MapMaterialData();
 
-	//
-	// forSkinning
-	//
-
-	// スキニング用頂点リソースの作成
-	void CreateSkinningVertexResources();
-	// スキニング用頂点バッファビュー
-	void CreateSkinningVertexBufferView();
-	// スキニング情報用のリソース作成
-	void CreateSkinningInformationResource();
-	// スキニング情報用のデータ書き込み
-	void MapSkinningInformationData();
-
-	// スキニング影響度用のリソースを作成
-	void CreateInfluenceResource();
-
-private:
+protected:
 	// メッシュデータ
 	MeshData meshData_{};
 
@@ -88,30 +67,4 @@ private:
 	ComPtr<ID3D12Resource> materialResource_ = nullptr;
 	// マテリアルデータ
 	MaterialForGPU* materialData_ = nullptr;
-
-
-	//
-	// forSkinning
-	//
-
-	// スキニング用頂点リソース
-	ComPtr<ID3D12Resource> skinningVertexResource_;
-	// スキニング用VBV
-	D3D12_VERTEX_BUFFER_VIEW skinningVertexBufferView_;
-
-	// スキニング影響度のリソース
-	ComPtr<ID3D12Resource> influenceResource_;
-	// スキニング影響度
-	std::span<VertexInfluence> mappedInfluence_;
-
-	// スキニング用の情報リソース
-	ComPtr<ID3D12Resource> skinningInformationResource_;
-	// スキニング用の情報データ
-	SkinningInformationForGPU* skiningInformationData_ = nullptr;
-
-
-	// スキニングに必要なリソースインデックス
-	uint32_t vertexSrvIndex_;
-	uint32_t vertexUavIndex_;
-	uint32_t influenceSrvIndex;
 };

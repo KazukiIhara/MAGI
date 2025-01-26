@@ -397,6 +397,7 @@
     <ClInclude Include="Engine\Includes\Enums\ComputePipelineEnum.h" />
     <ClInclude Include="Engine\ComputePipelines\SkinningComputePipeline\SkinningComputePipeline.h" />
     <ClInclude Include="Engine\3D\SkinningModel\SkinningModel.h" />
+    <ClInclude Include="Engine\3D\SkinningMesh\SkinningMesh.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="App\Game\Game.cpp">
@@ -533,6 +534,7 @@
     <ClCompile Include="Engine\PipelineManagers\ComputePipelineManager\ComputePipelineManager.cpp" />
     <ClCompile Include="Engine\ComputePipelines\SkinningComputePipeline\SkinningComputePipeline.cpp" />
     <ClCompile Include="Engine\3D\SkinningModel\SkinningModel.cpp" />
+    <ClCompile Include="Engine\3D\SkinningMesh\SkinningMesh.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Engine\SceneManager\SceneManager.ipp">

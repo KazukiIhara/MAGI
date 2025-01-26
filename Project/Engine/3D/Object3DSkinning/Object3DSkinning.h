@@ -9,9 +9,6 @@ public:
 	~Object3DSkinning()override;
 	void Initialize();
 	void Update()override;
-
-	SkinningModel* GetSkinningModel() const;
-
 private:
 	// アニメーション用変数
 	float animationTime_ = 0.0f;

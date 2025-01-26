@@ -19,11 +19,11 @@ Object3D::~Object3D() {
 void Object3D::Initialize() {
 	// モデル取得
 	model_ = std::make_unique<Model>(modelData_);
+	model_->Initialize();
 	assert(model_ && "Warning: Not found model");
 }
 
 void Object3D::Update() {
-
 	// モデル更新
 	model_->Update();
 

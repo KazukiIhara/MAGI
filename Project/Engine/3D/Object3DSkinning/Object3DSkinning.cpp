@@ -8,11 +8,14 @@ Object3DSkinning::Object3DSkinning(const std::string& objectName, const std::str
 	Initialize();
 }
 
-Object3DSkinning::~Object3DSkinning() {}
+Object3DSkinning::~Object3DSkinning() {
+
+}
 
 void Object3DSkinning::Initialize() {
 	model_.reset();
 	model_ = std::make_unique<SkinningModel>(modelData_);
+	model_->Initialize();
 	assert(model_ && "Warning: Not found model");
 }
 
@@ -20,15 +23,10 @@ void Object3DSkinning::Update() {
 	animationTime_ += MAGISYSTEM::GetDeltaTime();
 	animationTime_ = std::fmod(animationTime_, MAGISYSTEM::FindAnimation("Action.001").duration);
 
-	if (auto skinmodel = GetSkinningModel()) {
+	if (auto skinmodel = static_cast<SkinningModel*>(model_.get())) {
 		skinmodel->ApplyAnimation(MAGISYSTEM::FindAnimation("Action.001"), animationTime_);
 	}
 
 	// 基底クラスの更新
 	Object3D::Update();
-
-}
-
-SkinningModel* Object3DSkinning::GetSkinningModel() const {
-	return dynamic_cast<SkinningModel*>(model_.get());
 }

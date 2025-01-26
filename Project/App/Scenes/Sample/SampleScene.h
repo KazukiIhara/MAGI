@@ -32,6 +32,8 @@ template<typename Data>
 inline void SampleScene<Data>::Initialize() {
 	MAGISYSTEM::LoadModel("boxMan");
 	MAGISYSTEM::LoadModel("crossMan");
+	MAGISYSTEM::LoadModel("terrain", true);
+	MAGISYSTEM::LoadModel("teapot", true);
 
 	MAGISYSTEM::LoadAnimation("boxMan");
 

@@ -126,6 +126,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Engine\3D\PrimitiveShapes3D\BasePrimitiveShape3D\BasePrimitiveShape3D.h" />
     <ClInclude Include="Engine\3D\PrimitiveShapes3D\Plane\Plane.h" />
     <ClInclude Include="Engine\3D\Skeleton\Skeleton.h" />
+    <ClInclude Include="Engine\3D\SkinningMesh\SkinningMesh.h" />
     <ClInclude Include="Engine\3D\SkinningModel\SkinningModel.h" />
     <ClInclude Include="Engine\3D\WorldEntity\WorldEntity.h" />
     <ClInclude Include="Engine\3D\WorldTransform\WorldTransform.h" />
@@ -207,6 +208,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Engine\3D\PrimitiveShapes3D\BasePrimitiveShape3D\BasePrimitiveShape3D.cpp" />
     <ClCompile Include="Engine\3D\PrimitiveShapes3D\Plane\Plane.cpp" />
     <ClCompile Include="Engine\3D\Skeleton\Skeleton.cpp" />
+    <ClCompile Include="Engine\3D\SkinningMesh\SkinningMesh.cpp" />
     <ClCompile Include="Engine\3D\SkinningModel\SkinningModel.cpp" />
     <ClCompile Include="Engine\3D\WorldEntity\WorldEntity.cpp" />
     <ClCompile Include="Engine\3D\WorldTransform\WorldTransform.cpp" />

@@ -9,7 +9,6 @@ using namespace MAGIUtility;
 
 SkinningModel::SkinningModel(const ModelData& modeldata)
 	:Model(modeldata) {
-	Initialize();
 }
 
 SkinningModel::~SkinningModel() {
@@ -17,6 +16,7 @@ SkinningModel::~SkinningModel() {
 }
 
 void SkinningModel::Initialize() {
+	CreateMeshes();
 	skeleton_ = std::make_unique<Skeleton>(modelData_.rootNode);
 	CreateSkinPaletteResource();
 	CreateInverseBindPoseMatrix();
@@ -33,8 +33,11 @@ void SkinningModel::Update() {
 	Model::Update();
 
 	// スキニング
-	for (Mesh mesh : meshes_) {
-		mesh.Skinning(paletteSrvIndex_);
+	for (auto& mesh : meshes_) {
+		// キャスト
+		if (auto* skinMesh = static_cast<SkinningMesh*>(mesh.get())) {
+			skinMesh->Skinning(paletteSrvIndex_);
+		}
 	}
 }
 
@@ -46,6 +49,14 @@ void SkinningModel::ApplyAnimation(const AnimationData& animation, float animati
 			joint.transform.rotate = CalculateValue(rootNodeAnimation.rotate, animationTime);
 			joint.transform.scale = CalculateVelue(rootNodeAnimation.scale, animationTime);
 		}
+	}
+}
+
+void SkinningModel::CreateMeshes() {
+	for (uint32_t i = 0; i < modelData_.meshes.size(); i++) {
+		std::unique_ptr<Mesh> newMesh = std::make_unique<SkinningMesh>(modelData_.meshes[i]);
+		newMesh->Initialize();
+		meshes_.push_back(std::move(newMesh));
 	}
 }
 
@@ -90,13 +101,17 @@ void SkinningModel::SettingInfluenceAllMeshes() {
 		for (const auto& vertexWeight : jointWeight.second.vertexWeights) {
 			for (auto& mesh : meshes_) {
 
-				auto& currentInfluence = mesh.GetMappdInfluence()[vertexWeight.vertexIndex];
-				for (uint32_t index = 0; index < kNumMaxInfluence; index++) {
-					if (currentInfluence.weights[index] == 0.0f) {
-						currentInfluence.weights[index] = vertexWeight.weight;
-						currentInfluence.jointIndices[index] = (*it).second;
-						break;
+				// キャスト
+				if (auto* skinMesh = static_cast<SkinningMesh*>(mesh.get())) {
+					auto& currentInfluence = skinMesh->GetMappdInfluence()[vertexWeight.vertexIndex];
+					for (uint32_t index = 0; index < kNumMaxInfluence; index++) {
+						if (currentInfluence.weights[index] == 0.0f) {
+							currentInfluence.weights[index] = vertexWeight.weight;
+							currentInfluence.jointIndices[index] = (*it).second;
+							break;
+						}
 					}
+
 				}
 			}
 

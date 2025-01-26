@@ -8,38 +8,40 @@ using namespace MAGIMath;
 using namespace MAGIUtility;
 
 Model::Model(const ModelData& modeldata) {
-	Initialize(modeldata);
+	modelData_ = modeldata;
 }
 
 Model::~Model() {
-	
+	for (auto& mesh : meshes_) {
+		mesh.reset();
+	}
 }
 
-void Model::Initialize(const ModelData& modeldata) {
-	modelData_ = modeldata;
-	CreateMehes();
+void Model::Initialize() {
+	CreateMeshes();
 }
 
-void Model::Update() {	
+void Model::Update() {
 	// 各メッシュの更新
-	for (Mesh mesh : meshes_) {
-		mesh.Update();
+	for (auto& mesh : meshes_) {
+		mesh->Update();
 	}
 }
 
 void Model::Draw() {
-	for (Mesh mesh : meshes_) {
-		mesh.Draw();
+	for (auto& mesh : meshes_) {
+		mesh->Draw();
 	}
 }
 
 bool Model::IsNormalMap() {
-	return meshes_[0].IsNormalMap();
+	return meshes_[0]->IsNormalMap();
 }
 
-void Model::CreateMehes() {
+void Model::CreateMeshes() {
 	for (uint32_t i = 0; i < modelData_.meshes.size(); i++) {
-		Mesh newMesh(modelData_.meshes[i]);
-		meshes_.push_back(newMesh);
+		std::unique_ptr<Mesh> newMesh = std::make_unique<Mesh>(modelData_.meshes[i]);
+		newMesh->Initialize();
+		meshes_.push_back(std::move(newMesh));
 	}
 }

@@ -1,13 +1,14 @@
 #pragma once
 
 #include "3D/Model/Model.h"
+#include "3D/SkinningMesh/SkinningMesh.h"
 
 class SkinningModel:public Model {
 public:
 	SkinningModel(const ModelData& modeldata);
 	~SkinningModel()override;
 
-	void Initialize();
+	void Initialize()override;
 
 	void Update()override;
 
@@ -15,20 +16,19 @@ public:
 	void ApplyAnimation(const AnimationData& animation, float animationTime);
 
 private:
+	// メッシュ生成
+	void CreateMeshes()override;
+
 	// パレットのリソース作成
 	void CreateSkinPaletteResource();
-
 	// InverseBindPoseMatrixの作成
 	void CreateInverseBindPoseMatrix();
-
 	// 全メッシュにスキニング影響度を設定
 	void SettingInfluenceAllMeshes();
-
 	// パレットの更新
 	void SkinPaletteUpdate();
 
 private:
-
 	// スケルトン
 	std::unique_ptr<Skeleton> skeleton_ = nullptr;
 
