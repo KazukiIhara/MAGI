@@ -179,7 +179,7 @@
 		},
 		{
 			"mesh":0,
-			"name":"Cube.001",
+			"name":"Cube",
 			"skin":0
 		},
 		{
@@ -490,7 +490,7 @@
 	"materials":[
 		{
 			"doubleSided":true,
-			"name":"Material.002",
+			"name":"Material.001",
 			"pbrMetallicRoughness":{
 				"baseColorTexture":{
 					"index":0
@@ -502,7 +502,7 @@
 	],
 	"meshes":[
 		{
-			"name":"Cube.002",
+			"name":"Cube.001",
 			"primitives":[
 				{
 					"attributes":{
@@ -527,8 +527,8 @@
 	"images":[
 		{
 			"mimeType":"image/png",
-			"name":"crossManArmTex",
-			"uri":"crossManArmTex.png"
+			"name":"CroosManBodyTex",
+			"uri":"CroosManBodyTex.png"
 		}
 	],
 	"skins":[
@@ -553,14 +553,14 @@
 			"componentType":5126,
 			"count":48,
 			"max":[
-				1.5642952919006348,
-				1.343954086303711,
-				0.3724847137928009
+				0.5415870547294617,
+				2.1469783782958984,
+				0.5145471096038818
 			],
 			"min":[
-				-1.564295768737793,
-				0.26077961921691895,
-				-0.35264918208122253
+				-0.5415870547294617,
+				-1.0676501989364624,
+				-0.568626880645752
 			],
 			"type":"VEC3"
 		},
@@ -951,7 +951,7 @@
 	"buffers":[
 		{
 			"byteLength":5284,
-			"uri":"crossMan.bin"
+			"uri":"crossMan1.bin"
 		}
 	]
 }
