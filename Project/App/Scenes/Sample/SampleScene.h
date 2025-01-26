@@ -69,19 +69,19 @@ inline void SampleScene<Data>::Initialize() {
 template<typename Data>
 inline void SampleScene<Data>::Update() {
 
-	terrain_->Update();
+	//terrain_->Update();
 
 	skinningSample_->Update();
 
-	sample_->Update();
-	plane_->Update();
+	//sample_->Update();
+	//plane_->Update();
 }
 
 template<typename Data>
 inline void SampleScene<Data>::Draw() {
 
 	MAGISYSTEM::PreDrawObject3DNormalMap();
-	terrain_->Draw();
+	//terrain_->Draw();
 
 	MAGISYSTEM::PreDrawObject3D();
 	skinningSample_->Draw();

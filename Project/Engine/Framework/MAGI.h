@@ -32,6 +32,7 @@
 #include "AssetContainers/AnimationDataContainer/AnimationDataContainer.h"
 
 #include "PipelineManagers/GraphicsPipelineManager/GraphicsPipelineManager.h"
+#include "PipelineManagers/ComputePipelineManager/ComputePipelineManager.h"
 
 #include "Camera3DManager/Camera3DManager.h"
 #include "PunctualLightManager/PunctualLightManager.h"
@@ -155,6 +156,14 @@ public: // エンジンの機能
 
 #pragma endregion
 
+#pragma region ComputePipelineManager
+	// ルートシグネイチャ取得関数
+	static ID3D12RootSignature* GetComputeRootSignature(ComputePipelineStateType pipelineState);
+	// パイプライン取得関数
+	static ID3D12PipelineState* GetCompurePipelineState(ComputePipelineStateType pipelineState);
+
+#pragma endregion
+
 #pragma region TextureDataContainer
 	// 画像読み込み
 	static void LoadTexture(const std::string& filePath);
@@ -253,6 +262,7 @@ protected:
 	// PipelineManager
 	//
 	static std::unique_ptr<GraphicsPipelineManager> graphicsPipelineManager_;
+	static std::unique_ptr<ComputePipelineManager> computePipelineManager_;
 
 	// 
 	// AssetContainer

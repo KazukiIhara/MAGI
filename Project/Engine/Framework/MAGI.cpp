@@ -32,6 +32,7 @@ std::unique_ptr<ModelDataContainer> MAGISYSTEM::modelDataContainer_ = nullptr;
 std::unique_ptr<AnimationDataContainer> MAGISYSTEM::animationDataContainer_ = nullptr;
 
 std::unique_ptr<GraphicsPipelineManager> MAGISYSTEM::graphicsPipelineManager_ = nullptr;
+std::unique_ptr<ComputePipelineManager> MAGISYSTEM::computePipelineManager_ = nullptr;
 
 std::unique_ptr<Camera3DManager> MAGISYSTEM::camera3DManager_ = nullptr;
 std::unique_ptr<PunctualLightManager> MAGISYSTEM::punctualLightManager_ = nullptr;
@@ -101,6 +102,8 @@ void MAGISYSTEM::Initialize() {
 
 	// GraphicsPipelineManager
 	graphicsPipelineManager_ = std::make_unique<GraphicsPipelineManager>(dxgi_.get(), shaderCompiler_.get());
+	// ComputePipelineManager
+	computePipelineManager_ = std::make_unique<ComputePipelineManager>(dxgi_.get(), shaderCompiler_.get());
 
 
 	// Camera3DManager
@@ -150,6 +153,11 @@ void MAGISYSTEM::Finalize() {
 	// Camera3DManager
 	if (camera3DManager_) {
 		camera3DManager_.reset();
+	}
+
+	// CompuetPipelineManager
+	if (computePipelineManager_) {
+		computePipelineManager_.reset();
 	}
 
 	// GraphicsPipelineManager
@@ -544,5 +552,13 @@ void MAGISYSTEM::PreDrawObject3DNormalMap() {
 
 ID3D12PipelineState* MAGISYSTEM::GetGraphicsPipelineState(GraphicsPipelineStateType pipelineState, BlendMode blendMode) {
 	return graphicsPipelineManager_->GetPipelineState(pipelineState, blendMode);
+}
+
+ID3D12RootSignature* MAGISYSTEM::GetComputeRootSignature(ComputePipelineStateType pipelineState) {
+	return computePipelineManager_->GetRootSignature(pipelineState);
+}
+
+ID3D12PipelineState* MAGISYSTEM::GetCompurePipelineState(ComputePipelineStateType pipelineState) {
+	return computePipelineManager_->GetPipelineState(pipelineState);
 }
 

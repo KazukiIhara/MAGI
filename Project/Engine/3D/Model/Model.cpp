@@ -14,6 +14,7 @@ void Model::Initialize(const ModelData& modeldata) {
 	modelData_ = modeldata;
 	CreateMehes();
 	skeleton_ = std::make_unique<Skeleton>(modelData_.rootNode, modelData_.inverseBindPoseMatrices);
+	CreateSkinPaletteResource();
 }
 
 void Model::Update() {
@@ -23,7 +24,7 @@ void Model::Update() {
 	for (Mesh mesh : meshes_) {
 		mesh.Update();
 
-		//mesh.Skinning(paletteSrvIndex_);
+		mesh.Skinning(paletteSrvIndex_);
 	}
 }
 

@@ -50,9 +50,17 @@ private:
 	// forSkinning
 	//
 
+	// スキニング用頂点リソースの作成
+	void CreateSkinningVertexResources();
+	// スキニング用頂点バッファビュー
+	void CreateSkinningVertexBufferView();
+	// スキニング情報用のリソース作成
+	void CreateSkinningInformationResource();
+	// スキニング情報用のデータ書き込み
+	void MapSkinningInformationData();
+
 	// スキニング影響度用のリソースを作成
 	void CreateInfluenceResource();
-
 
 private:
 	// メッシュデータ
