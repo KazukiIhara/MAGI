@@ -33,13 +33,13 @@ inline void SampleScene<Data>::Initialize() {
 	MAGISYSTEM::LoadModel("boxMan");
 	MAGISYSTEM::LoadModel("crossMan");
 
-	MAGISYSTEM::LoadAnimation("crossMan");
+	MAGISYSTEM::LoadAnimation("boxMan");
 
 	//sample_ = std::make_unique<Object3D>("sample", "teapot");
 	//terrain_ = std::make_unique<Object3D>("terrain", "terrain");
 	//plane_ = std::make_unique<Primitive3D>("plane", Primitive3DType::Plane);
 
-	skinningSample_ = std::make_unique<Object3DSkinning>("skinningSample", "crossMan");
+	skinningSample_ = std::make_unique<Object3DSkinning>("skinningSample", "boxMan");
 
 	MAGISYSTEM::AddPunctualLight("sampleLight");
 
