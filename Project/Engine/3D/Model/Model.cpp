@@ -29,6 +29,10 @@ bool Model::IsNormalMap() {
 	return meshes_[0].IsNormalMap();
 }
 
+Node Model::GetRootNode() const {
+	return modelData_.rootNode;
+}
+
 void Model::CreateMehes() {
 	for (uint32_t i = 0; i < modelData_.meshes.size(); i++) {
 		Mesh newMesh(modelData_.meshes[i]);

@@ -16,7 +16,9 @@ public:
 	void Update();
 	void Draw();
 
+
 	bool IsNormalMap();
+	Node GetRootNode() const;
 private:
 	// 受け取ったモデルからメッシュを作成
 	void CreateMehes();

@@ -46,7 +46,11 @@ struct MeshData {
 	std::vector<VertexData3D> vertices;
 	std::vector<uint32_t> indices;
 	MaterialData material;
-	// 頂点ごとのスキニング影響度
+
+	//
+	// forSkinning
+	//
+
 	std::vector<VertexInfluence> influences_;
 	std::map<std::string, JointWeightData> skinClusterData;
 };
@@ -68,7 +72,10 @@ struct ModelData {
 	std::string name;
 	std::vector<MeshData> meshes;
 	Node rootNode;
-	// スキニング用の情報
+
+	//
+	// forSkinning
+	//
 	SkinCluster skinCluster_;
 };
 

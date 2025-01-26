@@ -2,7 +2,7 @@
 
 Object3DSkinning::Object3DSkinning(const std::string& objectName, const std::string& modelName)
 	:Object3D(objectName, modelName) {
-	skeleton_ = std::make_unique<Skeleton>();
+	skeleton_ = std::make_unique<Skeleton>(model_->GetRootNode());
 }
 
 Object3DSkinning::~Object3DSkinning() {

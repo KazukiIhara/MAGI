@@ -35,7 +35,7 @@ inline void SampleScene<Data>::Initialize() {
 
 	MAGISYSTEM::LoadAnimation("boxMan");
 
-	sample_ = std::make_unique<Object3D>("sample", "teapot");
+	sample_ = std::make_unique<Object3D>("sample", "boxMan");
 	terrain_ = std::make_unique<Object3D>("terrain", "terrain");
 	plane_ = std::make_unique<Primitive3D>("plane", Primitive3DType::Plane);
 
@@ -98,9 +98,9 @@ inline void SampleScene<Data>::Draw() {
 
 	MAGISYSTEM::PreDrawObject3DNormalMap();
 	terrain_->Draw();
-	sample_->Draw();
 
 	MAGISYSTEM::PreDrawObject3D();
+	sample_->Draw();
 	plane_->Draw();
 }
 
