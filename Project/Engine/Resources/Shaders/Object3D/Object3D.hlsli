@@ -41,8 +41,8 @@ struct ModelMaterial
 
 struct Camera
 {
-    float3 worldPosition;
     float4x4 viewProjection;
+    float3 worldPosition;
 };
 
 struct PunctualLight

@@ -15,15 +15,21 @@ Camera3D::~Camera3D() {
 }
 
 void Camera3D::Initialize() {
+	// ワールド行列初期化
 	worldTransform_.Initialize();
 	worldTransform_.rotate_ = kDefaultCameraRotate_;
 	worldTransform_.translate_ = kDefaultCameraTranslate_;
 	worldTransform_.Update();
 
+	// ワールド座標を取得
+	worldPosition_ = ExtractionWorldPos(worldTransform_.worldMatrix_);
+
+	// ビュー行列やらあれこれ
 	Matrix4x4 viewMatrix = Inverse(worldTransform_.worldMatrix_);
 	projectionMatrix_ = MakePerspectiveFovMatrix(fovY_, aspectRaito_, nearClipRange_, farClipRange_);
 	viewProjectionMatrix_ = viewMatrix * projectionMatrix_;
 
+	// 一回転行列を作成
 	backFrontMatrix_ = MakeRotateYMatrix(std::numbers::pi_v<float>);
 
 	CreateCameraResource();
@@ -32,6 +38,7 @@ void Camera3D::Initialize() {
 
 void Camera3D::Update() {
 	worldTransform_.Update();
+	worldPosition_ = ExtractionWorldPos(worldTransform_.worldMatrix_);
 	Matrix4x4 viewMatrix = Inverse(worldTransform_.worldMatrix_);
 	viewProjectionMatrix_ = viewMatrix * projectionMatrix_;
 

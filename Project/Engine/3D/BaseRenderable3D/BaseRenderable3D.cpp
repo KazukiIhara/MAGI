@@ -22,7 +22,7 @@ void BaseRenderable3D::Initialize(const std::string& objectName) {
 	// マテリアル初期化
 	material_.color = Vector4(1.0f, 1.0f, 1.0f, 1.0f);
 	material_.enableLighting = true;
-	material_.enableSpeculaerRef = false;
+	material_.enableSpeculaerRef = true;
 	material_.shininess = 100.0f;
 	material_.uvTransformMatrix = MakeIdentityMatrix4x4();
 
@@ -110,6 +110,7 @@ void BaseRenderable3D::MapMateiralData() {
 	materialResource_->Map(0, nullptr, reinterpret_cast<void**>(&materialData_));
 	materialData_->color = material_.color;
 	materialData_->enableLighting = material_.enableLighting;
+	materialData_->enableSpeculaerRef = material_.enableSpeculaerRef;
 	materialData_->shininess = material_.shininess;
 	materialData_->uvTransformMatrix = material_.uvTransformMatrix;
 }
@@ -122,6 +123,7 @@ void BaseRenderable3D::UpdateWVPData() {
 void BaseRenderable3D::UpdateMaterialData() {
 	materialData_->color = material_.color;
 	materialData_->enableLighting = material_.enableLighting;
-	materialData_->shininess = material_.shininess;
+	materialData_->enableSpeculaerRef = material_.enableSpeculaerRef;
 	materialData_->uvTransformMatrix = material_.uvTransformMatrix;
+	materialData_->shininess = material_.shininess;
 }

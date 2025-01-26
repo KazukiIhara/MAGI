@@ -5,12 +5,9 @@
 class Plane: public BasePrimitiveShape3D {
 public:
 	Plane(const std::string& textureFilePath = "");
-	virtual ~Plane() = default;
+	~Plane()override = default;
 
 	void CreateShape()override;
 	void Update()override;
 
-private:
-	float paramater0_ = 0.0f;
-	float paramater1_ = 0.0f;
 };

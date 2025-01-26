@@ -398,6 +398,7 @@
     <ClInclude Include="Engine\ComputePipelines\SkinningComputePipeline\SkinningComputePipeline.h" />
     <ClInclude Include="Engine\3D\SkinningModel\SkinningModel.h" />
     <ClInclude Include="Engine\3D\SkinningMesh\SkinningMesh.h" />
+    <ClInclude Include="Engine\3D\PrimitiveShapes3D\Sphere\Sphere.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="App\Game\Game.cpp">
@@ -535,6 +536,7 @@
     <ClCompile Include="Engine\ComputePipelines\SkinningComputePipeline\SkinningComputePipeline.cpp" />
     <ClCompile Include="Engine\3D\SkinningModel\SkinningModel.cpp" />
     <ClCompile Include="Engine\3D\SkinningMesh\SkinningMesh.cpp" />
+    <ClCompile Include="Engine\3D\PrimitiveShapes3D\Sphere\Sphere.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Engine\SceneManager\SceneManager.ipp">

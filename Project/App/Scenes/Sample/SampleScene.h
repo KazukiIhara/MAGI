@@ -25,7 +25,7 @@ private:
 	std::unique_ptr<Object3D> sample_ = nullptr;
 	std::unique_ptr<Object3DSkinning> skinningSample_ = nullptr;
 	std::unique_ptr<Object3D> terrain_ = nullptr;
-	std::unique_ptr<Primitive3D> plane_ = nullptr;
+	std::unique_ptr<Primitive3D> primitive_ = nullptr;
 };
 
 template<typename Data>
@@ -38,7 +38,8 @@ inline void SampleScene<Data>::Initialize() {
 	MAGISYSTEM::LoadAnimation("boxMan");
 
 	//sample_ = std::make_unique<Object3D>("sample", "teapot");
-	//plane_ = std::make_unique<Primitive3D>("plane", Primitive3DType::Plane);
+	primitive_ = std::make_unique<Primitive3D>("primitive", Primitive3DType::Sphere);
+
 
 	terrain_ = std::make_unique<Object3D>("terrain", "terrain");
 	terrain_->Initialize();
@@ -86,20 +87,20 @@ inline void SampleScene<Data>::Update() {
 	}
 
 	//sample_->Update();
-	//plane_->Update();
+	primitive_->Update();
 }
 
 template<typename Data>
 inline void SampleScene<Data>::Draw() {
 
 	MAGISYSTEM::PreDrawObject3DNormalMap();
-	terrain_->Draw();
+	//terrain_->Draw();
 
 	MAGISYSTEM::PreDrawObject3D();
-	skinningSample_->Draw();
+	//skinningSample_->Draw();
 
 	//sample_->Draw();
-	//plane_->Draw();
+	primitive_->Draw();
 }
 
 template<typename Data>
