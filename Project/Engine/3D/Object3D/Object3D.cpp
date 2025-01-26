@@ -9,7 +9,6 @@ using namespace MAGIMath;
 Object3D::Object3D(const std::string& objectName, const std::string& modelName)
 	:BaseRenderable3D(objectName) {
 	modelData_ = MAGISYSTEM::FindModel(modelName);
-	Initialize();
 }
 
 Object3D::~Object3D() {

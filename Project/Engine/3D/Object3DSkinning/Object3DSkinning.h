@@ -9,7 +9,15 @@ public:
 	~Object3DSkinning()override;
 	void Initialize();
 	void Update()override;
+
+	void PlayAnimation(const std::string& animationName);
+	void ResetAnimation();
+	void SwitchAnimation(const std::string& animationName);
 private:
 	// アニメーション用変数
 	float animationTime_ = 0.0f;
+	// 現在再生中のアニメーション名
+	std::string currentAnimationName_ = "";
+	// 現在再生中のアニメーション
+	AnimationData currentAnimation_{};
 };
