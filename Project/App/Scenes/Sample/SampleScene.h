@@ -33,6 +33,8 @@ inline void SampleScene<Data>::Initialize() {
 	MAGISYSTEM::LoadModel("crossMan");
 	MAGISYSTEM::LoadModel("boxMan");
 
+	MAGISYSTEM::LoadAnimation("boxMan");
+
 	sample_ = std::make_unique<Object3D>("sample", "teapot");
 	terrain_ = std::make_unique<Object3D>("terrain", "terrain");
 	plane_ = std::make_unique<Primitive3D>("plane", Primitive3DType::Plane);
