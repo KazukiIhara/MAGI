@@ -16,11 +16,5 @@ struct Joint {
 	std::vector<uint32_t> children;
 	int32_t index;
 	std::optional<int32_t> parent;
-};
-
-// スケルトン
-struct SkeletonData {
-	int32_t root;
-	std::unordered_map<std::string, int32_t> jointMap;
-	std::vector<Joint> joints;
+	Matrix4x4 inverseBindPoseMatrix;
 };

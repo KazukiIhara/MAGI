@@ -6,6 +6,7 @@
 #include "Framework/MAGI.h"
 
 #include "3D/Object3D/Object3D.h"
+#include "3D/Object3DSkinning/Object3DSkinning.h"
 #include "3D/Primitive3D/Primitive3D.h"
 
 // サンプルシーン
@@ -22,6 +23,7 @@ public:
 
 private:
 	std::unique_ptr<Object3D> sample_ = nullptr;
+	std::unique_ptr<Object3DSkinning> skinningSample_ = nullptr;
 	std::unique_ptr<Object3D> terrain_ = nullptr;
 	std::unique_ptr<Primitive3D> plane_ = nullptr;
 };
@@ -35,7 +37,8 @@ inline void SampleScene<Data>::Initialize() {
 
 	MAGISYSTEM::LoadAnimation("boxMan");
 
-	sample_ = std::make_unique<Object3D>("sample", "boxMan");
+	sample_ = std::make_unique<Object3D>("sample", "teapot");
+	skinningSample_ = std::make_unique<Object3DSkinning>("skinningSample", "boxMan");
 	terrain_ = std::make_unique<Object3D>("terrain", "terrain");
 	plane_ = std::make_unique<Primitive3D>("plane", Primitive3DType::Plane);
 
@@ -66,29 +69,10 @@ inline void SampleScene<Data>::Initialize() {
 template<typename Data>
 inline void SampleScene<Data>::Update() {
 
-	if (MAGISYSTEM::TriggerKey(DIK_R)) {
-		plane_->GetRotate() = { 0.0f,0.0f,0.0f };
-	}
-
-	if (MAGISYSTEM::PushKey(DIK_W)) {
-		plane_->GetRotate().x += 0.01f;
-	} else if (MAGISYSTEM::PushKey(DIK_S)) {
-		plane_->GetRotate().x -= 0.01f;
-	}
-
-	if (MAGISYSTEM::PushKey(DIK_D)) {
-		plane_->GetRotate().y += 0.01f;
-	} else if (MAGISYSTEM::PushKey(DIK_A)) {
-		plane_->GetRotate().y -= 0.01f;
-	}
-
-	if (MAGISYSTEM::PushKey(DIK_Q)) {
-		plane_->GetRotate().z += 0.01f;
-	} else if (MAGISYSTEM::PushKey(DIK_E)) {
-		plane_->GetRotate().z -= 0.01f;
-	}
-
 	terrain_->Update();
+
+	skinningSample_->Update();
+
 	sample_->Update();
 	plane_->Update();
 }
@@ -100,8 +84,10 @@ inline void SampleScene<Data>::Draw() {
 	terrain_->Draw();
 
 	MAGISYSTEM::PreDrawObject3D();
-	sample_->Draw();
-	plane_->Draw();
+	skinningSample_->Draw();
+
+	//sample_->Draw();
+	//plane_->Draw();
 }
 
 template<typename Data>

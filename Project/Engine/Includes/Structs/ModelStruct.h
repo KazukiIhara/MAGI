@@ -73,10 +73,8 @@ struct ModelData {
 	std::vector<MeshData> meshes;
 	Node rootNode;
 
-	//
-	// forSkinning
-	//
-	SkinCluster skinCluster_;
+	// 逆バインドポーズ
+	std::unordered_map<std::string, Matrix4x4> inverseBindPoseMatrices;
 };
 
 /// <summary>

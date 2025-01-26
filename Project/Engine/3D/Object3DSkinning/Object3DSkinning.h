@@ -1,7 +1,6 @@
 #pragma once
 
 #include "3D/Object3D/Object3D.h"
-#include "3D/Skeleton/Skeleton.h"
 
 class Object3DSkinning:public Object3D {
 public:
@@ -10,6 +9,4 @@ public:
 
 	void Update()override;
 private:
-	// スケルトン
-	std::unique_ptr<Skeleton> skeleton_ = nullptr;
 };

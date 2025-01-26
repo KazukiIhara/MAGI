@@ -3,8 +3,10 @@
 // C++
 #include <string>
 #include <vector>
+#include <memory>
 
 #include "3D/Mesh/Mesh.h"
+#include "3D/Skeleton/Skeleton.h"
 #include "Structs/AnimationStruct.h"
 
 class Model {
@@ -16,12 +18,23 @@ public:
 	void Update();
 	void Draw();
 
-
 	bool IsNormalMap();
-	Node GetRootNode() const;
 private:
 	// 受け取ったモデルからメッシュを作成
 	void CreateMehes();
+
+	// 
+	// forSkinning
+	// 
+
+	// パレットのリソース作成
+	void CreateSkinPaletteResource();
+
+	// パレットの更新
+	void SkinPaletteUpdate();
+
+	// スキニング
+	void Skinning();
 private:
 	// 受け取るモデルデータ
 	ModelData modelData_{};
@@ -32,6 +45,11 @@ private:
 	// forSkinning
 	// 
 
-	// スキニング用にシェーダーに渡す情報
-	ComPtr<ID3D12Resource> skinningInformationResource_;
+	// スケルトン
+	std::unique_ptr<Skeleton> skeleton_ = nullptr;
+
+	// パレットのリソース
+	ComPtr<ID3D12Resource> paletteResource_ = nullptr;
+	std::span<WellForGPU> mappedPalette_;
+	uint32_t paletteSrvIndex_;
 };

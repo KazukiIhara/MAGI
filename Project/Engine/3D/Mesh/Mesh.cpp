@@ -111,3 +111,43 @@ void Mesh::MapMaterialData() {
 	materialData_->color = meshData_.material.color;
 	materialData_->uvMatrix = meshData_.material.uvMatrix;
 }
+
+void Mesh::CreateInfluenceResource() {
+	// リソースを確保
+	influenceResource_ = MAGISYSTEM::CreateBufferResource(sizeof(VertexInfluence) * meshData_.vertices.size());
+	VertexInfluence* mappedInfluence = nullptr;
+	influenceResource_->Map(0, nullptr, reinterpret_cast<void**>(mappedInfluence));
+	std::memset(mappedInfluence, 0, sizeof(VertexInfluence) * meshData_.vertices.size());
+	mappedInfluence_ = { mappedInfluence,meshData_.vertices.size() };
+	// インデックス割り当て
+	influenceSrvIndex = MAGISYSTEM::ViewAllocate();
+	// srv作成
+	MAGISYSTEM::CreateSrvStructuredBuffer(influenceSrvIndex, influenceResource_.Get(), static_cast<uint32_t>(meshData_.vertices.size()), sizeof(VertexInfluence));
+}
+
+void Mesh::Skinning(const uint32_t& paletteSrvIndex) {
+	// コマンドリストを取得
+	ID3D12GraphicsCommandList* commandList = MAGISYSTEM::GetDirectXCommandList();
+	//commandList->SetComputeRootSignature();
+	//commandList->SetPipelineState();
+	
+	// DescriptoorHeapの設定
+	ComPtr<ID3D12DescriptorHeap> descriptorHeaps[] = { MAGISYSTEM::GetSrvUavDescriptorHeap() };
+	commandList->SetDescriptorHeaps(1, descriptorHeaps->GetAddressOf());
+	
+	// コマンドを積む
+	commandList->SetComputeRootDescriptorTable(0, MAGISYSTEM::GetSrvDescriptorHandleGPU(paletteSrvIndex));
+	commandList->SetComputeRootDescriptorTable(1, MAGISYSTEM::GetSrvDescriptorHandleGPU(vertexSrvIndex_));
+	commandList->SetComputeRootDescriptorTable(2, MAGISYSTEM::GetSrvDescriptorHandleGPU(influenceSrvIndex));
+	commandList->SetComputeRootDescriptorTable(3, MAGISYSTEM::GetSrvDescriptorHandleGPU(vertexUavIndex_));
+	commandList->SetComputeRootConstantBufferView(4, skinningInformationResource_->GetGPUVirtualAddress());
+
+	// コマンド発行
+	commandList->Dispatch(UINT(meshData_.vertices.size() + 1023) / 1024, 1, 1);
+
+	// コマンド実行
+	MAGISYSTEM::KickCommand();
+	MAGISYSTEM::WaitGPU();
+	MAGISYSTEM::ResetCommand();
+
+}

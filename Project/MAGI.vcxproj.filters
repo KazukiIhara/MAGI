@@ -393,6 +393,9 @@
     <ClInclude Include="Engine\3D\Skeleton\Skeleton.h" />
     <ClInclude Include="Engine\3D\Object3DSkinning\Object3DSkinning.h" />
     <ClInclude Include="Engine\AssetContainers\AnimationDataContainer\AnimationDataContainer.h" />
+    <ClInclude Include="Engine\PipelineManagers\ComputePipelineManager\ComputePipelineManager.h" />
+    <ClInclude Include="Engine\Includes\Enums\ComputePipelineEnum.h" />
+    <ClInclude Include="Engine\ComputePipelines\SkinningComputePipeline\SkinningComputePipeline.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="App\Game\Game.cpp">
@@ -526,15 +529,19 @@
     <ClCompile Include="Engine\3D\Skeleton\Skeleton.cpp" />
     <ClCompile Include="Engine\3D\Object3DSkinning\Object3DSkinning.cpp" />
     <ClCompile Include="Engine\AssetContainers\AnimationDataContainer\AnimationDataContainer.cpp" />
+    <ClCompile Include="Engine\PipelineManagers\ComputePipelineManager\ComputePipelineManager.cpp" />
+    <ClCompile Include="Engine\ComputePipelines\SkinningComputePipeline\SkinningComputePipeline.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Engine\SceneManager\SceneManager.ipp">
       <Filter>Engine\SceneManager</Filter>
     </None>
     <None Include="Engine\Resources\Shaders\Object3DNormalMap\Object3DNormalMap.hlsli" />
+    <None Include="Engine\Resources\Shaders\Skinning\Skinning.hlsli" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Engine\Resources\Shaders\Object3DNormalMap\Object3DNormalMap.VS.hlsl" />
     <FxCompile Include="Engine\Resources\Shaders\Object3DNormalMap\Object3DNormalMap.PS.hlsl" />
+    <FxCompile Include="Engine\Resources\Shaders\Skinning\Skinning.CS.hlsl" />
   </ItemGroup>
 </Project>

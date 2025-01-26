@@ -202,20 +202,14 @@ ModelData ModelDataContainer::LoadModel(const std::string& modelName, bool isNor
 					// 既存 or 新規作成する JointWeightData を取得
 					JointWeightData& jointWeightData = meshData.skinClusterData[jointName];
 
-					// Assimp の offsetMatrix は「頂点座標からボーン座標へ変換する行列 = 逆バインドポーズ行列」として扱われるケースが多いです。
-					// ただし、座標系の反転等を行うなら調整が必要です。以下はサンプル実装（前述の座標反転に合わせる例）。
-					// --------------------------------------------------
 					// 1. 現状 bone->mOffsetMatrix は「InverseBindPose」とみなす
 					// 2. 必要に応じて逆行列→分解→座標反転→再逆行列のような処理を行う
-					//    (以下は先ほどのご質問中のサンプルコードを参考にした例)
-					// --------------------------------------------------
 					aiMatrix4x4 offsetMatrix = bone->mOffsetMatrix;
 
 					// Assimpの offsetMatrix がすでに「逆バインドポーズ」の場合は、
 					// そのまま（あるいは座標変換をして）jointWeightData.inverseBindPoseMatrix に変換してよい。
-					// もし先ほどのように一度Inverse()してからDecomposeしたい場合は以下サンプル：
 					aiMatrix4x4 bindPoseMatrixAssimp = offsetMatrix;
-					bindPoseMatrixAssimp.Inverse(); // -> ボーンの「正方向のバインドポーズ行列」を想定している
+					bindPoseMatrixAssimp.Inverse();
 					aiVector3D scale, translate;
 					aiQuaternion rotate;
 					bindPoseMatrixAssimp.Decompose(scale, rotate, translate);
@@ -236,11 +230,23 @@ ModelData ModelDataContainer::LoadModel(const std::string& modelName, bool isNor
 						jointWeightData.vertexWeights.push_back({ w, vtxId });
 					}
 				}
+
+				// ボーンごとのinverseBindPoseMatrices設定
+				{
+					// ModelData 側のマップに追加入力する単純実装になっています。
+					int boneId = 0;
+					for (auto& [jointName, jointWeightData] : meshData.skinClusterData) {
+						if (newModelData.inverseBindPoseMatrices.find(jointName) == newModelData.inverseBindPoseMatrices.end()) {
+							newModelData.inverseBindPoseMatrices[jointName] = jointWeightData.inverseBindPoseMatrix;
+						}
+						boneId++;
+					}
+				}
+
+
 			}
 
-			//--------------------------------------------------------------------------
 			// 頂点ごとのスキニング影響度(influences_)の構築
-			//--------------------------------------------------------------------------
 			// メッシュの頂点数ぶん確保(最大4インフルエンス)
 			meshData.influences_.resize(mesh->mNumVertices);
 			for (auto& influence : meshData.influences_) {

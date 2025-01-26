@@ -441,6 +441,22 @@ ID3D12GraphicsCommandList* MAGISYSTEM::GetDirectXCommandList() {
 	return directXCommand_->GetList();
 }
 
+void MAGISYSTEM::KickCommand() {
+	directXCommand_->KickCommand();
+}
+
+void MAGISYSTEM::ResetCommand() {
+	directXCommand_->ResetCommand();
+}
+
+void MAGISYSTEM::WaitGPU() {
+	fence_->WaitGPU();
+}
+
+ID3D12DescriptorHeap* MAGISYSTEM::GetSrvUavDescriptorHeap() {
+	return srvuavManager_->GetDescriptorHeap();
+}
+
 D3D12_CPU_DESCRIPTOR_HANDLE MAGISYSTEM::GetSrvDescriptorHandleCPU(uint32_t index) {
 	return srvuavManager_->GetDescriptorHandleCPU(index);
 }

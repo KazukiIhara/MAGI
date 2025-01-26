@@ -120,16 +120,22 @@ public: // エンジンの機能
 #pragma region DirectXCommandの機能
 	// コマンドリストを取得
 	static ID3D12GraphicsCommandList* GetDirectXCommandList();
-
+	// コマンドのクローズと実行
+	static void KickCommand();
+	// コマンドのリセット
+	static void ResetCommand();
 #pragma endregion
 
 #pragma region Fenceの機能
-
-
+	// GPUを待機
+	static void WaitGPU();
 
 #pragma endregion
 
 #pragma region SRVUAVManagerの機能
+	// SRVUAVのディスクリプタヒープを取得
+	static ID3D12DescriptorHeap* GetSrvUavDescriptorHeap();
+
 	// SRVのCPUディスクリプタハンドルを取得
 	static D3D12_CPU_DESCRIPTOR_HANDLE GetSrvDescriptorHandleCPU(uint32_t index);
 	// SRVのGPUディスクリプタハンドルを取得

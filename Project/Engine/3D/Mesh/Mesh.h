@@ -22,6 +22,9 @@ public:
 	void Update();
 	void Draw();
 
+	// スキニング
+	void Skinning(const uint32_t& paletteSrvIndex);
+
 	bool IsNormalMap() const;
 private:
 	// 頂点リソースの作成
@@ -42,6 +45,15 @@ private:
 	void CreateMaterialResource();
 	// マテリアルデータの書き込み
 	void MapMaterialData();
+
+	//
+	// forSkinning
+	//
+
+	// スキニング影響度用のリソースを作成
+	void CreateInfluenceResource();
+
+
 private:
 	// メッシュデータ
 	MeshData meshData_{};
@@ -70,13 +82,25 @@ private:
 	// forSkinning
 	//
 
+	// スキニング用頂点リソース
+	ComPtr<ID3D12Resource> skinningVertexResource_;
+	// スキニング用VBV
+	D3D12_VERTEX_BUFFER_VIEW skinningVertexBufferView_;
+
+	// スキニング影響度
+	std::span<VertexInfluence> mappedInfluence_;
 	// スキニング影響度のリソース
 	ComPtr<ID3D12Resource> influenceResource_;
+
+
+	// スキニング用の情報リソース
+	ComPtr<ID3D12Resource> skinningInformationResource_;
+	// スキニング用の情報データ
+	SkinningInformationForGPU* skiningInformationData_ = nullptr;
+
 
 	// スキニングに必要なリソースインデックス
 	uint32_t vertexSrvIndex_;
 	uint32_t vertexUavIndex_;
 	uint32_t influenceSrvIndex;
-
-	std::span<VertexInfluence> mappedInfluence;
 };
