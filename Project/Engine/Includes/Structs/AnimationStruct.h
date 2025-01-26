@@ -30,7 +30,6 @@ struct NodeAnimation {
 };
 
 // アニメーション
-struct Animation {
-	float duration;
+struct AnimationData {
 	std::unordered_map<std::string, NodeAnimation> nodeAnimations;
 };
