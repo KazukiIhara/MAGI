@@ -1,6 +1,7 @@
 #include "Primitive3D.h"
 
 #include "3D/PrimitiveShapes3D/Plane/Plane.h"
+#include "3D/PrimitiveShapes3D/Sphere/Sphere.h"
 
 Primitive3D::Primitive3D(const std::string& objectName, const Primitive3DType& primitiveType, const std::string& textureFilePath)
 	:BaseRenderable3D(objectName) {
@@ -18,6 +19,7 @@ void Primitive3D::Initialize(const Primitive3DType& primitiveType, const std::st
 			primitive_ = std::make_unique<Plane>(textureFilePath);
 			break;
 		case Primitive3DType::Sphere:
+			primitive_ = std::make_unique<Sphere>(textureFilePath);
 			break;
 		case Primitive3DType::Ring:
 			break;
