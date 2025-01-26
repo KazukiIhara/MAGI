@@ -46,12 +46,6 @@ struct MeshData {
 	std::vector<VertexData3D> vertices;
 	std::vector<uint32_t> indices;
 	MaterialData material;
-
-	//
-	// forSkinning
-	//
-
-	std::vector<VertexInfluence> influences_;
 };
 
 /// <summary>

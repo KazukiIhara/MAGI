@@ -11,6 +11,7 @@
 #include "DirectX/ComPtr/ComPtr.h"
 #include "Structs/ModelStruct.h"
 #include "Structs/SkinningStruct.h"
+#include "Structs/SkeletonStruct.h"
 
 /// <summary>
 /// メッシュクラス
@@ -24,6 +25,9 @@ public:
 
 	// スキニング
 	void Skinning(const uint32_t& paletteSrvIndex);
+
+	// 影響度の参照を渡す
+	std::span<VertexInfluence>& GetMappdInfluence();
 
 	bool IsNormalMap() const;
 private:
@@ -95,11 +99,10 @@ private:
 	// スキニング用VBV
 	D3D12_VERTEX_BUFFER_VIEW skinningVertexBufferView_;
 
-	// スキニング影響度
-	std::span<VertexInfluence> mappedInfluence_;
 	// スキニング影響度のリソース
 	ComPtr<ID3D12Resource> influenceResource_;
-
+	// スキニング影響度
+	std::span<VertexInfluence> mappedInfluence_;
 
 	// スキニング用の情報リソース
 	ComPtr<ID3D12Resource> skinningInformationResource_;

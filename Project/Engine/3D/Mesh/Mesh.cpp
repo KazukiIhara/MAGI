@@ -83,6 +83,10 @@ void Mesh::Draw() {
 	commandList->DrawIndexedInstanced(UINT(meshData_.indices.size()), 1, 0, 0, 0);
 }
 
+std::span<VertexInfluence>& Mesh::GetMappdInfluence() {
+	return mappedInfluence_;
+}
+
 bool Mesh::IsNormalMap() const {
 	return meshData_.material.normalMapTextureFilePath != "";
 }
@@ -172,6 +176,8 @@ void Mesh::CreateInfluenceResource() {
 	// srv作成
 	MAGISYSTEM::CreateSrvStructuredBuffer(influenceSrvIndex, influenceResource_.Get(), static_cast<uint32_t>(meshData_.vertices.size()), sizeof(VertexInfluence));
 }
+
+
 
 void Mesh::Skinning(const uint32_t& paletteSrvIndex) {
 	// コマンドリストを取得

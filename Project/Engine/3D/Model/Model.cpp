@@ -90,8 +90,23 @@ void Model::CreateInverseBindPoseMatrix() {
 		if (it == skeleton_->jointMap.end()) {
 			continue;
 		}
-
 		inverseBindPoseMatrices_[(*it).second] = jointWeight.second.inverseBindPoseMatrix;
+		for (const auto& vertexWeight : jointWeight.second.vertexWeights) {
+			for (auto& mesh : meshes_) {
+
+				auto& currentInfluence = mesh.GetMappdInfluence()[vertexWeight.vertexIndex];
+				for (uint32_t index = 0; index < kNumMaxInfluence; index++) {
+					if (currentInfluence.weights[index] == 0.0f) {
+						currentInfluence.weights[index] = vertexWeight.weight;
+						currentInfluence.jointIndices[index] = (*it).second;
+						break;
+					}
+				}
+			}
+
+
+		}
+
 	}
 }
 

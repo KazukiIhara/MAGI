@@ -233,36 +233,6 @@ ModelData ModelDataContainer::LoadModel(const std::string& modelName, bool isNor
 
 			}
 
-			// 頂点ごとのスキニング影響度(influences_)の構築
-			// メッシュの頂点数ぶん確保(最大4インフルエンス)
-			meshData.influences_.resize(mesh->mNumVertices);
-			for (auto& influence : meshData.influences_) {
-				influence.weights = { 0.0f, 0.0f, 0.0f, 0.0f };
-				influence.jointIndices = { 0, 0, 0, 0 };
-			}
-
-			// ボーンごとに頂点のウェイトを influences_ に反映
-			{
-				int boneId = 0;
-				for (auto& [jointName, jointWeightData] : newModelData.skinClusterData) {
-					for (auto& vw : jointWeightData.vertexWeights) {
-						auto& inf = meshData.influences_[vw.vertexIndex];
-
-
-
-						// まだ空きスロットがあるところに詰めるだけの簡単実装
-						for (int i = 0; i < kNumMaxInfluence; i++) {
-							if (inf.weights[i] == 0.0f) {
-								inf.weights[i] = vw.weight;
-								inf.jointIndices[i] = boneId;
-								break;
-							}
-						}
-					}
-					boneId++;
-				}
-			}
-
 		}
 
 		newModelData.meshes.push_back(meshData);
