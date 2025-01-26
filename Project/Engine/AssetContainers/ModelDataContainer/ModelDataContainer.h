@@ -29,6 +29,8 @@ public:
 	ModelData FindModelData(const std::string& modelName)const;
 private:
 	ModelData LoadModel(const std::string& modelName, bool isNormalMap);
+	// ノードの読み込み
+	Node ReadNode(aiNode* node);
 private:
 	void SetTextureDataContainer(TextureDataContainer* textureDataContainer);
 private:

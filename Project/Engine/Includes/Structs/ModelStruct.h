@@ -2,10 +2,12 @@
 
 // C++
 #include <string>
+#include <map>
 
 // MyHedder
 #include "Math/Utility/MathUtility.h"
 #include "Structs/SkeletonStruct.h"
+#include "Structs/SkinningStruct.h"
 
 /// <summary>
 /// 3D頂点データ
@@ -44,6 +46,9 @@ struct MeshData {
 	std::vector<VertexData3D> vertices;
 	std::vector<uint32_t> indices;
 	MaterialData material;
+	// 頂点ごとのスキニング影響度
+	std::vector<VertexInfluence> influences_;
+	std::map<std::string, JointWeightData> skinClusterData;
 };
 
 /// <summary>
@@ -63,6 +68,8 @@ struct ModelData {
 	std::string name;
 	std::vector<MeshData> meshes;
 	Node rootNode;
+	// スキニング用の情報
+	SkinCluster skinCluster_;
 };
 
 /// <summary>

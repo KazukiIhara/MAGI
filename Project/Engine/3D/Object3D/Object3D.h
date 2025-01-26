@@ -10,7 +10,7 @@ public:
 	void Initialize(const std::string& modelName);
 	virtual void Update()override;
 	void Draw()override;
-private:
+protected:
 	// モデル
 	std::unique_ptr<Model> model_ = nullptr;
 };

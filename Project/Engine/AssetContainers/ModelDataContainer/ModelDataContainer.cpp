@@ -93,8 +93,10 @@ ModelData ModelDataContainer::LoadModel(const std::string& modelName, bool isNor
 		aiProcess_Triangulate |
 		aiProcess_CalcTangentSpace
 	);
-
 	assert(scene && scene->HasMeshes());
+
+	// ノード読み込み
+	newModelData.rootNode = ReadNode(scene->mRootNode);
 
 	std::vector<MaterialData> materials(scene->mNumMaterials);
 
@@ -191,12 +193,109 @@ ModelData ModelDataContainer::LoadModel(const std::string& modelName, bool isNor
 				}
 			}
 
+			// ボーン解析
+			if (mesh->HasBones()) {
+				for (uint32_t boneIndex = 0; boneIndex < mesh->mNumBones; ++boneIndex) {
+					aiBone* bone = mesh->mBones[boneIndex];
+					std::string jointName = bone->mName.C_Str();
+
+					// 既存 or 新規作成する JointWeightData を取得
+					JointWeightData& jointWeightData = meshData.skinClusterData[jointName];
+
+					// Assimp の offsetMatrix は「頂点座標からボーン座標へ変換する行列 = 逆バインドポーズ行列」として扱われるケースが多いです。
+					// ただし、座標系の反転等を行うなら調整が必要です。以下はサンプル実装（前述の座標反転に合わせる例）。
+					// --------------------------------------------------
+					// 1. 現状 bone->mOffsetMatrix は「InverseBindPose」とみなす
+					// 2. 必要に応じて逆行列→分解→座標反転→再逆行列のような処理を行う
+					//    (以下は先ほどのご質問中のサンプルコードを参考にした例)
+					// --------------------------------------------------
+					aiMatrix4x4 offsetMatrix = bone->mOffsetMatrix;
+
+					// Assimpの offsetMatrix がすでに「逆バインドポーズ」の場合は、
+					// そのまま（あるいは座標変換をして）jointWeightData.inverseBindPoseMatrix に変換してよい。
+					// もし先ほどのように一度Inverse()してからDecomposeしたい場合は以下サンプル：
+					aiMatrix4x4 bindPoseMatrixAssimp = offsetMatrix;
+					bindPoseMatrixAssimp.Inverse(); // -> ボーンの「正方向のバインドポーズ行列」を想定している
+					aiVector3D scale, translate;
+					aiQuaternion rotate;
+					bindPoseMatrixAssimp.Decompose(scale, rotate, translate);
+
+					// X反転を入れる場合は以下のようにマイナスをつける
+					Matrix4x4 bindPoseMatrix = MakeAffineMatrix(
+						{ scale.x, scale.y, scale.z },
+						{ rotate.x, -rotate.y, -rotate.z, rotate.w },
+						{ -translate.x, translate.y, translate.z }
+					);
+					// さらに「逆行列」をとる → 再度「逆バインドポーズ行列」として確定
+					jointWeightData.inverseBindPoseMatrix = Inverse(bindPoseMatrix);
+
+					// 頂点ウェイトの登録
+					for (uint32_t weightIndex = 0; weightIndex < bone->mNumWeights; ++weightIndex) {
+						float    w = bone->mWeights[weightIndex].mWeight;
+						uint32_t vtxId = bone->mWeights[weightIndex].mVertexId;
+						jointWeightData.vertexWeights.push_back({ w, vtxId });
+					}
+				}
+			}
+
+			//--------------------------------------------------------------------------
+			// 頂点ごとのスキニング影響度(influences_)の構築
+			//--------------------------------------------------------------------------
+			// メッシュの頂点数ぶん確保(最大4インフルエンス)
+			meshData.influences_.resize(mesh->mNumVertices);
+			for (auto& influence : meshData.influences_) {
+				influence.weights = { 0.0f, 0.0f, 0.0f, 0.0f };
+				influence.jointIndices = { 0, 0, 0, 0 };
+			}
+
+			// ボーンごとに頂点のウェイトを influences_ に反映
+			{
+				int boneId = 0;
+				for (auto& [jointName, jointWeightData] : meshData.skinClusterData) {
+					for (auto& vw : jointWeightData.vertexWeights) {
+						auto& inf = meshData.influences_[vw.vertexIndex];
+
+						// まだ空きスロットがあるところに詰めるだけの簡単実装
+						for (int i = 0; i < kNumMaxInfluence; i++) {
+							if (inf.weights[i] == 0.0f) {
+								inf.weights[i] = vw.weight;
+								inf.jointIndices[i] = boneId;
+								break;
+							}
+						}
+					}
+					boneId++;
+				}
+			}
+
 		}
 
 		newModelData.meshes.push_back(meshData);
 	}
 
 	return newModelData;
+}
+
+Node ModelDataContainer::ReadNode(aiNode* node) {
+	Node result{};
+
+	aiVector3D scale, translate;
+	aiQuaternion rotate;
+
+	node->mTransformation.Decompose(scale, rotate, translate);
+	result.transform.scale = { scale.x,scale.y,scale.z };
+	result.transform.rotate = { rotate.x,-rotate.y,-rotate.z,rotate.w };
+	result.transform.translate = { -translate.x,translate.y,translate.z };
+
+	result.localMatrix = MakeAffineMatrix(result.transform.scale, result.transform.rotate, result.transform.translate);
+
+	result.name = node->mName.C_Str(); // node名を格納
+	result.children.resize(node->mNumChildren);// 子供の数だけ確保
+	for (uint32_t childIndex = 0; childIndex < node->mNumChildren; childIndex++) {
+		// 再帰的に読んで階層構造を作っていく
+		result.children[childIndex] = ReadNode(node->mChildren[childIndex]);
+	}
+	return result;
 }
 
 void ModelDataContainer::SetTextureDataContainer(TextureDataContainer* textureDataContainer) {

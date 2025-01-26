@@ -70,9 +70,6 @@ private:
 	// forSkinning
 	//
 
-	// 頂点ごとのスキニング影響度
-	std::vector<VertexInfluence> influences_;
-
 	// スキニング影響度のリソース
 	ComPtr<ID3D12Resource> influenceResource_;
 

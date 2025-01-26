@@ -30,8 +30,6 @@ private:
 	// forSkinning
 	// 
 
-	// スキニング用の情報
-	SkinCluster skinCluster_;
 	// スキニング用にシェーダーに渡す情報
 	ComPtr<ID3D12Resource> skinningInformationResource_;
 };

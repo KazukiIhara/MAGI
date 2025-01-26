@@ -36,3 +36,13 @@ struct SkinningInformationForGPU {
 	uint32_t numVertices;
 	uint32_t numJoints;
 };
+
+struct VertexWeightData {
+	float weight;
+	uint32_t vertexIndex;
+};
+
+struct JointWeightData {
+	Matrix4x4 inverseBindPoseMatrix;
+	std::vector<VertexWeightData> vertexWeights;
+};
