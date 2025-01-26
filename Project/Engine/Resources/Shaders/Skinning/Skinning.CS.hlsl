@@ -19,6 +19,7 @@ void main(uint3 DTid : SV_DispatchThreadID)
         // Skinning後の頂点を計算
         Vertex skinned;
         skinned.texcoord = input.texcoord;
+        skinned.tangent = input.tangent;
         
         skinned.position = mul(input.position, gMatrixPalette[influence.index.x].skeletonSpaceMatrix) * influence.weight.x;
         skinned.position += mul(input.position, gMatrixPalette[influence.index.y].skeletonSpaceMatrix) * influence.weight.y;
@@ -31,7 +32,8 @@ void main(uint3 DTid : SV_DispatchThreadID)
         skinned.normal += mul(input.normal, (float3x3) gMatrixPalette[influence.index.y].skeletonSpaceInverseTransposeMatrix) * influence.weight.y;
         skinned.normal += mul(input.normal, (float3x3) gMatrixPalette[influence.index.z].skeletonSpaceInverseTransposeMatrix) * influence.weight.z;
         skinned.normal += mul(input.normal, (float3x3) gMatrixPalette[influence.index.w].skeletonSpaceInverseTransposeMatrix) * influence.weight.w;
-        skinned.normal = normalize(skinned.normal);
+        skinned.normal = normalize(skinned.normal);        
+       
         
         // Skining後の頂点データを格納
         gOutputVertices[vertexIndex] = skinned;

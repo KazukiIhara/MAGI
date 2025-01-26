@@ -90,6 +90,7 @@ void Model::CreateInverseBindPoseMatrix() {
 		if (it == skeleton_->jointMap.end()) {
 			continue;
 		}
+
 		inverseBindPoseMatrices_[(*it).second] = jointWeight.second.inverseBindPoseMatrix;
 	}
 }
