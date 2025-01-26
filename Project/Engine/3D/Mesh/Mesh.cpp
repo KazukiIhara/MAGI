@@ -63,7 +63,7 @@ void Mesh::Draw() {
 	// コマンドリストを取得
 	ID3D12GraphicsCommandList* commandList = MAGISYSTEM::GetDirectXCommandList();
 	// VBVを設定
-	commandList->IASetVertexBuffers(0, 1, &vertexBufferView_);
+	commandList->IASetVertexBuffers(0, 1, &skinningVertexBufferView_);
 	// IBVを設定
 	commandList->IASetIndexBuffer(&indexBufferView_);
 

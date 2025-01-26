@@ -22,8 +22,13 @@ void Object3D::Initialize(const std::string& modelName) {
 }
 
 void Object3D::Update() {
+	animationTime_ += MAGISYSTEM::GetDeltaTime();
+	animationTime_ = std::fmod(animationTime_, MAGISYSTEM::FindAnimation("ArmatureAction").duration);
+	model_->ApplyAnimation(MAGISYSTEM::FindAnimation("ArmatureAction"), animationTime_);
+
 	// モデル更新
 	model_->Update();
+
 	// 基底クラスの更新
 	BaseRenderable3D::Update();
 }

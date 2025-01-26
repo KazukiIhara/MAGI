@@ -2,8 +2,8 @@
 
 using namespace MAGIMath;
 
-Skeleton::Skeleton(const Node& rootNode, const std::unordered_map<std::string, Matrix4x4>& ibpMap) {
-	Initialize(rootNode, ibpMap);
+Skeleton::Skeleton(const Node& rootNode) {
+	Initialize(rootNode);
 }
 
 Skeleton::~Skeleton() {}
@@ -19,20 +19,12 @@ void Skeleton::Update() {
 	}
 }
 
-void Skeleton::Initialize(const Node& rootNode, const std::unordered_map<std::string, Matrix4x4>& ibpMap) {
+void Skeleton::Initialize(const Node& rootNode) {
 	// ジョイントを作成
 	root = CreateJoint(rootNode, {});
 	// ジョイントマップを埋める
 	for (const Joint& joint : joints) {
 		jointMap.emplace(joint.name, joint.index);
-	}
-	// ジョイントマップに含まれるジョイント名を調べて、同名のジョイントがあれば inverseBindPose を設定する
-	for (auto& [jointName, ibp] : ibpMap) {
-		auto it = jointMap.find(jointName);
-		if (it != jointMap.end()) {
-			int jointIndex = it->second;
-			joints[jointIndex].inverseBindPoseMatrix = ibp;
-		}
 	}
 }
 

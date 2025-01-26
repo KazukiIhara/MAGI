@@ -52,7 +52,6 @@ struct MeshData {
 	//
 
 	std::vector<VertexInfluence> influences_;
-	std::map<std::string, JointWeightData> skinClusterData;
 };
 
 /// <summary>
@@ -72,9 +71,7 @@ struct ModelData {
 	std::string name;
 	std::vector<MeshData> meshes;
 	Node rootNode;
-
-	// 逆バインドポーズ
-	std::unordered_map<std::string, Matrix4x4> inverseBindPoseMatrices;
+	std::map<std::string, JointWeightData> skinClusterData;
 };
 
 /// <summary>

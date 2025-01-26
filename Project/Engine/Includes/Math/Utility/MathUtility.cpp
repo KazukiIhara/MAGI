@@ -2,6 +2,7 @@
 
 #include <cassert>
 #include <stdexcept>
+#include <string>
 
 static const float EPSILON = 1.0e-6f;
 
@@ -253,6 +254,22 @@ Vector3 MAGIMath::Forward(const Vector3& rotate) {
 	return Normalize(forward);
 }
 
+Vector3 MAGIMath::Lerp(const Vector3& v1, const Vector3& v2, float t) {
+	return Vector3(
+		v1.x + t * (v2.x - v1.x),
+		v1.y + t * (v2.y - v1.y),
+		v1.z + t * (v2.z - v1.z)
+	);
+}
+
+Vector3 MAGIMath::Cross(const Vector3& a, const Vector3& b) {
+	return {
+		a.y * b.z - a.z * b.y,
+		a.z * b.x - a.x * b.z,
+		a.x * b.y - a.y * b.x
+	};
+}
+
 Vector3 MAGIMath::Transform(const Vector3& vector, const Quaternion& rotation) {
 	// クォータニオンの逆（共役）を計算
 	Quaternion conjugateRotation = Conjugate(rotation);
@@ -289,27 +306,36 @@ Matrix4x4 MAGIMath::Inverse(const Matrix4x4& a) {
 	Matrix4x4 B = MakeIdentityMatrix4x4();
 
 	for (int i = 0; i < 4; ++i) {
-		if (std::abs(A.m[i][i]) < 1e-6f) {
+		// ピボット選択（ゼロ近傍チェック）
+		const float epsilon = std::numeric_limits<float>::epsilon() * std::max(1.0f, std::abs(A.m[i][i]));
+		if (std::abs(A.m[i][i]) < epsilon) {
 			bool swapped = false;
+
+			// ピボット列でスワップ行を探す
 			for (int row = i + 1; row < 4; ++row) {
-				if (std::abs(A.m[row][i]) > 1e-6f) {
+				if (std::abs(A.m[row][i]) > epsilon) {
 					std::swap(A.m[i], A.m[row]);
 					std::swap(B.m[i], B.m[row]);
 					swapped = true;
 					break;
 				}
 			}
+
+			// スワップ失敗 → 特異行列
 			if (!swapped) {
-				throw std::runtime_error("Matrix is singular and cannot be inverted.");
+				throw std::runtime_error("Matrix is singular at row " + std::to_string(i) +
+					" with pivot value " + std::to_string(A.m[i][i]));
 			}
 		}
 
+		// ピボット行のスケーリング
 		float scale = 1.0f / A.m[i][i];
 		for (int j = 0; j < 4; ++j) {
 			A.m[i][j] *= scale;
 			B.m[i][j] *= scale;
 		}
 
+		// 他の行のピボット列をゼロにする
 		for (int k = 0; k < 4; ++k) {
 			if (k != i) {
 				float factor = A.m[k][i];

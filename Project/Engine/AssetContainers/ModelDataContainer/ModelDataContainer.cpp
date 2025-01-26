@@ -200,7 +200,7 @@ ModelData ModelDataContainer::LoadModel(const std::string& modelName, bool isNor
 					std::string jointName = bone->mName.C_Str();
 
 					// 既存 or 新規作成する JointWeightData を取得
-					JointWeightData& jointWeightData = meshData.skinClusterData[jointName];
+					JointWeightData& jointWeightData = newModelData.skinClusterData[jointName];
 
 					// 1. 現状 bone->mOffsetMatrix は「InverseBindPose」とみなす
 					// 2. 必要に応じて逆行列→分解→座標反転→再逆行列のような処理を行う
@@ -225,24 +225,11 @@ ModelData ModelDataContainer::LoadModel(const std::string& modelName, bool isNor
 
 					// 頂点ウェイトの登録
 					for (uint32_t weightIndex = 0; weightIndex < bone->mNumWeights; ++weightIndex) {
-						float    w = bone->mWeights[weightIndex].mWeight;
+						float w = bone->mWeights[weightIndex].mWeight;
 						uint32_t vtxId = bone->mWeights[weightIndex].mVertexId;
 						jointWeightData.vertexWeights.push_back({ w, vtxId });
 					}
 				}
-
-				// ボーンごとのinverseBindPoseMatrices設定
-				{
-					// ModelData 側のマップに追加入力する単純実装になっています。
-					int boneId = 0;
-					for (auto& [jointName, jointWeightData] : meshData.skinClusterData) {
-						if (newModelData.inverseBindPoseMatrices.find(jointName) == newModelData.inverseBindPoseMatrices.end()) {
-							newModelData.inverseBindPoseMatrices[jointName] = jointWeightData.inverseBindPoseMatrix;
-						}
-						boneId++;
-					}
-				}
-
 
 			}
 
@@ -257,9 +244,11 @@ ModelData ModelDataContainer::LoadModel(const std::string& modelName, bool isNor
 			// ボーンごとに頂点のウェイトを influences_ に反映
 			{
 				int boneId = 0;
-				for (auto& [jointName, jointWeightData] : meshData.skinClusterData) {
+				for (auto& [jointName, jointWeightData] : newModelData.skinClusterData) {
 					for (auto& vw : jointWeightData.vertexWeights) {
 						auto& inf = meshData.influences_[vw.vertexIndex];
+
+
 
 						// まだ空きスロットがあるところに詰めるだけの簡単実装
 						for (int i = 0; i < kNumMaxInfluence; i++) {

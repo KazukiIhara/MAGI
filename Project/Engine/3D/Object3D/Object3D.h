@@ -10,7 +10,10 @@ public:
 	void Initialize(const std::string& modelName);
 	virtual void Update()override;
 	void Draw()override;
+
 protected:
 	// モデル
 	std::unique_ptr<Model> model_ = nullptr;
+
+	float animationTime_ = 0.0f;
 };

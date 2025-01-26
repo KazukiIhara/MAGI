@@ -16,5 +16,4 @@ struct Joint {
 	std::vector<uint32_t> children;
 	int32_t index;
 	std::optional<int32_t> parent;
-	Matrix4x4 inverseBindPoseMatrix;
 };
