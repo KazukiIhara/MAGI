@@ -2,9 +2,12 @@
 
 // C++
 #include <string>
+#include <map>
 
 // MyHedder
 #include "Math/Utility/MathUtility.h"
+#include "Structs/SkeletonStruct.h"
+#include "Structs/SkinningStruct.h"
 
 /// <summary>
 /// 3D頂点データ
@@ -24,6 +27,16 @@ struct MaterialData {
 	std::string normalMapTextureFilePath;
 	Matrix4x4 uvMatrix;
 	Vector4 color;
+};
+
+/// <summary>
+/// ノード
+/// </summary>
+struct Node {
+	QuaternionTransform3D transform;
+	Matrix4x4 localMatrix;
+	std::string name;
+	std::vector<Node> children;
 };
 
 /// <summary>
@@ -51,6 +64,8 @@ struct PrimitiveData {
 struct ModelData {
 	std::string name;
 	std::vector<MeshData> meshes;
+	Node rootNode;
+	std::map<std::string, JointWeightData> skinClusterData;
 };
 
 /// <summary>

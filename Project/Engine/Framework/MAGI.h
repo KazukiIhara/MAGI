@@ -29,8 +29,10 @@
 
 #include "AssetContainers/TextureDataContainer/TextureDataContainer.h"
 #include "AssetContainers/ModelDataContainer/ModelDataContainer.h"
+#include "AssetContainers/AnimationDataContainer/AnimationDataContainer.h"
 
 #include "PipelineManagers/GraphicsPipelineManager/GraphicsPipelineManager.h"
+#include "PipelineManagers/ComputePipelineManager/ComputePipelineManager.h"
 
 #include "Camera3DManager/Camera3DManager.h"
 #include "PunctualLightManager/PunctualLightManager.h"
@@ -119,16 +121,22 @@ public: // エンジンの機能
 #pragma region DirectXCommandの機能
 	// コマンドリストを取得
 	static ID3D12GraphicsCommandList* GetDirectXCommandList();
-
+	// コマンドのクローズと実行
+	static void KickCommand();
+	// コマンドのリセット
+	static void ResetCommand();
 #pragma endregion
 
 #pragma region Fenceの機能
-
-
+	// GPUを待機
+	static void WaitGPU();
 
 #pragma endregion
 
 #pragma region SRVUAVManagerの機能
+	// SRVUAVのディスクリプタヒープを取得
+	static ID3D12DescriptorHeap* GetSrvUavDescriptorHeap();
+
 	// SRVのCPUディスクリプタハンドルを取得
 	static D3D12_CPU_DESCRIPTOR_HANDLE GetSrvDescriptorHandleCPU(uint32_t index);
 	// SRVのGPUディスクリプタハンドルを取得
@@ -148,6 +156,14 @@ public: // エンジンの機能
 
 #pragma endregion
 
+#pragma region ComputePipelineManager
+	// ルートシグネイチャ取得関数
+	static ID3D12RootSignature* GetComputeRootSignature(ComputePipelineStateType pipelineState);
+	// パイプライン取得関数
+	static ID3D12PipelineState* GetCompurePipelineState(ComputePipelineStateType pipelineState);
+
+#pragma endregion
+
 #pragma region TextureDataContainer
 	// 画像読み込み
 	static void LoadTexture(const std::string& filePath);
@@ -164,6 +180,14 @@ public: // エンジンの機能
 	static ModelData FindModel(const std::string& modelName);
 
 #pragma endregion
+
+#pragma region AnimationDataContainer
+	// アニメーションの読み込み
+	static void LoadAnimation(const std::string& animationFileName, bool isInSameDirectoryAsModel = true);
+	// 読み込み済みアニメーションの検索
+	static AnimationData FindAnimation(const std::string& animationName);
+#pragma endregion
+
 
 #pragma region Camera3DManager
 	// カメラの転送
@@ -238,12 +262,14 @@ protected:
 	// PipelineManager
 	//
 	static std::unique_ptr<GraphicsPipelineManager> graphicsPipelineManager_;
+	static std::unique_ptr<ComputePipelineManager> computePipelineManager_;
 
 	// 
 	// AssetContainer
 	// 
 	static std::unique_ptr<TextureDataContainer> textureDataCantainer_;
 	static std::unique_ptr<ModelDataContainer> modelDataContainer_;
+	static std::unique_ptr<AnimationDataContainer> animationDataContainer_;
 
 	//
 	// ObjectManager

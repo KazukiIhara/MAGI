@@ -29,8 +29,10 @@ std::unique_ptr<ScissorRect> MAGISYSTEM::scissorRect_ = nullptr;
 
 std::unique_ptr<TextureDataContainer> MAGISYSTEM::textureDataCantainer_ = nullptr;
 std::unique_ptr<ModelDataContainer> MAGISYSTEM::modelDataContainer_ = nullptr;
+std::unique_ptr<AnimationDataContainer> MAGISYSTEM::animationDataContainer_ = nullptr;
 
 std::unique_ptr<GraphicsPipelineManager> MAGISYSTEM::graphicsPipelineManager_ = nullptr;
+std::unique_ptr<ComputePipelineManager> MAGISYSTEM::computePipelineManager_ = nullptr;
 
 std::unique_ptr<Camera3DManager> MAGISYSTEM::camera3DManager_ = nullptr;
 std::unique_ptr<PunctualLightManager> MAGISYSTEM::punctualLightManager_ = nullptr;
@@ -57,6 +59,7 @@ void MAGISYSTEM::Initialize() {
 	// DirectInput
 	directInput_ = std::make_unique<DirectInput>(windowApp_.get());
 
+
 	// DXGI
 	dxgi_ = std::make_unique<DXGI>();
 	// DirectXCommand
@@ -66,12 +69,14 @@ void MAGISYSTEM::Initialize() {
 	// ShaderCompiler
 	shaderCompiler_ = std::make_unique<ShaderCompiler>();
 
+
 	// RTVManager
 	rtvManager_ = std::make_unique<RTVManager>(dxgi_.get());
 	// DSVManager
 	dsvManager_ = std::make_unique<DSVManager>(dxgi_.get());
 	// SRVUAVmanager
 	srvuavManager_ = std::make_unique<SRVUAVManager>(dxgi_.get());
+
 
 	// SwapChain
 	swapChain_ = std::make_unique<SwapChain>(windowApp_.get(), dxgi_.get(), directXCommand_.get(), rtvManager_.get());
@@ -86,14 +91,19 @@ void MAGISYSTEM::Initialize() {
 	// Scissor
 	scissorRect_ = std::make_unique<ScissorRect>(directXCommand_.get());
 
+
 	// TextureDataContainer
 	textureDataCantainer_ = std::make_unique<TextureDataContainer>(dxgi_.get(), directXCommand_.get(), fence_.get(), srvuavManager_.get());
 	// ModelDataContainer
 	modelDataContainer_ = std::make_unique<ModelDataContainer>(textureDataCantainer_.get());
+	// AnimationDataContainer
+	animationDataContainer_ = std::make_unique<AnimationDataContainer>();
 
 
 	// GraphicsPipelineManager
 	graphicsPipelineManager_ = std::make_unique<GraphicsPipelineManager>(dxgi_.get(), shaderCompiler_.get());
+	// ComputePipelineManager
+	computePipelineManager_ = std::make_unique<ComputePipelineManager>(dxgi_.get(), shaderCompiler_.get());
 
 
 	// Camera3DManager
@@ -145,9 +155,19 @@ void MAGISYSTEM::Finalize() {
 		camera3DManager_.reset();
 	}
 
+	// CompuetPipelineManager
+	if (computePipelineManager_) {
+		computePipelineManager_.reset();
+	}
+
 	// GraphicsPipelineManager
 	if (graphicsPipelineManager_) {
 		graphicsPipelineManager_.reset();
+	}
+
+	// AnimationDataContainer
+	if (animationDataContainer_) {
+		animationDataContainer_.reset();
 	}
 
 	// ModelDataContainer
@@ -429,6 +449,22 @@ ID3D12GraphicsCommandList* MAGISYSTEM::GetDirectXCommandList() {
 	return directXCommand_->GetList();
 }
 
+void MAGISYSTEM::KickCommand() {
+	directXCommand_->KickCommand();
+}
+
+void MAGISYSTEM::ResetCommand() {
+	directXCommand_->ResetCommand();
+}
+
+void MAGISYSTEM::WaitGPU() {
+	fence_->WaitGPU();
+}
+
+ID3D12DescriptorHeap* MAGISYSTEM::GetSrvUavDescriptorHeap() {
+	return srvuavManager_->GetDescriptorHeap();
+}
+
 D3D12_CPU_DESCRIPTOR_HANDLE MAGISYSTEM::GetSrvDescriptorHandleCPU(uint32_t index) {
 	return srvuavManager_->GetDescriptorHandleCPU(index);
 }
@@ -467,6 +503,14 @@ void MAGISYSTEM::LoadModel(const std::string& modelName, bool isNormalMap) {
 
 ModelData MAGISYSTEM::FindModel(const std::string& modelName) {
 	return modelDataContainer_->FindModelData(modelName);
+}
+
+void MAGISYSTEM::LoadAnimation(const std::string& animationFileName, bool isInSameDirectoryAsModel) {
+	animationDataContainer_->Load(animationFileName, isInSameDirectoryAsModel);
+}
+
+AnimationData MAGISYSTEM::FindAnimation(const std::string& animationName) {
+	return animationDataContainer_->FindAnimationData(animationName);
 }
 
 void MAGISYSTEM::TransferCamera() {
@@ -508,5 +552,13 @@ void MAGISYSTEM::PreDrawObject3DNormalMap() {
 
 ID3D12PipelineState* MAGISYSTEM::GetGraphicsPipelineState(GraphicsPipelineStateType pipelineState, BlendMode blendMode) {
 	return graphicsPipelineManager_->GetPipelineState(pipelineState, blendMode);
+}
+
+ID3D12RootSignature* MAGISYSTEM::GetComputeRootSignature(ComputePipelineStateType pipelineState) {
+	return computePipelineManager_->GetRootSignature(pipelineState);
+}
+
+ID3D12PipelineState* MAGISYSTEM::GetCompurePipelineState(ComputePipelineStateType pipelineState) {
+	return computePipelineManager_->GetPipelineState(pipelineState);
 }
 

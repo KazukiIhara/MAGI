@@ -3,13 +3,11 @@
 #include "Framework/MAGI.h"
 
 Mesh::Mesh(const MeshData& meshData) {
-	Initialize(meshData);
-}
-
-void Mesh::Initialize(const MeshData& meshData) {
 	// メッシュのデータを受けとる
 	meshData_ = meshData;
+}
 
+void Mesh::Initialize() {
 	// テクスチャが未設定の場合、デフォルトのテクスチャを割り当てる
 	if (meshData_.material.textureFilePath == "") {
 		meshData_.material.textureFilePath = "Engine/Resources/Images/uvChecker.png";

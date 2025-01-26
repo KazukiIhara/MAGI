@@ -219,9 +219,6 @@
     <ClInclude Include="Engine\3D\WorldTransform\WorldTransform.h">
       <Filter>Engine\3D\WorldTransform</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\AssetContainers\AnimationDataContainer\AnimationDataContainer.h">
-      <Filter>Engine\AssetContainers\AnimationDataContainer</Filter>
-    </ClInclude>
     <ClInclude Include="Engine\AssetContainers\ModelDataContainer\ModelDataContainer.h">
       <Filter>Engine\AssetContainers\ModelDataContainer</Filter>
     </ClInclude>
@@ -390,6 +387,17 @@
     <ClInclude Include="Engine\3D\PrimitiveShapes3D\Plane\Plane.h" />
     <ClInclude Include="Engine\3D\PrimitiveShapes3D\BasePrimitiveShape3D\BasePrimitiveShape3D.h" />
     <ClInclude Include="Engine\GraphicsPipelines\Object3DGraphicsPipelineNormalMap\Object3DGraphicsPipelineNormalMap.h" />
+    <ClInclude Include="Engine\Includes\Structs\AnimationStruct.h" />
+    <ClInclude Include="Engine\Includes\Structs\SkinningStruct.h" />
+    <ClInclude Include="Engine\Includes\Structs\SkeletonStruct.h" />
+    <ClInclude Include="Engine\3D\Skeleton\Skeleton.h" />
+    <ClInclude Include="Engine\3D\Object3DSkinning\Object3DSkinning.h" />
+    <ClInclude Include="Engine\AssetContainers\AnimationDataContainer\AnimationDataContainer.h" />
+    <ClInclude Include="Engine\PipelineManagers\ComputePipelineManager\ComputePipelineManager.h" />
+    <ClInclude Include="Engine\Includes\Enums\ComputePipelineEnum.h" />
+    <ClInclude Include="Engine\ComputePipelines\SkinningComputePipeline\SkinningComputePipeline.h" />
+    <ClInclude Include="Engine\3D\SkinningModel\SkinningModel.h" />
+    <ClInclude Include="Engine\3D\SkinningMesh\SkinningMesh.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="App\Game\Game.cpp">
@@ -418,9 +426,6 @@
     </ClCompile>
     <ClCompile Include="Engine\3D\WorldTransform\WorldTransform.cpp">
       <Filter>Engine\3D\WorldTransform</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\AssetContainers\AnimationDataContainer\AnimationDataContainer.cpp">
-      <Filter>Engine\AssetContainers\AnimationDataContainer</Filter>
     </ClCompile>
     <ClCompile Include="Engine\AssetContainers\ModelDataContainer\ModelDataContainer.cpp">
       <Filter>Engine\AssetContainers\ModelDataContainer</Filter>
@@ -523,15 +528,24 @@
     <ClCompile Include="Engine\3D\PrimitiveShapes3D\Plane\Plane.cpp" />
     <ClCompile Include="Engine\3D\PrimitiveShapes3D\BasePrimitiveShape3D\BasePrimitiveShape3D.cpp" />
     <ClCompile Include="Engine\GraphicsPipelines\Object3DGraphicsPipelineNormalMap\Object3DGraphicsPipelineNormalMap.cpp" />
+    <ClCompile Include="Engine\3D\Skeleton\Skeleton.cpp" />
+    <ClCompile Include="Engine\3D\Object3DSkinning\Object3DSkinning.cpp" />
+    <ClCompile Include="Engine\AssetContainers\AnimationDataContainer\AnimationDataContainer.cpp" />
+    <ClCompile Include="Engine\PipelineManagers\ComputePipelineManager\ComputePipelineManager.cpp" />
+    <ClCompile Include="Engine\ComputePipelines\SkinningComputePipeline\SkinningComputePipeline.cpp" />
+    <ClCompile Include="Engine\3D\SkinningModel\SkinningModel.cpp" />
+    <ClCompile Include="Engine\3D\SkinningMesh\SkinningMesh.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Engine\SceneManager\SceneManager.ipp">
       <Filter>Engine\SceneManager</Filter>
     </None>
     <None Include="Engine\Resources\Shaders\Object3DNormalMap\Object3DNormalMap.hlsli" />
+    <None Include="Engine\Resources\Shaders\Skinning\Skinning.hlsli" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Engine\Resources\Shaders\Object3DNormalMap\Object3DNormalMap.VS.hlsl" />
     <FxCompile Include="Engine\Resources\Shaders\Object3DNormalMap\Object3DNormalMap.PS.hlsl" />
+    <FxCompile Include="Engine\Resources\Shaders\Skinning\Skinning.CS.hlsl" />
   </ItemGroup>
 </Project>

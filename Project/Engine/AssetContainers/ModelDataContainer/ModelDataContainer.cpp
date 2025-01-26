@@ -16,6 +16,7 @@ ModelDataContainer::ModelDataContainer(TextureDataContainer* textureDataContaine
 }
 
 ModelDataContainer::~ModelDataContainer() {
+	modelDatas_.clear();
 	Logger::Log("ModelDataContainer Finalize\n");
 }
 
@@ -43,7 +44,7 @@ ModelData ModelDataContainer::FindModelData(const std::string& modelName) const 
 	}
 	// 見つからなかった場合止める
 
-	assert(false && "Warning: Not found model");
+	assert(false && "Warning: Not Found Model!!");
 	return ModelData{};
 }
 
@@ -92,8 +93,10 @@ ModelData ModelDataContainer::LoadModel(const std::string& modelName, bool isNor
 		aiProcess_Triangulate |
 		aiProcess_CalcTangentSpace
 	);
-
 	assert(scene && scene->HasMeshes());
+
+	// ノード読み込み
+	newModelData.rootNode = ReadNode(scene->mRootNode);
 
 	std::vector<MaterialData> materials(scene->mNumMaterials);
 
@@ -190,12 +193,74 @@ ModelData ModelDataContainer::LoadModel(const std::string& modelName, bool isNor
 				}
 			}
 
+			// ボーン解析
+			if (mesh->HasBones()) {
+				for (uint32_t boneIndex = 0; boneIndex < mesh->mNumBones; ++boneIndex) {
+					aiBone* bone = mesh->mBones[boneIndex];
+					std::string jointName = bone->mName.C_Str();
+
+					// 既存 or 新規作成する JointWeightData を取得
+					JointWeightData& jointWeightData = newModelData.skinClusterData[jointName];
+
+					// 1. 現状 bone->mOffsetMatrix は「InverseBindPose」とみなす
+					// 2. 必要に応じて逆行列→分解→座標反転→再逆行列のような処理を行う
+					aiMatrix4x4 offsetMatrix = bone->mOffsetMatrix;
+
+					// Assimpの offsetMatrix がすでに「逆バインドポーズ」の場合は、
+					// そのまま（あるいは座標変換をして）jointWeightData.inverseBindPoseMatrix に変換してよい。
+					aiMatrix4x4 bindPoseMatrixAssimp = offsetMatrix;
+					bindPoseMatrixAssimp.Inverse();
+					aiVector3D scale, translate;
+					aiQuaternion rotate;
+					bindPoseMatrixAssimp.Decompose(scale, rotate, translate);
+
+					// X反転を入れる場合は以下のようにマイナスをつける
+					Matrix4x4 bindPoseMatrix = MakeAffineMatrix(
+						{ scale.x, scale.y, scale.z },
+						{ rotate.x, -rotate.y, -rotate.z, rotate.w },
+						{ -translate.x, translate.y, translate.z }
+					);
+					// さらに「逆行列」をとる → 再度「逆バインドポーズ行列」として確定
+					jointWeightData.inverseBindPoseMatrix = Inverse(bindPoseMatrix);
+
+					// 頂点ウェイトの登録
+					for (uint32_t weightIndex = 0; weightIndex < bone->mNumWeights; ++weightIndex) {
+						float w = bone->mWeights[weightIndex].mWeight;
+						uint32_t vtxId = bone->mWeights[weightIndex].mVertexId;
+						jointWeightData.vertexWeights.push_back({ w, vtxId });
+					}
+				}
+
+			}
+
 		}
 
 		newModelData.meshes.push_back(meshData);
 	}
 
 	return newModelData;
+}
+
+Node ModelDataContainer::ReadNode(aiNode* node) {
+	Node result{};
+
+	aiVector3D scale, translate;
+	aiQuaternion rotate;
+
+	node->mTransformation.Decompose(scale, rotate, translate);
+	result.transform.scale = { scale.x,scale.y,scale.z };
+	result.transform.rotate = { rotate.x,-rotate.y,-rotate.z,rotate.w };
+	result.transform.translate = { -translate.x,translate.y,translate.z };
+
+	result.localMatrix = MakeAffineMatrix(result.transform.scale, result.transform.rotate, result.transform.translate);
+
+	result.name = node->mName.C_Str(); // node名を格納
+	result.children.resize(node->mNumChildren);// 子供の数だけ確保
+	for (uint32_t childIndex = 0; childIndex < node->mNumChildren; childIndex++) {
+		// 再帰的に読んで階層構造を作っていく
+		result.children[childIndex] = ReadNode(node->mChildren[childIndex]);
+	}
+	return result;
 }
 
 void ModelDataContainer::SetTextureDataContainer(TextureDataContainer* textureDataContainer) {

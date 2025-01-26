@@ -139,6 +139,12 @@ namespace MAGIMath {
 	// ベクトルの向きを取得
 	Vector3 Forward(const Vector3& rotate);
 
+	// 線形補完
+	Vector3 Lerp(const Vector3& v1, const Vector3& v2, float t);
+
+	// クロス積
+	Vector3 Cross(const Vector3& a, const Vector3& b);
+
 	// クォータニオンを使用してベクトルを回転させる
 	Vector3 Transform(const Vector3& vector, const Quaternion& rotation);
 

@@ -3,25 +3,30 @@
 // C++
 #include <string>
 #include <vector>
+#include <memory>
 
 #include "3D/Mesh/Mesh.h"
+#include "3D/Skeleton/Skeleton.h"
+#include "Structs/AnimationStruct.h"
 
 class Model {
 public:
 	Model(const ModelData& modeldata);
-	~Model();
+	virtual ~Model();
 
-	void Initialize(const ModelData& modeldata);
-	void Update();
+	virtual void Initialize();
+	virtual void Update();
 	void Draw();
 
 	bool IsNormalMap();
+
 private:
 	// 受け取ったモデルからメッシュを作成
-	void CreateMehes();
-private:
+	virtual void CreateMeshes();
+
+protected:
 	// 受け取るモデルデータ
 	ModelData modelData_{};
 	// メッシュ
-	std::vector<Mesh> meshes_;
+	std::vector<std::unique_ptr<Mesh>> meshes_;
 };
