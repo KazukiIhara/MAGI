@@ -35,7 +35,7 @@ inline void SampleScene<Data>::Initialize() {
 	MAGISYSTEM::LoadModel("terrain", true);
 	MAGISYSTEM::LoadModel("teapot", true);
 
-	MAGISYSTEM::LoadAnimation("boxMan");
+	MAGISYSTEM::LoadAnimation("crossMan");
 
 	//sample_ = std::make_unique<Object3D>("sample", "teapot");
 	primitive_ = std::make_unique<Primitive3D>("primitive", Primitive3DType::Sphere);
@@ -44,7 +44,7 @@ inline void SampleScene<Data>::Initialize() {
 	terrain_ = std::make_unique<Object3D>("terrain", "terrain");
 	terrain_->Initialize();
 
-	skinningSample_ = std::make_unique<Object3DSkinning>("skinningSample", "boxMan");
+	skinningSample_ = std::make_unique<Object3DSkinning>("skinningSample", "crossMan");
 	skinningSample_->Initialize();
 
 	MAGISYSTEM::AddPunctualLight("sampleLight");
@@ -77,7 +77,7 @@ inline void SampleScene<Data>::Update() {
 	skinningSample_->Update();
 
 	if (MAGISYSTEM::TriggerKey(DIK_1)) {
-		skinningSample_->PlayAnimation("Action.001");
+		skinningSample_->PlayAnimation("ArmatureAction");
 	}
 	if (MAGISYSTEM::TriggerKey(DIK_2)) {
 		skinningSample_->PlayAnimation("Action.002");
@@ -97,7 +97,7 @@ inline void SampleScene<Data>::Draw() {
 	//terrain_->Draw();
 
 	MAGISYSTEM::PreDrawObject3D();
-	//skinningSample_->Draw();
+	skinningSample_->Draw();
 
 	//sample_->Draw();
 	primitive_->Draw();
