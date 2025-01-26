@@ -21,6 +21,7 @@ void Model::Initialize(const ModelData& modeldata) {
 	skeleton_ = std::make_unique<Skeleton>(modelData_.rootNode);
 	CreateSkinPaletteResource();
 	CreateInverseBindPoseMatrix();
+	SettingInfluenceAllMeshes();
 }
 
 void Model::Update() {
@@ -91,6 +92,17 @@ void Model::CreateInverseBindPoseMatrix() {
 			continue;
 		}
 		inverseBindPoseMatrices_[(*it).second] = jointWeight.second.inverseBindPoseMatrix;
+
+	}
+}
+
+void Model::SettingInfluenceAllMeshes() {
+	for (const auto& jointWeight : modelData_.skinClusterData) {
+		auto it = skeleton_->jointMap.find(jointWeight.first);
+		if (it == skeleton_->jointMap.end()) {
+			continue;
+		}
+
 		for (const auto& vertexWeight : jointWeight.second.vertexWeights) {
 			for (auto& mesh : meshes_) {
 

@@ -40,6 +40,9 @@ private:
 	// InverseBindPoseMatrixの作成
 	void CreateInverseBindPoseMatrix();
 
+	// 全メッシュにスキニング影響度を設定
+	void SettingInfluenceAllMeshes();
+
 	// パレットの更新
 	void SkinPaletteUpdate();
 private:
