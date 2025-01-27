@@ -31,50 +31,59 @@
     <Filter Include="Engine\3D\Base3D\WorldTransform">
       <UniqueIdentifier>{951E359A-0102-44DA-0A05-721676670A2B}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Engine\3D\BaseRenderable3D">
-      <UniqueIdentifier>{36AD5E61-22BD-0A32-8B76-6F5077A5F9CA}</UniqueIdentifier>
+    <Filter Include="Engine\3D\Camera3Ds">
+      <UniqueIdentifier>{A3B5DC05-0F17-BA13-9884-00C604E5F0D2}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Engine\3D\Camera3D">
-      <UniqueIdentifier>{30CF8255-1CB3-43AB-8513-3EFE71162E2D}</UniqueIdentifier>
+    <Filter Include="Engine\3D\Camera3Ds\Camera3D">
+      <UniqueIdentifier>{52563DD1-3E11-2D7D-E7C8-A5C7D362770D}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Engine\3D\DebugCamera3D">
-      <UniqueIdentifier>{17055C86-833C-A41D-8C46-0841F8FCCA16}</UniqueIdentifier>
+    <Filter Include="Engine\3D\Camera3Ds\DebugCamera3D">
+      <UniqueIdentifier>{7951129E-E5BF-671D-2EA9-221D9A565DB9}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Engine\3D\Mesh">
-      <UniqueIdentifier>{1DE32C8E-09B1-2094-F244-91BADEB1FCF8}</UniqueIdentifier>
+    <Filter Include="Engine\3D\RenderObjects3D">
+      <UniqueIdentifier>{D1CC20B2-3D8F-543C-863F-E3C8F2402D1A}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Engine\3D\Model">
-      <UniqueIdentifier>{C182CE53-2D0E-3C18-361F-BF0CA2299818}</UniqueIdentifier>
+    <Filter Include="Engine\3D\RenderObjects3D\BaseRenderable3D">
+      <UniqueIdentifier>{464F0611-32B7-CCDE-9B22-E1F487A9E3CA}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Engine\3D\Object3D">
-      <UniqueIdentifier>{BEA38BAE-AA87-4C04-13E8-4657FFEA3686}</UniqueIdentifier>
+    <Filter Include="Engine\3D\RenderObjects3D\Object3D">
+      <UniqueIdentifier>{CE35FA8F-BA71-FDF9-2384-15F10FDFA514}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Engine\3D\Object3DSkinning">
-      <UniqueIdentifier>{BF3BBC7C-AB4B-684D-1405-CD6B003457E6}</UniqueIdentifier>
+    <Filter Include="Engine\3D\RenderObjects3D\Object3DSkinning">
+      <UniqueIdentifier>{CFDD632C-BB45-2AFA-24B1-3E10103841E6}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Engine\3D\Primitive3D">
-      <UniqueIdentifier>{80A7D805-EC13-9400-B507-2C5E2133B668}</UniqueIdentifier>
+    <Filter Include="Engine\3D\RenderObjects3D\Primitive3D">
+      <UniqueIdentifier>{90BF9EE8-FC83-9DD8-C5E9-CDA2316D390E}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Engine\3D\PrimitiveShapes3D">
-      <UniqueIdentifier>{84DE6B08-F0EB-99EE-79D2-95D9E5DE65A5}</UniqueIdentifier>
+    <Filter Include="Engine\3D\Shapes3D">
+      <UniqueIdentifier>{2B183A19-17FC-FA6E-805C-F5C16C5FE5F0}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Engine\3D\PrimitiveShapes3D\BasePrimitiveShape3D">
-      <UniqueIdentifier>{8F5289CC-7BFB-F0FB-A491-0C7B90990B3D}</UniqueIdentifier>
+    <Filter Include="Engine\3D\Shapes3D\Mesh">
+      <UniqueIdentifier>{C7601551-3398-5DE8-3CA2-C10BA85884E1}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Engine\3D\PrimitiveShapes3D\Plane">
-      <UniqueIdentifier>{83B3E891-EF21-3E11-380B-F910A4B833AD}</UniqueIdentifier>
+    <Filter Include="Engine\3D\Shapes3D\Model">
+      <UniqueIdentifier>{ABB5C673-97DA-15F4-C025-FB83ACA91412}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Engine\3D\PrimitiveShapes3D\Sphere">
-      <UniqueIdentifier>{3AB24AD6-26EE-4D40-8F00-66377B5BF65A}</UniqueIdentifier>
+    <Filter Include="Engine\3D\Shapes3D\PrimitiveShapes3D">
+      <UniqueIdentifier>{6EC01DF9-5AA7-DFF0-03F8-450EEFBD5857}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\3D\Shapes3D\PrimitiveShapes3D\BasePrimitiveShape3D">
+      <UniqueIdentifier>{B90AEE94-257D-30B1-6E11-6635DAC2FAA9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\3D\Shapes3D\PrimitiveShapes3D\Plane">
+      <UniqueIdentifier>{EDDC7ACF-D944-419D-42B0-55B32E375889}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\3D\Shapes3D\PrimitiveShapes3D\Sphere">
+      <UniqueIdentifier>{E40822C6-506E-B54C-D946-572545ABAABB}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\3D\Shapes3D\SkinningMesh">
+      <UniqueIdentifier>{484D8AC4-B430-9904-BD33-C74029965F55}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\3D\Shapes3D\SkinningModel">
+      <UniqueIdentifier>{4C32D955-3883-C497-61E7-B2594D975701}</UniqueIdentifier>
     </Filter>
     <Filter Include="Engine\3D\Skeleton">
       <UniqueIdentifier>{151B3509-01FF-F55E-6A5F-F0B15662E0E0}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Engine\3D\SkinningMesh">
-      <UniqueIdentifier>{9EC5D17B-8ABF-FACD-732C-91DE5FC5603A}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Engine\3D\SkinningModel">
-      <UniqueIdentifier>{62B50FF6-CEEC-578D-D7F6-BBB043AD7E86}</UniqueIdentifier>
     </Filter>
     <Filter Include="Engine\AssetContainers">
       <UniqueIdentifier>{C08CB08C-AC86-D9DE-95F3-6FEF818C3F4B}</UniqueIdentifier>
@@ -243,47 +252,47 @@
     <ClInclude Include="Engine\3D\Base3D\WorldTransform\WorldTransform.h">
       <Filter>Engine\3D\Base3D\WorldTransform</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\3D\RenderObjects3D\BaseRenderable3D\BaseRenderable3D.h">
-      <Filter>Engine\3D\BaseRenderable3D</Filter>
-    </ClInclude>
     <ClInclude Include="Engine\3D\Camera3Ds\Camera3D\Camera3D.h">
-      <Filter>Engine\3D\Camera3D</Filter>
+      <Filter>Engine\3D\Camera3Ds\Camera3D</Filter>
     </ClInclude>
     <ClInclude Include="Engine\3D\Camera3Ds\DebugCamera3D\DebugCamera3D.h">
-      <Filter>Engine\3D\DebugCamera3D</Filter>
+      <Filter>Engine\3D\Camera3Ds\DebugCamera3D</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\3D\Shapes3D\Mesh\Mesh.h">
-      <Filter>Engine\3D\Mesh</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\3D\Shapes3D\Model\Model.h">
-      <Filter>Engine\3D\Model</Filter>
+    <ClInclude Include="Engine\3D\RenderObjects3D\BaseRenderable3D\BaseRenderable3D.h">
+      <Filter>Engine\3D\RenderObjects3D\BaseRenderable3D</Filter>
     </ClInclude>
     <ClInclude Include="Engine\3D\RenderObjects3D\Object3D\Object3D.h">
-      <Filter>Engine\3D\Object3D</Filter>
+      <Filter>Engine\3D\RenderObjects3D\Object3D</Filter>
     </ClInclude>
     <ClInclude Include="Engine\3D\RenderObjects3D\Object3DSkinning\Object3DSkinning.h">
-      <Filter>Engine\3D\Object3DSkinning</Filter>
+      <Filter>Engine\3D\RenderObjects3D\Object3DSkinning</Filter>
     </ClInclude>
     <ClInclude Include="Engine\3D\RenderObjects3D\Primitive3D\Primitive3D.h">
-      <Filter>Engine\3D\Primitive3D</Filter>
+      <Filter>Engine\3D\RenderObjects3D\Primitive3D</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\3D\Shapes3D\Mesh\Mesh.h">
+      <Filter>Engine\3D\Shapes3D\Mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\3D\Shapes3D\Model\Model.h">
+      <Filter>Engine\3D\Shapes3D\Model</Filter>
     </ClInclude>
     <ClInclude Include="Engine\3D\Shapes3D\PrimitiveShapes3D\BasePrimitiveShape3D\BasePrimitiveShape3D.h">
-      <Filter>Engine\3D\PrimitiveShapes3D\BasePrimitiveShape3D</Filter>
+      <Filter>Engine\3D\Shapes3D\PrimitiveShapes3D\BasePrimitiveShape3D</Filter>
     </ClInclude>
     <ClInclude Include="Engine\3D\Shapes3D\PrimitiveShapes3D\Plane\Plane.h">
-      <Filter>Engine\3D\PrimitiveShapes3D\Plane</Filter>
+      <Filter>Engine\3D\Shapes3D\PrimitiveShapes3D\Plane</Filter>
     </ClInclude>
     <ClInclude Include="Engine\3D\Shapes3D\PrimitiveShapes3D\Sphere\Sphere.h">
-      <Filter>Engine\3D\PrimitiveShapes3D\Sphere</Filter>
+      <Filter>Engine\3D\Shapes3D\PrimitiveShapes3D\Sphere</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\3D\Shapes3D\SkinningMesh\SkinningMesh.h">
+      <Filter>Engine\3D\Shapes3D\SkinningMesh</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\3D\Shapes3D\SkinningModel\SkinningModel.h">
+      <Filter>Engine\3D\Shapes3D\SkinningModel</Filter>
     </ClInclude>
     <ClInclude Include="Engine\3D\Skeleton\Skeleton.h">
       <Filter>Engine\3D\Skeleton</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\3D\Shapes3D\SkinningMesh\SkinningMesh.h">
-      <Filter>Engine\3D\SkinningMesh</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\3D\Shapes3D\SkinningModel\SkinningModel.h">
-      <Filter>Engine\3D\SkinningModel</Filter>
     </ClInclude>
     <ClInclude Include="Engine\AssetContainers\AnimationDataContainer\AnimationDataContainer.h">
       <Filter>Engine\AssetContainers\AnimationDataContainer</Filter>
@@ -485,47 +494,47 @@
     <ClCompile Include="Engine\3D\Base3D\WorldTransform\WorldTransform.cpp">
       <Filter>Engine\3D\Base3D\WorldTransform</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\3D\RenderObjects3D\BaseRenderable3D\BaseRenderable3D.cpp">
-      <Filter>Engine\3D\BaseRenderable3D</Filter>
-    </ClCompile>
     <ClCompile Include="Engine\3D\Camera3Ds\Camera3D\Camera3D.cpp">
-      <Filter>Engine\3D\Camera3D</Filter>
+      <Filter>Engine\3D\Camera3Ds\Camera3D</Filter>
     </ClCompile>
     <ClCompile Include="Engine\3D\Camera3Ds\DebugCamera3D\DebugCamera3D.cpp">
-      <Filter>Engine\3D\DebugCamera3D</Filter>
+      <Filter>Engine\3D\Camera3Ds\DebugCamera3D</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\3D\Shapes3D\Mesh\Mesh.cpp">
-      <Filter>Engine\3D\Mesh</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\3D\Shapes3D\Model\Model.cpp">
-      <Filter>Engine\3D\Model</Filter>
+    <ClCompile Include="Engine\3D\RenderObjects3D\BaseRenderable3D\BaseRenderable3D.cpp">
+      <Filter>Engine\3D\RenderObjects3D\BaseRenderable3D</Filter>
     </ClCompile>
     <ClCompile Include="Engine\3D\RenderObjects3D\Object3D\Object3D.cpp">
-      <Filter>Engine\3D\Object3D</Filter>
+      <Filter>Engine\3D\RenderObjects3D\Object3D</Filter>
     </ClCompile>
     <ClCompile Include="Engine\3D\RenderObjects3D\Object3DSkinning\Object3DSkinning.cpp">
-      <Filter>Engine\3D\Object3DSkinning</Filter>
+      <Filter>Engine\3D\RenderObjects3D\Object3DSkinning</Filter>
     </ClCompile>
     <ClCompile Include="Engine\3D\RenderObjects3D\Primitive3D\Primitive3D.cpp">
-      <Filter>Engine\3D\Primitive3D</Filter>
+      <Filter>Engine\3D\RenderObjects3D\Primitive3D</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\3D\Shapes3D\Mesh\Mesh.cpp">
+      <Filter>Engine\3D\Shapes3D\Mesh</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\3D\Shapes3D\Model\Model.cpp">
+      <Filter>Engine\3D\Shapes3D\Model</Filter>
     </ClCompile>
     <ClCompile Include="Engine\3D\Shapes3D\PrimitiveShapes3D\BasePrimitiveShape3D\BasePrimitiveShape3D.cpp">
-      <Filter>Engine\3D\PrimitiveShapes3D\BasePrimitiveShape3D</Filter>
+      <Filter>Engine\3D\Shapes3D\PrimitiveShapes3D\BasePrimitiveShape3D</Filter>
     </ClCompile>
     <ClCompile Include="Engine\3D\Shapes3D\PrimitiveShapes3D\Plane\Plane.cpp">
-      <Filter>Engine\3D\PrimitiveShapes3D\Plane</Filter>
+      <Filter>Engine\3D\Shapes3D\PrimitiveShapes3D\Plane</Filter>
     </ClCompile>
     <ClCompile Include="Engine\3D\Shapes3D\PrimitiveShapes3D\Sphere\Sphere.cpp">
-      <Filter>Engine\3D\PrimitiveShapes3D\Sphere</Filter>
+      <Filter>Engine\3D\Shapes3D\PrimitiveShapes3D\Sphere</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\3D\Shapes3D\SkinningMesh\SkinningMesh.cpp">
+      <Filter>Engine\3D\Shapes3D\SkinningMesh</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\3D\Shapes3D\SkinningModel\SkinningModel.cpp">
+      <Filter>Engine\3D\Shapes3D\SkinningModel</Filter>
     </ClCompile>
     <ClCompile Include="Engine\3D\Skeleton\Skeleton.cpp">
       <Filter>Engine\3D\Skeleton</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\3D\Shapes3D\SkinningMesh\SkinningMesh.cpp">
-      <Filter>Engine\3D\SkinningMesh</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\3D\Shapes3D\SkinningModel\SkinningModel.cpp">
-      <Filter>Engine\3D\SkinningModel</Filter>
     </ClCompile>
     <ClCompile Include="Engine\AssetContainers\AnimationDataContainer\AnimationDataContainer.cpp">
       <Filter>Engine\AssetContainers\AnimationDataContainer</Filter>
