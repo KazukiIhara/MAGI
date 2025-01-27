@@ -115,6 +115,8 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="App\Game\Game.h" />
     <ClInclude Include="App\GameData\GameData.h" />
     <ClInclude Include="App\Scenes\Sample\SampleScene.h" />
+    <ClInclude Include="Engine\2D\Object2D\Object2D.h" />
+    <ClInclude Include="Engine\2D\WorldTransform2D\WorldTransform2D.h" />
     <ClInclude Include="Engine\3D\Base3D\WorldEntity\WorldEntity.h" />
     <ClInclude Include="Engine\3D\Base3D\WorldTransform\WorldTransform.h" />
     <ClInclude Include="Engine\3D\Camera3Ds\Camera3D\Camera3D.h" />
@@ -198,6 +200,8 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="App\Game\Game.cpp" />
+    <ClCompile Include="Engine\2D\Object2D\Object2D.cpp" />
+    <ClCompile Include="Engine\2D\WorldTransform2D\WorldTransform2D.cpp" />
     <ClCompile Include="Engine\3D\Base3D\WorldEntity\WorldEntity.cpp" />
     <ClCompile Include="Engine\3D\Base3D\WorldTransform\WorldTransform.cpp" />
     <ClCompile Include="Engine\3D\Camera3Ds\Camera3D\Camera3D.cpp" />
