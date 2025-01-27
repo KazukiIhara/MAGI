@@ -62,6 +62,10 @@ Vector3& BaseRenderable3D::GetTranslate() {
 	return worldTransform_.translate_;
 }
 
+Material3D& BaseRenderable3D::GetMaterial() {
+	return material_;
+}
+
 void BaseRenderable3D::PrepareForRendering(bool isNormalMap) {
 	// コマンドリストを取得
 	ID3D12GraphicsCommandList* commandList = MAGISYSTEM::GetDirectXCommandList();

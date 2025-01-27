@@ -31,47 +31,47 @@ private:
 template<typename Data>
 inline void SampleScene<Data>::Initialize() {
 	MAGISYSTEM::LoadModel("boxMan");
-	MAGISYSTEM::LoadModel("crossMan3");
+	MAGISYSTEM::LoadModel("kei");
 	MAGISYSTEM::LoadModel("terrain", true);
 	MAGISYSTEM::LoadModel("teapot", true);
 
-	MAGISYSTEM::LoadAnimation("crossMan");
+	MAGISYSTEM::LoadAnimation("kei");
 
 	primitive_ = std::make_unique<Primitive3D>("primitive", Primitive3DType::Sphere);
 	primitive_->GetTranslate().y = 1.0f;
 
+	skinningSample_ = std::make_unique<Object3DSkinning>("kei", "kei");
+	skinningSample_->Initialize();
+	
 
 	terrain_ = std::make_unique<Object3D>("terrain", "terrain");
 	terrain_->Initialize();
 
-	//MAGISYSTEM::AddPunctualLight("sampleLight");
-	//auto& sampleLight = MAGISYSTEM::GetLightData("sampleLight");
-	//sampleLight.intensity = 1.0f;
+	MAGISYSTEM::AddPunctualLight("sampleLight");
+	auto& sampleLight = MAGISYSTEM::GetLightData("sampleLight");
+	sampleLight.intensity = 1.0f;
 
 
-	MAGISYSTEM::AddPunctualLight("redLight");
-	auto& redLightData = MAGISYSTEM::GetLightData("redLight");
-	redLightData.type = 1;
-	redLightData.color = { 1.0f,0.0f,0.0f };
-	redLightData.intensity = 7.0f;
-	redLightData.position = { 3.0f,2.0f,0.0f };
+	//MAGISYSTEM::AddPunctualLight("redLight");
+	//auto& redLightData = MAGISYSTEM::GetLightData("redLight");
+	//redLightData.type = 1;
+	//redLightData.color = { 1.0f,0.0f,0.0f };
+	//redLightData.intensity = 7.0f;
+	//redLightData.position = { 3.0f,2.0f,0.0f };
 
 
-	MAGISYSTEM::AddPunctualLight("blueLight");
-	auto& blueLightData = MAGISYSTEM::GetLightData("blueLight");
-	blueLightData.type = 1;
-	blueLightData.color = { 0.0f,0.0f,1.0f };
-	blueLightData.intensity = 7.0f;
-	blueLightData.position = { -3.0f,2.0f,0.0f };
+	//MAGISYSTEM::AddPunctualLight("blueLight");
+	//auto& blueLightData = MAGISYSTEM::GetLightData("blueLight");
+	//blueLightData.type = 1;
+	//blueLightData.color = { 0.0f,0.0f,1.0f };
+	//blueLightData.intensity = 7.0f;
+	//blueLightData.position = { -3.0f,2.0f,0.0f };
 }
 
 template<typename Data>
 inline void SampleScene<Data>::Update() {
-
-	terrain_->Update();
-
 	if (MAGISYSTEM::TriggerKey(DIK_1)) {
-		skinningSample_->PlayAnimation("ArmatureAction");
+		skinningSample_->PlayAnimation("Root");
 	}
 	if (MAGISYSTEM::TriggerKey(DIK_2)) {
 		skinningSample_->PlayAnimation("Action.002");
@@ -80,7 +80,11 @@ inline void SampleScene<Data>::Update() {
 		skinningSample_->ResetAnimation();
 	}
 
+	terrain_->Update();
+
 	primitive_->Update();
+
+	skinningSample_->Update();
 }
 
 template<typename Data>
@@ -90,7 +94,8 @@ inline void SampleScene<Data>::Draw() {
 	terrain_->Draw();
 
 	MAGISYSTEM::PreDrawObject3D();
-	primitive_->Draw();
+	//primitive_->Draw();
+	skinningSample_->Draw();
 }
 
 template<typename Data>

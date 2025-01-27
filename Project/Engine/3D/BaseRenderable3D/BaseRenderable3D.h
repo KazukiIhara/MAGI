@@ -25,6 +25,8 @@ public:
 	Vector3& GetScale();
 	Vector3& GetRotate();
 	Vector3& GetTranslate();
+
+	Material3D& GetMaterial();
 protected:
 	void PrepareForRendering(bool isNormalMap = false);
 
