@@ -1,7 +1,7 @@
 #pragma once
 
 #include "3D/RenderObjects3D/BaseRenderable3D/BaseRenderable3D.h"
-#include "3D/Model/Model.h"
+#include "3D/Shapes3D/Model/Model.h"
 
 /// <summary>
 /// 3Dオブジェクト(インスタンスの生成後初期化メソッドを呼んでください)

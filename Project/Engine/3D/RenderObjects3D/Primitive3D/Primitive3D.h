@@ -4,7 +4,7 @@
 #include <memory>
 
 #include "3D/RenderObjects3D/BaseRenderable3D/BaseRenderable3D.h"
-#include "3D/PrimitiveShapes3D/BasePrimitiveShape3D/BasePrimitiveShape3D.h"
+#include "3D/Shapes3D/PrimitiveShapes3D/BasePrimitiveShape3D/BasePrimitiveShape3D.h"
 #include "Enums/Primitive3DEnum.h"
 
 /// <summary>

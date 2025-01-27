@@ -5,7 +5,7 @@
 #include <vector>
 #include <memory>
 
-#include "3D/Mesh/Mesh.h"
+#include "3D/Shapes3D/Mesh/Mesh.h"
 #include "3D/Skeleton/Skeleton.h"
 #include "Structs/AnimationStruct.h"
 

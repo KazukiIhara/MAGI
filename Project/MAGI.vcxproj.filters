@@ -252,10 +252,10 @@
     <ClInclude Include="Engine\3D\DebugCamera3D\DebugCamera3D.h">
       <Filter>Engine\3D\DebugCamera3D</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\3D\Mesh\Mesh.h">
+    <ClInclude Include="Engine\3D\Shapes3D\Mesh\Mesh.h">
       <Filter>Engine\3D\Mesh</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\3D\Model\Model.h">
+    <ClInclude Include="Engine\3D\Shapes3D\Model\Model.h">
       <Filter>Engine\3D\Model</Filter>
     </ClInclude>
     <ClInclude Include="Engine\3D\RenderObjects3D\Object3D\Object3D.h">
@@ -267,22 +267,22 @@
     <ClInclude Include="Engine\3D\RenderObjects3D\Primitive3D\Primitive3D.h">
       <Filter>Engine\3D\Primitive3D</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\3D\PrimitiveShapes3D\BasePrimitiveShape3D\BasePrimitiveShape3D.h">
+    <ClInclude Include="Engine\3D\Shapes3D\PrimitiveShapes3D\BasePrimitiveShape3D\BasePrimitiveShape3D.h">
       <Filter>Engine\3D\PrimitiveShapes3D\BasePrimitiveShape3D</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\3D\PrimitiveShapes3D\Plane\Plane.h">
+    <ClInclude Include="Engine\3D\Shapes3D\PrimitiveShapes3D\Plane\Plane.h">
       <Filter>Engine\3D\PrimitiveShapes3D\Plane</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\3D\PrimitiveShapes3D\Sphere\Sphere.h">
+    <ClInclude Include="Engine\3D\Shapes3D\PrimitiveShapes3D\Sphere\Sphere.h">
       <Filter>Engine\3D\PrimitiveShapes3D\Sphere</Filter>
     </ClInclude>
     <ClInclude Include="Engine\3D\Skeleton\Skeleton.h">
       <Filter>Engine\3D\Skeleton</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\3D\SkinningMesh\SkinningMesh.h">
+    <ClInclude Include="Engine\3D\Shapes3D\SkinningMesh\SkinningMesh.h">
       <Filter>Engine\3D\SkinningMesh</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\3D\SkinningModel\SkinningModel.h">
+    <ClInclude Include="Engine\3D\Shapes3D\SkinningModel\SkinningModel.h">
       <Filter>Engine\3D\SkinningModel</Filter>
     </ClInclude>
     <ClInclude Include="Engine\AssetContainers\AnimationDataContainer\AnimationDataContainer.h">
@@ -494,10 +494,10 @@
     <ClCompile Include="Engine\3D\DebugCamera3D\DebugCamera3D.cpp">
       <Filter>Engine\3D\DebugCamera3D</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\3D\Mesh\Mesh.cpp">
+    <ClCompile Include="Engine\3D\Shapes3D\Mesh\Mesh.cpp">
       <Filter>Engine\3D\Mesh</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\3D\Model\Model.cpp">
+    <ClCompile Include="Engine\3D\Shapes3D\Model\Model.cpp">
       <Filter>Engine\3D\Model</Filter>
     </ClCompile>
     <ClCompile Include="Engine\3D\RenderObjects3D\Object3D\Object3D.cpp">
@@ -509,22 +509,22 @@
     <ClCompile Include="Engine\3D\RenderObjects3D\Primitive3D\Primitive3D.cpp">
       <Filter>Engine\3D\Primitive3D</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\3D\PrimitiveShapes3D\BasePrimitiveShape3D\BasePrimitiveShape3D.cpp">
+    <ClCompile Include="Engine\3D\Shapes3D\PrimitiveShapes3D\BasePrimitiveShape3D\BasePrimitiveShape3D.cpp">
       <Filter>Engine\3D\PrimitiveShapes3D\BasePrimitiveShape3D</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\3D\PrimitiveShapes3D\Plane\Plane.cpp">
+    <ClCompile Include="Engine\3D\Shapes3D\PrimitiveShapes3D\Plane\Plane.cpp">
       <Filter>Engine\3D\PrimitiveShapes3D\Plane</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\3D\PrimitiveShapes3D\Sphere\Sphere.cpp">
+    <ClCompile Include="Engine\3D\Shapes3D\PrimitiveShapes3D\Sphere\Sphere.cpp">
       <Filter>Engine\3D\PrimitiveShapes3D\Sphere</Filter>
     </ClCompile>
     <ClCompile Include="Engine\3D\Skeleton\Skeleton.cpp">
       <Filter>Engine\3D\Skeleton</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\3D\SkinningMesh\SkinningMesh.cpp">
+    <ClCompile Include="Engine\3D\Shapes3D\SkinningMesh\SkinningMesh.cpp">
       <Filter>Engine\3D\SkinningMesh</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\3D\SkinningModel\SkinningModel.cpp">
+    <ClCompile Include="Engine\3D\Shapes3D\SkinningModel\SkinningModel.cpp">
       <Filter>Engine\3D\SkinningModel</Filter>
     </ClCompile>
     <ClCompile Include="Engine\AssetContainers\AnimationDataContainer\AnimationDataContainer.cpp">

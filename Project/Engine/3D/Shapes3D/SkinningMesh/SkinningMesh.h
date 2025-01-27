@@ -1,6 +1,6 @@
 #pragma once
 
-#include "3D/Mesh/Mesh.h"
+#include "3D/Shapes3D/Mesh/Mesh.h"
 
 class SkinningMesh:public Mesh {
 public:

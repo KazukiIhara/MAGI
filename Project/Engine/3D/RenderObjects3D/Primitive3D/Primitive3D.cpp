@@ -1,7 +1,7 @@
 #include "Primitive3D.h"
 
-#include "3D/PrimitiveShapes3D/Plane/Plane.h"
-#include "3D/PrimitiveShapes3D/Sphere/Sphere.h"
+#include "3D/Shapes3D/PrimitiveShapes3D/Plane/Plane.h"
+#include "3D/Shapes3D/PrimitiveShapes3D/Sphere/Sphere.h"
 
 Primitive3D::Primitive3D(const std::string& objectName, const Primitive3DType& primitiveType, const std::string& textureFilePath)
 	:BaseRenderable3D(objectName) {

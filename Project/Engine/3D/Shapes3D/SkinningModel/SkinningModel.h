@@ -1,7 +1,7 @@
 #pragma once
 
-#include "3D/Model/Model.h"
-#include "3D/SkinningMesh/SkinningMesh.h"
+#include "3D/Shapes3D/Model/Model.h"
+#include "3D/Shapes3D/SkinningMesh/SkinningMesh.h"
 
 class SkinningModel:public Model {
 public:

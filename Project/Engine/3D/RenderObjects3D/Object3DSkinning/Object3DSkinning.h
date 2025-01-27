@@ -1,7 +1,7 @@
 #pragma once
 
 #include "3D/RenderObjects3D/Object3D/Object3D.h"
-#include "3D/SkinningModel/SkinningModel.h"
+#include "3D/Shapes3D/SkinningModel/SkinningModel.h"
 
 /// <summary>
 /// スキニングつき3Dオブジェクト(インスタンスの生成後初期化メソッドを呼んでください)

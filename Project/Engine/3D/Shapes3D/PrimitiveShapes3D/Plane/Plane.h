@@ -1,6 +1,6 @@
 #pragma once
 
-#include "3D/PrimitiveShapes3D/BasePrimitiveShape3D/BasePrimitiveShape3D.h"
+#include "3D/Shapes3D/PrimitiveShapes3D/BasePrimitiveShape3D/BasePrimitiveShape3D.h"
 
 class Plane: public BasePrimitiveShape3D {
 public:
