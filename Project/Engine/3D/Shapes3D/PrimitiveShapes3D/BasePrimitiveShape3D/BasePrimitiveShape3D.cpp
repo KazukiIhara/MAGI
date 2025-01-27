@@ -14,8 +14,8 @@ void BasePrimitiveShape3D::Initialize(const std::string& textureFilePath) {
 		textureFilePath_ = "Engine/Resources/Images/uvChecker.png";
 	}
 
-	// 形状を作成
-	CreateShape();
+	// 形状を取得
+	SetShape();
 
 	// 頂点リソースの作成
 	CreateVertexResource();

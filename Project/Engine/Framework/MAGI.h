@@ -28,6 +28,7 @@
 #include "DirectX/ScissorRect/ScissorRect.h"
 
 #include "AssetContainers/TextureDataContainer/TextureDataContainer.h"
+#include "AssetContainers/PrimitiveShapeDataContainer/PrimitiveShapeDataContainer.h"
 #include "AssetContainers/ModelDataContainer/ModelDataContainer.h"
 #include "AssetContainers/AnimationDataContainer/AnimationDataContainer.h"
 
@@ -167,10 +168,18 @@ public: // エンジンの機能
 #pragma region TextureDataContainer
 	// 画像読み込み
 	static void LoadTexture(const std::string& filePath);
+	// 法線マップ画像の読み込み
+	static void LoadNormalMapTexture(const std::string& filePath);
 	// テクスチャの取得
 	static std::unordered_map<std::string, Texture>& GetTexture();
 	// メタデータ取得
 	static const DirectX::TexMetadata& GetTextureMetaData(const std::string& filePath);
+#pragma endregion
+
+#pragma region PrimitiveShapeDataContainer
+	// 形状の取得
+	static PrimitiveData GetPrimitiveShape(const Primitive3DType& primitive3dType);
+
 #pragma endregion
 
 #pragma region ModelDataContainer
@@ -268,6 +277,7 @@ protected:
 	// AssetContainer
 	// 
 	static std::unique_ptr<TextureDataContainer> textureDataCantainer_;
+	static std::unique_ptr<PrimitiveShapeDataContainer> primitiveDataContainer_;
 	static std::unique_ptr<ModelDataContainer> modelDataContainer_;
 	static std::unique_ptr<AnimationDataContainer> animationDataContainer_;
 

@@ -1,4 +1,7 @@
 #include "Sphere.h"
+
+#include "Framework/MAGI.h"
+
 using namespace MAGIMath;
 
 Sphere::Sphere(const std::string& textureFilePath)
@@ -6,8 +9,8 @@ Sphere::Sphere(const std::string& textureFilePath)
 	BasePrimitiveShape3D::Initialize(textureFilePath);
 }
 
-void Sphere::CreateShape() {
-
+void Sphere::SetShape() {
+	primitiveData_ = MAGISYSTEM::GetPrimitiveShape(Primitive3DType::Sphere);
 }
 
 void Sphere::Update() {

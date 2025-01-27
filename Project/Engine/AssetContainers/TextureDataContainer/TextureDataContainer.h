@@ -23,7 +23,9 @@ public:
 	// 初期化
 	void Initialize(DXGI* dxgi, DirectXCommand* command, Fence* fence, SRVUAVManager* srvUavManager);
 	// テクスチャのロード
-	void Load(const std::string& filePath, bool isNormalMapTex = false);
+	void Load(const std::string& filePath);
+	// ノーマルマップテクスチャのロード
+	void LoadNormalMap(const std::string& filePath);
 	// Textureを渡す
 	std::unordered_map<std::string, Texture>& GetTexture();
 	// メタデータを渡す
@@ -32,7 +34,7 @@ private:
 	// Texture読み込み
 	DirectX::ScratchImage LoadTexture(const std::string& filePath);
 	// 法線マップ用Texture読み込み
-	DirectX::ScratchImage LoadNomalMapTexture(const std::string& filePath);
+	DirectX::ScratchImage LoadNormalMapTexture(const std::string& filePath);
 	// テクスチャリソースを作る
 	ComPtr<ID3D12Resource> CreateTextureResource(const DirectX::TexMetadata& metadata);
 	// テクスチャデータを送る

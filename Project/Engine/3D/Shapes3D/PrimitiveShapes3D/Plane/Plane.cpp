@@ -10,7 +10,7 @@ Plane::Plane(const std::string& textureFilePath)
 }
 
 void Plane::SetShape() {
-	primitiveData_;
+	primitiveData_ = MAGISYSTEM::GetPrimitiveShape(Primitive3DType::Plane);
 }
 
 void Plane::Update() {
