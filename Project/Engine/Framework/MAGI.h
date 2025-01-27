@@ -167,7 +167,7 @@ public: // エンジンの機能
 
 #pragma region TextureDataContainer
 	// 画像読み込み
-	static void LoadTexture(const std::string& filePath);
+	static void LoadTexture(const std::string& filePath, bool isFullPath = false);
 	// 法線マップ画像の読み込み
 	static void LoadNormalMapTexture(const std::string& filePath);
 	// テクスチャの取得

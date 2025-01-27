@@ -23,7 +23,7 @@ public:
 	// 初期化
 	void Initialize(DXGI* dxgi, DirectXCommand* command, Fence* fence, SRVUAVManager* srvUavManager);
 	// テクスチャのロード
-	void Load(const std::string& filePath);
+	void Load(const std::string& fileName, bool isFullPath = true);
 	// ノーマルマップテクスチャのロード
 	void LoadNormalMap(const std::string& filePath);
 	// Textureを渡す

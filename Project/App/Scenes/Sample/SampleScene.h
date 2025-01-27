@@ -30,6 +30,8 @@ private:
 
 template<typename Data>
 inline void SampleScene<Data>::Initialize() {
+	MAGISYSTEM::LoadTexture("pronama_chan.png");
+
 	MAGISYSTEM::LoadModel("boxMan");
 	MAGISYSTEM::LoadModel("terrain", true);
 	MAGISYSTEM::LoadModel("teapot", true);
@@ -42,27 +44,26 @@ inline void SampleScene<Data>::Initialize() {
 
 	terrain_ = std::make_unique<Object3D>("terrain", "terrain");
 	terrain_->Initialize();
-	terrain_->GetMaterial().enableSpecularRef = true;
 
-	//MAGISYSTEM::AddPunctualLight("sampleLight");
-	//auto& sampleLight = MAGISYSTEM::GetLightData("sampleLight");
-	//sampleLight.intensity = 1.0f;
-
-
-	MAGISYSTEM::AddPunctualLight("redLight");
-	auto& redLightData = MAGISYSTEM::GetLightData("redLight");
-	redLightData.type = 1;
-	redLightData.color = { 1.0f,0.0f,0.0f };
-	redLightData.intensity = 7.0f;
-	redLightData.position = { 3.0f,2.0f,0.0f };
+	MAGISYSTEM::AddPunctualLight("sampleLight");
+	auto& sampleLight = MAGISYSTEM::GetLightData("sampleLight");
+	sampleLight.intensity = 1.0f;
 
 
-	MAGISYSTEM::AddPunctualLight("blueLight");
-	auto& blueLightData = MAGISYSTEM::GetLightData("blueLight");
-	blueLightData.type = 1;
-	blueLightData.color = { 0.0f,0.0f,1.0f };
-	blueLightData.intensity = 7.0f;
-	blueLightData.position = { -3.0f,2.0f,0.0f };
+	//MAGISYSTEM::AddPunctualLight("redLight");
+	//auto& redLightData = MAGISYSTEM::GetLightData("redLight");
+	//redLightData.type = 1;
+	//redLightData.color = { 1.0f,0.0f,0.0f };
+	//redLightData.intensity = 7.0f;
+	//redLightData.position = { 3.0f,2.0f,0.0f };
+
+
+	//MAGISYSTEM::AddPunctualLight("blueLight");
+	//auto& blueLightData = MAGISYSTEM::GetLightData("blueLight");
+	//blueLightData.type = 1;
+	//blueLightData.color = { 0.0f,0.0f,1.0f };
+	//blueLightData.intensity = 7.0f;
+	//blueLightData.position = { -3.0f,2.0f,0.0f };
 }
 
 template<typename Data>

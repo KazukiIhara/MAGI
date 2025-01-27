@@ -60,8 +60,8 @@ void WindowApp::ToggleFullScreen() {
 		GetWindowRect(hwnd_, &windowRect_);
 
 		// ディスプレイの解像度を取得
-		int screenWidth = GetSystemMetrics(SM_CXSCREEN);
-		int screenHeight = GetSystemMetrics(SM_CYSCREEN);
+		uint32_t screenWidth = GetSystemMetrics(SM_CXSCREEN);
+		uint32_t screenHeight = GetSystemMetrics(SM_CYSCREEN);
 
 		// フルスクリーンに設定
 		SetWindowLongPtr(hwnd_, GWL_STYLE, WS_POPUP | WS_VISIBLE);
