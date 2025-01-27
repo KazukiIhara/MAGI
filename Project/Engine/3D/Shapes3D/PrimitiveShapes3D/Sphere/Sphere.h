@@ -10,6 +10,4 @@ public:
 	void CreateShape()override;
 	void Update()override;
 private:
-	// 球分割数
-	const uint32_t kSubdivision = 16;
 };

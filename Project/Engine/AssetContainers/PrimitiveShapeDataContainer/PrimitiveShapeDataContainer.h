@@ -14,13 +14,12 @@ class PrimitiveShapeDataContainer {
 public:
 	PrimitiveShapeDataContainer();
 	~PrimitiveShapeDataContainer();
-
+	PrimitiveData GetPrimitiveShapeData(const Primitive3DType& primitiveType);
 private:
 	void Initialize();
 
 	void CreatePlane();
 	void CreateSphere();
-
 private:
 	// シンプル形状のデータ
 	std::unordered_map<Primitive3DType, PrimitiveData> primitiveDatas_;
