@@ -30,19 +30,25 @@ void TextureDataContainer::Initialize(DXGI* dxgi, DirectXCommand* directXCommand
 
 }
 
-void TextureDataContainer::Load(const std::string& filePath) {
+void TextureDataContainer::Load(const std::string& fileName, bool isFullPath) {
 	// テクスチャがすでに読み込まれているかチェック
-	auto it = textureDatas_.find(filePath);
+	auto it = textureDatas_.find(fileName);
 	if (it != textureDatas_.end()) {
 		// すでに読み込まれている場合、早期リターン
 		return;
 	}
 
 	// 今回ぶち込むテクスチャーの箱
-	Texture& texture = textureDatas_[filePath];
+	Texture& texture = textureDatas_[fileName];
 	DirectX::ScratchImage mipImage;
 
-	mipImage = LoadTexture(filePath);
+	if (isFullPath) {
+		mipImage = LoadTexture(fileName);
+	} else {
+		// フルパス作成
+		const std::string textureDirectoryFilePath = "App/Assets/Images/";
+		mipImage = LoadTexture(textureDirectoryFilePath + fileName);
+	}
 
 	texture.metaData = mipImage.GetMetadata();
 	texture.resource = CreateTextureResource(texture.metaData);
@@ -56,7 +62,7 @@ void TextureDataContainer::Load(const std::string& filePath) {
 	// SRVを作成するDescriptorHeapの場所を決める
 	texture.srvIndex = srvUavManager_->Allocate();
 	// srvの作成
-	srvUavManager_->CreateSrvTexture2d(texture.srvIndex, textureDatas_[filePath].resource.Get(), texture.metaData.format, UINT(texture.metaData.mipLevels));
+	srvUavManager_->CreateSrvTexture2d(texture.srvIndex, textureDatas_[fileName].resource.Get(), texture.metaData.format, UINT(texture.metaData.mipLevels));
 
 	// テクスチャ枚数上限チェック
 	assert(srvUavManager_->IsLowerViewMax());

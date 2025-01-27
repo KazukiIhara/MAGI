@@ -30,19 +30,20 @@ private:
 
 template<typename Data>
 inline void SampleScene<Data>::Initialize() {
-	MAGISYSTEM::LoadModel("boxMan");
-	MAGISYSTEM::LoadModel("terrain", true);
-	MAGISYSTEM::LoadModel("teapot", true);
 
-	MAGISYSTEM::LoadAnimation("boxMan");
+	//MAGISYSTEM::LoadModel("boxMan");
+	//MAGISYSTEM::LoadModel("terrain", true);
+	//MAGISYSTEM::LoadModel("teapot", true);
 
-	primitive_ = std::make_unique<Primitive3D>("primitive", Primitive3DType::Sphere);
-	primitive_->GetTranslate().y = 1.0f;
-	primitive_->GetMaterial().enableSpecularRef = true;
+	//MAGISYSTEM::LoadAnimation("boxMan");
 
-	terrain_ = std::make_unique<Object3D>("terrain", "terrain");
-	terrain_->Initialize();
-	terrain_->GetMaterial().enableSpecularRef = true;
+	//primitive_ = std::make_unique<Primitive3D>("primitive", Primitive3DType::Sphere);
+	//primitive_->GetTranslate().y = 1.0f;
+	//primitive_->GetMaterial().enableSpecularRef = true;
+
+	//terrain_ = std::make_unique<Object3D>("terrain", "terrain");
+	//terrain_->Initialize();
+	//terrain_->GetMaterial().enableSpecularRef = true;
 
 	//MAGISYSTEM::AddPunctualLight("sampleLight");
 	//auto& sampleLight = MAGISYSTEM::GetLightData("sampleLight");
@@ -75,20 +76,20 @@ inline void SampleScene<Data>::Update() {
 		skinningSample_->ResetAnimation();
 	}
 
-	terrain_->Update();
+	//terrain_->Update();
 
-	primitive_->Update();
+	//primitive_->Update();
 
 }
 
 template<typename Data>
 inline void SampleScene<Data>::Draw() {
 
-	MAGISYSTEM::PreDrawObject3DNormalMap();
-	terrain_->Draw();
+	//MAGISYSTEM::PreDrawObject3DNormalMap();
+	//terrain_->Draw();
 
-	MAGISYSTEM::PreDrawObject3D();
-	primitive_->Draw();
+	//MAGISYSTEM::PreDrawObject3D();
+	//primitive_->Draw();
 }
 
 template<typename Data>

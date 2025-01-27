@@ -123,7 +123,7 @@ void MAGISYSTEM::Initialize() {
 	imguiController_ = std::make_unique<ImGuiController>(windowApp_.get(), dxgi_.get(), directXCommand_.get(), srvuavManager_.get());
 
 	// GUI
-	gui_ = std::make_unique<GUI>(imguiController_.get(),textureDataCantainer_.get());
+	gui_ = std::make_unique<GUI>(imguiController_.get(), textureDataCantainer_.get());
 
 	// 初期化完了ログ
 	Logger::Log("MAGISYSTEM Initialize\n");
@@ -495,8 +495,8 @@ void MAGISYSTEM::CreateUavStructuredBuffer(uint32_t viewIndex, ID3D12Resource* p
 	srvuavManager_->CreateUavStructuredBuffer(viewIndex, pResource, numElements, structureByteStride);
 }
 
-void MAGISYSTEM::LoadTexture(const std::string& filePath) {
-	textureDataCantainer_->Load(filePath);
+void MAGISYSTEM::LoadTexture(const std::string& filePath, bool isFullPath) {
+	textureDataCantainer_->Load(filePath, isFullPath);
 }
 
 void MAGISYSTEM::LoadNormalMapTexture(const std::string& filePath) {
