@@ -31,7 +31,7 @@ private:
 template<typename Data>
 inline void SampleScene<Data>::Initialize() {
 	MAGISYSTEM::LoadModel("boxMan");
-	MAGISYSTEM::LoadModel("crossMan");
+	MAGISYSTEM::LoadModel("crossMan3");
 	MAGISYSTEM::LoadModel("terrain", true);
 	MAGISYSTEM::LoadModel("teapot", true);
 
@@ -44,7 +44,7 @@ inline void SampleScene<Data>::Initialize() {
 	terrain_ = std::make_unique<Object3D>("terrain", "terrain");
 	terrain_->Initialize();
 
-	skinningSample_ = std::make_unique<Object3DSkinning>("skinningSample", "crossMan");
+	skinningSample_ = std::make_unique<Object3DSkinning>("skinningSample", "crossMan3");
 	skinningSample_->Initialize();
 
 	MAGISYSTEM::AddPunctualLight("sampleLight");
