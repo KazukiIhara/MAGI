@@ -6,8 +6,8 @@ class Plane: public BasePrimitiveShape3D {
 public:
 	Plane(const std::string& textureFilePath = "");
 	~Plane()override = default;
-
-	void CreateShape()override;
+	void SetShape();
 	void Update()override;
+private:
 
 };
