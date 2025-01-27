@@ -40,10 +40,6 @@ inline void SampleScene<Data>::Initialize() {
 	primitive_->GetTranslate().y = 1.0f;
 	primitive_->GetMaterial().enableSpecularRef = true;
 
-	skinningSample_ = std::make_unique<Object3DSkinning>("boxMan", "boxMan");
-	skinningSample_->Initialize();
-
-
 	terrain_ = std::make_unique<Object3D>("terrain", "terrain");
 	terrain_->Initialize();
 
@@ -82,7 +78,6 @@ inline void SampleScene<Data>::Update() {
 
 	primitive_->Update();
 
-	skinningSample_->Update();
 }
 
 template<typename Data>
@@ -93,7 +88,6 @@ inline void SampleScene<Data>::Draw() {
 
 	MAGISYSTEM::PreDrawObject3D();
 	primitive_->Draw();
-	skinningSample_->Draw();
 }
 
 template<typename Data>
