@@ -14,15 +14,3 @@ void Game::Initialize() {
 	// 最初のシーンを設定
 	sceneManager_->ChangeScene("Sample");
 }
-
-void Game::Update() {
-	// 基底システムの更新
-	MAGISYSTEM::Update();	
-
-}
-
-void Game::Draw() {
-	// 規定システムの描画
-	MAGISYSTEM::Draw();
-
-}

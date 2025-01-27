@@ -20,10 +20,9 @@ public:
 	BasePrimitiveShape3D();
 	virtual ~BasePrimitiveShape3D() = default;
 	void Initialize(const std::string& textureFilePath);
+	virtual void SetShape() = 0;
 	virtual void Update();
 	void Draw();
-
-	virtual void CreateShape() = 0;
 
 	void SetTextureFilePath(const std::string& textureFilePath);
 private:

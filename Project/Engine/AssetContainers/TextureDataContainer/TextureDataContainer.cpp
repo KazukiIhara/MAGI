@@ -30,7 +30,7 @@ void TextureDataContainer::Initialize(DXGI* dxgi, DirectXCommand* directXCommand
 
 }
 
-void TextureDataContainer::Load(const std::string& filePath, bool isNormalMapTex) {
+void TextureDataContainer::Load(const std::string& filePath) {
 	// テクスチャがすでに読み込まれているかチェック
 	auto it = textureDatas_.find(filePath);
 	if (it != textureDatas_.end()) {
@@ -41,11 +41,8 @@ void TextureDataContainer::Load(const std::string& filePath, bool isNormalMapTex
 	// 今回ぶち込むテクスチャーの箱
 	Texture& texture = textureDatas_[filePath];
 	DirectX::ScratchImage mipImage;
-	if (isNormalMapTex) {
-		mipImage = LoadNomalMapTexture(filePath);
-	} else {
-		mipImage = LoadTexture(filePath);
-	}
+
+	mipImage = LoadTexture(filePath);
 
 	texture.metaData = mipImage.GetMetadata();
 	texture.resource = CreateTextureResource(texture.metaData);
@@ -63,6 +60,39 @@ void TextureDataContainer::Load(const std::string& filePath, bool isNormalMapTex
 
 	// テクスチャ枚数上限チェック
 	assert(srvUavManager_->IsLowerViewMax());
+}
+
+void TextureDataContainer::LoadNormalMap(const std::string& filePath) {
+	// テクスチャがすでに読み込まれているかチェック
+	auto it = textureDatas_.find(filePath);
+	if (it != textureDatas_.end()) {
+		// すでに読み込まれている場合、早期リターン
+		return;
+	}
+
+	// 今回ぶち込むテクスチャーの箱
+	Texture& texture = textureDatas_[filePath];
+	DirectX::ScratchImage mipImage;
+
+	mipImage = LoadNormalMapTexture(filePath);
+
+	texture.metaData = mipImage.GetMetadata();
+	texture.resource = CreateTextureResource(texture.metaData);
+	ComPtr<ID3D12Resource> intermediateResource = UploadTextureData(texture.resource.Get(), mipImage);
+
+	// コマンドのクローズと実行
+	directXCommand_->KickCommand();
+	fence_->WaitGPU();
+	directXCommand_->ResetCommand();
+
+	// SRVを作成するDescriptorHeapの場所を決める
+	texture.srvIndex = srvUavManager_->Allocate();
+	// srvの作成
+	srvUavManager_->CreateSrvTexture2d(texture.srvIndex, textureDatas_[filePath].resource.Get(), texture.metaData.format, UINT(texture.metaData.mipLevels));
+
+	// テクスチャ枚数上限チェック
+	assert(srvUavManager_->IsLowerViewMax());
+
 }
 
 std::unordered_map<std::string, Texture>& TextureDataContainer::GetTexture() {
@@ -91,7 +121,7 @@ DirectX::ScratchImage TextureDataContainer::LoadTexture(const std::string& fileP
 	return mipImages;
 }
 
-DirectX::ScratchImage TextureDataContainer::LoadNomalMapTexture(const std::string& filePath) {
+DirectX::ScratchImage TextureDataContainer::LoadNormalMapTexture(const std::string& filePath) {
 	// テクスチャファイルをWICで読む
 	DirectX::ScratchImage image{};
 	std::wstring filePathW = Logger::ConvertString(filePath);

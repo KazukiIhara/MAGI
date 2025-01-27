@@ -28,6 +28,7 @@ std::unique_ptr<Viewport> MAGISYSTEM::viewport_ = nullptr;
 std::unique_ptr<ScissorRect> MAGISYSTEM::scissorRect_ = nullptr;
 
 std::unique_ptr<TextureDataContainer> MAGISYSTEM::textureDataCantainer_ = nullptr;
+std::unique_ptr<PrimitiveShapeDataContainer> MAGISYSTEM::primitiveDataContainer_ = nullptr;
 std::unique_ptr<ModelDataContainer> MAGISYSTEM::modelDataContainer_ = nullptr;
 std::unique_ptr<AnimationDataContainer> MAGISYSTEM::animationDataContainer_ = nullptr;
 
@@ -94,6 +95,8 @@ void MAGISYSTEM::Initialize() {
 
 	// TextureDataContainer
 	textureDataCantainer_ = std::make_unique<TextureDataContainer>(dxgi_.get(), directXCommand_.get(), fence_.get(), srvuavManager_.get());
+	// PrimitiveDataContainer
+	primitiveDataContainer_ = std::make_unique<PrimitiveShapeDataContainer>();
 	// ModelDataContainer
 	modelDataContainer_ = std::make_unique<ModelDataContainer>(textureDataCantainer_.get());
 	// AnimationDataContainer
@@ -173,6 +176,11 @@ void MAGISYSTEM::Finalize() {
 	// ModelDataContainer
 	if (modelDataContainer_) {
 		modelDataContainer_.reset();
+	}
+
+	// PrimitiveDataContainer
+	if (primitiveDataContainer_) {
+		primitiveDataContainer_.reset();
 	}
 
 	// TextureDataContainer
@@ -489,12 +497,20 @@ void MAGISYSTEM::LoadTexture(const std::string& filePath) {
 	textureDataCantainer_->Load(filePath);
 }
 
+void MAGISYSTEM::LoadNormalMapTexture(const std::string& filePath) {
+	textureDataCantainer_->LoadNormalMap(filePath);
+}
+
 std::unordered_map<std::string, Texture>& MAGISYSTEM::GetTexture() {
 	return textureDataCantainer_->GetTexture();
 }
 
 const DirectX::TexMetadata& MAGISYSTEM::GetTextureMetaData(const std::string& filePath) {
 	return textureDataCantainer_->GetMetaData(filePath);
+}
+
+PrimitiveData MAGISYSTEM::GetPrimitiveShape(const Primitive3DType& primitive3dType) {
+	return primitiveDataContainer_->GetPrimitiveShapeData(primitive3dType);
 }
 
 void MAGISYSTEM::LoadModel(const std::string& modelName, bool isNormalMap) {
