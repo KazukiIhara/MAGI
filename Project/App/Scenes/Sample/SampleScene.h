@@ -38,10 +38,11 @@ inline void SampleScene<Data>::Initialize() {
 
 	primitive_ = std::make_unique<Primitive3D>("primitive", Primitive3DType::Sphere);
 	primitive_->GetTranslate().y = 1.0f;
+	primitive_->GetMaterial().enableSpecularRef = true;
 
 	skinningSample_ = std::make_unique<Object3DSkinning>("boxMan", "boxMan");
 	skinningSample_->Initialize();
-	
+
 
 	terrain_ = std::make_unique<Object3D>("terrain", "terrain");
 	terrain_->Initialize();
@@ -70,12 +71,10 @@ inline void SampleScene<Data>::Initialize() {
 template<typename Data>
 inline void SampleScene<Data>::Update() {
 	if (MAGISYSTEM::TriggerKey(DIK_1)) {
-		skinningSample_->PlayAnimation("Root");
+		skinningSample_->PlayAnimation("Action.001");
 	}
-	if (MAGISYSTEM::TriggerKey(DIK_2)) {
-		skinningSample_->PlayAnimation("Action.002");
-	}
-	if (MAGISYSTEM::TriggerKey(DIK_3)) {
+
+	if (MAGISYSTEM::TriggerKey(DIK_0)) {
 		skinningSample_->ResetAnimation();
 	}
 
