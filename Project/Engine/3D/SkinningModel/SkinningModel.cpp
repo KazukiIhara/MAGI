@@ -8,8 +8,7 @@ using namespace MAGIMath;
 using namespace MAGIUtility;
 
 SkinningModel::SkinningModel(const ModelData& modeldata)
-	:Model(modeldata) {
-}
+	:Model(modeldata) {}
 
 SkinningModel::~SkinningModel() {
 	skeleton_.reset();
@@ -92,31 +91,36 @@ void SkinningModel::CreateInverseBindPoseMatrix() {
 }
 
 void SkinningModel::SettingInfluenceAllMeshes() {
-	for (const auto& jointWeight : modelData_.skinClusterData) {
-		auto it = skeleton_->jointMap.find(jointWeight.first);
+	for (const auto& [jointName, jointWeightData] : modelData_.skinClusterData) {
+		auto it = skeleton_->jointMap.find(jointName);
 		if (it == skeleton_->jointMap.end()) {
 			continue;
 		}
+		// ジョイントID
+		uint32_t jointId = it->second;
 
-		for (const auto& vertexWeight : jointWeight.second.vertexWeights) {
-			for (auto& mesh : meshes_) {
+		// それぞれの "weight情報" を見る
+		for (const auto& vertexWeight : jointWeightData.vertexWeights) {
+			// ここで「どのサブメッシュか」を判別する
+			uint32_t targetMeshIndex = vertexWeight.meshIndex;
+			uint32_t localVertexIndex = vertexWeight.localVertexIndex;
+			float    weightValue = vertexWeight.weight;
 
-				// キャスト
-				if (auto* skinMesh = static_cast<SkinningMesh*>(mesh.get())) {
-					auto& currentInfluence = skinMesh->GetMappdInfluence()[vertexWeight.vertexIndex];
-					for (uint32_t index = 0; index < kNumMaxInfluence; index++) {
-						if (currentInfluence.weights[index] == 0.0f) {
-							currentInfluence.weights[index] = vertexWeight.weight;
-							currentInfluence.jointIndices[index] = (*it).second;
-							break;
-						}
+			// meshes_[i] が何番目のメッシュかを区別できるようにしておく
+			auto& targetMesh = meshes_[targetMeshIndex];
+			if (auto* skinMesh = dynamic_cast<SkinningMesh*>(targetMesh.get())) {
+				auto& currentInfluence = skinMesh->GetMappdInfluence()[localVertexIndex];
+
+				// kNumMaxInfluence スロットのうち空いているところへ書き込み
+				for (uint32_t idx = 0; idx < kNumMaxInfluence; idx++) {
+					if (currentInfluence.weights[idx] == 0.0f) {
+						currentInfluence.weights[idx] = weightValue;
+						currentInfluence.jointIndices[idx] = jointId;
+						break;
 					}
-
 				}
 			}
-
 		}
-
 	}
 }
 

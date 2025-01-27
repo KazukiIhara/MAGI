@@ -31,7 +31,10 @@ struct SkinningInformationForGPU {
 
 struct VertexWeightData {
 	float weight;
-	uint32_t vertexIndex;
+	// どのメッシュの頂点か
+	uint32_t meshIndex;
+	// メッシュ内でのローカル頂点インデックス
+	uint32_t localVertexIndex;
 };
 
 struct JointWeightData {

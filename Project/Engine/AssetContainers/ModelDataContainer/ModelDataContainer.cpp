@@ -226,8 +226,15 @@ ModelData ModelDataContainer::LoadModel(const std::string& modelName, bool isNor
 					// 頂点ウェイトの登録
 					for (uint32_t weightIndex = 0; weightIndex < bone->mNumWeights; ++weightIndex) {
 						float w = bone->mWeights[weightIndex].mWeight;
-						uint32_t vtxId = bone->mWeights[weightIndex].mVertexId;
-						jointWeightData.vertexWeights.push_back({ w, vtxId });
+						uint32_t localVtxId = bone->mWeights[weightIndex].mVertexId;
+
+						// bone->mWeights[..].mVertexId は 「meshIndex番のメッシュの」ローカルID
+						// であることを区別するために、構造体に meshIndex も入れる。
+						jointWeightData.vertexWeights.push_back({
+							w,
+							meshIndex,        // このメッシュ番号
+							localVtxId        // メッシュ内ローカル頂点インデックス
+							});
 					}
 				}
 
