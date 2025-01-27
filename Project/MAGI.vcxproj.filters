@@ -246,10 +246,10 @@
     <ClInclude Include="Engine\3D\RenderObjects3D\BaseRenderable3D\BaseRenderable3D.h">
       <Filter>Engine\3D\BaseRenderable3D</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\3D\Camera3D\Camera3D.h">
+    <ClInclude Include="Engine\3D\Camera3Ds\Camera3D\Camera3D.h">
       <Filter>Engine\3D\Camera3D</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\3D\DebugCamera3D\DebugCamera3D.h">
+    <ClInclude Include="Engine\3D\Camera3Ds\DebugCamera3D\DebugCamera3D.h">
       <Filter>Engine\3D\DebugCamera3D</Filter>
     </ClInclude>
     <ClInclude Include="Engine\3D\Shapes3D\Mesh\Mesh.h">
@@ -488,10 +488,10 @@
     <ClCompile Include="Engine\3D\RenderObjects3D\BaseRenderable3D\BaseRenderable3D.cpp">
       <Filter>Engine\3D\BaseRenderable3D</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\3D\Camera3D\Camera3D.cpp">
+    <ClCompile Include="Engine\3D\Camera3Ds\Camera3D\Camera3D.cpp">
       <Filter>Engine\3D\Camera3D</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\3D\DebugCamera3D\DebugCamera3D.cpp">
+    <ClCompile Include="Engine\3D\Camera3Ds\DebugCamera3D\DebugCamera3D.cpp">
       <Filter>Engine\3D\DebugCamera3D</Filter>
     </ClCompile>
     <ClCompile Include="Engine\3D\Shapes3D\Mesh\Mesh.cpp">

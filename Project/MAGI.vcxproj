@@ -118,8 +118,8 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Engine\3D\Base3D\WorldEntity\WorldEntity.h" />
     <ClInclude Include="Engine\3D\Base3D\WorldTransform\WorldTransform.h" />
     <ClInclude Include="Engine\3D\RenderObjects3D\BaseRenderable3D\BaseRenderable3D.h" />
-    <ClInclude Include="Engine\3D\Camera3D\Camera3D.h" />
-    <ClInclude Include="Engine\3D\DebugCamera3D\DebugCamera3D.h" />
+    <ClInclude Include="Engine\3D\Camera3Ds\Camera3D\Camera3D.h" />
+    <ClInclude Include="Engine\3D\Camera3Ds\DebugCamera3D\DebugCamera3D.h" />
     <ClInclude Include="Engine\3D\Shapes3D\Mesh\Mesh.h" />
     <ClInclude Include="Engine\3D\Shapes3D\Model\Model.h" />
     <ClInclude Include="Engine\3D\RenderObjects3D\Object3D\Object3D.h" />
@@ -200,8 +200,8 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Engine\3D\Base3D\WorldEntity\WorldEntity.cpp" />
     <ClCompile Include="Engine\3D\Base3D\WorldTransform\WorldTransform.cpp" />
     <ClCompile Include="Engine\3D\RenderObjects3D\BaseRenderable3D\BaseRenderable3D.cpp" />
-    <ClCompile Include="Engine\3D\Camera3D\Camera3D.cpp" />
-    <ClCompile Include="Engine\3D\DebugCamera3D\DebugCamera3D.cpp" />
+    <ClCompile Include="Engine\3D\Camera3Ds\Camera3D\Camera3D.cpp" />
+    <ClCompile Include="Engine\3D\Camera3Ds\DebugCamera3D\DebugCamera3D.cpp" />
     <ClCompile Include="Engine\3D\Shapes3D\Mesh\Mesh.cpp" />
     <ClCompile Include="Engine\3D\Shapes3D\Model\Model.cpp" />
     <ClCompile Include="Engine\3D\RenderObjects3D\Object3D\Object3D.cpp" />
