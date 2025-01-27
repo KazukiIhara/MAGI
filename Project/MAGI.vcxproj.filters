@@ -213,10 +213,10 @@
     <ClInclude Include="Engine\3D\Primitive3D\Primitive3D.h">
       <Filter>Engine\3D\Primitive3D</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\3D\WorldEntity\WorldEntity.h">
+    <ClInclude Include="Engine\3D\Base3D\WorldEntity\WorldEntity.h">
       <Filter>Engine\3D\WorldEntity</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\3D\WorldTransform\WorldTransform.h">
+    <ClInclude Include="Engine\3D\Base3D\WorldTransform\WorldTransform.h">
       <Filter>Engine\3D\WorldTransform</Filter>
     </ClInclude>
     <ClInclude Include="Engine\AssetContainers\ModelDataContainer\ModelDataContainer.h">
@@ -422,10 +422,10 @@
     <ClCompile Include="Engine\3D\Primitive3D\Primitive3D.cpp">
       <Filter>Engine\3D\Primitive3D</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\3D\WorldEntity\WorldEntity.cpp">
+    <ClCompile Include="Engine\3D\Base3D\WorldEntity\WorldEntity.cpp">
       <Filter>Engine\3D\WorldEntity</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\3D\WorldTransform\WorldTransform.cpp">
+    <ClCompile Include="Engine\3D\Base3D\WorldTransform\WorldTransform.cpp">
       <Filter>Engine\3D\WorldTransform</Filter>
     </ClCompile>
     <ClCompile Include="Engine\AssetContainers\ModelDataContainer\ModelDataContainer.cpp">

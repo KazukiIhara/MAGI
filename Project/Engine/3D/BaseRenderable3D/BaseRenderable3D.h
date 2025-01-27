@@ -11,8 +11,8 @@
 #include "Enums/BlendModeEnum.h"
 
 #include "DirectX/ComPtr/ComPtr.h"
-#include "3D/WorldEntity/WorldEntity.h"
-#include "3D/WorldTransform/WorldTransform.h"
+#include "3D/Base3D/WorldEntity/WorldEntity.h"
+#include "3D/Base3D/WorldTransform/WorldTransform.h"
 
 class BaseRenderable3D :public WorldEntity {
 public:

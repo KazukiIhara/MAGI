@@ -8,8 +8,8 @@
 
 // MyHedder
 #include "DirectX/ComPtr/ComPtr.h"
-#include "3D/WorldEntity/WorldEntity.h"
-#include "3D/WorldTransform/WorldTransform.h"
+#include "3D/Base3D/WorldEntity/WorldEntity.h"
+#include "3D/Base3D/WorldTransform/WorldTransform.h"
 #include "Structs/CameraStruct.h"
 
 /// <summary>

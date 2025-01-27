@@ -129,8 +129,8 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Engine\3D\Skeleton\Skeleton.h" />
     <ClInclude Include="Engine\3D\SkinningMesh\SkinningMesh.h" />
     <ClInclude Include="Engine\3D\SkinningModel\SkinningModel.h" />
-    <ClInclude Include="Engine\3D\WorldEntity\WorldEntity.h" />
-    <ClInclude Include="Engine\3D\WorldTransform\WorldTransform.h" />
+    <ClInclude Include="Engine\3D\Base3D\WorldEntity\WorldEntity.h" />
+    <ClInclude Include="Engine\3D\Base3D\WorldTransform\WorldTransform.h" />
     <ClInclude Include="Engine\AssetContainers\AnimationDataContainer\AnimationDataContainer.h" />
     <ClInclude Include="Engine\AssetContainers\ModelDataContainer\ModelDataContainer.h" />
     <ClInclude Include="Engine\AssetContainers\SoundDataContainer\SoundDataContainer.h" />
@@ -212,8 +212,8 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Engine\3D\Skeleton\Skeleton.cpp" />
     <ClCompile Include="Engine\3D\SkinningMesh\SkinningMesh.cpp" />
     <ClCompile Include="Engine\3D\SkinningModel\SkinningModel.cpp" />
-    <ClCompile Include="Engine\3D\WorldEntity\WorldEntity.cpp" />
-    <ClCompile Include="Engine\3D\WorldTransform\WorldTransform.cpp" />
+    <ClCompile Include="Engine\3D\Base3D\WorldEntity\WorldEntity.cpp" />
+    <ClCompile Include="Engine\3D\Base3D\WorldTransform\WorldTransform.cpp" />
     <ClCompile Include="Engine\AssetContainers\AnimationDataContainer\AnimationDataContainer.cpp" />
     <ClCompile Include="Engine\AssetContainers\ModelDataContainer\ModelDataContainer.cpp" />
     <ClCompile Include="Engine\AssetContainers\SoundDataContainer\SoundDataContainer.cpp" />
