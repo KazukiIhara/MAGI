@@ -44,6 +44,12 @@ struct Material3D {
 	float shininess;
 };
 
+// 2D用マテリアル構造体
+struct Material2D {
+	Vector4 color;
+	Matrix4x4 uvTransformMatrix;
+};
+
 // GPUに送る3D用マテリアル構造体
 struct Material3DForGPU {
 	Vector4 color;
