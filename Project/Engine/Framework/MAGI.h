@@ -230,6 +230,9 @@ public: // エンジンの機能
 private: // メンバ変数
 	// 終了リクエスト
 	bool endRequest_ = false;
+	// GUI描画フラグ
+	bool isActivateGUI_ = false;
+
 protected:
 #ifdef _DEBUG
 	static std::unique_ptr<D3DResourceLeakChecker> leakCheck_;

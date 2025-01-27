@@ -6,11 +6,21 @@
 
 #include "Framework/MAGI.h"
 
-GUI::GUI(ImGuiController* imguiController) {
-	SetImGuiController(imguiController);
+GUI::GUI(ImGuiController* imguiController,
+	TextureDataContainer* textureDataContainer) {
+
+	imguiController_ = imguiController;
+	textureDataContainer_ = textureDataContainer;
+
+
+
 }
 
 void GUI::Update() {
+
+}
+
+void GUI::Draw() {
 	ShowFPS();
 	ShowDeltaTime();
 }
@@ -48,9 +58,4 @@ void GUI::ShowDeltaTime() {
 	ImGui::PopStyleColor();
 
 	ImGui::End();
-}
-
-void GUI::SetImGuiController(ImGuiController* imguiController) {
-	assert(imguiController);
-	imguiController_ = imguiController;
 }

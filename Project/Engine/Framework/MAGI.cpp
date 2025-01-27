@@ -123,7 +123,7 @@ void MAGISYSTEM::Initialize() {
 	imguiController_ = std::make_unique<ImGuiController>(windowApp_.get(), dxgi_.get(), directXCommand_.get(), srvuavManager_.get());
 
 	// GUI
-	gui_ = std::make_unique<GUI>(imguiController_.get());
+	gui_ = std::make_unique<GUI>(imguiController_.get(),textureDataCantainer_.get());
 
 	// 初期化完了ログ
 	Logger::Log("MAGISYSTEM Initialize\n");
@@ -302,6 +302,8 @@ void MAGISYSTEM::Update() {
 	// ImGui開始処理
 	imguiController_->BeginFrame();
 
+	// GUI更新処理
+	gui_->Update();
 
 	// シーンの更新処理
 	sceneManager_->Update();
@@ -312,8 +314,8 @@ void MAGISYSTEM::Update() {
 	// ライトマネージャの更新
 	punctualLightManager_->Update();
 
-	// GUI更新処理
-	gui_->Update();
+	// GUI描画処理
+	gui_->Draw();
 
 	// ImGui内部コマンド生成
 	imguiController_->EndFrame();

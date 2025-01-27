@@ -105,6 +105,10 @@ const DirectX::TexMetadata& TextureDataContainer::GetMetaData(const std::string&
 	return texture.metaData;
 }
 
+const std::unordered_map<std::string, Texture>& TextureDataContainer::GetTextureDatas()const {
+	return textureDatas_;
+}
+
 DirectX::ScratchImage TextureDataContainer::LoadTexture(const std::string& filePath) {
 	// テクスチャファイルを読んでプログラムで扱えるようにする
 	DirectX::ScratchImage image{};

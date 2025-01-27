@@ -30,6 +30,9 @@ public:
 	std::unordered_map<std::string, Texture>& GetTexture();
 	// メタデータを渡す
 	const DirectX::TexMetadata& GetMetaData(const std::string& filePath);
+
+	// コンテナごと渡す
+	const std::unordered_map<std::string, Texture>& GetTextureDatas()const;
 private:
 	// Texture読み込み
 	DirectX::ScratchImage LoadTexture(const std::string& filePath);
