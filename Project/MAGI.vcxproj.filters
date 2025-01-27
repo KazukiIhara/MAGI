@@ -22,6 +22,18 @@
     <Filter Include="Engine\3D">
       <UniqueIdentifier>{C14C8BD1-2DB7-3F48-76F5-F0EDE29E1D9D}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Engine\3D\Base3D">
+      <UniqueIdentifier>{82F700B3-6EF0-1F05-9722-058A837AFF10}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\3D\Base3D\WorldEntity">
+      <UniqueIdentifier>{56B71E89-4272-0E35-EB29-877FD7C358C5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\3D\Base3D\WorldTransform">
+      <UniqueIdentifier>{951E359A-0102-44DA-0A05-721676670A2B}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\3D\BaseRenderable3D">
+      <UniqueIdentifier>{36AD5E61-22BD-0A32-8B76-6F5077A5F9CA}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Engine\3D\Camera3D">
       <UniqueIdentifier>{30CF8255-1CB3-43AB-8513-3EFE71162E2D}</UniqueIdentifier>
     </Filter>
@@ -37,14 +49,32 @@
     <Filter Include="Engine\3D\Object3D">
       <UniqueIdentifier>{BEA38BAE-AA87-4C04-13E8-4657FFEA3686}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Engine\3D\Object3DSkinning">
+      <UniqueIdentifier>{BF3BBC7C-AB4B-684D-1405-CD6B003457E6}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Engine\3D\Primitive3D">
       <UniqueIdentifier>{80A7D805-EC13-9400-B507-2C5E2133B668}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Engine\3D\WorldEntity">
-      <UniqueIdentifier>{15E333DD-814F-EFD7-4A43-8735B66E1140}</UniqueIdentifier>
+    <Filter Include="Engine\3D\PrimitiveShapes3D">
+      <UniqueIdentifier>{84DE6B08-F0EB-99EE-79D2-95D9E5DE65A5}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Engine\3D\WorldTransform">
-      <UniqueIdentifier>{F425270A-E04A-768A-0996-5B1AF51975A8}</UniqueIdentifier>
+    <Filter Include="Engine\3D\PrimitiveShapes3D\BasePrimitiveShape3D">
+      <UniqueIdentifier>{8F5289CC-7BFB-F0FB-A491-0C7B90990B3D}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\3D\PrimitiveShapes3D\Plane">
+      <UniqueIdentifier>{83B3E891-EF21-3E11-380B-F910A4B833AD}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\3D\PrimitiveShapes3D\Sphere">
+      <UniqueIdentifier>{3AB24AD6-26EE-4D40-8F00-66377B5BF65A}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\3D\Skeleton">
+      <UniqueIdentifier>{151B3509-01FF-F55E-6A5F-F0B15662E0E0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\3D\SkinningMesh">
+      <UniqueIdentifier>{9EC5D17B-8ABF-FACD-732C-91DE5FC5603A}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\3D\SkinningModel">
+      <UniqueIdentifier>{62B50FF6-CEEC-578D-D7F6-BBB043AD7E86}</UniqueIdentifier>
     </Filter>
     <Filter Include="Engine\AssetContainers">
       <UniqueIdentifier>{C08CB08C-AC86-D9DE-95F3-6FEF818C3F4B}</UniqueIdentifier>
@@ -66,6 +96,12 @@
     </Filter>
     <Filter Include="Engine\Camera3DManager">
       <UniqueIdentifier>{256F4171-1169-6AC3-FAD5-00D4E66ED02F}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\ComputePipelines">
+      <UniqueIdentifier>{F0A2B4EE-5CDA-FC85-65E4-60A9D19A237F}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\ComputePipelines\SkinningComputePipeline">
+      <UniqueIdentifier>{D39AF44C-3FD6-5410-48CB-D19FB485D940}</UniqueIdentifier>
     </Filter>
     <Filter Include="Engine\DeltaTimer">
       <UniqueIdentifier>{B5E83FAE-21FF-3D44-6A76-C965D6CB0ECC}</UniqueIdentifier>
@@ -124,6 +160,9 @@
     <Filter Include="Engine\GraphicsPipelines\Object3DGraphicsPipeline">
       <UniqueIdentifier>{680091E8-D4C6-ED04-1D22-7C6789275C69}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Engine\GraphicsPipelines\Object3DGraphicsPipelineNormalMap">
+      <UniqueIdentifier>{0FE23AFB-FBA1-CB9F-64BF-B3AA509EDEB1}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Engine\ImGuiController">
       <UniqueIdentifier>{2954621B-154E-8B6D-FEBA-217EEA53F1D9}</UniqueIdentifier>
     </Filter>
@@ -156,6 +195,9 @@
     </Filter>
     <Filter Include="Engine\PipelineManagers">
       <UniqueIdentifier>{0ED9C9FB-7A10-1293-831A-76B6EFD0388C}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\PipelineManagers\ComputePipelineManager">
+      <UniqueIdentifier>{EB927927-D710-CAC0-C008-8858AC250CE9}</UniqueIdentifier>
     </Filter>
     <Filter Include="Engine\PipelineManagers\GraphicsPipelineManager">
       <UniqueIdentifier>{5F42992D-CB7D-F9F0-D472-7680402D7E21}</UniqueIdentifier>
@@ -195,6 +237,15 @@
     <ClInclude Include="App\Scenes\Sample\SampleScene.h">
       <Filter>App\Scenes\Sample</Filter>
     </ClInclude>
+    <ClInclude Include="Engine\3D\Base3D\WorldEntity\WorldEntity.h">
+      <Filter>Engine\3D\Base3D\WorldEntity</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\3D\Base3D\WorldTransform\WorldTransform.h">
+      <Filter>Engine\3D\Base3D\WorldTransform</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\3D\BaseRenderable3D\BaseRenderable3D.h">
+      <Filter>Engine\3D\BaseRenderable3D</Filter>
+    </ClInclude>
     <ClInclude Include="Engine\3D\Camera3D\Camera3D.h">
       <Filter>Engine\3D\Camera3D</Filter>
     </ClInclude>
@@ -210,14 +261,32 @@
     <ClInclude Include="Engine\3D\Object3D\Object3D.h">
       <Filter>Engine\3D\Object3D</Filter>
     </ClInclude>
+    <ClInclude Include="Engine\3D\Object3DSkinning\Object3DSkinning.h">
+      <Filter>Engine\3D\Object3DSkinning</Filter>
+    </ClInclude>
     <ClInclude Include="Engine\3D\Primitive3D\Primitive3D.h">
       <Filter>Engine\3D\Primitive3D</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\3D\Base3D\WorldEntity\WorldEntity.h">
-      <Filter>Engine\3D\WorldEntity</Filter>
+    <ClInclude Include="Engine\3D\PrimitiveShapes3D\BasePrimitiveShape3D\BasePrimitiveShape3D.h">
+      <Filter>Engine\3D\PrimitiveShapes3D\BasePrimitiveShape3D</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\3D\Base3D\WorldTransform\WorldTransform.h">
-      <Filter>Engine\3D\WorldTransform</Filter>
+    <ClInclude Include="Engine\3D\PrimitiveShapes3D\Plane\Plane.h">
+      <Filter>Engine\3D\PrimitiveShapes3D\Plane</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\3D\PrimitiveShapes3D\Sphere\Sphere.h">
+      <Filter>Engine\3D\PrimitiveShapes3D\Sphere</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\3D\Skeleton\Skeleton.h">
+      <Filter>Engine\3D\Skeleton</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\3D\SkinningMesh\SkinningMesh.h">
+      <Filter>Engine\3D\SkinningMesh</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\3D\SkinningModel\SkinningModel.h">
+      <Filter>Engine\3D\SkinningModel</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\AssetContainers\AnimationDataContainer\AnimationDataContainer.h">
+      <Filter>Engine\AssetContainers\AnimationDataContainer</Filter>
     </ClInclude>
     <ClInclude Include="Engine\AssetContainers\ModelDataContainer\ModelDataContainer.h">
       <Filter>Engine\AssetContainers\ModelDataContainer</Filter>
@@ -233,6 +302,9 @@
     </ClInclude>
     <ClInclude Include="Engine\Camera3DManager\Camera3DManager.h">
       <Filter>Engine\Camera3DManager</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\ComputePipelines\SkinningComputePipeline\SkinningComputePipeline.h">
+      <Filter>Engine\ComputePipelines\SkinningComputePipeline</Filter>
     </ClInclude>
     <ClInclude Include="Engine\DeltaTimer\DeltaTimer.h">
       <Filter>Engine\DeltaTimer</Filter>
@@ -285,16 +357,25 @@
     <ClInclude Include="Engine\GraphicsPipelines\Object3DGraphicsPipeline\Object3DGraphicsPipeline.h">
       <Filter>Engine\GraphicsPipelines\Object3DGraphicsPipeline</Filter>
     </ClInclude>
+    <ClInclude Include="Engine\GraphicsPipelines\Object3DGraphicsPipelineNormalMap\Object3DGraphicsPipelineNormalMap.h">
+      <Filter>Engine\GraphicsPipelines\Object3DGraphicsPipelineNormalMap</Filter>
+    </ClInclude>
     <ClInclude Include="Engine\ImGuiController\ImGuiController.h">
       <Filter>Engine\ImGuiController</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Includes\Enums\BlendModeEnum.h">
       <Filter>Engine\Includes\Enums</Filter>
     </ClInclude>
+    <ClInclude Include="Engine\Includes\Enums\ComputePipelineEnum.h">
+      <Filter>Engine\Includes\Enums</Filter>
+    </ClInclude>
     <ClInclude Include="Engine\Includes\Enums\GraphicsPipelineEnum.h">
       <Filter>Engine\Includes\Enums</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Includes\Enums\MouseInputEnum.h">
+      <Filter>Engine\Includes\Enums</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Includes\Enums\Primitive3DEnum.h">
       <Filter>Engine\Includes\Enums</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Includes\Enums\PunctualLightDataEnum.h">
@@ -333,6 +414,9 @@
     <ClInclude Include="Engine\Includes\Math\Utility\MathUtility.h">
       <Filter>Engine\Includes\Math\Utility</Filter>
     </ClInclude>
+    <ClInclude Include="Engine\Includes\Structs\AnimationStruct.h">
+      <Filter>Engine\Includes\Structs</Filter>
+    </ClInclude>
     <ClInclude Include="Engine\Includes\Structs\CameraStruct.h">
       <Filter>Engine\Includes\Structs</Filter>
     </ClInclude>
@@ -342,10 +426,16 @@
     <ClInclude Include="Engine\Includes\Structs\ModelStruct.h">
       <Filter>Engine\Includes\Structs</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\Includes\Structs\ShapeStruct.h">
+    <ClInclude Include="Engine\Includes\Structs\ObjectStruct.h">
       <Filter>Engine\Includes\Structs</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Includes\Structs\PunctualLightStruct.h">
+      <Filter>Engine\Includes\Structs</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Includes\Structs\SkeletonStruct.h">
+      <Filter>Engine\Includes\Structs</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Includes\Structs\SkinningStruct.h">
       <Filter>Engine\Includes\Structs</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Includes\Structs\TextureStruct.h">
@@ -356,6 +446,9 @@
     </ClInclude>
     <ClInclude Include="Engine\Logger\Logger.h">
       <Filter>Engine\Logger</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\PipelineManagers\ComputePipelineManager\ComputePipelineManager.h">
+      <Filter>Engine\PipelineManagers\ComputePipelineManager</Filter>
     </ClInclude>
     <ClInclude Include="Engine\PipelineManagers\GraphicsPipelineManager\GraphicsPipelineManager.h">
       <Filter>Engine\PipelineManagers\GraphicsPipelineManager</Filter>
@@ -381,28 +474,19 @@
     <ClInclude Include="Engine\WindowApp\WindowApp.h">
       <Filter>Engine\WindowApp</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\3D\BaseRenderable3D\BaseRenderable3D.h" />
-    <ClInclude Include="Engine\Includes\Enums\Primitive3DEnum.h" />
-    <ClInclude Include="Engine\Includes\Structs\ObjectStruct.h" />
-    <ClInclude Include="Engine\3D\PrimitiveShapes3D\Plane\Plane.h" />
-    <ClInclude Include="Engine\3D\PrimitiveShapes3D\BasePrimitiveShape3D\BasePrimitiveShape3D.h" />
-    <ClInclude Include="Engine\GraphicsPipelines\Object3DGraphicsPipelineNormalMap\Object3DGraphicsPipelineNormalMap.h" />
-    <ClInclude Include="Engine\Includes\Structs\AnimationStruct.h" />
-    <ClInclude Include="Engine\Includes\Structs\SkinningStruct.h" />
-    <ClInclude Include="Engine\Includes\Structs\SkeletonStruct.h" />
-    <ClInclude Include="Engine\3D\Skeleton\Skeleton.h" />
-    <ClInclude Include="Engine\3D\Object3DSkinning\Object3DSkinning.h" />
-    <ClInclude Include="Engine\AssetContainers\AnimationDataContainer\AnimationDataContainer.h" />
-    <ClInclude Include="Engine\PipelineManagers\ComputePipelineManager\ComputePipelineManager.h" />
-    <ClInclude Include="Engine\Includes\Enums\ComputePipelineEnum.h" />
-    <ClInclude Include="Engine\ComputePipelines\SkinningComputePipeline\SkinningComputePipeline.h" />
-    <ClInclude Include="Engine\3D\SkinningModel\SkinningModel.h" />
-    <ClInclude Include="Engine\3D\SkinningMesh\SkinningMesh.h" />
-    <ClInclude Include="Engine\3D\PrimitiveShapes3D\Sphere\Sphere.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="App\Game\Game.cpp">
       <Filter>App\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\3D\Base3D\WorldEntity\WorldEntity.cpp">
+      <Filter>Engine\3D\Base3D\WorldEntity</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\3D\Base3D\WorldTransform\WorldTransform.cpp">
+      <Filter>Engine\3D\Base3D\WorldTransform</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\3D\BaseRenderable3D\BaseRenderable3D.cpp">
+      <Filter>Engine\3D\BaseRenderable3D</Filter>
     </ClCompile>
     <ClCompile Include="Engine\3D\Camera3D\Camera3D.cpp">
       <Filter>Engine\3D\Camera3D</Filter>
@@ -419,14 +503,32 @@
     <ClCompile Include="Engine\3D\Object3D\Object3D.cpp">
       <Filter>Engine\3D\Object3D</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\3D\Object3DSkinning\Object3DSkinning.cpp">
+      <Filter>Engine\3D\Object3DSkinning</Filter>
+    </ClCompile>
     <ClCompile Include="Engine\3D\Primitive3D\Primitive3D.cpp">
       <Filter>Engine\3D\Primitive3D</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\3D\Base3D\WorldEntity\WorldEntity.cpp">
-      <Filter>Engine\3D\WorldEntity</Filter>
+    <ClCompile Include="Engine\3D\PrimitiveShapes3D\BasePrimitiveShape3D\BasePrimitiveShape3D.cpp">
+      <Filter>Engine\3D\PrimitiveShapes3D\BasePrimitiveShape3D</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\3D\Base3D\WorldTransform\WorldTransform.cpp">
-      <Filter>Engine\3D\WorldTransform</Filter>
+    <ClCompile Include="Engine\3D\PrimitiveShapes3D\Plane\Plane.cpp">
+      <Filter>Engine\3D\PrimitiveShapes3D\Plane</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\3D\PrimitiveShapes3D\Sphere\Sphere.cpp">
+      <Filter>Engine\3D\PrimitiveShapes3D\Sphere</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\3D\Skeleton\Skeleton.cpp">
+      <Filter>Engine\3D\Skeleton</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\3D\SkinningMesh\SkinningMesh.cpp">
+      <Filter>Engine\3D\SkinningMesh</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\3D\SkinningModel\SkinningModel.cpp">
+      <Filter>Engine\3D\SkinningModel</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\AssetContainers\AnimationDataContainer\AnimationDataContainer.cpp">
+      <Filter>Engine\AssetContainers\AnimationDataContainer</Filter>
     </ClCompile>
     <ClCompile Include="Engine\AssetContainers\ModelDataContainer\ModelDataContainer.cpp">
       <Filter>Engine\AssetContainers\ModelDataContainer</Filter>
@@ -439,6 +541,9 @@
     </ClCompile>
     <ClCompile Include="Engine\Camera3DManager\Camera3DManager.cpp">
       <Filter>Engine\Camera3DManager</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\ComputePipelines\SkinningComputePipeline\SkinningComputePipeline.cpp">
+      <Filter>Engine\ComputePipelines\SkinningComputePipeline</Filter>
     </ClCompile>
     <ClCompile Include="Engine\DeltaTimer\DeltaTimer.cpp">
       <Filter>Engine\DeltaTimer</Filter>
@@ -488,6 +593,9 @@
     <ClCompile Include="Engine\GraphicsPipelines\Object3DGraphicsPipeline\Object3DGraphicsPipeline.cpp">
       <Filter>Engine\GraphicsPipelines\Object3DGraphicsPipeline</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\GraphicsPipelines\Object3DGraphicsPipelineNormalMap\Object3DGraphicsPipelineNormalMap.cpp">
+      <Filter>Engine\GraphicsPipelines\Object3DGraphicsPipelineNormalMap</Filter>
+    </ClCompile>
     <ClCompile Include="Engine\ImGuiController\ImGuiController.cpp">
       <Filter>Engine\ImGuiController</Filter>
     </ClCompile>
@@ -502,6 +610,9 @@
     </ClCompile>
     <ClCompile Include="Engine\Logger\Logger.cpp">
       <Filter>Engine\Logger</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\PipelineManagers\ComputePipelineManager\ComputePipelineManager.cpp">
+      <Filter>Engine\PipelineManagers\ComputePipelineManager</Filter>
     </ClCompile>
     <ClCompile Include="Engine\PipelineManagers\GraphicsPipelineManager\GraphicsPipelineManager.cpp">
       <Filter>Engine\PipelineManagers\GraphicsPipelineManager</Filter>
@@ -525,29 +636,10 @@
       <Filter>Engine\WindowApp</Filter>
     </ClCompile>
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="Engine\3D\BaseRenderable3D\BaseRenderable3D.cpp" />
-    <ClCompile Include="Engine\3D\PrimitiveShapes3D\Plane\Plane.cpp" />
-    <ClCompile Include="Engine\3D\PrimitiveShapes3D\BasePrimitiveShape3D\BasePrimitiveShape3D.cpp" />
-    <ClCompile Include="Engine\GraphicsPipelines\Object3DGraphicsPipelineNormalMap\Object3DGraphicsPipelineNormalMap.cpp" />
-    <ClCompile Include="Engine\3D\Skeleton\Skeleton.cpp" />
-    <ClCompile Include="Engine\3D\Object3DSkinning\Object3DSkinning.cpp" />
-    <ClCompile Include="Engine\AssetContainers\AnimationDataContainer\AnimationDataContainer.cpp" />
-    <ClCompile Include="Engine\PipelineManagers\ComputePipelineManager\ComputePipelineManager.cpp" />
-    <ClCompile Include="Engine\ComputePipelines\SkinningComputePipeline\SkinningComputePipeline.cpp" />
-    <ClCompile Include="Engine\3D\SkinningModel\SkinningModel.cpp" />
-    <ClCompile Include="Engine\3D\SkinningMesh\SkinningMesh.cpp" />
-    <ClCompile Include="Engine\3D\PrimitiveShapes3D\Sphere\Sphere.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Engine\SceneManager\SceneManager.ipp">
       <Filter>Engine\SceneManager</Filter>
     </None>
-    <None Include="Engine\Resources\Shaders\Object3DNormalMap\Object3DNormalMap.hlsli" />
-    <None Include="Engine\Resources\Shaders\Skinning\Skinning.hlsli" />
-  </ItemGroup>
-  <ItemGroup>
-    <FxCompile Include="Engine\Resources\Shaders\Object3DNormalMap\Object3DNormalMap.VS.hlsl" />
-    <FxCompile Include="Engine\Resources\Shaders\Object3DNormalMap\Object3DNormalMap.PS.hlsl" />
-    <FxCompile Include="Engine\Resources\Shaders\Skinning\Skinning.CS.hlsl" />
   </ItemGroup>
 </Project>
