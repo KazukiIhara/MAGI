@@ -31,16 +31,15 @@ private:
 template<typename Data>
 inline void SampleScene<Data>::Initialize() {
 	MAGISYSTEM::LoadModel("boxMan");
-	MAGISYSTEM::LoadModel("kei");
 	MAGISYSTEM::LoadModel("terrain", true);
 	MAGISYSTEM::LoadModel("teapot", true);
 
-	MAGISYSTEM::LoadAnimation("kei");
+	MAGISYSTEM::LoadAnimation("boxMan");
 
 	primitive_ = std::make_unique<Primitive3D>("primitive", Primitive3DType::Sphere);
 	primitive_->GetTranslate().y = 1.0f;
 
-	skinningSample_ = std::make_unique<Object3DSkinning>("kei", "kei");
+	skinningSample_ = std::make_unique<Object3DSkinning>("boxMan", "boxMan");
 	skinningSample_->Initialize();
 	
 
