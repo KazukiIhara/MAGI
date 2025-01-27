@@ -3,6 +3,9 @@
 #include "3D/Object3D/Object3D.h"
 #include "3D/SkinningModel/SkinningModel.h"
 
+/// <summary>
+/// スキニングつき3Dオブジェクト(インスタンスの生成後初期化メソッドを呼んでください)
+/// </summary>
 class Object3DSkinning:public Object3D {
 public:
 	Object3DSkinning(const std::string& objectName, const std::string& modelName);

@@ -9,33 +9,6 @@ BaseRenderable3D::BaseRenderable3D(const std::string& objectName) {
 	Initialize(objectName);
 }
 
-void BaseRenderable3D::Initialize(const std::string& objectName) {
-	// 名前のセット
-	name_ = objectName;
-	// ワールド行列初期化
-	worldTransform_.Initialize();
-	// UVトランスフォームを初期化
-	uvTransform_ = {};
-
-	// クオータニオン角を使用する
-	worldTransform_.isUseQuaternion_ = true;
-	// マテリアル初期化
-	material_.color = Vector4(1.0f, 1.0f, 1.0f, 1.0f);
-	material_.enableLighting = true;
-	material_.enableSpeculaerRef = true;
-	material_.shininess = 100.0f;
-	material_.uvTransformMatrix = MakeIdentityMatrix4x4();
-
-	// WVP用のリソース作成
-	CreateWVPResource();
-	// データを書きこむ
-	MapWVPData();
-	// マテリアル用のリソース作成
-	CreateMaterialResource();
-	// マテリアルデータ書き込み
-	MapMateiralData();
-}
-
 void BaseRenderable3D::Update() {
 	// ワールド行列更新
 	worldTransform_.Update();
@@ -62,8 +35,39 @@ Vector3& BaseRenderable3D::GetTranslate() {
 	return worldTransform_.translate_;
 }
 
-Material3D& BaseRenderable3D::GetMaterial() {
+UVTransform& BaseRenderable3D::GetUvTransform() {
+	return uvTransform_;
+}
+
+Material3DForGPU& BaseRenderable3D::GetMaterial() {
 	return material_;
+}
+
+void BaseRenderable3D::Initialize(const std::string& objectName) {
+	// 名前のセット
+	name_ = objectName;
+	// ワールド行列初期化
+	worldTransform_.Initialize();
+	// UVトランスフォームを初期化
+	uvTransform_ = {};
+
+	// クオータニオン角を使用する
+	worldTransform_.isUseQuaternion_ = true;
+	// マテリアル初期化
+	material_.color = Vector4(1.0f, 1.0f, 1.0f, 1.0f);
+	material_.enableLighting = true;
+	material_.enableSpecularRef = false;
+	material_.shininess = 100.0f;
+	material_.uvTransformMatrix = MakeIdentityMatrix4x4();
+
+	// WVP用のリソース作成
+	CreateWVPResource();
+	// データを書きこむ
+	MapWVPData();
+	// マテリアル用のリソース作成
+	CreateMaterialResource();
+	// マテリアルデータ書き込み
+	MapMateiralData();
 }
 
 void BaseRenderable3D::PrepareForRendering(bool isNormalMap) {
@@ -106,7 +110,7 @@ void BaseRenderable3D::MapWVPData() {
 
 void BaseRenderable3D::CreateMaterialResource() {
 	// マテリアル用のリソース作成
-	materialResource_ = MAGISYSTEM::CreateBufferResource(sizeof(Material3D));
+	materialResource_ = MAGISYSTEM::CreateBufferResource(sizeof(Material3DForGPU));
 }
 
 void BaseRenderable3D::MapMateiralData() {
@@ -114,7 +118,7 @@ void BaseRenderable3D::MapMateiralData() {
 	materialResource_->Map(0, nullptr, reinterpret_cast<void**>(&materialData_));
 	materialData_->color = material_.color;
 	materialData_->enableLighting = material_.enableLighting;
-	materialData_->enableSpeculaerRef = material_.enableSpeculaerRef;
+	materialData_->enableSpecularRef = material_.enableSpecularRef;
 	materialData_->shininess = material_.shininess;
 	materialData_->uvTransformMatrix = material_.uvTransformMatrix;
 }
@@ -127,7 +131,7 @@ void BaseRenderable3D::UpdateWVPData() {
 void BaseRenderable3D::UpdateMaterialData() {
 	materialData_->color = material_.color;
 	materialData_->enableLighting = material_.enableLighting;
-	materialData_->enableSpeculaerRef = material_.enableSpeculaerRef;
+	materialData_->enableSpecularRef = material_.enableSpecularRef;
 	materialData_->uvTransformMatrix = material_.uvTransformMatrix;
 	materialData_->shininess = material_.shininess;
 }

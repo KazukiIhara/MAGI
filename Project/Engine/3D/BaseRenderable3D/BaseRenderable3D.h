@@ -14,11 +14,10 @@
 #include "3D/WorldEntity/WorldEntity.h"
 #include "3D/WorldTransform/WorldTransform.h"
 
-class BaseRenderable3D:public WorldEntity {
+class BaseRenderable3D :public WorldEntity {
 public:
 	BaseRenderable3D(const std::string& objectName);
 	virtual ~BaseRenderable3D() = default;
-	void Initialize(const std::string& objectName);
 	virtual void Update();
 	virtual void Draw() = 0;
 
@@ -26,10 +25,13 @@ public:
 	Vector3& GetRotate();
 	Vector3& GetTranslate();
 
-	Material3D& GetMaterial();
-protected:
-	void PrepareForRendering(bool isNormalMap = false);
+	UVTransform& GetUvTransform();
 
+	Material3DForGPU& GetMaterial();
+protected:
+	void Initialize(const std::string& objectName);
+	// 描画前の処理
+	void PrepareForRendering(bool isNormalMap = false);
 	// WVP用のリソース作成
 	void CreateWVPResource();
 	// データを書き込む
@@ -60,7 +62,7 @@ private:
 	// マテリアルリソース
 	ComPtr<ID3D12Resource> materialResource_ = nullptr;
 	// マテリアルデータ
-	Material3D* materialData_ = nullptr;
+	Material3DForGPU* materialData_ = nullptr;
 	// マテリアル
-	Material3D material_{};
+	Material3DForGPU material_{};
 };

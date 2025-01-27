@@ -93,7 +93,7 @@ inline void SampleScene<Data>::Draw() {
 	terrain_->Draw();
 
 	MAGISYSTEM::PreDrawObject3D();
-	//primitive_->Draw();
+	primitive_->Draw();
 	skinningSample_->Draw();
 }
 

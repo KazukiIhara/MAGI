@@ -38,9 +38,19 @@ struct TransformationMatrix {
 // 3D用マテリアル構造体
 struct Material3D {
 	Vector4 color;
+	bool enableLighting;
+	bool enableSpecularRef;
+	UVTransform uvTransform;
+	float shininess;
+};
+
+// GPUに送る3D用マテリアル構造体
+struct Material3DForGPU {
+	Vector4 color;
 	int32_t enableLighting;
-	int32_t enableSpeculaerRef;
+	int32_t enableSpecularRef;
 	float padding[2];
 	Matrix4x4 uvTransformMatrix;
 	float shininess;
 };
+
