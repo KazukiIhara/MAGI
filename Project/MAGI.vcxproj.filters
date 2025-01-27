@@ -243,7 +243,7 @@
     <ClInclude Include="Engine\3D\Base3D\WorldTransform\WorldTransform.h">
       <Filter>Engine\3D\Base3D\WorldTransform</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\3D\BaseRenderable3D\BaseRenderable3D.h">
+    <ClInclude Include="Engine\3D\RenderObjects3D\BaseRenderable3D\BaseRenderable3D.h">
       <Filter>Engine\3D\BaseRenderable3D</Filter>
     </ClInclude>
     <ClInclude Include="Engine\3D\Camera3D\Camera3D.h">
@@ -258,13 +258,13 @@
     <ClInclude Include="Engine\3D\Model\Model.h">
       <Filter>Engine\3D\Model</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\3D\Object3D\Object3D.h">
+    <ClInclude Include="Engine\3D\RenderObjects3D\Object3D\Object3D.h">
       <Filter>Engine\3D\Object3D</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\3D\Object3DSkinning\Object3DSkinning.h">
+    <ClInclude Include="Engine\3D\RenderObjects3D\Object3DSkinning\Object3DSkinning.h">
       <Filter>Engine\3D\Object3DSkinning</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\3D\Primitive3D\Primitive3D.h">
+    <ClInclude Include="Engine\3D\RenderObjects3D\Primitive3D\Primitive3D.h">
       <Filter>Engine\3D\Primitive3D</Filter>
     </ClInclude>
     <ClInclude Include="Engine\3D\PrimitiveShapes3D\BasePrimitiveShape3D\BasePrimitiveShape3D.h">
@@ -485,7 +485,7 @@
     <ClCompile Include="Engine\3D\Base3D\WorldTransform\WorldTransform.cpp">
       <Filter>Engine\3D\Base3D\WorldTransform</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\3D\BaseRenderable3D\BaseRenderable3D.cpp">
+    <ClCompile Include="Engine\3D\RenderObjects3D\BaseRenderable3D\BaseRenderable3D.cpp">
       <Filter>Engine\3D\BaseRenderable3D</Filter>
     </ClCompile>
     <ClCompile Include="Engine\3D\Camera3D\Camera3D.cpp">
@@ -500,13 +500,13 @@
     <ClCompile Include="Engine\3D\Model\Model.cpp">
       <Filter>Engine\3D\Model</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\3D\Object3D\Object3D.cpp">
+    <ClCompile Include="Engine\3D\RenderObjects3D\Object3D\Object3D.cpp">
       <Filter>Engine\3D\Object3D</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\3D\Object3DSkinning\Object3DSkinning.cpp">
+    <ClCompile Include="Engine\3D\RenderObjects3D\Object3DSkinning\Object3DSkinning.cpp">
       <Filter>Engine\3D\Object3DSkinning</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\3D\Primitive3D\Primitive3D.cpp">
+    <ClCompile Include="Engine\3D\RenderObjects3D\Primitive3D\Primitive3D.cpp">
       <Filter>Engine\3D\Primitive3D</Filter>
     </ClCompile>
     <ClCompile Include="Engine\3D\PrimitiveShapes3D\BasePrimitiveShape3D\BasePrimitiveShape3D.cpp">

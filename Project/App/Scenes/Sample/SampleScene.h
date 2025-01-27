@@ -5,9 +5,9 @@
 #include "BaseScene/BaseScene.h"
 #include "Framework/MAGI.h"
 
-#include "3D/Object3D/Object3D.h"
-#include "3D/Object3DSkinning/Object3DSkinning.h"
-#include "3D/Primitive3D/Primitive3D.h"
+#include "3D/RenderObjects3D/Object3D/Object3D.h"
+#include "3D/RenderObjects3D/Object3DSkinning/Object3DSkinning.h"
+#include "3D/RenderObjects3D/Primitive3D/Primitive3D.h"
 
 // サンプルシーン
 template <typename Data>

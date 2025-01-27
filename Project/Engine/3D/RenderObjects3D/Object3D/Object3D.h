@@ -1,6 +1,6 @@
 #pragma once
 
-#include "3D/BaseRenderable3D/BaseRenderable3D.h"
+#include "3D/RenderObjects3D/BaseRenderable3D/BaseRenderable3D.h"
 #include "3D/Model/Model.h"
 
 /// <summary>

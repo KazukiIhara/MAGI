@@ -1,6 +1,6 @@
 #pragma once
 
-#include "3D/Object3D/Object3D.h"
+#include "3D/RenderObjects3D/Object3D/Object3D.h"
 #include "3D/SkinningModel/SkinningModel.h"
 
 /// <summary>
