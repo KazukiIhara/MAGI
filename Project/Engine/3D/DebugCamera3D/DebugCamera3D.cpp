@@ -66,7 +66,7 @@ void DebugCamera3D::HandleCameraTranslation(Vector3& cameraTranslate, Vector3& c
 		up.z = std::sinf(cameraRotate.x) * std::cosf(cameraRotate.y);
 
 		// 移動量をローカル座標系で計算
-		const float moveSpeed = 0.8f;
+		const float moveSpeed = 0.4f;
 		Vector3 moveDelta = (right * static_cast<float> (-delta.x) + up * static_cast<float> (delta.y)) * moveSpeed * MAGISYSTEM::GetDeltaTime();
 
 		// カメラ位置を更新
