@@ -58,6 +58,8 @@ private:
 	std::string name_ = "";
 	// TextureName
 	std::string textureName_;
+	// ブレンドモード
+	BlendMode blendMode_ = BlendMode::Normal;
 
 	// トランスフォーム
 	WorldTransform2D worldTransform_{};

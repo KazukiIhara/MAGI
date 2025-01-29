@@ -109,10 +109,8 @@ void Object2D::Update() {
 void Object2D::Draw() {
 	// コマンドリストを取得
 	ID3D12GraphicsCommandList* commandList = MAGISYSTEM::GetDirectXCommandList();
-
-	//// PSOを設定
-	//commandList->SetPipelineState(SUGER::GetPipelineState(kObject2d, blendMode));
-
+	// PSOを設定
+	commandList->SetPipelineState(MAGISYSTEM::GetGraphicsPipelineState(GraphicsPipelineStateType::Object2D, blendMode_));
 	// VBVの設定
 	commandList->IASetVertexBuffers(0, 1, &vertexBufferView_);
 	// IBVの設定
@@ -121,11 +119,11 @@ void Object2D::Draw() {
 	commandList->SetGraphicsRootConstantBufferView(0, materialResource_->GetGPUVirtualAddress());
 	// wvp用のCBufferの場所を設定
 	commandList->SetGraphicsRootConstantBufferView(1, transformationResource_->GetGPUVirtualAddress());
-	// SRVのDescriptorTableの先頭を設定
-	SUGER::SetGraphicsRootDescriptorTable(2, SUGER::GetTexture()[textureFilePath_].srvIndex);
+	// テクスチャのSRVを設定
+	uint32_t textureSrv = MAGISYSTEM::GetTexture()[textureName_].srvIndex;
+	commandList->SetGraphicsRootDescriptorTable(2, MAGISYSTEM::GetSrvDescriptorHandleGPU(textureSrv));
 	// 描画！(DrawCall/ドローコール)
 	commandList->DrawIndexedInstanced(6, 1, 0, 0, 0);
-
 }
 
 void Object2D::CreateVertexResource() {
