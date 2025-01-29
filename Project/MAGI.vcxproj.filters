@@ -453,7 +453,7 @@
     <ClInclude Include="Engine\LeakChecker\D3DResourceLeakChecker.h">
       <Filter>Engine\LeakChecker</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\Logger\Logger.h">
+    <ClInclude Include="Engine\Includes\Logger\Logger.h">
       <Filter>Engine\Logger</Filter>
     </ClInclude>
     <ClInclude Include="Engine\PipelineManagers\ComputePipelineManager\ComputePipelineManager.h">
@@ -484,6 +484,7 @@
       <Filter>Engine\WindowApp</Filter>
     </ClInclude>
     <ClInclude Include="Engine\AssetContainers\PrimitiveShapeDataContainer\PrimitiveShapeDataContainer.h" />
+    <ClInclude Include="Engine\Includes\Random\Random.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="App\Game\Game.cpp">
@@ -618,7 +619,7 @@
     <ClCompile Include="Engine\LeakChecker\D3DResourceLeakChecker.cpp">
       <Filter>Engine\LeakChecker</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\Logger\Logger.cpp">
+    <ClCompile Include="Engine\Includes\Logger\Logger.cpp">
       <Filter>Engine\Logger</Filter>
     </ClCompile>
     <ClCompile Include="Engine\PipelineManagers\ComputePipelineManager\ComputePipelineManager.cpp">
@@ -647,6 +648,7 @@
     </ClCompile>
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Engine\AssetContainers\PrimitiveShapeDataContainer\PrimitiveShapeDataContainer.cpp" />
+    <ClCompile Include="Engine\Includes\Random\Random.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Engine\SceneManager\SceneManager.ipp">
