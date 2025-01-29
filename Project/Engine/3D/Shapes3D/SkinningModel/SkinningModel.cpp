@@ -129,6 +129,7 @@ void SkinningModel::SkinPaletteUpdate() {
 		assert(jointIndex < inverseBindPoseMatrices_.size());
 		mappedPalette_[jointIndex].skeletonSpaceMatrix =
 			inverseBindPoseMatrices_[jointIndex] * skeleton_->joints[jointIndex].skeletonSpaceMatrix;
+
 		mappedPalette_[jointIndex].skeletonSpaceInverseTransposeMatrix =
 			Transpose(Inverse(mappedPalette_[jointIndex].skeletonSpaceMatrix));
 	}

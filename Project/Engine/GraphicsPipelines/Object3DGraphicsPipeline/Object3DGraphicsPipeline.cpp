@@ -258,7 +258,7 @@ D3D12_DEPTH_STENCIL_DESC Object3DGraphicsPipeline::DepthStecilDescSetting() {
 
 D3D12_INPUT_LAYOUT_DESC Object3DGraphicsPipeline::InputLayoutSetting() {
 	// InputLayout
-	static D3D12_INPUT_ELEMENT_DESC inputElementDescs[3] = {};
+	static D3D12_INPUT_ELEMENT_DESC inputElementDescs[4] = {};
 	inputElementDescs[0].SemanticName = "POSITION";
 	inputElementDescs[0].SemanticIndex = 0;
 	inputElementDescs[0].Format = DXGI_FORMAT_R32G32B32A32_FLOAT;
@@ -275,6 +275,11 @@ D3D12_INPUT_LAYOUT_DESC Object3DGraphicsPipeline::InputLayoutSetting() {
 	inputElementDescs[2].SemanticIndex = 0;
 	inputElementDescs[2].Format = DXGI_FORMAT_R32G32B32_FLOAT;
 	inputElementDescs[2].AlignedByteOffset = D3D12_APPEND_ALIGNED_ELEMENT;
+
+	inputElementDescs[3].SemanticName = "TANGENT";
+	inputElementDescs[3].SemanticIndex = 0;
+	inputElementDescs[3].Format = DXGI_FORMAT_R32G32B32_FLOAT;
+	inputElementDescs[3].AlignedByteOffset = D3D12_APPEND_ALIGNED_ELEMENT;
 
 	D3D12_INPUT_LAYOUT_DESC inputLayoutDesc{};
 	inputLayoutDesc.pInputElementDescs = inputElementDescs;

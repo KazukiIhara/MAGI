@@ -197,6 +197,7 @@ ModelData ModelDataContainer::LoadModel(const std::string& modelName, bool isNor
 			if (mesh->HasBones()) {
 				for (uint32_t boneIndex = 0; boneIndex < mesh->mNumBones; ++boneIndex) {
 					aiBone* bone = mesh->mBones[boneIndex];
+
 					std::string jointName = bone->mName.C_Str();
 
 					// 既存 or 新規作成する JointWeightData を取得

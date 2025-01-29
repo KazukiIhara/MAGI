@@ -51,15 +51,12 @@ protected:
 
 	// 頂点リソース
 	ComPtr<ID3D12Resource> vertexResource_ = nullptr;
-	// 頂点データ
-	VertexData3D* vertexData_ = nullptr;
+	
 	// VBV
 	D3D12_VERTEX_BUFFER_VIEW vertexBufferView_{};
 
 	// インデックスリソース
 	ComPtr<ID3D12Resource> indexResource_ = nullptr;
-	// インデックスデータ
-	uint32_t* indexData_ = nullptr;
 	// IBV
 	D3D12_INDEX_BUFFER_VIEW indexBufferView_{};
 

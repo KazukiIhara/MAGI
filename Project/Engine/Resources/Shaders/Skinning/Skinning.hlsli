@@ -19,7 +19,7 @@ struct SkinningInformation
 };
 
 struct Well
-{
+{ 
     float4x4 skeletonSpaceMatrix;
     float4x4 skeletonSpaceInverseTransposeMatrix;
 };
