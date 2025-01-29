@@ -164,6 +164,8 @@ namespace MAGIMath {
 	// 逆転置行列
 	Matrix4x4 MakeInverseTransposeMatrix(const Matrix4x4& a);
 
+	// スケール成分削除関数
+	Matrix4x4 RemoveScaling(const Matrix4x4& mat);
 
 	// 拡縮行列作成関数
 	Matrix4x4 MakeScaleMatrix(const Vector3& scale);

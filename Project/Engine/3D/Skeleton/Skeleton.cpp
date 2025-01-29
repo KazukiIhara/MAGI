@@ -12,7 +12,7 @@ void Skeleton::Update() {
 	for (Joint& joint : joints) {
 		joint.localMatrix = MakeAffineMatrix(joint.transform.scale, joint.transform.rotate, joint.transform.translate);
 		if (joint.parent) {
-			joint.skeletonSpaceMatrix = joint.localMatrix * joints[*joint.parent].skeletonSpaceMatrix ;
+			joint.skeletonSpaceMatrix = joint.localMatrix * joints[*joint.parent].skeletonSpaceMatrix;
 		} else {
 			joint.skeletonSpaceMatrix = joint.localMatrix;
 		}

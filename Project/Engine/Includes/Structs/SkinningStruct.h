@@ -12,9 +12,9 @@
 #include "Math/Utility/MathUtility.h"
 #include "DirectX/ComPtr/ComPtr.h"
 
-// 影響を受ける頂点の数
+// 頂点が影響を受けるボーンの数
 const uint32_t kNumMaxInfluence = 4;
-// 影響を受ける頂点
+// 頂点が影響を受けるボーンのスロット
 struct VertexInfluence {
 	std::array<float, kNumMaxInfluence> weights;
 	std::array<int32_t, kNumMaxInfluence> jointIndices;
@@ -30,6 +30,7 @@ struct SkinningInformationForGPU {
 };
 
 struct VertexWeightData {
+	// 重み
 	float weight;
 	// どのメッシュの頂点か
 	uint32_t meshIndex;

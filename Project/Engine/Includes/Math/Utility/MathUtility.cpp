@@ -366,6 +366,32 @@ Matrix4x4 MAGIMath::MakeInverseTransposeMatrix(const Matrix4x4& a) {
 	return result;
 }
 
+Matrix4x4 MAGIMath::RemoveScaling(const Matrix4x4& mat) {
+	Matrix4x4 result = mat;
+
+	// X軸方向のベクトルを正規化
+	Vector3 xAxis = { result.m[0][0], result.m[1][0], result.m[2][0] };
+	xAxis = Normalize(xAxis);
+	result.m[0][0] = xAxis.x;
+	result.m[1][0] = xAxis.y;
+	result.m[2][0] = xAxis.z;
+
+	// Y軸方向のベクトルを正規化
+	Vector3 yAxis = { result.m[0][1], result.m[1][1], result.m[2][1] };
+	yAxis = Normalize(yAxis);
+	result.m[0][1] = yAxis.x;
+	result.m[1][1] = yAxis.y;
+	result.m[2][1] = yAxis.z;
+
+	// Z軸方向のベクトルを正規化
+	Vector3	zAxis = { result.m[0][2], result.m[1][2], result.m[2][2] };
+	zAxis = Normalize(zAxis);
+	result.m[0][2] = zAxis.x;
+	result.m[1][2] = zAxis.y;
+	result.m[2][2] = zAxis.z;
+
+	return result;
+}
 Matrix4x4 MAGIMath::MakeScaleMatrix(const Vector3& scale) {
 	Matrix4x4 result = {
 		scale.x, 0.0f, 0.0f, 0.0f,

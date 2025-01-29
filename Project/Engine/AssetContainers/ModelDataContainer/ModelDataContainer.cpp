@@ -207,10 +207,7 @@ ModelData ModelDataContainer::LoadModel(const std::string& modelName, bool isNor
 					// 既存 or 新規作成する JointWeightData を取得
 					JointWeightData& jointWeightData = newModelData.skinClusterData[jointName];
 
-					aiMatrix4x4 offsetMatrix = bone->mOffsetMatrix;
-
-					aiMatrix4x4 bindPoseMatrixAssimp = offsetMatrix;
-					bindPoseMatrixAssimp.Inverse();
+					aiMatrix4x4 bindPoseMatrixAssimp= bone->mOffsetMatrix.Inverse();
 					aiVector3D scale, translate;
 					aiQuaternion rotate;
 					bindPoseMatrixAssimp.Decompose(scale, rotate, translate);
