@@ -176,7 +176,7 @@ void Object3DGraphicsPipelineNormalMap::CreateGraphicsPipelineObject() {
 	graphicsPipelineStateDesc.DSVFormat = DXGI_FORMAT_D24_UNORM_S8_UINT;
 
 	// 実際に生成
-	for (uint32_t i = 0; i < kBlendModeNum_; i++) {
+	for (uint32_t i = 0; i < kBlendModeNum; i++) {
 		graphicsPipelineStateDesc.BlendState = BlendStateSetting(i);
 		pipelineState_[i] = nullptr;
 		hr = dxgi_->GetDevice()->CreateGraphicsPipelineState(&graphicsPipelineStateDesc,
