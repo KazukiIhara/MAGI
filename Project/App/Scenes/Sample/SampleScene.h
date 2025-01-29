@@ -31,9 +31,8 @@ private:
 template<typename Data>
 inline void SampleScene<Data>::Initialize() {
 	MAGISYSTEM::LoadTexture("pronama_chan.png");
-	//MAGISYSTEM::LoadModel("XBot");
+	MAGISYSTEM::LoadModel("XBot");
 	MAGISYSTEM::LoadModel("Kick");
-	//MAGISYSTEM::LoadModel("kei");
 	MAGISYSTEM::LoadModel("terrain", true);
 	MAGISYSTEM::LoadModel("teapot", true);
 	MAGISYSTEM::LoadModel("walk");
@@ -52,11 +51,11 @@ inline void SampleScene<Data>::Initialize() {
 	terrain_ = std::make_unique<Object3D>("terrain", "terrain");
 	terrain_->Initialize();
 
-	skinningSample_ = std::make_unique<Object3DSkinning>("Kick", "Man");
+	skinningSample_ = std::make_unique<Object3DSkinning>("Kick", "XBot");
 	skinningSample_->Initialize();
 	skinningSample_->GetTranslate().x = -1.0f;
 
-	sample_ = std::make_unique<Object3D>("Kick", "Kick");
+	sample_ = std::make_unique<Object3D>("Kick", "XBot");
 	sample_->Initialize();
 	sample_->GetTranslate().x = 1.0f;
 
