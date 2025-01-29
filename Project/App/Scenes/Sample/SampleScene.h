@@ -91,7 +91,7 @@ inline void SampleScene<Data>::Update() {
 		skinningSample_->PlayAnimation("sneakWalk");
 	}
 	if (MAGISYSTEM::TriggerKey(DIK_3)) {
-		skinningSample_->PlayAnimation("Kick");
+		skinningSample_->PlayAnimation("Reaction");
 	}
 
 	if (MAGISYSTEM::TriggerKey(DIK_0)) {
