@@ -37,7 +37,7 @@ inline void SampleScene<Data>::Initialize() {
 	MAGISYSTEM::LoadModel("terrain", true);
 	MAGISYSTEM::LoadModel("teapot", true);
 
-	//MAGISYSTEM::LoadAnimation("Kick");
+	MAGISYSTEM::LoadAnimation("Kick");
 
 	primitive_ = std::make_unique<Primitive3D>("primitive", Primitive3DType::Sphere);
 	primitive_->GetTranslate().y = 1.0f;
