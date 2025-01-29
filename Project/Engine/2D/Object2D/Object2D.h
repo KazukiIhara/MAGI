@@ -23,26 +23,69 @@ public:
 	void Update();
 	void Draw();
 
+private:
+	// 頂点リソースの作成
+	void CreateVertexResource();
+	// 頂点バッファビューの作成
+	void CreateVretexBufferView();
+	// 頂点データの書き込み
+	void MapVertexData();
+
+	// 描画用のインデックスリソースを作成
+	void CreateIndexResource();
+	// インデックスバッファビューの作成
+	void CreateIndexBufferView();
+	// インデックスリソースにデータを書き込む
+	void MapIndexResource();
+
+	// マテリアルリソースの作成
+	void CreateMaterialResource();
+	// マテリアルデータの書き込み
+	void MapMaterialData();
+
+	// wvp用のリソース作成
+	void CreateWVPResource();
+	// データを書き込む
+	void MapWVPData();
+
+
+	// テクスチャサイズをイメージに合わせる
+	void AdjustTextureSize();
 
 
 private:
+	// 名前
+	std::string name_ = "";
+	// TextureName
+	std::string textureName_;
 
-
-private:
 	// トランスフォーム
-	WorldTransform2D transform_{};
+	WorldTransform2D worldTransform_{};
 	// uvTransform
 	UVTransform uvTransform_{};
+
+	// アンカーポイント
+	Vector2 anchorPoint_ = { 0.0f,0.0f };
+
+	// テクスチャ左上座標
+	Vector2 textureLeftTop_ = { 0.0f,0.0f };
+	// テクスチャ切り出しサイズ
+	Vector2	cutOutSize_ = { 100.0f,100.0f };
+
+	// 左右フリップ
+	bool isFlipX_ = false;
+	// 上下フリップ
+	bool isFlipY_ = false;
 
 	// WVP用のリソース
 	ComPtr<ID3D12Resource> transformationResource_ = nullptr;
 	// WVPデータ
-	Matrix4x4* wvpData_;
+	Matrix4x4* wvpData_ = nullptr;
 
 	// 頂点リソース
 	ComPtr<ID3D12Resource> vertexResource_ = nullptr;
 	// VBV
-	D3D12_VERTEX_BUFFER_VIEW vertexBufferView_;
+	D3D12_VERTEX_BUFFER_VIEW vertexBufferView_{};
 	// 頂点データ
 	VertexData2D* vertexData_ = nullptr;
 
@@ -58,6 +101,6 @@ private:
 	// マテリアルデータ
 	Material2D* materialData_ = nullptr;
 	// マテリアル情報を受け取る箱
-	Material2D material_;
+	Material2D material_{};
 
 };
