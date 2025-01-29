@@ -125,6 +125,29 @@ void SkinningModel::SettingInfluenceAllMeshes() {
 			}
 		}
 	}
+
+	// 各頂点のウェイトを正規化
+	for (auto& mesh : meshes_) {
+		if (auto* skinMesh = dynamic_cast<SkinningMesh*>(mesh.get())) {
+			for (uint32_t i = 0; i < skinMesh->GetMappdInfluence().size(); i++) {
+				auto& influence = skinMesh->GetMappdInfluence()[i];
+
+				// ウェイトの合計を計算
+				float totalWeight = 0.0f;
+				for (uint32_t idx = 0; idx < kNumMaxInfluence; idx++) {
+					totalWeight += influence.weights[idx];
+				}
+
+				// 合計がゼロでない場合、正規化
+				if (totalWeight > 0.0f) {
+					for (uint32_t idx = 0; idx < kNumMaxInfluence; idx++) {
+						influence.weights[idx] /= totalWeight;
+					}
+				}
+			}
+		}
+
+	}
 }
 
 void SkinningModel::SkinPaletteUpdate() {

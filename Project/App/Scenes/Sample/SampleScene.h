@@ -22,7 +22,7 @@ public:
 	void Finalize() override;
 
 private:
-	std::unique_ptr<Object3D> sample_ = nullptr;
+	std::unique_ptr<Object3DSkinning> sample_ = nullptr;
 	std::unique_ptr<Object3DSkinning> skinningSample_ = nullptr;
 	std::unique_ptr<Object3D> terrain_ = nullptr;
 	std::unique_ptr<Primitive3D> primitive_ = nullptr;
@@ -52,11 +52,11 @@ inline void SampleScene<Data>::Initialize() {
 	terrain_ = std::make_unique<Object3D>("terrain", "terrain");
 	terrain_->Initialize();
 
-	skinningSample_ = std::make_unique<Object3DSkinning>("Kick", "Women");
+	skinningSample_ = std::make_unique<Object3DSkinning>("Kick", "Man");
 	skinningSample_->Initialize();
 	skinningSample_->GetTranslate().x = -1.0f;
 
-	sample_ = std::make_unique<Object3D>("Kick","walk");
+	sample_ = std::make_unique<Object3DSkinning>("Kick","Women");
 	sample_->Initialize();
 	sample_->GetTranslate().x = 1.0f;
 

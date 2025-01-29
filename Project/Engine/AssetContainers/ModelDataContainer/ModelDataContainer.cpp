@@ -91,7 +91,11 @@ ModelData ModelDataContainer::LoadModel(const std::string& modelName, bool isNor
 		aiProcess_FlipWindingOrder |
 		aiProcess_FlipUVs |
 		aiProcess_Triangulate |
-		aiProcess_CalcTangentSpace
+		aiProcess_CalcTangentSpace |
+		aiProcess_JoinIdenticalVertices |  // 重複頂点のマージ（ボーンの影響を統一）
+		aiProcess_LimitBoneWeights |       // 最大4ボーンに制限
+		aiProcess_PopulateArmatureData |   // アーマチュアデータを整理（Assimp 5.3 以降）
+		aiProcess_GenSmoothNormals
 	);
 	assert(scene && scene->HasMeshes());
 
