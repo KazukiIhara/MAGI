@@ -31,13 +31,13 @@ private:
 template<typename Data>
 inline void SampleScene<Data>::Initialize() {
 	MAGISYSTEM::LoadTexture("pronama_chan.png");
-	MAGISYSTEM::LoadModel("XBot");
-	MAGISYSTEM::LoadModel("XBot2");
-	MAGISYSTEM::LoadModel("kei");
+	//MAGISYSTEM::LoadModel("XBot");
+	MAGISYSTEM::LoadModel("Kick");
+	//MAGISYSTEM::LoadModel("kei");
 	MAGISYSTEM::LoadModel("terrain", true);
 	MAGISYSTEM::LoadModel("teapot", true);
 
-	MAGISYSTEM::LoadAnimation("Kick");
+	//MAGISYSTEM::LoadAnimation("Kick");
 
 	primitive_ = std::make_unique<Primitive3D>("primitive", Primitive3DType::Sphere);
 	primitive_->GetTranslate().y = 1.0f;
@@ -46,15 +46,13 @@ inline void SampleScene<Data>::Initialize() {
 	terrain_ = std::make_unique<Object3D>("terrain", "terrain");
 	terrain_->Initialize();
 
-	skinningSample_ = std::make_unique<Object3DSkinning>("Kick", "XBot2");
+	skinningSample_ = std::make_unique<Object3DSkinning>("Kick", "Kick");
 	skinningSample_->Initialize();
 	skinningSample_->GetTranslate().x = -1.0f;
-	skinningSample_->GetScale() = Vector3(1.0f / 100.0f, 1.0f / 100.0f, 1.0f / 100.0f);
 
-	sample_ = std::make_unique<Object3D>("Kick", "XBot2");
+	sample_ = std::make_unique<Object3D>("Kick", "Kick");
 	sample_->Initialize();
 	sample_->GetTranslate().x = 1.0f;
-	sample_->GetScale() = Vector3(1.0f / 100.0f, 1.0f / 100.0f, 1.0f / 100.0f);
 
 	MAGISYSTEM::AddPunctualLight("sampleLight");
 	auto& sampleLight = MAGISYSTEM::GetLightData("sampleLight");

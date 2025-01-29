@@ -1,6 +1,6 @@
 {
 	"asset":{
-		"generator":"Khronos glTF Blender I/O v4.2.70",
+		"generator":"Khronos glTF Blender I/O v4.3.47",
 		"version":"2.0"
 	},
 	"scene":0,
@@ -866,7 +866,7 @@
 					}
 				}
 			],
-			"name":"\u30a2\u30fc\u30de\u30c1\u30e5\u30a2\u30a2\u30af\u30b7\u30e7\u30f3",
+			"name":"Action",
 			"samplers":[
 				{
 					"input":145,
@@ -1191,9 +1191,6 @@
 			"doubleSided":true,
 			"name":"\u307e\u3086\u3052",
 			"pbrMetallicRoughness":{
-				"baseColorTexture":{
-					"index":0
-				},
 				"metallicFactor":0,
 				"roughnessFactor":0.5
 			}
@@ -1202,9 +1199,6 @@
 			"doubleSided":true,
 			"name":"\u9aea1",
 			"pbrMetallicRoughness":{
-				"baseColorTexture":{
-					"index":1
-				},
 				"metallicFactor":0,
 				"roughnessFactor":0.5
 			}
@@ -1213,9 +1207,6 @@
 			"doubleSided":true,
 			"name":"\u9aea\u7559\u3081",
 			"pbrMetallicRoughness":{
-				"baseColorTexture":{
-					"index":2
-				},
 				"metallicFactor":0,
 				"roughnessFactor":0.5
 			}
@@ -1224,9 +1215,6 @@
 			"doubleSided":true,
 			"name":"\u808c",
 			"pbrMetallicRoughness":{
-				"baseColorTexture":{
-					"index":3
-				},
 				"metallicFactor":0,
 				"roughnessFactor":0.5
 			}
@@ -1236,9 +1224,6 @@
 			"doubleSided":true,
 			"name":"\u30b7\u30e3\u30c4",
 			"pbrMetallicRoughness":{
-				"baseColorTexture":{
-					"index":4
-				},
 				"metallicFactor":0,
 				"roughnessFactor":0.5
 			}
@@ -1248,9 +1233,6 @@
 			"doubleSided":true,
 			"name":"\u30d6\u30ec\u30b6\u30fc",
 			"pbrMetallicRoughness":{
-				"baseColorTexture":{
-					"index":5
-				},
 				"metallicFactor":0,
 				"roughnessFactor":0.5
 			}
@@ -1260,9 +1242,6 @@
 			"doubleSided":true,
 			"name":"\u30ea\u30dc\u30f3",
 			"pbrMetallicRoughness":{
-				"baseColorTexture":{
-					"index":6
-				},
 				"metallicFactor":0,
 				"roughnessFactor":0.5
 			}
@@ -1272,9 +1251,6 @@
 			"doubleSided":true,
 			"name":"\u30d1\u30f3\u30c4",
 			"pbrMetallicRoughness":{
-				"baseColorTexture":{
-					"index":7
-				},
 				"metallicFactor":0,
 				"roughnessFactor":0.5
 			}
@@ -1284,9 +1260,6 @@
 			"doubleSided":true,
 			"name":"\u8155\u6642\u8a08",
 			"pbrMetallicRoughness":{
-				"baseColorTexture":{
-					"index":8
-				},
 				"metallicFactor":0,
 				"roughnessFactor":0.5
 			}
@@ -1296,9 +1269,6 @@
 			"doubleSided":true,
 			"name":"\u306f\u3060\u30571",
 			"pbrMetallicRoughness":{
-				"baseColorTexture":{
-					"index":9
-				},
 				"metallicFactor":0,
 				"roughnessFactor":0.5
 			}
@@ -1308,9 +1278,6 @@
 			"doubleSided":true,
 			"name":"\u8155\u6642\u8a08\u7167",
 			"pbrMetallicRoughness":{
-				"baseColorTexture":{
-					"index":10
-				},
 				"metallicFactor":0,
 				"roughnessFactor":0.5
 			}
@@ -1320,9 +1287,6 @@
 			"doubleSided":true,
 			"name":"\u30b9\u30ab\u30fc\u30c8\u88cf",
 			"pbrMetallicRoughness":{
-				"baseColorTexture":{
-					"index":11
-				},
 				"metallicFactor":0,
 				"roughnessFactor":0.5
 			}
@@ -1332,9 +1296,6 @@
 			"doubleSided":true,
 			"name":"\u30b9\u30ab\u30fc\u30c8",
 			"pbrMetallicRoughness":{
-				"baseColorTexture":{
-					"index":12
-				},
 				"metallicFactor":0,
 				"roughnessFactor":0.5
 			}
@@ -1344,9 +1305,6 @@
 			"doubleSided":true,
 			"name":"\u9774",
 			"pbrMetallicRoughness":{
-				"baseColorTexture":{
-					"index":13
-				},
 				"metallicFactor":0,
 				"roughnessFactor":0.5
 			}
@@ -1356,9 +1314,6 @@
 			"doubleSided":true,
 			"name":"\u304f\u3064\u3057\u305f",
 			"pbrMetallicRoughness":{
-				"baseColorTexture":{
-					"index":14
-				},
 				"metallicFactor":0,
 				"roughnessFactor":0.5
 			}
@@ -1368,9 +1323,6 @@
 			"doubleSided":true,
 			"name":"\u76ee",
 			"pbrMetallicRoughness":{
-				"baseColorTexture":{
-					"index":15
-				},
 				"metallicFactor":0,
 				"roughnessFactor":0.5
 			}
@@ -1380,9 +1332,6 @@
 			"doubleSided":true,
 			"name":"\u76ee\u30cf\u30a4\u30e9\u30a4\u30c8",
 			"pbrMetallicRoughness":{
-				"baseColorTexture":{
-					"index":16
-				},
 				"metallicFactor":0,
 				"roughnessFactor":0.5
 			}
@@ -1391,9 +1340,6 @@
 			"doubleSided":true,
 			"name":"\u53e3\u306e\u4e2d",
 			"pbrMetallicRoughness":{
-				"baseColorTexture":{
-					"index":17
-				},
 				"metallicFactor":0,
 				"roughnessFactor":0.5
 			}
@@ -1402,9 +1348,6 @@
 			"doubleSided":true,
 			"name":"\u9854",
 			"pbrMetallicRoughness":{
-				"baseColorTexture":{
-					"index":18
-				},
 				"metallicFactor":0,
 				"roughnessFactor":0.5
 			}
@@ -1413,9 +1356,6 @@
 			"doubleSided":true,
 			"name":"\u6b6f",
 			"pbrMetallicRoughness":{
-				"baseColorTexture":{
-					"index":19
-				},
 				"metallicFactor":0,
 				"roughnessFactor":0.5
 			}
@@ -1424,9 +1364,6 @@
 			"doubleSided":true,
 			"name":"\u820c",
 			"pbrMetallicRoughness":{
-				"baseColorTexture":{
-					"index":20
-				},
 				"metallicFactor":0,
 				"roughnessFactor":0.5
 			}
@@ -1436,9 +1373,6 @@
 			"doubleSided":true,
 			"name":"\u767d\u76ee",
 			"pbrMetallicRoughness":{
-				"baseColorTexture":{
-					"index":21
-				},
 				"metallicFactor":0,
 				"roughnessFactor":0.5
 			}
@@ -1447,9 +1381,6 @@
 			"doubleSided":true,
 			"name":"\u307e\u3064\u3052",
 			"pbrMetallicRoughness":{
-				"baseColorTexture":{
-					"index":22
-				},
 				"metallicFactor":0,
 				"roughnessFactor":0.5
 			}
@@ -1458,9 +1389,6 @@
 			"doubleSided":true,
 			"name":"\u4e0b\u307e\u3064\u3052",
 			"pbrMetallicRoughness":{
-				"baseColorTexture":{
-					"index":23
-				},
 				"metallicFactor":0,
 				"roughnessFactor":0.5
 			}
@@ -1735,161 +1663,6 @@
 					"material":23
 				}
 			]
-		}
-	],
-	"textures":[
-		{
-			"sampler":0,
-			"source":0
-		},
-		{
-			"sampler":0,
-			"source":1
-		},
-		{
-			"sampler":0,
-			"source":1
-		},
-		{
-			"sampler":0,
-			"source":2
-		},
-		{
-			"sampler":0,
-			"source":3
-		},
-		{
-			"sampler":0,
-			"source":3
-		},
-		{
-			"sampler":0,
-			"source":3
-		},
-		{
-			"sampler":0,
-			"source":3
-		},
-		{
-			"sampler":0,
-			"source":4
-		},
-		{
-			"sampler":0,
-			"source":5
-		},
-		{
-			"sampler":0,
-			"source":4
-		},
-		{
-			"sampler":0,
-			"source":6
-		},
-		{
-			"sampler":0,
-			"source":6
-		},
-		{
-			"sampler":0,
-			"source":7
-		},
-		{
-			"sampler":0,
-			"source":8
-		},
-		{
-			"sampler":0,
-			"source":9
-		},
-		{
-			"sampler":0,
-			"source":10
-		},
-		{
-			"sampler":0,
-			"source":0
-		},
-		{
-			"sampler":0,
-			"source":0
-		},
-		{
-			"sampler":0,
-			"source":0
-		},
-		{
-			"sampler":0,
-			"source":0
-		},
-		{
-			"sampler":0,
-			"source":9
-		},
-		{
-			"sampler":0,
-			"source":0
-		},
-		{
-			"sampler":0,
-			"source":0
-		}
-	],
-	"images":[
-		{
-			"mimeType":"image/png",
-			"name":"face",
-			"uri":"tex/face.png"
-		},
-		{
-			"mimeType":"image/png",
-			"name":"hair",
-			"uri":"tex/hair.png"
-		},
-		{
-			"mimeType":"image/png",
-			"name":"skin",
-			"uri":"tex/skin.png"
-		},
-		{
-			"mimeType":"image/png",
-			"name":"dress",
-			"uri":"tex/dress.png"
-		},
-		{
-			"mimeType":"image/png",
-			"name":"watch",
-			"uri":"tex/watch.png"
-		},
-		{
-			"mimeType":"image/png",
-			"name":"leg",
-			"uri":"tex/leg.png"
-		},
-		{
-			"mimeType":"image/png",
-			"name":"skirt",
-			"uri":"tex/skirt.png"
-		},
-		{
-			"mimeType":"image/png",
-			"name":"shoes",
-			"uri":"tex/shoes.png"
-		},
-		{
-			"mimeType":"image/png",
-			"name":"socks",
-			"uri":"tex/socks.png"
-		},
-		{
-			"mimeType":"image/png",
-			"name":"eyes",
-			"uri":"tex/eyes.png"
-		},
-		{
-			"mimeType":"image/png",
-			"name":"eyelight",
-			"uri":"tex/eyelight.png"
 		}
 	],
 	"skins":[
@@ -4630,12 +4403,6 @@
 			"buffer":0,
 			"byteLength":24,
 			"byteOffset":1115472
-		}
-	],
-	"samplers":[
-		{
-			"magFilter":9729,
-			"minFilter":9987
 		}
 	],
 	"buffers":[
