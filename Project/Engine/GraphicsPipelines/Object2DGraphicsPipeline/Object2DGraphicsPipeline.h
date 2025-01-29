@@ -14,10 +14,13 @@
 class DXGI;
 class ShaderCompiler;
 
-class Object3DGraphicsPipelineNormalMap {
+/// <summary>
+/// 2D描画パイプライン
+/// </summary>
+class Object2DGraphicsPipeline {
 public:
-	Object3DGraphicsPipelineNormalMap(DXGI* dxgi, ShaderCompiler* shaderCompiler);
-	~Object3DGraphicsPipelineNormalMap();
+	Object2DGraphicsPipeline(DXGI* dxgi, ShaderCompiler* shaderCompiler);
+	~Object2DGraphicsPipeline();
 
 	// 初期化
 	void Initialize(DXGI* dxgi, ShaderCompiler* shaderCompiler);
@@ -25,7 +28,6 @@ public:
 	ID3D12RootSignature* GetRootSignature();
 	// 指定されたブレンドモードに対応するパイプラインステートを取得する
 	ID3D12PipelineState* GetPipelineState(BlendMode blendMode);
-
 private:
 	// ルートシグネチャを作成する
 	void CreateRootSignature();
@@ -41,12 +43,12 @@ private:
 	D3D12_INPUT_LAYOUT_DESC InputLayoutSetting();
 	// RasterizerStateの設定を行う
 	D3D12_RASTERIZER_DESC RasterizerStateSetting();
+
 private:
 	// DXGIのインスタンスをセット
 	void SetDXGI(DXGI* dxgi);
 	// ShaderCompilerのインスタンスをセット
 	void SetShaderCompiler(ShaderCompiler* shaderCompiler);
-
 private:
 	// ルートシグネチャ
 	ComPtr<ID3D12RootSignature> rootSignature_;
