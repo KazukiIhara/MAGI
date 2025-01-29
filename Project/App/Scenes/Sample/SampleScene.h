@@ -38,6 +38,7 @@ inline void SampleScene<Data>::Initialize() {
 	MAGISYSTEM::LoadModel("walk");
 	MAGISYSTEM::LoadModel("Man");
 
+
 	MAGISYSTEM::LoadAnimation("walk");
 	MAGISYSTEM::LoadAnimation("sneakWalk");
 	MAGISYSTEM::LoadAnimation("Kick");
@@ -55,7 +56,7 @@ inline void SampleScene<Data>::Initialize() {
 	skinningSample_->Initialize();
 	skinningSample_->GetTranslate().x = -1.0f;
 
-	sample_ = std::make_unique<Object3D>("Kick", "XBot");
+	sample_ = std::make_unique<Object3D>("Kick","walk");
 	sample_->Initialize();
 	sample_->GetTranslate().x = 1.0f;
 

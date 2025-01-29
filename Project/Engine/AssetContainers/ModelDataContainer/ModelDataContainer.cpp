@@ -203,19 +203,15 @@ ModelData ModelDataContainer::LoadModel(const std::string& modelName, bool isNor
 					// 既存 or 新規作成する JointWeightData を取得
 					JointWeightData& jointWeightData = newModelData.skinClusterData[jointName];
 
-					// 1. 現状 bone->mOffsetMatrix は「InverseBindPose」とみなす
-					// 2. 必要に応じて逆行列→分解→座標反転→再逆行列のような処理を行う
 					aiMatrix4x4 offsetMatrix = bone->mOffsetMatrix;
 
-					// Assimpの offsetMatrix がすでに「逆バインドポーズ」の場合は、
-					// そのまま（あるいは座標変換をして）jointWeightData.inverseBindPoseMatrix に変換してよい。
 					aiMatrix4x4 bindPoseMatrixAssimp = offsetMatrix;
 					bindPoseMatrixAssimp.Inverse();
 					aiVector3D scale, translate;
 					aiQuaternion rotate;
 					bindPoseMatrixAssimp.Decompose(scale, rotate, translate);
 
-					// X反転を入れる場合は以下のようにマイナスをつける
+					// X反転
 					Matrix4x4 bindPoseMatrix = MakeAffineMatrix(
 						{ scale.x, scale.y, scale.z },
 						{ rotate.x, -rotate.y, -rotate.z, rotate.w },
@@ -241,6 +237,8 @@ ModelData ModelDataContainer::LoadModel(const std::string& modelName, bool isNor
 
 			}
 
+		} else {
+			assert(false);
 		}
 
 		newModelData.meshes.push_back(meshData);
