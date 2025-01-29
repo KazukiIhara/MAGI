@@ -484,6 +484,7 @@
       <Filter>Engine\WindowApp</Filter>
     </ClInclude>
     <ClInclude Include="Engine\AssetContainers\PrimitiveShapeDataContainer\PrimitiveShapeDataContainer.h" />
+    <ClInclude Include="Engine\Includes\Random\Random.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="App\Game\Game.cpp">
@@ -647,6 +648,7 @@
     </ClCompile>
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Engine\AssetContainers\PrimitiveShapeDataContainer\PrimitiveShapeDataContainer.cpp" />
+    <ClCompile Include="Engine\Includes\Random\Random.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Engine\SceneManager\SceneManager.ipp">
