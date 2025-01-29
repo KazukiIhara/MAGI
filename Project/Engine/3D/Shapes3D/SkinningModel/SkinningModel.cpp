@@ -3,6 +3,7 @@
 #include "Framework/MAGI.h"
 
 #include "MAGIUitility/MAGIUtility.h"
+#include <iostream>
 
 using namespace MAGIMath;
 using namespace MAGIUtility;
@@ -111,9 +112,11 @@ void SkinningModel::SettingInfluenceAllMeshes() {
 			if (auto* skinMesh = dynamic_cast<SkinningMesh*>(targetMesh.get())) {
 				auto& currentInfluence = skinMesh->GetMappdInfluence()[localVertexIndex];
 
+
 				// kNumMaxInfluence スロットのうち空いているところへ書き込み
 				for (uint32_t idx = 0; idx < kNumMaxInfluence; idx++) {
 					if (currentInfluence.weights[idx] == 0.0f) {
+
 						currentInfluence.weights[idx] = weightValue;
 						currentInfluence.jointIndices[idx] = jointId;
 						break;

@@ -36,8 +36,14 @@ inline void SampleScene<Data>::Initialize() {
 	//MAGISYSTEM::LoadModel("kei");
 	MAGISYSTEM::LoadModel("terrain", true);
 	MAGISYSTEM::LoadModel("teapot", true);
+	MAGISYSTEM::LoadModel("walk");
+	MAGISYSTEM::LoadModel("Man");
 
+	MAGISYSTEM::LoadAnimation("walk");
+	MAGISYSTEM::LoadAnimation("sneakWalk");
 	MAGISYSTEM::LoadAnimation("Kick");
+	MAGISYSTEM::LoadAnimation("Reaction", false);
+
 
 	primitive_ = std::make_unique<Primitive3D>("primitive", Primitive3DType::Sphere);
 	primitive_->GetTranslate().y = 1.0f;
@@ -46,7 +52,7 @@ inline void SampleScene<Data>::Initialize() {
 	terrain_ = std::make_unique<Object3D>("terrain", "terrain");
 	terrain_->Initialize();
 
-	skinningSample_ = std::make_unique<Object3DSkinning>("Kick", "Kick");
+	skinningSample_ = std::make_unique<Object3DSkinning>("Kick", "Man");
 	skinningSample_->Initialize();
 	skinningSample_->GetTranslate().x = -1.0f;
 
@@ -78,6 +84,13 @@ inline void SampleScene<Data>::Initialize() {
 template<typename Data>
 inline void SampleScene<Data>::Update() {
 	if (MAGISYSTEM::TriggerKey(DIK_1)) {
+		skinningSample_->PlayAnimation("walk");
+	}
+
+	if (MAGISYSTEM::TriggerKey(DIK_2)) {
+		skinningSample_->PlayAnimation("sneakWalk");
+	}
+	if (MAGISYSTEM::TriggerKey(DIK_3)) {
 		skinningSample_->PlayAnimation("Kick");
 	}
 
