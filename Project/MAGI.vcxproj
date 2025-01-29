@@ -185,7 +185,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Engine\Includes\Structs\SkinningStruct.h" />
     <ClInclude Include="Engine\Includes\Structs\TextureStruct.h" />
     <ClInclude Include="Engine\LeakChecker\D3DResourceLeakChecker.h" />
-    <ClInclude Include="Engine\Logger\Logger.h" />
+    <ClInclude Include="Engine\Includes\Logger\Logger.h" />
     <ClInclude Include="Engine\PipelineManagers\ComputePipelineManager\ComputePipelineManager.h" />
     <ClInclude Include="Engine\PipelineManagers\GraphicsPipelineManager\GraphicsPipelineManager.h" />
     <ClInclude Include="Engine\PunctualLightManager\PunctualLightManager.h" />
@@ -242,7 +242,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Engine\Includes\MAGIUitility\MAGIUtility.cpp" />
     <ClCompile Include="Engine\Includes\Math\Utility\MathUtility.cpp" />
     <ClCompile Include="Engine\LeakChecker\D3DResourceLeakChecker.cpp" />
-    <ClCompile Include="Engine\Logger\Logger.cpp" />
+    <ClCompile Include="Engine\Includes\Logger\Logger.cpp" />
     <ClCompile Include="Engine\PipelineManagers\ComputePipelineManager\ComputePipelineManager.cpp" />
     <ClCompile Include="Engine\PipelineManagers\GraphicsPipelineManager\GraphicsPipelineManager.cpp" />
     <ClCompile Include="Engine\PunctualLightManager\PunctualLightManager.cpp" />
