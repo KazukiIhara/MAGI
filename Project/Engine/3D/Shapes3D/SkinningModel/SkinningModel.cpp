@@ -105,7 +105,7 @@ void SkinningModel::SettingInfluenceAllMeshes() {
 			// ここで「どのサブメッシュか」を判別する
 			uint32_t targetMeshIndex = vertexWeight.meshIndex;
 			uint32_t localVertexIndex = vertexWeight.localVertexIndex;
-			float    weightValue = vertexWeight.weight;
+			float weightValue = vertexWeight.weight;
 
 			// meshes_[i] が何番目のメッシュかを区別できるようにしておく
 			auto& targetMesh = meshes_[targetMeshIndex];
