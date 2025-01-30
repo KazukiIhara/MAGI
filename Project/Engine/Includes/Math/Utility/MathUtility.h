@@ -208,6 +208,9 @@ namespace MAGIMath {
 	// 協約クオータニオンを返す
 	Quaternion Conjugate(const Quaternion& quaternion);
 
+	// クオータニオン同士の内積
+	float Dot(const Quaternion& q1, const Quaternion& q2);
+
 	// クオータニオンのnormを返す
 	float Norm(const Quaternion& quaternion);
 

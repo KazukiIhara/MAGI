@@ -37,6 +37,7 @@ inline void SampleScene<Data>::Initialize() {
 	MAGISYSTEM::LoadModel("teapot", true);
 	MAGISYSTEM::LoadModel("walk");
 	MAGISYSTEM::LoadModel("Man");
+	MAGISYSTEM::LoadModel("KickHand");
 
 
 	MAGISYSTEM::LoadAnimation("walk");
@@ -56,10 +57,10 @@ inline void SampleScene<Data>::Initialize() {
 	skinningSample_->Initialize();
 	skinningSample_->GetTranslate().x = -1.0f;
 
-	sample_ = std::make_unique<Object3DSkinning>("Kick", "Kick");
+	sample_ = std::make_unique<Object3DSkinning>("Kick", "KickHand");
 	sample_->Initialize();
 	sample_->GetTranslate().x = 1.0f;
-	
+
 
 	MAGISYSTEM::AddPunctualLight("sampleLight");
 	auto& sampleLight = MAGISYSTEM::GetLightData("sampleLight");
@@ -100,7 +101,7 @@ inline void SampleScene<Data>::Update() {
 
 	primitive_->Update();
 
-	skinningSample_->Update();
+	//skinningSample_->Update();
 	sample_->Update();
 
 }
@@ -113,7 +114,7 @@ inline void SampleScene<Data>::Draw() {
 
 	MAGISYSTEM::PreDrawObject3D();
 	//primitive_->Draw();
-	skinningSample_->Draw();
+	//skinningSample_->Draw();
 	//skinningSample_->DrawSkeleton();
 	sample_->Draw();
 	sample_->DrawSkeleton();
