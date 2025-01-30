@@ -11,7 +11,7 @@
 
 // サンプルシーン
 template <typename Data>
-class SampleScene: public BaseScene<Data> {
+class SampleScene : public BaseScene<Data> {
 public:
 	using BaseScene<Data>::BaseScene; // 親クラスのコンストラクタをそのまま継承
 	~SampleScene()override = default;
@@ -31,8 +31,8 @@ private:
 template<typename Data>
 inline void SampleScene<Data>::Initialize() {
 	MAGISYSTEM::LoadTexture("pronama_chan.png");
-	MAGISYSTEM::LoadModel("XBot");
 	MAGISYSTEM::LoadModel("Kick");
+	MAGISYSTEM::LoadModel("XBot");
 	MAGISYSTEM::LoadModel("terrain", true);
 	MAGISYSTEM::LoadModel("teapot", true);
 	MAGISYSTEM::LoadModel("walk");
@@ -59,7 +59,7 @@ inline void SampleScene<Data>::Initialize() {
 	sample_ = std::make_unique<Object3DSkinning>("Kick", "Kick");
 	sample_->Initialize();
 	sample_->GetTranslate().x = 1.0f;
-
+	
 
 	MAGISYSTEM::AddPunctualLight("sampleLight");
 	auto& sampleLight = MAGISYSTEM::GetLightData("sampleLight");
