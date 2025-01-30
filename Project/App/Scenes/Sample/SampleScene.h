@@ -85,12 +85,9 @@ inline void SampleScene<Data>::Initialize() {
 template<typename Data>
 inline void SampleScene<Data>::Update() {
 	if (MAGISYSTEM::TriggerKey(DIK_1)) {
-		skinningSample_->PlayAnimation("walk");
+		sample_->PlayAnimation("Kick");
 	}
 
-	if (MAGISYSTEM::TriggerKey(DIK_2)) {
-		skinningSample_->PlayAnimation("sneakWalk");
-	}
 	if (MAGISYSTEM::TriggerKey(DIK_3)) {
 		skinningSample_->PlayAnimation("Reaction");
 	}
