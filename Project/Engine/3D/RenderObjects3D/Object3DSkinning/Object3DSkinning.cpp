@@ -56,3 +56,11 @@ void Object3DSkinning::SwitchAnimation(const std::string& animationName) {
 	animationName;
 	// TODO::アニメーションの切り替え部分を補間する
 }
+
+void Object3DSkinning::DrawSkeleton() {
+
+	if (auto skinModel = static_cast<SkinningModel*>(model_.get())) {
+		skinModel->DrawSkeleton();
+	}
+
+}

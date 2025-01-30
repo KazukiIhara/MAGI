@@ -3,12 +3,14 @@
 #include "Framework/MAGI.h"
 
 #include "MAGIUitility/MAGIUtility.h"
+#include <iostream>
 
 using namespace MAGIMath;
 using namespace MAGIUtility;
 
 SkinningModel::SkinningModel(const ModelData& modeldata)
-	:Model(modeldata) {}
+	:Model(modeldata) {
+}
 
 SkinningModel::~SkinningModel() {
 	skeleton_.reset();
@@ -51,6 +53,10 @@ void SkinningModel::ApplyAnimation(const AnimationData& animation, float animati
 	}
 }
 
+void SkinningModel::DrawSkeleton() {
+	skeleton_->Draw();
+}
+
 void SkinningModel::CreateMeshes() {
 	for (uint32_t i = 0; i < modelData_.meshes.size(); i++) {
 		std::unique_ptr<Mesh> newMesh = std::make_unique<SkinningMesh>(modelData_.meshes[i]);
@@ -61,7 +67,7 @@ void SkinningModel::CreateMeshes() {
 
 void SkinningModel::CreateSkinPaletteResource() {
 	// palette用のリソースを確保
-	paletteResource_ = MAGISYSTEM::CreateBufferResource(sizeof(WellForGPU) * skeleton_->jointMap.size());
+	paletteResource_ = MAGISYSTEM::CreateBufferResource(sizeof(WellForGPU) * skeleton_->joints.size());
 	WellForGPU* mappedPalette = nullptr;
 	paletteResource_->Map(0, nullptr, reinterpret_cast<void**>(&mappedPalette));
 	mappedPalette_ = { mappedPalette,skeleton_->joints.size() };
@@ -91,29 +97,39 @@ void SkinningModel::CreateInverseBindPoseMatrix() {
 }
 
 void SkinningModel::SettingInfluenceAllMeshes() {
+
+	// Jointの数ループ
 	for (const auto& [jointName, jointWeightData] : modelData_.skinClusterData) {
+		// このループのジョイント
 		auto it = skeleton_->jointMap.find(jointName);
 		if (it == skeleton_->jointMap.end()) {
 			continue;
 		}
-		// ジョイントID
-		uint32_t jointId = it->second;
 
-		// それぞれの "weight情報" を見る
-		for (const auto& vertexWeight : jointWeightData.vertexWeights) {
-			// ここで「どのサブメッシュか」を判別する
+		// このループのジョイントID
+		uint32_t jointId = (*it).second;
+
+		// このループのJointが影響を与える頂点の数ループ
+		for (const auto& vertexWeight : jointWeightData.jointToVertexWeights) {
+			// Jointが影響を与える頂点がいるメッシュのインデックス
 			uint32_t targetMeshIndex = vertexWeight.meshIndex;
+			// Jointが影響を与える頂点のインデックス(メッシュ内)
 			uint32_t localVertexIndex = vertexWeight.localVertexIndex;
-			float    weightValue = vertexWeight.weight;
+			// Jointが頂点に与える影響度
+			float weightValue = vertexWeight.weight;
 
-			// meshes_[i] が何番目のメッシュかを区別できるようにしておく
+			// 今回影響を与えられる頂点がいるメッシュ
 			auto& targetMesh = meshes_[targetMeshIndex];
-			if (auto* skinMesh = dynamic_cast<SkinningMesh*>(targetMesh.get())) {
+			// スキン用メッシュにキャスト
+			if (auto* skinMesh = static_cast<SkinningMesh*>(targetMesh.get())) {
+
+				// 今回影響を与えられるメッシュの頂点が持つ影響度具合の参照
 				auto& currentInfluence = skinMesh->GetMappdInfluence()[localVertexIndex];
 
 				// kNumMaxInfluence スロットのうち空いているところへ書き込み
-				for (uint32_t idx = 0; idx < kNumMaxInfluence; idx++) {
-					if (currentInfluence.weights[idx] == 0.0f) {
+				for (uint32_t idx = 0; idx < kNumMaxInfluence; ++idx) {
+					if (currentInfluence.weights[idx] == 0.0f) {	
+
 						currentInfluence.weights[idx] = weightValue;
 						currentInfluence.jointIndices[idx] = jointId;
 						break;
@@ -127,8 +143,10 @@ void SkinningModel::SettingInfluenceAllMeshes() {
 void SkinningModel::SkinPaletteUpdate() {
 	for (size_t jointIndex = 0; jointIndex < skeleton_->joints.size(); ++jointIndex) {
 		assert(jointIndex < inverseBindPoseMatrices_.size());
+
 		mappedPalette_[jointIndex].skeletonSpaceMatrix =
 			inverseBindPoseMatrices_[jointIndex] * skeleton_->joints[jointIndex].skeletonSpaceMatrix;
+
 		mappedPalette_[jointIndex].skeletonSpaceInverseTransposeMatrix =
 			Transpose(Inverse(mappedPalette_[jointIndex].skeletonSpaceMatrix));
 	}

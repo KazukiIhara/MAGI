@@ -78,9 +78,10 @@ void Mesh::CreateVertexBufferView() {
 }
 
 void Mesh::MapVertexData() {
-	vertexData_ = nullptr;
-	vertexResource_->Map(0, nullptr, reinterpret_cast<void**>(&vertexData_));
-	std::memcpy(vertexData_, meshData_.vertices.data(), sizeof(VertexData3D) * meshData_.vertices.size());
+	// 頂点データ
+	VertexData3D* vertexData = nullptr;
+	vertexResource_->Map(0, nullptr, reinterpret_cast<void**>(&vertexData));
+	std::memcpy(vertexData, meshData_.vertices.data(), sizeof(VertexData3D) * meshData_.vertices.size());
 }
 
 void Mesh::CreateIndexResource() {
@@ -94,9 +95,10 @@ void Mesh::CreateIndexBufferView() {
 }
 
 void Mesh::MapIndexData() {
-	indexData_ = nullptr;
-	indexResource_->Map(0, nullptr, reinterpret_cast<void**>(&indexData_));
-	std::memcpy(indexData_, meshData_.indices.data(), sizeof(uint32_t) * meshData_.indices.size());
+	// インデックスデータ
+	uint32_t* indexData = nullptr;
+	indexResource_->Map(0, nullptr, reinterpret_cast<void**>(&indexData));
+	std::memcpy(indexData, meshData_.indices.data(), sizeof(uint32_t) * meshData_.indices.size());
 }
 
 void Mesh::CreateMaterialResource() {

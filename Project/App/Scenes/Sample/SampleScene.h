@@ -11,7 +11,7 @@
 
 // サンプルシーン
 template <typename Data>
-class SampleScene : public BaseScene<Data> {
+class SampleScene: public BaseScene<Data> {
 public:
 	using BaseScene<Data>::BaseScene; // 親クラスのコンストラクタをそのまま継承
 	~SampleScene()override = default;
@@ -22,7 +22,7 @@ public:
 	void Finalize() override;
 
 private:
-	std::unique_ptr<Object3D> sample_ = nullptr;
+	std::unique_ptr<Object3DSkinning> sample_ = nullptr;
 	std::unique_ptr<Object3DSkinning> skinningSample_ = nullptr;
 	std::unique_ptr<Object3D> terrain_ = nullptr;
 	std::unique_ptr<Primitive3D> primitive_ = nullptr;
@@ -30,26 +30,34 @@ private:
 
 template<typename Data>
 inline void SampleScene<Data>::Initialize() {
-	MAGISYSTEM::LoadTexture("pronama_chan.png");
-
+	//MAGISYSTEM::LoadTexture("pronama_chan.png");
 	MAGISYSTEM::LoadModel("Kick");
-	MAGISYSTEM::LoadModel("terrain", true);
-	MAGISYSTEM::LoadModel("teapot", true);
+	MAGISYSTEM::LoadModel("XBot");
+	//MAGISYSTEM::LoadModel("terrain", true);
+	//MAGISYSTEM::LoadModel("teapot", true);
+	//MAGISYSTEM::LoadModel("walk");
+	MAGISYSTEM::LoadModel("Man");
+	MAGISYSTEM::LoadModel("KickHand");
 
+
+	//MAGISYSTEM::LoadAnimation("walk");
+	//MAGISYSTEM::LoadAnimation("sneakWalk");
+	MAGISYSTEM::LoadAnimation("Reaction", false);
 	MAGISYSTEM::LoadAnimation("Kick");
 
-	primitive_ = std::make_unique<Primitive3D>("primitive", Primitive3DType::Sphere);
-	primitive_->GetTranslate().y = 1.0f;
-	primitive_->GetMaterial().enableSpecularRef = true;
 
-	terrain_ = std::make_unique<Object3D>("terrain", "terrain");
-	terrain_->Initialize();
+	//primitive_ = std::make_unique<Primitive3D>("primitive", Primitive3DType::Sphere);
+	//primitive_->GetTranslate().y = 1.0f;
+	//primitive_->GetMaterial().enableSpecularRef = true;
 
-	skinningSample_ = std::make_unique<Object3DSkinning>("Kick", "Kick");
+	//terrain_ = std::make_unique<Object3D>("terrain", "terrain");
+	//terrain_->Initialize();
+
+	skinningSample_ = std::make_unique<Object3DSkinning>("Kick", "Man");
 	skinningSample_->Initialize();
 	skinningSample_->GetTranslate().x = -1.0f;
 
-	sample_ = std::make_unique<Object3D>("Kick", "Kick");
+	sample_ = std::make_unique<Object3DSkinning>("Kick", "Kick");
 	sample_->Initialize();
 	sample_->GetTranslate().x = 1.0f;
 
@@ -77,16 +85,17 @@ inline void SampleScene<Data>::Initialize() {
 template<typename Data>
 inline void SampleScene<Data>::Update() {
 	if (MAGISYSTEM::TriggerKey(DIK_1)) {
-		skinningSample_->PlayAnimation("Kick");
+		sample_->PlayAnimation("Kick");
+		skinningSample_->PlayAnimation("Reaction");
 	}
 
 	if (MAGISYSTEM::TriggerKey(DIK_0)) {
-		skinningSample_->ResetAnimation();
+		sample_->ResetAnimation();
 	}
 
-	terrain_->Update();
+	//terrain_->Update();
 
-	primitive_->Update();
+	//primitive_->Update();
 
 	skinningSample_->Update();
 	sample_->Update();
@@ -97,12 +106,14 @@ template<typename Data>
 inline void SampleScene<Data>::Draw() {
 
 	MAGISYSTEM::PreDrawObject3DNormalMap();
-	terrain_->Draw();
+	//terrain_->Draw();
 
 	MAGISYSTEM::PreDrawObject3D();
 	//primitive_->Draw();
 	skinningSample_->Draw();
+	//skinningSample_->DrawSkeleton();
 	sample_->Draw();
+	//sample_->DrawSkeleton();
 }
 
 template<typename Data>

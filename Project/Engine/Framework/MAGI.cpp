@@ -576,7 +576,7 @@ ID3D12RootSignature* MAGISYSTEM::GetComputeRootSignature(ComputePipelineStateTyp
 	return computePipelineManager_->GetRootSignature(pipelineState);
 }
 
-ID3D12PipelineState* MAGISYSTEM::GetCompurePipelineState(ComputePipelineStateType pipelineState) {
+ID3D12PipelineState* MAGISYSTEM::GetComputePipelineState(ComputePipelineStateType pipelineState) {
 	return computePipelineManager_->GetPipelineState(pipelineState);
 }
 

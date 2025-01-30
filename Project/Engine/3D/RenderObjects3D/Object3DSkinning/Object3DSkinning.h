@@ -16,6 +16,14 @@ public:
 	void PlayAnimation(const std::string& animationName);
 	void ResetAnimation();
 	void SwitchAnimation(const std::string& animationName);
+
+
+	//
+	// ForDebug
+	//
+
+	void DrawSkeleton();
+
 private:
 	// アニメーション用変数
 	float animationTime_ = 0.0f;

@@ -13,7 +13,7 @@ struct Joint {
 	Matrix4x4 localMatrix;
 	Matrix4x4 skeletonSpaceMatrix;
 	std::string name;
-	std::vector<uint32_t> children;
+	std::vector<int32_t> children;
 	int32_t index;
 	std::optional<int32_t> parent;
 };

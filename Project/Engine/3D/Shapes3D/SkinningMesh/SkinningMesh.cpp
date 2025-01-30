@@ -54,7 +54,7 @@ void SkinningMesh::Skinning(const uint32_t& paletteSrvIndex) {
 	// コマンドリストを取得
 	ID3D12GraphicsCommandList* commandList = MAGISYSTEM::GetDirectXCommandList();
 	commandList->SetComputeRootSignature(MAGISYSTEM::GetComputeRootSignature(ComputePipelineStateType::Skinning));
-	commandList->SetPipelineState(MAGISYSTEM::GetCompurePipelineState(ComputePipelineStateType::Skinning));
+	commandList->SetPipelineState(MAGISYSTEM::GetComputePipelineState(ComputePipelineStateType::Skinning));
 
 	// DescriptoorHeapの設定
 	ComPtr<ID3D12DescriptorHeap> descriptorHeaps[] = { MAGISYSTEM::GetSrvUavDescriptorHeap() };
@@ -76,7 +76,7 @@ void SkinningMesh::Skinning(const uint32_t& paletteSrvIndex) {
 	MAGISYSTEM::ResetCommand();
 }
 
-std::span<VertexInfluence>& SkinningMesh::GetMappdInfluence() {
+std::span<VertexInfluenceJoints>& SkinningMesh::GetMappdInfluence() {
 	return mappedInfluence_;
 }
 
@@ -111,13 +111,13 @@ void SkinningMesh::MapSkinningInformationData() {
 
 void SkinningMesh::CreateInfluenceResource() {
 	// リソースを確保
-	influenceResource_ = MAGISYSTEM::CreateBufferResource(sizeof(VertexInfluence) * meshData_.vertices.size());
-	VertexInfluence* mappedInfluence = nullptr;
+	influenceResource_ = MAGISYSTEM::CreateBufferResource(sizeof(VertexInfluenceJoints) * meshData_.vertices.size());
+	VertexInfluenceJoints* mappedInfluence = nullptr;
 	influenceResource_->Map(0, nullptr, reinterpret_cast<void**>(&mappedInfluence));
-	std::memset(mappedInfluence, 0, sizeof(VertexInfluence) * meshData_.vertices.size());
-	mappedInfluence_ = { mappedInfluence,meshData_.vertices.size() };
+	std::memset(mappedInfluence, 0, sizeof(VertexInfluenceJoints) * meshData_.vertices.size());
+	mappedInfluence_ = { mappedInfluence, meshData_.vertices.size() };
 	// インデックス割り当て
 	influenceSrvIndex = MAGISYSTEM::ViewAllocate();
 	// srv作成
-	MAGISYSTEM::CreateSrvStructuredBuffer(influenceSrvIndex, influenceResource_.Get(), static_cast<uint32_t>(meshData_.vertices.size()), sizeof(VertexInfluence));
+	MAGISYSTEM::CreateSrvStructuredBuffer(influenceSrvIndex, influenceResource_.Get(), static_cast<uint32_t>(meshData_.vertices.size()), sizeof(VertexInfluenceJoints));
 }
