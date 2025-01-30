@@ -30,28 +30,15 @@ private:
 
 template<typename Data>
 inline void SampleScene<Data>::Initialize() {
-	//MAGISYSTEM::LoadTexture("pronama_chan.png");
 	MAGISYSTEM::LoadModel("Kick");
-	MAGISYSTEM::LoadModel("XBot");
-	//MAGISYSTEM::LoadModel("terrain", true);
-	//MAGISYSTEM::LoadModel("teapot", true);
-	//MAGISYSTEM::LoadModel("walk");
+	MAGISYSTEM::LoadModel("terrain", true);
 	MAGISYSTEM::LoadModel("Man");
-	MAGISYSTEM::LoadModel("KickHand");
 
-
-	//MAGISYSTEM::LoadAnimation("walk");
-	//MAGISYSTEM::LoadAnimation("sneakWalk");
 	MAGISYSTEM::LoadAnimation("Reaction", false);
 	MAGISYSTEM::LoadAnimation("Kick");
 
-
-	//primitive_ = std::make_unique<Primitive3D>("primitive", Primitive3DType::Sphere);
-	//primitive_->GetTranslate().y = 1.0f;
-	//primitive_->GetMaterial().enableSpecularRef = true;
-
-	//terrain_ = std::make_unique<Object3D>("terrain", "terrain");
-	//terrain_->Initialize();
+	terrain_ = std::make_unique<Object3D>("terrain", "terrain");
+	terrain_->Initialize();
 
 	skinningSample_ = std::make_unique<Object3DSkinning>("Kick", "Man");
 	skinningSample_->Initialize();
@@ -60,6 +47,7 @@ inline void SampleScene<Data>::Initialize() {
 	sample_ = std::make_unique<Object3DSkinning>("Kick", "Kick");
 	sample_->Initialize();
 	sample_->GetTranslate().x = 1.0f;
+	sample_->GetRotate().y = std::numbers::pi_v<float>;
 
 	MAGISYSTEM::AddPunctualLight("sampleLight");
 	auto& sampleLight = MAGISYSTEM::GetLightData("sampleLight");
@@ -91,29 +79,25 @@ inline void SampleScene<Data>::Update() {
 
 	if (MAGISYSTEM::TriggerKey(DIK_0)) {
 		sample_->ResetAnimation();
+		skinningSample_->ResetAnimation();
 	}
 
-	//terrain_->Update();
-
-	//primitive_->Update();
+	terrain_->Update();
 
 	skinningSample_->Update();
+
 	sample_->Update();
 
 }
 
 template<typename Data>
 inline void SampleScene<Data>::Draw() {
-
 	MAGISYSTEM::PreDrawObject3DNormalMap();
-	//terrain_->Draw();
+	terrain_->Draw();
 
 	MAGISYSTEM::PreDrawObject3D();
-	//primitive_->Draw();
 	skinningSample_->Draw();
-	//skinningSample_->DrawSkeleton();
 	sample_->Draw();
-	//sample_->DrawSkeleton();
 }
 
 template<typename Data>
