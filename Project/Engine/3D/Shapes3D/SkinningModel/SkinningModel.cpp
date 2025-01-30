@@ -9,7 +9,8 @@ using namespace MAGIMath;
 using namespace MAGIUtility;
 
 SkinningModel::SkinningModel(const ModelData& modeldata)
-	:Model(modeldata) {}
+	:Model(modeldata) {
+}
 
 SkinningModel::~SkinningModel() {
 	skeleton_.reset();
@@ -50,6 +51,10 @@ void SkinningModel::ApplyAnimation(const AnimationData& animation, float animati
 			joint.transform.scale = CalculateVelue(rootNodeAnimation.scale, animationTime);
 		}
 	}
+}
+
+void SkinningModel::DrawSkeleton() {
+	skeleton_->Draw();
 }
 
 void SkinningModel::CreateMeshes() {

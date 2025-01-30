@@ -13,7 +13,7 @@
 #include "DirectX/ComPtr/ComPtr.h"
 
 // 頂点が影響を受けるボーンの数
-const uint32_t kNumMaxInfluence = 4;
+static const uint32_t kNumMaxInfluence = 4;
 // 頂点が影響を受けるボーンのスロット
 struct VertexInfluence {
 	std::array<float, kNumMaxInfluence> weights;

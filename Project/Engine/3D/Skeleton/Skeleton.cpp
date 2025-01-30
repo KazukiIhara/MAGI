@@ -17,6 +17,19 @@ void Skeleton::Update() {
 			joint.skeletonSpaceMatrix = joint.localMatrix;
 		}
 	}
+
+	for (uint32_t i = 0; i < spheres_.size(); ++i) {
+		Vector3 worldPos = ExtractionWorldPos(joints[i].skeletonSpaceMatrix);
+		spheres_[i]->GetTranslate() = Vector3(worldPos);
+		spheres_[i]->Update();
+	}
+
+}
+
+void Skeleton::Draw() {
+	for (auto& sphere : spheres_) {
+		sphere->Draw();
+	}
 }
 
 void Skeleton::Initialize(const Node& rootNode) {
@@ -26,6 +39,19 @@ void Skeleton::Initialize(const Node& rootNode) {
 	for (const Joint& joint : joints) {
 		jointMap.emplace(joint.name, joint.index);
 	}
+
+
+	//
+	// forDebug
+	//
+
+	for (uint32_t i = 0; i < jointMap.size(); i++) {
+		std::unique_ptr<Primitive3D> newsphere = std::make_unique<Primitive3D>("sphere", Primitive3DType::Sphere);
+		newsphere->GetScale() = Vector3(0.1f, 0.1f, 0.1f);
+		spheres_.push_back(std::move(newsphere));
+	}
+
+
 }
 
 int32_t Skeleton::CreateJoint(const Node& node, const std::optional<int32_t>& parent) {

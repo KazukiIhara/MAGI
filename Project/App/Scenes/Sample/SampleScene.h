@@ -114,7 +114,9 @@ inline void SampleScene<Data>::Draw() {
 	MAGISYSTEM::PreDrawObject3D();
 	//primitive_->Draw();
 	skinningSample_->Draw();
+	//skinningSample_->DrawSkeleton();
 	sample_->Draw();
+	sample_->DrawSkeleton();
 }
 
 template<typename Data>
