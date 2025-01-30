@@ -29,7 +29,7 @@ private:
 	int32_t CreateJoint(const Node& node, const std::optional<int32_t>& parent);
 public:
 	int32_t root;
-	std::unordered_map<std::string, int32_t> jointMap;
+	std::map<std::string, int32_t> jointMap;
 	std::vector<Joint> joints;
 
 	//

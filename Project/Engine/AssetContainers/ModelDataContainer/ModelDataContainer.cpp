@@ -207,7 +207,7 @@ ModelData ModelDataContainer::LoadModel(const std::string& modelName, bool isNor
 					// 既存 or 新規作成する JointWeightData を取得
 					JointWeightData& jointWeightData = newModelData.skinClusterData[jointName];
 
-					aiMatrix4x4 bindPoseMatrixAssimp= bone->mOffsetMatrix.Inverse();
+					aiMatrix4x4 bindPoseMatrixAssimp= bone->mOffsetMatrix;
 					aiVector3D scale, translate;
 					aiQuaternion rotate;
 					bindPoseMatrixAssimp.Decompose(scale, rotate, translate);
@@ -219,16 +219,16 @@ ModelData ModelDataContainer::LoadModel(const std::string& modelName, bool isNor
 						{ -translate.x, translate.y, translate.z }
 					);
 					// さらに「逆行列」をとる → 再度「逆バインドポーズ行列」として確定
-					jointWeightData.inverseBindPoseMatrix = Inverse(bindPoseMatrix);
+					jointWeightData.inverseBindPoseMatrix = bindPoseMatrix;
 
 					// 頂点ウェイトの登録
 					for (uint32_t weightIndex = 0; weightIndex < bone->mNumWeights; ++weightIndex) {
 						float w = bone->mWeights[weightIndex].mWeight;
-						uint32_t localVtxId = bone->mWeights[weightIndex].mVertexId;
+						int32_t localVtxId = bone->mWeights[weightIndex].mVertexId;
 
 						// bone->mWeights[..].mVertexId は 「meshIndex番のメッシュの」ローカルID
 						// であることを区別するために、構造体に meshIndex も入れる。
-						jointWeightData.vertexWeights.push_back({
+						jointWeightData.jointToVertexWeights.push_back({
 							w,
 							meshIndex,        // このメッシュ番号
 							localVtxId        // メッシュ内ローカル頂点インデックス

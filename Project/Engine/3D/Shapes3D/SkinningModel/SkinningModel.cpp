@@ -110,7 +110,7 @@ void SkinningModel::SettingInfluenceAllMeshes() {
 		uint32_t jointId = (*it).second;
 
 		// このループのJointが影響を与える頂点の数ループ
-		for (const auto& vertexWeight : jointWeightData.vertexWeights) {
+		for (const auto& vertexWeight : jointWeightData.jointToVertexWeights) {
 			// Jointが影響を与える頂点がいるメッシュのインデックス
 			uint32_t targetMeshIndex = vertexWeight.meshIndex;
 			// Jointが影響を与える頂点のインデックス(メッシュ内)
@@ -128,7 +128,7 @@ void SkinningModel::SettingInfluenceAllMeshes() {
 
 				// kNumMaxInfluence スロットのうち空いているところへ書き込み
 				for (uint32_t idx = 0; idx < kNumMaxInfluence; ++idx) {
-					if (currentInfluence.weights[idx] == 0.0f) {
+					if (currentInfluence.weights[idx] == 0.0f) {	
 
 						currentInfluence.weights[idx] = weightValue;
 						currentInfluence.jointIndices[idx] = jointId;

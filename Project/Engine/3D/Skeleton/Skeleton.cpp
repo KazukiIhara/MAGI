@@ -48,10 +48,9 @@ void Skeleton::Initialize(const Node& rootNode) {
 
 	for (uint32_t i = 0; i < jointMap.size(); i++) {
 		std::unique_ptr<Primitive3D> newsphere = std::make_unique<Primitive3D>("sphere", Primitive3DType::Sphere);
-		newsphere->GetScale() = Vector3(0.05f, 0.05f, 0.05f);
+		newsphere->GetScale() = Vector3(0.01f, 0.01f, 0.01f);
 		spheres_.push_back(std::move(newsphere));
 	}
-
 
 }
 
