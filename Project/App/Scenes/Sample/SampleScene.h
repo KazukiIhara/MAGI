@@ -31,18 +31,18 @@ private:
 template<typename Data>
 inline void SampleScene<Data>::Initialize() {
 	//MAGISYSTEM::LoadTexture("pronama_chan.png");
-	//MAGISYSTEM::LoadModel("Kick");
-	//MAGISYSTEM::LoadModel("XBot");
+	MAGISYSTEM::LoadModel("Kick");
+	MAGISYSTEM::LoadModel("XBot");
 	//MAGISYSTEM::LoadModel("terrain", true);
 	//MAGISYSTEM::LoadModel("teapot", true);
 	//MAGISYSTEM::LoadModel("walk");
-	//MAGISYSTEM::LoadModel("Man");
+	MAGISYSTEM::LoadModel("Man");
 	MAGISYSTEM::LoadModel("KickHand");
 
 
 	//MAGISYSTEM::LoadAnimation("walk");
 	//MAGISYSTEM::LoadAnimation("sneakWalk");
-	//MAGISYSTEM::LoadAnimation("Reaction", false);
+	MAGISYSTEM::LoadAnimation("Reaction", false);
 	MAGISYSTEM::LoadAnimation("Kick");
 
 
@@ -53,13 +53,13 @@ inline void SampleScene<Data>::Initialize() {
 	//terrain_ = std::make_unique<Object3D>("terrain", "terrain");
 	//terrain_->Initialize();
 
-	//skinningSample_ = std::make_unique<Object3DSkinning>("Kick", "Man");
-	//skinningSample_->Initialize();
-	//skinningSample_->GetTranslate().x = -1.0f;
+	skinningSample_ = std::make_unique<Object3DSkinning>("Kick", "Man");
+	skinningSample_->Initialize();
+	skinningSample_->GetTranslate().x = -1.0f;
 
-	sample_ = std::make_unique<Object3DSkinning>("Kick", "KickHand");
+	sample_ = std::make_unique<Object3DSkinning>("Kick", "Kick");
 	sample_->Initialize();
-
+	sample_->GetTranslate().x = 1.0f;
 
 	MAGISYSTEM::AddPunctualLight("sampleLight");
 	auto& sampleLight = MAGISYSTEM::GetLightData("sampleLight");
@@ -86,6 +86,7 @@ template<typename Data>
 inline void SampleScene<Data>::Update() {
 	if (MAGISYSTEM::TriggerKey(DIK_1)) {
 		sample_->PlayAnimation("Kick");
+		skinningSample_->PlayAnimation("Reaction");
 	}
 
 	if (MAGISYSTEM::TriggerKey(DIK_0)) {
@@ -96,7 +97,7 @@ inline void SampleScene<Data>::Update() {
 
 	//primitive_->Update();
 
-	//skinningSample_->Update();
+	skinningSample_->Update();
 	sample_->Update();
 
 }
@@ -109,10 +110,10 @@ inline void SampleScene<Data>::Draw() {
 
 	MAGISYSTEM::PreDrawObject3D();
 	//primitive_->Draw();
-	//skinningSample_->Draw();
+	skinningSample_->Draw();
 	//skinningSample_->DrawSkeleton();
 	sample_->Draw();
-	sample_->DrawSkeleton();
+	//sample_->DrawSkeleton();
 }
 
 template<typename Data>

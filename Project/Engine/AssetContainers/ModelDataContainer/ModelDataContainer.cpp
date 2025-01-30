@@ -207,7 +207,7 @@ ModelData ModelDataContainer::LoadModel(const std::string& modelName, bool isNor
 					// 既存 or 新規作成する JointWeightData を取得
 					JointWeightData& jointWeightData = newModelData.skinClusterData[jointName];
 
-					aiMatrix4x4 bindPoseMatrixAssimp= bone->mOffsetMatrix;
+					aiMatrix4x4 bindPoseMatrixAssimp = bone->mOffsetMatrix;
 					aiVector3D scale, translate;
 					aiQuaternion rotate;
 					bindPoseMatrixAssimp.Decompose(scale, rotate, translate);
@@ -218,7 +218,7 @@ ModelData ModelDataContainer::LoadModel(const std::string& modelName, bool isNor
 						{ rotate.x, -rotate.y, -rotate.z, rotate.w },
 						{ -translate.x, translate.y, translate.z }
 					);
-					// さらに「逆行列」をとる → 再度「逆バインドポーズ行列」として確定
+
 					jointWeightData.inverseBindPoseMatrix = bindPoseMatrix;
 
 					// 頂点ウェイトの登録
@@ -226,8 +226,6 @@ ModelData ModelDataContainer::LoadModel(const std::string& modelName, bool isNor
 						float w = bone->mWeights[weightIndex].mWeight;
 						int32_t localVtxId = bone->mWeights[weightIndex].mVertexId;
 
-						// bone->mWeights[..].mVertexId は 「meshIndex番のメッシュの」ローカルID
-						// であることを区別するために、構造体に meshIndex も入れる。
 						jointWeightData.jointToVertexWeights.push_back({
 							w,
 							meshIndex,        // このメッシュ番号
@@ -239,7 +237,7 @@ ModelData ModelDataContainer::LoadModel(const std::string& modelName, bool isNor
 			}
 
 		} else {
-			assert(false);
+			assert(false && "Warning: Not Found UV");
 		}
 
 		newModelData.meshes.push_back(meshData);
