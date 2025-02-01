@@ -33,16 +33,20 @@ inline void SampleScene<Data>::Initialize() {
 	MAGISYSTEM::LoadModel("Kick");
 	MAGISYSTEM::LoadModel("terrain", true);
 	MAGISYSTEM::LoadModel("Man");
+	MAGISYSTEM::LoadModel("Maw");
 
 	MAGISYSTEM::LoadAnimation("Reaction", false);
 	MAGISYSTEM::LoadAnimation("Kick");
+	MAGISYSTEM::LoadAnimation("Maw");
+
 
 	terrain_ = std::make_unique<Object3D>("terrain", "terrain");
 	terrain_->Initialize();
 
-	skinningSample_ = std::make_unique<Object3DSkinning>("Kick", "Man");
+	skinningSample_ = std::make_unique<Object3DSkinning>("Kick", "Maw");
 	skinningSample_->Initialize();
 	skinningSample_->GetTranslate().x = -1.0f;
+	
 
 	sample_ = std::make_unique<Object3DSkinning>("Kick", "Kick");
 	sample_->Initialize();
@@ -74,7 +78,7 @@ template<typename Data>
 inline void SampleScene<Data>::Update() {
 	if (MAGISYSTEM::TriggerKey(DIK_1)) {
 		sample_->PlayAnimation("Kick");
-		skinningSample_->PlayAnimation("Reaction");
+		skinningSample_->PlayAnimation("Capoeira");
 	}
 
 	if (MAGISYSTEM::TriggerKey(DIK_0)) {
@@ -94,9 +98,9 @@ template<typename Data>
 inline void SampleScene<Data>::Draw() {
 	MAGISYSTEM::PreDrawObject3DNormalMap();
 	terrain_->Draw();
+	skinningSample_->Draw();
 
 	MAGISYSTEM::PreDrawObject3D();
-	skinningSample_->Draw();
 	sample_->Draw();
 }
 

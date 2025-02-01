@@ -119,7 +119,21 @@ ModelData ModelDataContainer::LoadModel(const std::string& modelName, bool isNor
 			materialData.textureFilePath = fileDirectoryPath + "/" + diffuseTexName;
 			textureDataContainer_->Load(materialData.textureFilePath);
 
-			// 法線マップがある場合の処理
+			// normalMapのテクスチャが割り当てられている場合
+			aiString normalMapPath;
+			if (material->GetTexture(aiTextureType_NORMALS, 0, &normalMapPath) == AI_SUCCESS) {
+				// アセットにNormal Mapが設定されているので、こちらを使う
+				materialData.normalMapTextureFilePath = fileDirectoryPath + "/" + normalMapPath.C_Str();
+				textureDataContainer_->LoadNormalMap(materialData.normalMapTextureFilePath);
+			} else {
+
+			}
+
+			// 
+			// TODO:この下の処理はそのうち消す
+			// 
+
+			// 主導で割り当てる法線マップがある場合の処理
 			if (isNormalMap) {
 				// 拡張子の前に"_normal"を挿入する
 				std::string baseName;
@@ -129,7 +143,7 @@ ModelData ModelDataContainer::LoadModel(const std::string& modelName, bool isNor
 				const size_t dotPos = diffuseTexName.find_last_of('.');
 				if (dotPos != std::string::npos) {
 					baseName = diffuseTexName.substr(0, dotPos);
-					ext = diffuseTexName.substr(dotPos);        
+					ext = diffuseTexName.substr(dotPos);
 				} else {
 					// 拡張子が見つからない場合はそのまま
 					baseName = diffuseTexName;
@@ -137,7 +151,7 @@ ModelData ModelDataContainer::LoadModel(const std::string& modelName, bool isNor
 				}
 
 				// 拡張子の前に "_normal" をつける
-				const std::string normalMapName = baseName + "_normal" + ext;  
+				const std::string normalMapName = baseName + "_normal" + ext;
 
 				// パスを作ってロード
 				materialData.normalMapTextureFilePath = fileDirectoryPath + "/" + normalMapName;
