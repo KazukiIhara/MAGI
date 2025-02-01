@@ -11,6 +11,7 @@
 #include "2D/WorldTransform2D/WorldTransform2D.h"
 #include "Structs/ObjectStruct.h"
 #include "Structs/ModelStruct.h"
+#include "Enums/BlendModeEnum.h"
 
 /// <summary>
 /// 2Dオブジェクトクラス

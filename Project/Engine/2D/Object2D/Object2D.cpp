@@ -7,7 +7,7 @@
 using namespace MAGIMath;
 
 Object2D::Object2D(const std::string& objectName, const std::string& textureName) {
-
+	Initialize(objectName, textureName);
 }
 
 Object2D::~Object2D() {
