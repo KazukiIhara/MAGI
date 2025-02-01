@@ -98,7 +98,7 @@ void Object2D::Update() {
 	// ワールド行列の更新
 	worldTransform_.Update();
 	Matrix4x4 projectionMatrix = MakeOrthographicMatrix(0.0f, 0.0f, float(GetSystemMetrics(SM_CXSCREEN)), float(GetSystemMetrics(SM_CYSCREEN)), 0.0f, 100.0f);
-	*wvpData_ = worldTransform_.worldMatrix_ * projectionMatrix;
+	*wvpData_ = worldTransform_.worldMatrix * projectionMatrix;
 
 	// マテリアルデータの更新
 	material_.uvTransformMatrix = MakeUVMatrix(uvTransform_.scale, uvTransform_.rotateZ, uvTransform_.translate);
@@ -127,45 +127,92 @@ void Object2D::Draw() {
 }
 
 void Object2D::CreateVertexResource() {
-
+	vertexResource_ = MAGISYSTEM::CreateBufferResource(sizeof(VertexData2D) * 6);
 }
 
 void Object2D::CreateVretexBufferView() {
-
+	//頂点バッファビューを作成する
+	//リソースの先頭アドレスから使う
+	vertexBufferView_.BufferLocation = vertexResource_->GetGPUVirtualAddress();
+	//使用するリソースのサイズは頂点4つ分のサイズ
+	vertexBufferView_.SizeInBytes = sizeof(VertexData2D) * 4;
+	//1頂点あたりのサイズ
+	vertexBufferView_.StrideInBytes = sizeof(VertexData2D);
 }
 
 void Object2D::MapVertexData() {
+	//頂点リソースにデータを書き込む
+	vertexData_ = nullptr;
 
+	//書き込むためのアドレスを取得
+	vertexResource_->Map(0, nullptr, reinterpret_cast<void**>(&vertexData_));
+
+	//1枚目の三角形
+	vertexData_[0].position = { 0.0f,1.0f,0.0f,1.0f };//左下
+	vertexData_[0].texcoord = { 0.0f,1.0f };
+	vertexData_[1].position = { 0.0f,0.0f,0.0f,1.0f };//左上
+	vertexData_[1].texcoord = { 0.0f,0.0f };
+	vertexData_[2].position = { 1.0f,1.0f,0.0f,1.0f };//右下
+	vertexData_[2].texcoord = { 1.0f,1.0f };
+	vertexData_[3].position = { 1.0f,0.0f,0.0f,1.0f };//右上
+	vertexData_[3].texcoord = { 1.0f,0.0f };
 }
 
 void Object2D::CreateIndexResource() {
-
+	indexResource_ = MAGISYSTEM::CreateBufferResource(sizeof(uint32_t) * 6);
 }
 
 void Object2D::CreateIndexBufferView() {
-
+	// リソースの先頭アドレスから使う
+	indexBufferView_.BufferLocation = indexResource_->GetGPUVirtualAddress();
+	// 使用するリソースのサイズはインデックス6つ分
+	indexBufferView_.SizeInBytes = sizeof(uint32_t) * 6;
+	// インデックスはuint32_tとする
+	indexBufferView_.Format = DXGI_FORMAT_R32_UINT;
 }
 
 void Object2D::MapIndexResource() {
-
+	// インデックスリソースにデータを書き込む
+	indexData_ = nullptr;
+	indexResource_->Map(0, nullptr, reinterpret_cast<void**>(&indexData_));
+	indexData_[0] = 0;	indexData_[1] = 1;	indexData_[2] = 2;
+	indexData_[3] = 1;	indexData_[4] = 3;	indexData_[5] = 2;
 }
 
 void Object2D::CreateMaterialResource() {
-
+	// マテリアル用のリソースを作る
+	materialResource_ = MAGISYSTEM::CreateBufferResource(sizeof(Material2D));
 }
 
 void Object2D::MapMaterialData() {
-
+	materialData_ = nullptr;
+	// 書き込むためのアドレスを取得
+	materialResource_->Map(0, nullptr, reinterpret_cast<void**>(&materialData_));
+	// マテリアルデータを書き込む
+	materialData_->color = material_.color;
+	materialData_->uvTransformMatrix = material_.uvTransformMatrix;
 }
 
 void Object2D::CreateWVPResource() {
-
+	// WVP用のリソースを作る
+	transformationResource_ = MAGISYSTEM::CreateBufferResource(sizeof(Matrix4x4));
 }
 
 void Object2D::MapWVPData() {
-
+	// データを書き込む
+	wvpData_ = nullptr;
+	// データを書き込むためのアドレスを取得
+	transformationResource_->Map(0, nullptr, reinterpret_cast<void**>(&wvpData_));
+	// 単位行列を書き込んでおく
+	*wvpData_ = MakeIdentityMatrix4x4();
 }
 
 void Object2D::AdjustTextureSize() {
+	// テクスチャデータ取得
+	const DirectX::TexMetadata& metaData = MAGISYSTEM::GetTextureMetaData(textureName_);
 
+	cutOutSize_.x = static_cast<float>(metaData.width);
+	cutOutSize_.y = static_cast<float>(metaData.height);
+	// 画面サイズをテクスチャサイズに合わせる
+	worldTransform_.size = cutOutSize_;
 }

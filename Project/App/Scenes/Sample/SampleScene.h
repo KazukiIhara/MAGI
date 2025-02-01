@@ -90,6 +90,8 @@ inline void SampleScene<Data>::Draw() {
 
 	MAGISYSTEM::PreDrawObject3D();
 	primitive_->Draw();
+
+	
 }
 
 template<typename Data>
