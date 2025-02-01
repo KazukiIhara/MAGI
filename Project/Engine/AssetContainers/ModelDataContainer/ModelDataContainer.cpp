@@ -110,16 +110,37 @@ ModelData ModelDataContainer::LoadModel(const std::string& modelName, bool isNor
 
 		// Diffuseテクスチャがある場合
 		if (material->GetTextureCount(aiTextureType_DIFFUSE) != 0) {
+			// Diffuse テクスチャのパスを取得
 			aiString textureFilePath;
 			material->GetTexture(aiTextureType_DIFFUSE, 0, &textureFilePath);
-			materialData.textureFilePath = fileDirectoryPath + "/" + textureFilePath.C_Str();
+			std::string diffuseTexName = textureFilePath.C_Str();
+
+			// 通常の Diffuse テクスチャ読み込み
+			materialData.textureFilePath = fileDirectoryPath + "/" + diffuseTexName;
 			textureDataContainer_->Load(materialData.textureFilePath);
 
 			// 法線マップがある場合の処理
 			if (isNormalMap) {
-				// 指定のパスを作成
-				materialData.normalMapTextureFilePath = fileDirectoryPath + "/" + "Normal_" + textureFilePath.C_Str();
-				// 法線マップテクスチャをロード
+				// 拡張子の前に"_normal"を挿入する
+				std::string baseName;
+				std::string ext;
+
+				// 拡張子を切り出す
+				const size_t dotPos = diffuseTexName.find_last_of('.');
+				if (dotPos != std::string::npos) {
+					baseName = diffuseTexName.substr(0, dotPos);
+					ext = diffuseTexName.substr(dotPos);        
+				} else {
+					// 拡張子が見つからない場合はそのまま
+					baseName = diffuseTexName;
+					ext = "";
+				}
+
+				// 拡張子の前に "_normal" をつける
+				const std::string normalMapName = baseName + "_normal" + ext;  
+
+				// パスを作ってロード
+				materialData.normalMapTextureFilePath = fileDirectoryPath + "/" + normalMapName;
 				textureDataContainer_->LoadNormalMap(materialData.normalMapTextureFilePath);
 			}
 
