@@ -32,6 +32,7 @@ private:
 
 template<typename Data>
 inline void SampleScene<Data>::Initialize() {
+	MAGISYSTEM::LoadTexture("pronama_chan.png");
 	MAGISYSTEM::LoadModel("Kick");
 	MAGISYSTEM::LoadModel("terrain", true);
 	MAGISYSTEM::LoadModel("Man");
@@ -45,27 +46,21 @@ inline void SampleScene<Data>::Initialize() {
 	terrain_ = std::make_unique<Object3D>("terrain", "terrain");
 	terrain_->Initialize();
 
-
-	object2DSample_ = std::make_unique<Object2D>("pronama", "pronama_chan.png");
-
-	//MAGISYSTEM::AddPunctualLight("sampleLight");
-	//auto& sampleLight = MAGISYSTEM::GetLightData("sampleLight");
-	//sampleLight.intensity = 1.0f;
-
 	skinningSample_ = std::make_unique<Object3DSkinning>("Kick", "Maw");
 	skinningSample_->Initialize();
 	skinningSample_->GetTranslate().x = -1.0f;
-	
 
 	sample_ = std::make_unique<Object3DSkinning>("Kick", "Kick");
 	sample_->Initialize();
 	sample_->GetTranslate().x = 1.0f;
 	sample_->GetRotate().y = std::numbers::pi_v<float>;
 
+	object2DSample_ = std::make_unique<Object2D>("pronama", "pronama_chan.png");
+
+
 	MAGISYSTEM::AddPunctualLight("sampleLight");
 	auto& sampleLight = MAGISYSTEM::GetLightData("sampleLight");
 	sampleLight.intensity = 1.0f;
-
 
 
 	//MAGISYSTEM::AddPunctualLight("redLight");
@@ -109,25 +104,23 @@ inline void SampleScene<Data>::Update() {
 template<typename Data>
 inline void SampleScene<Data>::Draw() {
 	// 
-	// スキニングなしオブジェクト3Dの描画前処理
+	// 法線マップなしオブジェクト3Dの描画前処理
 	// 
 	MAGISYSTEM::PreDrawObject3D();
-  sample_->Draw();
-	primitive_->Draw();
+	sample_->Draw();
 
 	// 
-	// スキニングありオブジェクト3Dの描画前処理
+	// 法線マップありオブジェクト3Dの描画前処理
 	// 
 	MAGISYSTEM::PreDrawObject3DNormalMap();
-	terrain_->Draw();
 	skinningSample_->Draw();
+	terrain_->Draw();
 
 	// 
 	// オブジェクト2Dの描画前処理
 	// 
 	MAGISYSTEM::PreDrawObject2D();
 	object2DSample_->Draw();
-
 
 }
 
