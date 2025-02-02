@@ -42,6 +42,9 @@ inline void SampleScene<Data>::Initialize() {
 	MAGISYSTEM::LoadAnimation("Kick");
 	MAGISYSTEM::LoadAnimation("Maw");
 
+	primitive_ = std::make_unique<Primitive3D>("Plane", Primitive3DType::Plane);
+	primitive_->GetRotate().y = std::numbers::pi_v<float>;
+	primitive_->GetTranslate().y = 1.0f;
 
 	terrain_ = std::make_unique<Object3D>("terrain", "terrain");
 	terrain_->Initialize();
@@ -91,6 +94,8 @@ inline void SampleScene<Data>::Update() {
 		skinningSample_->ResetAnimation();
 	}
 
+	primitive_->Update();
+
 	terrain_->Update();
 
 	skinningSample_->Update();
@@ -107,6 +112,7 @@ inline void SampleScene<Data>::Draw() {
 	// 法線マップなしオブジェクト3Dの描画前処理
 	// 
 	MAGISYSTEM::PreDrawObject3D();
+	primitive_->Draw();
 	sample_->Draw();
 
 	// 
