@@ -48,12 +48,8 @@ private:
 	void CreateWVPResource();
 	// データを書き込む
 	void MapWVPData();
-
-
 	// テクスチャサイズをイメージに合わせる
 	void AdjustTextureSize();
-
-
 private:
 	// 名前
 	std::string name_ = "";
@@ -80,6 +76,7 @@ private:
 	// 上下フリップ
 	bool isFlipY_ = false;
 
+private:
 	// WVP用のリソース
 	ComPtr<ID3D12Resource> transformationResource_ = nullptr;
 	// WVPデータ
@@ -105,5 +102,4 @@ private:
 	Material2D* materialData_ = nullptr;
 	// マテリアル情報を受け取る箱
 	Material2D material_{};
-
 };
