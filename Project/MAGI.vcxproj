@@ -115,6 +115,8 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="App\Game\Game.h" />
     <ClInclude Include="App\GameData\GameData.h" />
     <ClInclude Include="App\Scenes\Sample\SampleScene.h" />
+    <ClInclude Include="Engine\2D\Object2D\Object2D.h" />
+    <ClInclude Include="Engine\2D\WorldTransform2D\WorldTransform2D.h" />
     <ClInclude Include="Engine\3D\Base3D\WorldEntity\WorldEntity.h" />
     <ClInclude Include="Engine\3D\Base3D\WorldTransform\WorldTransform.h" />
     <ClInclude Include="Engine\3D\Camera3Ds\Camera3D\Camera3D.h" />
@@ -154,6 +156,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Engine\DirectX\Viewport\Viewport.h" />
     <ClInclude Include="Engine\FPSController\FPSController.h" />
     <ClInclude Include="Engine\Framework\MAGI.h" />
+    <ClInclude Include="Engine\GraphicsPipelines\Object2DGraphicsPipeline\Object2DGraphicsPipeline.h" />
     <ClInclude Include="Engine\GUI\GUI.h" />
     <ClInclude Include="Engine\GraphicsPipelines\Object3DGraphicsPipeline\Object3DGraphicsPipeline.h" />
     <ClInclude Include="Engine\GraphicsPipelines\Object3DGraphicsPipelineNormalMap\Object3DGraphicsPipelineNormalMap.h" />
@@ -199,6 +202,8 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="App\Game\Game.cpp" />
+    <ClCompile Include="Engine\2D\Object2D\Object2D.cpp" />
+    <ClCompile Include="Engine\2D\WorldTransform2D\WorldTransform2D.cpp" />
     <ClCompile Include="Engine\3D\Base3D\WorldEntity\WorldEntity.cpp" />
     <ClCompile Include="Engine\3D\Base3D\WorldTransform\WorldTransform.cpp" />
     <ClCompile Include="Engine\3D\Camera3Ds\Camera3D\Camera3D.cpp" />
@@ -236,6 +241,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Engine\DirectX\Viewport\Viewport.cpp" />
     <ClCompile Include="Engine\FPSController\FPSController.cpp" />
     <ClCompile Include="Engine\Framework\MAGI.cpp" />
+    <ClCompile Include="Engine\GraphicsPipelines\Object2DGraphicsPipeline\Object2DGraphicsPipeline.cpp" />
     <ClCompile Include="Engine\GUI\GUI.cpp" />
     <ClCompile Include="Engine\GraphicsPipelines\Object3DGraphicsPipeline\Object3DGraphicsPipeline.cpp" />
     <ClCompile Include="Engine\GraphicsPipelines\Object3DGraphicsPipelineNormalMap\Object3DGraphicsPipelineNormalMap.cpp" />
@@ -256,6 +262,10 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Engine\Resources\Shaders\Object2D\Object2D.hlsli">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </None>
     <None Include="Engine\SceneManager\SceneManager.ipp" />
   </ItemGroup>
   <ItemGroup>
@@ -265,6 +275,20 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ProjectReference Include="Externals\imgui\imgui.vcxproj">
       <Project>{22345678-ABCD-4321-DCBA-1234567890AB}</Project>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="Engine\Resources\Shaders\Object2D\Object2D.PS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </FxCompile>
+    <FxCompile Include="Engine\Resources\Shaders\Object2D\Object2D.VS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </FxCompile>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -11,6 +11,7 @@
 // MyHedder
 #include "Includes/Enums/GraphicsPipelineEnum.h"
 
+#include "GraphicsPipelines/Object2DGraphicsPipeline/Object2DGraphicsPipeline.h"
 #include "GraphicsPipelines/Object3DGraphicsPipeline/Object3DGraphicsPipeline.h"
 #include "GraphicsPipelines/Object3DGraphicsPipelineNormalMap/Object3DGraphicsPipelineNormalMap.h"
 
@@ -41,8 +42,10 @@ private: // メンバ変数
 	// ルートシグネイチャ
 	ComPtr<ID3D12RootSignature> rootSignatures_[kGraphicsPipelineStateNum];
 	// グラフィックスパイプライン
-	ComPtr<ID3D12PipelineState> graphicsPipelineStates_[kGraphicsPipelineStateNum][kBlendModeNum_];
+	ComPtr<ID3D12PipelineState> graphicsPipelineStates_[kGraphicsPipelineStateNum][kBlendModeNum];
 private:
+	// Object2DGraphicsPipeline
+	std::unique_ptr<Object2DGraphicsPipeline> object2DGraphicsPipeline_ = nullptr;
 	// Object3DGraphicsPipeline
 	std::unique_ptr<Object3DGraphicsPipeline> object3DGraphicsPipeline_ = nullptr;
 	// Object3DNormalMapGraphicsPipeline

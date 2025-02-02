@@ -568,6 +568,14 @@ void MAGISYSTEM::PreDrawObject3DNormalMap() {
 	commandList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 }
 
+void MAGISYSTEM::PreDrawObject2D() {
+	ID3D12GraphicsCommandList* commandList = directXCommand_->GetList();
+	// RootSignatureの設定
+	commandList->SetGraphicsRootSignature(graphicsPipelineManager_->GetRootSignature(GraphicsPipelineStateType::Object2D));
+	// 形状を設定
+	commandList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+}
+
 ID3D12PipelineState* MAGISYSTEM::GetGraphicsPipelineState(GraphicsPipelineStateType pipelineState, BlendMode blendMode) {
 	return graphicsPipelineManager_->GetPipelineState(pipelineState, blendMode);
 }

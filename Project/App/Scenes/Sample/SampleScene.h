@@ -8,6 +8,7 @@
 #include "3D/RenderObjects3D/Object3D/Object3D.h"
 #include "3D/RenderObjects3D/Object3DSkinning/Object3DSkinning.h"
 #include "3D/RenderObjects3D/Primitive3D/Primitive3D.h"
+#include "2D/Object2D/Object2D.h"
 
 // サンプルシーン
 template <typename Data>
@@ -26,6 +27,7 @@ private:
 	std::unique_ptr<Object3DSkinning> skinningSample_ = nullptr;
 	std::unique_ptr<Object3D> terrain_ = nullptr;
 	std::unique_ptr<Primitive3D> primitive_ = nullptr;
+	std::unique_ptr<Object2D> object2DSample_ = nullptr;
 };
 
 template<typename Data>
@@ -43,6 +45,13 @@ inline void SampleScene<Data>::Initialize() {
 	terrain_ = std::make_unique<Object3D>("terrain", "terrain");
 	terrain_->Initialize();
 
+
+	object2DSample_ = std::make_unique<Object2D>("pronama", "pronama_chan.png");
+
+	//MAGISYSTEM::AddPunctualLight("sampleLight");
+	//auto& sampleLight = MAGISYSTEM::GetLightData("sampleLight");
+	//sampleLight.intensity = 1.0f;
+
 	skinningSample_ = std::make_unique<Object3DSkinning>("Kick", "Maw");
 	skinningSample_->Initialize();
 	skinningSample_->GetTranslate().x = -1.0f;
@@ -56,6 +65,7 @@ inline void SampleScene<Data>::Initialize() {
 	MAGISYSTEM::AddPunctualLight("sampleLight");
 	auto& sampleLight = MAGISYSTEM::GetLightData("sampleLight");
 	sampleLight.intensity = 1.0f;
+
 
 
 	//MAGISYSTEM::AddPunctualLight("redLight");
@@ -92,16 +102,33 @@ inline void SampleScene<Data>::Update() {
 
 	sample_->Update();
 
+	object2DSample_->Update();
+
 }
 
 template<typename Data>
 inline void SampleScene<Data>::Draw() {
+	// 
+	// スキニングなしオブジェクト3Dの描画前処理
+	// 
+	MAGISYSTEM::PreDrawObject3D();
+  sample_->Draw();
+	primitive_->Draw();
+
+	// 
+	// スキニングありオブジェクト3Dの描画前処理
+	// 
 	MAGISYSTEM::PreDrawObject3DNormalMap();
 	terrain_->Draw();
 	skinningSample_->Draw();
 
-	MAGISYSTEM::PreDrawObject3D();
-	sample_->Draw();
+	// 
+	// オブジェクト2Dの描画前処理
+	// 
+	MAGISYSTEM::PreDrawObject2D();
+	object2DSample_->Draw();
+
+
 }
 
 template<typename Data>

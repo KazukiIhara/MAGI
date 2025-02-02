@@ -14,6 +14,9 @@
 class DXGI;
 class ShaderCompiler;
 
+/// <summary>
+/// 3D描画パイプライン
+/// </summary>
 class Object3DGraphicsPipeline {
 public:
 	Object3DGraphicsPipeline(DXGI* dxgi, ShaderCompiler* shaderCompiler);
@@ -51,7 +54,7 @@ private:
 	// ルートシグネチャ
 	ComPtr<ID3D12RootSignature> rootSignature_;
 	// グラフィックスパイプラインステート (ブレンドモードごとに設定)
-	ComPtr<ID3D12PipelineState> pipelineState_[kBlendModeNum_];
+	ComPtr<ID3D12PipelineState> pipelineState_[kBlendModeNum];
 	// 頂点シェーダーのバイナリデータ
 	ComPtr<ID3DBlob> vertexShaderBlob_;
 	// ピクセルシェーダーのバイナリデータ

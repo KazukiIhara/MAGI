@@ -7,6 +7,7 @@
 /// グラフィックスパイプラインの種類
 /// </summary>
 enum class GraphicsPipelineStateType {
+	Object2D,
 	Object3D,
 	Object3DNormalMap,
 
