@@ -17,6 +17,8 @@ Object2D::~Object2D() {
 void Object2D::Initialize(const std::string& objectName, const std::string& textureName) {
 	// 名前をセット
 	name_ = objectName;
+	// テクスチャの名前をセット
+	textureName_ = textureName;
 	// トランスフォームを初期化
 	worldTransform_.Update();
 	// マテリアルを初期化
