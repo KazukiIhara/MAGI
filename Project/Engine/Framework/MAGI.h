@@ -161,7 +161,7 @@ public: // エンジンの機能
 	// ルートシグネイチャ取得関数
 	static ID3D12RootSignature* GetComputeRootSignature(ComputePipelineStateType pipelineState);
 	// パイプライン取得関数
-	static ID3D12PipelineState* GetCompurePipelineState(ComputePipelineStateType pipelineState);
+	static ID3D12PipelineState* GetComputePipelineState(ComputePipelineStateType pipelineState);
 
 #pragma endregion
 

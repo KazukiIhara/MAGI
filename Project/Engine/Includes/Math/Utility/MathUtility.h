@@ -164,6 +164,8 @@ namespace MAGIMath {
 	// 逆転置行列
 	Matrix4x4 MakeInverseTransposeMatrix(const Matrix4x4& a);
 
+	// スケール成分削除関数
+	Matrix4x4 RemoveScaling(const Matrix4x4& mat);
 
 	// 拡縮行列作成関数
 	Matrix4x4 MakeScaleMatrix(const Vector3& scale);
@@ -205,6 +207,9 @@ namespace MAGIMath {
 
 	// 協約クオータニオンを返す
 	Quaternion Conjugate(const Quaternion& quaternion);
+
+	// クオータニオン同士の内積
+	float Dot(const Quaternion& q1, const Quaternion& q2);
 
 	// クオータニオンのnormを返す
 	float Norm(const Quaternion& quaternion);

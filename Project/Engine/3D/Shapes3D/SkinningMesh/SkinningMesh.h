@@ -13,7 +13,7 @@ public:
 	// スキニング
 	void Skinning(const uint32_t& paletteSrvIndex);
 	// 影響度の参照を渡す
-	std::span<VertexInfluence>& GetMappdInfluence();
+	std::span<VertexInfluenceJoints>& GetMappdInfluence();
 private:
 	// 頂点リソースを作成
 	void CreateVertexResource()override;
@@ -38,7 +38,7 @@ private:
 	// スキニング影響度のリソース
 	ComPtr<ID3D12Resource> influenceResource_;
 	// スキニング影響度
-	std::span<VertexInfluence> mappedInfluence_;
+	std::span<VertexInfluenceJoints> mappedInfluence_;
 
 	// スキニング用の情報リソース
 	ComPtr<ID3D12Resource> skinningInformationResource_;
