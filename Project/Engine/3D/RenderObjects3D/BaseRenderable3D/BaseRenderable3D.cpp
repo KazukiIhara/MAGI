@@ -56,7 +56,7 @@ void BaseRenderable3D::Initialize(const std::string& objectName) {
 	// マテリアル初期化
 	material_.color = Vector4(1.0f, 1.0f, 1.0f, 1.0f);
 	material_.enableLighting = true;
-	material_.enableSpecularRef = true;
+	material_.enableSpecularRef = false;
 	material_.shininess = 100.0f;
 	material_.uvTransformMatrix = MakeIdentityMatrix4x4();
 

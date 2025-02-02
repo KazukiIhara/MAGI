@@ -24,7 +24,9 @@ void LineDrawer3D::Draw() {
 }
 
 void LineDrawer3D::AddLine(const Vector3& start, const Vector3& end, const RGBA& color) {
-
+	start;
+	end;
+	color;
 }
 
 void LineDrawer3D::ClearLines() {
@@ -32,7 +34,7 @@ void LineDrawer3D::ClearLines() {
 }
 
 void LineDrawer3D::Initialize(Camera3DManager* camera3DManager) {
-
+	SetCamera3DManager(camera3DManager);
 }
 
 void LineDrawer3D::SetCamera3DManager(Camera3DManager* camera3DManager) {

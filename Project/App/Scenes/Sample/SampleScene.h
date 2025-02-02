@@ -51,7 +51,7 @@ inline void SampleScene<Data>::Initialize() {
 
 	skinningSample_ = std::make_unique<Object3DSkinning>("Kick", "Maw");
 	skinningSample_->Initialize();
-	skinningSample_->GetTranslate().x = -1.0f;
+	//skinningSample_->GetTranslate().x = -1.0f;
 
 	sample_ = std::make_unique<Object3DSkinning>("Kick", "Kick");
 	sample_->Initialize();
@@ -112,8 +112,8 @@ inline void SampleScene<Data>::Draw() {
 	// 法線マップなしオブジェクト3Dの描画前処理
 	// 
 	MAGISYSTEM::PreDrawObject3D();
-	primitive_->Draw();
-	sample_->Draw();
+	//primitive_->Draw();
+	//sample_->Draw();
 
 	// 
 	// 法線マップありオブジェクト3Dの描画前処理
@@ -126,7 +126,7 @@ inline void SampleScene<Data>::Draw() {
 	// オブジェクト2Dの描画前処理
 	// 
 	MAGISYSTEM::PreDrawObject2D();
-	object2DSample_->Draw();
+	//object2DSample_->Draw();
 
 }
 
