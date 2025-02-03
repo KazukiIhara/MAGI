@@ -531,8 +531,8 @@ AnimationData MAGISYSTEM::FindAnimation(const std::string& animationName) {
 	return animationDataContainer_->FindAnimationData(animationName);
 }
 
-void MAGISYSTEM::TransferCamera() {
-	camera3DManager_->TransferCamera();
+void MAGISYSTEM::TransferCamera(const uint32_t& rootParameterIndex) {
+	camera3DManager_->TransferCamera(rootParameterIndex);
 }
 
 void MAGISYSTEM::AddPunctualLight(const std::string& lightName, const PunctualLightData& lightData) {

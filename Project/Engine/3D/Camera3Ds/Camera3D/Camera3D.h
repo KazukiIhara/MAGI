@@ -25,7 +25,7 @@ public:
 	// 更新
 	virtual void Update();
 	// 定数バッファに転送
-	void TransferCamera();
+	void TransferCamera(const uint32_t& rootParameterIndex);
 
 
 	// ビュープロジェクションマトリックスを送る

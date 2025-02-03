@@ -90,7 +90,7 @@ void BaseRenderable3D::PrepareForRendering(bool isNormalMap) {
 	// ライトを転送
 	MAGISYSTEM::TransferPunctualLight();
 	// カメラ情報を転送
-	MAGISYSTEM::TransferCamera();
+	MAGISYSTEM::TransferCamera(2);
 }
 
 void BaseRenderable3D::CreateWVPResource() {

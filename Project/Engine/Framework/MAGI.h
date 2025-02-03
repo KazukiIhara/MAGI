@@ -200,7 +200,7 @@ public: // エンジンの機能
 
 #pragma region Camera3DManager
 	// カメラの転送
-	static void TransferCamera();
+	static void TransferCamera(const uint32_t& rootParameterIndex);
 
 #pragma endregion
 
