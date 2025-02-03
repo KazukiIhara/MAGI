@@ -76,7 +76,7 @@ void DebugCamera3D::HandleCameraTranslation(Vector3& cameraTranslate, Vector3& c
 
 void DebugCamera3D::HandleCameraZoom(Vector3& cameraTranslate, Vector3& cameraRotate, int64_t wheelDelta) {
 	if (wheelDelta != 0) {
-		const float zoomSpeed = 0.5f; // ズーム速度スケール
+		const float zoomSpeed = 0.3f; // ズーム速度スケール
 
 		// カメラの forward ベクトルを取得
 		Vector3 forward = Forward(cameraRotate);
