@@ -39,7 +39,7 @@ void LineDrawer3D::Draw() {
 	// PSOを設定
 	//commandList->SetPipelineState(MAGISYSTEM::GetGraphicsPipelineState(Line, blendMode_));
 	// Cameraを転送
-	MAGISYSTEM::TransferCamera(0); // TODO:Index0
+	MAGISYSTEM::TransferCamera(0);
 	// StructuredBufferのSRVを設定する
 	commandList->SetGraphicsRootDescriptorTable(1, MAGISYSTEM::GetSrvDescriptorHandleGPU(srvIndex_));
 	// 描画！(DrawCall/ドローコール)。3頂点で1つのインスタンス。インスタンスについては今後
