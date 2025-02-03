@@ -42,8 +42,10 @@ void DebugCamera3D::Update() {
 void DebugCamera3D::HandleCameraRotation(Vector3& cameraRotate, const POINT& delta) {
 	// マウスの右ボタンが押されているか確認
 	if (GetAsyncKeyState(VK_RBUTTON) & 0x8000) {
-
 		float rotateSpeed = 0.2f;
+		if (MAGISYSTEM::PushKey(DIK_LSHIFT)) {
+			rotateSpeed *= 0.3f;
+		}
 		// カメラの回転を更新
 		cameraRotate.x -= delta.y * rotateSpeed * MAGISYSTEM::GetDeltaTime(); // 縦方向
 		cameraRotate.y -= delta.x * rotateSpeed * MAGISYSTEM::GetDeltaTime(); // 横方向
@@ -66,7 +68,11 @@ void DebugCamera3D::HandleCameraTranslation(Vector3& cameraTranslate, Vector3& c
 		up.z = std::sinf(cameraRotate.x) * std::cosf(cameraRotate.y);
 
 		// 移動量をローカル座標系で計算
-		const float moveSpeed = 0.3f;
+		float moveSpeed = 0.3f;
+		if (MAGISYSTEM::PushKey(DIK_LSHIFT)) {
+			moveSpeed *= 0.3f;
+		}
+
 		Vector3 moveDelta = (right * static_cast<float> (-delta.x) + up * static_cast<float> (delta.y)) * moveSpeed * MAGISYSTEM::GetDeltaTime();
 
 		// カメラ位置を更新
@@ -76,8 +82,10 @@ void DebugCamera3D::HandleCameraTranslation(Vector3& cameraTranslate, Vector3& c
 
 void DebugCamera3D::HandleCameraZoom(Vector3& cameraTranslate, Vector3& cameraRotate, int64_t wheelDelta) {
 	if (wheelDelta != 0) {
-		const float zoomSpeed = 0.3f; // ズーム速度スケール
-
+		float zoomSpeed = 0.3f; // ズーム速度スケール
+		if (MAGISYSTEM::PushKey(DIK_LSHIFT)) {
+			zoomSpeed *= 0.3f;
+		}
 		// カメラの forward ベクトルを取得
 		Vector3 forward = Forward(cameraRotate);
 
