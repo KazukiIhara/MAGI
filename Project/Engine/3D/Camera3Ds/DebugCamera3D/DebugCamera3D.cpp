@@ -43,7 +43,7 @@ void DebugCamera3D::HandleCameraRotation(Vector3& cameraRotate, const POINT& del
 	// マウスの右ボタンが押されているか確認
 	if (GetAsyncKeyState(VK_RBUTTON) & 0x8000) {
 
-		float rotateSpeed = 0.3f;
+		float rotateSpeed = 0.2f;
 		// カメラの回転を更新
 		cameraRotate.x -= delta.y * rotateSpeed * MAGISYSTEM::GetDeltaTime(); // 縦方向
 		cameraRotate.y -= delta.x * rotateSpeed * MAGISYSTEM::GetDeltaTime(); // 横方向
@@ -66,7 +66,7 @@ void DebugCamera3D::HandleCameraTranslation(Vector3& cameraTranslate, Vector3& c
 		up.z = std::sinf(cameraRotate.x) * std::cosf(cameraRotate.y);
 
 		// 移動量をローカル座標系で計算
-		const float moveSpeed = 0.4f;
+		const float moveSpeed = 0.3f;
 		Vector3 moveDelta = (right * static_cast<float> (-delta.x) + up * static_cast<float> (delta.y)) * moveSpeed * MAGISYSTEM::GetDeltaTime();
 
 		// カメラ位置を更新
