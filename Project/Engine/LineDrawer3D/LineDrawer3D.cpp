@@ -20,11 +20,30 @@ LineDrawer3D::~LineDrawer3D() {
 }
 
 void LineDrawer3D::Update() {
+	// 描画すべきインスタンス数
+	instanceCount_ = static_cast<uint32_t>(lines_.size());
 
+	if (instancingData_ != nullptr) {
+		for (uint32_t i = 0; i < instanceCount_; ++i) {
+			// GPUにデータを転送
+			instancingData_[i] = lines_[i];
+		}
+	}
+	// ラインのコンテナをクリア
+	ClearLines();
 }
 
 void LineDrawer3D::Draw() {
-
+	// コマンドリストを取得
+	ID3D12GraphicsCommandList* commandList = MAGISYSTEM::GetDirectXCommandList();
+	// PSOを設定
+	//commandList->SetPipelineState(MAGISYSTEM::GetGraphicsPipelineState(Line, blendMode_));
+	// Cameraを転送
+	MAGISYSTEM::TransferCamera(); // TODO:Index0
+	// StructuredBufferのSRVを設定する
+	commandList->SetGraphicsRootDescriptorTable(1, MAGISYSTEM::GetSrvDescriptorHandleGPU(srvIndex_));
+	// 描画！(DrawCall/ドローコール)。3頂点で1つのインスタンス。インスタンスについては今後
+	commandList->DrawInstanced(2, instanceCount_, 0, 0);
 }
 
 void LineDrawer3D::AddLine(const Vector3& start, const Vector3& end, const RGBA& color) {
