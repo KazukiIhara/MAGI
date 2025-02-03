@@ -35,7 +35,7 @@ private:
 	void MapInstancingData();
 private:
 	// ラインの最大数
-	const uint32_t kNumMaxInstance = 8192;
+	const uint32_t kNumMaxInstance = 16384;
 
 	// ライン
 	std::vector<LineData3D> lines_;
