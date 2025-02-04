@@ -99,7 +99,7 @@ void Object2D::Update() {
 
 	// ワールド行列の更新
 	worldTransform_.Update();
-	Matrix4x4 projectionMatrix = MakeOrthographicMatrix(0.0f, 0.0f, float(GetSystemMetrics(SM_CXSCREEN)), float(GetSystemMetrics(SM_CYSCREEN)), 0.0f, 100.0f);
+	Matrix4x4 projectionMatrix = MakeOrthographicMatrix(0.0f, 0.0f, float(WindowApp::kClientWidth), float(WindowApp::kClientHeight), 0.0f, 100.0f);
 	*wvpData_ = worldTransform_.worldMatrix * projectionMatrix;
 
 	// マテリアルデータの更新

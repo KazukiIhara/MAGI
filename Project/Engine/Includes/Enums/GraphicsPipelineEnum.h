@@ -8,6 +8,7 @@
 /// </summary>
 enum class GraphicsPipelineStateType {
 	Object2D,
+	Line3D,
 	Object3D,
 	Object3DNormalMap,
 

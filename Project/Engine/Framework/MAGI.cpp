@@ -38,8 +38,9 @@ std::unique_ptr<ComputePipelineManager> MAGISYSTEM::computePipelineManager_ = nu
 std::unique_ptr<Camera3DManager> MAGISYSTEM::camera3DManager_ = nullptr;
 std::unique_ptr<PunctualLightManager> MAGISYSTEM::punctualLightManager_ = nullptr;
 
-std::unique_ptr<SceneManager<GameData>> MAGISYSTEM::sceneManager_ = nullptr;
+std::unique_ptr<LineDrawer3D> MAGISYSTEM::lineDrawer3D_ = nullptr;
 
+std::unique_ptr<SceneManager<GameData>> MAGISYSTEM::sceneManager_ = nullptr;
 
 std::unique_ptr<ImGuiController> MAGISYSTEM::imguiController_ = nullptr;
 std::unique_ptr<GUI> MAGISYSTEM::gui_ = nullptr;
@@ -114,6 +115,8 @@ void MAGISYSTEM::Initialize() {
 	// PunctualLightManager
 	punctualLightManager_ = std::make_unique<PunctualLightManager>(dxgi_.get(), directXCommand_.get(), srvuavManager_.get());
 
+	// LineDrawer3D
+	lineDrawer3D_ = std::make_unique<LineDrawer3D>(dxgi_.get(), directXCommand_.get(), srvuavManager_.get(), graphicsPipelineManager_.get(), camera3DManager_.get());
 
 	// SceneManager
 	sceneManager_ = std::make_unique<SceneManager<GameData>>();
@@ -146,6 +149,11 @@ void MAGISYSTEM::Finalize() {
 	// SceneManager
 	if (sceneManager_) {
 		sceneManager_.reset();
+	}
+
+	// LineDrawer3D
+	if (lineDrawer3D_) {
+		lineDrawer3D_.reset();
 	}
 
 	// PunctualLightManager
@@ -314,6 +322,9 @@ void MAGISYSTEM::Update() {
 	// ライトマネージャの更新
 	punctualLightManager_->Update();
 
+	// 3Dライン描画クラスの更新
+	lineDrawer3D_->Update();
+
 	// GUI描画処理
 	gui_->Draw();
 
@@ -340,9 +351,12 @@ void MAGISYSTEM::Draw() {
 	// シザー矩形の設定
 	scissorRect_->SettingScissorRect();
 
+	// コマンドリスト取得
+	ID3D12GraphicsCommandList* commandList = directXCommand_->GetList();
+
 	// SRVUAVのディスクリプタヒープを設定
 	ComPtr<ID3D12DescriptorHeap> descriptorHeaps[] = { srvuavManager_->GetDescriptorHeap() };
-	directXCommand_->GetList()->SetDescriptorHeaps(1, descriptorHeaps->GetAddressOf());
+	commandList->SetDescriptorHeaps(1, descriptorHeaps->GetAddressOf());
 
 	// 
 	// 描画処理
@@ -353,6 +367,17 @@ void MAGISYSTEM::Draw() {
 	// シーンの描画処理
 	//
 	sceneManager_->Draw();
+
+	// 
+	// LineDrawer3Dの描画前処理
+	// 
+	commandList->SetGraphicsRootSignature(graphicsPipelineManager_->GetRootSignature(GraphicsPipelineStateType::Line3D));
+	commandList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_LINELIST);
+
+	// 
+	// LineDrawer3Dの描画処理
+	// 
+	lineDrawer3D_->Draw();
 
 
 	//
@@ -531,8 +556,8 @@ AnimationData MAGISYSTEM::FindAnimation(const std::string& animationName) {
 	return animationDataContainer_->FindAnimationData(animationName);
 }
 
-void MAGISYSTEM::TransferCamera() {
-	camera3DManager_->TransferCamera();
+void MAGISYSTEM::TransferCamera(const uint32_t& rootParameterIndex) {
+	camera3DManager_->TransferCamera(rootParameterIndex);
 }
 
 void MAGISYSTEM::AddPunctualLight(const std::string& lightName, const PunctualLightData& lightData) {
@@ -550,6 +575,10 @@ PunctualLightData& MAGISYSTEM::GetLightData(const std::string& lightName) {
 
 void MAGISYSTEM::TransferPunctualLight() {
 	punctualLightManager_->TransferLightsData();
+}
+
+void MAGISYSTEM::DrawLine3D(const Vector3& start, const Vector3& end, const RGBA& color) {
+	lineDrawer3D_->AddLine(start, end, color);
 }
 
 void MAGISYSTEM::PreDrawObject3D() {

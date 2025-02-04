@@ -29,14 +29,14 @@ void Camera3DManager::Update() {
 	sceneCamera_->Update();
 }
 
-void Camera3DManager::TransferCamera() {
+void Camera3DManager::TransferCamera(const uint32_t& rootParameterIndex) {
 #ifdef _DEBUG
 	if (isDebugCamera_) {
-		debugCamera_->TransferCamera();
+		debugCamera_->TransferCamera(rootParameterIndex);
 		return;
 	}
 #endif // _DEBUG
-	sceneCamera_->TransferCamera();
+	sceneCamera_->TransferCamera(rootParameterIndex);
 }
 
 bool& Camera3DManager::GetIsDebugCamera() {

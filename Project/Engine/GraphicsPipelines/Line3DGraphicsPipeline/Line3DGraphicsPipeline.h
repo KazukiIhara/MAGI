@@ -2,17 +2,10 @@
 
 #include "GraphicsPipelines/BaseGraphicsPipeline/BaseGraphicsPipeline.h"
 
-// 前方宣言
-class DXGI;
-class ShaderCompiler;
-
-/// <summary>
-/// 3D描画パイプライン
-/// </summary>
-class Object3DGraphicsPipeline :public BaseGraphicsPipeline {
+class Line3DGraphicsPipeline :public BaseGraphicsPipeline {
 public:
-	Object3DGraphicsPipeline(DXGI* dxgi, ShaderCompiler* shaderCompiler);
-	~Object3DGraphicsPipeline()override;
+	Line3DGraphicsPipeline(DXGI* dxgi, ShaderCompiler* shaderCompiler);
+	~Line3DGraphicsPipeline()override;
 private:
 	// ルートシグネチャを作成する
 	void CreateRootSignature()override;

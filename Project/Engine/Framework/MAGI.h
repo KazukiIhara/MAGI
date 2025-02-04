@@ -38,6 +38,9 @@
 #include "Camera3DManager/Camera3DManager.h"
 #include "PunctualLightManager/PunctualLightManager.h"
 
+#include "LineDrawer3D/LineDrawer3D.h"
+
+
 #include "SceneManager/SceneManager.h"
 
 
@@ -200,7 +203,7 @@ public: // エンジンの機能
 
 #pragma region Camera3DManager
 	// カメラの転送
-	static void TransferCamera();
+	static void TransferCamera(const uint32_t& rootParameterIndex);
 
 #pragma endregion
 
@@ -214,6 +217,11 @@ public: // エンジンの機能
 	static PunctualLightData& GetLightData(const std::string& lightName);
 	// ライトの転送
 	static void TransferPunctualLight();
+#pragma endregion
+
+#pragma region LineDrawer3D
+	// ライン描画
+	static void DrawLine3D(const Vector3& start, const Vector3& end, const RGBA& color);
 #pragma endregion
 
 
@@ -292,6 +300,11 @@ protected:
 	//
 	static std::unique_ptr<Camera3DManager> camera3DManager_;
 	static std::unique_ptr<PunctualLightManager> punctualLightManager_;
+
+	// 
+	// Drawer
+	// 
+	static std::unique_ptr<LineDrawer3D> lineDrawer3D_;
 
 	// 
 	// GameManager

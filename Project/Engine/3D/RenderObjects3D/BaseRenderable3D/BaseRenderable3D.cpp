@@ -56,7 +56,7 @@ void BaseRenderable3D::Initialize(const std::string& objectName) {
 	// マテリアル初期化
 	material_.color = Vector4(1.0f, 1.0f, 1.0f, 1.0f);
 	material_.enableLighting = true;
-	material_.enableSpecularRef = true;
+	material_.enableSpecularRef = false;
 	material_.shininess = 100.0f;
 	material_.uvTransformMatrix = MakeIdentityMatrix4x4();
 
@@ -90,7 +90,7 @@ void BaseRenderable3D::PrepareForRendering(bool isNormalMap) {
 	// ライトを転送
 	MAGISYSTEM::TransferPunctualLight();
 	// カメラ情報を転送
-	MAGISYSTEM::TransferCamera();
+	MAGISYSTEM::TransferCamera(2);
 }
 
 void BaseRenderable3D::CreateWVPResource() {

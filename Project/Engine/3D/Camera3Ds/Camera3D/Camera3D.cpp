@@ -51,8 +51,8 @@ void Camera3D::Update() {
 	UpdateCameraData();
 }
 
-void Camera3D::TransferCamera() {
-	MAGISYSTEM::GetDirectXCommandList()->SetGraphicsRootConstantBufferView(2, cameraResource_->GetGPUVirtualAddress());
+void Camera3D::TransferCamera(const uint32_t& rootParameterIndex) {
+	MAGISYSTEM::GetDirectXCommandList()->SetGraphicsRootConstantBufferView(rootParameterIndex, cameraResource_->GetGPUVirtualAddress());
 }
 
 Matrix4x4 Camera3D::GetViewProjectionMatrix() const {

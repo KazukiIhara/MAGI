@@ -60,3 +60,11 @@ struct Material3DForGPU {
 	float shininess;
 };
 
+/// <summary>
+/// 3Dのラインデータ
+/// </summary>
+struct LineData3D {
+	Vector3 start;
+	Vector3 end;
+	Vector4 color;
+};

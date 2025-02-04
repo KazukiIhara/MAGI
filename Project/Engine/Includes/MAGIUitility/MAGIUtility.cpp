@@ -4,6 +4,14 @@
 
 using namespace MAGIMath;
 
+Vector4 MAGIUtility::RGBAToVector4(const RGBA& color) {
+	return Vector4(color.r, color.g, color.b, color.a);
+}
+
+RGBA MAGIUtility::Vector4ToRGBA(const Vector4& color) {
+	return RGBA(color.x, color.y, color.z, color.w);
+}
+
 Vector3 MAGIUtility::CalculateVelue(const std::vector<KeyframeVector3>& keyframes, float time) {
 	assert(!keyframes.empty());
 
