@@ -18,6 +18,9 @@ class SRVUAVManager;
 class GraphicsPipelineManager;
 class Camera3DManager;
 
+/// <summary>
+/// 3Dライン描画クラス
+/// </summary>
 class LineDrawer3D {
 public:
 	LineDrawer3D(
@@ -32,7 +35,6 @@ public:
 	void Draw();
 
 	void AddLine(const Vector3& start, const Vector3& end, const RGBA& color);
-	void ClearLines();
 
 private:
 	void Initialize(
@@ -41,6 +43,7 @@ private:
 		SRVUAVManager* srvUavManager,
 		GraphicsPipelineManager* graphicsPipelineManager,
 		Camera3DManager* camera3DManager);
+	void ClearLines();
 	void SetDXGI(DXGI* dxgi);
 	void SetDirectXCommand(DirectXCommand* directXCommand);
 	void SetSRVUAVManager(SRVUAVManager* srvUavManager);

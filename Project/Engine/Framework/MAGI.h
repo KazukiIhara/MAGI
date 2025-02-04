@@ -219,6 +219,11 @@ public: // エンジンの機能
 	static void TransferPunctualLight();
 #pragma endregion
 
+#pragma region LineDrawer3D
+	// ライン描画
+	static void DrawLine3D(const Vector3& start, const Vector3& end, const RGBA& color);
+#pragma endregion
+
 
 #pragma region PreRender
 	// Object3Dの描画前処理
@@ -300,7 +305,7 @@ protected:
 	// Drawer
 	// 
 	static std::unique_ptr<LineDrawer3D> lineDrawer3D_;
-	
+
 	// 
 	// GameManager
 	// 
