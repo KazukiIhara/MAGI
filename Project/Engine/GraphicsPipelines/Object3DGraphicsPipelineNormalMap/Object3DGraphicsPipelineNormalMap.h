@@ -2,10 +2,9 @@
 
 #include "GraphicsPipelines/BaseGraphicsPipeline/BaseGraphicsPipeline.h"
 
-// 前方宣言
-class DXGI;
-class ShaderCompiler;
-
+/// <summary>
+/// 法線マップ付き描画パイプライン
+/// </summary>
 class Object3DGraphicsPipelineNormalMap :public BaseGraphicsPipeline {
 public:
 	Object3DGraphicsPipelineNormalMap(DXGI* dxgi, ShaderCompiler* shaderCompiler);

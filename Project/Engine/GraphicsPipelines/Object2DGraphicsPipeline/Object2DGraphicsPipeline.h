@@ -2,10 +2,6 @@
 
 #include "GraphicsPipelines/BaseGraphicsPipeline/BaseGraphicsPipeline.h"
 
-// 前方宣言
-class DXGI;
-class ShaderCompiler;
-
 /// <summary>
 /// 2D描画パイプライン
 /// </summary>
