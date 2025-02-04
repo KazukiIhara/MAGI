@@ -12,11 +12,20 @@
 #include "Structs/ColorStruct.h"
 #include "Enums/BlendModeEnum.h"
 
+class DXGI;
+class DirectXCommand;
+class SRVUAVManager;
+class GraphicsPipelineManager;
 class Camera3DManager;
 
 class LineDrawer3D {
 public:
-	LineDrawer3D(Camera3DManager* camera3DManager);
+	LineDrawer3D(
+		DXGI* dxgi,
+		DirectXCommand* directXCommand,
+		SRVUAVManager* srvUavManager,
+		GraphicsPipelineManager* graphicsPipelineManager,
+		Camera3DManager* camera3DManager);
 	~LineDrawer3D();
 
 	void Update();
@@ -26,7 +35,16 @@ public:
 	void ClearLines();
 
 private:
-	void Initialize(Camera3DManager* camera3DManager);
+	void Initialize(
+		DXGI* dxgi,
+		DirectXCommand* directXCommand,
+		SRVUAVManager* srvUavManager,
+		GraphicsPipelineManager* graphicsPipelineManager,
+		Camera3DManager* camera3DManager);
+	void SetDXGI(DXGI* dxgi);
+	void SetDirectXCommand(DirectXCommand* directXCommand);
+	void SetSRVUAVManager(SRVUAVManager* srvUavManager);
+	void SetGraphicsPipelineManager(GraphicsPipelineManager* graphicsPipelineManager);
 	void SetCamera3DManager(Camera3DManager* camera3DManager);
 private:
 	// instancingリソース作成
@@ -53,6 +71,10 @@ private:
 	uint32_t instanceCount_ = kNumMaxInstance;
 
 private:
+	DXGI* dxgi_ = nullptr;
+	DirectXCommand* directXCommand_ = nullptr;
+	SRVUAVManager* srvUavManager_ = nullptr;
+	GraphicsPipelineManager* graphicsPipelineManager_ = nullptr;
 	Camera3DManager* camera3DManager_ = nullptr;
 
 };

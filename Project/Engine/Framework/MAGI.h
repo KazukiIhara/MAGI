@@ -38,6 +38,9 @@
 #include "Camera3DManager/Camera3DManager.h"
 #include "PunctualLightManager/PunctualLightManager.h"
 
+#include "LineDrawer3D/LineDrawer3D.h"
+
+
 #include "SceneManager/SceneManager.h"
 
 
@@ -293,6 +296,11 @@ protected:
 	static std::unique_ptr<Camera3DManager> camera3DManager_;
 	static std::unique_ptr<PunctualLightManager> punctualLightManager_;
 
+	// 
+	// Drawer
+	// 
+	static std::unique_ptr<LineDrawer3D> lineDrawer3D_;
+	
 	// 
 	// GameManager
 	// 
