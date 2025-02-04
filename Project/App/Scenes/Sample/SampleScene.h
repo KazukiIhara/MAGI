@@ -35,7 +35,7 @@ inline void SampleScene<Data>::Initialize() {
 	MAGISYSTEM::LoadTexture("pronama_chan.png");
 	MAGISYSTEM::LoadModel("Kick");
 	MAGISYSTEM::LoadModel("terrain", true);
-	MAGISYSTEM::LoadModel("Man");
+	MAGISYSTEM::LoadModel("Women");
 	MAGISYSTEM::LoadModel("Maw");
 
 	MAGISYSTEM::LoadAnimation("Reaction", false);
