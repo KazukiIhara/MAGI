@@ -12,7 +12,7 @@
 
 // サンプルシーン
 template <typename Data>
-class SampleScene: public BaseScene<Data> {
+class SampleScene : public BaseScene<Data> {
 public:
 	using BaseScene<Data>::BaseScene; // 親クラスのコンストラクタをそのまま継承
 	~SampleScene()override = default;
@@ -103,6 +103,8 @@ inline void SampleScene<Data>::Update() {
 	sample_->Update();
 
 	object2DSample_->Update();
+
+	MAGISYSTEM::DrawLine3D(Vector3(0.0f, 0.0f, 0.0f), Vector3(1.0f, 0.0f, 0.0f), Color::Red);
 
 }
 
