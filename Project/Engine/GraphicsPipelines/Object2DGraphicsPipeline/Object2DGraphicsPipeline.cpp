@@ -6,29 +6,11 @@
 #include "DirectX/DXGI/DXGI.h"
 #include "DirectX/ShaderCompiler/ShaderCompiler.h"
 
-Object2DGraphicsPipeline::Object2DGraphicsPipeline(DXGI* dxgi, ShaderCompiler* shaderCompiler) {
-	Initialize(dxgi, shaderCompiler);
-	Logger::Log("Object2DGraphicsPipeline Initialize\n");
+Object2DGraphicsPipeline::Object2DGraphicsPipeline(DXGI* dxgi, ShaderCompiler* shaderCompiler)
+	:BaseGraphicsPipeline(dxgi, shaderCompiler) {
 }
 
 Object2DGraphicsPipeline::~Object2DGraphicsPipeline() {
-	Logger::Log("Object2DGraphicsPipeline Finalize\n");
-}
-
-void Object2DGraphicsPipeline::Initialize(DXGI* dxgi, ShaderCompiler* shaderCompiler) {
-	SetDXGI(dxgi);
-	SetShaderCompiler(shaderCompiler);
-	CreateRootSignature();
-	CompileShaders();
-	CreateGraphicsPipelineObject();
-}
-
-ID3D12RootSignature* Object2DGraphicsPipeline::GetRootSignature() {
-	return rootSignature_.Get();
-}
-
-ID3D12PipelineState* Object2DGraphicsPipeline::GetPipelineState(BlendMode blendMode) {
-	return pipelineState_[static_cast<uint32_t>(blendMode)].Get();
 }
 
 void Object2DGraphicsPipeline::CreateRootSignature() {
@@ -253,14 +235,4 @@ D3D12_RASTERIZER_DESC Object2DGraphicsPipeline::RasterizerStateSetting() {
 	rasterizerDesc_.FillMode = D3D12_FILL_MODE_SOLID;
 
 	return rasterizerDesc_;
-}
-
-void Object2DGraphicsPipeline::SetDXGI(DXGI* dxgi) {
-	assert(dxgi);
-	dxgi_ = dxgi;
-}
-
-void Object2DGraphicsPipeline::SetShaderCompiler(ShaderCompiler* shaderCompiler) {
-	assert(shaderCompiler);
-	shaderCompiler_ = shaderCompiler;
 }

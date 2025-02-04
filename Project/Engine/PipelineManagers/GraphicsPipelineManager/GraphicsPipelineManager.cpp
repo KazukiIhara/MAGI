@@ -20,16 +20,19 @@ GraphicsPipelineManager::~GraphicsPipelineManager() {
 void GraphicsPipelineManager::Initialize(DXGI* dxgi, ShaderCompiler* shaderCompiler) {
 	// 2Dオブジェクトのグラフィックスパイプラインを生成、初期化
 	object2DGraphicsPipeline_ = std::make_unique<Object2DGraphicsPipeline>(dxgi, shaderCompiler);
+	object2DGraphicsPipeline_->Initialize();
 	SetRootSignature(GraphicsPipelineStateType::Object2D);
 	SetPipelineState(GraphicsPipelineStateType::Object2D);
 
 	// 3Dオブジェクトのグラフィックスパイプラインを生成、初期化
 	object3DGraphicsPipeline_ = std::make_unique<Object3DGraphicsPipeline>(dxgi, shaderCompiler);
+	object3DGraphicsPipeline_->Initialize();
 	SetRootSignature(GraphicsPipelineStateType::Object3D);
 	SetPipelineState(GraphicsPipelineStateType::Object3D);
 
 	// 法線マップありのグラフィックスパイプラインを生成、初期化
 	object3DNormalMapGraphicsPipeline_ = std::make_unique<Object3DGraphicsPipelineNormalMap>(dxgi, shaderCompiler);
+	object3DNormalMapGraphicsPipeline_->Initialize();
 	SetRootSignature(GraphicsPipelineStateType::Object3DNormalMap);
 	SetPipelineState(GraphicsPipelineStateType::Object3DNormalMap);
 }
