@@ -18,8 +18,6 @@ public:
 	virtual void Update();
 	void Draw();
 
-	bool IsNormalMap();
-
 private:
 	// 受け取ったモデルからメッシュを作成
 	virtual void CreateMeshes();

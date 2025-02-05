@@ -31,7 +31,7 @@ public:
 protected:
 	void Initialize(const std::string& objectName);
 	// 描画前の処理
-	void PrepareForRendering(bool isNormalMap = false);
+	void PrepareForRendering();
 	// WVP用のリソース作成
 	void CreateWVPResource();
 	// データを書き込む

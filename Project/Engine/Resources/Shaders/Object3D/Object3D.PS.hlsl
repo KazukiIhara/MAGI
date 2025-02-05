@@ -6,6 +6,7 @@ ConstantBuffer<ModelMaterial> gModelMaterial : register(b2);
 ConstantBuffer<LightCount> gLightCount : register(b3);
 Texture2D<float4> gTexture : register(t0);
 StructuredBuffer<PunctualLight> gLights : register(t1);
+Texture2D<float4> gNormalMap : register(t2);
 SamplerState gSampler : register(s0);
 
 
@@ -15,7 +16,38 @@ PixelShaderOutput main(VertexShaderOutput input)
     output.color = float4(0, 0, 0, 1);
 
     // 前処理
-    float3 normal = normalize(input.normal);
+    float3 normalWS = normalize(input.normal);
+    float3 tangentWS = normalize(input.tangent);
+    
+    // Binormal(=Bitangent) を再構築 (T x N)
+    float3 binormalWS = normalize(cross(normalWS, tangentWS));
+    
+    float3 normalMapTS; // Tangent Space上の法線（= normalMap）
+    if (gModelMaterial.enableNormalMap != 0)
+    {
+        // (1) 法線マップのサンプリング
+        normalMapTS = gNormalMap.Sample(gSampler, input.texcoord).xyz;
+        // [0,1] → [-1,1]へ
+        normalMapTS = normalMapTS * 2.0f - 1.0f;
+    }
+    else
+    {
+    // (2) ノーマルマップ無しの場合 → Tangent空間では +Z を使う
+    //     = ジオメトリ本来の法線をそのまま使う意味になる
+        normalMapTS = float3(0, 0, 1);
+    }
+        
+    // (2) TBN行列 (3x3) を作成
+    float3x3 TBN = float3x3(
+        tangentWS,
+        binormalWS,
+        normalWS
+    );
+
+    // TBN行列でWorldSpaceへ変換
+    float3 normal = mul(normalMapTS, TBN);
+    normal = normalize(normal);
+    
     float3 toEye = normalize(gCamera.worldPosition - input.worldPosition);
 
     // Diffuse,Specularを蓄積するための変数
@@ -36,7 +68,8 @@ PixelShaderOutput main(VertexShaderOutput input)
     // 元のカラーを保存
     float3 baseColor = gModelMaterial.color.rgb * gMaterial.color.rgb * textureColor.rgb;
     float alpha = gModelMaterial.color.a * gMaterial.color.a * textureColor.a;
-     
+    
+    
     if (gMaterial.enableLighting != 0)
     {
         // シーン中のすべてのライトをループ
@@ -62,6 +95,8 @@ PixelShaderOutput main(VertexShaderOutput input)
                         float specPow = (gMaterial.shininess >= 1.0f && gMaterial.enableSpeculaerRef) ? pow(NdotH, gMaterial.shininess) : 0.0f;
                         float3 specular = light.color * light.intensity * specPow;
                         totalSpecular += specular;
+                  
+                        
                     }
                     break;
 

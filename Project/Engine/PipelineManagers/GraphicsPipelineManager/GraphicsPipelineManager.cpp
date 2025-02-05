@@ -35,12 +35,6 @@ void GraphicsPipelineManager::Initialize(DXGI* dxgi, ShaderCompiler* shaderCompi
 	object3DGraphicsPipeline_->Initialize();
 	SetRootSignature(GraphicsPipelineStateType::Object3D);
 	SetPipelineState(GraphicsPipelineStateType::Object3D);
-
-	// 法線マップありのグラフィックスパイプラインを生成、初期化
-	object3DNormalMapGraphicsPipeline_ = std::make_unique<Object3DGraphicsPipelineNormalMap>(dxgi, shaderCompiler);
-	object3DNormalMapGraphicsPipeline_->Initialize();
-	SetRootSignature(GraphicsPipelineStateType::Object3DNormalMap);
-	SetPipelineState(GraphicsPipelineStateType::Object3DNormalMap);
 }
 
 ID3D12RootSignature* GraphicsPipelineManager::GetRootSignature(GraphicsPipelineStateType pipelineState) {
@@ -66,9 +60,6 @@ void GraphicsPipelineManager::SetRootSignature(GraphicsPipelineStateType pipelin
 		// 3Dオブジェクト描画用のルートシグネチャを設定
 		rootSignatures_[static_cast<uint32_t>(pipelineState)] = object3DGraphicsPipeline_->GetRootSignature();
 		break;
-	case GraphicsPipelineStateType::Object3DNormalMap:
-		rootSignatures_[static_cast<uint32_t>(pipelineState)] = object3DNormalMapGraphicsPipeline_->GetRootSignature();
-		break;
 
 		// 他のパイプラインステートが追加された場合はここに追加
 	}
@@ -89,11 +80,6 @@ void GraphicsPipelineManager::SetPipelineState(GraphicsPipelineStateType pipelin
 	case GraphicsPipelineStateType::Object3D:
 		for (int mode = static_cast<uint32_t>(BlendMode::None); mode < static_cast<uint32_t>(BlendMode::Num); ++mode) {
 			graphicsPipelineStates_[static_cast<uint32_t>(pipelineState)][mode] = object3DGraphicsPipeline_->GetPipelineState(static_cast<BlendMode>(mode));
-		}
-		break;
-	case GraphicsPipelineStateType::Object3DNormalMap:
-		for (int mode = static_cast<uint32_t>(BlendMode::None); mode < static_cast<uint32_t>(BlendMode::Num); ++mode) {
-			graphicsPipelineStates_[static_cast<uint32_t>(pipelineState)][mode] = object3DNormalMapGraphicsPipeline_->GetPipelineState(static_cast<BlendMode>(mode));
 		}
 		break;
 

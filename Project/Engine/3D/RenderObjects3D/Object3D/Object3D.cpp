@@ -32,7 +32,7 @@ void Object3D::Update() {
 
 void Object3D::Draw() {
 	// 描画用の設定
-	PrepareForRendering(model_->IsNormalMap());
+	PrepareForRendering();
 	// 3Dモデル描画
 	model_->Draw();
 }

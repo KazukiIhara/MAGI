@@ -34,10 +34,6 @@ void Model::Draw() {
 	}
 }
 
-bool Model::IsNormalMap() {
-	return meshes_[0]->IsNormalMap();
-}
-
 void Model::CreateMeshes() {
 	for (uint32_t i = 0; i < modelData_.meshes.size(); i++) {
 		std::unique_ptr<Mesh> newMesh = std::make_unique<Mesh>(modelData_.meshes[i]);
