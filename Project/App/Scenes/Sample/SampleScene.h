@@ -111,15 +111,10 @@ inline void SampleScene<Data>::Update() {
 template<typename Data>
 inline void SampleScene<Data>::Draw() {
 	// 
-	// 法線マップなしオブジェクト3Dの描画前処理
+	// オブジェクト3Dの描画前処理
 	// 
 	MAGISYSTEM::PreDrawObject3D();
-	//primitive_->Draw();
-
-	// 
-	// 法線マップありオブジェクト3Dの描画前処理
-	// 
-	MAGISYSTEM::PreDrawObject3DNormalMap();
+	primitive_->Draw();
 	skinningSample_->Draw();
 	terrain_->Draw();
 	sample_->Draw();

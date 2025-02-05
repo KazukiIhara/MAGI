@@ -24,7 +24,6 @@ public:
 	void Update();
 	virtual void Draw();
 
-	bool IsNormalMap() const;
 protected:
 	// 頂点リソースの作成
 	virtual void CreateVertexResource();

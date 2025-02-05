@@ -366,9 +366,6 @@
     <ClInclude Include="Engine\GraphicsPipelines\Object3DGraphicsPipeline\Object3DGraphicsPipeline.h">
       <Filter>Engine\GraphicsPipelines\Object3DGraphicsPipeline</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\GraphicsPipelines\Object3DGraphicsPipelineNormalMap\Object3DGraphicsPipelineNormalMap.h">
-      <Filter>Engine\GraphicsPipelines\Object3DGraphicsPipelineNormalMap</Filter>
-    </ClInclude>
     <ClInclude Include="Engine\ImGuiController\ImGuiController.h">
       <Filter>Engine\ImGuiController</Filter>
     </ClInclude>
@@ -609,9 +606,6 @@
     </ClCompile>
     <ClCompile Include="Engine\GraphicsPipelines\Object3DGraphicsPipeline\Object3DGraphicsPipeline.cpp">
       <Filter>Engine\GraphicsPipelines\Object3DGraphicsPipeline</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\GraphicsPipelines\Object3DGraphicsPipelineNormalMap\Object3DGraphicsPipelineNormalMap.cpp">
-      <Filter>Engine\GraphicsPipelines\Object3DGraphicsPipelineNormalMap</Filter>
     </ClCompile>
     <ClCompile Include="Engine\ImGuiController\ImGuiController.cpp">
       <Filter>Engine\ImGuiController</Filter>

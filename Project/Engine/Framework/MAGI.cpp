@@ -589,14 +589,6 @@ void MAGISYSTEM::PreDrawObject3D() {
 	commandList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 }
 
-void MAGISYSTEM::PreDrawObject3DNormalMap() {
-	ID3D12GraphicsCommandList* commandList = directXCommand_->GetList();
-	// RootSignatureの設定
-	commandList->SetGraphicsRootSignature(graphicsPipelineManager_->GetRootSignature(GraphicsPipelineStateType::Object3DNormalMap));
-	// 形状を設定
-	commandList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-}
-
 void MAGISYSTEM::PreDrawObject2D() {
 	ID3D12GraphicsCommandList* commandList = directXCommand_->GetList();
 	// RootSignatureの設定

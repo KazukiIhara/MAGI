@@ -229,9 +229,6 @@ public: // エンジンの機能
 	// Object3Dの描画前処理
 	static void PreDrawObject3D();
 
-	// NormalMapありObject3Dの描画前処理
-	static void PreDrawObject3DNormalMap();
-
 	// Object2Dの描画前処理
 	static void PreDrawObject2D();
 
