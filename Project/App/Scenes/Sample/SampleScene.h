@@ -51,7 +51,7 @@ inline void SampleScene<Data>::Initialize() {
 
 	skinningSample_ = std::make_unique<Object3DSkinning>("Kick", "Maw");
 	skinningSample_->Initialize();
-	//skinningSample_->GetTranslate().x = -1.0f;
+	skinningSample_->GetTranslate().x = -1.0f;
 
 	sample_ = std::make_unique<Object3DSkinning>("Kick", "Kick");
 	sample_->Initialize();
