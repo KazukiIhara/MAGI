@@ -82,4 +82,5 @@ struct ModelData {
 struct MaterialForGPU {
 	Vector4 color;
 	Matrix4x4 uvMatrix;
+	int32_t enableNormalMap;
 };

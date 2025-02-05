@@ -115,7 +115,6 @@ inline void SampleScene<Data>::Draw() {
 	// 
 	MAGISYSTEM::PreDrawObject3D();
 	//primitive_->Draw();
-	//sample_->Draw();
 
 	// 
 	// 法線マップありオブジェクト3Dの描画前処理
@@ -123,6 +122,7 @@ inline void SampleScene<Data>::Draw() {
 	MAGISYSTEM::PreDrawObject3DNormalMap();
 	skinningSample_->Draw();
 	terrain_->Draw();
+	sample_->Draw();
 
 	// 
 	// オブジェクト2Dの描画前処理

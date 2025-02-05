@@ -21,22 +21,32 @@ PixelShaderOutput main(VertexShaderOutput input)
     
     // Binormal(=Bitangent) を再構築 (T x N)
     float3 binormalWS = normalize(cross(normalWS, tangentWS));
-
-    // (1) 法線マップのサンプリング
-    float3 normalMap = gNormalMap.Sample(gSampler, input.texcoord).xyz;
-    // [0,1] → [-1,1]へ
-    normalMap = normalMap * 2.0f - 1.0f;
     
+    float3 normalMapTS; // Tangent Space上の法線（= normalMap）
+    if (gModelMaterial.enableNormalMap != 0)
+    {
+        // (1) 法線マップのサンプリング
+        normalMapTS = gNormalMap.Sample(gSampler, input.texcoord).xyz;
+        // [0,1] → [-1,1]へ
+        normalMapTS = normalMapTS * 2.0f - 1.0f;
+    }
+    else
+    {
+    // (2) ノーマルマップ無しの場合 → Tangent空間では +Z を使う
+    //     = ジオメトリ本来の法線をそのまま使う意味になる
+        normalMapTS = float3(0, 0, 1);
+    }  
+        
     // (2) TBN行列 (3x3) を作成
     float3x3 TBN = float3x3(
         tangentWS,
         binormalWS,
         normalWS
     );
-    
-    // (3) Tangent Space → World Space へ変換
-    float3 normal = mul(normalMap, TBN);
-    normal = normalize(normal);
+
+    // TBN行列でWorldSpaceへ変換
+    float3 normal = mul(normalMapTS, TBN);
+    normal = normalize(normal);  
     
     float3 toEye = normalize(gCamera.worldPosition - input.worldPosition);
 

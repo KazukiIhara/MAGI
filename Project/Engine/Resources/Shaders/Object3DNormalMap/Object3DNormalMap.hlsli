@@ -39,6 +39,7 @@ struct ModelMaterial
 {
     float4 color;
     float4x4 uvTransform;
+    int enableNormalMap;
 };
 
 struct Camera

@@ -73,15 +73,10 @@ void BaseRenderable3D::Initialize(const std::string& objectName) {
 void BaseRenderable3D::PrepareForRendering(bool isNormalMap) {
 	// コマンドリストを取得
 	ID3D12GraphicsCommandList* commandList = MAGISYSTEM::GetDirectXCommandList();
-
+	isNormalMap;
 	// PSOを設定
-	if (isNormalMap) {
-		// NormalMapを使う
-		commandList->SetPipelineState(MAGISYSTEM::GetGraphicsPipelineState(GraphicsPipelineStateType::Object3DNormalMap, blendMode_));
-	} else {
-		// NormalMapを使わない
-		commandList->SetPipelineState(MAGISYSTEM::GetGraphicsPipelineState(GraphicsPipelineStateType::Object3D, blendMode_));
-	}
+	// NormalMapを使う
+	commandList->SetPipelineState(MAGISYSTEM::GetGraphicsPipelineState(GraphicsPipelineStateType::Object3DNormalMap, blendMode_));
 
 	// マテリアルCBufferの場所を設定
 	commandList->SetGraphicsRootConstantBufferView(0, materialResource_->GetGPUVirtualAddress());

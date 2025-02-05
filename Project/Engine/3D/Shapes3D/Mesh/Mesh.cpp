@@ -8,11 +8,6 @@ Mesh::Mesh(const MeshData& meshData) {
 }
 
 void Mesh::Initialize() {
-	// テクスチャが未設定の場合、デフォルトのテクスチャを割り当てる
-	if (meshData_.material.textureFilePath == "") {
-		meshData_.material.textureFilePath = "Engine/Resources/Images/uvChecker.png";
-	}
-
 	// 頂点リソースの作成
 	CreateVertexResource();
 	// 頂点バッファビューの作成
@@ -31,6 +26,18 @@ void Mesh::Initialize() {
 	CreateMaterialResource();
 	// マテリアルにデータを書き込む
 	MapMaterialData();
+
+	// テクスチャが未設定の場合、デフォルトのテクスチャを割り当てる
+	if (meshData_.material.textureFilePath == "") {
+		meshData_.material.textureFilePath = "Engine/Resources/Images/uvChecker.png";
+	}
+
+	// ノーマルマップがあるかチェック
+	if (meshData_.material.normalMapTextureFilePath != "") {
+		materialData_->enableNormalMap = true;
+	} else {
+		materialData_->enableNormalMap = false;
+	}
 }
 
 void Mesh::Update() {
