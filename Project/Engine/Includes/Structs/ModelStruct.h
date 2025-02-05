@@ -64,6 +64,7 @@ struct PrimitiveData {
 	std::vector<uint32_t> indices;
 	Matrix4x4 uvMatrix;
 	Vector4 color;
+	bool enableNormalMap;
 };
 
 /// <summary>

@@ -4,9 +4,9 @@
 
 using namespace MAGIMath;
 
-Sphere::Sphere(const std::string& textureName)
+Sphere::Sphere()
 	:BasePrimitiveShape3D() {
-	BasePrimitiveShape3D::Initialize(textureName);
+	BasePrimitiveShape3D::Initialize();
 }
 
 void Sphere::SetShape() {

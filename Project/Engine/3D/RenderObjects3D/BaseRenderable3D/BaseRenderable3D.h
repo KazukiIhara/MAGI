@@ -14,7 +14,7 @@
 #include "3D/Base3D/WorldEntity/WorldEntity.h"
 #include "3D/Base3D/WorldTransform/WorldTransform.h"
 
-class BaseRenderable3D :public WorldEntity {
+class BaseRenderable3D: public WorldEntity {
 public:
 	BaseRenderable3D(const std::string& objectName);
 	virtual ~BaseRenderable3D() = default;

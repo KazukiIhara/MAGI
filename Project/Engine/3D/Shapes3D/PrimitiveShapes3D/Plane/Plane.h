@@ -4,7 +4,7 @@
 
 class Plane : public BasePrimitiveShape3D {
 public:
-	Plane(const std::string& textureName = "");
+	Plane();
 	~Plane()override = default;
 	void SetShape()override;
 	void Update()override;

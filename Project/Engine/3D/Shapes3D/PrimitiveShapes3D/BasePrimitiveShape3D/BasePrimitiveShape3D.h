@@ -19,12 +19,13 @@ class BasePrimitiveShape3D {
 public:
 	BasePrimitiveShape3D();
 	virtual ~BasePrimitiveShape3D() = default;
-	void Initialize(const std::string& textureFilePath);
+	void Initialize();
 	virtual void SetShape() = 0;
 	virtual void Update();
 	void Draw();
 
-	void SetTextureName(const std::string& textureFilePath);
+	void SetIsNormalMap(bool enableNormalMap);
+
 private:
 	// 頂点リソースの作成
 	void CreateVertexResource();
@@ -48,10 +49,6 @@ private:
 protected:
 	// 形状データ
 	PrimitiveData primitiveData_{};
-	// 貼り付けるテクスチャファイルパス
-	std::string textureName_ = "";
-	// 法線マップ用のテクスチャファイルパス
-	std::string normalMapTextureName_ = "";
 private:
 
 	// 頂点リソース
