@@ -15,12 +15,6 @@ public:
 	// アニメーションの適用
 	void ApplyAnimation(const AnimationData& animation, float animationTime);
 
-
-	//
-	// ForDebug
-	//
-	void DrawSkeleton();
-
 private:
 	// メッシュ生成
 	void CreateMeshes()override;

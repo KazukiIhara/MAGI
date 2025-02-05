@@ -53,10 +53,6 @@ void SkinningModel::ApplyAnimation(const AnimationData& animation, float animati
 	}
 }
 
-void SkinningModel::DrawSkeleton() {
-	skeleton_->Draw();
-}
-
 void SkinningModel::CreateMeshes() {
 	for (uint32_t i = 0; i < modelData_.meshes.size(); i++) {
 		std::unique_ptr<Mesh> newMesh = std::make_unique<SkinningMesh>(modelData_.meshes[i]);
