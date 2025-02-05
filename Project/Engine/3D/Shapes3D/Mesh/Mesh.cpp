@@ -62,6 +62,9 @@ void Mesh::Draw() {
 	if (meshData_.material.normalMapTextureFilePath != "") {
 		uint32_t normalMapTextureSrvIndex = MAGISYSTEM::GetTexture()[meshData_.material.normalMapTextureFilePath].srvIndex;
 		commandList->SetGraphicsRootDescriptorTable(7, MAGISYSTEM::GetSrvDescriptorHandleGPU(normalMapTextureSrvIndex));
+	} else {// 未定義動作を防ぐため、デフォルトのテクスチャのsrvIndexをセットしておく
+		uint32_t defaultNormalMapTextureSrvIndex = MAGISYSTEM::GetTexture()["Engine/Resources/Images/uvChecker.png"].srvIndex;
+		commandList->SetGraphicsRootDescriptorTable(7, MAGISYSTEM::GetSrvDescriptorHandleGPU(defaultNormalMapTextureSrvIndex));
 	}
 
 	// ModelMaterial用CBufferの場所を設定

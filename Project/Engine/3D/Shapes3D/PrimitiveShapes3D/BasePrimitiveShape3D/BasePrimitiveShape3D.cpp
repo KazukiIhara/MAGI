@@ -5,13 +5,13 @@
 BasePrimitiveShape3D::BasePrimitiveShape3D() {
 }
 
-void BasePrimitiveShape3D::Initialize(const std::string& textureFilePath) {
+void BasePrimitiveShape3D::Initialize(const std::string& textureName) {
 	// テクスチャをセット
-	SetTextureFilePath(textureFilePath);
+	SetTextureName(textureName);
 
-	// テクスチャが未設定の場合、デフォルトのテクスチャを割り当てる
-	if (textureFilePath_ == "") {
-		textureFilePath_ = "Engine/Resources/Images/uvChecker.png";
+	// テクスチャが未設定の場合、デフォルトのテクスチャを割り当てる(uvCheckerはエンジン用のリソースのためフルパス指定)
+	if (textureName_ == "") {
+		textureName_ = "Engine/Resources/Images/uvChecker.png";
 	}
 
 	// 形状を取得
@@ -52,8 +52,17 @@ void BasePrimitiveShape3D::Draw() {
 	commandList->IASetIndexBuffer(&indexBufferView_);
 
 	// Texture用のSRVをセット
-	uint32_t textureSrvIndex = MAGISYSTEM::GetTexture()[textureFilePath_].srvIndex;
+	uint32_t textureSrvIndex = MAGISYSTEM::GetTexture()[textureName_].srvIndex;
 	commandList->SetGraphicsRootDescriptorTable(3, MAGISYSTEM::GetSrvDescriptorHandleGPU(textureSrvIndex));
+
+	// NormalMap用のSrvをセット
+	if (normalMapTextureName_ != "") {
+		uint32_t normalMapTextureSrvIndex = MAGISYSTEM::GetTexture()[normalMapTextureName_].srvIndex;
+		commandList->SetGraphicsRootDescriptorTable(7, MAGISYSTEM::GetSrvDescriptorHandleGPU(normalMapTextureSrvIndex));
+	} else {// 未定義動作を防ぐため、デフォルトのテクスチャのsrvIndexをセットしておく
+		uint32_t defaultNormalMapTextureSrvIndex = MAGISYSTEM::GetTexture()["Engine/Resources/Images/uvChecker.png"].srvIndex;
+		commandList->SetGraphicsRootDescriptorTable(7, MAGISYSTEM::GetSrvDescriptorHandleGPU(defaultNormalMapTextureSrvIndex));
+	}
 
 	// ModelMaterial用CBufferの場所を設定
 	commandList->SetGraphicsRootConstantBufferView(4, materialResource_->GetGPUVirtualAddress());
@@ -61,8 +70,8 @@ void BasePrimitiveShape3D::Draw() {
 	commandList->DrawIndexedInstanced(UINT(primitiveData_.indices.size()), 1, 0, 0, 0);
 }
 
-void BasePrimitiveShape3D::SetTextureFilePath(const std::string& textureFilePath) {
-	textureFilePath_ = textureFilePath;
+void BasePrimitiveShape3D::SetTextureName(const std::string& textureName) {
+	textureName_ = textureName;
 }
 
 void BasePrimitiveShape3D::CreateVertexResource() {

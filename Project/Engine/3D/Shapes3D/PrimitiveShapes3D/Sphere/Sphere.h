@@ -4,7 +4,7 @@
 
 class Sphere: public BasePrimitiveShape3D {
 public:
-	Sphere(const std::string& textureFilePath = "");
+	Sphere(const std::string& textureName = "");
 	~Sphere()override = default;
 	void SetShape()override;
 	void Update()override;

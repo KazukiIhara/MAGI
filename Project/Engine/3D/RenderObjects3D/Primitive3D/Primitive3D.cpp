@@ -3,9 +3,9 @@
 #include "3D/Shapes3D/PrimitiveShapes3D/Plane/Plane.h"
 #include "3D/Shapes3D/PrimitiveShapes3D/Sphere/Sphere.h"
 
-Primitive3D::Primitive3D(const std::string& objectName, const Primitive3DType& primitiveType, const std::string& textureFilePath)
+Primitive3D::Primitive3D(const std::string& objectName, const Primitive3DType& primitiveType, const std::string& textureName)
 	:BaseRenderable3D(objectName) {
-	Initialize(primitiveType, textureFilePath);
+	Initialize(primitiveType, textureName);
 }
 
 Primitive3D::~Primitive3D() {
@@ -26,14 +26,14 @@ void Primitive3D::Draw() {
 	primitive_->Draw();
 }
 
-void Primitive3D::Initialize(const Primitive3DType& primitiveType, const std::string& textureFilePath) {
+void Primitive3D::Initialize(const Primitive3DType& primitiveType, const std::string& textureName) {
 	primitiveType_ = primitiveType;
 	switch (primitiveType_) {
 	case Primitive3DType::Plane:
-		primitive_ = std::make_unique<Plane>(textureFilePath);
+		primitive_ = std::make_unique<Plane>(textureName);
 		break;
 	case Primitive3DType::Sphere:
-		primitive_ = std::make_unique<Sphere>(textureFilePath);
+		primitive_ = std::make_unique<Sphere>(textureName);
 		break;
 	case Primitive3DType::Ring:
 		break;

@@ -24,7 +24,7 @@ public:
 	virtual void Update();
 	void Draw();
 
-	void SetTextureFilePath(const std::string& textureFilePath);
+	void SetTextureName(const std::string& textureFilePath);
 private:
 	// 頂点リソースの作成
 	void CreateVertexResource();
@@ -49,8 +49,9 @@ protected:
 	// 形状データ
 	PrimitiveData primitiveData_{};
 	// 貼り付けるテクスチャファイルパス
-	std::string textureFilePath_ = "";
-
+	std::string textureName_ = "";
+	// 法線マップ用のテクスチャファイルパス
+	std::string normalMapTextureName_ = "";
 private:
 
 	// 頂点リソース

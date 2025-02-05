@@ -4,9 +4,9 @@
 
 using namespace MAGIMath;
 
-Plane::Plane(const std::string& textureFilePath)
+Plane::Plane(const std::string& textureName)
 	:BasePrimitiveShape3D() {
-	BasePrimitiveShape3D::Initialize(textureFilePath);
+	BasePrimitiveShape3D::Initialize(textureName);
 }
 
 void Plane::SetShape() {
