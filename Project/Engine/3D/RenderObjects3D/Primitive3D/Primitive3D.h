@@ -8,16 +8,15 @@
 #include "Enums/Primitive3DEnum.h"
 
 /// <summary>
-/// シンプル形状描画クラス(コンストラクタで完結しているので初期化メソッドを呼ぶ必要がありません)
+/// シンプル形状描画クラス
 /// </summary>
 class Primitive3D:public BaseRenderable3D {
 public:
 	Primitive3D(const std::string& objectName, const Primitive3DType& primitiveType, const std::string& textureName = "");
 	~Primitive3D()override;
+	void AssignShape()override;
 	void Update()override;
 	void Draw()override;
-private:
-	void Initialize();
 private:
 	// 形状の設定
 	Primitive3DType primitiveType_{};

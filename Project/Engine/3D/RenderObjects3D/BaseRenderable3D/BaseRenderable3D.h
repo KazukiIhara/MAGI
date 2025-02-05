@@ -18,6 +18,7 @@ class BaseRenderable3D: public WorldEntity {
 public:
 	BaseRenderable3D(const std::string& objectName);
 	virtual ~BaseRenderable3D() = default;
+	virtual void AssignShape() = 0;
 	virtual void Update();
 	virtual void Draw() = 0;
 

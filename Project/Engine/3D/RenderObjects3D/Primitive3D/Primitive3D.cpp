@@ -13,8 +13,6 @@ Primitive3D::Primitive3D(const std::string& objectName, const Primitive3DType& p
 	if (textureName_ == "") {
 		textureName_ = "Engine/Resources/Images/uvChecker.png";
 	}
-
-	Initialize();
 }
 
 Primitive3D::~Primitive3D() {
@@ -52,7 +50,7 @@ void Primitive3D::Draw() {
 	primitive_->Draw();
 }
 
-void Primitive3D::Initialize() {
+void Primitive3D::AssignShape() {
 	switch (primitiveType_) {
 		case Primitive3DType::Plane:
 			primitive_ = std::make_unique<Plane>();

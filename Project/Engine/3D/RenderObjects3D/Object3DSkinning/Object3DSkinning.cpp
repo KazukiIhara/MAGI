@@ -4,13 +4,15 @@
 
 
 Object3DSkinning::Object3DSkinning(const std::string& objectName, const std::string& modelName)
-	:Object3D(objectName, modelName) {}
+	:Object3D(objectName, modelName) {
+
+}
 
 Object3DSkinning::~Object3DSkinning() {
 
 }
 
-void Object3DSkinning::Initialize() {
+void Object3DSkinning::AssignShape() {
 	// モデル取得
 	model_ = std::make_unique<SkinningModel>(modelData_);
 	model_->Initialize();

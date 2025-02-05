@@ -10,7 +10,7 @@ class Object3DSkinning:public Object3D {
 public:
 	Object3DSkinning(const std::string& objectName, const std::string& modelName);
 	~Object3DSkinning()override;
-	void Initialize();
+	void AssignShape()override;
 	void Update()override;
 
 	void PlayAnimation(const std::string& animationName);

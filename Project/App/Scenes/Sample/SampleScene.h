@@ -43,18 +43,20 @@ inline void SampleScene<Data>::Initialize() {
 	MAGISYSTEM::LoadAnimation("Maw");
 
 	primitive_ = std::make_unique<Primitive3D>("Plane", Primitive3DType::Plane);
+	primitive_->AssignShape();
+
 	primitive_->GetRotate().y = std::numbers::pi_v<float>;
 	primitive_->GetTranslate().y = 1.0f;
 
 	terrain_ = std::make_unique<Object3D>("terrain", "terrain");
-	terrain_->Initialize();
+	terrain_->AssignShape();
 
 	skinningSample_ = std::make_unique<Object3DSkinning>("Kick", "Maw");
-	skinningSample_->Initialize();
+	skinningSample_->AssignShape();
 	skinningSample_->GetTranslate().x = -1.0f;
 
 	sample_ = std::make_unique<Object3DSkinning>("Kick", "Kick");
-	sample_->Initialize();
+	sample_->AssignShape();
 	sample_->GetTranslate().x = 1.0f;
 	sample_->GetRotate().y = std::numbers::pi_v<float>;
 

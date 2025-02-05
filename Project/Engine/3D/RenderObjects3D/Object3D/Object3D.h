@@ -10,7 +10,7 @@ class Object3D :public BaseRenderable3D {
 public:
 	Object3D(const std::string& objectName, const std::string& modelName);
 	virtual ~Object3D()override;
-	virtual void Initialize();
+	virtual void AssignShape()override;
 	virtual void Update()override;
 	void Draw()override;
 
@@ -19,5 +19,4 @@ protected:
 	ModelData modelData_{};
 	// モデル
 	std::unique_ptr<Model> model_ = nullptr;
-
 };
