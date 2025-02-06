@@ -76,11 +76,11 @@ void Object2DGraphicsPipeline::CreateRootSignature() {
 
 void Object2DGraphicsPipeline::CompileShaders() {
 	vertexShaderBlob_ = nullptr;
-	vertexShaderBlob_ = shaderCompiler_->CompileShader(L"Engine/Resources/Shaders/Object2D/Object2D.VS.hlsl", L"vs_6_0");
+	vertexShaderBlob_ = shaderCompiler_->CompileShader(L"Resources/Shaders/Object2D/Object2D.VS.hlsl", L"vs_6_0");
 	assert(vertexShaderBlob_ != nullptr);
 
 	pixelShaderBlob_ = nullptr;
-	pixelShaderBlob_ = shaderCompiler_->CompileShader(L"Engine/Resources/Shaders/Object2D/Object2D.PS.hlsl", L"ps_6_0");
+	pixelShaderBlob_ = shaderCompiler_->CompileShader(L"Resources/Shaders/Object2D/Object2D.PS.hlsl", L"ps_6_0");
 	assert(pixelShaderBlob_ != nullptr);
 }
 

@@ -53,7 +53,7 @@ ModelData ModelDataContainer::LoadModel(const std::string& modelName, bool isNor
 	std::vector<std::string> supportedExtensions = { ".obj", ".gltf" };
 
 	// ディレクトリ内のファイルを検索
-	std::string directoryPath = "App/Assets/Models";
+	std::string directoryPath = "Assets/Models";
 	// モデルファイルが入っているディレクトリ
 	std::string fileDirectoryPath = directoryPath + "/" + modelName;
 	// filesystem用

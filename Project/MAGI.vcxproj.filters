@@ -662,13 +662,13 @@
     <None Include="Engine\SceneManager\SceneManager.ipp">
       <Filter>Engine\SceneManager</Filter>
     </None>
-    <None Include="Engine\Resources\Shaders\Object2D\Object2D.hlsli" />
-    <None Include="Engine\Resources\Shaders\Line3D\Line3D.hlsli" />
+    <None Include="Resources\Shaders\Object2D\Object2D.hlsli" />
+    <None Include="Resources\Shaders\Line3D\Line3D.hlsli" />
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="Engine\Resources\Shaders\Object2D\Object2D.VS.hlsl" />
-    <FxCompile Include="Engine\Resources\Shaders\Object2D\Object2D.PS.hlsl" />
-    <FxCompile Include="Engine\Resources\Shaders\Line3D\Line3D.VS.hlsl" />
-    <FxCompile Include="Engine\Resources\Shaders\Line3D\Line3D.PS.hlsl" />
+    <FxCompile Include="Resources\Shaders\Object2D\Object2D.VS.hlsl" />
+    <FxCompile Include="Resources\Shaders\Object2D\Object2D.PS.hlsl" />
+    <FxCompile Include="Resources\Shaders\Line3D\Line3D.VS.hlsl" />
+    <FxCompile Include="Resources\Shaders\Line3D\Line3D.PS.hlsl" />
   </ItemGroup>
 </Project>

@@ -26,7 +26,7 @@ void TextureDataContainer::Initialize(DXGI* dxgi, DirectXCommand* directXCommand
 	SetSrvUavManager(srvUavManager);
 
 	// デフォルトのテクスチャをロード
-	Load("Engine/Resources/Images/uvChecker.png");
+	Load("Resources/Images/uvChecker.png");
 
 }
 
@@ -46,7 +46,7 @@ void TextureDataContainer::Load(const std::string& fileName, bool isFullPath) {
 		mipImage = LoadTexture(fileName);
 	} else {
 		// フルパス作成
-		const std::string textureDirectoryFilePath = "App/Assets/Images/";
+		const std::string textureDirectoryFilePath = "Assets/Images/";
 		mipImage = LoadTexture(textureDirectoryFilePath + fileName);
 	}
 

@@ -36,8 +36,8 @@ void AnimationDataContainer::Load(const std::string& animationFileName, bool isI
 	std::vector<std::string> supportedExtensions = { ".gltf" };
 
 	// ディレクトリパスを作成
-	const std::string modelDirectoryPath = "App/Assets/Models/";
-	const std::string animationDirectoryPath = "App/Assets/Animations/";
+	const std::string modelDirectoryPath = "Assets/Models/";
+	const std::string animationDirectoryPath = "Assets/Animations/";
 	std::string fileDirectoryPath = isInSameDirectoryAsModel
 		? (modelDirectoryPath + animationFileName)
 		: (animationDirectoryPath + animationFileName);
