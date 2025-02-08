@@ -106,7 +106,7 @@ inline void SampleScene<Data>::Update() {
 
 	object2DSample_->Update();
 
-	MAGISYSTEM::DrawLine3D(Vector3(0.0f, 0.0f, 0.0f), Vector3(1.0f, 0.0f, 0.0f), Color::Red);
+	MAGISYSTEM::DrawLine3D(Vector3(0.0f, 0.0f, 0.0f), Vector3(0.0f, 1.0f, 0.0f), Color::Red);
 
 }
 
@@ -125,7 +125,7 @@ inline void SampleScene<Data>::Draw() {
 	// オブジェクト2Dの描画前処理
 	// 
 	MAGISYSTEM::PreDrawObject2D();
-	//object2DSample_->Draw();
+	object2DSample_->Draw();
 
 }
 
