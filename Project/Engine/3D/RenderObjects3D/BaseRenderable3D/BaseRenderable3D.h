@@ -11,16 +11,20 @@
 #include "Enums/BlendModeEnum.h"
 
 #include "DirectX/ComPtr/ComPtr.h"
+#include "Interfaces/IRenderObject3D.h"
 #include "3D/Base3D/WorldEntity/WorldEntity.h"
 #include "3D/Base3D/WorldTransform/WorldTransform.h"
 
-class BaseRenderable3D: public WorldEntity {
+/// <summary>
+/// 3D描画用の基底クラス
+/// </summary>
+class BaseRenderable3D: public IRenderObject3D, public WorldEntity {
 public:
 	BaseRenderable3D(const std::string& objectName);
 	virtual ~BaseRenderable3D() = default;
-	virtual void AssignShape() = 0;
-	virtual void Update();
-	virtual void Draw() = 0;
+	virtual void AssignShape()override = 0;
+	virtual void Update()override;
+	virtual void Draw()override = 0;
 
 	Vector3& GetScale();
 	Vector3& GetRotate();
