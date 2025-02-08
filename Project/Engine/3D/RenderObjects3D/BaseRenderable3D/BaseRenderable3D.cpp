@@ -77,8 +77,6 @@ void BaseRenderable3D::PrepareForRendering() {
 	// NormalMapを使う
 	commandList->SetPipelineState(MAGISYSTEM::GetGraphicsPipelineState(GraphicsPipelineStateType::Object3D, blendMode_));
 
-	// TODO:モデルマネージャ内のモデルを直接触る方法ではなくなったため、オブジェクト側でマテリアルを送る必要はない
-
 	// マテリアルCBufferの場所を設定
 	commandList->SetGraphicsRootConstantBufferView(0, materialResource_->GetGPUVirtualAddress());
 	// wvp用のCBufferの場所を設定
