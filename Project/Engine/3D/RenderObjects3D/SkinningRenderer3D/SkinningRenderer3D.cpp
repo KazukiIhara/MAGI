@@ -1,25 +1,25 @@
-#include "Object3DSkinning.h"
+#include "SkinningRenderer3D.h"
 
 #include "Framework/MAGI.h"
 
 
-Object3DSkinning::Object3DSkinning(const std::string& objectName, const std::string& modelName)
-	:Object3D(objectName, modelName) {
+SkinningRenderer3D::SkinningRenderer3D(const std::string& objectName, const std::string& modelName)
+	:StaticRenderer3D(objectName, modelName) {
 
 }
 
-Object3DSkinning::~Object3DSkinning() {
+SkinningRenderer3D::~SkinningRenderer3D() {
 
 }
 
-void Object3DSkinning::AssignShape() {
+void SkinningRenderer3D::AssignShape() {
 	// モデル取得
 	model_ = std::make_unique<SkinningModel>(modelData_);
 	model_->Initialize();
 	assert(model_ && "Warning: Not found model");
 }
 
-void Object3DSkinning::Update() {
+void SkinningRenderer3D::Update() {
 	// アニメーション再生中なら
 	if (currentAnimationName_ != "") {
 		animationTime_ += MAGISYSTEM::GetDeltaTime();
@@ -30,10 +30,10 @@ void Object3DSkinning::Update() {
 		}
 	}
 	// 基底クラスの更新
-	Object3D::Update();
+	StaticRenderer3D::Update();
 }
 
-void Object3DSkinning::PlayAnimation(const std::string& animationName) {
+void SkinningRenderer3D::PlayAnimation(const std::string& animationName) {
 	// 名前をセット
 	currentAnimationName_ = animationName;
 	// アニメーションを持ってくる
@@ -42,7 +42,7 @@ void Object3DSkinning::PlayAnimation(const std::string& animationName) {
 	animationTime_ = 0.0f;
 }
 
-void Object3DSkinning::ResetAnimation() {
+void SkinningRenderer3D::ResetAnimation() {
 	// 名前を削除
 	currentAnimationName_ = "";
 	// アニメーションをリセット
@@ -54,7 +54,7 @@ void Object3DSkinning::ResetAnimation() {
 	animationTime_ = 0.0f;
 }
 
-void Object3DSkinning::SwitchAnimation(const std::string& animationName) {
+void SkinningRenderer3D::SwitchAnimation(const std::string& animationName) {
 	animationName;
 	// TODO::アニメーションの切り替え部分を補間する
 }

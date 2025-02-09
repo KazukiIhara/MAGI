@@ -294,13 +294,13 @@
     <ClInclude Include="Engine\3D\RenderObjects3D\BaseRenderable3D\BaseRenderable3D.h">
       <Filter>Engine\3D\RenderObjects3D\BaseRenderable3D</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\3D\RenderObjects3D\Object3D\Object3D.h">
+    <ClInclude Include="Engine\3D\RenderObjects3D\StaticRenderer3D\StaticRenderer3D.h">
       <Filter>Engine\3D\RenderObjects3D\Object3D</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\3D\RenderObjects3D\Object3DSkinning\Object3DSkinning.h">
+    <ClInclude Include="Engine\3D\RenderObjects3D\SkinningRenderer3D\SkinningRenderer3D.h">
       <Filter>Engine\3D\RenderObjects3D\Object3DSkinning</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\3D\RenderObjects3D\Primitive3D\Primitive3D.h">
+    <ClInclude Include="Engine\3D\RenderObjects3D\PrimitiveRenderer3D\PrimitiveRenderer3D.h">
       <Filter>Engine\3D\RenderObjects3D\Primitive3D</Filter>
     </ClInclude>
     <ClInclude Include="Engine\3D\Shapes3D\Mesh\Mesh.h">
@@ -399,7 +399,7 @@
     <ClInclude Include="Engine\GUI\GUI.h">
       <Filter>Engine\GUI</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\GameObject\GameObject.h">
+    <ClInclude Include="Engine\3D\GameObject3D\GameObject3D.h">
       <Filter>Engine\GameObject</Filter>
     </ClInclude>
     <ClInclude Include="Engine\GraphicsPipelines\BaseGraphicsPipeline\BaseGraphicsPipeline.h">
@@ -534,6 +534,7 @@
     <ClInclude Include="Engine\WindowApp\WindowApp.h">
       <Filter>Engine\WindowApp</Filter>
     </ClInclude>
+    <ClInclude Include="Engine\Includes\Enums\Renderer3DEnum.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="App\Game\Game.cpp">
@@ -560,13 +561,13 @@
     <ClCompile Include="Engine\3D\RenderObjects3D\BaseRenderable3D\BaseRenderable3D.cpp">
       <Filter>Engine\3D\RenderObjects3D\BaseRenderable3D</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\3D\RenderObjects3D\Object3D\Object3D.cpp">
+    <ClCompile Include="Engine\3D\RenderObjects3D\StaticRenderer3D\StaticRenderer3D.cpp">
       <Filter>Engine\3D\RenderObjects3D\Object3D</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\3D\RenderObjects3D\Object3DSkinning\Object3DSkinning.cpp">
+    <ClCompile Include="Engine\3D\RenderObjects3D\SkinningRenderer3D\SkinningRenderer3D.cpp">
       <Filter>Engine\3D\RenderObjects3D\Object3DSkinning</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\3D\RenderObjects3D\Primitive3D\Primitive3D.cpp">
+    <ClCompile Include="Engine\3D\RenderObjects3D\PrimitiveRenderer3D\PrimitiveRenderer3D.cpp">
       <Filter>Engine\3D\RenderObjects3D\Primitive3D</Filter>
     </ClCompile>
     <ClCompile Include="Engine\3D\Shapes3D\Mesh\Mesh.cpp">
@@ -659,7 +660,7 @@
     <ClCompile Include="Engine\GUI\GUI.cpp">
       <Filter>Engine\GUI</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\GameObject\GameObject.cpp">
+    <ClCompile Include="Engine\3D\GameObject3D\GameObject3D.cpp">
       <Filter>Engine\GameObject</Filter>
     </ClCompile>
     <ClCompile Include="Engine\GraphicsPipelines\BaseGraphicsPipeline\BaseGraphicsPipeline.cpp">

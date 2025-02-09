@@ -6,10 +6,10 @@
 /// <summary>
 /// 3Dオブジェクト(インスタンスの生成後初期化メソッドを呼んでください)
 /// </summary>
-class Object3D :public BaseRenderable3D {
+class StaticRenderer3D :public BaseRenderable3D {
 public:
-	Object3D(const std::string& objectName, const std::string& modelName);
-	virtual ~Object3D()override;
+	StaticRenderer3D(const std::string& objectName, const std::string& modelName);
+	virtual ~StaticRenderer3D()override;
 	virtual void AssignShape()override;
 	virtual void Update()override;
 	void Draw()override;

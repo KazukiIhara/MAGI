@@ -1,11 +1,11 @@
-#include "Primitive3D.h"
+#include "PrimitiveRenderer3D.h"
 
 #include "3D/Shapes3D/PrimitiveShapes3D/Plane/Plane.h"
 #include "3D/Shapes3D/PrimitiveShapes3D/Sphere/Sphere.h"
 
 #include "Framework/MAGI.h"
 
-Primitive3D::Primitive3D(const std::string& objectName, const Primitive3DType& primitiveType, const std::string& textureName)
+PrimitiveRenderer3D::PrimitiveRenderer3D(const std::string& objectName, const Primitive3DType& primitiveType, const std::string& textureName)
 	:BaseRenderable3D(objectName) {
 	primitiveType_ = primitiveType;
 	textureName_ = textureName;
@@ -15,18 +15,18 @@ Primitive3D::Primitive3D(const std::string& objectName, const Primitive3DType& p
 	}
 }
 
-Primitive3D::~Primitive3D() {
+PrimitiveRenderer3D::~PrimitiveRenderer3D() {
 	primitive_.reset();
 }
 
-void Primitive3D::Update() {
+void PrimitiveRenderer3D::Update() {
 	// Primitive更新
 	primitive_->Update();
 	// 基底クラスの更新
 	BaseRenderable3D::Update();
 }
 
-void Primitive3D::Draw() {
+void PrimitiveRenderer3D::Draw() {
 	// 描画の設定
 	PrepareForRendering();
 
@@ -50,7 +50,7 @@ void Primitive3D::Draw() {
 	primitive_->Draw();
 }
 
-void Primitive3D::AssignShape() {
+void PrimitiveRenderer3D::AssignShape() {
 	switch (primitiveType_) {
 		case Primitive3DType::Plane:
 			primitive_ = std::make_unique<Plane>();

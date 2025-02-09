@@ -14,6 +14,9 @@
 #include "3D/Base3D/WorldEntity/WorldEntity.h"
 #include "3D/Base3D/WorldTransform/WorldTransform.h"
 
+/// <summary>
+/// 3D描画用の基底クラス
+/// </summary>
 class BaseRenderable3D: public WorldEntity {
 public:
 	BaseRenderable3D(const std::string& objectName);
@@ -21,10 +24,12 @@ public:
 	virtual void AssignShape() = 0;
 	virtual void Update();
 	virtual void Draw() = 0;
+	WorldTransform* GetWorldTransform();
 
 	Vector3& GetScale();
 	Vector3& GetRotate();
 	Vector3& GetTranslate();
+
 
 	UVTransform& GetUvTransform();
 
@@ -48,7 +53,7 @@ protected:
 	void UpdateMaterialData();
 private:
 	// ワールドトランスフォーム
-	WorldTransform worldTransform_{};
+	std::unique_ptr<WorldTransform> worldTransform_{};
 	// UVトランスフォーム
 	UVTransform uvTransform_{};
 	// ブレンドモード

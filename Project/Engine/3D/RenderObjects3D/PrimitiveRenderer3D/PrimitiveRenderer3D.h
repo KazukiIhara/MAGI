@@ -10,10 +10,10 @@
 /// <summary>
 /// シンプル形状描画クラス
 /// </summary>
-class Primitive3D:public BaseRenderable3D {
+class PrimitiveRenderer3D:public BaseRenderable3D {
 public:
-	Primitive3D(const std::string& objectName, const Primitive3DType& primitiveType, const std::string& textureName = "");
-	~Primitive3D()override;
+	PrimitiveRenderer3D(const std::string& objectName, const Primitive3DType& primitiveType, const std::string& textureName = "");
+	~PrimitiveRenderer3D()override;
 	void AssignShape()override;
 	void Update()override;
 	void Draw()override;
