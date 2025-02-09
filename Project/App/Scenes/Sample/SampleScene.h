@@ -116,7 +116,7 @@ inline void SampleScene<Data>::Draw() {
 	// オブジェクト3Dの描画前処理
 	// 
 	MAGISYSTEM::PreDrawObject3D();
-	primitive_->Draw();
+	//primitive_->Draw();
 	skinningSample_->Draw();
 	terrain_->Draw();
 	sample_->Draw();
@@ -125,7 +125,7 @@ inline void SampleScene<Data>::Draw() {
 	// オブジェクト2Dの描画前処理
 	// 
 	MAGISYSTEM::PreDrawObject2D();
-	object2DSample_->Draw();
+	//object2DSample_->Draw();
 
 }
 
