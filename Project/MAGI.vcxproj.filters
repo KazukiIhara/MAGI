@@ -399,7 +399,7 @@
     <ClInclude Include="Engine\GUI\GUI.h">
       <Filter>Engine\GUI</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\GameObject\GameObject.h">
+    <ClInclude Include="Engine\3D\GameObject3D\GameObject3D.h">
       <Filter>Engine\GameObject</Filter>
     </ClInclude>
     <ClInclude Include="Engine\GraphicsPipelines\BaseGraphicsPipeline\BaseGraphicsPipeline.h">
@@ -660,7 +660,7 @@
     <ClCompile Include="Engine\GUI\GUI.cpp">
       <Filter>Engine\GUI</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\GameObject\GameObject.cpp">
+    <ClCompile Include="Engine\3D\GameObject3D\GameObject3D.cpp">
       <Filter>Engine\GameObject</Filter>
     </ClCompile>
     <ClCompile Include="Engine\GraphicsPipelines\BaseGraphicsPipeline\BaseGraphicsPipeline.cpp">
