@@ -4,7 +4,7 @@
 
 
 Object3DSkinning::Object3DSkinning(const std::string& objectName, const std::string& modelName)
-	:Object3D(objectName, modelName) {
+	:StaticRenderer3D(objectName, modelName) {
 
 }
 
@@ -30,7 +30,7 @@ void Object3DSkinning::Update() {
 		}
 	}
 	// 基底クラスの更新
-	Object3D::Update();
+	StaticRenderer3D::Update();
 }
 
 void Object3DSkinning::PlayAnimation(const std::string& animationName) {

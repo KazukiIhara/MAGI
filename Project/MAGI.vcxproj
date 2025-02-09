@@ -122,7 +122,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Engine\3D\Camera3Ds\Camera3D\Camera3D.h" />
     <ClInclude Include="Engine\3D\Camera3Ds\DebugCamera3D\DebugCamera3D.h" />
     <ClInclude Include="Engine\3D\RenderObjects3D\BaseRenderable3D\BaseRenderable3D.h" />
-    <ClInclude Include="Engine\3D\RenderObjects3D\Object3D\Object3D.h" />
+    <ClInclude Include="Engine\3D\RenderObjects3D\StaticRenderer3D\StaticRenderer3D.h" />
     <ClInclude Include="Engine\3D\RenderObjects3D\Object3DSkinning\Object3DSkinning.h" />
     <ClInclude Include="Engine\3D\RenderObjects3D\Primitive3D\Primitive3D.h" />
     <ClInclude Include="Engine\3D\Shapes3D\Mesh\Mesh.h" />
@@ -169,6 +169,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Engine\Includes\Enums\MouseInputEnum.h" />
     <ClInclude Include="Engine\Includes\Enums\Primitive3DEnum.h" />
     <ClInclude Include="Engine\Includes\Enums\PunctualLightDataEnum.h" />
+    <ClInclude Include="Engine\Includes\Enums\Renderer3DEnum.h" />
     <ClInclude Include="Engine\Includes\Enums\RenderTargetEnumh.h" />
     <ClInclude Include="Engine\Includes\Enums\XInputEnum.h" />
     <ClInclude Include="Engine\Includes\Logger\Logger.h" />
@@ -191,7 +192,6 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Engine\Includes\Structs\SkeletonStruct.h" />
     <ClInclude Include="Engine\Includes\Structs\SkinningStruct.h" />
     <ClInclude Include="Engine\Includes\Structs\TextureStruct.h" />
-    <ClInclude Include="Engine\Interfaces\IRenderObject3D.h" />
     <ClInclude Include="Engine\LeakChecker\D3DResourceLeakChecker.h" />
     <ClInclude Include="Engine\LineDrawer3D\LineDrawer3D.h" />
     <ClInclude Include="Engine\PipelineManagers\ComputePipelineManager\ComputePipelineManager.h" />
@@ -213,7 +213,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Engine\3D\Camera3Ds\Camera3D\Camera3D.cpp" />
     <ClCompile Include="Engine\3D\Camera3Ds\DebugCamera3D\DebugCamera3D.cpp" />
     <ClCompile Include="Engine\3D\RenderObjects3D\BaseRenderable3D\BaseRenderable3D.cpp" />
-    <ClCompile Include="Engine\3D\RenderObjects3D\Object3D\Object3D.cpp" />
+    <ClCompile Include="Engine\3D\RenderObjects3D\StaticRenderer3D\StaticRenderer3D.cpp" />
     <ClCompile Include="Engine\3D\RenderObjects3D\Object3DSkinning\Object3DSkinning.cpp" />
     <ClCompile Include="Engine\3D\RenderObjects3D\Primitive3D\Primitive3D.cpp" />
     <ClCompile Include="Engine\3D\Shapes3D\Mesh\Mesh.cpp" />

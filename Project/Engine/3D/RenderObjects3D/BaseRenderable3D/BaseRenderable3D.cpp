@@ -11,9 +11,9 @@ BaseRenderable3D::BaseRenderable3D(const std::string& objectName) {
 
 void BaseRenderable3D::Update() {
 	// ワールド行列更新
-	worldTransform_.Update();
+	worldTransform_->Update();
 	// 中心座標の更新
-	worldPosition_ = ExtractionWorldPos(worldTransform_.worldMatrix_);
+	worldPosition_ = ExtractionWorldPos(worldTransform_->worldMatrix_);
 
 	// uvTransformの更新
 	material_.uvTransformMatrix = MakeUVMatrix(uvTransform_.scale, uvTransform_.rotateZ, uvTransform_.translate);
@@ -24,15 +24,19 @@ void BaseRenderable3D::Update() {
 }
 
 Vector3& BaseRenderable3D::GetScale() {
-	return worldTransform_.scale_;
+	return worldTransform_->scale_;
 }
 
 Vector3& BaseRenderable3D::GetRotate() {
-	return worldTransform_.rotate_;
+	return worldTransform_->rotate_;
 }
 
 Vector3& BaseRenderable3D::GetTranslate() {
-	return worldTransform_.translate_;
+	return worldTransform_->translate_;
+}
+
+WorldTransform* BaseRenderable3D::GetWorldTransform() {
+	return worldTransform_.get();
 }
 
 UVTransform& BaseRenderable3D::GetUvTransform() {
@@ -47,12 +51,12 @@ void BaseRenderable3D::Initialize(const std::string& objectName) {
 	// 名前のセット
 	name_ = objectName;
 	// ワールド行列初期化
-	worldTransform_.Initialize();
+	worldTransform_->Initialize();
 	// UVトランスフォームを初期化
 	uvTransform_ = {};
 
 	// クオータニオン角を使用する
-	worldTransform_.isUseQuaternion_ = false;
+	worldTransform_->isUseQuaternion_ = false;
 	// マテリアル初期化
 	material_.color = Vector4(1.0f, 1.0f, 1.0f, 1.0f);
 	material_.enableLighting = true;
@@ -118,8 +122,8 @@ void BaseRenderable3D::MapMateiralData() {
 }
 
 void BaseRenderable3D::UpdateWVPData() {
-	transformationData_->World = worldTransform_.worldMatrix_;
-	transformationData_->WorldInverseTransepose = MakeInverseTransposeMatrix(worldTransform_.worldMatrix_);
+	transformationData_->World = worldTransform_->worldMatrix_;
+	transformationData_->WorldInverseTransepose = MakeInverseTransposeMatrix(worldTransform_->worldMatrix_);
 }
 
 void BaseRenderable3D::UpdateMaterialData() {

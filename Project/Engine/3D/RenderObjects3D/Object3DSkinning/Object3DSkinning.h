@@ -1,12 +1,12 @@
 #pragma once
 
-#include "3D/RenderObjects3D/Object3D/Object3D.h"
+#include "3D/RenderObjects3D/StaticRenderer3D/StaticRenderer3D.h"
 #include "3D/Shapes3D/SkinningModel/SkinningModel.h"
 
 /// <summary>
 /// スキニングつき3Dオブジェクト(インスタンスの生成後初期化メソッドを呼んでください)
 /// </summary>
-class Object3DSkinning:public Object3D {
+class Object3DSkinning:public StaticRenderer3D {
 public:
 	Object3DSkinning(const std::string& objectName, const std::string& modelName);
 	~Object3DSkinning()override;
