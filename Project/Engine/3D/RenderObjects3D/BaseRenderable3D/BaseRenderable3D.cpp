@@ -51,6 +51,7 @@ void BaseRenderable3D::Initialize(const std::string& objectName) {
 	// 名前のセット
 	name_ = objectName;
 	// ワールド行列初期化
+	worldTransform_ = std::make_unique<WorldTransform>();
 	worldTransform_->Initialize();
 	// UVトランスフォームを初期化
 	uvTransform_ = {};

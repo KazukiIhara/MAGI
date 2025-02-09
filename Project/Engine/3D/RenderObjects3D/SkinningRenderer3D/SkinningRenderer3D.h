@@ -6,10 +6,10 @@
 /// <summary>
 /// スキニングつき3Dオブジェクト(インスタンスの生成後初期化メソッドを呼んでください)
 /// </summary>
-class Object3DSkinning:public StaticRenderer3D {
+class SkinningRenderer3D:public StaticRenderer3D {
 public:
-	Object3DSkinning(const std::string& objectName, const std::string& modelName);
-	~Object3DSkinning()override;
+	SkinningRenderer3D(const std::string& objectName, const std::string& modelName);
+	~SkinningRenderer3D()override;
 	void AssignShape()override;
 	void Update()override;
 

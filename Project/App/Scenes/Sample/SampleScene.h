@@ -5,12 +5,9 @@
 #include "BaseScene/BaseScene.h"
 #include "Framework/MAGI.h"
 
-#include "3D/RenderObjects3D/Object3D/Object3D.h"
-#include "3D/RenderObjects3D/Object3DSkinning/Object3DSkinning.h"
-#include "3D/RenderObjects3D/Primitive3D/Primitive3D.h"
-#include "2D/Object2D/Object2D.h"
-
 #include "3D/GameObject3D/GameObject3D.h"
+
+#include "2D/Object2D/Object2D.h"
 
 // サンプルシーン
 template <typename Data>
@@ -39,14 +36,13 @@ inline void SampleScene<Data>::Initialize() {
 	sampleLight.intensity = 1.0f;
 
 	terrain_ = std::make_unique<GameObject3D>("Terrain");
-
-
+	terrain_->CreateStaticRenderer("Terrain", "terrain");
 }
 
 template<typename Data>
 inline void SampleScene<Data>::Update() {
 
-
+	terrain_->Update();
 
 }
 
@@ -57,6 +53,7 @@ inline void SampleScene<Data>::Draw() {
 	// 
 	MAGISYSTEM::PreDrawObject3D();
 
+	terrain_->Draw();
 
 	// 
 	// オブジェクト2Dの描画前処理

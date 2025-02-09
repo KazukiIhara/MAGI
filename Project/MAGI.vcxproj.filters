@@ -297,10 +297,10 @@
     <ClInclude Include="Engine\3D\RenderObjects3D\StaticRenderer3D\StaticRenderer3D.h">
       <Filter>Engine\3D\RenderObjects3D\Object3D</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\3D\RenderObjects3D\Object3DSkinning\Object3DSkinning.h">
+    <ClInclude Include="Engine\3D\RenderObjects3D\SkinningRenderer3D\SkinningRenderer3D.h">
       <Filter>Engine\3D\RenderObjects3D\Object3DSkinning</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\3D\RenderObjects3D\Primitive3D\Primitive3D.h">
+    <ClInclude Include="Engine\3D\RenderObjects3D\PrimitiveRenderer3D\PrimitiveRenderer3D.h">
       <Filter>Engine\3D\RenderObjects3D\Primitive3D</Filter>
     </ClInclude>
     <ClInclude Include="Engine\3D\Shapes3D\Mesh\Mesh.h">
@@ -564,10 +564,10 @@
     <ClCompile Include="Engine\3D\RenderObjects3D\StaticRenderer3D\StaticRenderer3D.cpp">
       <Filter>Engine\3D\RenderObjects3D\Object3D</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\3D\RenderObjects3D\Object3DSkinning\Object3DSkinning.cpp">
+    <ClCompile Include="Engine\3D\RenderObjects3D\SkinningRenderer3D\SkinningRenderer3D.cpp">
       <Filter>Engine\3D\RenderObjects3D\Object3DSkinning</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\3D\RenderObjects3D\Primitive3D\Primitive3D.cpp">
+    <ClCompile Include="Engine\3D\RenderObjects3D\PrimitiveRenderer3D\PrimitiveRenderer3D.cpp">
       <Filter>Engine\3D\RenderObjects3D\Primitive3D</Filter>
     </ClCompile>
     <ClCompile Include="Engine\3D\Shapes3D\Mesh\Mesh.cpp">

@@ -1,4 +1,4 @@
-#include "Object3D.h"
+#include "StaticRenderer3D.h"
 
 #include <cassert>
 
