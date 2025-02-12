@@ -26,9 +26,7 @@ private:
 	std::unique_ptr<GameObject3D> terrain_ = nullptr;
 
 	// オブジェクト
-	std::unique_ptr<GameObject3D> sphere0_ = nullptr;
-	// オブジェクト
-	std::unique_ptr<GameObject3D> sphere1_ = nullptr;
+	std::unique_ptr<GameObject3D> sphere_[2] = nullptr;
 };
 
 template<typename Data>
