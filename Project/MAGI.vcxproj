@@ -112,6 +112,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="App\GameData\CollisionCategory.h" />
     <ClInclude Include="App\Game\Game.h" />
     <ClInclude Include="App\GameData\GameData.h" />
     <ClInclude Include="App\Scenes\Sample\SampleScene.h" />

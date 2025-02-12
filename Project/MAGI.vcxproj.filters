@@ -537,6 +537,7 @@
     <ClInclude Include="Engine\Includes\Enums\Renderer3DEnum.h" />
     <ClInclude Include="Engine\3D\Collider3D\Collider3D.h" />
     <ClInclude Include="Engine\Includes\Enums\Collider3DType.h" />
+    <ClInclude Include="App\GameData\CollisionCategory.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="App\Game\Game.cpp">
