@@ -39,6 +39,18 @@ void GameObject3D::Draw() {
 	}
 }
 
+Vector3& GameObject3D::GetScale() {
+	return worldTransform_->scale_;
+}
+
+Vector3& GameObject3D::GetRotate() {
+	return worldTransform_->rotate_;
+}
+
+Vector3& GameObject3D::GetTranslate() {
+	return worldTransform_->translate_;
+}
+
 WorldTransform* GameObject3D::GetWorldTransform() {
 	return worldTransform_.get();
 }

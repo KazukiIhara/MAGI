@@ -24,6 +24,10 @@ public:
 	virtual void Update();
 	virtual void Draw();
 
+	Vector3& GetScale();
+	Vector3& GetRotate();
+	Vector3& GetTranslate();
+
 	// ワールドトランスフォームの取得
 	WorldTransform* GetWorldTransform();
 
