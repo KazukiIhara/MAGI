@@ -15,8 +15,22 @@ Collider3D::~Collider3D() {}
 
 void Collider3D::Update() {
 
+	// ワールド行列の更新
+	worldTransform_->Update();
 }
 
 void Collider3D::Draw() {
+
+}
+
+void Collider3D::DrawSphere() {
+
+}
+
+void Collider3D::DrawAABB() {
+
+}
+
+void Collider3D::DrawOBB() {
 
 }

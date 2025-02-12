@@ -19,7 +19,9 @@ public:
 	void Draw();
 
 private:
-
+	void DrawSphere();
+	void DrawAABB();
+	void DrawOBB();
 private:
 	// 所属するゲームオブジェクトのポインタ
 	GameObject3D* owner_ = nullptr;

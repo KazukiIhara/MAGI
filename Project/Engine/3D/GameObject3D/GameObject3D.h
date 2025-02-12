@@ -10,6 +10,8 @@
 #include "3D/RenderObjects3D/StaticRenderer3D/StaticRenderer3D.h"
 #include "3D/RenderObjects3D/SkinningRenderer3D/SkinningRenderer3D.h"
 
+#include "3D/Collider3D/Collider3D.h"
+
 /// <summary>
 /// 3Dゲームオブジェクトクラス
 /// </summary>
@@ -31,6 +33,9 @@ public:
 	void CreateStaticRenderer(const std::string& rendererName, const std::string& modelName);
 	// スキニングありモデル描画オブジェクト生成
 	void CreateSkinningRenderer(const std::string& rendererName, const std::string& modelName);
+
+	// コライダー作成
+	void CreateCollider(Collider3DType type);
 private:
 	// ワールドトランスフォーム作成
 	void CreateWorldTransform(const EulerTransform3D& transform);
@@ -39,4 +44,6 @@ private:
 	std::unique_ptr<WorldTransform> worldTransform_ = nullptr;
 	// 描画用クラス
 	std::unique_ptr<BaseRenderable3D> renderer3D_ = nullptr;
+	// コライダークラス
+	std::unique_ptr<Collider3D> collider3D_ = nullptr;
 };
