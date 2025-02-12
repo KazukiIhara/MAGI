@@ -11,7 +11,7 @@
 
 // サンプルシーン
 template <typename Data>
-class SampleScene: public BaseScene<Data> {
+class SampleScene : public BaseScene<Data> {
 public:
 	using BaseScene<Data>::BaseScene; // 親クラスのコンストラクタをそのまま継承
 	~SampleScene()override = default;
@@ -25,6 +25,10 @@ private:
 	// 地形
 	std::unique_ptr<GameObject3D> terrain_ = nullptr;
 
+	// オブジェクト
+	std::unique_ptr<GameObject3D> sphere0_ = nullptr;
+	// オブジェクト
+	std::unique_ptr<GameObject3D> sphere1_ = nullptr;
 };
 
 template<typename Data>
