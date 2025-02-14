@@ -10,19 +10,15 @@
 
 class GameObject3D;
 
-class Collider3D :public WorldEntity {
+class BaseCollider3D:public WorldEntity {
 public:
-	Collider3D(GameObject3D* owner, Collider3DType type);
-	~Collider3D();
+	BaseCollider3D(GameObject3D* owner, Collider3DType type);
+	virtual ~BaseCollider3D() = default;
 
 	void Update();
-	void Draw();
+	virtual void Draw() = 0;
 
-private:
-	void DrawSphere(const Vector3& center, float radius);
-	void DrawAABB();
-	void DrawOBB();
-private:
+protected:
 	// 所属するゲームオブジェクトのポインタ
 	GameObject3D* owner_ = nullptr;
 	// コライダーのタイプ

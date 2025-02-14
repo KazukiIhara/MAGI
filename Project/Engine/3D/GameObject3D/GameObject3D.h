@@ -10,7 +10,8 @@
 #include "3D/RenderObjects3D/StaticRenderer3D/StaticRenderer3D.h"
 #include "3D/RenderObjects3D/SkinningRenderer3D/SkinningRenderer3D.h"
 
-#include "3D/Collider3D/Collider3D.h"
+#include "3D/Collider3Ds/BaseCollider3D/BaseCollider3D.h"
+#include "3D/Collider3Ds/SphereCollider/SphereCollider.h"
 
 /// <summary>
 /// 3Dゲームオブジェクトクラス
@@ -42,6 +43,11 @@ public:
 	virtual void OnCollisionExit([[maybe_unused]] GameObject3D* other);
 
 
+	//
+	// コンポーネント作成関数
+	//
+
+
 	// シンプル形状描画オブジェクト生成
 	void CreatePrimitiveRenderer(const std::string& rendererName, const Primitive3DType& primitiveType, const std::string& textureName = "");
 	// スキニングなしモデル描画オブジェクト生成
@@ -61,5 +67,5 @@ private:
 	// 描画用クラス
 	std::unique_ptr<BaseRenderable3D> renderer3D_ = nullptr;
 	// コライダークラス
-	std::unique_ptr<Collider3D> collider3D_ = nullptr;
+	std::unique_ptr<BaseCollider3D> collider3D_ = nullptr;
 };

@@ -86,7 +86,15 @@ void GameObject3D::CreateSkinningRenderer(const std::string& rendererName, const
 }
 
 void GameObject3D::CreateCollider(Collider3DType type) {
-	collider3D_ = std::make_unique<Collider3D>(this, type);
+	switch (type) {
+		case Collider3DType::Sphere:
+			collider3D_ = std::make_unique<SphereCollider>(this, type);
+			break;
+		case Collider3DType::AABB:
+			break;
+		case Collider3DType::OBB:
+			break;
+	}
 }
 
 void GameObject3D::CreateWorldTransform(const EulerTransform3D& transform) {

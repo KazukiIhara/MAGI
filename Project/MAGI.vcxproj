@@ -122,7 +122,8 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Engine\3D\Base3D\WorldTransform\WorldTransform.h" />
     <ClInclude Include="Engine\3D\Camera3Ds\Camera3D\Camera3D.h" />
     <ClInclude Include="Engine\3D\Camera3Ds\DebugCamera3D\DebugCamera3D.h" />
-    <ClInclude Include="Engine\3D\Collider3D\Collider3D.h" />
+    <ClInclude Include="Engine\3D\Collider3Ds\BaseCollider3D\BaseCollider3D.h" />
+    <ClInclude Include="Engine\3D\Collider3Ds\SphereCollider\SphereCollider.h" />
     <ClInclude Include="Engine\3D\RenderObjects3D\BaseRenderable3D\BaseRenderable3D.h" />
     <ClInclude Include="Engine\3D\RenderObjects3D\StaticRenderer3D\StaticRenderer3D.h" />
     <ClInclude Include="Engine\3D\RenderObjects3D\SkinningRenderer3D\SkinningRenderer3D.h" />
@@ -215,7 +216,8 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Engine\3D\Base3D\WorldTransform\WorldTransform.cpp" />
     <ClCompile Include="Engine\3D\Camera3Ds\Camera3D\Camera3D.cpp" />
     <ClCompile Include="Engine\3D\Camera3Ds\DebugCamera3D\DebugCamera3D.cpp" />
-    <ClCompile Include="Engine\3D\Collider3D\Collider3D.cpp" />
+    <ClCompile Include="Engine\3D\Collider3Ds\BaseCollider3D\BaseCollider3D.cpp" />
+    <ClCompile Include="Engine\3D\Collider3Ds\SphereCollider\SphereCollider.cpp" />
     <ClCompile Include="Engine\3D\RenderObjects3D\BaseRenderable3D\BaseRenderable3D.cpp" />
     <ClCompile Include="Engine\3D\RenderObjects3D\StaticRenderer3D\StaticRenderer3D.cpp" />
     <ClCompile Include="Engine\3D\RenderObjects3D\SkinningRenderer3D\SkinningRenderer3D.cpp" />
