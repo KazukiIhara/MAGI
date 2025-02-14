@@ -15,7 +15,7 @@
 /// <summary>
 /// 3Dゲームオブジェクトクラス
 /// </summary>
-class GameObject3D:public WorldEntity {
+class GameObject3D :public WorldEntity {
 public:
 	GameObject3D(const std::string& objectName, const EulerTransform3D& transform = EulerTransform3D{});
 	~GameObject3D()override = default;
@@ -24,12 +24,23 @@ public:
 	virtual void Update();
 	virtual void Draw();
 
+	// スケール
 	Vector3& GetScale();
+	// 回転
 	Vector3& GetRotate();
+	// 移動量
 	Vector3& GetTranslate();
 
 	// ワールドトランスフォームの取得
 	WorldTransform* GetWorldTransform();
+
+	// 衝突した
+	virtual void OnCollisionEnter([[maybe_unused]] GameObject3D* other);
+	// 衝突中
+	virtual void OnCollisionStay([[maybe_unused]] GameObject3D* other);
+	// 離れた
+	virtual void OnCollisionExit([[maybe_unused]] GameObject3D* other);
+
 
 	// シンプル形状描画オブジェクト生成
 	void CreatePrimitiveRenderer(const std::string& rendererName, const Primitive3DType& primitiveType, const std::string& textureName = "");
@@ -40,6 +51,7 @@ public:
 
 	// コライダー作成
 	void CreateCollider(Collider3DType type);
+
 private:
 	// ワールドトランスフォーム作成
 	void CreateWorldTransform(const EulerTransform3D& transform);

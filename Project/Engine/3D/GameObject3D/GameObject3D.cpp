@@ -55,6 +55,18 @@ WorldTransform* GameObject3D::GetWorldTransform() {
 	return worldTransform_.get();
 }
 
+void GameObject3D::OnCollisionEnter(GameObject3D* other) {
+
+}
+
+void GameObject3D::OnCollisionStay(GameObject3D* other) {
+
+}
+
+void GameObject3D::OnCollisionExit(GameObject3D* other) {
+
+}
+
 void GameObject3D::CreatePrimitiveRenderer(const std::string& rendererName, const Primitive3DType& primitiveType, const std::string& textureName) {
 	renderer3D_ = std::make_unique<PrimitiveRenderer3D>(rendererName, primitiveType, textureName);
 	renderer3D_->AssignShape();
