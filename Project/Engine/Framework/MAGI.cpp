@@ -325,6 +325,9 @@ void MAGISYSTEM::Update() {
 	// シーンの更新処理
 	sceneManager_->Update();
 
+	// コリジョンマネージャの更新処理
+	collisionManager_->Update();
+
 	// カメラマネージャの更新処理
 	camera3DManager_->Update();
 
