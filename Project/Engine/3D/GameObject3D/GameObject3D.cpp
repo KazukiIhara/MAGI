@@ -55,15 +55,15 @@ WorldTransform* GameObject3D::GetWorldTransform() {
 	return worldTransform_.get();
 }
 
-void GameObject3D::OnCollisionEnter(GameObject3D* other) {
+void GameObject3D::OnCollisionEnter([[maybe_unused]] GameObject3D* other) {
 
 }
 
-void GameObject3D::OnCollisionStay(GameObject3D* other) {
+void GameObject3D::OnCollisionStay([[maybe_unused]] GameObject3D* other) {
 
 }
 
-void GameObject3D::OnCollisionExit(GameObject3D* other) {
+void GameObject3D::OnCollisionExit([[maybe_unused]] GameObject3D* other) {
 
 }
 
