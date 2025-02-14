@@ -19,7 +19,7 @@ public:
 	void Draw();
 
 private:
-	void DrawSphere();
+	void DrawSphere(const Vector3& center, float radius);
 	void DrawAABB();
 	void DrawOBB();
 private:
