@@ -10,8 +10,8 @@
 #include "3D/RenderObjects3D/StaticRenderer3D/StaticRenderer3D.h"
 #include "3D/RenderObjects3D/SkinningRenderer3D/SkinningRenderer3D.h"
 
-#include "3D/Collider3Ds/BaseCollider3D/BaseCollider3D.h"
-#include "3D/Collider3Ds/SphereCollider/SphereCollider.h"
+#include "3D/Colliders3D/BaseCollider3D/BaseCollider3D.h"
+#include "3D/Colliders3D/SphereCollider/SphereCollider.h"
 
 /// <summary>
 /// 3Dゲームオブジェクトクラス

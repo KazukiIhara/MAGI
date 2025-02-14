@@ -1,6 +1,6 @@
 #pragma once
 
-#include "3D/Collider3Ds/BaseCollider3D/BaseCollider3D.h"
+#include "3D/Colliders3D/BaseCollider3D/BaseCollider3D.h"
 
 class SphereCollider:public BaseCollider3D {
 public:

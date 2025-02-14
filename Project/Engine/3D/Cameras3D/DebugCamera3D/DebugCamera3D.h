@@ -1,6 +1,6 @@
 #pragma once
 
-#include "3D/Camera3Ds/Camera3D/Camera3D.h"
+#include "3D/Cameras3D/Camera3D/Camera3D.h"
 
 class DebugCamera3D:public Camera3D {
 public:
