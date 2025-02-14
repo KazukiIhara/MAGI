@@ -19,6 +19,10 @@ void GameObject3D::Update() {
 		worldTransform_->Update();
 	}
 
+	if (collider3D_) {
+		collider3D_->Update();
+	}
+
 	if (renderer3D_) {
 		renderer3D_->Update();
 	}
@@ -26,28 +30,71 @@ void GameObject3D::Update() {
 
 void GameObject3D::Draw() {
 
+	if (collider3D_) {
+		collider3D_->Draw();
+	}
+
 	if (renderer3D_) {
 		renderer3D_->Draw();
 	}
+}
+
+Vector3& GameObject3D::GetScale() {
+	return worldTransform_->scale_;
+}
+
+Vector3& GameObject3D::GetRotate() {
+	return worldTransform_->rotate_;
+}
+
+Vector3& GameObject3D::GetTranslate() {
+	return worldTransform_->translate_;
 }
 
 WorldTransform* GameObject3D::GetWorldTransform() {
 	return worldTransform_.get();
 }
 
+void GameObject3D::OnCollisionEnter([[maybe_unused]] GameObject3D* other) {
+
+}
+
+void GameObject3D::OnCollisionStay([[maybe_unused]] GameObject3D* other) {
+
+}
+
+void GameObject3D::OnCollisionExit([[maybe_unused]] GameObject3D* other) {
+
+}
+
 void GameObject3D::CreatePrimitiveRenderer(const std::string& rendererName, const Primitive3DType& primitiveType, const std::string& textureName) {
 	renderer3D_ = std::make_unique<PrimitiveRenderer3D>(rendererName, primitiveType, textureName);
 	renderer3D_->AssignShape();
+	renderer3D_->GetWorldTransform()->parent_ = worldTransform_.get();
 }
 
 void GameObject3D::CreateStaticRenderer(const std::string& rendererName, const std::string& modelName) {
 	renderer3D_ = std::make_unique<StaticRenderer3D>(rendererName, modelName);
 	renderer3D_->AssignShape();
+	renderer3D_->GetWorldTransform()->parent_ = worldTransform_.get();
 }
 
 void GameObject3D::CreateSkinningRenderer(const std::string& rendererName, const std::string& modelName) {
 	renderer3D_ = std::make_unique<SkinningRenderer3D>(rendererName, modelName);
 	renderer3D_->AssignShape();
+	renderer3D_->GetWorldTransform()->parent_ = worldTransform_.get();
+}
+
+void GameObject3D::CreateCollider(Collider3DType type) {
+	switch (type) {
+		case Collider3DType::Sphere:
+			collider3D_ = std::make_unique<SphereCollider>(this, type);
+			break;
+		case Collider3DType::AABB:
+			break;
+		case Collider3DType::OBB:
+			break;
+	}
 }
 
 void GameObject3D::CreateWorldTransform(const EulerTransform3D& transform) {

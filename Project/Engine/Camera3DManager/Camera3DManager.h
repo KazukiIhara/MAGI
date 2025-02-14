@@ -2,7 +2,7 @@
 
 #include <memory>
 
-#include "3D/Camera3Ds/DebugCamera3D/DebugCamera3D.h"
+#include "3D/Cameras3D/DebugCamera3D/DebugCamera3D.h"
 
 /// <summary>
 /// 3D描画用カメラのマネージャ

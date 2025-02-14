@@ -285,10 +285,10 @@
     <ClInclude Include="Engine\3D\Base3D\WorldTransform\WorldTransform.h">
       <Filter>Engine\3D\Base3D\WorldTransform</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\3D\Camera3Ds\Camera3D\Camera3D.h">
+    <ClInclude Include="Engine\3D\Cameras3D\Camera3D\Camera3D.h">
       <Filter>Engine\3D\Camera3Ds\Camera3D</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\3D\Camera3Ds\DebugCamera3D\DebugCamera3D.h">
+    <ClInclude Include="Engine\3D\Cameras3D\DebugCamera3D\DebugCamera3D.h">
       <Filter>Engine\3D\Camera3Ds\DebugCamera3D</Filter>
     </ClInclude>
     <ClInclude Include="Engine\3D\RenderObjects3D\BaseRenderable3D\BaseRenderable3D.h">
@@ -535,6 +535,10 @@
       <Filter>Engine\WindowApp</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Includes\Enums\Renderer3DEnum.h" />
+    <ClInclude Include="Engine\3D\Colliders3D\BaseCollider3D\BaseCollider3D.h" />
+    <ClInclude Include="Engine\Includes\Enums\Collider3DType.h" />
+    <ClInclude Include="App\GameData\CollisionCategory.h" />
+    <ClInclude Include="Engine\3D\Colliders3D\SphereCollider\SphereCollider.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="App\Game\Game.cpp">
@@ -552,10 +556,10 @@
     <ClCompile Include="Engine\3D\Base3D\WorldTransform\WorldTransform.cpp">
       <Filter>Engine\3D\Base3D\WorldTransform</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\3D\Camera3Ds\Camera3D\Camera3D.cpp">
+    <ClCompile Include="Engine\3D\Cameras3D\Camera3D\Camera3D.cpp">
       <Filter>Engine\3D\Camera3Ds\Camera3D</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\3D\Camera3Ds\DebugCamera3D\DebugCamera3D.cpp">
+    <ClCompile Include="Engine\3D\Cameras3D\DebugCamera3D\DebugCamera3D.cpp">
       <Filter>Engine\3D\Camera3Ds\DebugCamera3D</Filter>
     </ClCompile>
     <ClCompile Include="Engine\3D\RenderObjects3D\BaseRenderable3D\BaseRenderable3D.cpp">
@@ -721,6 +725,8 @@
       <Filter>Engine\WindowApp</Filter>
     </ClCompile>
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Engine\3D\Colliders3D\BaseCollider3D\BaseCollider3D.cpp" />
+    <ClCompile Include="Engine\3D\Colliders3D\SphereCollider\SphereCollider.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Engine\SceneManager\SceneManager.ipp">
