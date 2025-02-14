@@ -8,7 +8,11 @@ CollisionManager::CollisionManager() {
 	//
 
 	// 球体同士
-	collisionFuncMap_[{Collider3DType::Sphere, Collider3DType::Sphere}] = CheckSphereToSphereCollision;
+	collisionFuncMap_[{Collider3DType::Sphere, Collider3DType::Sphere}] =
+		[this](BaseCollider3D* collider1, BaseCollider3D* collider2) {
+		return this->CheckSphereToSphereCollision(collider1, collider2);
+		};
+
 }
 
 void CollisionManager::Update() {
@@ -20,7 +24,22 @@ void CollisionManager::Add(BaseCollider3D* baseCollider3D) {
 }
 
 void CollisionManager::CheckCollisionPair(BaseCollider3D* colliderA, BaseCollider3D* colliderB) {
+	// コライダーのタイプを取得
+	Collider3DType typeA = colliderA->GetType();
+	Collider3DType typeB = colliderB->GetType();
 
+	// タイプの組み合わせを順序固定で取得
+	auto key = MakeOrderedPair(typeA, typeB);
+
+	// マップから衝突判定関数を探す
+	auto it = collisionFuncMap_.find(key);
+	if (it != collisionFuncMap_.end()) {
+		// 見つかったら衝突判定関数を実行
+		if (it->second(colliderA, colliderB)) {
+			// 衝突処理
+
+		}
+	}
 }
 
 void CollisionManager::CheckAllCollisions() {

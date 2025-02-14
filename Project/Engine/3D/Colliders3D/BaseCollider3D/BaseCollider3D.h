@@ -18,7 +18,7 @@ public:
 	void Update();
 	virtual void Draw() = 0;
 
-	Collider3DType GetCollider3DType()const;
+	Collider3DType GetType()const;
 
 protected:
 	// 所属するゲームオブジェクトのポインタ

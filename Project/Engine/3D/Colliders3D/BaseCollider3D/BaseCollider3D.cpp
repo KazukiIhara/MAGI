@@ -24,7 +24,7 @@ void BaseCollider3D::Update() {
 	worldPosition_ = ExtractionWorldPos(worldTransform_->worldMatrix_);
 }
 
-Collider3DType BaseCollider3D::GetCollider3DType() const {
+Collider3DType BaseCollider3D::GetType() const {
 	return type_.value();
 }
 
