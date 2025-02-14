@@ -40,6 +40,7 @@
 
 #include "LineDrawer3D/LineDrawer3D.h"
 
+#include "CollisionManager/CollisionManager.h"
 
 #include "SceneManager/SceneManager.h"
 
@@ -306,6 +307,7 @@ protected:
 	// 
 	// GameManager
 	// 
+	static std::unique_ptr<CollisionManager> collisionManager_;
 	static std::unique_ptr<SceneManager<GameData>> sceneManager_;
 
 	//

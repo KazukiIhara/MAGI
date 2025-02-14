@@ -40,6 +40,7 @@ std::unique_ptr<PunctualLightManager> MAGISYSTEM::punctualLightManager_ = nullpt
 
 std::unique_ptr<LineDrawer3D> MAGISYSTEM::lineDrawer3D_ = nullptr;
 
+std::unique_ptr<CollisionManager> MAGISYSTEM::collisionManager_ = nullptr;
 std::unique_ptr<SceneManager<GameData>> MAGISYSTEM::sceneManager_ = nullptr;
 
 std::unique_ptr<ImGuiController> MAGISYSTEM::imguiController_ = nullptr;
@@ -118,6 +119,9 @@ void MAGISYSTEM::Initialize() {
 	// LineDrawer3D
 	lineDrawer3D_ = std::make_unique<LineDrawer3D>(dxgi_.get(), directXCommand_.get(), srvuavManager_.get(), graphicsPipelineManager_.get(), camera3DManager_.get());
 
+
+	// CollisionManager
+	collisionManager_ = std::make_unique<CollisionManager>();
 	// SceneManager
 	sceneManager_ = std::make_unique<SceneManager<GameData>>();
 
@@ -149,6 +153,11 @@ void MAGISYSTEM::Finalize() {
 	// SceneManager
 	if (sceneManager_) {
 		sceneManager_.reset();
+	}
+
+	// CollisionManager
+	if (collisionManager_) {
+		collisionManager_.reset();
 	}
 
 	// LineDrawer3D
