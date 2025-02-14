@@ -18,6 +18,8 @@ public:
 	void Update();
 	virtual void Draw() = 0;
 
+	Collider3DType GetCollider3DType()const;
+
 protected:
 	// 所属するゲームオブジェクトのポインタ
 	GameObject3D* owner_ = nullptr;

@@ -225,6 +225,12 @@ public: // エンジンの機能
 	static void DrawLine3D(const Vector3& start, const Vector3& end, const RGBA& color);
 #pragma endregion
 
+#pragma region CollisionManager
+	// コライダーの追加
+	static void AddCollider(BaseCollider3D* baseCollider3D);
+
+#pragma endregion
+
 
 #pragma region PreRender
 	// Object3Dの描画前処理
