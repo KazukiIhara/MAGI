@@ -1,5 +1,7 @@
 #include "GameObject3D.h"
 
+#include <cassert>
+
 GameObject3D::GameObject3D(const std::string& objectName, const EulerTransform3D& transform)
 	:WorldEntity() {
 	// 名前をセット
@@ -14,13 +16,8 @@ void GameObject3D::Initialize() {
 }
 
 void GameObject3D::Update() {
-
 	if (worldTransform_) {
 		worldTransform_->Update();
-	}
-
-	if (collider3D_) {
-		collider3D_->Update();
 	}
 
 	if (renderer3D_) {
@@ -29,10 +26,6 @@ void GameObject3D::Update() {
 }
 
 void GameObject3D::Draw() {
-
-	if (collider3D_) {
-		collider3D_->Draw();
-	}
 
 	if (renderer3D_) {
 		renderer3D_->Draw();
@@ -67,6 +60,18 @@ void GameObject3D::OnCollisionExit([[maybe_unused]] GameObject3D* other) {
 
 }
 
+Vector3& GameObject3D::GetColliderOffset(const std::string& name) {
+	// 作成済みコライダーを検索
+	if (colliders3D_.contains(name)) {
+		// コライダーを返す
+		return colliders3D_.at(name)->GetOffset();
+	}
+	// エラーメッセージ
+	assert(false && "Not Found Collider");
+	// コライダーを返す
+	return colliders3D_.at(name)->GetOffset();
+}
+
 void GameObject3D::CreatePrimitiveRenderer(const std::string& rendererName, const Primitive3DType& primitiveType, const std::string& textureName) {
 	renderer3D_ = std::make_unique<PrimitiveRenderer3D>(rendererName, primitiveType, textureName);
 	renderer3D_->AssignShape();
@@ -85,16 +90,13 @@ void GameObject3D::CreateSkinningRenderer(const std::string& rendererName, const
 	renderer3D_->GetWorldTransform()->parent_ = worldTransform_.get();
 }
 
-void GameObject3D::CreateCollider(Collider3DType type) {
-	switch (type) {
-		case Collider3DType::Sphere:
-			collider3D_ = std::make_unique<SphereCollider>(this, type);
-			break;
-		case Collider3DType::AABB:
-			break;
-		case Collider3DType::OBB:
-			break;
-	}
+void GameObject3D::AddCollider(BaseCollider3D* collider) {
+	// nullチェック
+	assert(collider);
+	// オーナーをセット
+	collider->SetOwner(this);
+	// コライダーマップにセット
+	colliders3D_.insert(std::pair(collider->name_, collider));
 }
 
 void GameObject3D::CreateWorldTransform(const EulerTransform3D& transform) {

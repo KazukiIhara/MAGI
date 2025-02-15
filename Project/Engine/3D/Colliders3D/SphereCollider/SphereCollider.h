@@ -4,7 +4,7 @@
 
 class SphereCollider:public BaseCollider3D {
 public:
-	SphereCollider(GameObject3D* owner, Collider3DType type);
+	SphereCollider(Collider3DType type);
 	~SphereCollider()override = default;
 
 	void Draw()override;

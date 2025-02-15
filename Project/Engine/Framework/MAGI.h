@@ -254,9 +254,12 @@ public: // エンジンの機能
 #pragma endregion
 
 #pragma region ColliderManager
-
-
-
+	// コライダーの追加
+	static void CreateCollider(const std::string& name, Collider3DType colliderType);
+	// コライダーの削除
+	static void RemoveCollider(const std::string& name);
+	// コライダーの取得
+	static BaseCollider3D* FindCollider(const std::string& name);
 #pragma endregion
 
 #pragma region LineDrawer3D

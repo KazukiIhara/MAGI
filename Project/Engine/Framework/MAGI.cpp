@@ -58,7 +58,7 @@ std::unique_ptr<ComputePipelineManager> MAGISYSTEM::computePipelineManager_ = nu
 //
 std::unique_ptr<Camera3DManager> MAGISYSTEM::camera3DManager_ = nullptr;
 std::unique_ptr<PunctualLightManager> MAGISYSTEM::punctualLightManager_ = nullptr;
-std::unique_ptr<ColliderManager> colliderManager_ = nullptr;
+std::unique_ptr<ColliderManager> MAGISYSTEM::colliderManager_ = nullptr;
 
 // 
 // Drawer
@@ -650,6 +650,18 @@ PunctualLightData& MAGISYSTEM::GetLightData(const std::string& lightName) {
 
 void MAGISYSTEM::TransferPunctualLight() {
 	punctualLightManager_->TransferLightsData();
+}
+
+void MAGISYSTEM::CreateCollider(const std::string& name, Collider3DType colliderType) {
+	colliderManager_->Create(name, colliderType);
+}
+
+void MAGISYSTEM::RemoveCollider(const std::string& name) {
+	colliderManager_->Remove(name);
+}
+
+BaseCollider3D* MAGISYSTEM::FindCollider(const std::string& name) {
+	return colliderManager_->Find( name);
 }
 
 void MAGISYSTEM::DrawLine3D(const Vector3& start, const Vector3& end, const RGBA& color) {

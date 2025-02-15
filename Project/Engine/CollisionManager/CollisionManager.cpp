@@ -20,7 +20,7 @@ void CollisionManager::Update() {
 }
 
 void CollisionManager::Add(BaseCollider3D* baseCollider3D) {
-
+	baseCollider3D;
 }
 
 void CollisionManager::CheckCollisionPair(BaseCollider3D* colliderA, BaseCollider3D* colliderB) {
@@ -59,5 +59,7 @@ std::pair<Collider3DType, Collider3DType> CollisionManager::MakeOrderedPair(Coll
 }
 
 bool CollisionManager::CheckSphereToSphereCollision(BaseCollider3D* colliderA, BaseCollider3D* colliderB) {
+	colliderA;
+	colliderB;
 	return true;
 }

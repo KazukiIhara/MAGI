@@ -16,12 +16,17 @@ BaseCollider3D::BaseCollider3D(Collider3DType type) {
 
 void BaseCollider3D::Update() {
 	// ワールド行列の更新
+	worldTransform_->translate_ = offset_;
 	worldTransform_->Update();
 	worldPosition_ = ExtractionWorldPos(worldTransform_->worldMatrix_);
 }
 
 Collider3DType BaseCollider3D::GetType() const {
 	return type_.value();
+}
+
+Vector3& BaseCollider3D::GetOffset() {
+	return offset_;
 }
 
 void BaseCollider3D::SetOwner(GameObject3D* owner) {

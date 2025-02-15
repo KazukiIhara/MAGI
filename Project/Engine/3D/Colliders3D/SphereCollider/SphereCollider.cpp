@@ -2,8 +2,8 @@
 
 #include "Framework/MAGI.h"
 
-SphereCollider::SphereCollider(GameObject3D* owner, Collider3DType type)
-	:BaseCollider3D(owner, type) {
+SphereCollider::SphereCollider(Collider3DType type)
+	:BaseCollider3D(type) {
 
 }
 

@@ -20,6 +20,8 @@ public:
 
 	// コライダータイプの取得
 	Collider3DType GetType()const;
+	// オフセットの取得
+	Vector3& GetOffset();
 
 	// 所属するゲームオブジェクトのセット
 	void SetOwner(GameObject3D* owner);
@@ -33,4 +35,6 @@ protected:
 	CollisionCategory collisionCategory_ = CollisionCategory::None;
 	// ワールドトランスフォーム
 	std::unique_ptr<WorldTransform> worldTransform_ = nullptr;
+	// 親トランスフォームとのオフセット
+	Vector3 offset_{};
 };
