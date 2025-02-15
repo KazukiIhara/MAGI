@@ -12,13 +12,17 @@ class GameObject3D;
 
 class BaseCollider3D:public WorldEntity {
 public:
-	BaseCollider3D(GameObject3D* owner, Collider3DType type);
+	BaseCollider3D(Collider3DType type);
 	virtual ~BaseCollider3D() = default;
 
 	void Update();
 	virtual void Draw() = 0;
 
+	// コライダータイプの取得
 	Collider3DType GetType()const;
+
+	// 所属するゲームオブジェクトのセット
+	void SetOwner(GameObject3D* owner);
 
 protected:
 	// 所属するゲームオブジェクトのポインタ

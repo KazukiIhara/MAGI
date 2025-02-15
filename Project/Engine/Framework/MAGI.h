@@ -7,19 +7,31 @@
 #include "LeakChecker/D3DResourceLeakChecker.h"
 #endif // _DEBUG
 
+// 
+// BaseSystems
+// 
 #include "WindowApp/WindowApp.h"
 #include "DeltaTimer/DeltaTimer.h"    
 #include "DirectInput/DirectInput.h"
 
+// 
+// DirectXBaseSystems
+// 
 #include "DirectX/DXGI/DXGI.h"
 #include "DirectX/DirectXCommand/DirectXCommand.h"
 #include "DirectX/Fence/Fence.h"
 #include "DirectX/ShaderCompiler/ShaderCompiler.h"
 
+// 
+// ViewManagers
+// 
 #include "ViewManagers/RTVManager/RTVManager.h"
 #include "ViewManagers/DSVManager/DSVManager.h"
 #include "ViewManagers/SRVUAVManager/SRVUAVManager.h"
 
+// 
+// DirectXRenderSystems
+// 
 #include "DirectX/SwapChain/SwapChain.h"
 #include "DirectX/DepthStencil/DepthStencil.h"
 #include "DirectX/ResourceBarrier/ResourceBarrier.h"
@@ -27,26 +39,47 @@
 #include "DirectX/Viewport/Viewport.h"
 #include "DirectX/ScissorRect/ScissorRect.h"
 
+// 
+// AssetContainer
+// 
 #include "AssetContainers/TextureDataContainer/TextureDataContainer.h"
 #include "AssetContainers/PrimitiveShapeDataContainer/PrimitiveShapeDataContainer.h"
 #include "AssetContainers/ModelDataContainer/ModelDataContainer.h"
 #include "AssetContainers/AnimationDataContainer/AnimationDataContainer.h"
 
+// 
+// PipelineManager
+// 
 #include "PipelineManagers/GraphicsPipelineManager/GraphicsPipelineManager.h"
 #include "PipelineManagers/ComputePipelineManager/ComputePipelineManager.h"
 
+// 
+// ObjectManager
+// 
 #include "Camera3DManager/Camera3DManager.h"
 #include "PunctualLightManager/PunctualLightManager.h"
+#include "ColliderManager/ColliderManager.h"
 
+// 
+// Drawer
+// 
 #include "LineDrawer3D/LineDrawer3D.h"
 
+// 
+// GameManager
+// 
 #include "CollisionManager/CollisionManager.h"
-
 #include "SceneManager/SceneManager.h"
 
+// 
+// Data入出力クラス
+// 
+#include "DataIO/DataIO.h"
 
+// 
+// UIクラス
+// 
 #include "ImGuiController/ImGuiController.h"
-
 #include "GUI/GUI.h"
 
 // エンジンの全機能を持つクラス
@@ -220,6 +253,12 @@ public: // エンジンの機能
 	static void TransferPunctualLight();
 #pragma endregion
 
+#pragma region ColliderManager
+
+
+
+#pragma endregion
+
 #pragma region LineDrawer3D
 	// ライン描画
 	static void DrawLine3D(const Vector3& start, const Vector3& end, const RGBA& color);
@@ -304,6 +343,7 @@ protected:
 	//
 	static std::unique_ptr<Camera3DManager> camera3DManager_;
 	static std::unique_ptr<PunctualLightManager> punctualLightManager_;
+	static std::unique_ptr<ColliderManager> colliderManager_;
 
 	// 
 	// Drawer
@@ -315,6 +355,11 @@ protected:
 	// 
 	static std::unique_ptr<CollisionManager> collisionManager_;
 	static std::unique_ptr<SceneManager<GameData>> sceneManager_;
+
+	//
+	// Data入出力クラス
+	//
+	static std::unique_ptr<DataIO> dataIO_;
 
 	//
 	// UIクラス

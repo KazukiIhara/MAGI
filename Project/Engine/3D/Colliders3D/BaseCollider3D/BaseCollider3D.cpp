@@ -6,16 +6,12 @@
 
 using namespace MAGIMath;
 
-BaseCollider3D::BaseCollider3D(GameObject3D* owner, Collider3DType type) {
-	// オーナーを登録
-	owner_ = owner;
+BaseCollider3D::BaseCollider3D(Collider3DType type) {
 	// コライダーのタイプを登録
 	type_ = type;
 	// トランスフォームを初期化
 	worldTransform_ = std::make_unique<WorldTransform>();
 	worldTransform_->Initialize();
-	// 親のゲームオブジェクトのトランスフォームを親子付け
-	worldTransform_->parent_ = owner_->GetWorldTransform();
 }
 
 void BaseCollider3D::Update() {
@@ -26,5 +22,12 @@ void BaseCollider3D::Update() {
 
 Collider3DType BaseCollider3D::GetType() const {
 	return type_.value();
+}
+
+void BaseCollider3D::SetOwner(GameObject3D* owner) {
+	// オーナーを登録
+	owner_ = owner;
+	// 親のゲームオブジェクトのトランスフォームを親子付け
+	worldTransform_->parent_ = owner_->GetWorldTransform();
 }
 
