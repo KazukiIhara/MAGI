@@ -2,7 +2,13 @@
 
 #include <cassert>
 
-CollisionManager::CollisionManager() {
+#include "ColliderManager/ColliderManager.h"
+
+CollisionManager::CollisionManager(ColliderManager* colliderManager) {
+	// コライダーマネージャのインスタンスをセット
+	assert(colliderManager);
+	colliderManager_ = colliderManager;
+
 	//
 	// 各コライダーの組み合わせに対応する衝突判定関数を登録する
 	//
@@ -16,6 +22,8 @@ CollisionManager::CollisionManager() {
 }
 
 void CollisionManager::Update() {
+	// このフレームでチェックするコライダーをリストに挿入
+
 
 }
 

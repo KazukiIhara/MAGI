@@ -6,7 +6,9 @@
 
 using namespace MAGIMath;
 
-BaseCollider3D::BaseCollider3D(Collider3DType type) {
+BaseCollider3D::BaseCollider3D(uint32_t id, Collider3DType type) {
+	// 識別IDをセット
+	id_ = id;
 	// コライダーのタイプを登録
 	type_ = type;
 	// トランスフォームを初期化
@@ -25,8 +27,16 @@ Collider3DType BaseCollider3D::GetType() const {
 	return type_.value();
 }
 
+uint32_t BaseCollider3D::GetID() const {
+	return id_;
+}
+
 Vector3& BaseCollider3D::GetOffset() {
 	return offset_;
+}
+
+bool& BaseCollider3D::GetIsActive() {
+	return isActive_;
 }
 
 void BaseCollider3D::SetOwner(GameObject3D* owner) {

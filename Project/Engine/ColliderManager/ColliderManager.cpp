@@ -16,13 +16,6 @@ void ColliderManager::Update() {
 	for (auto& collider : colliders_) {
 		if (collider.second) {
 			collider.second->Update();
-		}
-	}
-}
-
-void ColliderManager::Draw() {
-	for (auto& collider : colliders_) {
-		if (collider.second) {
 			collider.second->Draw();
 		}
 	}
@@ -30,19 +23,19 @@ void ColliderManager::Draw() {
 
 void ColliderManager::Create(const std::string& name, Collider3DType colliderType) {
 	std::unique_ptr<BaseCollider3D> newCollider;
-
 	switch (colliderType) {
 		case Collider3DType::Sphere:
-			newCollider = std::make_unique<SphereCollider>(colliderType);
+			newCollider = std::make_unique<SphereCollider>(currentID_, colliderType);
 			break;
 		case Collider3DType::AABB:
 			break;
 		case Collider3DType::OBB:
 			break;
 	}
-
 	// コンテナに登録
 	colliders_.insert(std::pair(name, std::move(newCollider)));
+	// 識別IDをインクリメント
+	currentID_++;
 }
 
 void ColliderManager::Remove(const std::string& name) {
@@ -66,4 +59,9 @@ BaseCollider3D* ColliderManager::Find(const std::string& name) {
 
 	// ファイル名一致なし
 	return nullptr;
+}
+
+void ColliderManager::Clear() {
+	colliders_.clear();
+	currentID_ = 0;
 }

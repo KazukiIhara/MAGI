@@ -7,12 +7,14 @@
 // MyHedder
 #include "3D/Colliders3D/BaseCollider3D/BaseCollider3D.h"
 
+class ColliderManager;
+
 /// <summary>
 /// コリジョンマネージャ
 /// </summary>
 class CollisionManager {
 public:
-	CollisionManager();
+	CollisionManager(ColliderManager* colliderManager);
 	~CollisionManager() = default;
 
 	// 更新
@@ -38,5 +40,7 @@ private:
 	using CollisionFunc = std::function<bool(BaseCollider3D*, BaseCollider3D*)>;
 	// 衝突判定関数を管理するマップ
 	std::map<std::pair<Collider3DType, Collider3DType>, CollisionFunc> collisionFuncMap_;
-
+private:
+	// コライダーマネージャのポインタ
+	ColliderManager* colliderManager_ = nullptr;
 };

@@ -160,7 +160,7 @@ void MAGISYSTEM::Initialize() {
 
 
 	// CollisionManager
-	collisionManager_ = std::make_unique<CollisionManager>();
+	collisionManager_ = std::make_unique<CollisionManager>(colliderManager_.get());
 	// SceneManager
 	sceneManager_ = std::make_unique<SceneManager<GameData>>();
 
@@ -375,6 +375,9 @@ void MAGISYSTEM::Update() {
 
 	// シーンの更新処理
 	sceneManager_->Update();
+
+	// コライダーマネージャの更新
+	colliderManager_->Update();
 
 	// コリジョンマネージャの更新処理
 	collisionManager_->Update();
@@ -661,7 +664,7 @@ void MAGISYSTEM::RemoveCollider(const std::string& name) {
 }
 
 BaseCollider3D* MAGISYSTEM::FindCollider(const std::string& name) {
-	return colliderManager_->Find( name);
+	return colliderManager_->Find(name);
 }
 
 void MAGISYSTEM::DrawLine3D(const Vector3& start, const Vector3& end, const RGBA& color) {

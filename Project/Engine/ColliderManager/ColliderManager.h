@@ -15,15 +15,17 @@ public:
 	~ColliderManager();
 
 	void Update();
-	void Draw();
 
 	void Create(const std::string& name, Collider3DType colliderType);
 	void Remove(const std::string& name);
 
 	BaseCollider3D* Find(const std::string& name);
 
+	void Clear();
+
 private:
 	// コライダーコンテナ
 	std::map<std::string, std::unique_ptr<BaseCollider3D>> colliders_;
-
+	// コライダーID
+	uint32_t currentID_ = 0;
 };

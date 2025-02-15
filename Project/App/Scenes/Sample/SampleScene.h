@@ -73,6 +73,13 @@ inline void SampleScene<Data>::Initialize() {
 template<typename Data>
 inline void SampleScene<Data>::Update() {
 
+	if (MAGISYSTEM::PushKey(DIK_D)) {
+		sphere_[0]->GetTranslate().x += 0.1f;
+	}
+	if (MAGISYSTEM::PushKey(DIK_A)) {
+		sphere_[0]->GetTranslate().x -= 0.1f;
+	}
+
 	terrain_->Update();
 	sphere_[0]->Update();
 	sphere_[1]->Update();
