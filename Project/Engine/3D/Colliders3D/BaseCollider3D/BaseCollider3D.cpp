@@ -6,7 +6,9 @@
 
 using namespace MAGIMath;
 
-BaseCollider3D::BaseCollider3D(uint32_t id, Collider3DType type) {
+BaseCollider3D::BaseCollider3D(const std::string& name, uint32_t id, Collider3DType type) {
+	// 名前をセット
+	name_ = name;
 	// 識別IDをセット
 	id_ = id;
 	// コライダーのタイプを登録
@@ -38,6 +40,10 @@ Collider3DType BaseCollider3D::GetType() const {
 
 uint32_t BaseCollider3D::GetID() const {
 	return id_;
+}
+
+GameObject3D* BaseCollider3D::GetOwner() const {
+	return owner_;
 }
 
 Vector3& BaseCollider3D::GetOffset() {

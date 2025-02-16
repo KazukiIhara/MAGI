@@ -3,6 +3,8 @@
 // C++
 #include <map>
 #include <functional>
+#include <vector>
+#include <set>
 
 // MyHedder
 #include "3D/Colliders3D/BaseCollider3D/BaseCollider3D.h"
@@ -19,17 +21,23 @@ public:
 
 	// 更新
 	void Update();
+
+private:
 	// チェックするコライダーを追加
 	void Add(BaseCollider3D* baseCollider3D);
+	// IDをもとにコライダーを取得する
+	BaseCollider3D* FindColliderByID(const std::vector<BaseCollider3D*>& colliders, uint32_t id);
 	// ペア同士の当たり判定をチェック
-	void CheckCollisionPair(BaseCollider3D* colliderA, BaseCollider3D* colliderB);
+	bool CheckCollisionPair(BaseCollider3D* colliderA, BaseCollider3D* colliderB);
 	// すべてのコライダー同士の当たり判定チェック
-	void CheckAllCollisions();
+	std::set<std::pair<uint32_t, uint32_t>> CheckAllCollisions();
+	// 衝突応答を呼ぶ
+	void ResolveCollisions(const std::set<std::pair<uint32_t, uint32_t>>& currentCollisions);
 	// コライダーリストをクリア
 	void Clear();
 
-private:
 	// ペアの順序を固定する関数
+	std::pair<uint32_t, uint32_t> MakeOrderedPair(uint32_t idA, uint32_t idB);
 	std::pair<Collider3DType, Collider3DType> MakeOrderedPair(Collider3DType typeA, Collider3DType typeB);
 
 	// 球体同士の当たり判定
@@ -40,6 +48,13 @@ private:
 	using CollisionFunc = std::function<bool(BaseCollider3D*, BaseCollider3D*)>;
 	// 衝突判定関数を管理するマップ
 	std::map<std::pair<Collider3DType, Collider3DType>, CollisionFunc> collisionFuncMap_;
+
+	// 衝突応答をチェックするリスト
+	std::vector<BaseCollider3D*> colliders_;
+
+	// 前フレームで衝突していたペア
+	std::set<std::pair<uint32_t, uint32_t>> previousCollisions_;
+
 private:
 	// コライダーマネージャのポインタ
 	ColliderManager* colliderManager_ = nullptr;

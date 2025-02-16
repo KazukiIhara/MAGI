@@ -25,7 +25,7 @@ void ColliderManager::Create(const std::string& name, Collider3DType colliderTyp
 	std::unique_ptr<BaseCollider3D> newCollider;
 	switch (colliderType) {
 		case Collider3DType::Sphere:
-			newCollider = std::make_unique<SphereCollider>(currentID_, colliderType);
+			newCollider = std::make_unique<SphereCollider>(name, currentID_, colliderType);
 			break;
 		case Collider3DType::AABB:
 			break;

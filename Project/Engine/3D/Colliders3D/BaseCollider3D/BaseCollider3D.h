@@ -13,7 +13,7 @@ class GameObject3D;
 
 class BaseCollider3D:public WorldEntity {
 public:
-	BaseCollider3D(uint32_t id, Collider3DType type);
+	BaseCollider3D(const std::string& name, uint32_t id, Collider3DType type);
 	virtual ~BaseCollider3D() = default;
 
 	void Update();
@@ -23,6 +23,8 @@ public:
 	Collider3DType GetType()const;
 	// 識別IDの取得
 	uint32_t GetID()const;
+	// 所属するゲームオブジェクトの取得
+	GameObject3D* GetOwner()const;
 
 	// オフセットの取得
 	Vector3& GetOffset();

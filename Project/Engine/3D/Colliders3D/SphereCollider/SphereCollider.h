@@ -4,7 +4,7 @@
 
 class SphereCollider:public BaseCollider3D {
 public:
-	SphereCollider(uint32_t id, Collider3DType type);
+	SphereCollider(const std::string& name,uint32_t id, Collider3DType type);
 	~SphereCollider()override = default;
 
 	void Draw()override;
