@@ -3,7 +3,8 @@
 #include <memory>
 #include <optional>
 
-#include "Includes/Enums/Collider3DType.h"
+#include "Enums/Collider3DType.h"
+#include "Structs/ColorStruct.h"
 #include "GameData/CollisionCategory.h"
 #include "3D/Base3D/WorldEntity/WorldEntity.h"
 #include "3D/Base3D/WorldTransform/WorldTransform.h"
@@ -44,6 +45,8 @@ protected:
 	std::unique_ptr<WorldTransform> worldTransform_ = nullptr;
 	// 親トランスフォームとのオフセット
 	Vector3 offset_{};
+	// コライダーの色
+	RGBA color_ = Color::White;
 	// アクティブフラグ
 	bool isActive_ = false;
 };

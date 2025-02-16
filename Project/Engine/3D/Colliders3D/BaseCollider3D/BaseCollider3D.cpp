@@ -21,6 +21,14 @@ void BaseCollider3D::Update() {
 	worldTransform_->translate_ = offset_;
 	worldTransform_->Update();
 	worldPosition_ = ExtractionWorldPos(worldTransform_->worldMatrix_);
+
+	// アクティブ状態かどうかによって色を変える処理
+	if (isActive_) {
+		color_ = Color::Green;
+	} else {
+		color_ = Color::Blue;
+	}
+	
 }
 
 Collider3DType BaseCollider3D::GetType() const {

@@ -11,7 +11,6 @@ void SphereCollider::Draw() {
 	uint32_t segments = 8;
 	const int rings = segments;        // 緯度方向の分割数
 	const int slices = segments * 2;  // 経度方向の分割数
-	RGBA color = { 1.0f, 1.0f, 1.0f, 1.0f }; // デフォルトの色 (白)
 
 	// π の定数を取得
 	const float pi = std::numbers::pi_v<float>;
@@ -30,7 +29,7 @@ void SphereCollider::Draw() {
 			Vector3 p2 = { worldPosition_.x + r * cosf(phi2), y, worldPosition_.z + r * sinf(phi2) };
 
 			// 線を描画
-			MAGISYSTEM::DrawLine3D(p1, p2, color);
+			MAGISYSTEM::DrawLine3D(p1, p2, color_);
 		}
 	}
 
@@ -46,7 +45,7 @@ void SphereCollider::Draw() {
 			Vector3 p2 = { worldPosition_.x + radius_ * sinf(theta2) * cosf(phi), worldPosition_.y + radius_ * cosf(theta2), worldPosition_.z + radius_ * sinf(theta2) * sinf(phi) };
 
 			// 線を描画
-			MAGISYSTEM::DrawLine3D(p1, p2, color);
+			MAGISYSTEM::DrawLine3D(p1, p2, color_);
 		}
 	}
 
