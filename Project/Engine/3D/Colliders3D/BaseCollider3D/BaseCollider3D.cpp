@@ -20,6 +20,8 @@ void BaseCollider3D::Update() {
 	// ワールド行列の更新
 	worldTransform_->translate_ = offset_;
 	worldTransform_->Update();
+
+	// 行列からワールド座標を計算
 	worldPosition_ = ExtractionWorldPos(worldTransform_->worldMatrix_);
 
 	// アクティブ状態かどうかによって色を変える処理
@@ -28,7 +30,6 @@ void BaseCollider3D::Update() {
 	} else {
 		color_ = Color::Blue;
 	}
-	
 }
 
 Collider3DType BaseCollider3D::GetType() const {

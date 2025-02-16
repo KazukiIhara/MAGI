@@ -49,5 +49,4 @@ void SphereCollider::Draw() {
 		}
 	}
 
-
 }
