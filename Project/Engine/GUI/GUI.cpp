@@ -9,6 +9,9 @@
 #include "DataIO/DataIO.h"
 #include "AssetContainers/TextureDataContainer/TextureDataContainer.h"
 
+#include "3D/Colliders3D/BaseCollider3D/BaseCollider3D.h"
+#include "3D/GameObject3D/GameObject3D.h"
+
 GUI::GUI(
 	DeltaTimer* deltaTimer,
 	SRVUAVManager* srvUavManager,
@@ -43,6 +46,14 @@ void GUI::Update() {
 
 	// テクスチャ
 	ShowTextureDatas();
+
+
+	// 
+	// オブジェクトマネージャの描画
+	// 
+
+	// コライダーマネージャ
+	ShowColliderManager();
 
 	if (ImGui::Button("SaveColliderFile")) {
 		dataIO_->SaveColliderDataFile("SceneCollider");
@@ -150,10 +161,89 @@ void GUI::ShowTextureDatas() {
 }
 
 void GUI::ShowModelDatas() {
+
 }
 
 void GUI::ShowAnimaionDatas() {
+
 }
 
 void GUI::ShowSoundDatas() {
+
+}
+
+void GUI::ShowColliderManager() {
+	// コライダーの一覧を取得
+	const auto& colliders = dataIO_->GetColliders();
+
+	// ウィンドウ表示開始（ImGuiウィンドウ）
+	ImGui::Begin("Collider Manager");
+
+	// コライダー総数を表示
+	ImGui::Text("Total Colliders: %d", static_cast<int>(colliders.size()));
+
+	// 選択中のコライダーを識別するための静的変数
+	// （GUIを閉じたりするとリセットされる簡易的な方法です。必要に応じてクラスメンバ等にしてください）
+	static int selectedIndex = -1;
+
+	//
+	// 左側にコライダー一覧を表示（スクロール可）
+	//
+	// BeginChild(name, size, border, flags) を使うと、その領域がスクロール可能になります
+	//
+	ImGui::BeginChild("ColliderList", ImVec2(200, 300), true);
+	for (int i = 0; i < static_cast<int>(colliders.size()); i++) {
+		// コライダー名を取得
+		const std::string& colliderName = colliders[i]->name_;
+
+		// ボタンとして表示
+		// 押されたら選択中のインデックスを更新する
+		if (ImGui::Button(colliderName.c_str(), ImVec2(180, 0))) {
+			selectedIndex = i;
+		}
+	}
+	ImGui::EndChild();
+
+	// 同じ行に並べたい場合は ImGui::SameLine() を呼び出す
+	ImGui::SameLine();
+
+	//
+	// 右側に選択されたコライダーの詳細情報を表示
+	//
+	ImGui::BeginChild("ColliderDetails", ImVec2(300, 300), true);
+
+	// 有効なインデックスなら、詳細情報を表示
+	if (selectedIndex >= 0 && selectedIndex < static_cast<int>(colliders.size())) {
+		// unique_ptr から生のポインタを取り出す
+		BaseCollider3D* collider = colliders[selectedIndex].get();
+		if (collider) {
+			// 所属するゲームオブジェクトの名前
+			ImGui::Text("GameObject: %s", collider->GetOwner()->name_.c_str());
+
+			// ワールド座標
+			auto worldPos = collider->worldPosition_;
+			ImGui::Text("World Position: (%.2f, %.2f, %.2f)", worldPos.x, worldPos.y, worldPos.z);
+
+			// コライダーのタイプ
+			int colliderTypeNum = static_cast<int>(collider->GetType());
+			switch (colliderTypeNum) {
+			case 0:
+				ImGui::Text("Collider Type: Sphere");
+				break;
+			}
+
+			// コライダーのオフセット
+			auto offsetPos = collider->GetOffset();
+			ImGui::Text("Offset Position: (%.2f, %.2f, %.2f)", offsetPos.x, offsetPos.y, offsetPos.z);
+
+			// アクティブフラグ
+			bool isActive = collider->GetIsActive();
+			ImGui::Text("Active: %s", isActive ? "true" : "false");
+		}
+	}
+
+	ImGui::EndChild();
+
+	// ウィンドウを閉じる
+	ImGui::End();
 }

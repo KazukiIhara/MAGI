@@ -129,8 +129,9 @@ void DataIO::SaveColliderDataFile(const std::string& fileName) {
 #endif
 }
 
-ColliderManager* DataIO::GetColliderManager() {
-	return colliderManager_;
+
+const std::vector<std::unique_ptr<BaseCollider3D>>& DataIO::GetColliders() const {
+	return colliderManager_->GetColliders();
 }
 
 void DataIO::SetColliderManager(ColliderManager* colliderManager) {

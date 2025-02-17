@@ -2,8 +2,11 @@
 
 // C++
 #include <string>
+#include <vector>
+#include <memory>
 
 // 前方宣言
+class BaseCollider3D;
 class ColliderManager;
 
 /// <summary>
@@ -37,11 +40,12 @@ public:
 	void SaveColliderDataFile(const std::string& fileName);
 
 	// 
-	// GUIクラスで描画する用にマネージャのインスタンスを送るクラス
+	// 所有しているマネージャのコンテナの中身を送る関数
 	// 
 
-	// コライダーマネージャ
-	ColliderManager* GetColliderManager();
+	// コライダーコンテナ
+	const std::vector<std::unique_ptr<BaseCollider3D>>& GetColliders() const;
+
 
 private:
 	// コライダーマネージャのセット

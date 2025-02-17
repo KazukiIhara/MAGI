@@ -39,16 +39,16 @@ void BaseCollider3D::Update() {
 	}
 }
 
-Collider3DType BaseCollider3D::GetType() const {
-	return type_.value();
-}
-
 uint32_t BaseCollider3D::GetID() const {
 	return id_;
 }
 
 GameObject3D* BaseCollider3D::GetOwner() const {
 	return owner_;
+}
+
+Collider3DType& BaseCollider3D::GetType() {
+	return type_.value();
 }
 
 Vector3& BaseCollider3D::GetOffset() {

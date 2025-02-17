@@ -22,10 +22,20 @@ private:
 	// DeltaTime表示
 	void ShowDeltaTime();
 
+	// 
+	// AssetsContainer
+	// 
 	void ShowTextureDatas();
 	void ShowModelDatas();
 	void ShowAnimaionDatas();
 	void ShowSoundDatas();
+
+	// 
+	// ObjectsManager
+	// 
+	void ShowColliderManager();
+
+
 private:
 	// DeltaTimerのインスタンス
 	DeltaTimer* deltaTimer_ = nullptr;
