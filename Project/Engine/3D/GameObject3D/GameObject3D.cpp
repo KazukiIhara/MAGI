@@ -51,15 +51,15 @@ WorldTransform* GameObject3D::GetWorldTransform() {
 }
 
 void GameObject3D::OnCollisionEnter([[maybe_unused]] GameObject3D* other) {
-	renderer3D_->GetMaterial().color = RGBAToVector4(Color::Red);
+
 }
 
 void GameObject3D::OnCollisionStay([[maybe_unused]] GameObject3D* other) {
-	renderer3D_->GetMaterial().color = RGBAToVector4(Color::Green);
+
 }
 
 void GameObject3D::OnCollisionExit([[maybe_unused]] GameObject3D* other) {
-	renderer3D_->GetMaterial().color = RGBAToVector4(Color::Blue);
+
 }
 
 void GameObject3D::SetColliderIsActive(const std::string& name, bool isActive) {
