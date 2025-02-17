@@ -166,14 +166,14 @@ void MAGISYSTEM::Initialize() {
 
 
 	// DataIO
-	dataIO_ = std::make_unique<DataIO>();
+	dataIO_ = std::make_unique<DataIO>(colliderManager_.get());
 
 
 	// ImGuiController
 	imguiController_ = std::make_unique<ImGuiController>(windowApp_.get(), dxgi_.get(), directXCommand_.get(), srvuavManager_.get());
 
 	// GUI
-	gui_ = std::make_unique<GUI>(imguiController_.get(), textureDataCantainer_.get());
+	gui_ = std::make_unique<GUI>(deltaTimer_.get(),srvuavManager_.get(),dataIO_.get(),textureDataCantainer_.get());
 
 	// 初期化完了ログ
 	Logger::Log("MAGISYSTEM Initialize\n");
@@ -373,9 +373,6 @@ void MAGISYSTEM::Update() {
 	// Dataクラスフレーム開始処理
 	dataIO_->BeginFrame();
 
-	// GUI更新処理
-	gui_->Update();
-
 	// シーンの更新処理
 	sceneManager_->Update();
 
@@ -397,8 +394,8 @@ void MAGISYSTEM::Update() {
 	// Dataクラスフレーム終了処理
 	dataIO_->EndFrame();
 
-	// GUI描画処理
-	gui_->Draw();
+	// GUI更新処理
+	gui_->Update();
 
 	// ImGui内部コマンド生成
 	imguiController_->EndFrame();
@@ -612,7 +609,7 @@ void MAGISYSTEM::LoadNormalMapTexture(const std::string& filePath) {
 	textureDataCantainer_->LoadNormalMap(filePath);
 }
 
-std::unordered_map<std::string, Texture>& MAGISYSTEM::GetTexture() {
+std::map<std::string, Texture>& MAGISYSTEM::GetTexture() {
 	return textureDataCantainer_->GetTexture();
 }
 
@@ -675,6 +672,10 @@ BaseCollider3D* MAGISYSTEM::FindCollider(const std::string& name) {
 
 void MAGISYSTEM::DrawLine3D(const Vector3& start, const Vector3& end, const RGBA& color) {
 	lineDrawer3D_->AddLine(start, end, color);
+}
+
+void MAGISYSTEM::LoadColliderDataFile(const std::string& fileName) {
+	dataIO_->LoadColliderDataFile(fileName);
 }
 
 void MAGISYSTEM::PreDrawObject3D() {

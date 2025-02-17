@@ -1,7 +1,7 @@
 #pragma once
 
 // C++
-#include <unordered_map>
+#include <map>
 #include <string>
 
 #include "Structs/TextureStruct.h"
@@ -27,12 +27,12 @@ public:
 	// ノーマルマップテクスチャのロード
 	void LoadNormalMap(const std::string& filePath);
 	// Textureを渡す
-	std::unordered_map<std::string, Texture>& GetTexture();
+	std::map<std::string, Texture>& GetTexture();
 	// メタデータを渡す
 	const DirectX::TexMetadata& GetMetaData(const std::string& filePath);
 
 	// コンテナごと渡す
-	const std::unordered_map<std::string, Texture>& GetTextureDatas()const;
+	const std::map<std::string, Texture>& GetTextureDatas()const;
 private:
 	// Texture読み込み
 	DirectX::ScratchImage LoadTexture(const std::string& filePath);
@@ -53,7 +53,7 @@ private:
 	void SetSrvUavManager(SRVUAVManager* srvUavManager);
 private:
 	// テクスチャデータコンテナ
-	std::unordered_map<std::string, Texture> textureDatas_;
+	std::map<std::string, Texture> textureDatas_;
 private:
 	// DXGI
 	DXGI* dxgi_ = nullptr;

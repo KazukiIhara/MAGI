@@ -1,26 +1,48 @@
 #pragma once
 
 // 前方宣言
-class ImGuiController;
+class DeltaTimer;
+class SRVUAVManager;
+class DataIO;
 class TextureDataContainer;
 
 // エンジンのグラフィックUIクラス
 class GUI {
 public:
-	GUI(ImGuiController* imguiController,
+	GUI(
+		DeltaTimer* deltaTimer,
+		SRVUAVManager* srvUavManager,
+		DataIO* dataIO,
 		TextureDataContainer* textureDataContainer
 	);
-
 	void Update();
-	void Draw();
 private:
 	// FPS表示
 	void ShowFPS();
 	// DeltaTime表示
 	void ShowDeltaTime();
+
+	// 
+	// AssetsContainer
+	// 
+	void ShowTextureDatas();
+	void ShowModelDatas();
+	void ShowAnimaionDatas();
+	void ShowSoundDatas();
+
+	// 
+	// ObjectsManager
+	// 
+	void ShowColliderManager();
+
+
 private:
-	// ImGuiControllerのインスタンス
-	ImGuiController* imguiController_ = nullptr;
+	// DeltaTimerのインスタンス
+	DeltaTimer* deltaTimer_ = nullptr;
+	// SrvUavManagerのインスタンス
+	SRVUAVManager* srvUavManager_ = nullptr;
+	// DataIOのインスタンス
+	DataIO* dataIO_ = nullptr;
 	// TextureDataContainerのインスタンス
 	TextureDataContainer* textureDataContainer_ = nullptr;
 };

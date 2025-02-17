@@ -11,7 +11,7 @@
 
 class GameObject3D;
 
-class BaseCollider3D:public WorldEntity {
+class BaseCollider3D :public WorldEntity {
 public:
 	BaseCollider3D(const std::string& name, uint32_t id, Collider3DType type);
 	virtual ~BaseCollider3D() = default;
@@ -19,13 +19,15 @@ public:
 	void Update();
 	virtual void TransferShape() = 0;
 
-	// コライダータイプの取得
-	Collider3DType GetType()const;
 	// 識別IDの取得
 	uint32_t GetID()const;
 	// 所属するゲームオブジェクトの取得
 	GameObject3D* GetOwner()const;
 
+	// コライダータイプの取得
+	Collider3DType& GetType();
+	// コライダーのカテゴリの取得
+	CollisionCategory& GetCategory();
 	// オフセットの取得
 	Vector3& GetOffset();
 	// アクティブフラグの取得

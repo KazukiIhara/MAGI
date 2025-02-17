@@ -36,8 +36,14 @@ inline void SampleScene<Data>::Initialize() {
 	// アセットのロード
 	//
 
+	// テクスチャ
+	MAGISYSTEM::LoadTexture("pronama_chan.png");
+
 	// モデル
 	MAGISYSTEM::LoadModel("terrain", true);
+
+	// コライダー
+	MAGISYSTEM::LoadColliderDataFile("SceneCollider.json");
 
 	//
 	// オブジェクトの作成
@@ -47,10 +53,6 @@ inline void SampleScene<Data>::Initialize() {
 	MAGISYSTEM::AddPunctualLight("sampleLight");
 	auto& sampleLight = MAGISYSTEM::GetLightData("sampleLight");
 	sampleLight.intensity = 0.5f;
-
-	// コライダー
-	MAGISYSTEM::CreateCollider("Sphere0", Collider3DType::Sphere);
-	MAGISYSTEM::CreateCollider("Sphere1", Collider3DType::Sphere);
 
 	// ゲームオブジェクト
 	terrain_ = std::make_unique<GameObject3D>("Terrain");

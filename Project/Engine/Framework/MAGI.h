@@ -208,7 +208,7 @@ public: // エンジンの機能
 	// 法線マップ画像の読み込み
 	static void LoadNormalMapTexture(const std::string& filePath);
 	// テクスチャの取得
-	static std::unordered_map<std::string, Texture>& GetTexture();
+	static std::map<std::string, Texture>& GetTexture();
 	// メタデータ取得
 	static const DirectX::TexMetadata& GetTextureMetaData(const std::string& filePath);
 #pragma endregion
@@ -268,6 +268,18 @@ public: // エンジンの機能
 #pragma endregion
 
 #pragma region CollisionManager
+
+
+#pragma endregion
+
+#pragma region DataIO
+	// コライダーファイルの読み込み
+	static void LoadColliderDataFile(const std::string& fileName);
+
+#pragma endregion 
+
+#pragma region GUI
+
 
 #pragma endregion
 
