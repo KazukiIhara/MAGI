@@ -64,7 +64,7 @@ public:
 	//
 	// スフィアコライダー用の設定
 	// 
-	void SetColliderRadius(const std::string& name, float radius);
+	float& GetColliderRadius(const std::string& name);
 
 	//
 	// コンポーネント追加関数

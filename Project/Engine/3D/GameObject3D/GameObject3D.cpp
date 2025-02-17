@@ -86,17 +86,19 @@ Vector3& GameObject3D::GetColliderOffset(const std::string& name) {
 	return colliders3D_.at(name)->GetOffset();
 }
 
-void GameObject3D::SetColliderRadius(const std::string& name, float radius) {
-	// 作成済みコライダーを検索
-	if (colliders3D_.contains(name)) {
-		// 球体コライダーかどうかチェック
-		if (auto it = dynamic_cast<SphereCollider*>(colliders3D_.at(name))) {
-			// 半径を設定
-			it->GetRadius() = radius;
-		} else {
-			assert(false && "Not Sphere Collider");
-		}
+float& GameObject3D::GetColliderRadius(const std::string& name) {
+	if (!colliders3D_.contains(name)) {
+		// エラーメッセージ
+		assert(false && "Not Found Collider");
 	}
+	auto collider = colliders3D_.at(name);
+	auto sphere = dynamic_cast<SphereCollider*>(collider);
+	if (!sphere) {
+		// エラーメッセージ
+		assert(false && "Not Sphere Collider");
+	}
+
+	return sphere->GetRadius();
 }
 
 void GameObject3D::CreatePrimitiveRenderer(const std::string& rendererName, const Primitive3DType& primitiveType, const std::string& textureName) {
