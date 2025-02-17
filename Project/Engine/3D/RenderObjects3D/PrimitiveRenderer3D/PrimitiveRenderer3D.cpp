@@ -11,7 +11,7 @@ PrimitiveRenderer3D::PrimitiveRenderer3D(const std::string& objectName, const Pr
 	textureName_ = textureName;
 	// テクスチャが未設定の場合、デフォルトのテクスチャを割り当てる(uvCheckerはエンジン用のリソースのためフルパス指定)
 	if (textureName_ == "") {
-		textureName_ = "Engine/Resources/Images/uvChecker.png";
+		textureName_ = "Resources/Images/uvChecker.png";
 	}
 }
 
@@ -42,7 +42,7 @@ void PrimitiveRenderer3D::Draw() {
 		uint32_t normalMapTextureSrvIndex = MAGISYSTEM::GetTexture()[normalMapTextureName_].srvIndex;
 		commandList->SetGraphicsRootDescriptorTable(7, MAGISYSTEM::GetSrvDescriptorHandleGPU(normalMapTextureSrvIndex));
 	} else {// 未定義動作を防ぐため、デフォルトのテクスチャのsrvIndexをセットしておく
-		uint32_t defaultNormalMapTextureSrvIndex = MAGISYSTEM::GetTexture()["Engine/Resources/Images/uvChecker.png"].srvIndex;
+		uint32_t defaultNormalMapTextureSrvIndex = MAGISYSTEM::GetTexture()["Resources/Images/uvChecker.png"].srvIndex;
 		commandList->SetGraphicsRootDescriptorTable(7, MAGISYSTEM::GetSrvDescriptorHandleGPU(defaultNormalMapTextureSrvIndex));
 	}
 

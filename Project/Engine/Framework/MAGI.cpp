@@ -173,7 +173,7 @@ void MAGISYSTEM::Initialize() {
 	imguiController_ = std::make_unique<ImGuiController>(windowApp_.get(), dxgi_.get(), directXCommand_.get(), srvuavManager_.get());
 
 	// GUI
-	gui_ = std::make_unique<GUI>(dataIO_.get(), textureDataCantainer_.get());
+	gui_ = std::make_unique<GUI>(deltaTimer_.get(),srvuavManager_.get(),dataIO_.get(),textureDataCantainer_.get());
 
 	// 初期化完了ログ
 	Logger::Log("MAGISYSTEM Initialize\n");
@@ -372,9 +372,6 @@ void MAGISYSTEM::Update() {
 
 	// Dataクラスフレーム開始処理
 	dataIO_->BeginFrame();
-
-	// GUI更新処理
-	gui_->Update();
 
 	// シーンの更新処理
 	sceneManager_->Update();
@@ -612,7 +609,7 @@ void MAGISYSTEM::LoadNormalMapTexture(const std::string& filePath) {
 	textureDataCantainer_->LoadNormalMap(filePath);
 }
 
-std::unordered_map<std::string, Texture>& MAGISYSTEM::GetTexture() {
+std::map<std::string, Texture>& MAGISYSTEM::GetTexture() {
 	return textureDataCantainer_->GetTexture();
 }
 

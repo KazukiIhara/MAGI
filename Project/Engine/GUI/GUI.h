@@ -1,6 +1,8 @@
 #pragma once
 
 // 前方宣言
+class DeltaTimer;
+class SRVUAVManager;
 class DataIO;
 class TextureDataContainer;
 
@@ -8,6 +10,8 @@ class TextureDataContainer;
 class GUI {
 public:
 	GUI(
+		DeltaTimer* deltaTimer,
+		SRVUAVManager* srvUavManager,
 		DataIO* dataIO,
 		TextureDataContainer* textureDataContainer
 	);
@@ -17,7 +21,16 @@ private:
 	void ShowFPS();
 	// DeltaTime表示
 	void ShowDeltaTime();
+
+	void ShowTextureDatas();
+	void ShowModelDatas();
+	void ShowAnimaionDatas();
+	void ShowSoundDatas();
 private:
+	// DeltaTimerのインスタンス
+	DeltaTimer* deltaTimer_ = nullptr;
+	// SrvUavManagerのインスタンス
+	SRVUAVManager* srvUavManager_ = nullptr;
 	// DataIOのインスタンス
 	DataIO* dataIO_ = nullptr;
 	// TextureDataContainerのインスタンス
