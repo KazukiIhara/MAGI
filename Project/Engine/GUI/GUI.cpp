@@ -2,14 +2,19 @@
 
 #include <cassert>
 
-#include "ImGuiController/ImGuiController.h"
+#include "DataIO/DataIO.h"
+#include "AssetContainers/TextureDataContainer/TextureDataContainer.h"
 
 #include "Framework/MAGI.h"
 
-GUI::GUI(ImGuiController* imguiController,
+GUI::GUI(
+	DataIO* dataIO,
 	TextureDataContainer* textureDataContainer) {
 
-	imguiController_ = imguiController;
+	assert(dataIO);
+	assert(textureDataContainer);
+
+	dataIO_ = dataIO;
 	textureDataContainer_ = textureDataContainer;
 
 

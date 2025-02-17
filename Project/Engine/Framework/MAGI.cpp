@@ -166,14 +166,14 @@ void MAGISYSTEM::Initialize() {
 
 
 	// DataIO
-	dataIO_ = std::make_unique<DataIO>();
+	dataIO_ = std::make_unique<DataIO>(colliderManager_.get());
 
 
 	// ImGuiController
 	imguiController_ = std::make_unique<ImGuiController>(windowApp_.get(), dxgi_.get(), directXCommand_.get(), srvuavManager_.get());
 
 	// GUI
-	gui_ = std::make_unique<GUI>(imguiController_.get(), textureDataCantainer_.get());
+	gui_ = std::make_unique<GUI>(dataIO_.get(), textureDataCantainer_.get());
 
 	// 初期化完了ログ
 	Logger::Log("MAGISYSTEM Initialize\n");

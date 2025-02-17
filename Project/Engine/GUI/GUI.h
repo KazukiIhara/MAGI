@@ -1,13 +1,14 @@
 #pragma once
 
 // 前方宣言
-class ImGuiController;
+class DataIO;
 class TextureDataContainer;
 
 // エンジンのグラフィックUIクラス
 class GUI {
 public:
-	GUI(ImGuiController* imguiController,
+	GUI(
+		DataIO* dataIO,
 		TextureDataContainer* textureDataContainer
 	);
 
@@ -19,8 +20,8 @@ private:
 	// DeltaTime表示
 	void ShowDeltaTime();
 private:
-	// ImGuiControllerのインスタンス
-	ImGuiController* imguiController_ = nullptr;
+	// DataIOのインスタンス
+	DataIO* dataIO_ = nullptr;
 	// TextureDataContainerのインスタンス
 	TextureDataContainer* textureDataContainer_ = nullptr;
 };
