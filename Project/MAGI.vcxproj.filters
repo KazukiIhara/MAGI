@@ -539,6 +539,9 @@
     <ClInclude Include="Engine\Includes\Enums\Collider3DType.h" />
     <ClInclude Include="App\GameData\CollisionCategory.h" />
     <ClInclude Include="Engine\3D\Colliders3D\SphereCollider\SphereCollider.h" />
+    <ClInclude Include="Engine\CollisionManager\CollisionManager.h" />
+    <ClInclude Include="Engine\ColliderManager\ColliderManager.h" />
+    <ClInclude Include="Engine\DataIO\DataIO.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="App\Game\Game.cpp">
@@ -727,6 +730,9 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Engine\3D\Colliders3D\BaseCollider3D\BaseCollider3D.cpp" />
     <ClCompile Include="Engine\3D\Colliders3D\SphereCollider\SphereCollider.cpp" />
+    <ClCompile Include="Engine\CollisionManager\CollisionManager.cpp" />
+    <ClCompile Include="Engine\ColliderManager\ColliderManager.cpp" />
+    <ClCompile Include="Engine\DataIO\DataIO.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Engine\SceneManager\SceneManager.ipp">

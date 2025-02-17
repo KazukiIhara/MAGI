@@ -7,19 +7,31 @@
 std::unique_ptr<D3DResourceLeakChecker> MAGISYSTEM::leakCheck_ = nullptr;
 #endif // _DEBUG
 
+// 
+// BaseSystems
+// 
 std::unique_ptr<WindowApp> MAGISYSTEM::windowApp_ = nullptr;
 std::unique_ptr<DeltaTimer> MAGISYSTEM::deltaTimer_ = nullptr;
 std::unique_ptr<DirectInput> MAGISYSTEM::directInput_ = nullptr;
 
+// 
+// DirectXBaseSystems
+// 
 std::unique_ptr<DXGI> MAGISYSTEM::dxgi_ = nullptr;
 std::unique_ptr<DirectXCommand> MAGISYSTEM::directXCommand_ = nullptr;
 std::unique_ptr<Fence> MAGISYSTEM::fence_ = nullptr;
 std::unique_ptr<ShaderCompiler> MAGISYSTEM::shaderCompiler_ = nullptr;
 
+// 
+// ViewManagers
+// 
 std::unique_ptr<RTVManager> MAGISYSTEM::rtvManager_ = nullptr;
 std::unique_ptr<DSVManager> MAGISYSTEM::dsvManager_ = nullptr;
 std::unique_ptr<SRVUAVManager> MAGISYSTEM::srvuavManager_ = nullptr;
 
+// 
+// DirectXRenderSystems
+// 
 std::unique_ptr<SwapChain> MAGISYSTEM::swapChain_ = nullptr;
 std::unique_ptr<DepthStencil> MAGISYSTEM::depthStencil_ = nullptr;
 std::unique_ptr<ResourceBarrier> MAGISYSTEM::resourceBarrier_ = nullptr;
@@ -27,21 +39,46 @@ std::unique_ptr<RenderTarget> MAGISYSTEM::renderTarget_ = nullptr;
 std::unique_ptr<Viewport> MAGISYSTEM::viewport_ = nullptr;
 std::unique_ptr<ScissorRect> MAGISYSTEM::scissorRect_ = nullptr;
 
+//
+// PipelineManager
+//
 std::unique_ptr<TextureDataContainer> MAGISYSTEM::textureDataCantainer_ = nullptr;
 std::unique_ptr<PrimitiveShapeDataContainer> MAGISYSTEM::primitiveDataContainer_ = nullptr;
 std::unique_ptr<ModelDataContainer> MAGISYSTEM::modelDataContainer_ = nullptr;
 std::unique_ptr<AnimationDataContainer> MAGISYSTEM::animationDataContainer_ = nullptr;
 
+// 
+// AssetContainer
+// 
 std::unique_ptr<GraphicsPipelineManager> MAGISYSTEM::graphicsPipelineManager_ = nullptr;
 std::unique_ptr<ComputePipelineManager> MAGISYSTEM::computePipelineManager_ = nullptr;
 
+//
+// ObjectManager
+//
 std::unique_ptr<Camera3DManager> MAGISYSTEM::camera3DManager_ = nullptr;
 std::unique_ptr<PunctualLightManager> MAGISYSTEM::punctualLightManager_ = nullptr;
+std::unique_ptr<ColliderManager> MAGISYSTEM::colliderManager_ = nullptr;
 
+// 
+// Drawer
+// 
 std::unique_ptr<LineDrawer3D> MAGISYSTEM::lineDrawer3D_ = nullptr;
 
+// 
+// GameManager
+// 
+std::unique_ptr<CollisionManager> MAGISYSTEM::collisionManager_ = nullptr;
 std::unique_ptr<SceneManager<GameData>> MAGISYSTEM::sceneManager_ = nullptr;
 
+//
+// Data入出力クラス
+//
+std::unique_ptr<DataIO> MAGISYSTEM::dataIO_ = nullptr;
+
+//
+// UIクラス
+//
 std::unique_ptr<ImGuiController> MAGISYSTEM::imguiController_ = nullptr;
 std::unique_ptr<GUI> MAGISYSTEM::gui_ = nullptr;
 
@@ -114,12 +151,22 @@ void MAGISYSTEM::Initialize() {
 	camera3DManager_ = std::make_unique<Camera3DManager>();
 	// PunctualLightManager
 	punctualLightManager_ = std::make_unique<PunctualLightManager>(dxgi_.get(), directXCommand_.get(), srvuavManager_.get());
+	// ColliderManager
+	colliderManager_ = std::make_unique<ColliderManager>();
+
 
 	// LineDrawer3D
 	lineDrawer3D_ = std::make_unique<LineDrawer3D>(dxgi_.get(), directXCommand_.get(), srvuavManager_.get(), graphicsPipelineManager_.get(), camera3DManager_.get());
 
+
+	// CollisionManager
+	collisionManager_ = std::make_unique<CollisionManager>(colliderManager_.get());
 	// SceneManager
 	sceneManager_ = std::make_unique<SceneManager<GameData>>();
+
+
+	// DataIO
+	dataIO_ = std::make_unique<DataIO>();
 
 
 	// ImGuiController
@@ -144,16 +191,29 @@ void MAGISYSTEM::Finalize() {
 		imguiController_.reset();
 	}
 
-
+	// DataIO
+	if (dataIO_) {
+		dataIO_.reset();
+	}
 
 	// SceneManager
 	if (sceneManager_) {
 		sceneManager_.reset();
 	}
 
+	// CollisionManager
+	if (collisionManager_) {
+		collisionManager_.reset();
+	}
+
 	// LineDrawer3D
 	if (lineDrawer3D_) {
 		lineDrawer3D_.reset();
+	}
+
+	// ColliderManager
+	if (colliderManager_) {
+		colliderManager_.reset();
 	}
 
 	// PunctualLightManager
@@ -315,6 +375,12 @@ void MAGISYSTEM::Update() {
 
 	// シーンの更新処理
 	sceneManager_->Update();
+
+	// コライダーマネージャの更新
+	colliderManager_->Update();
+
+	// コリジョンマネージャの更新処理
+	collisionManager_->Update();
 
 	// カメラマネージャの更新処理
 	camera3DManager_->Update();
@@ -520,6 +586,18 @@ void MAGISYSTEM::CreateUavStructuredBuffer(uint32_t viewIndex, ID3D12Resource* p
 	srvuavManager_->CreateUavStructuredBuffer(viewIndex, pResource, numElements, structureByteStride);
 }
 
+ID3D12PipelineState* MAGISYSTEM::GetGraphicsPipelineState(GraphicsPipelineStateType pipelineState, BlendMode blendMode) {
+	return graphicsPipelineManager_->GetPipelineState(pipelineState, blendMode);
+}
+
+ID3D12RootSignature* MAGISYSTEM::GetComputeRootSignature(ComputePipelineStateType pipelineState) {
+	return computePipelineManager_->GetRootSignature(pipelineState);
+}
+
+ID3D12PipelineState* MAGISYSTEM::GetComputePipelineState(ComputePipelineStateType pipelineState) {
+	return computePipelineManager_->GetPipelineState(pipelineState);
+}
+
 void MAGISYSTEM::LoadTexture(const std::string& filePath, bool isFullPath) {
 	textureDataCantainer_->Load(filePath, isFullPath);
 }
@@ -577,6 +655,18 @@ void MAGISYSTEM::TransferPunctualLight() {
 	punctualLightManager_->TransferLightsData();
 }
 
+void MAGISYSTEM::CreateCollider(const std::string& name, Collider3DType colliderType) {
+	colliderManager_->Create(name, colliderType);
+}
+
+void MAGISYSTEM::RemoveCollider(const std::string& name) {
+	colliderManager_->Remove(name);
+}
+
+BaseCollider3D* MAGISYSTEM::FindCollider(const std::string& name) {
+	return colliderManager_->Find(name);
+}
+
 void MAGISYSTEM::DrawLine3D(const Vector3& start, const Vector3& end, const RGBA& color) {
 	lineDrawer3D_->AddLine(start, end, color);
 }
@@ -596,16 +686,3 @@ void MAGISYSTEM::PreDrawObject2D() {
 	// 形状を設定
 	commandList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 }
-
-ID3D12PipelineState* MAGISYSTEM::GetGraphicsPipelineState(GraphicsPipelineStateType pipelineState, BlendMode blendMode) {
-	return graphicsPipelineManager_->GetPipelineState(pipelineState, blendMode);
-}
-
-ID3D12RootSignature* MAGISYSTEM::GetComputeRootSignature(ComputePipelineStateType pipelineState) {
-	return computePipelineManager_->GetRootSignature(pipelineState);
-}
-
-ID3D12PipelineState* MAGISYSTEM::GetComputePipelineState(ComputePipelineStateType pipelineState) {
-	return computePipelineManager_->GetPipelineState(pipelineState);
-}
-

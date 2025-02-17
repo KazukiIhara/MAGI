@@ -29,7 +29,7 @@ private:
 
 private:
 	// スワップチェーンのクリアカラー
-	RGBA clearColor_ = Color::DarkGray;
+	RGBA clearColor_ = Color::Gray;
 private:
 	// コマンドのインスタンスを受け取る箱
 	DirectXCommand* directXCommand_ = nullptr;

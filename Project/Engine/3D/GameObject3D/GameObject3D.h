@@ -1,6 +1,7 @@
 #pragma once
 
 #include <memory>
+#include <vector>
 
 #include "Structs/ObjectStruct.h"
 #include "3D/Base3D/WorldEntity/WorldEntity.h"
@@ -25,6 +26,10 @@ public:
 	virtual void Update();
 	virtual void Draw();
 
+	//
+	// トランスフォーム取得関数
+	//
+
 	// スケール
 	Vector3& GetScale();
 	// 回転
@@ -35,6 +40,10 @@ public:
 	// ワールドトランスフォームの取得
 	WorldTransform* GetWorldTransform();
 
+	// 
+	// 衝突応答関数
+	// 
+
 	// 衝突した
 	virtual void OnCollisionEnter([[maybe_unused]] GameObject3D* other);
 	// 衝突中
@@ -42,11 +51,24 @@ public:
 	// 離れた
 	virtual void OnCollisionExit([[maybe_unused]] GameObject3D* other);
 
+	//
+	// コライダーの設定関数
+	//
+
+	// アクティブフラグの設定
+	bool& GetColliderIsActive(const std::string& name);
+
+	// オフセットの取得
+	Vector3& GetColliderOffset(const std::string& name);
 
 	//
-	// コンポーネント作成関数
-	//
+	// スフィアコライダー用の設定
+	// 
+	void SetColliderRadius(const std::string& name, float radius);
 
+	//
+	// コンポーネント追加関数
+	//
 
 	// シンプル形状描画オブジェクト生成
 	void CreatePrimitiveRenderer(const std::string& rendererName, const Primitive3DType& primitiveType, const std::string& textureName = "");
@@ -55,8 +77,8 @@ public:
 	// スキニングありモデル描画オブジェクト生成
 	void CreateSkinningRenderer(const std::string& rendererName, const std::string& modelName);
 
-	// コライダー作成
-	void CreateCollider(Collider3DType type);
+	// コライダーの追加関数
+	void AddCollider(BaseCollider3D* collider);
 
 private:
 	// ワールドトランスフォーム作成
@@ -66,6 +88,6 @@ private:
 	std::unique_ptr<WorldTransform> worldTransform_ = nullptr;
 	// 描画用クラス
 	std::unique_ptr<BaseRenderable3D> renderer3D_ = nullptr;
-	// コライダークラス
-	std::unique_ptr<BaseCollider3D> collider3D_ = nullptr;
+	// コライダーを受け取る箱
+	std::map<std::string, BaseCollider3D*> colliders3D_;
 };
