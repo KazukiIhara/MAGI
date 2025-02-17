@@ -1,6 +1,6 @@
 #pragma once
 
-#include <map>
+#include <vector>
 #include <string>
 
 #include "3D/Colliders3D/BaseCollider3D/BaseCollider3D.h"
@@ -22,10 +22,13 @@ public:
 	BaseCollider3D* Find(const std::string& name);
 
 	void Clear();
-	
+
+	// 生成された全コライダーのリストを取得
+	const std::vector<std::unique_ptr<BaseCollider3D>>& GetColliders() const;
+
 private:
 	// コライダーコンテナ
-	std::map<std::string, std::unique_ptr<BaseCollider3D>> colliders_;
+	std::vector<std::unique_ptr<BaseCollider3D>> colliders_;
 	// コライダーID
 	uint32_t currentID_ = 0;
 };

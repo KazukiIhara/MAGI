@@ -4,6 +4,9 @@
 
 #include "ColliderManager/ColliderManager.h"
 #include "3D/GameObject3D/GameObject3D.h"
+#include "Math/Utility/MathUtility.h"
+
+using namespace MAGIMath;
 
 CollisionManager::CollisionManager(ColliderManager* colliderManager) {
 	// コライダーマネージャのインスタンスをセット
@@ -24,7 +27,7 @@ CollisionManager::CollisionManager(ColliderManager* colliderManager) {
 
 void CollisionManager::Update() {
 	// このフレームでチェックするアクティブなコライダーをリストに挿入
-
+	AddCheckColliders();
 	// 全コライダー同士で衝突判定をとり、マップに挿入
 	std::set<std::pair<uint32_t, uint32_t>> currentCollisions = CheckAllCollisions();
 
@@ -37,7 +40,19 @@ void CollisionManager::Update() {
 
 void CollisionManager::Add(BaseCollider3D* baseCollider3D) {
 	if (baseCollider3D) {
-		colliders_.push_back(baseCollider3D);
+		activeColliders_.push_back(baseCollider3D);
+	}
+}
+
+void CollisionManager::AddCheckColliders() {
+	// 要素数を確保
+	const auto& allColliders = colliderManager_->GetColliders();
+	activeColliders_.reserve(allColliders.size());  // 大きさ分を確保
+
+	for (auto& collider : allColliders) {
+		if (collider && collider->GetIsActive()) {
+			Add(collider.get());
+		}
 	}
 }
 
@@ -72,13 +87,13 @@ bool CollisionManager::CheckCollisionPair(BaseCollider3D* colliderA, BaseCollide
 std::set<std::pair<uint32_t, uint32_t>> CollisionManager::CheckAllCollisions() {
 	std::set<std::pair<uint32_t, uint32_t>> collisions;
 
-	// 総当たり or Broad-Phase で候補を抽出 etc.
-	for (size_t i = 0; i < colliders_.size(); ++i) {
-		BaseCollider3D* colliderA = colliders_[i];
+	// 総当たり
+	for (size_t i = 0; i < activeColliders_.size(); ++i) {
+		BaseCollider3D* colliderA = activeColliders_[i];
 		if (!colliderA || !colliderA->GetIsActive()) continue;
 
-		for (size_t j = i + 1; j < colliders_.size(); ++j) {
-			BaseCollider3D* colliderB = colliders_[j];
+		for (size_t j = i + 1; j < activeColliders_.size(); ++j) {
+			BaseCollider3D* colliderB = activeColliders_[j];
 			if (!colliderB || !colliderB->GetIsActive()) continue;
 
 			// 実際の衝突検出
@@ -96,14 +111,14 @@ std::set<std::pair<uint32_t, uint32_t>> CollisionManager::CheckAllCollisions() {
 
 void CollisionManager::ResolveCollisions(const std::set<std::pair<uint32_t, uint32_t>>& currentCollisions) {
 
-	// 2-1. 新規衝突(OnCollisionEnter) or 継続衝突(OnCollisionStay)
+	// 新規衝突(OnCollisionEnter) or 継続衝突(OnCollisionStay)
 	for (const auto& pair : currentCollisions) {
 		// このペアが前フレームにも存在していたらStay, なければEnter
 		bool isNew = (previousCollisions_.find(pair) == previousCollisions_.end());
 
 		auto [idA, idB] = pair;
-		BaseCollider3D* colliderA = FindColliderByID(colliders_, idA);
-		BaseCollider3D* colliderB = FindColliderByID(colliders_, idB);
+		BaseCollider3D* colliderA = FindColliderByID(activeColliders_, idA);
+		BaseCollider3D* colliderB = FindColliderByID(activeColliders_, idB);
 		if (!colliderA || !colliderB) {
 			continue;
 		}
@@ -125,13 +140,13 @@ void CollisionManager::ResolveCollisions(const std::set<std::pair<uint32_t, uint
 		}
 	}
 
-	// 2-2. 衝突離脱(OnCollisionExit)
+	// 衝突離脱(OnCollisionExit)
 	for (const auto& oldPair : previousCollisions_) {
 		// 前フレームにあったペアが今フレームに無い場合は離脱
 		if (currentCollisions.find(oldPair) == currentCollisions.end()) {
 			auto [idA, idB] = oldPair;
-			BaseCollider3D* colliderA = FindColliderByID(colliders_, idA);
-			BaseCollider3D* colliderB = FindColliderByID(colliders_, idB);
+			BaseCollider3D* colliderA = FindColliderByID(activeColliders_, idA);
+			BaseCollider3D* colliderB = FindColliderByID(activeColliders_, idB);
 			if (!colliderA || !colliderB) {
 				continue;
 			}
@@ -147,10 +162,13 @@ void CollisionManager::ResolveCollisions(const std::set<std::pair<uint32_t, uint
 			ownerB->OnCollisionExit(ownerA);
 		}
 	}
+
+	// 今回フレームの衝突結果リストを保存
+	previousCollisions_ = currentCollisions;
 }
 
 void CollisionManager::Clear() {
-	colliders_.clear();
+	activeColliders_.clear();
 }
 
 std::pair<uint32_t, uint32_t> CollisionManager::MakeOrderedPair(uint32_t idA, uint32_t idB) {
@@ -170,7 +188,26 @@ std::pair<Collider3DType, Collider3DType> CollisionManager::MakeOrderedPair(Coll
 }
 
 bool CollisionManager::CheckSphereToSphereCollision(BaseCollider3D* colliderA, BaseCollider3D* colliderB) {
-	colliderA;
-	colliderB;
-	return true;
+	// SphereColliderにキャスト
+	SphereCollider* sphereA = static_cast<SphereCollider*>(colliderA);
+	SphereCollider* sphereB = static_cast<SphereCollider*>(colliderB);
+	assert(sphereA && sphereB && "Colliders must be SphereCollider!");
+
+	// 中心座標を取得
+	Vector3 centerA = sphereA->worldPosition_;
+	Vector3 centerB = sphereB->worldPosition_;
+
+	// 半径を取得
+	float radiusA = sphereA->GetRadius();
+	float radiusB = sphereB->GetRadius();
+
+	// 二点間の距離判定
+	Vector3 diff = centerA - centerB;
+	float distance = Length(diff);
+	float radiusSum = radiusA + radiusB;
+
+	if (distance <= radiusSum) {
+		return true;  // 衝突している
+	}
+	return false;     // 衝突していない
 }

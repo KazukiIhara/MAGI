@@ -17,7 +17,7 @@ public:
 	virtual ~BaseCollider3D() = default;
 
 	void Update();
-	virtual void Draw() = 0;
+	virtual void TransferShape() = 0;
 
 	// コライダータイプの取得
 	Collider3DType GetType()const;

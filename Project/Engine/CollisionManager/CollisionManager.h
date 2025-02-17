@@ -25,6 +25,8 @@ public:
 private:
 	// チェックするコライダーを追加
 	void Add(BaseCollider3D* baseCollider3D);
+	// チェックするすべてのコライダーを追加
+	void AddCheckColliders();
 	// IDをもとにコライダーを取得する
 	BaseCollider3D* FindColliderByID(const std::vector<BaseCollider3D*>& colliders, uint32_t id);
 	// ペア同士の当たり判定をチェック
@@ -50,7 +52,7 @@ private:
 	std::map<std::pair<Collider3DType, Collider3DType>, CollisionFunc> collisionFuncMap_;
 
 	// 衝突応答をチェックするリスト
-	std::vector<BaseCollider3D*> colliders_;
+	std::vector<BaseCollider3D*> activeColliders_;
 
 	// 前フレームで衝突していたペア
 	std::set<std::pair<uint32_t, uint32_t>> previousCollisions_;

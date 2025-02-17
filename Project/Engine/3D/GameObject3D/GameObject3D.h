@@ -17,7 +17,7 @@
 /// <summary>
 /// 3Dゲームオブジェクトクラス
 /// </summary>
-class GameObject3D:public WorldEntity {
+class GameObject3D :public WorldEntity {
 public:
 	GameObject3D(const std::string& objectName, const EulerTransform3D& transform = EulerTransform3D{});
 	~GameObject3D()override = default;
@@ -52,10 +52,19 @@ public:
 	virtual void OnCollisionExit([[maybe_unused]] GameObject3D* other);
 
 	//
-	// コライダーのオフセット取得関数
+	// コライダーの設定関数
 	//
 
+	// アクティブフラグの設定
+	void SetColliderIsActive(const std::string& name, bool isActive);
+
+	// オフセットの取得
 	Vector3& GetColliderOffset(const std::string& name);
+
+	//
+	// スフィアコライダー用の設定
+	// 
+	void SetColliderRadius(const std::string& name, float radius);
 
 	//
 	// コンポーネント追加関数

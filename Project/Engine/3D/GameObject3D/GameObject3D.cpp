@@ -1,6 +1,8 @@
 #include "GameObject3D.h"
-
+#include "MAGIUitility/MAGIUtility.h"
 #include <cassert>
+
+using namespace MAGIUtility;
 
 GameObject3D::GameObject3D(const std::string& objectName, const EulerTransform3D& transform)
 	:WorldEntity() {
@@ -49,15 +51,23 @@ WorldTransform* GameObject3D::GetWorldTransform() {
 }
 
 void GameObject3D::OnCollisionEnter([[maybe_unused]] GameObject3D* other) {
-
+	renderer3D_->GetMaterial().color = RGBAToVector4(Color::Red);
 }
 
 void GameObject3D::OnCollisionStay([[maybe_unused]] GameObject3D* other) {
-
+	renderer3D_->GetMaterial().color = RGBAToVector4(Color::Green);
 }
 
 void GameObject3D::OnCollisionExit([[maybe_unused]] GameObject3D* other) {
+	renderer3D_->GetMaterial().color = RGBAToVector4(Color::Blue);
+}
 
+void GameObject3D::SetColliderIsActive(const std::string& name, bool isActive) {
+	// 作成済みコライダーを検索
+	if (colliders3D_.contains(name)) {
+		// アクティブフラグをセット
+		colliders3D_.at(name)->GetIsActive() = isActive;
+	}
 }
 
 Vector3& GameObject3D::GetColliderOffset(const std::string& name) {
@@ -70,6 +80,19 @@ Vector3& GameObject3D::GetColliderOffset(const std::string& name) {
 	assert(false && "Not Found Collider");
 	// コライダーを返す
 	return colliders3D_.at(name)->GetOffset();
+}
+
+void GameObject3D::SetColliderRadius(const std::string& name, float radius) {
+	// 作成済みコライダーを検索
+	if (colliders3D_.contains(name)) {
+		// 球体コライダーかどうかチェック
+		if (auto it = dynamic_cast<SphereCollider*>(colliders3D_.at(name))) {
+			// 半径を設定
+			it->GetRadius() = radius;
+		} else {
+			assert(false && "Not Sphere Collider");
+		}
+	}
 }
 
 void GameObject3D::CreatePrimitiveRenderer(const std::string& rendererName, const Primitive3DType& primitiveType, const std::string& textureName) {

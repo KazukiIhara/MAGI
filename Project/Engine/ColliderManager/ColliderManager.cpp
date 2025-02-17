@@ -14,9 +14,9 @@ ColliderManager::~ColliderManager() {
 
 void ColliderManager::Update() {
 	for (auto& collider : colliders_) {
-		if (collider.second) {
-			collider.second->Update();
-			collider.second->Draw();
+		if (collider) {
+			collider->Update();
+			collider->TransferShape();
 		}
 	}
 }
@@ -24,44 +24,51 @@ void ColliderManager::Update() {
 void ColliderManager::Create(const std::string& name, Collider3DType colliderType) {
 	std::unique_ptr<BaseCollider3D> newCollider;
 	switch (colliderType) {
-		case Collider3DType::Sphere:
-			newCollider = std::make_unique<SphereCollider>(name, currentID_, colliderType);
-			break;
-		case Collider3DType::AABB:
-			break;
-		case Collider3DType::OBB:
-			break;
+	case Collider3DType::Sphere:
+		newCollider = std::make_unique<SphereCollider>(name, currentID_, colliderType);
+		break;
+	case Collider3DType::AABB:
+		break;
+	case Collider3DType::OBB:
+		break;
 	}
 	// コンテナに登録
-	colliders_.insert(std::pair(name, std::move(newCollider)));
+	colliders_.push_back(std::move(newCollider));
 	// 識別IDをインクリメント
 	currentID_++;
 }
 
 void ColliderManager::Remove(const std::string& name) {
-	// 作成済みコライダーを検索
-	auto it = colliders_.find(name);
-	if (it != colliders_.end()) {
-		// コライダーが見つかった場合、削除する
-		colliders_.erase(it);
+	// ベクターを走査して、名前が一致するコライダーを探す
+	for (auto it = colliders_.begin(); it != colliders_.end(); ++it) {
+		// (*it)->name_ でコライダー名を取得
+		if ((*it)->name_ == name) {
+			colliders_.erase(it);
+			return;  // 見つかったら削除して関数を抜ける
+		}
 	}
+	// 見つからなかった場合
+	assert(false && "Not Found Collider to Remove");
 }
 
 BaseCollider3D* ColliderManager::Find(const std::string& name) {
-	// 作成済みコライダーを検索
-	if (colliders_.contains(name)) {
-		// コライダーを返す
-		return colliders_.at(name).get();
+	// ベクターを走査して、名前が一致するコライダーを探す
+	for (auto& collider : colliders_) {
+		if (collider && collider->name_ == name) {
+			return collider.get();  // ポインタを返す
+		}
 	}
 
-	// エラーメッセージ
+	// 見つからない場合
 	assert(false && "Not Found Collider");
-
-	// ファイル名一致なし
 	return nullptr;
 }
 
 void ColliderManager::Clear() {
 	colliders_.clear();
 	currentID_ = 0;
+}
+
+const std::vector<std::unique_ptr<BaseCollider3D>>& ColliderManager::GetColliders() const {
+	return colliders_;
 }

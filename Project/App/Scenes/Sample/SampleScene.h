@@ -11,7 +11,7 @@
 
 // サンプルシーン
 template <typename Data>
-class SampleScene: public BaseScene<Data> {
+class SampleScene : public BaseScene<Data> {
 public:
 	using BaseScene<Data>::BaseScene; // 親クラスのコンストラクタをそのまま継承
 	~SampleScene()override = default;
@@ -61,12 +61,14 @@ inline void SampleScene<Data>::Initialize() {
 	sphere_[0]->GetTranslate().y = 1.0f;
 	sphere_[0]->GetTranslate().x = 1.5f;
 	sphere_[0]->AddCollider(MAGISYSTEM::FindCollider("Sphere0"));
+	sphere_[0]->SetColliderIsActive("Sphere0", true);
 
 	sphere_[1] = std::make_unique<GameObject3D>("Sphere1");
 	sphere_[1]->CreatePrimitiveRenderer("Sphere1", Primitive3DType::Sphere);
 	sphere_[1]->GetTranslate().y = 1.0f;
 	sphere_[1]->GetTranslate().x = -1.5f;
 	sphere_[1]->AddCollider(MAGISYSTEM::FindCollider("Sphere1"));
+	sphere_[1]->SetColliderIsActive("Sphere1", true);
 
 }
 

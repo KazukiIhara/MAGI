@@ -7,7 +7,7 @@ SphereCollider::SphereCollider(const std::string& name, uint32_t id, Collider3DT
 
 }
 
-void SphereCollider::Draw() {
+void SphereCollider::TransferShape() {
 	uint32_t segments = 8;
 	const int rings = segments;        // 緯度方向の分割数
 	const int slices = segments * 2;  // 経度方向の分割数
@@ -49,4 +49,8 @@ void SphereCollider::Draw() {
 		}
 	}
 
+}
+
+float& SphereCollider::GetRadius() {
+	return radius_;
 }
