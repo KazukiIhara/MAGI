@@ -3,6 +3,9 @@
 // C++
 #include <string>
 
+// Json
+#include <nlohmann/json.hpp>
+
 // 前方宣言
 class ColliderManager;
 
