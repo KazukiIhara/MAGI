@@ -231,7 +231,7 @@ void GUI::ShowColliderManager() {
 			// オフセットを編集 (DragFloat3など)
 			//
 			auto offsetPos = collider->GetOffset();
-			if (ImGui::DragFloat3("Offset", &offsetPos.x, 0.1f)) {
+			if (ImGui::DragFloat3("Offset", &offsetPos.x, 0.01f)) {
 				// 値が変わったらコライダーに反映
 				collider->GetOffset() = offsetPos;
 			}
@@ -244,7 +244,7 @@ void GUI::ShowColliderManager() {
 				SphereCollider* sphere = dynamic_cast<SphereCollider*>(collider);
 				if (sphere) {
 					float radius = sphere->GetRadius();
-					if (ImGui::DragFloat("Radius", &radius, 0.1f, 0.0f, 10000.0f)) {
+					if (ImGui::DragFloat("Radius", &radius, 0.01f, 0.0f, 10000.0f)) {
 						sphere->GetRadius() = radius;
 					}
 				}

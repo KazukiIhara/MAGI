@@ -26,6 +26,8 @@ public:
 
 	// コライダータイプの取得
 	Collider3DType& GetType();
+	// コライダーのカテゴリの取得
+	CollisionCategory& GetCategory();
 	// オフセットの取得
 	Vector3& GetOffset();
 	// アクティブフラグの取得

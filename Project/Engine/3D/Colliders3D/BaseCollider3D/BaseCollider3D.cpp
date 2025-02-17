@@ -51,6 +51,10 @@ Collider3DType& BaseCollider3D::GetType() {
 	return type_.value();
 }
 
+CollisionCategory& BaseCollider3D::GetCategory() {
+	return collisionCategory_;
+}
+
 Vector3& BaseCollider3D::GetOffset() {
 	return offset_;
 }
