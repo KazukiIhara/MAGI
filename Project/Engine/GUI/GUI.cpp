@@ -44,6 +44,9 @@ void GUI::Update() {
 	// テクスチャ
 	ShowTextureDatas();
 
+	if (ImGui::Button("SaveColliderFile")) {
+		dataIO_->SaveColliderDataFile("SceneCollider");
+	}
 
 }
 
