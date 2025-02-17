@@ -97,8 +97,11 @@ void GUI::ShowDeltaTime() {
 }
 
 void GUI::ShowTextureDatas() {
+
+	ImGuiWindowFlags windowFlags = ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse;
+
 	// ウィンドウを開く
-	if (ImGui::Begin("Texture List")) {
+	if (ImGui::Begin("Texture List", nullptr, windowFlags)) {
 		// テクスチャを管理しているコンテナからマップを取得
 		const auto& textureDatas = textureDataContainer_->GetTextureDatas();
 
@@ -176,14 +179,15 @@ void GUI::ShowColliderManager() {
 	// コライダーの一覧を取得
 	const auto& colliders = dataIO_->GetColliders();
 
+	ImGuiWindowFlags windowFlags = ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse;
+
 	// ウィンドウ表示開始（ImGuiウィンドウ）
-	ImGui::Begin("Collider Manager");
+	ImGui::Begin("Collider Manager", nullptr, windowFlags);
 
 	// コライダー総数を表示
 	ImGui::Text("Total Colliders: %d", static_cast<int>(colliders.size()));
 
 	// 選択中のコライダーを識別するための静的変数
-	// （GUIを閉じたりするとリセットされる簡易的な方法です。必要に応じてクラスメンバ等にしてください）
 	static int selectedIndex = -1;
 
 	//
@@ -191,7 +195,7 @@ void GUI::ShowColliderManager() {
 	//
 	// BeginChild(name, size, border, flags) を使うと、その領域がスクロール可能になります
 	//
-	ImGui::BeginChild("ColliderList", ImVec2(200, 300), true);
+	ImGui::BeginChild("ColliderList", ImVec2(200, 100), true);
 	for (int i = 0; i < static_cast<int>(colliders.size()); i++) {
 		// コライダー名を取得
 		const std::string& colliderName = colliders[i]->name_;
@@ -201,20 +205,59 @@ void GUI::ShowColliderManager() {
 		if (ImGui::Button(colliderName.c_str(), ImVec2(180, 0))) {
 			selectedIndex = i;
 		}
+
 	}
 	ImGui::EndChild();
 
 	// 同じ行に並べたい場合は ImGui::SameLine() を呼び出す
 	ImGui::SameLine();
 
-	//
-	// 右側に選択されたコライダーの詳細情報を表示
-	//
-	ImGui::BeginChild("ColliderDetails", ImVec2(300, 300), true);
+	ImGui::BeginChild("ColliderSettings", ImVec2(0, 100), true);
+	if (selectedIndex >= 0 && selectedIndex < static_cast<int>(colliders.size())) {
+		BaseCollider3D* collider = colliders[selectedIndex].get();
+		if (collider) {
+			//
+			// コライダーのタイプを編集 (Combo などで変更)
+			//
+			int colliderTypeNum = static_cast<int>(collider->GetType());
+			// 例として3種類だけ想定
+			const char* colliderTypes[] = { "Sphere", "AABB", "OBB" };
+			if (ImGui::Combo("Collider Type", &colliderTypeNum, colliderTypes, IM_ARRAYSIZE(colliderTypes))) {
+				// Comboで選択が変わったらSetType
+				collider->GetType() = static_cast<Collider3DType>(colliderTypeNum);
+			}
+
+			//
+			// オフセットを編集 (DragFloat3など)
+			//
+			auto offsetPos = collider->GetOffset();
+			if (ImGui::DragFloat3("Offset", &offsetPos.x, 0.1f)) {
+				// 値が変わったらコライダーに反映
+				collider->GetOffset() = offsetPos;
+			}
+
+			//
+			// 球体コライダーの場合のみ、半径 (radius) を編集
+			//
+			if (collider->GetType() == Collider3DType::Sphere) {
+				// SphereCollider の派生クラスにキャスト
+				SphereCollider* sphere = dynamic_cast<SphereCollider*>(collider);
+				if (sphere) {
+					float radius = sphere->GetRadius();
+					if (ImGui::DragFloat("Radius", &radius, 0.1f, 0.0f, 10000.0f)) {
+						sphere->GetRadius() = radius;
+					}
+				}
+			}
+		}
+	}
+	ImGui::EndChild();
+
+	// 区切り線
+	ImGui::Separator();
 
 	// 有効なインデックスなら、詳細情報を表示
 	if (selectedIndex >= 0 && selectedIndex < static_cast<int>(colliders.size())) {
-		// unique_ptr から生のポインタを取り出す
 		BaseCollider3D* collider = colliders[selectedIndex].get();
 		if (collider) {
 			// 所属するゲームオブジェクトの名前
@@ -224,25 +267,39 @@ void GUI::ShowColliderManager() {
 			auto worldPos = collider->worldPosition_;
 			ImGui::Text("World Position: (%.2f, %.2f, %.2f)", worldPos.x, worldPos.y, worldPos.z);
 
-			// コライダーのタイプ
-			int colliderTypeNum = static_cast<int>(collider->GetType());
-			switch (colliderTypeNum) {
-			case 0:
+			// コライダータイプの表示
+			Collider3DType cType = collider->GetType();
+			switch (cType) {
+			case Collider3DType::Sphere:
 				ImGui::Text("Collider Type: Sphere");
+				// 半径を表示
+				{
+					SphereCollider* sphere = dynamic_cast<SphereCollider*>(collider);
+					if (sphere) {
+						ImGui::Text("Radius: %.2f", sphere->GetRadius());
+					}
+				}
+				break;
+			case Collider3DType::AABB:
+				ImGui::Text("Collider Type: AABB");
+				break;
+			case Collider3DType::OBB:
+				ImGui::Text("Collider Type: OBB");
+				break;
+			default:
+				ImGui::Text("Collider Type: Unknown");
 				break;
 			}
 
 			// コライダーのオフセット
 			auto offsetPos = collider->GetOffset();
-			ImGui::Text("Offset Position: (%.2f, %.2f, %.2f)", offsetPos.x, offsetPos.y, offsetPos.z);
+			ImGui::Text("Offset: (%.2f, %.2f, %.2f)", offsetPos.x, offsetPos.y, offsetPos.z);
 
 			// アクティブフラグ
 			bool isActive = collider->GetIsActive();
 			ImGui::Text("Active: %s", isActive ? "true" : "false");
 		}
 	}
-
-	ImGui::EndChild();
 
 	// ウィンドウを閉じる
 	ImGui::End();

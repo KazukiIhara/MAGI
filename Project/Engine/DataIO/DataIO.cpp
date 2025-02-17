@@ -46,7 +46,85 @@ void DataIO::EndFrame() {
 }
 
 void DataIO::LoadColliderDataFile(const std::string& fileName) {
-	fileName;
+	// パスを組み立て (例: "Assets/Datas/Colliders/<fileName>")
+	std::filesystem::path directoryPath = "Assets/Datas/Colliders";
+	std::filesystem::path inputPath = directoryPath / fileName;
+
+	// ファイルが存在するかチェック
+	if (!std::filesystem::exists(inputPath)) {
+		// エラーログ & MessageBox
+		Logger::Log("File not found: " + inputPath.string() + "\n");
+#ifdef _WIN32
+		// ワイド文字列に変換してエラー表示
+		std::wstring wMessage = Logger::ConvertString("ファイルが見つかりません: " + inputPath.generic_string());
+		std::wstring wTitle = Logger::ConvertString("Load Collider Data");
+		MessageBoxW(nullptr, wMessage.c_str(), wTitle.c_str(), MB_OK | MB_ICONERROR);
+#endif
+		return;
+	}
+
+	// ファイルを開く
+	std::ifstream ifs(inputPath);
+	if (!ifs) {
+		Logger::Log("Failed to open file: " + inputPath.string() + "\n");
+#ifdef _WIN32
+		std::wstring wMessage = Logger::ConvertString("ファイルを開けませんでした: " + inputPath.generic_string());
+		std::wstring wTitle = Logger::ConvertString("Load Collider Data");
+		MessageBoxW(nullptr, wMessage.c_str(), wTitle.c_str(), MB_OK | MB_ICONERROR);
+#endif
+		return;
+	}
+
+	// JSON パース
+	json jsonData;
+	try {
+		ifs >> jsonData;
+	}
+	catch (const std::exception& e) {
+		Logger::Log(std::string("JSON parse error: ") + e.what() + "\n");
+#ifdef _WIN32
+		std::wstring wMessage = Logger::ConvertString("JSONの読み込みに失敗しました:\n");
+		wMessage += Logger::ConvertString(e.what());
+		std::wstring wTitle = Logger::ConvertString("Load Collider Data");
+		MessageBoxW(nullptr, wMessage.c_str(), wTitle.c_str(), MB_OK | MB_ICONERROR);
+#endif
+		return;
+	}
+
+	// コライダーデータが含まれているか確認
+	if (!jsonData.contains("Colliders") || !jsonData["Colliders"].is_array()) {
+		Logger::Log("No 'Colliders' array in JSON: " + inputPath.string() + "\n");
+		return;
+	}
+
+	// JSON 配列を走査してコライダーを生成
+	auto& collidersArray = jsonData["Colliders"];
+	for (auto& colliderJson : collidersArray) {
+		// 必要なフィールドがあるかチェック
+		if (!colliderJson.contains("name") || !colliderJson.contains("type")) {
+			Logger::Log("Invalid collider entry.\n");
+			continue;
+		}
+
+		// それぞれ読み取る
+		std::string colliderName = colliderJson["name"].get<std::string>();
+		int typeValue = colliderJson["type"].get<int>();
+
+		// enum class へキャスト
+		Collider3DType colliderType = static_cast<Collider3DType>(typeValue);
+
+		// コライダーを生成
+		colliderManager_->Create(colliderName, colliderType);
+		Logger::Log("Collider created: " + colliderName + " (type=" + std::to_string(typeValue) + ")\n");
+	}
+
+	Logger::Log("Collider data loaded from: " + inputPath.string() + "\n");
+#ifdef _WIN32
+	// 読み込み完了メッセージ
+	std::wstring wMessage = Logger::ConvertString("コライダー情報をロードしました。\n" + inputPath.generic_string());
+	std::wstring wTitle = Logger::ConvertString("Load Collider Data");
+	MessageBoxW(nullptr, wMessage.c_str(), wTitle.c_str(), MB_OK | MB_ICONINFORMATION);
+#endif
 }
 
 void DataIO::SaveColliderDataFile(const std::string& fileName) {
