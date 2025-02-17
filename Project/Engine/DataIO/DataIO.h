@@ -48,11 +48,11 @@ public:
 
 
 private:
+
+
+private:
 	// コライダーマネージャのセット
 	void SetColliderManager(ColliderManager* colliderManager);
-private:
-
-
 private:
 	// 
 	// マネージャクラスのポインタ

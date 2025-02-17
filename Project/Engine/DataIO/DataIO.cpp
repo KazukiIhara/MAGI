@@ -46,6 +46,9 @@ void DataIO::EndFrame() {
 }
 
 void DataIO::LoadColliderDataFile(const std::string& fileName) {
+	// コライダーのリストをクリア
+	colliderManager_->Clear();
+
 	// パスを組み立て (例: "Assets/Datas/Colliders/<fileName>")
 	std::filesystem::path directoryPath = "Assets/Datas/Colliders";
 	std::filesystem::path inputPath = directoryPath / fileName;
