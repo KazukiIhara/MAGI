@@ -8,6 +8,11 @@ public:
 	DataIO();
 	~DataIO();
 
+	void Initialize();
+
+	void BeginFrame();
+	void EndFrame();
+
 private:
 
 };

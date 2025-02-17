@@ -370,6 +370,9 @@ void MAGISYSTEM::Update() {
 	// ImGui開始処理
 	imguiController_->BeginFrame();
 
+	// Dataクラスフレーム開始処理
+	dataIO_->BeginFrame();
+
 	// GUI更新処理
 	gui_->Update();
 
@@ -390,6 +393,9 @@ void MAGISYSTEM::Update() {
 
 	// 3Dライン描画クラスの更新
 	lineDrawer3D_->Update();
+
+	// Dataクラスフレーム終了処理
+	dataIO_->EndFrame();
 
 	// GUI描画処理
 	gui_->Draw();
