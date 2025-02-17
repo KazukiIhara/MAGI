@@ -56,7 +56,7 @@ public:
 	//
 
 	// アクティブフラグの設定
-	void SetColliderIsActive(const std::string& name, bool isActive);
+	bool& GetColliderIsActive(const std::string& name);
 
 	// オフセットの取得
 	Vector3& GetColliderOffset(const std::string& name);

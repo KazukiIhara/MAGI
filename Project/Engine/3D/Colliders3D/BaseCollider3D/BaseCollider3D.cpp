@@ -32,6 +32,11 @@ void BaseCollider3D::Update() {
 	} else {
 		color_ = Color::Blue;
 	}
+
+	// 何かに触れていれば赤にする
+	if (isSellingOther_) {
+		color_ = Color::Red;
+	}
 }
 
 Collider3DType BaseCollider3D::GetType() const {
@@ -52,6 +57,10 @@ Vector3& BaseCollider3D::GetOffset() {
 
 bool& BaseCollider3D::GetIsActive() {
 	return isActive_;
+}
+
+bool& BaseCollider3D::GetIsSellingOther() {
+	return isSellingOther_;
 }
 
 void BaseCollider3D::SetOwner(GameObject3D* owner) {

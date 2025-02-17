@@ -62,11 +62,15 @@ void GameObject3D::OnCollisionExit([[maybe_unused]] GameObject3D* other) {
 
 }
 
-void GameObject3D::SetColliderIsActive(const std::string& name, bool isActive) {
+bool& GameObject3D::GetColliderIsActive(const std::string& name) {
 	// 作成済みコライダーを検索
 	if (colliders3D_.contains(name)) {
-		// アクティブフラグをセット
-		colliders3D_.at(name)->GetIsActive() = isActive;
+		// アクティブフラグの参照を返す
+		return colliders3D_.at(name)->GetIsActive();
+	} else {
+		// エラーメッセージ
+		assert(false && "Not Found Collider");
+		return colliders3D_.at(name)->GetIsActive();
 	}
 }
 

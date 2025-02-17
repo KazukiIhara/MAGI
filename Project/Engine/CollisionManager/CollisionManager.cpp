@@ -131,6 +131,8 @@ void CollisionManager::ResolveCollisions(const std::set<std::pair<uint32_t, uint
 
 		if (isNew) {
 			// 衝突開始
+			colliderA->GetIsSellingOther() = true;
+			colliderB->GetIsSellingOther() = true;
 			ownerA->OnCollisionEnter(ownerB);
 			ownerB->OnCollisionEnter(ownerA);
 		} else {
@@ -150,6 +152,8 @@ void CollisionManager::ResolveCollisions(const std::set<std::pair<uint32_t, uint
 			if (!colliderA || !colliderB) {
 				continue;
 			}
+			colliderA->GetIsSellingOther() = false;
+			colliderB->GetIsSellingOther() = false;
 
 			GameObject3D* ownerA = colliderA->GetOwner();
 			GameObject3D* ownerB = colliderB->GetOwner();

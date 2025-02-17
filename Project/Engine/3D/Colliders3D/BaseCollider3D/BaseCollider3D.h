@@ -30,6 +30,8 @@ public:
 	Vector3& GetOffset();
 	// アクティブフラグの取得
 	bool& GetIsActive();
+	// 接触フラグの取得
+	bool& GetIsSellingOther();
 
 	// 所属するゲームオブジェクトのセット
 	void SetOwner(GameObject3D* owner);
@@ -51,4 +53,6 @@ protected:
 	RGBA color_ = Color::White;
 	// アクティブフラグ
 	bool isActive_ = false;
+	// 何かしらに触れている
+	bool isSellingOther_ = false;
 };
