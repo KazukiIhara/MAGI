@@ -70,6 +70,7 @@ bool& GameObject3D::GetColliderIsActive(const std::string& name) {
 	} else {
 		// エラーメッセージ
 		assert(false && "Not Found Collider");
+		// アクティブフラグの参照を返す
 		return colliders3D_.at(name)->GetIsActive();
 	}
 }
@@ -77,13 +78,14 @@ bool& GameObject3D::GetColliderIsActive(const std::string& name) {
 Vector3& GameObject3D::GetColliderOffset(const std::string& name) {
 	// 作成済みコライダーを検索
 	if (colliders3D_.contains(name)) {
-		// コライダーを返す
+		// コライダーのオフセットの参照を返す
+		return colliders3D_.at(name)->GetOffset();
+	} else {
+		// エラーメッセージ
+		assert(false && "Not Found Collider");
+		// コライダーのオフセットの参照を返す
 		return colliders3D_.at(name)->GetOffset();
 	}
-	// エラーメッセージ
-	assert(false && "Not Found Collider");
-	// コライダーを返す
-	return colliders3D_.at(name)->GetOffset();
 }
 
 float& GameObject3D::GetColliderRadius(const std::string& name) {
