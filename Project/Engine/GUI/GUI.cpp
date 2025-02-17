@@ -55,10 +55,6 @@ void GUI::Update() {
 	// コライダーマネージャ
 	ShowColliderManager();
 
-	if (ImGui::Button("SaveColliderFile")) {
-		dataIO_->SaveColliderDataFile("SceneCollider");
-	}
-
 }
 
 void GUI::ShowFPS() {
@@ -187,13 +183,36 @@ void GUI::ShowColliderManager() {
 	// コライダー総数を表示
 	ImGui::Text("Total Colliders: %d", static_cast<int>(colliders.size()));
 
+	// ファイル名入力用のバッファ (ImGui では文字配列を使うことが多い)
+	static char colliderSaveFileName[64] = "DefaultName";
+
+	// セーブ
+	ImGui::Text("Save");
+	// 同じ行に配置
+	ImGui::SameLine();
+	// テキスト入力 (ラベルとして "##" から始めるとラベルが非表示になるのでUIがコンパクトになる)
+	ImGui::InputText("##SaveFileName", colliderSaveFileName, IM_ARRAYSIZE(colliderSaveFileName));
+
+	// 同じ行に配置
+	ImGui::SameLine();
+
+	// 「Save」ボタン
+	if (ImGui::Button("Save")) {
+		// 入力されたファイル名が空でなければ保存を実行
+		if (strlen(colliderSaveFileName) > 0) {
+			// データIOクラスを使ってセーブ
+			dataIO_->SaveColliderDataFile(colliderSaveFileName);
+		} else {
+			// 空文字なら何もしない or エラーメッセージ表示
+		}
+	}
+
+
 	// 選択中のコライダーを識別するための静的変数
 	static int selectedIndex = -1;
 
 	//
 	// 左側にコライダー一覧を表示（スクロール可）
-	//
-	// BeginChild(name, size, border, flags) を使うと、その領域がスクロール可能になります
 	//
 	ImGui::BeginChild("ColliderList", ImVec2(200, 100), true);
 	for (int i = 0; i < static_cast<int>(colliders.size()); i++) {
@@ -212,6 +231,7 @@ void GUI::ShowColliderManager() {
 	// 同じ行に並べたい場合は ImGui::SameLine() を呼び出す
 	ImGui::SameLine();
 
+	// コライダーの設定
 	ImGui::BeginChild("ColliderSettings", ImVec2(0, 100), true);
 	if (selectedIndex >= 0 && selectedIndex < static_cast<int>(colliders.size())) {
 		BaseCollider3D* collider = colliders[selectedIndex].get();
