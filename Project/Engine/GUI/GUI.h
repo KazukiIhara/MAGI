@@ -11,9 +11,7 @@ public:
 		DataIO* dataIO,
 		TextureDataContainer* textureDataContainer
 	);
-
 	void Update();
-	void Draw();
 private:
 	// FPS表示
 	void ShowFPS();

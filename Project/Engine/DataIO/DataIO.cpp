@@ -10,9 +10,11 @@ DataIO::DataIO(ColliderManager* colliderManager) {
 	// 
 	// インスタンスのセット
 	// 
-
 	SetColliderManager(colliderManager);
 
+	// 
+	// 初期化
+	// 
 	Initialize();
 	Logger::Log("DataIO Initialize\n");
 }
@@ -31,6 +33,14 @@ void DataIO::BeginFrame() {
 
 void DataIO::EndFrame() {
 
+}
+
+void DataIO::LoadColliderDataFile(const std::string& fileName) {
+	fileName;
+}
+
+void DataIO::SaveColliderDataFile(const std::string& fileName) {
+	fileName;
 }
 
 void DataIO::SetColliderManager(ColliderManager* colliderManager) {

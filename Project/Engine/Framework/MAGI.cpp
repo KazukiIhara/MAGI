@@ -397,8 +397,8 @@ void MAGISYSTEM::Update() {
 	// Dataクラスフレーム終了処理
 	dataIO_->EndFrame();
 
-	// GUI描画処理
-	gui_->Draw();
+	// GUI更新処理
+	gui_->Update();
 
 	// ImGui内部コマンド生成
 	imguiController_->EndFrame();

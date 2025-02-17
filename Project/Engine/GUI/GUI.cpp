@@ -7,13 +7,14 @@
 
 #include "Framework/MAGI.h"
 
-GUI::GUI(
-	DataIO* dataIO,
+GUI::GUI(DataIO* dataIO,
 	TextureDataContainer* textureDataContainer) {
 
+	// 
+	// インスタンスのセット
+	// 
 	assert(dataIO);
 	assert(textureDataContainer);
-
 	dataIO_ = dataIO;
 	textureDataContainer_ = textureDataContainer;
 
@@ -22,10 +23,6 @@ GUI::GUI(
 }
 
 void GUI::Update() {
-
-}
-
-void GUI::Draw() {
 	ShowFPS();
 	ShowDeltaTime();
 }
