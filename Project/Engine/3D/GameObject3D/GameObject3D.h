@@ -57,13 +57,14 @@ public:
 
 	// アクティブフラグの設定
 	bool& GetColliderIsActive(const std::string& name);
-
 	// オフセットの取得
 	Vector3& GetColliderOffset(const std::string& name);
 
 	//
 	// スフィアコライダー用の設定
 	// 
+
+	// 半径を設定
 	float& GetColliderRadius(const std::string& name);
 
 	//

@@ -269,6 +269,18 @@ public: // エンジンの機能
 
 #pragma region CollisionManager
 
+
+#pragma endregion
+
+#pragma region DataIO
+	// コライダーファイルの読み込み
+	static void LoadColliderDataFile(const std::string& fileName);
+
+#pragma endregion 
+
+#pragma region GUI
+
+
 #pragma endregion
 
 #pragma region PreRender

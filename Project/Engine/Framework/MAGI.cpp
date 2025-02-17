@@ -674,6 +674,10 @@ void MAGISYSTEM::DrawLine3D(const Vector3& start, const Vector3& end, const RGBA
 	lineDrawer3D_->AddLine(start, end, color);
 }
 
+void MAGISYSTEM::LoadColliderDataFile(const std::string& fileName) {
+	dataIO_->LoadColliderDataFile(fileName);
+}
+
 void MAGISYSTEM::PreDrawObject3D() {
 	ID3D12GraphicsCommandList* commandList = directXCommand_->GetList();
 	// RootSignatureの設定
