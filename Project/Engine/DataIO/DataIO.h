@@ -39,6 +39,13 @@ public:
 	// コライダーデータファイルのセーブ
 	void SaveColliderDataFile(const std::string& fileName);
 
+	// 
+	// GUIクラスで描画する用にマネージャのインスタンスを送るクラス
+	// 
+
+	// コライダーマネージャ
+	ColliderManager* GetColliderManager();
+
 private:
 	// コライダーマネージャのセット
 	void SetColliderManager(ColliderManager* colliderManager);

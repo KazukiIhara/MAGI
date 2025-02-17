@@ -43,6 +43,10 @@ void DataIO::SaveColliderDataFile(const std::string& fileName) {
 	fileName;
 }
 
+ColliderManager* DataIO::GetColliderManager() {
+	return colliderManager_;
+}
+
 void DataIO::SetColliderManager(ColliderManager* colliderManager) {
 	assert(colliderManager);
 	colliderManager_ = colliderManager;
