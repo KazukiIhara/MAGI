@@ -42,6 +42,11 @@ inline void SampleScene<Data>::Initialize() {
 	// モデル
 	MAGISYSTEM::LoadModel("terrain", true);
 
+
+	// 
+	// リソースのロード
+	// 
+
 	// コライダー
 	MAGISYSTEM::LoadColliderDataFile("SceneCollider.json");
 

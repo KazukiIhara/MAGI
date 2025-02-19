@@ -204,6 +204,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Engine\PipelineManagers\ComputePipelineManager\ComputePipelineManager.h" />
     <ClInclude Include="Engine\PipelineManagers\GraphicsPipelineManager\GraphicsPipelineManager.h" />
     <ClInclude Include="Engine\PunctualLightManager\PunctualLightManager.h" />
+    <ClInclude Include="Engine\Renderer3DManager\Renderer3DManager.h" />
     <ClInclude Include="Engine\SceneManager\SceneManager.h" />
     <ClInclude Include="Engine\ViewManagers\BaseViewManager\BaseViewManager.h" />
     <ClInclude Include="Engine\ViewManagers\DSVManager\DSVManager.h" />
@@ -273,6 +274,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Engine\PipelineManagers\ComputePipelineManager\ComputePipelineManager.cpp" />
     <ClCompile Include="Engine\PipelineManagers\GraphicsPipelineManager\GraphicsPipelineManager.cpp" />
     <ClCompile Include="Engine\PunctualLightManager\PunctualLightManager.cpp" />
+    <ClCompile Include="Engine\Renderer3DManager\Renderer3DManager.cpp" />
     <ClCompile Include="Engine\ViewManagers\BaseViewManager\BaseViewManager.cpp" />
     <ClCompile Include="Engine\ViewManagers\DSVManager\DSVManager.cpp" />
     <ClCompile Include="Engine\ViewManagers\RTVManager\RTVManager.cpp" />

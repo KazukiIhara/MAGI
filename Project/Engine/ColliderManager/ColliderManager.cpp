@@ -4,7 +4,7 @@
 #include <cassert>
 
 ColliderManager::ColliderManager() {
-	colliders_.clear();
+	Clear();
 	Logger::Log("ColliderManager Initialize\n");
 }
 
@@ -22,6 +22,7 @@ void ColliderManager::Update() {
 }
 
 void ColliderManager::Create(const std::string& name, Collider3DType colliderType) {
+	// 追加するコライダー
 	std::unique_ptr<BaseCollider3D> newCollider;
 	switch (colliderType) {
 	case Collider3DType::Sphere:
