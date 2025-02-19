@@ -49,10 +49,16 @@ private:
 	// Collider
 	void ShowColliderManager();
 	void ShowColliderSaveUI();
+	void ShowCreateColliderUI();
 	void ShowColliderLoadUI();
 	void ShowColliderList(const std::vector<std::unique_ptr<BaseCollider3D>>& colliders, int& colliderIndex);
 	void ShowColliderSetting(const std::vector<std::unique_ptr<BaseCollider3D>>& colliders, int& selectedIndex);
 	void ShowColliderInformation(const std::vector<std::unique_ptr<BaseCollider3D>>& colliders, int& selectedIndex);
+private:
+	// ウィンドウ表示フラグ
+	
+	// コライダーウィンドウの表示非表示を管理するフラグ
+	bool showColliderCreateWindow_ = false;
 
 private:
 	// DeltaTimerのインスタンス

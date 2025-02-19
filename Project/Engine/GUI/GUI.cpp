@@ -198,10 +198,10 @@ void GUI::ShowRenderer3DManager() {
 
 	// ウィンドウ表示開始（ImGuiウィンドウ）
 	ImGui::Begin("3DRenderer Manager", nullptr, windowFlags);
-
-	// コライダー総数を表示
+	// 総数を表示
 	ImGui::Text("Total 3DRenderers: %d", static_cast<int>(renderers.size()));
 
+	// 描画オブジェクトセーブ機能
 
 	// ウィンドウを閉じる
 	ImGui::End();
@@ -218,14 +218,28 @@ void GUI::ShowColliderManager() {
 
 	// ウィンドウ表示開始（ImGuiウィンドウ）
 	ImGui::Begin("Collider Manager", nullptr, windowFlags);
-
-	// コライダー総数を表示
+	// 総数を表示
 	ImGui::Text("Total Colliders: %d", static_cast<int>(colliders.size()));
 
 	// コライダーセーブ関数
 	ShowColliderSaveUI();
 	// コライダーロード関数
 	ShowColliderLoadUI();
+
+	// コライダー作成ボタン
+	if (ImGui::Button("Create New Collider")) {
+		showColliderCreateWindow_ = true;
+	}
+	// コライダー作成ウィンドウ
+	if (showColliderCreateWindow_) {
+		// 第2引数に &showCreateWindow を渡すことで、×ボタンを押すと false になる
+		ImGui::Begin("Create Collider", &showColliderCreateWindow_, ImGuiWindowFlags_AlwaysAutoResize);
+
+		// 新規作成用のUIを表示
+		ShowCreateColliderUI();
+
+		ImGui::End();
+	}
 
 	// コライダーリスト表示関数
 	ShowColliderList(colliders, selectedColliderIndex);
@@ -271,6 +285,46 @@ void GUI::ShowColliderSaveUI() {
 		}
 	}
 }
+
+// 例: 毎フレーム呼ばれる描画処理などで
+void GUI::ShowCreateColliderUI() {
+	// 静的変数を使って、UIの状態を保持します。
+	static char colliderName[128] = "NewCollider";  // 初期値適当
+	// 選択中のコライダータイプ
+	static int selectedTypeIndex = 0;
+	static float offset[3] = { 0.0f, 0.0f, 0.0f };
+	static float radius = 1.0f; // Sphere用
+
+	// コライダー名の入力
+	ImGui::InputText("Collider Name", colliderName, IM_ARRAYSIZE(colliderName));
+
+	// コライダータイプの選択 (コンボボックス例)
+	// 実際の列挙値
+	const char* colliderTypes[] = {
+		"Sphere",
+		"AABB",
+		"OBB",
+	};
+	ImGui::Combo("Collider Type", &selectedTypeIndex, colliderTypes, IM_ARRAYSIZE(colliderTypes));
+
+	// Offset
+	ImGui::InputFloat3("Offset", offset);
+
+	// 球体コライダーの場合
+	if (selectedTypeIndex == 0) {
+		// 半径入力
+		ImGui::InputFloat("Radius", &radius);
+	}
+
+	// 作成ボタン
+	if (ImGui::Button("Create")) {
+
+		// ウィンドウを非表示に
+		showColliderCreateWindow_ = false;
+	}
+
+}
+
 
 void GUI::ShowColliderLoadUI() {
 	// ファイル名入力用のバッファ

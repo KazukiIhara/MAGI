@@ -139,7 +139,6 @@ void DataIO::SaveColliderDataFile(const std::string& fileName) {
 	std::filesystem::path outputPath = directoryPath / fileName;
 
 	// 拡張子を強制的に .json にする
-	// （拡張子がついていなくても、何か別の拡張子がついていても .json に差し替え）
 	outputPath.replace_extension(".json");
 
 	// ディレクトリが存在しない場合は作成 (再帰的に作成する)
@@ -175,9 +174,28 @@ void DataIO::SaveColliderDataFile(const std::string& fileName) {
 			continue;
 		}
 
+		// 基本情報
 		json colliderJson;
 		colliderJson["name"] = collider->name_;
 		colliderJson["type"] = static_cast<int>(collider->GetType());
+
+		// オフセットの追加 (Vector3 などを想定)
+		{
+			auto offset = collider->GetOffset();  // 例：Vector3 offset
+			colliderJson["offset"] = {
+				{"x", offset.x},
+				{"y", offset.y},
+				{"z", offset.z}
+			};
+		}
+
+		// 球体コライダーの場合は半径を追加
+		if (collider->GetType() == Collider3DType::Sphere) {
+			if (auto sphereCollider = dynamic_cast<SphereCollider*>(collider.get())) {
+				colliderJson["radius"] = sphereCollider->GetRadius(); // 例：float radius
+			}
+		}
+
 		jsonData["Colliders"].push_back(colliderJson);
 	}
 
@@ -211,6 +229,7 @@ void DataIO::SaveColliderDataFile(const std::string& fileName) {
 	MessageBoxW(nullptr, wMessage.c_str(), wTitle.c_str(), MB_OK | MB_ICONINFORMATION);
 #endif
 }
+
 
 Renderer3DManager* DataIO::GetRenderer3DManager() {
 	return renderer3DManager_;
