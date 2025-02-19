@@ -184,6 +184,10 @@ void GUI::ShowSoundDatas() {
 
 }
 
+void GUI::ShowRenderer3DManager() {
+
+}
+
 void GUI::ShowColliderManager() {
 	// コライダーの一覧を取得
 	const auto& colliders = colliderManager_->GetColliders();
@@ -201,6 +205,8 @@ void GUI::ShowColliderManager() {
 
 	// コライダーセーブ関数
 	ShowColliderSaveUI();
+	// コライダーロード関数
+	ShowColliderLoadUI();
 
 	// コライダーリスト表示関数
 	ShowColliderList(colliders, selectedIndex);
@@ -223,7 +229,7 @@ void GUI::ShowColliderManager() {
 
 void GUI::ShowColliderSaveUI() {
 	// ファイル名入力用のバッファ
-	static char colliderSaveFileName[64] = "DefaultName";
+	static char colliderSaveFileName[64] = "DefaultName.json";
 
 	// セーブ
 	ImGui::Text("Save");
@@ -241,6 +247,32 @@ void GUI::ShowColliderSaveUI() {
 		if (strlen(colliderSaveFileName) > 0) {
 			// データIOクラスを使ってセーブ
 			dataIO_->SaveColliderDataFile(colliderSaveFileName);
+		} else {
+			// 空文字なら何もしない or エラーメッセージ表示
+		}
+	}
+}
+
+void GUI::ShowColliderLoadUI() {
+	// ファイル名入力用のバッファ
+	static char colliderLoadFileName[64] = "DefaultName.json";
+
+	// セーブ
+	ImGui::Text("Load");
+	// 同じ行に配置
+	ImGui::SameLine();
+	// テキスト入力
+	ImGui::InputText("##LoadFileName", colliderLoadFileName, IM_ARRAYSIZE(colliderLoadFileName));
+
+	// 同じ行に配置
+	ImGui::SameLine();
+
+	// 「Save」ボタン
+	if (ImGui::Button("Load")) {
+		// 入力されたファイル名が空でなければ保存を実行
+		if (strlen(colliderLoadFileName) > 0) {
+			// データIOクラスを使ってセーブ
+			dataIO_->LoadColliderDataFile(colliderLoadFileName);
 		} else {
 			// 空文字なら何もしない or エラーメッセージ表示
 		}
