@@ -249,19 +249,16 @@ void GUI::ShowColliderManager() {
 	if (selectedIndex >= 0 && selectedIndex < static_cast<int>(colliders.size())) {
 		BaseCollider3D* collider = colliders[selectedIndex].get();
 		if (collider) {
-			//
-			// コライダーのタイプを編集 (Combo などで変更)
-			//
-			int colliderTypeNum = static_cast<int>(collider->GetType());
-			// 例として3種類だけ想定
-			const char* colliderTypes[] = { "Sphere", "AABB", "OBB" };
-			if (ImGui::Combo("Collider Type", &colliderTypeNum, colliderTypes, IM_ARRAYSIZE(colliderTypes))) {
-				// Comboで選択が変わったらSetType
-				collider->GetType() = static_cast<Collider3DType>(colliderTypeNum);
+			// 
+			// 有効フラグを編集
+			// 
+			auto isActive = collider->GetIsActive();
+			if (ImGui::Checkbox("IsActive", &isActive)) {
+				collider->GetIsActive() = isActive;
 			}
 
 			//
-			// オフセットを編集 (DragFloat3など)
+			// オフセットを編集
 			//
 			auto offsetPos = collider->GetOffset();
 			if (ImGui::DragFloat3("Offset", &offsetPos.x, 0.01f)) {
@@ -293,8 +290,14 @@ void GUI::ShowColliderManager() {
 	if (selectedIndex >= 0 && selectedIndex < static_cast<int>(colliders.size())) {
 		BaseCollider3D* collider = colliders[selectedIndex].get();
 		if (collider) {
-			// 所属するゲームオブジェクトの名前
-			ImGui::Text("GameObject: %s", collider->GetOwner()->name_.c_str());
+			if (collider->GetOwner()) {
+				// ゲームオブジェクトに所属している場合
+				// 所属するゲームオブジェクトの名前
+				ImGui::Text("GameObject: %s", collider->GetOwner()->name_.c_str());
+			} else {
+				// 所属するゲームオブジェクトがない場合
+				ImGui::Text("GameObject: Not Owner");
+			}
 
 			// ワールド座標
 			auto worldPos = collider->worldPosition_;

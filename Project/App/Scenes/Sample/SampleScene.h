@@ -63,35 +63,35 @@ inline void SampleScene<Data>::Initialize() {
 	terrain_ = std::make_unique<GameObject3D>("Terrain");
 	terrain_->CreateStaticRenderer("Terrain", "terrain");
 
-	sphere_[0] = std::make_unique<GameObject3D>("Sphere0");
-	sphere_[0]->CreatePrimitiveRenderer("Sphere0", Primitive3DType::Sphere);
-	sphere_[0]->GetTranslate().y = 1.0f;
-	sphere_[0]->GetTranslate().x = 1.5f;
-	sphere_[0]->AddCollider(MAGISYSTEM::FindCollider("Sphere0"));
-	sphere_[0]->GetColliderIsActive("Sphere0") = true;
+	//sphere_[0] = std::make_unique<GameObject3D>("Sphere0");
+	//sphere_[0]->CreatePrimitiveRenderer("Sphere0", Primitive3DType::Sphere);
+	//sphere_[0]->GetTranslate().y = 1.0f;
+	//sphere_[0]->GetTranslate().x = 1.5f;
+	//sphere_[0]->AddCollider(MAGISYSTEM::FindCollider("Sphere0"));
+	//sphere_[0]->GetColliderIsActive("Sphere0") = true;
 
-	sphere_[1] = std::make_unique<GameObject3D>("Sphere1");
-	sphere_[1]->CreatePrimitiveRenderer("Sphere1", Primitive3DType::Sphere);
-	sphere_[1]->GetTranslate().y = 1.0f;
-	sphere_[1]->GetTranslate().x = -1.5f;
-	sphere_[1]->AddCollider(MAGISYSTEM::FindCollider("Sphere1"));
-	sphere_[1]->GetColliderIsActive("Sphere1") = true;
+	//sphere_[1] = std::make_unique<GameObject3D>("Sphere1");
+	//sphere_[1]->CreatePrimitiveRenderer("Sphere1", Primitive3DType::Sphere);
+	//sphere_[1]->GetTranslate().y = 1.0f;
+	//sphere_[1]->GetTranslate().x = -1.5f;
+	//sphere_[1]->AddCollider(MAGISYSTEM::FindCollider("Sphere1"));
+	//sphere_[1]->GetColliderIsActive("Sphere1") = true;
 
 }
 
 template<typename Data>
 inline void SampleScene<Data>::Update() {
 
-	if (MAGISYSTEM::PushKey(DIK_D)) {
-		sphere_[0]->GetTranslate().x += 0.1f;
-	}
-	if (MAGISYSTEM::PushKey(DIK_A)) {
-		sphere_[0]->GetTranslate().x -= 0.1f;
-	}
+	//if (MAGISYSTEM::PushKey(DIK_D)) {
+	//	sphere_[0]->GetTranslate().x += 0.1f;
+	//}
+	//if (MAGISYSTEM::PushKey(DIK_A)) {
+	//	sphere_[0]->GetTranslate().x -= 0.1f;
+	//}
 
 	terrain_->Update();
-	sphere_[0]->Update();
-	sphere_[1]->Update();
+	/*sphere_[0]->Update();
+	sphere_[1]->Update();*/
 
 }
 
@@ -103,8 +103,8 @@ inline void SampleScene<Data>::Draw() {
 	MAGISYSTEM::PreDrawObject3D();
 
 	terrain_->Draw();
-	sphere_[0]->Draw();
-	sphere_[1]->Draw();
+	/*sphere_[0]->Draw();
+	sphere_[1]->Draw();*/
 
 
 	// 
