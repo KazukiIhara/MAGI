@@ -188,6 +188,9 @@ void GUI::ShowColliderManager() {
 	// コライダーの一覧を取得
 	const auto& colliders = colliderManager_->GetColliders();
 
+	// 選択中のコライダーを識別するための静的変数
+	static int selectedIndex = -1;
+
 	ImGuiWindowFlags windowFlags = ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse;
 
 	// ウィンドウ表示開始（ImGuiウィンドウ）
@@ -196,14 +199,37 @@ void GUI::ShowColliderManager() {
 	// コライダー総数を表示
 	ImGui::Text("Total Colliders: %d", static_cast<int>(colliders.size()));
 
-	// ファイル名入力用のバッファ (ImGui では文字配列を使うことが多い)
+	// コライダーセーブ関数
+	ShowColliderSaveUI();
+
+	// コライダーリスト表示関数
+	ShowColliderList(colliders, selectedIndex);
+
+	// 同じ行に並べたい場合は ImGui::SameLine() を呼び出す
+	ImGui::SameLine();
+
+	// コライダーの設定関数
+	ShowColliderSetting(colliders, selectedIndex);
+
+	// 区切り線
+	ImGui::Separator();
+
+	// コライダーの情報表示関数
+	ShowColliderInformation(colliders, selectedIndex);
+
+	// ウィンドウを閉じる
+	ImGui::End();
+}
+
+void GUI::ShowColliderSaveUI() {
+	// ファイル名入力用のバッファ
 	static char colliderSaveFileName[64] = "DefaultName";
 
 	// セーブ
 	ImGui::Text("Save");
 	// 同じ行に配置
 	ImGui::SameLine();
-	// テキスト入力 (ラベルとして "##" から始めるとラベルが非表示になるのでUIがコンパクトになる)
+	// テキスト入力
 	ImGui::InputText("##SaveFileName", colliderSaveFileName, IM_ARRAYSIZE(colliderSaveFileName));
 
 	// 同じ行に配置
@@ -219,11 +245,9 @@ void GUI::ShowColliderManager() {
 			// 空文字なら何もしない or エラーメッセージ表示
 		}
 	}
+}
 
-
-	// 選択中のコライダーを識別するための静的変数
-	static int selectedIndex = -1;
-
+void GUI::ShowColliderList(const std::vector<std::unique_ptr<BaseCollider3D>>& colliders, int& selectedIndex) {
 	//
 	// 左側にコライダー一覧を表示（スクロール可）
 	//
@@ -240,10 +264,9 @@ void GUI::ShowColliderManager() {
 
 	}
 	ImGui::EndChild();
+}
 
-	// 同じ行に並べたい場合は ImGui::SameLine() を呼び出す
-	ImGui::SameLine();
-
+void GUI::ShowColliderSetting(const std::vector<std::unique_ptr<BaseCollider3D>>& colliders, int& selectedIndex) {
 	// コライダーの設定
 	ImGui::BeginChild("ColliderSettings", ImVec2(0, 100), true);
 	if (selectedIndex >= 0 && selectedIndex < static_cast<int>(colliders.size())) {
@@ -282,10 +305,9 @@ void GUI::ShowColliderManager() {
 		}
 	}
 	ImGui::EndChild();
+}
 
-	// 区切り線
-	ImGui::Separator();
-
+void GUI::ShowColliderInformation(const std::vector<std::unique_ptr<BaseCollider3D>>& colliders, int& selectedIndex) {
 	// 有効なインデックスなら、詳細情報を表示
 	if (selectedIndex >= 0 && selectedIndex < static_cast<int>(colliders.size())) {
 		BaseCollider3D* collider = colliders[selectedIndex].get();
@@ -336,7 +358,4 @@ void GUI::ShowColliderManager() {
 			ImGui::Text("Active: %s", isActive ? "true" : "false");
 		}
 	}
-
-	// ウィンドウを閉じる
-	ImGui::End();
 }

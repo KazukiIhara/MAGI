@@ -1,5 +1,9 @@
 #pragma once
 
+// C++
+#include <vector>
+#include <memory>
+
 // 前方宣言
 class DeltaTimer;
 class SRVUAVManager;
@@ -8,6 +12,8 @@ class TextureDataContainer;
 
 class Renderer3DManager;
 class ColliderManager;
+
+class BaseCollider3D;
 
 // エンジンのグラフィックUIクラス
 class GUI {
@@ -36,8 +42,13 @@ private:
 	// 
 	// ObjectsManager
 	// 
-	void ShowColliderManager();
 
+	// Collider
+	void ShowColliderManager();
+	void ShowColliderSaveUI();
+	void ShowColliderList(const std::vector<std::unique_ptr<BaseCollider3D>>& colliders, int& colliderIndex);
+	void ShowColliderSetting(const std::vector<std::unique_ptr<BaseCollider3D>>& colliders, int& selectedIndex);
+	void ShowColliderInformation(const std::vector<std::unique_ptr<BaseCollider3D>>& colliders, int& selectedIndex);
 
 private:
 	// DeltaTimerのインスタンス
