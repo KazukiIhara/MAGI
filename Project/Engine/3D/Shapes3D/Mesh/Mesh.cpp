@@ -29,7 +29,7 @@ void Mesh::Initialize() {
 
 	// テクスチャが未設定の場合、デフォルトのテクスチャを割り当てる
 	if (meshData_.material.textureFilePath == "") {
-		meshData_.material.textureFilePath = "Resources/Images/uvChecker.png";
+		meshData_.material.textureFilePath = "EngineAssets/Images/uvChecker.png";
 	}
 
 	// ノーマルマップがあるかチェック
@@ -63,7 +63,7 @@ void Mesh::Draw() {
 		uint32_t normalMapTextureSrvIndex = MAGISYSTEM::GetTexture()[meshData_.material.normalMapTextureFilePath].srvIndex;
 		commandList->SetGraphicsRootDescriptorTable(7, MAGISYSTEM::GetSrvDescriptorHandleGPU(normalMapTextureSrvIndex));
 	} else {// 未定義動作を防ぐため、デフォルトのテクスチャのsrvIndexをセットしておく
-		uint32_t defaultNormalMapTextureSrvIndex = MAGISYSTEM::GetTexture()["Resources/Images/uvChecker.png"].srvIndex;
+		uint32_t defaultNormalMapTextureSrvIndex = MAGISYSTEM::GetTexture()["EngineAssets/Images/uvChecker.png"].srvIndex;
 		commandList->SetGraphicsRootDescriptorTable(7, MAGISYSTEM::GetSrvDescriptorHandleGPU(defaultNormalMapTextureSrvIndex));
 	}
 

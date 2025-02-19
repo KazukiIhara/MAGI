@@ -9,7 +9,9 @@
 #include "DataIO/DataIO.h"
 #include "AssetContainers/TextureDataContainer/TextureDataContainer.h"
 
-#include "3D/Colliders3D/BaseCollider3D/BaseCollider3D.h"
+#include "Renderer3DManager/Renderer3DManager.h"
+#include "ColliderManager/ColliderManager.h"
+
 #include "3D/GameObject3D/GameObject3D.h"
 
 GUI::GUI(
@@ -31,6 +33,17 @@ GUI::GUI(
 	dataIO_ = dataIO;
 	textureDataContainer_ = textureDataContainer;
 
+
+	// 
+	// データIOクラスから受け取るインスタンス
+	// 
+
+	renderer3DManager_ = dataIO_->GetRenderer3DManager();
+	assert(renderer3DManager_);
+
+	colliderManager_ = dataIO_->GetColliderManager();
+	assert(colliderManager_);
+
 }
 
 void GUI::Update() {
@@ -51,6 +64,9 @@ void GUI::Update() {
 	// 
 	// オブジェクトマネージャの描画
 	// 
+
+	// 3D描画オブジェクト
+	ShowRenderer3DManager();
 
 	// コライダーマネージャ
 	ShowColliderManager();
@@ -171,26 +187,128 @@ void GUI::ShowSoundDatas() {
 
 }
 
+void GUI::ShowRenderer3DManager() {
+	// 3D描画オブジェクトの一覧を取得
+	const auto& renderers = renderer3DManager_->GetRenderers();
+
+	// 選択中の描画オブジェクトを識別するための静的変数
+	static int selectedRenderer3DIndex = -1;
+
+	ImGuiWindowFlags windowFlags = ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse;
+
+	// ウィンドウ表示開始（ImGuiウィンドウ）
+	ImGui::Begin("3DRenderer Manager", nullptr, windowFlags);
+	// 総数を表示
+	ImGui::Text("Total 3DRenderers: %d", static_cast<int>(renderers.size()));
+
+	// 描画オブジェクトデータセーブ関数
+	ShowRenderer3DDataSaveUI();
+	// 描画オブジェクトデータロード関数
+	ShowRenderer3DDataLoadUI();
+
+	// 描画オブジェクト作成関数
+	ShowCreateRenderer3DUI();
+
+	// 描画オブジェクトリスト描画関数
+	ShowRenderer3DList(renderers, selectedRenderer3DIndex);
+
+	// 描画オブジェクト設定描画
+
+	// 区切り線
+	ImGui::Separator();
+
+	// 描画オブジェクト情報表示関数
+
+	// ウィンドウを閉じる
+	ImGui::End();
+}
+
+void GUI::ShowRenderer3DDataSaveUI() {
+
+}
+
+void GUI::ShowRenderer3DDataLoadUI() {
+
+}
+
+void GUI::ShowCreateRenderer3DUI() {
+
+}
+
+void GUI::ShowCreateRenderer3DWindow() {
+
+}
+
+void GUI::ShowRenderer3DList(const std::vector<std::unique_ptr<BaseRenderable3D>>& renderers3D, int& selectedIndex) {
+	//
+	// 左側に一覧を表示（スクロール可）
+	//
+	ImGui::Text("3DRendererList");
+	ImGui::BeginChild("Renderer3DList", ImVec2(200, 100), true);
+	for (int i = 0; i < static_cast<int>(renderers3D.size()); i++) {
+		// 名前を取得
+		const std::string& rendererName = renderers3D[i]->name_;
+
+		// ボタンとして表示
+		// 押されたら選択中のインデックスを更新する
+		if (ImGui::Button(rendererName.c_str(), ImVec2(180, 0))) {
+			selectedIndex = i;
+		}
+
+	}
+	ImGui::EndChild();
+}
+
 void GUI::ShowColliderManager() {
 	// コライダーの一覧を取得
-	const auto& colliders = dataIO_->GetColliders();
+	const auto& colliders = colliderManager_->GetColliders();
+
+	// 選択中のコライダーを識別するための静的変数
+	static int selectedColliderIndex = -1;
 
 	ImGuiWindowFlags windowFlags = ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse;
 
 	// ウィンドウ表示開始（ImGuiウィンドウ）
 	ImGui::Begin("Collider Manager", nullptr, windowFlags);
-
-	// コライダー総数を表示
+	// 総数を表示
 	ImGui::Text("Total Colliders: %d", static_cast<int>(colliders.size()));
 
-	// ファイル名入力用のバッファ (ImGui では文字配列を使うことが多い)
-	static char colliderSaveFileName[64] = "DefaultName";
+	// コライダーセーブ関数
+	ShowColliderDataSaveUI();
+	// コライダーロード関数
+	ShowColliderDataLoadUI();
+
+	// コライダー作成UI管理関数
+	ShowCreateColliderUI();
+
+	// コライダーリスト表示関数
+	ShowColliderList(colliders, selectedColliderIndex);
+
+	// 同じ行に並べたい場合は ImGui::SameLine() を呼び出す
+	ImGui::SameLine();
+
+	// コライダーの設定関数
+	ShowColliderSetting(colliders, selectedColliderIndex);
+
+	// 区切り線
+	ImGui::Separator();
+
+	// コライダーの情報表示関数
+	ShowColliderInformation(colliders, selectedColliderIndex);
+
+	// ウィンドウを閉じる
+	ImGui::End();
+}
+
+void GUI::ShowColliderDataSaveUI() {
+	// ファイル名入力用のバッファ
+	static char colliderSaveFileName[64] = "CollidersData.json";
 
 	// セーブ
 	ImGui::Text("Save");
 	// 同じ行に配置
 	ImGui::SameLine();
-	// テキスト入力 (ラベルとして "##" から始めるとラベルが非表示になるのでUIがコンパクトになる)
+	// テキスト入力
 	ImGui::InputText("##SaveFileName", colliderSaveFileName, IM_ARRAYSIZE(colliderSaveFileName));
 
 	// 同じ行に配置
@@ -206,14 +324,117 @@ void GUI::ShowColliderManager() {
 			// 空文字なら何もしない or エラーメッセージ表示
 		}
 	}
+}
 
+void GUI::ShowColliderDataLoadUI() {
+	// ファイル名入力用のバッファ
+	static char colliderLoadFileName[64] = "CollidersData.json";
 
-	// 選択中のコライダーを識別するための静的変数
-	static int selectedIndex = -1;
+	// セーブ
+	ImGui::Text("Load");
+	// 同じ行に配置
+	ImGui::SameLine();
+	// テキスト入力
+	ImGui::InputText("##LoadFileName", colliderLoadFileName, IM_ARRAYSIZE(colliderLoadFileName));
 
+	// 同じ行に配置
+	ImGui::SameLine();
+
+	// 「Save」ボタン
+	if (ImGui::Button("Load")) {
+		// 入力されたファイル名が空でなければ保存を実行
+		if (strlen(colliderLoadFileName) > 0) {
+			// データIOクラスを使ってセーブ
+			dataIO_->LoadColliderDataFile(colliderLoadFileName);
+		} else {
+			// 空文字なら何もしない or エラーメッセージ表示
+		}
+	}
+}
+void GUI::ShowCreateColliderUI() {
+	// コライダー作成ボタン
+	if (ImGui::Button("Create New Collider")) {
+		showColliderCreateWindow_ = true;
+	}
+	// コライダー作成ウィンドウ
+	if (showColliderCreateWindow_) {
+		// 第2引数に &showCreateWindow を渡すことで、×ボタンを押すと false になる
+		ImGui::Begin("Create Collider", &showColliderCreateWindow_, ImGuiWindowFlags_AlwaysAutoResize);
+
+		// 新規作成用のUIを表示
+		ShowCreateColliderWindow();
+
+		ImGui::End();
+	}
+}
+
+void GUI::ShowCreateColliderWindow() {
+	// 静的変数を使って、UIの状態を保持します。
+	static char colliderName[128] = "NewCollider";  // 初期値適当
+	// 選択中のコライダータイプ
+	static int selectedTypeIndex = 0;
+	static float offset[3] = { 0.0f, 0.0f, 0.0f };
+	static float radius = 1.0f; // Sphere用
+	static char ownerName[128] = "";
+
+	// コライダー名の入力
+	ImGui::InputText("Collider Name", colliderName, IM_ARRAYSIZE(colliderName));
+
+	// コライダータイプの選択 (コンボボックス例)
+	// 実際の列挙値
+	const char* colliderTypes[] = {
+		"Sphere",
+		"AABB",
+		"OBB",
+	};
+	ImGui::Combo("Collider Type", &selectedTypeIndex, colliderTypes, IM_ARRAYSIZE(colliderTypes));
+
+	// Offset
+	ImGui::InputFloat3("Offset", offset);
+
+	// 球体コライダーの場合
+	if (selectedTypeIndex == 0) {
+		// 半径入力
+		ImGui::InputFloat("Radius", &radius);
+	}
+
+	// コライダー名の入力
+	ImGui::InputText("Owner Name", ownerName, IM_ARRAYSIZE(ownerName));
+
+	// 作成ボタン
+	if (ImGui::Button("Create")) {
+		// 作る
+		colliderManager_->Create(colliderName, static_cast<Collider3DType>(selectedTypeIndex));
+		// パラメータをセットしていく
+		BaseCollider3D* newCollider = colliderManager_->Find(colliderName);
+		newCollider->GetOffset() = { offset[0],offset[1],offset[2] };
+
+		switch (selectedTypeIndex) {
+		case 0: // Sphere
+			// キャスト
+			if (auto sphereCollider = dynamic_cast<SphereCollider*> (newCollider)) {
+				sphereCollider->GetRadius() = radius;
+			}
+			break;
+		case 1: // AABB
+
+			break;
+		case 2: // OBB
+
+			break;
+		}
+
+		// ウィンドウを非表示に
+		showColliderCreateWindow_ = false;
+	}
+
+}
+
+void GUI::ShowColliderList(const std::vector<std::unique_ptr<BaseCollider3D>>& colliders, int& selectedIndex) {
 	//
 	// 左側にコライダー一覧を表示（スクロール可）
 	//
+	ImGui::Text("ColliderList");
 	ImGui::BeginChild("ColliderList", ImVec2(200, 100), true);
 	for (int i = 0; i < static_cast<int>(colliders.size()); i++) {
 		// コライダー名を取得
@@ -227,28 +448,24 @@ void GUI::ShowColliderManager() {
 
 	}
 	ImGui::EndChild();
+}
 
-	// 同じ行に並べたい場合は ImGui::SameLine() を呼び出す
-	ImGui::SameLine();
-
+void GUI::ShowColliderSetting(const std::vector<std::unique_ptr<BaseCollider3D>>& colliders, int& selectedIndex) {
 	// コライダーの設定
 	ImGui::BeginChild("ColliderSettings", ImVec2(0, 100), true);
 	if (selectedIndex >= 0 && selectedIndex < static_cast<int>(colliders.size())) {
 		BaseCollider3D* collider = colliders[selectedIndex].get();
 		if (collider) {
-			//
-			// コライダーのタイプを編集 (Combo などで変更)
-			//
-			int colliderTypeNum = static_cast<int>(collider->GetType());
-			// 例として3種類だけ想定
-			const char* colliderTypes[] = { "Sphere", "AABB", "OBB" };
-			if (ImGui::Combo("Collider Type", &colliderTypeNum, colliderTypes, IM_ARRAYSIZE(colliderTypes))) {
-				// Comboで選択が変わったらSetType
-				collider->GetType() = static_cast<Collider3DType>(colliderTypeNum);
+			// 
+			// 有効フラグを編集
+			// 
+			auto isActive = collider->GetIsActive();
+			if (ImGui::Checkbox("IsActive", &isActive)) {
+				collider->GetIsActive() = isActive;
 			}
 
 			//
-			// オフセットを編集 (DragFloat3など)
+			// オフセットを編集
 			//
 			auto offsetPos = collider->GetOffset();
 			if (ImGui::DragFloat3("Offset", &offsetPos.x, 0.01f)) {
@@ -272,16 +489,21 @@ void GUI::ShowColliderManager() {
 		}
 	}
 	ImGui::EndChild();
+}
 
-	// 区切り線
-	ImGui::Separator();
-
+void GUI::ShowColliderInformation(const std::vector<std::unique_ptr<BaseCollider3D>>& colliders, int& selectedIndex) {
 	// 有効なインデックスなら、詳細情報を表示
 	if (selectedIndex >= 0 && selectedIndex < static_cast<int>(colliders.size())) {
 		BaseCollider3D* collider = colliders[selectedIndex].get();
 		if (collider) {
-			// 所属するゲームオブジェクトの名前
-			ImGui::Text("GameObject: %s", collider->GetOwner()->name_.c_str());
+			if (collider->GetOwner()) {
+				// ゲームオブジェクトに所属している場合
+				// 所属するゲームオブジェクトの名前
+				ImGui::Text("GameObject: %s", collider->GetOwner()->name_.c_str());
+			} else {
+				// 所属するゲームオブジェクトがない場合
+				ImGui::Text("GameObject: Not Owner");
+			}
 
 			// ワールド座標
 			auto worldPos = collider->worldPosition_;
@@ -320,7 +542,4 @@ void GUI::ShowColliderManager() {
 			ImGui::Text("Active: %s", isActive ? "true" : "false");
 		}
 	}
-
-	// ウィンドウを閉じる
-	ImGui::End();
 }

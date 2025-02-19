@@ -1,5 +1,6 @@
 #include "DataIO.h"
 
+#include "Renderer3DManager/Renderer3DManager.h"
 #include "ColliderManager/ColliderManager.h"
 #include "Logger/Logger.h"
 
@@ -16,10 +17,11 @@ using json = nlohmann::json;
 #include <Windows.h>
 #endif
 
-DataIO::DataIO(ColliderManager* colliderManager) {
+DataIO::DataIO(Renderer3DManager* renderer3DManager, ColliderManager* colliderManager) {
 	// 
 	// インスタンスのセット
 	// 
+	SetRenderer3DManager(renderer3DManager);
 	SetColliderManager(colliderManager);
 
 	// 
@@ -46,7 +48,7 @@ void DataIO::EndFrame() {
 }
 
 void DataIO::LoadColliderDataFile(const std::string& fileName) {
-	// コライダーのリストをクリア
+	// コライダーのリストをクリア（既存コライダー削除）
 	colliderManager_->Clear();
 
 	// パスを組み立て (例: "Assets/Datas/Colliders/<fileName>")
@@ -105,7 +107,7 @@ void DataIO::LoadColliderDataFile(const std::string& fileName) {
 	for (auto& colliderJson : collidersArray) {
 		// 必要なフィールドがあるかチェック
 		if (!colliderJson.contains("name") || !colliderJson.contains("type")) {
-			Logger::Log("Invalid collider entry.\n");
+			Logger::Log("Invalid collider entry: missing 'name' or 'type'.\n");
 			continue;
 		}
 
@@ -116,9 +118,44 @@ void DataIO::LoadColliderDataFile(const std::string& fileName) {
 		// enum class へキャスト
 		Collider3DType colliderType = static_cast<Collider3DType>(typeValue);
 
-		// コライダーを生成
+		// コライダーを生成 (ColliderManager 内のメソッドに合わせて修正)
 		colliderManager_->Create(colliderName, colliderType);
-		Logger::Log("Collider created: " + colliderName + " (type=" + std::to_string(typeValue) + ")\n");
+
+		// 作成したコライダーを検索
+		BaseCollider3D* newCollider = colliderManager_->Find(colliderName);
+
+		if (!newCollider) {
+			// 生成失敗などのエラーハンドリング
+			Logger::Log("Failed to create collider: " + colliderName + "\n");
+			continue;
+		}
+
+		// ------------------------------------------------
+		// offset (x, y, z)
+		// ------------------------------------------------
+		if (colliderJson.contains("offset")) {
+			auto offsetJson = colliderJson["offset"];
+			// JSON から取り出すときにキーが無ければデフォルト値 0.0f にしておく
+			float x = offsetJson.value("x", 0.0f);
+			float y = offsetJson.value("y", 0.0f);
+			float z = offsetJson.value("z", 0.0f);
+
+			newCollider->GetOffset() = { x,y,z };
+		}
+
+		// ------------------------------------------------
+		// radius (Sphere のみ)
+		// ------------------------------------------------
+		if (colliderType == Collider3DType::Sphere) {
+			// SphereCollider の派生クラスにキャストして半径を設定
+			auto sphereCollider = dynamic_cast<SphereCollider*>(newCollider);
+			if (sphereCollider && colliderJson.contains("radius")) {
+				float radiusVal = colliderJson["radius"].get<float>();
+				sphereCollider->GetRadius() = radiusVal;
+			}
+		}
+
+		Logger::Log("Collider loaded: " + colliderName + " (type=" + std::to_string(typeValue) + ")\n");
 	}
 
 	Logger::Log("Collider data loaded from: " + inputPath.string() + "\n");
@@ -130,6 +167,7 @@ void DataIO::LoadColliderDataFile(const std::string& fileName) {
 #endif
 }
 
+
 void DataIO::SaveColliderDataFile(const std::string& fileName) {
 	// 出力先ディレクトリ
 	std::filesystem::path directoryPath = "Assets/Datas/Colliders";
@@ -137,7 +175,6 @@ void DataIO::SaveColliderDataFile(const std::string& fileName) {
 	std::filesystem::path outputPath = directoryPath / fileName;
 
 	// 拡張子を強制的に .json にする
-	// （拡張子がついていなくても、何か別の拡張子がついていても .json に差し替え）
 	outputPath.replace_extension(".json");
 
 	// ディレクトリが存在しない場合は作成 (再帰的に作成する)
@@ -173,13 +210,32 @@ void DataIO::SaveColliderDataFile(const std::string& fileName) {
 			continue;
 		}
 
+		// 基本情報
 		json colliderJson;
 		colliderJson["name"] = collider->name_;
 		colliderJson["type"] = static_cast<int>(collider->GetType());
+
+		// オフセットの追加 (Vector3 などを想定)
+		{
+			auto offset = collider->GetOffset();
+			colliderJson["offset"] = {
+				{"x", offset.x},
+				{"y", offset.y},
+				{"z", offset.z}
+			};
+		}
+
+		// 球体コライダーの場合は半径を追加
+		if (collider->GetType() == Collider3DType::Sphere) {
+			if (auto sphereCollider = dynamic_cast<SphereCollider*>(collider.get())) {
+				colliderJson["radius"] = sphereCollider->GetRadius();
+			}
+		}
+
 		jsonData["Colliders"].push_back(colliderJson);
 	}
 
-	// ファイルを書き込み用に開く (なければ作成、あれば上書き)
+	// ファイルを書き込み用に開く
 	std::ofstream ofs(outputPath, std::ios::out | std::ios::trunc);
 	if (!ofs) {
 		Logger::Log("Failed to open file: " + outputPath.string() + "\n");
@@ -211,8 +267,17 @@ void DataIO::SaveColliderDataFile(const std::string& fileName) {
 }
 
 
-const std::vector<std::unique_ptr<BaseCollider3D>>& DataIO::GetColliders() const {
-	return colliderManager_->GetColliders();
+Renderer3DManager* DataIO::GetRenderer3DManager() {
+	return renderer3DManager_;
+}
+
+ColliderManager* DataIO::GetColliderManager() {
+	return colliderManager_;
+}
+
+void DataIO::SetRenderer3DManager(Renderer3DManager* renderer3DManager) {
+	assert(renderer3DManager);
+	renderer3DManager_ = renderer3DManager;
 }
 
 void DataIO::SetColliderManager(ColliderManager* colliderManager) {

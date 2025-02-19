@@ -26,7 +26,7 @@ void TextureDataContainer::Initialize(DXGI* dxgi, DirectXCommand* directXCommand
 	SetSrvUavManager(srvUavManager);
 
 	// デフォルトのテクスチャをロード
-	Load("Resources/Images/uvChecker.png");
+	Load("EngineAssets/Images/uvChecker.png");
 
 }
 

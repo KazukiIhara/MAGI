@@ -68,6 +68,7 @@ std::unique_ptr<LineDrawer3D> MAGISYSTEM::lineDrawer3D_ = nullptr;
 // 
 // GameManager
 // 
+std::unique_ptr<Renderer3DManager> MAGISYSTEM::renderer3DManager_ = nullptr;
 std::unique_ptr<CollisionManager> MAGISYSTEM::collisionManager_ = nullptr;
 std::unique_ptr<SceneManager<GameData>> MAGISYSTEM::sceneManager_ = nullptr;
 
@@ -158,7 +159,8 @@ void MAGISYSTEM::Initialize() {
 	// LineDrawer3D
 	lineDrawer3D_ = std::make_unique<LineDrawer3D>(dxgi_.get(), directXCommand_.get(), srvuavManager_.get(), graphicsPipelineManager_.get(), camera3DManager_.get());
 
-
+	// Renderer3DManager
+	renderer3DManager_ = std::make_unique<Renderer3DManager>();
 	// CollisionManager
 	collisionManager_ = std::make_unique<CollisionManager>(colliderManager_.get());
 	// SceneManager
@@ -166,14 +168,14 @@ void MAGISYSTEM::Initialize() {
 
 
 	// DataIO
-	dataIO_ = std::make_unique<DataIO>(colliderManager_.get());
+	dataIO_ = std::make_unique<DataIO>(renderer3DManager_.get(), colliderManager_.get());
 
 
 	// ImGuiController
 	imguiController_ = std::make_unique<ImGuiController>(windowApp_.get(), dxgi_.get(), directXCommand_.get(), srvuavManager_.get());
 
 	// GUI
-	gui_ = std::make_unique<GUI>(deltaTimer_.get(),srvuavManager_.get(),dataIO_.get(),textureDataCantainer_.get());
+	gui_ = std::make_unique<GUI>(deltaTimer_.get(), srvuavManager_.get(), dataIO_.get(), textureDataCantainer_.get());
 
 	// 初期化完了ログ
 	Logger::Log("MAGISYSTEM Initialize\n");
@@ -204,6 +206,11 @@ void MAGISYSTEM::Finalize() {
 	// CollisionManager
 	if (collisionManager_) {
 		collisionManager_.reset();
+	}
+
+	// Renderer3DManager
+	if (renderer3DManager_) {
+		renderer3DManager_.reset();
 	}
 
 	// LineDrawer3D
@@ -376,6 +383,9 @@ void MAGISYSTEM::Update() {
 	// シーンの更新処理
 	sceneManager_->Update();
 
+	// 描画オブジェクトクラスの更新処理
+	renderer3DManager_->Update();
+
 	// コライダーマネージャの更新
 	colliderManager_->Update();
 
@@ -436,6 +446,15 @@ void MAGISYSTEM::Draw() {
 	// シーンの描画処理
 	//
 	sceneManager_->Draw();
+
+	// 
+	// Object3Dの描画前処理
+	// 
+	commandList->SetGraphicsRootSignature(graphicsPipelineManager_->GetRootSignature(GraphicsPipelineStateType::Object3D));
+	commandList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+
+	// 3Dオブジェクト描画処理
+	renderer3DManager_->Draw();
 
 	// 
 	// LineDrawer3Dの描画前処理
@@ -656,6 +675,26 @@ PunctualLightData& MAGISYSTEM::GetLightData(const std::string& lightName) {
 
 void MAGISYSTEM::TransferPunctualLight() {
 	punctualLightManager_->TransferLightsData();
+}
+
+void MAGISYSTEM::CreatePrimitiveRenderer3D(const std::string& name, Primitive3DType primitiveRenderer, const std::string& textureName) {
+	renderer3DManager_->CreatePrimitiveRenderer(name, primitiveRenderer, textureName);
+}
+
+void MAGISYSTEM::CreateStaticRenderer3D(const std::string& name, const std::string& modelName) {
+	renderer3DManager_->CreateStaticRenderer(name, modelName);
+}
+
+void MAGISYSTEM::CreateSkinningRenderer3D(const std::string& name, const std::string& modelName) {
+	renderer3DManager_->CreateSkinningRenderer(name, modelName);
+}
+
+void MAGISYSTEM::RemoveRenderer3D(const std::string& name) {
+	renderer3DManager_->Remove(name);
+}
+
+BaseRenderable3D* MAGISYSTEM::FindRenderer3D(const std::string& name) {
+	return renderer3DManager_->Find(name);
 }
 
 void MAGISYSTEM::CreateCollider(const std::string& name, Collider3DType colliderType) {

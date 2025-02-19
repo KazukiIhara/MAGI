@@ -7,6 +7,7 @@
 
 // 前方宣言
 class BaseCollider3D;
+class Renderer3DManager;
 class ColliderManager;
 
 /// <summary>
@@ -14,7 +15,7 @@ class ColliderManager;
 /// </summary>
 class DataIO {
 public:
-	DataIO(ColliderManager* colliderManager);
+	DataIO(Renderer3DManager* renderer3DManager, ColliderManager* colliderManager);
 	~DataIO();
 
 	// 初期化
@@ -29,28 +30,36 @@ public:
 	// ファイル読み込み関数
 	// 
 
+	// 3D描画オブジェクトデータファイルの読み込み
+
 	// コライダーデータファイルの読み込み
 	void LoadColliderDataFile(const std::string& fileName);
 
 	// 
 	// ファイルセーブ関数
 	// 
+		
+	// 3D描画オブジェクトデータファイルのセーブ
+	
 
 	// コライダーデータファイルのセーブ
 	void SaveColliderDataFile(const std::string& fileName);
 
 	// 
-	// 所有しているマネージャのコンテナの中身を送る関数
+	// 所有しているマネージャのインスタンスを送る
 	// 
 
-	// コライダーコンテナ
-	const std::vector<std::unique_ptr<BaseCollider3D>>& GetColliders() const;
+	// 3D描画マネージャ
+	Renderer3DManager* GetRenderer3DManager();
+	// コライダーマネージャ
+	ColliderManager* GetColliderManager();
+
+private:
 
 
 private:
-
-
-private:
+	// 3D描画マネージャのセット
+	void SetRenderer3DManager(Renderer3DManager* renderer3DManager);
 	// コライダーマネージャのセット
 	void SetColliderManager(ColliderManager* colliderManager);
 private:
@@ -58,6 +67,8 @@ private:
 	// マネージャクラスのポインタ
 	// 
 
+	// 3D描画マネージャクラス
+	Renderer3DManager* renderer3DManager_ = nullptr;
 	// コライダーマネージャクラス
 	ColliderManager* colliderManager_ = nullptr;
 };

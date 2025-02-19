@@ -542,6 +542,7 @@
     <ClInclude Include="Engine\CollisionManager\CollisionManager.h" />
     <ClInclude Include="Engine\ColliderManager\ColliderManager.h" />
     <ClInclude Include="Engine\DataIO\DataIO.h" />
+    <ClInclude Include="Engine\Renderer3DManager\Renderer3DManager.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="App\Game\Game.cpp">
@@ -733,6 +734,7 @@
     <ClCompile Include="Engine\CollisionManager\CollisionManager.cpp" />
     <ClCompile Include="Engine\ColliderManager\ColliderManager.cpp" />
     <ClCompile Include="Engine\DataIO\DataIO.cpp" />
+    <ClCompile Include="Engine\Renderer3DManager\Renderer3DManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Engine\SceneManager\SceneManager.ipp">
