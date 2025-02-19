@@ -45,19 +45,24 @@ private:
 
 	// 3D描画オブジェクト
 	void ShowRenderer3DManager();
+	void ShowCreateRenderer3DUI();
 
 	// Collider
 	void ShowColliderManager();
 	void ShowColliderSaveUI();
 	void ShowCreateColliderUI();
+	void ShowCreateColliderWindow();
 	void ShowColliderLoadUI();
 	void ShowColliderList(const std::vector<std::unique_ptr<BaseCollider3D>>& colliders, int& colliderIndex);
 	void ShowColliderSetting(const std::vector<std::unique_ptr<BaseCollider3D>>& colliders, int& selectedIndex);
 	void ShowColliderInformation(const std::vector<std::unique_ptr<BaseCollider3D>>& colliders, int& selectedIndex);
 private:
 	// ウィンドウ表示フラグ
-	
-	// コライダーウィンドウの表示非表示を管理するフラグ
+
+	// 3D描画オブジェクト作成ウィンドウの表示管理フラグ
+	bool showRenderer3DCreateWindow_ = false;
+
+	// コライダー作成ウィンドウの表示非表示を管理するフラグ
 	bool showColliderCreateWindow_ = false;
 
 private:

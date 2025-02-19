@@ -175,7 +175,7 @@ void MAGISYSTEM::Initialize() {
 	imguiController_ = std::make_unique<ImGuiController>(windowApp_.get(), dxgi_.get(), directXCommand_.get(), srvuavManager_.get());
 
 	// GUI
-	gui_ = std::make_unique<GUI>(deltaTimer_.get(),srvuavManager_.get(),dataIO_.get(),textureDataCantainer_.get());
+	gui_ = std::make_unique<GUI>(deltaTimer_.get(), srvuavManager_.get(), dataIO_.get(), textureDataCantainer_.get());
 
 	// 初期化完了ログ
 	Logger::Log("MAGISYSTEM Initialize\n");
@@ -446,6 +446,15 @@ void MAGISYSTEM::Draw() {
 	// シーンの描画処理
 	//
 	sceneManager_->Draw();
+
+	// 
+	// Object3Dの描画前処理
+	// 
+	commandList->SetGraphicsRootSignature(graphicsPipelineManager_->GetRootSignature(GraphicsPipelineStateType::Object3D));
+	commandList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+
+	// 3Dオブジェクト描画処理
+	renderer3DManager_->Draw();
 
 	// 
 	// LineDrawer3Dの描画前処理

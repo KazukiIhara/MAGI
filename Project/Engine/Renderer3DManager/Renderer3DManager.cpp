@@ -21,9 +21,18 @@ void Renderer3DManager::Update() {
 	}
 }
 
+void Renderer3DManager::Draw() {
+	for (auto& renderer : renderers_) {
+		if (renderer) {
+			renderer->Draw();
+		}
+	}
+}
+
 void Renderer3DManager::CreatePrimitiveRenderer(const std::string& name, Primitive3DType primitiveRenderer, const std::string& textureName) {
 	// 追加する描画オブジェクト
 	std::unique_ptr<BaseRenderable3D> newRenderer3D = std::make_unique<PrimitiveRenderer3D>(name, primitiveRenderer, textureName);
+	newRenderer3D->AssignShape();
 	// コンテナに登録
 	renderers_.push_back(std::move(newRenderer3D));
 }
@@ -31,6 +40,7 @@ void Renderer3DManager::CreatePrimitiveRenderer(const std::string& name, Primiti
 void Renderer3DManager::CreateStaticRenderer(const std::string& name, const std::string& modelName) {
 	// 追加する描画オブジェクト
 	std::unique_ptr<BaseRenderable3D> newRenderer3D = std::make_unique<StaticRenderer3D>(name, modelName);
+	newRenderer3D->AssignShape();
 	// コンテナに登録
 	renderers_.push_back(std::move(newRenderer3D));
 }
@@ -38,6 +48,7 @@ void Renderer3DManager::CreateStaticRenderer(const std::string& name, const std:
 void Renderer3DManager::CreateSkinningRenderer(const std::string& name, const std::string& modelName) {
 	// 追加する描画オブジェクト
 	std::unique_ptr<BaseRenderable3D> newRenderer3D = std::make_unique<SkinningRenderer3D>(name, modelName);
+	newRenderer3D->AssignShape();
 	// コンテナに登録
 	renderers_.push_back(std::move(newRenderer3D));
 }

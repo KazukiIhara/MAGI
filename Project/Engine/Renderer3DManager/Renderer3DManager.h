@@ -19,6 +19,7 @@ public:
 	~Renderer3DManager();
 
 	void Update();
+	void Draw();
 
 	void CreatePrimitiveRenderer(const std::string& name, Primitive3DType primitiveRenderer, const std::string& textureName);
 	void CreateStaticRenderer(const std::string& name, const std::string& modelName);

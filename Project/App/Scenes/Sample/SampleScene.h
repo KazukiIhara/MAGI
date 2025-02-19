@@ -60,8 +60,7 @@ inline void SampleScene<Data>::Initialize() {
 	sampleLight.intensity = 0.5f;
 
 	// ゲームオブジェクト
-	terrain_ = std::make_unique<GameObject3D>("Terrain");
-	terrain_->CreateStaticRenderer("Terrain", "terrain");
+	MAGISYSTEM::CreateStaticRenderer3D("terrain", "terrain");
 
 	//sphere_[0] = std::make_unique<GameObject3D>("Sphere0");
 	//sphere_[0]->CreatePrimitiveRenderer("Sphere0", Primitive3DType::Sphere);
@@ -89,7 +88,7 @@ inline void SampleScene<Data>::Update() {
 	//	sphere_[0]->GetTranslate().x -= 0.1f;
 	//}
 
-	terrain_->Update();
+	
 	/*sphere_[0]->Update();
 	sphere_[1]->Update();*/
 
@@ -102,7 +101,7 @@ inline void SampleScene<Data>::Draw() {
 	// 
 	MAGISYSTEM::PreDrawObject3D();
 
-	terrain_->Draw();
+	
 	/*sphere_[0]->Draw();
 	sphere_[1]->Draw();*/
 

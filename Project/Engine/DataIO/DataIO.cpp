@@ -48,7 +48,7 @@ void DataIO::EndFrame() {
 }
 
 void DataIO::LoadColliderDataFile(const std::string& fileName) {
-	// コライダーのリストをクリア
+	// コライダーのリストをクリア（既存コライダー削除）
 	colliderManager_->Clear();
 
 	// パスを組み立て (例: "Assets/Datas/Colliders/<fileName>")
@@ -107,7 +107,7 @@ void DataIO::LoadColliderDataFile(const std::string& fileName) {
 	for (auto& colliderJson : collidersArray) {
 		// 必要なフィールドがあるかチェック
 		if (!colliderJson.contains("name") || !colliderJson.contains("type")) {
-			Logger::Log("Invalid collider entry.\n");
+			Logger::Log("Invalid collider entry: missing 'name' or 'type'.\n");
 			continue;
 		}
 
@@ -118,9 +118,44 @@ void DataIO::LoadColliderDataFile(const std::string& fileName) {
 		// enum class へキャスト
 		Collider3DType colliderType = static_cast<Collider3DType>(typeValue);
 
-		// コライダーを生成
+		// コライダーを生成 (ColliderManager 内のメソッドに合わせて修正)
 		colliderManager_->Create(colliderName, colliderType);
-		Logger::Log("Collider created: " + colliderName + " (type=" + std::to_string(typeValue) + ")\n");
+
+		// 作成したコライダーを検索
+		BaseCollider3D* newCollider = colliderManager_->Find(colliderName);
+
+		if (!newCollider) {
+			// 生成失敗などのエラーハンドリング
+			Logger::Log("Failed to create collider: " + colliderName + "\n");
+			continue;
+		}
+
+		// ------------------------------------------------
+		// offset (x, y, z)
+		// ------------------------------------------------
+		if (colliderJson.contains("offset")) {
+			auto offsetJson = colliderJson["offset"];
+			// JSON から取り出すときにキーが無ければデフォルト値 0.0f にしておく
+			float x = offsetJson.value("x", 0.0f);
+			float y = offsetJson.value("y", 0.0f);
+			float z = offsetJson.value("z", 0.0f);
+
+			newCollider->GetOffset() = { x,y,z };
+		}
+
+		// ------------------------------------------------
+		// radius (Sphere のみ)
+		// ------------------------------------------------
+		if (colliderType == Collider3DType::Sphere) {
+			// SphereCollider の派生クラスにキャストして半径を設定
+			auto sphereCollider = dynamic_cast<SphereCollider*>(newCollider);
+			if (sphereCollider && colliderJson.contains("radius")) {
+				float radiusVal = colliderJson["radius"].get<float>();
+				sphereCollider->GetRadius() = radiusVal;
+			}
+		}
+
+		Logger::Log("Collider loaded: " + colliderName + " (type=" + std::to_string(typeValue) + ")\n");
 	}
 
 	Logger::Log("Collider data loaded from: " + inputPath.string() + "\n");
@@ -131,6 +166,7 @@ void DataIO::LoadColliderDataFile(const std::string& fileName) {
 	MessageBoxW(nullptr, wMessage.c_str(), wTitle.c_str(), MB_OK | MB_ICONINFORMATION);
 #endif
 }
+
 
 void DataIO::SaveColliderDataFile(const std::string& fileName) {
 	// 出力先ディレクトリ
@@ -181,7 +217,7 @@ void DataIO::SaveColliderDataFile(const std::string& fileName) {
 
 		// オフセットの追加 (Vector3 などを想定)
 		{
-			auto offset = collider->GetOffset();  // 例：Vector3 offset
+			auto offset = collider->GetOffset();
 			colliderJson["offset"] = {
 				{"x", offset.x},
 				{"y", offset.y},
@@ -192,14 +228,14 @@ void DataIO::SaveColliderDataFile(const std::string& fileName) {
 		// 球体コライダーの場合は半径を追加
 		if (collider->GetType() == Collider3DType::Sphere) {
 			if (auto sphereCollider = dynamic_cast<SphereCollider*>(collider.get())) {
-				colliderJson["radius"] = sphereCollider->GetRadius(); // 例：float radius
+				colliderJson["radius"] = sphereCollider->GetRadius();
 			}
 		}
 
 		jsonData["Colliders"].push_back(colliderJson);
 	}
 
-	// ファイルを書き込み用に開く (なければ作成、あれば上書き)
+	// ファイルを書き込み用に開く
 	std::ofstream ofs(outputPath, std::ios::out | std::ios::trunc);
 	if (!ofs) {
 		Logger::Log("Failed to open file: " + outputPath.string() + "\n");

@@ -201,10 +201,15 @@ void GUI::ShowRenderer3DManager() {
 	// 総数を表示
 	ImGui::Text("Total 3DRenderers: %d", static_cast<int>(renderers.size()));
 
-	// 描画オブジェクトセーブ機能
+	// 描画オブジェクト作成関数
+	ShowCreateRenderer3DUI();
 
 	// ウィンドウを閉じる
 	ImGui::End();
+}
+
+void GUI::ShowCreateRenderer3DUI() {
+
 }
 
 void GUI::ShowColliderManager() {
@@ -226,20 +231,8 @@ void GUI::ShowColliderManager() {
 	// コライダーロード関数
 	ShowColliderLoadUI();
 
-	// コライダー作成ボタン
-	if (ImGui::Button("Create New Collider")) {
-		showColliderCreateWindow_ = true;
-	}
-	// コライダー作成ウィンドウ
-	if (showColliderCreateWindow_) {
-		// 第2引数に &showCreateWindow を渡すことで、×ボタンを押すと false になる
-		ImGui::Begin("Create Collider", &showColliderCreateWindow_, ImGuiWindowFlags_AlwaysAutoResize);
-
-		// 新規作成用のUIを表示
-		ShowCreateColliderUI();
-
-		ImGui::End();
-	}
+	// コライダー作成UI管理関数
+	ShowCreateColliderUI();
 
 	// コライダーリスト表示関数
 	ShowColliderList(colliders, selectedColliderIndex);
@@ -287,6 +280,23 @@ void GUI::ShowColliderSaveUI() {
 }
 
 void GUI::ShowCreateColliderUI() {
+	// コライダー作成ボタン
+	if (ImGui::Button("Create New Collider")) {
+		showColliderCreateWindow_ = true;
+	}
+	// コライダー作成ウィンドウ
+	if (showColliderCreateWindow_) {
+		// 第2引数に &showCreateWindow を渡すことで、×ボタンを押すと false になる
+		ImGui::Begin("Create Collider", &showColliderCreateWindow_, ImGuiWindowFlags_AlwaysAutoResize);
+
+		// 新規作成用のUIを表示
+		ShowCreateColliderWindow();
+
+		ImGui::End();
+	}
+}
+
+void GUI::ShowCreateColliderWindow() {
 	// 静的変数を使って、UIの状態を保持します。
 	static char colliderName[128] = "NewCollider";  // 初期値適当
 	// 選択中のコライダータイプ
