@@ -22,9 +22,6 @@ public:
 	void Finalize() override;
 
 private:
-	// 地形
-	std::unique_ptr<GameObject3D> terrain_ = nullptr;
-
 	// オブジェクト
 	std::unique_ptr<GameObject3D> sphere_[2] = nullptr;
 };
@@ -41,14 +38,6 @@ inline void SampleScene<Data>::Initialize() {
 
 	// モデル
 	MAGISYSTEM::LoadModel("terrain", true);
-
-
-	// 
-	// リソースのロード
-	// 
-
-	//// コライダー
-	//MAGISYSTEM::LoadColliderDataFile("SceneCollider.json");
 
 	//
 	// オブジェクトの作成
@@ -96,15 +85,6 @@ inline void SampleScene<Data>::Update() {
 
 template<typename Data>
 inline void SampleScene<Data>::Draw() {
-	// 
-	// オブジェクト3Dの描画前処理
-	// 
-	MAGISYSTEM::PreDrawObject3D();
-
-	
-	/*sphere_[0]->Draw();
-	sphere_[1]->Draw();*/
-
 
 	// 
 	// オブジェクト2Dの描画前処理

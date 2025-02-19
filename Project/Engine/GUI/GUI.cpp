@@ -201,15 +201,62 @@ void GUI::ShowRenderer3DManager() {
 	// 総数を表示
 	ImGui::Text("Total 3DRenderers: %d", static_cast<int>(renderers.size()));
 
+	// 描画オブジェクトデータセーブ関数
+	ShowRenderer3DDataSaveUI();
+	// 描画オブジェクトデータロード関数
+	ShowRenderer3DDataLoadUI();
+
 	// 描画オブジェクト作成関数
 	ShowCreateRenderer3DUI();
+
+	// 描画オブジェクトリスト描画関数
+	ShowRenderer3DList(renderers, selectedRenderer3DIndex);
+
+	// 描画オブジェクト設定描画
+
+	// 区切り線
+	ImGui::Separator();
+
+	// 描画オブジェクト情報表示関数
 
 	// ウィンドウを閉じる
 	ImGui::End();
 }
 
+void GUI::ShowRenderer3DDataSaveUI() {
+
+}
+
+void GUI::ShowRenderer3DDataLoadUI() {
+
+}
+
 void GUI::ShowCreateRenderer3DUI() {
 
+}
+
+void GUI::ShowCreateRenderer3DWindow() {
+
+}
+
+void GUI::ShowRenderer3DList(const std::vector<std::unique_ptr<BaseRenderable3D>>& renderers3D, int& selectedIndex) {
+	//
+	// 左側に一覧を表示（スクロール可）
+	//
+	ImGui::Text("3DRendererList");
+	ImGui::BeginChild("Renderer3DList", ImVec2(200, 100), true);
+	for (int i = 0; i < static_cast<int>(renderers3D.size()); i++) {
+		// 名前を取得
+		const std::string& rendererName = renderers3D[i]->name_;
+
+		// ボタンとして表示
+		// 押されたら選択中のインデックスを更新する
+		if (ImGui::Button(rendererName.c_str(), ImVec2(180, 0))) {
+			selectedIndex = i;
+		}
+
+	}
+	ImGui::EndChild();
 }
 
 void GUI::ShowColliderManager() {
@@ -227,9 +274,9 @@ void GUI::ShowColliderManager() {
 	ImGui::Text("Total Colliders: %d", static_cast<int>(colliders.size()));
 
 	// コライダーセーブ関数
-	ShowColliderSaveUI();
+	ShowColliderDataSaveUI();
 	// コライダーロード関数
-	ShowColliderLoadUI();
+	ShowColliderDataLoadUI();
 
 	// コライダー作成UI管理関数
 	ShowCreateColliderUI();
@@ -253,7 +300,7 @@ void GUI::ShowColliderManager() {
 	ImGui::End();
 }
 
-void GUI::ShowColliderSaveUI() {
+void GUI::ShowColliderDataSaveUI() {
 	// ファイル名入力用のバッファ
 	static char colliderSaveFileName[64] = "CollidersData.json";
 
@@ -279,6 +326,31 @@ void GUI::ShowColliderSaveUI() {
 	}
 }
 
+void GUI::ShowColliderDataLoadUI() {
+	// ファイル名入力用のバッファ
+	static char colliderLoadFileName[64] = "CollidersData.json";
+
+	// セーブ
+	ImGui::Text("Load");
+	// 同じ行に配置
+	ImGui::SameLine();
+	// テキスト入力
+	ImGui::InputText("##LoadFileName", colliderLoadFileName, IM_ARRAYSIZE(colliderLoadFileName));
+
+	// 同じ行に配置
+	ImGui::SameLine();
+
+	// 「Save」ボタン
+	if (ImGui::Button("Load")) {
+		// 入力されたファイル名が空でなければ保存を実行
+		if (strlen(colliderLoadFileName) > 0) {
+			// データIOクラスを使ってセーブ
+			dataIO_->LoadColliderDataFile(colliderLoadFileName);
+		} else {
+			// 空文字なら何もしない or エラーメッセージ表示
+		}
+	}
+}
 void GUI::ShowCreateColliderUI() {
 	// コライダー作成ボタン
 	if (ImGui::Button("Create New Collider")) {
@@ -358,37 +430,11 @@ void GUI::ShowCreateColliderWindow() {
 
 }
 
-
-void GUI::ShowColliderLoadUI() {
-	// ファイル名入力用のバッファ
-	static char colliderLoadFileName[64] = "CollidersData.json";
-
-	// セーブ
-	ImGui::Text("Load");
-	// 同じ行に配置
-	ImGui::SameLine();
-	// テキスト入力
-	ImGui::InputText("##LoadFileName", colliderLoadFileName, IM_ARRAYSIZE(colliderLoadFileName));
-
-	// 同じ行に配置
-	ImGui::SameLine();
-
-	// 「Save」ボタン
-	if (ImGui::Button("Load")) {
-		// 入力されたファイル名が空でなければ保存を実行
-		if (strlen(colliderLoadFileName) > 0) {
-			// データIOクラスを使ってセーブ
-			dataIO_->LoadColliderDataFile(colliderLoadFileName);
-		} else {
-			// 空文字なら何もしない or エラーメッセージ表示
-		}
-	}
-}
-
 void GUI::ShowColliderList(const std::vector<std::unique_ptr<BaseCollider3D>>& colliders, int& selectedIndex) {
 	//
 	// 左側にコライダー一覧を表示（スクロール可）
 	//
+	ImGui::Text("ColliderList");
 	ImGui::BeginChild("ColliderList", ImVec2(200, 100), true);
 	for (int i = 0; i < static_cast<int>(colliders.size()); i++) {
 		// コライダー名を取得

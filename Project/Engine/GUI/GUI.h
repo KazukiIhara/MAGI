@@ -13,6 +13,7 @@ class TextureDataContainer;
 class Renderer3DManager;
 class ColliderManager;
 
+class BaseRenderable3D;
 class BaseCollider3D;
 
 // エンジンのグラフィックUIクラス
@@ -45,15 +46,20 @@ private:
 
 	// 3D描画オブジェクト
 	void ShowRenderer3DManager();
+	void ShowRenderer3DDataSaveUI();
+	void ShowRenderer3DDataLoadUI();
 	void ShowCreateRenderer3DUI();
+	void ShowCreateRenderer3DWindow();
+	void ShowRenderer3DList(const std::vector<std::unique_ptr<BaseRenderable3D>>& colliders, int& selectedIndex);
+	
 
 	// Collider
 	void ShowColliderManager();
-	void ShowColliderSaveUI();
+	void ShowColliderDataSaveUI();
+	void ShowColliderDataLoadUI();
 	void ShowCreateColliderUI();
 	void ShowCreateColliderWindow();
-	void ShowColliderLoadUI();
-	void ShowColliderList(const std::vector<std::unique_ptr<BaseCollider3D>>& colliders, int& colliderIndex);
+	void ShowColliderList(const std::vector<std::unique_ptr<BaseCollider3D>>& colliders, int& selectedIndex);
 	void ShowColliderSetting(const std::vector<std::unique_ptr<BaseCollider3D>>& colliders, int& selectedIndex);
 	void ShowColliderInformation(const std::vector<std::unique_ptr<BaseCollider3D>>& colliders, int& selectedIndex);
 private:
