@@ -49,8 +49,8 @@ void DataIO::LoadColliderDataFile(const std::string& fileName) {
 	// コライダーのリストをクリア
 	colliderManager_->Clear();
 
-	// パスを組み立て (例: "Assets/Datas/Colliders/<fileName>")
-	std::filesystem::path directoryPath = "Assets/Datas/Colliders";
+	// パスを組み立て (例: "Resources/Datas/Colliders/<fileName>")
+	std::filesystem::path directoryPath = "Resources/Datas/Colliders";
 	std::filesystem::path inputPath = directoryPath / fileName;
 
 	// ファイルが存在するかチェック
@@ -132,7 +132,7 @@ void DataIO::LoadColliderDataFile(const std::string& fileName) {
 
 void DataIO::SaveColliderDataFile(const std::string& fileName) {
 	// 出力先ディレクトリ
-	std::filesystem::path directoryPath = "Assets/Datas/Colliders";
+	std::filesystem::path directoryPath = "Resources/Datas/Colliders";
 	// ファイル名を連結してフルパスを作る
 	std::filesystem::path outputPath = directoryPath / fileName;
 
