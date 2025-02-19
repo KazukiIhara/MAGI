@@ -7,6 +7,7 @@
 
 // 前方宣言
 class BaseCollider3D;
+class Renderer3DManager;
 class ColliderManager;
 
 /// <summary>
@@ -14,7 +15,7 @@ class ColliderManager;
 /// </summary>
 class DataIO {
 public:
-	DataIO(ColliderManager* colliderManager);
+	DataIO(Renderer3DManager * renderer3DManager, ColliderManager* colliderManager);
 	~DataIO();
 
 	// 初期化
@@ -40,12 +41,11 @@ public:
 	void SaveColliderDataFile(const std::string& fileName);
 
 	// 
-	// 所有しているマネージャのコンテナの中身を送る関数
+	// 所有しているマネージャのインスタンスを送る
 	// 
 
-	// コライダーコンテナ
-	const std::vector<std::unique_ptr<BaseCollider3D>>& GetColliders() const;
-
+	// コライダーマネージャ
+	ColliderManager* GetColliderManager();
 
 private:
 

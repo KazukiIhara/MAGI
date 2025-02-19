@@ -68,6 +68,7 @@ std::unique_ptr<LineDrawer3D> MAGISYSTEM::lineDrawer3D_ = nullptr;
 // 
 // GameManager
 // 
+std::unique_ptr<Renderer3DManager> MAGISYSTEM::renderer3DManager_ = nullptr;
 std::unique_ptr<CollisionManager> MAGISYSTEM::collisionManager_ = nullptr;
 std::unique_ptr<SceneManager<GameData>> MAGISYSTEM::sceneManager_ = nullptr;
 
@@ -158,7 +159,8 @@ void MAGISYSTEM::Initialize() {
 	// LineDrawer3D
 	lineDrawer3D_ = std::make_unique<LineDrawer3D>(dxgi_.get(), directXCommand_.get(), srvuavManager_.get(), graphicsPipelineManager_.get(), camera3DManager_.get());
 
-
+	// Renderer3DManager
+	renderer3DManager_ = std::make_unique<Renderer3DManager>();
 	// CollisionManager
 	collisionManager_ = std::make_unique<CollisionManager>(colliderManager_.get());
 	// SceneManager
@@ -204,6 +206,11 @@ void MAGISYSTEM::Finalize() {
 	// CollisionManager
 	if (collisionManager_) {
 		collisionManager_.reset();
+	}
+
+	// Renderer3DManager
+	if (renderer3DManager_) {
+		renderer3DManager_.reset();
 	}
 
 	// LineDrawer3D
@@ -375,6 +382,9 @@ void MAGISYSTEM::Update() {
 
 	// シーンの更新処理
 	sceneManager_->Update();
+
+	// 描画オブジェクトクラスの更新処理
+	renderer3DManager_->Update();
 
 	// コライダーマネージャの更新
 	colliderManager_->Update();

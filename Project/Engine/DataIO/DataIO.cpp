@@ -16,7 +16,7 @@ using json = nlohmann::json;
 #include <Windows.h>
 #endif
 
-DataIO::DataIO(ColliderManager* colliderManager) {
+DataIO::DataIO(Renderer3DManager* renderer3DManager, ColliderManager* colliderManager) {
 	// 
 	// インスタンスのセット
 	// 
@@ -210,9 +210,8 @@ void DataIO::SaveColliderDataFile(const std::string& fileName) {
 #endif
 }
 
-
-const std::vector<std::unique_ptr<BaseCollider3D>>& DataIO::GetColliders() const {
-	return colliderManager_->GetColliders();
+ColliderManager* DataIO::GetColliderManager() {
+	return colliderManager_;
 }
 
 void DataIO::SetColliderManager(ColliderManager* colliderManager) {

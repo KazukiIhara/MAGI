@@ -9,7 +9,8 @@
 #include "DataIO/DataIO.h"
 #include "AssetContainers/TextureDataContainer/TextureDataContainer.h"
 
-#include "3D/Colliders3D/BaseCollider3D/BaseCollider3D.h"
+#include "ColliderManager/ColliderManager.h"
+
 #include "3D/GameObject3D/GameObject3D.h"
 
 GUI::GUI(
@@ -30,6 +31,14 @@ GUI::GUI(
 	srvUavManager_ = srvUavManager;
 	dataIO_ = dataIO;
 	textureDataContainer_ = textureDataContainer;
+
+
+	// 
+	// データIOクラスから受け取るインスタンス
+	// 
+
+	colliderManager_ = dataIO_->GetColliderManager();
+	assert(colliderManager_);
 
 }
 
@@ -173,7 +182,7 @@ void GUI::ShowSoundDatas() {
 
 void GUI::ShowColliderManager() {
 	// コライダーの一覧を取得
-	const auto& colliders = dataIO_->GetColliders();
+	const auto& colliders = colliderManager_->GetColliders();
 
 	ImGuiWindowFlags windowFlags = ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse;
 

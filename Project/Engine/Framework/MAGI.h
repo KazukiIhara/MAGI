@@ -68,6 +68,7 @@
 // 
 // GameManager
 // 
+#include "Renderer3DManager/Renderer3DManager.h"
 #include "CollisionManager/CollisionManager.h"
 #include "SceneManager/SceneManager.h"
 
@@ -168,7 +169,6 @@ public: // エンジンの機能
 #pragma region Fenceの機能
 	// GPUを待機
 	static void WaitGPU();
-
 #pragma endregion
 
 #pragma region SRVUAVManagerの機能
@@ -185,7 +185,6 @@ public: // エンジンの機能
 	static void CreateSrvStructuredBuffer(uint32_t viewIndex, ID3D12Resource* pResource, uint32_t numElements, UINT structureByteStride);
 	// StructuredBuffer用のUAV作成
 	static void CreateUavStructuredBuffer(uint32_t viewIndex, ID3D12Resource* pResource, uint32_t numElements, UINT structureByteStride);
-
 #pragma endregion
 
 #pragma region GraphicsPipelineManager
@@ -199,7 +198,6 @@ public: // エンジンの機能
 	static ID3D12RootSignature* GetComputeRootSignature(ComputePipelineStateType pipelineState);
 	// パイプライン取得関数
 	static ID3D12PipelineState* GetComputePipelineState(ComputePipelineStateType pipelineState);
-
 #pragma endregion
 
 #pragma region TextureDataContainer
@@ -216,7 +214,6 @@ public: // エンジンの機能
 #pragma region PrimitiveShapeDataContainer
 	// 形状の取得
 	static PrimitiveData GetPrimitiveShape(const Primitive3DType& primitive3dType);
-
 #pragma endregion
 
 #pragma region ModelDataContainer
@@ -224,7 +221,6 @@ public: // エンジンの機能
 	static void LoadModel(const std::string& modelName, bool isNormalMap = false);
 	// 読み込み済みモデル検索
 	static ModelData FindModel(const std::string& modelName);
-
 #pragma endregion
 
 #pragma region AnimationDataContainer
@@ -234,13 +230,10 @@ public: // エンジンの機能
 	static AnimationData FindAnimation(const std::string& animationName);
 #pragma endregion
 
-
 #pragma region Camera3DManager
 	// カメラの転送
 	static void TransferCamera(const uint32_t& rootParameterIndex);
-
 #pragma endregion
-
 
 #pragma region PunctualLightManager
 	// ライトの追加
@@ -291,7 +284,6 @@ public: // エンジンの機能
 	static void PreDrawObject2D();
 
 #pragma endregion
-
 
 private: // メンバ変数
 	// 終了リクエスト
@@ -365,6 +357,7 @@ protected:
 	// 
 	// GameManager
 	// 
+	static std::unique_ptr<Renderer3DManager> renderer3DManager_;
 	static std::unique_ptr<CollisionManager> collisionManager_;
 	static std::unique_ptr<SceneManager<GameData>> sceneManager_;
 
