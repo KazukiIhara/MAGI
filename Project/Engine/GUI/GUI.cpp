@@ -65,6 +65,9 @@ void GUI::Update() {
 	// オブジェクトマネージャの描画
 	// 
 
+	// 3D描画オブジェクト
+	ShowRenderer3DManager();
+
 	// コライダーマネージャ
 	ShowColliderManager();
 
@@ -185,7 +188,23 @@ void GUI::ShowSoundDatas() {
 }
 
 void GUI::ShowRenderer3DManager() {
+	// 3D描画オブジェクトの一覧を取得
+	const auto& renderers = renderer3DManager_->GetRenderers();
 
+	// 選択中の描画オブジェクトを識別するための静的変数
+	static int selectedRenderer3DIndex = -1;
+
+	ImGuiWindowFlags windowFlags = ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse;
+
+	// ウィンドウ表示開始（ImGuiウィンドウ）
+	ImGui::Begin("3DRenderer Manager", nullptr, windowFlags);
+
+	// コライダー総数を表示
+	ImGui::Text("Total 3DRenderers: %d", static_cast<int>(renderers.size()));
+
+
+	// ウィンドウを閉じる
+	ImGui::End();
 }
 
 void GUI::ShowColliderManager() {
@@ -193,7 +212,7 @@ void GUI::ShowColliderManager() {
 	const auto& colliders = colliderManager_->GetColliders();
 
 	// 選択中のコライダーを識別するための静的変数
-	static int selectedIndex = -1;
+	static int selectedColliderIndex = -1;
 
 	ImGuiWindowFlags windowFlags = ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse;
 
@@ -209,19 +228,19 @@ void GUI::ShowColliderManager() {
 	ShowColliderLoadUI();
 
 	// コライダーリスト表示関数
-	ShowColliderList(colliders, selectedIndex);
+	ShowColliderList(colliders, selectedColliderIndex);
 
 	// 同じ行に並べたい場合は ImGui::SameLine() を呼び出す
 	ImGui::SameLine();
 
 	// コライダーの設定関数
-	ShowColliderSetting(colliders, selectedIndex);
+	ShowColliderSetting(colliders, selectedColliderIndex);
 
 	// 区切り線
 	ImGui::Separator();
 
 	// コライダーの情報表示関数
-	ShowColliderInformation(colliders, selectedIndex);
+	ShowColliderInformation(colliders, selectedColliderIndex);
 
 	// ウィンドウを閉じる
 	ImGui::End();
@@ -229,7 +248,7 @@ void GUI::ShowColliderManager() {
 
 void GUI::ShowColliderSaveUI() {
 	// ファイル名入力用のバッファ
-	static char colliderSaveFileName[64] = "DefaultName.json";
+	static char colliderSaveFileName[64] = "CollidersData.json";
 
 	// セーブ
 	ImGui::Text("Save");
@@ -255,7 +274,7 @@ void GUI::ShowColliderSaveUI() {
 
 void GUI::ShowColliderLoadUI() {
 	// ファイル名入力用のバッファ
-	static char colliderLoadFileName[64] = "DefaultName.json";
+	static char colliderLoadFileName[64] = "CollidersData.json";
 
 	// セーブ
 	ImGui::Text("Load");

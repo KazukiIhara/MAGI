@@ -15,7 +15,7 @@ class ColliderManager;
 /// </summary>
 class DataIO {
 public:
-	DataIO(Renderer3DManager * renderer3DManager, ColliderManager* colliderManager);
+	DataIO(Renderer3DManager* renderer3DManager, ColliderManager* colliderManager);
 	~DataIO();
 
 	// 初期化
@@ -30,12 +30,17 @@ public:
 	// ファイル読み込み関数
 	// 
 
+	// 3D描画オブジェクトデータファイルの読み込み
+
 	// コライダーデータファイルの読み込み
 	void LoadColliderDataFile(const std::string& fileName);
 
 	// 
 	// ファイルセーブ関数
 	// 
+		
+	// 3D描画オブジェクトデータファイルのセーブ
+	
 
 	// コライダーデータファイルのセーブ
 	void SaveColliderDataFile(const std::string& fileName);

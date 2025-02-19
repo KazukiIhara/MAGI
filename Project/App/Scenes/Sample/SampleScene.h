@@ -47,8 +47,8 @@ inline void SampleScene<Data>::Initialize() {
 	// リソースのロード
 	// 
 
-	// コライダー
-	MAGISYSTEM::LoadColliderDataFile("SceneCollider.json");
+	//// コライダー
+	//MAGISYSTEM::LoadColliderDataFile("SceneCollider.json");
 
 	//
 	// オブジェクトの作成

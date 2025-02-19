@@ -246,6 +246,21 @@ public: // エンジンの機能
 	static void TransferPunctualLight();
 #pragma endregion
 
+#pragma region Renderer3DManager
+	// 描画オブジェクトの追加
+	// シンプル形状
+	static void CreatePrimitiveRenderer3D(const std::string& name, Primitive3DType primitiveRenderer, const std::string& textureName = "");
+	// 静的モデル
+	static void CreateStaticRenderer3D(const std::string& name, const std::string& modelName);
+	// スキニングモデル
+	static void CreateSkinningRenderer3D(const std::string& name, const std::string& modelName);
+	// 描画オブジェクトの削除
+	static void RemoveRenderer3D(const std::string& name);
+	// 描画オブジェクトの取得
+	static BaseRenderable3D* FindRenderer3D(const std::string& name);
+#pragma endregion
+
+
 #pragma region ColliderManager
 	// コライダーの追加
 	static void CreateCollider(const std::string& name, Collider3DType colliderType);

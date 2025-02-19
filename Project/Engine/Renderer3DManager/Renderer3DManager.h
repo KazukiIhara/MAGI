@@ -29,7 +29,7 @@ public:
 
 	void Clear();
 
-	// 生成してある全コライダーのリストを取得
+	// 生成してある全オブジェクトのリストを取得
 	const std::vector<std::unique_ptr<BaseRenderable3D>>& GetRenderers() const;
 
 private:

@@ -668,6 +668,26 @@ void MAGISYSTEM::TransferPunctualLight() {
 	punctualLightManager_->TransferLightsData();
 }
 
+void MAGISYSTEM::CreatePrimitiveRenderer3D(const std::string& name, Primitive3DType primitiveRenderer, const std::string& textureName) {
+	renderer3DManager_->CreatePrimitiveRenderer(name, primitiveRenderer, textureName);
+}
+
+void MAGISYSTEM::CreateStaticRenderer3D(const std::string& name, const std::string& modelName) {
+	renderer3DManager_->CreateStaticRenderer(name, modelName);
+}
+
+void MAGISYSTEM::CreateSkinningRenderer3D(const std::string& name, const std::string& modelName) {
+	renderer3DManager_->CreateSkinningRenderer(name, modelName);
+}
+
+void MAGISYSTEM::RemoveRenderer3D(const std::string& name) {
+	renderer3DManager_->Remove(name);
+}
+
+BaseRenderable3D* MAGISYSTEM::FindRenderer3D(const std::string& name) {
+	return renderer3DManager_->Find(name);
+}
+
 void MAGISYSTEM::CreateCollider(const std::string& name, Collider3DType colliderType) {
 	colliderManager_->Create(name, colliderType);
 }
