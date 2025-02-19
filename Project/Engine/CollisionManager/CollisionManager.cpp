@@ -85,8 +85,8 @@ bool CollisionManager::CheckCollisionPair(BaseCollider3D* colliderA, BaseCollide
 }
 
 std::set<std::pair<uint32_t, uint32_t>> CollisionManager::CheckAllCollisions() {
-	std::set<std::pair<uint32_t, uint32_t>> collisions;
 
+	std::set<std::pair<uint32_t, uint32_t>> collisions;
 	// 総当たり
 	for (size_t i = 0; i < activeColliders_.size(); ++i) {
 		BaseCollider3D* colliderA = activeColliders_[i];
@@ -110,7 +110,6 @@ std::set<std::pair<uint32_t, uint32_t>> CollisionManager::CheckAllCollisions() {
 }
 
 void CollisionManager::ResolveCollisions(const std::set<std::pair<uint32_t, uint32_t>>& currentCollisions) {
-
 	// 新規衝突(OnCollisionEnter) or 継続衝突(OnCollisionStay)
 	for (const auto& pair : currentCollisions) {
 		// このペアが前フレームにも存在していたらStay, なければEnter
