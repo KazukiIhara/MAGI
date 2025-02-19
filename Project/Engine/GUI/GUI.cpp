@@ -286,7 +286,6 @@ void GUI::ShowColliderSaveUI() {
 	}
 }
 
-// 例: 毎フレーム呼ばれる描画処理などで
 void GUI::ShowCreateColliderUI() {
 	// 静的変数を使って、UIの状態を保持します。
 	static char colliderName[128] = "NewCollider";  // 初期値適当
@@ -294,6 +293,7 @@ void GUI::ShowCreateColliderUI() {
 	static int selectedTypeIndex = 0;
 	static float offset[3] = { 0.0f, 0.0f, 0.0f };
 	static float radius = 1.0f; // Sphere用
+	static char ownerName[128] = "";
 
 	// コライダー名の入力
 	ImGui::InputText("Collider Name", colliderName, IM_ARRAYSIZE(colliderName));
@@ -316,8 +316,31 @@ void GUI::ShowCreateColliderUI() {
 		ImGui::InputFloat("Radius", &radius);
 	}
 
+	// コライダー名の入力
+	ImGui::InputText("Owner Name", ownerName, IM_ARRAYSIZE(ownerName));
+
 	// 作成ボタン
 	if (ImGui::Button("Create")) {
+		// 作る
+		colliderManager_->Create(colliderName, static_cast<Collider3DType>(selectedTypeIndex));
+		// パラメータをセットしていく
+		BaseCollider3D* newCollider = colliderManager_->Find(colliderName);
+		newCollider->GetOffset() = { offset[0],offset[1],offset[2] };
+
+		switch (selectedTypeIndex) {
+		case 0: // Sphere
+			// キャスト
+			if (auto sphereCollider = dynamic_cast<SphereCollider*> (newCollider)) {
+				sphereCollider->GetRadius() = radius;
+			}
+			break;
+		case 1: // AABB
+
+			break;
+		case 2: // OBB
+
+			break;
+		}
 
 		// ウィンドウを非表示に
 		showColliderCreateWindow_ = false;
