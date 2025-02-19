@@ -6,6 +6,7 @@ class SRVUAVManager;
 class DataIO;
 class TextureDataContainer;
 
+class Renderer3DManager;
 class ColliderManager;
 
 // エンジンのグラフィックUIクラス
@@ -48,6 +49,8 @@ private:
 	// TextureDataContainerのインスタンス
 	TextureDataContainer* textureDataContainer_ = nullptr;
 
+	// 3D描画マネージャのインスタンス
+	Renderer3DManager* renderer3DManager_ = nullptr;
 	// コライダーマネージャのインスタンス
 	ColliderManager* colliderManager_ = nullptr;
 };

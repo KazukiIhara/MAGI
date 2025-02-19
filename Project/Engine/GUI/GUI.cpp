@@ -9,6 +9,7 @@
 #include "DataIO/DataIO.h"
 #include "AssetContainers/TextureDataContainer/TextureDataContainer.h"
 
+#include "Renderer3DManager/Renderer3DManager.h"
 #include "ColliderManager/ColliderManager.h"
 
 #include "3D/GameObject3D/GameObject3D.h"
@@ -36,6 +37,9 @@ GUI::GUI(
 	// 
 	// データIOクラスから受け取るインスタンス
 	// 
+
+	renderer3DManager_ = dataIO_->GetRenderer3DManager();
+	assert(renderer3DManager_);
 
 	colliderManager_ = dataIO_->GetColliderManager();
 	assert(colliderManager_);

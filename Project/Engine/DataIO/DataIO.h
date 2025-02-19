@@ -44,6 +44,8 @@ public:
 	// 所有しているマネージャのインスタンスを送る
 	// 
 
+	// 3D描画マネージャ
+	Renderer3DManager* GetRenderer3DManager();
 	// コライダーマネージャ
 	ColliderManager* GetColliderManager();
 
@@ -51,6 +53,8 @@ private:
 
 
 private:
+	// 3D描画マネージャのセット
+	void SetRenderer3DManager(Renderer3DManager* renderer3DManager);
 	// コライダーマネージャのセット
 	void SetColliderManager(ColliderManager* colliderManager);
 private:
@@ -58,6 +62,8 @@ private:
 	// マネージャクラスのポインタ
 	// 
 
+	// 3D描画マネージャクラス
+	Renderer3DManager* renderer3DManager_ = nullptr;
 	// コライダーマネージャクラス
 	ColliderManager* colliderManager_ = nullptr;
 };

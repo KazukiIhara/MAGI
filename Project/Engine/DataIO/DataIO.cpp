@@ -1,5 +1,6 @@
 #include "DataIO.h"
 
+#include "Renderer3DManager/Renderer3DManager.h"
 #include "ColliderManager/ColliderManager.h"
 #include "Logger/Logger.h"
 
@@ -20,6 +21,7 @@ DataIO::DataIO(Renderer3DManager* renderer3DManager, ColliderManager* colliderMa
 	// 
 	// インスタンスのセット
 	// 
+	SetRenderer3DManager(renderer3DManager);
 	SetColliderManager(colliderManager);
 
 	// 
@@ -210,8 +212,17 @@ void DataIO::SaveColliderDataFile(const std::string& fileName) {
 #endif
 }
 
+Renderer3DManager* DataIO::GetRenderer3DManager() {
+	return renderer3DManager_;
+}
+
 ColliderManager* DataIO::GetColliderManager() {
 	return colliderManager_;
+}
+
+void DataIO::SetRenderer3DManager(Renderer3DManager* renderer3DManager) {
+	assert(renderer3DManager);
+	renderer3DManager_ = renderer3DManager;
 }
 
 void DataIO::SetColliderManager(ColliderManager* colliderManager) {
