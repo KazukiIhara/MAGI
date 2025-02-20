@@ -31,6 +31,7 @@ public:
 	// 
 
 	// 3D描画オブジェクトデータファイルの読み込み
+	void LoadRenderer3DDataFile(const std::string& fileName);
 
 	// コライダーデータファイルの読み込み
 	void LoadColliderDataFile(const std::string& fileName);
@@ -38,9 +39,9 @@ public:
 	// 
 	// ファイルセーブ関数
 	// 
-		
+
 	// 3D描画オブジェクトデータファイルのセーブ
-	
+	void SaveRenderer3DDataFile(const std::string& fileName);
 
 	// コライダーデータファイルのセーブ
 	void SaveColliderDataFile(const std::string& fileName);
