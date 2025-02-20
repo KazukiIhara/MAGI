@@ -12,7 +12,14 @@
 #include "Renderer3DManager/Renderer3DManager.h"
 #include "ColliderManager/ColliderManager.h"
 
+#include "Logger/Logger.h"
+
 #include "3D/GameObject3D/GameObject3D.h"
+
+// Windows環境限定
+#ifdef _WIN32
+#include <Windows.h>
+#endif
 
 GUI::GUI(
 	DeltaTimer* deltaTimer,
@@ -278,11 +285,99 @@ void GUI::ShowRenderer3DDataLoadUI() {
 }
 
 void GUI::ShowCreateRenderer3DUI() {
+	// コライダー作成ボタン
+	if (ImGui::Button("Create New Renderer3D")) {
+		showRenderer3DCreateWindow_ = true;
+	}
+	// コライダー作成ウィンドウ
+	if (showRenderer3DCreateWindow_) {
+		// 第2引数に &showCreateWindow を渡すことで、×ボタンを押すと false になる
+		ImGui::Begin("Create Renderer3D", &showRenderer3DCreateWindow_, ImGuiWindowFlags_AlwaysAutoResize);
 
+		// 新規作成用のUIを表示
+		ShowCreateRenderer3DWindow();
+
+		ImGui::End();
+	}
 }
 
 void GUI::ShowCreateRenderer3DWindow() {
+	static char rendererName[128] = "NewRenderer";  // 初期描画オブジェクト
+	static Renderer3DType renderer3DType = Renderer3DType::Primitive; // 描画タイプ
+	static int selectedRenderer3DTypeIndex = 0;
 
+	static Primitive3DType primitive3DType = Primitive3DType::Plane; // シンプル形状の場合のタイプ
+	static int selectedPrimitive3DTypeIndex = 0;
+
+	static char modelNameOrTextureName[128] = ""; // テクスチャおよびモデル名
+
+	// ウィンドウが初めて表示されたときにリセット
+	if (ImGui::IsWindowAppearing()) {
+		strcpy_s(rendererName, "NewRenderer");
+
+		renderer3DType = Renderer3DType::Primitive;
+		selectedRenderer3DTypeIndex = 0;
+		primitive3DType = Primitive3DType::Plane;
+		selectedPrimitive3DTypeIndex = 0;
+
+		strcpy_s(modelNameOrTextureName, "");
+	}
+
+	// メッシュ名の入力
+	ImGui::InputText("RendererName", rendererName, IM_ARRAYSIZE(rendererName));
+
+	// レンダラータイプの設定
+	const char* rendererTypes[] = { "Primitive","Static","Skinning" };
+	ImGui::Combo("Renderer Type", &selectedRenderer3DTypeIndex, rendererTypes, IM_ARRAYSIZE(rendererTypes));
+
+	// タイプによって設定を表示
+	if (selectedRenderer3DTypeIndex == 0) {
+		// シンプル形状のタイプを設定
+		const char* primitiveTypes[] = { "Plane","Sphere","Ring","Cylinder" };
+		ImGui::Combo("Primitive Type", &selectedPrimitive3DTypeIndex, primitiveTypes, IM_ARRAYSIZE(primitiveTypes));
+
+		// テクスチャの設定
+		ImGui::InputText("TextureName", modelNameOrTextureName, IM_ARRAYSIZE(modelNameOrTextureName));
+	} else {
+		// モデルの設定
+		ImGui::InputText("ModelName", modelNameOrTextureName, IM_ARRAYSIZE(modelNameOrTextureName));
+	}
+
+	// 作成ボタン
+	if (ImGui::Button("Create")) {
+		// モデルが空の場合
+		if (selectedRenderer3DTypeIndex == 1 || selectedRenderer3DTypeIndex == 2) {
+			if (strcmp(modelNameOrTextureName, "") == 0) {
+
+				// ウィンドウを非表示に
+				showRenderer3DCreateWindow_ = false;
+#ifdef _WIN32
+				std::wstring wMessage = Logger::ConvertString("AssetFileNameIsEmpty");
+				std::wstring wTitle = Logger::ConvertString("Warning");
+				MessageBoxW(nullptr, wMessage.c_str(), wTitle.c_str(), MB_OK | MB_ICONERROR);
+#endif
+				return;
+			}
+		}
+
+		// タイプによって生成
+		switch (selectedRenderer3DTypeIndex) {
+			case 0:
+				renderer3DManager_->CreatePrimitiveRenderer(rendererName, static_cast<Primitive3DType>(selectedPrimitive3DTypeIndex), modelNameOrTextureName);
+				break;
+			case 1:
+				renderer3DManager_->CreateStaticRenderer(rendererName, modelNameOrTextureName);
+				break;
+			case 2:
+				renderer3DManager_->CreateSkinningRenderer(rendererName, modelNameOrTextureName);
+				break;
+			default:
+				break;
+		}
+
+		// ウィンドウを非表示に
+		showRenderer3DCreateWindow_ = false;
+	}
 }
 
 void GUI::ShowRenderer3DList(const std::vector<std::unique_ptr<BaseRenderable3D>>& renderers3D, int& selectedIndex) {
@@ -474,8 +569,12 @@ void GUI::ShowCreateColliderWindow() {
 
 	// 作成ボタン
 	if (ImGui::Button("Create")) {
-		// コライダーを作成して取得
-		BaseCollider3D* newCollider = colliderManager_->Find(colliderManager_->Create(colliderName, static_cast<Collider3DType>(selectedTypeIndex)));
+
+		// コライダーを作成して受け取る
+		std::string newColliderName = colliderManager_->Create(colliderName, static_cast<Collider3DType>(selectedTypeIndex));
+
+		// 設定のためコライダーを作成して取得
+		BaseCollider3D* newCollider = colliderManager_->Find(newColliderName);
 		if (newCollider) {
 			newCollider->GetOffset() = { offset[0], offset[1], offset[2] };
 			newCollider->GetCategory() = selectedCategory; // カテゴリを設定
