@@ -671,6 +671,21 @@ void GUI::ShowColliderInformation(const std::vector<std::unique_ptr<BaseCollider
 				break;
 			case Collider3DType::AABB:
 				ImGui::Text("Collider Type: AABB");
+				// 情報を表示
+				{
+					AABBCollider* aabb = dynamic_cast<AABBCollider*>(collider);
+					if (aabb) {
+						Vector3 offsetMin = aabb->GetOffsetMin();
+						Vector3 offsetMax = aabb->GetOffsetMax();
+						Vector3 min = aabb->GetMin();
+						Vector3 max = aabb->GetMax();
+
+						ImGui::Text("Offset Min: (%.2f, %.2f, %.2f)", offsetMin.x, offsetMin.y, offsetMin.z);
+						ImGui::Text("Offset Max: (%.2f, %.2f, %.2f)", offsetMax.x, offsetMax.y, offsetMax.z);
+						ImGui::Text("World Min: (%.2f, %.2f, %.2f)", min.x, min.y, min.z);
+						ImGui::Text("World Max: (%.2f, %.2f, %.2f)", max.x, max.y, max.z);
+					}
+				}
 				break;
 			case Collider3DType::OBB:
 				ImGui::Text("Collider Type: OBB");
