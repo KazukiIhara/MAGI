@@ -504,19 +504,20 @@ void GUI::ShowColliderList(const std::vector<std::unique_ptr<BaseCollider3D>>& c
 	//
 	// 左側にコライダー一覧を表示（スクロール可）
 	//
-	ImGui::Text("ColliderList");
+	ImGui::Text("Collider List");
 	ImGui::BeginChild("ColliderList", ImVec2(200, 150), true);
+
 	for (int i = 0; i < static_cast<int>(colliders.size()); i++) {
 		// コライダー名を取得
 		const std::string& colliderName = colliders[i]->name_;
 
-		// ボタンとして表示
-		// 押されたら選択中のインデックスを更新する
-		if (ImGui::Button(colliderName.c_str(), ImVec2(180, 0))) {
-			selectedIndex = i;
+		// 選択中のコライダーをクリックすると解除されるようにする
+		bool isSelected = (selectedIndex == i);
+		if (ImGui::Selectable(colliderName.c_str(), isSelected, ImGuiSelectableFlags_SpanAllColumns)) {
+			selectedIndex = isSelected ? -1 : i;  // クリックしたら選択解除 or 選択
 		}
-
 	}
+
 	ImGui::EndChild();
 }
 
