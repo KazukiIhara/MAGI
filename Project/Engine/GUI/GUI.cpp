@@ -508,17 +508,30 @@ void GUI::ShowColliderList(const std::vector<std::unique_ptr<BaseCollider3D>>& c
 	ImGui::BeginChild("ColliderList", ImVec2(200, 150), true);
 
 	for (int i = 0; i < static_cast<int>(colliders.size()); i++) {
-		// コライダー名を取得
 		const std::string& colliderName = colliders[i]->name_;
-
-		// 選択中のコライダーをクリックすると解除されるようにする
 		bool isSelected = (selectedIndex == i);
-		if (ImGui::Selectable(colliderName.c_str(), isSelected, ImGuiSelectableFlags_SpanAllColumns)) {
-			selectedIndex = isSelected ? -1 : i;  // クリックしたら選択解除 or 選択
+
+		// 選択時と非選択時の色設定
+		if (isSelected) {
+			ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.26f, 0.59f, 0.98f, 1.0f)); // 明るい青
+			ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(0.26f, 0.59f, 0.98f, 1.0f));
+			ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4(0.06f, 0.53f, 0.98f, 1.0f));
+		} else {
+			ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.16f, 0.29f, 0.48f, 1.0f)); // 暗めの青
+			ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(0.26f, 0.59f, 0.98f, 1.0f));
+			ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4(0.06f, 0.53f, 0.98f, 1.0f));
 		}
+
+		// ボタンとして描画
+		if (ImGui::Button(colliderName.c_str(), ImVec2(180, 20))) {
+			selectedIndex = isSelected ? -1 : i;  // クリックで選択解除 or 選択
+		}
+
+		ImGui::PopStyleColor(3); // 設定した色を元に戻す
 	}
 
 	ImGui::EndChild();
+
 }
 
 void GUI::ShowColliderSetting(const std::vector<std::unique_ptr<BaseCollider3D>>& colliders, int& selectedIndex) {
@@ -660,40 +673,40 @@ void GUI::ShowColliderInformation(const std::vector<std::unique_ptr<BaseCollider
 			// コライダータイプの表示
 			Collider3DType cType = collider->GetType();
 			switch (cType) {
-			case Collider3DType::Sphere:
-				ImGui::Text("Collider Type: Sphere");
-				// 半径を表示
-				{
-					SphereCollider* sphere = dynamic_cast<SphereCollider*>(collider);
-					if (sphere) {
-						ImGui::Text("Radius: %.2f", sphere->GetRadius());
+				case Collider3DType::Sphere:
+					ImGui::Text("Collider Type: Sphere");
+					// 半径を表示
+					{
+						SphereCollider* sphere = dynamic_cast<SphereCollider*>(collider);
+						if (sphere) {
+							ImGui::Text("Radius: %.2f", sphere->GetRadius());
+						}
 					}
-				}
-				break;
-			case Collider3DType::AABB:
-				ImGui::Text("Collider Type: AABB");
-				// 情報を表示
-				{
-					AABBCollider* aabb = dynamic_cast<AABBCollider*>(collider);
-					if (aabb) {
-						Vector3 offsetMin = aabb->GetOffsetMin();
-						Vector3 offsetMax = aabb->GetOffsetMax();
-						Vector3 min = aabb->GetMin();
-						Vector3 max = aabb->GetMax();
+					break;
+				case Collider3DType::AABB:
+					ImGui::Text("Collider Type: AABB");
+					// 情報を表示
+					{
+						AABBCollider* aabb = dynamic_cast<AABBCollider*>(collider);
+						if (aabb) {
+							Vector3 offsetMin = aabb->GetOffsetMin();
+							Vector3 offsetMax = aabb->GetOffsetMax();
+							Vector3 min = aabb->GetMin();
+							Vector3 max = aabb->GetMax();
 
-						ImGui::Text("Offset Min: (%.2f, %.2f, %.2f)", offsetMin.x, offsetMin.y, offsetMin.z);
-						ImGui::Text("Offset Max: (%.2f, %.2f, %.2f)", offsetMax.x, offsetMax.y, offsetMax.z);
-						ImGui::Text("World Min: (%.2f, %.2f, %.2f)", min.x, min.y, min.z);
-						ImGui::Text("World Max: (%.2f, %.2f, %.2f)", max.x, max.y, max.z);
+							ImGui::Text("Offset Min: (%.2f, %.2f, %.2f)", offsetMin.x, offsetMin.y, offsetMin.z);
+							ImGui::Text("Offset Max: (%.2f, %.2f, %.2f)", offsetMax.x, offsetMax.y, offsetMax.z);
+							ImGui::Text("World Min: (%.2f, %.2f, %.2f)", min.x, min.y, min.z);
+							ImGui::Text("World Max: (%.2f, %.2f, %.2f)", max.x, max.y, max.z);
+						}
 					}
-				}
-				break;
-			case Collider3DType::OBB:
-				ImGui::Text("Collider Type: OBB");
-				break;
-			default:
-				ImGui::Text("Collider Type: Unknown");
-				break;
+					break;
+				case Collider3DType::OBB:
+					ImGui::Text("Collider Type: OBB");
+					break;
+				default:
+					ImGui::Text("Collider Type: Unknown");
+					break;
 			}
 
 			// コライダーのオフセット
