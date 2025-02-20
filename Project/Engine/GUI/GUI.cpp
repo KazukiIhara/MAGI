@@ -428,19 +428,23 @@ void GUI::ShowCreateColliderUI() {
 }
 
 void GUI::ShowCreateColliderWindow() {
-	static char colliderName[128] = "NewCollider";  // 初期値適当
+	static char colliderName[128] = "NewCollider";  // 初期値
 	static int selectedTypeIndex = 0;
-	static CollisionCategory selectedCategory = CollisionCategory::None; // 列挙型で管理
+	static CollisionCategory selectedCategory = CollisionCategory::None; // コライダーカテゴリー
 	static float offset[3] = { 0.0f, 0.0f, 0.0f };
 	static float radius = 1.0f; // Sphere用
+	static float offsetMin[3] = { -1.0f, -1.0f, -1.0f }; // AABB用
+	static float offsetMax[3] = { 1.0f, 1.0f, 1.0f };   // AABB用
 
 	// ウィンドウが初めて表示されたタイミングで初期状態にリセット
 	if (ImGui::IsWindowAppearing()) {
-		strcpy_s(colliderName, "NewCollider");  // 初期値にリセット
+		strcpy_s(colliderName, "NewCollider");
 		selectedTypeIndex = 0;
 		selectedCategory = CollisionCategory::None;
-		offset[0] = 0.0f; offset[1] = 0.0f; offset[2] = 0.0f;
+		offset[0] = offset[1] = offset[2] = 0.0f;
 		radius = 1.0f;
+		offsetMin[0] = offsetMin[1] = offsetMin[2] = -1.0f;
+		offsetMax[0] = offsetMax[1] = offsetMax[2] = 1.0f;
 	}
 
 	// コライダー名の入力
@@ -460,9 +464,12 @@ void GUI::ShowCreateColliderWindow() {
 	// Offset
 	ImGui::InputFloat3("Offset", offset);
 
-	// 球体コライダーの場合
-	if (selectedTypeIndex == 0) {
+	// コライダータイプ別のパラメータ
+	if (selectedTypeIndex == 0) { // Sphere
 		ImGui::InputFloat("Radius", &radius);
+	} else if (selectedTypeIndex == 1) { // AABB
+		ImGui::InputFloat3("Offset Min", offsetMin);
+		ImGui::InputFloat3("Offset Max", offsetMax);
 	}
 
 	// 作成ボタン
@@ -473,10 +480,17 @@ void GUI::ShowCreateColliderWindow() {
 			newCollider->GetOffset() = { offset[0], offset[1], offset[2] };
 			newCollider->GetCategory() = selectedCategory; // カテゴリを設定
 
-			// 球体コライダーの場合は半径をセット
+			// 球体コライダーの設定
 			if (selectedTypeIndex == 0) {
 				if (auto sphereCollider = dynamic_cast<SphereCollider*>(newCollider)) {
 					sphereCollider->GetRadius() = radius;
+				}
+			}
+			// AABBコライダーの設定
+			else if (selectedTypeIndex == 1) {
+				if (auto aabbCollider = dynamic_cast<AABBCollider*>(newCollider)) {
+					aabbCollider->GetOffsetMin() = { offsetMin[0], offsetMin[1], offsetMin[2] };
+					aabbCollider->GetOffsetMax() = { offsetMax[0], offsetMax[1], offsetMax[2] };
 				}
 			}
 		}
@@ -491,7 +505,7 @@ void GUI::ShowColliderList(const std::vector<std::unique_ptr<BaseCollider3D>>& c
 	// 左側にコライダー一覧を表示（スクロール可）
 	//
 	ImGui::Text("ColliderList");
-	ImGui::BeginChild("ColliderList", ImVec2(200, 130), true);
+	ImGui::BeginChild("ColliderList", ImVec2(200, 150), true);
 	for (int i = 0; i < static_cast<int>(colliders.size()); i++) {
 		// コライダー名を取得
 		const std::string& colliderName = colliders[i]->name_;
@@ -508,7 +522,7 @@ void GUI::ShowColliderList(const std::vector<std::unique_ptr<BaseCollider3D>>& c
 
 void GUI::ShowColliderSetting(const std::vector<std::unique_ptr<BaseCollider3D>>& colliders, int& selectedIndex) {
 	// コライダーの設定
-	ImGui::BeginChild("ColliderSettings", ImVec2(0, 130), true);
+	ImGui::BeginChild("ColliderSettings", ImVec2(0, 150), true);
 	if (selectedIndex >= 0 && selectedIndex < static_cast<int>(colliders.size())) {
 		BaseCollider3D* collider = colliders[selectedIndex].get();
 		if (collider) {
@@ -592,6 +606,29 @@ void GUI::ShowColliderSetting(const std::vector<std::unique_ptr<BaseCollider3D>>
 					}
 				}
 			}
+
+			//
+			// AABBコライダーの場合のみ、offsetMin / offsetMax を編集
+			//
+			{
+				if (collider->GetType() == Collider3DType::AABB) {
+					AABBCollider* aabb = dynamic_cast<AABBCollider*>(collider);
+					if (aabb) {
+						Vector3 offsetMin = aabb->GetOffsetMin();
+						Vector3 offsetMax = aabb->GetOffsetMax();
+
+						if (ImGui::DragFloat3("Offset Min", &offsetMin.x, 0.01f, -10000.0f, 10000.0f)) {
+							aabb->GetOffsetMin() = offsetMin;
+						}
+						if (ImGui::DragFloat3("Offset Max", &offsetMax.x, 0.01f, -10000.0f, 10000.0f)) {
+							aabb->GetOffsetMax() = offsetMax;
+						}
+					}
+				}
+			}
+
+
+
 		}
 	}
 	ImGui::EndChild();

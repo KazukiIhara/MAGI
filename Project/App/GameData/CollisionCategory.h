@@ -10,9 +10,6 @@
 /// </summary>
 enum class CollisionCategory {
 	None,
-	Player,
-	Enemy,
-
 
 	Count,
 };
@@ -26,10 +23,6 @@ inline std::string CollisionCategoryToString(CollisionCategory category) {
 	switch (category) {
 	case CollisionCategory::None:
 		return "None";
-	case CollisionCategory::Player:
-		return "Player";
-	case CollisionCategory::Enemy:
-		return "Enemy";
 	default:
 		return "Unknown";
 	}
@@ -38,10 +31,6 @@ inline std::string CollisionCategoryToString(CollisionCategory category) {
 inline CollisionCategory StringToCollisionCategory(const std::string& categoryName) {
 	if (categoryName == "None") {
 		return CollisionCategory::None;
-	} else if (categoryName == "Player") {
-		return CollisionCategory::Player;
-	} else if (categoryName == "Enemy") {
-		return CollisionCategory::Enemy;
 	} else {
 		return CollisionCategory::None;
 	}
