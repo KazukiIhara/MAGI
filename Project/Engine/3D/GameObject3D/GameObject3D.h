@@ -24,6 +24,8 @@ public:
 
 	virtual void Initialize();
 	virtual void Update();
+	void UpdateWorldTransform();
+	void UpdateRenderer();
 	virtual void Draw();
 
 	//

@@ -640,8 +640,8 @@ PrimitiveData MAGISYSTEM::GetPrimitiveShape(const Primitive3DType& primitive3dTy
 	return primitiveDataContainer_->GetPrimitiveShapeData(primitive3dType);
 }
 
-void MAGISYSTEM::LoadModel(const std::string& modelName, bool isNormalMap) {
-	modelDataContainer_->Load(modelName, isNormalMap);
+void MAGISYSTEM::LoadModel(const std::string& modelName) {
+	modelDataContainer_->Load(modelName);
 }
 
 ModelData MAGISYSTEM::FindModel(const std::string& modelName) {

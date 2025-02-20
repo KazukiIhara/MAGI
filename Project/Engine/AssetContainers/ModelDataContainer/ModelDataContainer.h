@@ -24,11 +24,11 @@ public:
 	~ModelDataContainer();
 
 	void Initialize(TextureDataContainer* textureDataContainer);
-	void Load(const std::string& modelName, bool isNormalMap);
+	void Load(const std::string& modelName);
 
 	ModelData FindModelData(const std::string& modelName)const;
 private:
-	ModelData LoadModel(const std::string& modelName, bool isNormalMap);
+	ModelData LoadModel(const std::string& modelName);
 	// ノードの読み込み
 	Node ReadNode(aiNode* node);
 private:

@@ -18,10 +18,18 @@ void GameObject3D::Initialize() {
 }
 
 void GameObject3D::Update() {
+
+
+
+}
+
+void GameObject3D::UpdateWorldTransform() {
 	if (worldTransform_) {
 		worldTransform_->Update();
 	}
+}
 
+void GameObject3D::UpdateRenderer() {
 	if (renderer3D_) {
 		renderer3D_->Update();
 	}
