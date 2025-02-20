@@ -21,22 +21,44 @@ void ColliderManager::Update() {
 	}
 }
 
-void ColliderManager::Create(const std::string& name, Collider3DType colliderType) {
+std::string ColliderManager::Create(const std::string& name, Collider3DType colliderType) {
+	// 新しいコライダー名を決定
+	std::string uniqueName = name;
+	int suffix = 1;
+
+	// 同じ名前が既に存在する場合、一意な名前を生成
+	auto isNameUsed = [&](const std::string& testName) {
+		return std::any_of(colliders_.begin(), colliders_.end(), [&](const auto& collider) {
+			return collider->name_ == testName;
+			});
+		};
+
+	while (isNameUsed(uniqueName)) {
+		uniqueName = name + "_" + std::to_string(suffix);
+		suffix++;
+	}
+
 	// 追加するコライダー
 	std::unique_ptr<BaseCollider3D> newCollider;
 	switch (colliderType) {
 	case Collider3DType::Sphere:
-		newCollider = std::make_unique<SphereCollider>(name, currentID_, colliderType);
+		newCollider = std::make_unique<SphereCollider>(uniqueName, currentID_, colliderType);
 		break;
 	case Collider3DType::AABB:
+		newCollider = std::make_unique<AABBCollider>(uniqueName, currentID_, colliderType);
 		break;
 	case Collider3DType::OBB:
 		break;
 	}
+
 	// コンテナに登録
 	colliders_.push_back(std::move(newCollider));
+
 	// 識別IDをインクリメント
 	currentID_++;
+
+	// 作成した名前を返す
+	return uniqueName;
 }
 
 void ColliderManager::Remove(const std::string& name) {

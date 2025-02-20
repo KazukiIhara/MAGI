@@ -17,11 +17,29 @@ CollisionManager::CollisionManager(ColliderManager* colliderManager) {
 	// 各コライダーの組み合わせに対応する衝突判定関数を登録する
 	//
 
+	// 同形状同士
+
 	// 球体同士
 	collisionFuncMap_[{Collider3DType::Sphere, Collider3DType::Sphere}] =
 		[this](BaseCollider3D* collider1, BaseCollider3D* collider2) {
 		return this->CheckSphereToSphereCollision(collider1, collider2);
 		};
+
+	// AABB同士
+	collisionFuncMap_[{Collider3DType::AABB, Collider3DType::AABB}] =
+		[this](BaseCollider3D* collider1, BaseCollider3D* collider2) {
+		return this->CheckAABBToAABBCollision(collider1, collider2);
+		};
+
+
+	// 異種形状同士
+
+	// 球体とAABB
+	collisionFuncMap_[{Collider3DType::Sphere, Collider3DType::AABB}] =
+		[this](BaseCollider3D* collider1, BaseCollider3D* collider2) {
+		return this->CheckSphereToAABBCollision(collider1, collider2);
+		};
+
 
 }
 
@@ -110,6 +128,32 @@ std::set<std::pair<uint32_t, uint32_t>> CollisionManager::CheckAllCollisions() {
 }
 
 void CollisionManager::ResolveCollisions(const std::set<std::pair<uint32_t, uint32_t>>& currentCollisions) {
+	// 衝突離脱(OnCollisionExit)
+	for (const auto& oldPair : previousCollisions_) {
+		// 前フレームにあったペアが今フレームに無い場合は離脱
+		if (currentCollisions.find(oldPair) == currentCollisions.end()) {
+			auto [idA, idB] = oldPair;
+			BaseCollider3D* colliderA = FindColliderByID(activeColliders_, idA);
+			BaseCollider3D* colliderB = FindColliderByID(activeColliders_, idB);
+			if (!colliderA || !colliderB) {
+				continue;
+			}
+
+			colliderA->GetIsSellingOther() = false;
+			colliderB->GetIsSellingOther() = false;
+
+			GameObject3D* ownerA = colliderA->GetOwner();
+			GameObject3D* ownerB = colliderB->GetOwner();
+			if (!ownerA || !ownerB) {
+				continue;
+			}
+
+			// 衝突終了
+			ownerA->OnCollisionExit(ownerB);
+			ownerB->OnCollisionExit(ownerA);
+		}
+	}
+
 	// 新規衝突(OnCollisionEnter) or 継続衝突(OnCollisionStay)
 	for (const auto& pair : currentCollisions) {
 		// このペアが前フレームにも存在していたらStay, なければEnter
@@ -122,11 +166,8 @@ void CollisionManager::ResolveCollisions(const std::set<std::pair<uint32_t, uint
 			continue;
 		}
 
-		if (isNew) {
-			// 衝突開始
-			colliderA->GetIsSellingOther() = true;
-			colliderB->GetIsSellingOther() = true;
-		}
+		colliderA->GetIsSellingOther() = true;
+		colliderB->GetIsSellingOther() = true;
 
 		GameObject3D* ownerA = colliderA->GetOwner();
 		GameObject3D* ownerB = colliderB->GetOwner();
@@ -141,31 +182,6 @@ void CollisionManager::ResolveCollisions(const std::set<std::pair<uint32_t, uint
 			// 衝突継続
 			ownerA->OnCollisionStay(ownerB);
 			ownerB->OnCollisionStay(ownerA);
-		}
-	}
-
-	// 衝突離脱(OnCollisionExit)
-	for (const auto& oldPair : previousCollisions_) {
-		// 前フレームにあったペアが今フレームに無い場合は離脱
-		if (currentCollisions.find(oldPair) == currentCollisions.end()) {
-			auto [idA, idB] = oldPair;
-			BaseCollider3D* colliderA = FindColliderByID(activeColliders_, idA);
-			BaseCollider3D* colliderB = FindColliderByID(activeColliders_, idB);
-			if (!colliderA || !colliderB) {
-				continue;
-			}
-			colliderA->GetIsSellingOther() = false;
-			colliderB->GetIsSellingOther() = false;
-
-			GameObject3D* ownerA = colliderA->GetOwner();
-			GameObject3D* ownerB = colliderB->GetOwner();
-			if (!ownerA || !ownerB) {
-				continue;
-			}
-
-			// 衝突終了
-			ownerA->OnCollisionExit(ownerB);
-			ownerB->OnCollisionExit(ownerA);
 		}
 	}
 
@@ -216,4 +232,53 @@ bool CollisionManager::CheckSphereToSphereCollision(BaseCollider3D* colliderA, B
 		return true;  // 衝突している
 	}
 	return false;     // 衝突していない
+}
+
+bool CollisionManager::CheckAABBToAABBCollision(BaseCollider3D* colliderA, BaseCollider3D* colliderB) {
+	// AABBCollider にキャスト
+	AABBCollider* aabbA = static_cast<AABBCollider*>(colliderA);
+	AABBCollider* aabbB = static_cast<AABBCollider*>(colliderB);
+	assert(aabbA && aabbB && "Colliders must be AABBCollider!");
+
+	// AABBの最小点・最大点を取得
+	Vector3 minA = aabbA->GetMin();
+	Vector3 maxA = aabbA->GetMax();
+	Vector3 minB = aabbB->GetMin();
+	Vector3 maxB = aabbB->GetMax();
+
+	// 各軸ごとに範囲が重なっているか判定（Separating Axis Theorem）
+	bool overlapX = (minA.x <= maxB.x) && (maxA.x >= minB.x);
+	bool overlapY = (minA.y <= maxB.y) && (maxA.y >= minB.y);
+	bool overlapZ = (minA.z <= maxB.z) && (maxA.z >= minB.z);
+
+	// すべての軸でオーバーラップしていれば衝突
+	return overlapX && overlapY && overlapZ;
+}
+
+bool CollisionManager::CheckSphereToAABBCollision(BaseCollider3D* colliderA, BaseCollider3D* colliderB) {
+	// SphereCollider にキャスト
+	SphereCollider* sphere = static_cast<SphereCollider*>(colliderA);
+	AABBCollider* aabb = static_cast<AABBCollider*>(colliderB);
+	assert(sphere && aabb && "Colliders must be SphereCollider and AABBCollider!");
+
+	// 球の中心座標を取得
+	Vector3 sphereCenter = sphere->worldPosition_;
+	float sphereRadius = sphere->GetRadius();
+
+	// AABB の最小点・最大点を取得
+	Vector3 minAABB = aabb->GetMin();
+	Vector3 maxAABB = aabb->GetMax();
+
+	// 最近接点を求める（Clamp）
+	Vector3 closestPoint{};
+	closestPoint.x = std::clamp(sphereCenter.x, minAABB.x, maxAABB.x);
+	closestPoint.y = std::clamp(sphereCenter.y, minAABB.y, maxAABB.y);
+	closestPoint.z = std::clamp(sphereCenter.z, minAABB.z, maxAABB.z);
+
+	// 球の中心から最近接点までの距離を計算
+	Vector3 diff = sphereCenter - closestPoint;
+	float distanceSquared = LengthSquared(diff);
+
+	// 距離が半径以下なら衝突
+	return distanceSquared <= (sphereRadius * sphereRadius);
 }

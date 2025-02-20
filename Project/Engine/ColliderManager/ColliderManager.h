@@ -5,6 +5,7 @@
 
 #include "3D/Colliders3D/BaseCollider3D/BaseCollider3D.h"
 #include "3D/Colliders3D/SphereCollider/SphereCollider.h"
+#include "3D/Colliders3D/AABBCollider3D/AABBCollider3D.h"
 
 /// <summary>
 /// コライダーマネージャ
@@ -16,7 +17,7 @@ public:
 
 	void Update();
 
-	void Create(const std::string& name, Collider3DType colliderType);
+	std::string Create(const std::string& name, Collider3DType colliderType);
 	void Remove(const std::string& name);
 
 	BaseCollider3D* Find(const std::string& name);

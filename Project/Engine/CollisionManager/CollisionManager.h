@@ -42,8 +42,19 @@ private:
 	std::pair<uint32_t, uint32_t> MakeOrderedPair(uint32_t idA, uint32_t idB);
 	std::pair<Collider3DType, Collider3DType> MakeOrderedPair(Collider3DType typeA, Collider3DType typeB);
 
+	// 同形状同士
+
 	// 球体同士の当たり判定
 	bool CheckSphereToSphereCollision(BaseCollider3D* colliderA, BaseCollider3D* colliderB);
+
+	// AABB同士の当たり判定
+	bool CheckAABBToAABBCollision(BaseCollider3D* colliderA, BaseCollider3D* colliderB);
+
+	// 異種形状同士
+
+	// 球体とAABBの当たり判定
+	bool CheckSphereToAABBCollision(BaseCollider3D* colliderA, BaseCollider3D* colliderB);
+
 
 private:
 	// 衝突判定関数の型の定義

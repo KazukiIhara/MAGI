@@ -467,11 +467,8 @@ void GUI::ShowCreateColliderWindow() {
 
 	// 作成ボタン
 	if (ImGui::Button("Create")) {
-		// コライダーを作成
-		colliderManager_->Create(colliderName, static_cast<Collider3DType>(selectedTypeIndex));
-
-		// 作成したコライダーを取得
-		BaseCollider3D* newCollider = colliderManager_->Find(colliderName);
+		// コライダーを作成して取得
+		BaseCollider3D* newCollider = colliderManager_->Find(colliderManager_->Create(colliderName, static_cast<Collider3DType>(selectedTypeIndex)));
 		if (newCollider) {
 			newCollider->GetOffset() = { offset[0], offset[1], offset[2] };
 			newCollider->GetCategory() = selectedCategory; // カテゴリを設定
