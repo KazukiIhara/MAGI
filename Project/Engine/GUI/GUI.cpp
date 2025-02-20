@@ -384,19 +384,33 @@ void GUI::ShowRenderer3DList(const std::vector<std::unique_ptr<BaseRenderable3D>
 	//
 	// 左側に一覧を表示（スクロール可）
 	//
-	ImGui::Text("3DRendererList");
+	ImGui::Text("3D Renderer List");
 	ImGui::BeginChild("Renderer3DList", ImVec2(200, 100), true);
+
 	for (int i = 0; i < static_cast<int>(renderers3D.size()); i++) {
 		// 名前を取得
 		const std::string& rendererName = renderers3D[i]->name_;
+		bool isSelected = (selectedIndex == i);
 
-		// ボタンとして表示
-		// 押されたら選択中のインデックスを更新する
-		if (ImGui::Button(rendererName.c_str(), ImVec2(180, 0))) {
-			selectedIndex = i;
+		// 選択時と非選択時の色設定
+		if (isSelected) {
+			ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.26f, 0.59f, 0.98f, 1.0f)); // 明るい青
+			ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(0.26f, 0.59f, 0.98f, 1.0f));
+			ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4(0.06f, 0.53f, 0.98f, 1.0f));
+		} else {
+			ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.16f, 0.29f, 0.48f, 1.0f)); // 暗めの青
+			ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(0.26f, 0.59f, 0.98f, 1.0f));
+			ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4(0.06f, 0.53f, 0.98f, 1.0f));
 		}
 
+		// ボタンとして表示
+		if (ImGui::Button(rendererName.c_str(), ImVec2(180, 20))) {
+			selectedIndex = isSelected ? -1 : i; // クリックで選択解除 or 選択
+		}
+
+		ImGui::PopStyleColor(3); // 設定した色を元に戻す
 	}
+
 	ImGui::EndChild();
 }
 
