@@ -430,10 +430,18 @@ void GUI::ShowCreateColliderUI() {
 void GUI::ShowCreateColliderWindow() {
 	static char colliderName[128] = "NewCollider";  // 初期値適当
 	static int selectedTypeIndex = 0;
-	static CollisionCategory selectedCategory = CollisionCategory::None; // 🔹列挙型で管理
+	static CollisionCategory selectedCategory = CollisionCategory::None; // 列挙型で管理
 	static float offset[3] = { 0.0f, 0.0f, 0.0f };
 	static float radius = 1.0f; // Sphere用
-	static char ownerName[128] = "";
+
+	// ウィンドウが初めて表示されたタイミングで初期状態にリセット
+	if (ImGui::IsWindowAppearing()) {
+		strcpy_s(colliderName, "NewCollider");  // 初期値にリセット
+		selectedTypeIndex = 0;
+		selectedCategory = CollisionCategory::None;
+		offset[0] = 0.0f; offset[1] = 0.0f; offset[2] = 0.0f;
+		radius = 1.0f;
+	}
 
 	// コライダー名の入力
 	ImGui::InputText("Collider Name", colliderName, IM_ARRAYSIZE(colliderName));
@@ -442,6 +450,7 @@ void GUI::ShowCreateColliderWindow() {
 	const char* colliderTypes[] = { "Sphere", "AABB", "OBB" };
 	ImGui::Combo("Collider Type", &selectedTypeIndex, colliderTypes, IM_ARRAYSIZE(colliderTypes));
 
+	// コライダーカテゴリーの選択
 	int selectedCategoryIndex = static_cast<int>(selectedCategory);
 	const std::vector<const char*>& categoryList = GetCollisionCategoryList();
 	if (ImGui::Combo("Collider Category", &selectedCategoryIndex, categoryList.data(), static_cast<int>(categoryList.size()))) {
@@ -517,64 +526,72 @@ void GUI::ShowColliderSetting(const std::vector<std::unique_ptr<BaseCollider3D>>
 				}
 			}
 
-			//
-			// コライダータイプの編集
-			//
-			Collider3DType currentType = collider->GetType();
-			int selectedTypeIndex = static_cast<int>(currentType);
-			const char* colliderTypes[] = { "Sphere", "AABB", "OBB" };
-
-			if (ImGui::Combo("Collider Type", &selectedTypeIndex, colliderTypes, IM_ARRAYSIZE(colliderTypes))) {
-				// 変更されたら、新しいコライダーを作成
-				std::string colliderName = collider->name_;
-				CollisionCategory category = collider->GetCategory(); // カテゴリの保持
-				auto offset = collider->GetOffset(); // オフセットを保持
-				bool isActive = collider->GetIsActive(); // 有効フラグ保持
-
-				// 古いコライダーを削除
-				colliderManager_->Remove(colliderName);
-
-				// 新しいコライダーを作成
-				colliderManager_->Create(colliderName, static_cast<Collider3DType>(selectedTypeIndex));
-				BaseCollider3D* newCollider = colliderManager_->Find(colliderName);
-				if (newCollider) {
-					newCollider->GetOffset() = offset;
-					newCollider->GetIsActive() = isActive;
-					newCollider->GetCategory() = category;
-				}
-
-				// 更新
-				collider = newCollider;
-			}
-
-
 			// 
 			// カテゴリを編集
 			// 
-			CollisionCategory selectedCategory = collider->GetCategory();
-			int selectedCategoryIndex = static_cast<int>(selectedCategory);
-			const std::vector<const char*>& categoryList = GetCollisionCategoryList();
-			if (ImGui::Combo("Collider Category", &selectedCategoryIndex, categoryList.data(), static_cast<int>(categoryList.size()))) {
-				selectedCategory = static_cast<CollisionCategory>(selectedCategoryIndex);
+			{
+				CollisionCategory selectedCategory = collider->GetCategory();
+				int selectedCategoryIndex = static_cast<int>(selectedCategory);
+				const std::vector<const char*>& categoryList = GetCollisionCategoryList();
+				if (ImGui::Combo("Collider Category", &selectedCategoryIndex, categoryList.data(), static_cast<int>(categoryList.size()))) {
+					selectedCategory = static_cast<CollisionCategory>(selectedCategoryIndex);
+					collider->GetCategory() = selectedCategory;
+				}
+			}
+
+			//
+			// コライダータイプの編集
+			//
+			{
+				Collider3DType currentType = collider->GetType();
+				int selectedTypeIndex = static_cast<int>(currentType);
+				const char* colliderTypes[] = { "Sphere", "AABB", "OBB" };
+
+				if (ImGui::Combo("Collider Type", &selectedTypeIndex, colliderTypes, IM_ARRAYSIZE(colliderTypes))) {
+					// 変更されたら、新しいコライダーを作成
+					std::string colliderName = collider->name_;
+					CollisionCategory category = collider->GetCategory(); // カテゴリの保持
+					auto offset = collider->GetOffset(); // オフセットを保持
+					bool isActive = collider->GetIsActive(); // 有効フラグ保持
+
+					// 古いコライダーを削除
+					colliderManager_->Remove(colliderName);
+
+					// 新しいコライダーを作成
+					colliderManager_->Create(colliderName, static_cast<Collider3DType>(selectedTypeIndex));
+					BaseCollider3D* newCollider = colliderManager_->Find(colliderName);
+					if (newCollider) {
+						newCollider->GetOffset() = offset;
+						newCollider->GetIsActive() = isActive;
+						newCollider->GetCategory() = category;
+					}
+
+					// 更新
+					collider = newCollider;
+				}
 			}
 
 			//
 			// オフセットを編集
 			//
-			auto offsetPos = collider->GetOffset();
-			if (ImGui::DragFloat3("Offset", &offsetPos.x, 0.01f)) {
-				collider->GetOffset() = offsetPos;
+			{
+				auto offsetPos = collider->GetOffset();
+				if (ImGui::DragFloat3("Offset", &offsetPos.x, 0.01f)) {
+					collider->GetOffset() = offsetPos;
+				}
 			}
 
 			//
 			// 球体コライダーの場合のみ、半径 (radius) を編集
 			//
-			if (collider->GetType() == Collider3DType::Sphere) {
-				SphereCollider* sphere = dynamic_cast<SphereCollider*>(collider);
-				if (sphere) {
-					float radius = sphere->GetRadius();
-					if (ImGui::DragFloat("Radius", &radius, 0.01f, 0.0f, 10000.0f)) {
-						sphere->GetRadius() = radius;
+			{
+				if (collider->GetType() == Collider3DType::Sphere) {
+					SphereCollider* sphere = dynamic_cast<SphereCollider*>(collider);
+					if (sphere) {
+						float radius = sphere->GetRadius();
+						if (ImGui::DragFloat("Radius", &radius, 0.01f, 0.0f, 10000.0f)) {
+							sphere->GetRadius() = radius;
+						}
 					}
 				}
 			}
@@ -596,9 +613,14 @@ void GUI::ShowColliderInformation(const std::vector<std::unique_ptr<BaseCollider
 				ImGui::Text("GameObject: Not Owner");
 			}
 
-			// ワールド座標
-			auto worldPos = collider->worldPosition_;
-			ImGui::Text("World Position: (%.2f, %.2f, %.2f)", worldPos.x, worldPos.y, worldPos.z);
+			// アクティブフラグ
+			bool isActive = collider->GetIsActive();
+			ImGui::Text("Active: %s", isActive ? "true" : "false");
+
+			// コライダーのカテゴリ表示
+			CollisionCategory category = collider->GetCategory();
+			std::string categoryStr = CollisionCategoryToString(category);
+			ImGui::Text("Category: %s", categoryStr.c_str());
 
 			// コライダータイプの表示
 			Collider3DType cType = collider->GetType();
@@ -624,18 +646,13 @@ void GUI::ShowColliderInformation(const std::vector<std::unique_ptr<BaseCollider
 				break;
 			}
 
-			// コライダーのカテゴリ表示
-			CollisionCategory category = collider->GetCategory();
-			std::string categoryStr = CollisionCategoryToString(category);
-			ImGui::Text("Category: %s", categoryStr.c_str());
-
 			// コライダーのオフセット
 			auto offsetPos = collider->GetOffset();
 			ImGui::Text("Offset: (%.2f, %.2f, %.2f)", offsetPos.x, offsetPos.y, offsetPos.z);
 
-			// アクティブフラグ
-			bool isActive = collider->GetIsActive();
-			ImGui::Text("Active: %s", isActive ? "true" : "false");
+			// ワールド座標
+			auto worldPos = collider->worldPosition_;
+			ImGui::Text("World Position: (%.2f, %.2f, %.2f)", worldPos.x, worldPos.y, worldPos.z);
 
 		}
 	}

@@ -35,6 +35,18 @@ inline std::string CollisionCategoryToString(CollisionCategory category) {
 	}
 }
 
+inline CollisionCategory StringToCollisionCategory(const std::string& categoryName) {
+	if (categoryName == "None") {
+		return CollisionCategory::None;
+	} else if (categoryName == "Player") {
+		return CollisionCategory::Player;
+	} else if (categoryName == "Enemy") {
+		return CollisionCategory::Enemy;
+	} else {
+		return CollisionCategory::None;
+	}
+}
+
 // CollisionCategory の列挙値から ImGui 用の文字列配列（const char* の vector）を生成するヘルパー関数
 inline const std::vector<const char*>& GetCollisionCategoryList() {
 	// 文字列保持用と、ImGui 用の配列を静的変数で保持

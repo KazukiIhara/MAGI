@@ -122,10 +122,8 @@ void DataIO::LoadColliderDataFile(const std::string& fileName) {
 
 	// ファイルが存在するかチェック
 	if (!std::filesystem::exists(inputPath)) {
-		// エラーログ & MessageBox
 		Logger::Log("File not found: " + inputPath.string() + "\n");
 #ifdef _WIN32
-		// ワイド文字列に変換してエラー表示
 		std::wstring wMessage = Logger::ConvertString("ファイルが見つかりません: " + inputPath.generic_string());
 		std::wstring wTitle = Logger::ConvertString("Load Collider Data");
 		MessageBoxW(nullptr, wMessage.c_str(), wTitle.c_str(), MB_OK | MB_ICONERROR);
@@ -190,7 +188,6 @@ void DataIO::LoadColliderDataFile(const std::string& fileName) {
 		BaseCollider3D* newCollider = colliderManager_->Find(colliderName);
 
 		if (!newCollider) {
-			// 生成失敗などのエラーハンドリング
 			Logger::Log("Failed to create collider: " + colliderName + "\n");
 			continue;
 		}
@@ -200,19 +197,16 @@ void DataIO::LoadColliderDataFile(const std::string& fileName) {
 		// ------------------------------------------------
 		if (colliderJson.contains("offset")) {
 			auto offsetJson = colliderJson["offset"];
-			// JSON から取り出すときにキーが無ければデフォルト値 0.0f にしておく
 			float x = offsetJson.value("x", 0.0f);
 			float y = offsetJson.value("y", 0.0f);
 			float z = offsetJson.value("z", 0.0f);
-
-			newCollider->GetOffset() = { x,y,z };
+			newCollider->GetOffset() = { x, y, z };
 		}
 
 		// ------------------------------------------------
 		// radius (Sphere のみ)
 		// ------------------------------------------------
 		if (colliderType == Collider3DType::Sphere) {
-			// SphereCollider の派生クラスにキャストして半径を設定
 			auto sphereCollider = dynamic_cast<SphereCollider*>(newCollider);
 			if (sphereCollider && colliderJson.contains("radius")) {
 				float radiusVal = colliderJson["radius"].get<float>();
@@ -220,12 +214,25 @@ void DataIO::LoadColliderDataFile(const std::string& fileName) {
 			}
 		}
 
+		// ------------------------------------------------
+		// category (文字列から列挙型に変換)
+		// ------------------------------------------------
+		if (colliderJson.contains("category")) {
+			std::string categoryStr = colliderJson["category"].get<std::string>();
+			CollisionCategory category = CollisionCategory::None; // デフォルト値
+
+			// 文字列からカテゴリーを取得
+			category = StringToCollisionCategory(categoryStr);
+
+			// カテゴリを設定
+			newCollider->GetCategory() = category;
+		}
+
 		Logger::Log("Collider loaded: " + colliderName + " (type=" + std::to_string(typeValue) + ")\n");
 	}
 
 	Logger::Log("Collider data loaded from: " + inputPath.string() + "\n");
 #ifdef _WIN32
-	// 読み込み完了メッセージ
 	std::wstring wMessage = Logger::ConvertString("コライダー情報をロードしました。\n" + inputPath.generic_string());
 	std::wstring wTitle = Logger::ConvertString("Load Collider Data");
 	MessageBoxW(nullptr, wMessage.c_str(), wTitle.c_str(), MB_OK | MB_ICONINFORMATION);
@@ -278,7 +285,7 @@ void DataIO::SaveRenderer3DDataFile(const std::string& fileName) {
 		// JSON に名前を追加
 		json objectJson;
 		objectJson["name"] = obj->name_; // オブジェクト名を取得
-		
+
 		jsonData["Renderer3D"].push_back(objectJson);
 	}
 
@@ -327,12 +334,9 @@ void DataIO::SaveColliderDataFile(const std::string& fileName) {
 	if (!std::filesystem::exists(directoryPath)) {
 		std::error_code ec;
 		std::filesystem::create_directories(directoryPath, ec);
-
 		if (ec) {
-			// ログを出して
 			Logger::Log("Failed to create directory: " + directoryPath.string() + "\n");
 #ifdef _WIN32
-			// メッセージボックス (ワイド文字列に変換)
 			std::wstring wMessage = Logger::ConvertString(
 				"ディレクトリの作成に失敗しました。\n" + directoryPath.generic_string()
 			);
@@ -360,6 +364,8 @@ void DataIO::SaveColliderDataFile(const std::string& fileName) {
 		json colliderJson;
 		colliderJson["name"] = collider->name_;
 		colliderJson["type"] = static_cast<int>(collider->GetType());
+		// カテゴリを文字列で保存
+		colliderJson["category"] = CollisionCategoryToString(collider->GetCategory());
 
 		// オフセットの追加 (Vector3 などを想定)
 		{
@@ -401,9 +407,7 @@ void DataIO::SaveColliderDataFile(const std::string& fileName) {
 
 	// 保存完了をログ出力
 	Logger::Log("Collider data saved to: " + outputPath.string() + "\n");
-
 #ifdef _WIN32
-	// メッセージボックスで表示 (ワイド文字に変換し、区切りを '/' に統一した文字列を使用)
 	std::wstring wMessage = Logger::ConvertString(
 		"コライダー情報の保存が完了しました。\n" + outputPath.generic_string()
 	);
@@ -411,7 +415,6 @@ void DataIO::SaveColliderDataFile(const std::string& fileName) {
 	MessageBoxW(nullptr, wMessage.c_str(), wTitle.c_str(), MB_OK | MB_ICONINFORMATION);
 #endif
 }
-
 
 Renderer3DManager* DataIO::GetRenderer3DManager() {
 	return renderer3DManager_;
