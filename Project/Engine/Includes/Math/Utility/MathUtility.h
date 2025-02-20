@@ -133,6 +133,9 @@ namespace MAGIMath {
 	// ベクトルの長さ
 	float Length(const Vector3& a);
 
+	// ベクトルの長さとの二乗値
+	float LengthSquared(const Vector3& v);
+
 	// 正規化
 	Vector3 Normalize(const Vector3& a);
 

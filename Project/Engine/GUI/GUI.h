@@ -50,8 +50,9 @@ private:
 	void ShowRenderer3DDataLoadUI();
 	void ShowCreateRenderer3DUI();
 	void ShowCreateRenderer3DWindow();
-	void ShowRenderer3DList(const std::vector<std::unique_ptr<BaseRenderable3D>>& colliders, int& selectedIndex);
-	
+	void ShowRenderer3DList(const std::vector<std::unique_ptr<BaseRenderable3D>>& renderers, int& selectedIndex);
+	void ShowRenderer3DSetting(const std::vector<std::unique_ptr<BaseRenderable3D>>& renderers, int& selectedIndex);
+	void ShowRenderer3DInformation(const std::vector<std::unique_ptr<BaseRenderable3D>>& renderers, int& selectedIndex);
 
 	// Collider
 	void ShowColliderManager();
@@ -63,8 +64,10 @@ private:
 	void ShowColliderSetting(const std::vector<std::unique_ptr<BaseCollider3D>>& colliders, int& selectedIndex);
 	void ShowColliderInformation(const std::vector<std::unique_ptr<BaseCollider3D>>& colliders, int& selectedIndex);
 private:
+	//
 	// ウィンドウ表示フラグ
-
+	//
+	
 	// 3D描画オブジェクト作成ウィンドウの表示管理フラグ
 	bool showRenderer3DCreateWindow_ = false;
 

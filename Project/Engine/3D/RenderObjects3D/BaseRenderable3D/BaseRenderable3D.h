@@ -2,13 +2,15 @@
 
 // C++
 #include <memory>
-
+#include <optional>
+// 
 // DirectX
 #include <d3d12.h>
 
 // MyHedder
 #include "Structs/ObjectStruct.h"
 #include "Enums/BlendModeEnum.h"
+#include "Enums/Renderer3DEnum.h"
 
 #include "DirectX/ComPtr/ComPtr.h"
 #include "3D/Base3D/WorldEntity/WorldEntity.h"
@@ -17,7 +19,7 @@
 /// <summary>
 /// 3D描画用の基底クラス
 /// </summary>
-class BaseRenderable3D: public WorldEntity {
+class BaseRenderable3D : public WorldEntity {
 public:
 	BaseRenderable3D(const std::string& objectName);
 	virtual ~BaseRenderable3D() = default;
@@ -29,7 +31,6 @@ public:
 	Vector3& GetScale();
 	Vector3& GetRotate();
 	Vector3& GetTranslate();
-
 
 	UVTransform& GetUvTransform();
 
@@ -58,7 +59,8 @@ private:
 	UVTransform uvTransform_{};
 	// ブレンドモード
 	BlendMode blendMode_ = BlendMode::Normal;
-
+	// 描画オブジェクトのタイプ
+	std::optional<Renderer3DType> renderer3DType_ = std::nullopt;
 private:
 	// WVP用のリソース
 	ComPtr<ID3D12Resource> transformationResource_ = nullptr;

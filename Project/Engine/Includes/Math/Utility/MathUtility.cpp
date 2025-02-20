@@ -212,6 +212,10 @@ float MAGIMath::Length(const Vector3& a) {
 	return std::sqrt(a.x * a.x + a.y * a.y + a.z * a.z);
 }
 
+float MAGIMath::LengthSquared(const Vector3& v) {
+	return v.x * v.x + v.y * v.y + v.z * v.z;
+}
+
 Vector3 MAGIMath::Normalize(const Vector3& a) {
 	float length = Length(a);
 	Vector3 normalizedVector{};
