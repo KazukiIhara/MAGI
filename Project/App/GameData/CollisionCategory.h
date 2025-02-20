@@ -3,6 +3,7 @@
 // C++
 #include <iostream>
 #include <string>
+#include <vector>
 
 /// <summary>
 /// 当たり判定のカテゴリ
@@ -32,4 +33,26 @@ inline std::string CollisionCategoryToString(CollisionCategory category) {
 	default:
 		return "Unknown";
 	}
+}
+
+// CollisionCategory の列挙値から ImGui 用の文字列配列（const char* の vector）を生成するヘルパー関数
+inline const std::vector<const char*>& GetCollisionCategoryList() {
+	// 文字列保持用と、ImGui 用の配列を静的変数で保持
+	static std::vector<std::string> categoryNamesStr;
+	static std::vector<const char*> categoryNamesCStr;
+	static bool initialized = false;
+
+	if (!initialized) {
+		// CollisionCategory::Count までループして、各カテゴリの文字列を取得
+		for (int i = 0; i < static_cast<int>(CollisionCategory::Count); ++i) {
+			categoryNamesStr.push_back(CollisionCategoryToString(static_cast<CollisionCategory>(i)));
+		}
+		// 各 std::string の c_str() を取得して vector に格納
+		for (const auto& str : categoryNamesStr) {
+			categoryNamesCStr.push_back(str.c_str());
+		}
+		initialized = true;
+	}
+
+	return categoryNamesCStr;
 }

@@ -435,26 +435,6 @@ void GUI::ShowCreateColliderWindow() {
 	static float radius = 1.0f; // Sphere用
 	static char ownerName[128] = "";
 
-	// CollisionCategory の列挙値を元に動的にリストを作成
-	static std::vector<std::string> categoryNamesStr; // std::string を保持
-	static std::vector<const char*> categoryNamesCStr; // ImGui::Combo 用の const char* 配列
-	static bool initialized = false;
-
-	if (!initialized) {
-		for (int i = 0; i < static_cast<int>(CollisionCategory::Count); ++i) {
-			categoryNamesStr.push_back(CollisionCategoryToString(static_cast<CollisionCategory>(i))); // 文字列を保存
-		}
-
-		// `.c_str()` を取得して const char* 配列を作成
-		for (const auto& str : categoryNamesStr) {
-			categoryNamesCStr.push_back(str.c_str());
-		}
-
-		initialized = true;
-	}
-
-
-
 	// コライダー名の入力
 	ImGui::InputText("Collider Name", colliderName, IM_ARRAYSIZE(colliderName));
 
@@ -462,9 +442,9 @@ void GUI::ShowCreateColliderWindow() {
 	const char* colliderTypes[] = { "Sphere", "AABB", "OBB" };
 	ImGui::Combo("Collider Type", &selectedTypeIndex, colliderTypes, IM_ARRAYSIZE(colliderTypes));
 
-	// ImGui::Combo で使用
 	int selectedCategoryIndex = static_cast<int>(selectedCategory);
-	if (ImGui::Combo("Collider Category", &selectedCategoryIndex, categoryNamesCStr.data(), static_cast<int>(categoryNamesCStr.size()))) {
+	const std::vector<const char*>& categoryList = GetCollisionCategoryList();
+	if (ImGui::Combo("Collider Category", &selectedCategoryIndex, categoryList.data(), static_cast<int>(categoryList.size()))) {
 		selectedCategory = static_cast<CollisionCategory>(selectedCategoryIndex);
 	}
 
@@ -526,8 +506,19 @@ void GUI::ShowColliderSetting(const std::vector<std::unique_ptr<BaseCollider3D>>
 	if (selectedIndex >= 0 && selectedIndex < static_cast<int>(colliders.size())) {
 		BaseCollider3D* collider = colliders[selectedIndex].get();
 		if (collider) {
+
 			//
-			// コライダータイプの変更
+			// 有効フラグを編集
+			//
+			{
+				auto isActive = collider->GetIsActive();
+				if (ImGui::Checkbox("IsActive", &isActive)) {
+					collider->GetIsActive() = isActive;
+				}
+			}
+
+			//
+			// コライダータイプの編集
 			//
 			Collider3DType currentType = collider->GetType();
 			int selectedTypeIndex = static_cast<int>(currentType);
@@ -556,39 +547,15 @@ void GUI::ShowColliderSetting(const std::vector<std::unique_ptr<BaseCollider3D>>
 				collider = newCollider;
 			}
 
-			//
-			// コライダーのカテゴリ変更
-			//
-			static std::vector<std::string> categoryNamesStr;
-			static std::vector<const char*> categoryNamesCStr;
-			static bool initialized = false;
-
-			if (!initialized) {
-				for (int i = 0; i < static_cast<int>(CollisionCategory::Count); ++i) {
-					categoryNamesStr.push_back(CollisionCategoryToString(static_cast<CollisionCategory>(i)));
-				}
-				for (const auto& str : categoryNamesStr) {
-					categoryNamesCStr.push_back(str.c_str());
-				}
-				initialized = true;
-			}
-
-			CollisionCategory currentCategory = collider->GetCategory();
-			int selectedCategoryIndex = static_cast<int>(currentCategory);
 
 			// 
 			// カテゴリを編集
 			// 
-			if (ImGui::Combo("Collider Category", &selectedCategoryIndex, categoryNamesCStr.data(), static_cast<int>(categoryNamesCStr.size()))) {
-				collider->GetCategory() = static_cast<CollisionCategory>(selectedCategoryIndex);
-			}
-
-			//
-			// 有効フラグを編集
-			//
-			auto isActive = collider->GetIsActive();
-			if (ImGui::Checkbox("IsActive", &isActive)) {
-				collider->GetIsActive() = isActive;
+			CollisionCategory selectedCategory = collider->GetCategory();
+			int selectedCategoryIndex = static_cast<int>(selectedCategory);
+			const std::vector<const char*>& categoryList = GetCollisionCategoryList();
+			if (ImGui::Combo("Collider Category", &selectedCategoryIndex, categoryList.data(), static_cast<int>(categoryList.size()))) {
+				selectedCategory = static_cast<CollisionCategory>(selectedCategoryIndex);
 			}
 
 			//
