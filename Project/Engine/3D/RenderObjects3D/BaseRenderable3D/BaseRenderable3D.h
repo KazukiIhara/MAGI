@@ -36,6 +36,8 @@ public:
 
 	Material3DForGPU& GetMaterial();
 
+	BlendMode& GetBlendMode();
+
 	void SetRenderer3DType(Renderer3DType type);
 	Renderer3DType GetType()const;
 protected:

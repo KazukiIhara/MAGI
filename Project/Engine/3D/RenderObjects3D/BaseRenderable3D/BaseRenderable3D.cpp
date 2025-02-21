@@ -47,6 +47,10 @@ Material3DForGPU& BaseRenderable3D::GetMaterial() {
 	return material_;
 }
 
+BlendMode& BaseRenderable3D::GetBlendMode() {
+	return blendMode_;
+}
+
 void BaseRenderable3D::SetRenderer3DType(Renderer3DType type) {
 	renderer3DType_ = type;
 }

@@ -427,14 +427,14 @@ void GUI::ShowRenderer3DList(const std::vector<std::unique_ptr<BaseRenderable3D>
 
 void GUI::ShowRenderer3DSetting(const std::vector<std::unique_ptr<BaseRenderable3D>>& renderers, int& selectedIndex) {
 	// 描画オブジェクトの設定
-	ImGui::BeginChild("RendererSettings", ImVec2(0, 200), true);
+	ImGui::BeginChild("RendererSettings", ImVec2(0, 250), true);
 	if (selectedIndex >= 0 && selectedIndex < static_cast<int>(renderers.size())) {
 		BaseRenderable3D* renderer = renderers[selectedIndex].get();
 		if (renderer) {
 
 			// タブバーの開始
 			if (ImGui::BeginTabBar("RendererSettingsTabs")) {
-				
+
 				//
 				// トランスフォームのタブ
 				//
@@ -489,9 +489,38 @@ void GUI::ShowRenderer3DSetting(const std::vector<std::unique_ptr<BaseRenderable
 				// マテリアルのタブ
 				//
 				if (ImGui::BeginTabItem("Material")) {
-					auto color = renderer->GetMaterial().color;
-					if (ImGui::ColorEdit4("Color", &color.x)) {
-						renderer->GetMaterial().color = color;
+					auto& material = renderer->GetMaterial();
+
+					// カラー
+					if (ImGui::ColorEdit4("Color", &material.color.x)) {
+						renderer->GetMaterial().color = material.color;
+					}
+
+					// ライティングの有効化
+					bool enableLighting = material.enableLighting;
+					if (ImGui::Checkbox("Enable Lighting", &enableLighting)) {
+						renderer->GetMaterial().enableLighting = enableLighting;
+					}
+
+					// スペキュラ反射の有効化
+					bool enableSpecular = material.enableSpecularRef;
+					if (ImGui::Checkbox("Enable Specular", &enableSpecular)) {
+						renderer->GetMaterial().enableSpecularRef = enableSpecular;
+					}
+
+					// シャイニネス（光沢）
+					float shininess = material.shininess;
+					if (ImGui::DragFloat("Shininess", &shininess, 0.1f, 0.0f, 128.0f)) {
+						renderer->GetMaterial().shininess = shininess;
+					}
+
+					// UV変換行列の編集
+					Matrix4x4 uvMatrix = material.uvTransformMatrix;
+					if (ImGui::InputFloat4("UV Matrix Row 1", &uvMatrix.m[0][0]) ||
+						ImGui::InputFloat4("UV Matrix Row 2", &uvMatrix.m[1][0]) ||
+						ImGui::InputFloat4("UV Matrix Row 3", &uvMatrix.m[2][0]) ||
+						ImGui::InputFloat4("UV Matrix Row 4", &uvMatrix.m[3][0])) {
+						renderer->GetMaterial().uvTransformMatrix = uvMatrix;
 					}
 
 					ImGui::EndTabItem();
@@ -504,7 +533,6 @@ void GUI::ShowRenderer3DSetting(const std::vector<std::unique_ptr<BaseRenderable
 	}
 	ImGui::EndChild();
 }
-
 
 void GUI::ShowRenderer3DInformation(const std::vector<std::unique_ptr<BaseRenderable3D>>& renderers, int& selectedIndex) {
 	// 有効なインデックスなら、詳細情報を表示
