@@ -455,6 +455,31 @@ void GUI::ShowRenderer3DSetting(const std::vector<std::unique_ptr<BaseRenderable
 				}
 			}
 
+			// 
+			// UVトランスフォームの編集
+			// 
+			{
+				// スケール
+				auto uvScale = renderer->GetUvTransform().scale;
+				if (ImGui::DragFloat2("UVScale", &uvScale.x, 0.01f, 0.0f, 1000.0f)) {
+					renderer->GetUvTransform().scale = uvScale;
+				}
+
+				// 回転
+				auto uvRotate = renderer->GetUvTransform().rotateZ;
+				if (ImGui::DragFloat("UVRotate", &uvRotate, 0.01f, -std::numbers::pi_v<float>, std::numbers::pi_v<float>)) {
+					renderer->GetUvTransform().rotateZ = uvRotate;
+				}
+
+				// 位置
+				auto uvTranslate = renderer->GetUvTransform().translate;
+				if (ImGui::DragFloat2("UVTranslate", &uvTranslate.x, 0.01f, -1000.0f, 1000.0f)) {
+					renderer->GetUvTransform().translate = uvTranslate;
+				}
+
+			}
+
+
 			//
 			// カラーの編集
 			//
