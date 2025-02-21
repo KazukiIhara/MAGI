@@ -7,6 +7,7 @@
 
 PrimitiveRenderer3D::PrimitiveRenderer3D(const std::string& objectName, const Primitive3DType& primitiveType, const std::string& textureName)
 	:BaseRenderable3D(objectName) {
+	
 	primitiveType_ = primitiveType;
 	textureName_ = textureName;
 	// テクスチャが未設定の場合、デフォルトのテクスチャを割り当てる(uvCheckerはエンジン用のリソースのためフルパス指定)
@@ -48,6 +49,10 @@ void PrimitiveRenderer3D::Draw() {
 
 	// Primitive描画
 	primitive_->Draw();
+}
+
+Primitive3DType PrimitiveRenderer3D::GetPrimitiveType() const {
+	return primitiveType_;
 }
 
 void PrimitiveRenderer3D::AssignShape() {

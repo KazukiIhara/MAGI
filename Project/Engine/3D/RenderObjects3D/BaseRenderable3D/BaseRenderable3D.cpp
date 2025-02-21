@@ -47,6 +47,14 @@ Material3DForGPU& BaseRenderable3D::GetMaterial() {
 	return material_;
 }
 
+void BaseRenderable3D::SetRenderer3DType(Renderer3DType type) {
+	renderer3DType_ = type;
+}
+
+Renderer3DType BaseRenderable3D::GetType() const {
+	return renderer3DType_.value();
+}
+
 void BaseRenderable3D::Initialize(const std::string& objectName) {
 	// 名前のセット
 	name_ = objectName;

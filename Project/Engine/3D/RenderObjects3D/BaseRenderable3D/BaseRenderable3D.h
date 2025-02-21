@@ -35,6 +35,9 @@ public:
 	UVTransform& GetUvTransform();
 
 	Material3DForGPU& GetMaterial();
+
+	void SetRenderer3DType(Renderer3DType type);
+	Renderer3DType GetType()const;
 protected:
 	void Initialize(const std::string& objectName);
 	// 描画前の処理

@@ -362,17 +362,17 @@ void GUI::ShowCreateRenderer3DWindow() {
 
 		// タイプによって生成
 		switch (selectedRenderer3DTypeIndex) {
-			case 0:
-				renderer3DManager_->CreatePrimitiveRenderer(rendererName, static_cast<Primitive3DType>(selectedPrimitive3DTypeIndex), modelNameOrTextureName);
-				break;
-			case 1:
-				renderer3DManager_->CreateStaticRenderer(rendererName, modelNameOrTextureName);
-				break;
-			case 2:
-				renderer3DManager_->CreateSkinningRenderer(rendererName, modelNameOrTextureName);
-				break;
-			default:
-				break;
+		case 0:
+			renderer3DManager_->CreatePrimitiveRenderer(rendererName, static_cast<Primitive3DType>(selectedPrimitive3DTypeIndex), modelNameOrTextureName);
+			break;
+		case 1:
+			renderer3DManager_->CreateStaticRenderer(rendererName, modelNameOrTextureName);
+			break;
+		case 2:
+			renderer3DManager_->CreateSkinningRenderer(rendererName, modelNameOrTextureName);
+			break;
+		default:
+			break;
 		}
 
 		// ウィンドウを非表示に
@@ -421,9 +421,39 @@ void GUI::ShowRenderer3DSetting(const std::vector<std::unique_ptr<BaseRenderable
 }
 
 void GUI::ShowRenderer3DInformation(const std::vector<std::unique_ptr<BaseRenderable3D>>& renderers, int& selectedIndex) {
-	// 描画オブジェクトの情報
-	renderers;
-	selectedIndex;
+	// 有効なインデックスなら、詳細情報を表示
+	if (selectedIndex >= 0 && selectedIndex < static_cast<int>(renderers.size())) {
+		BaseRenderable3D* renderer = renderers[selectedIndex].get();
+		if (renderer) {
+			// Rendererの名前
+			ImGui::Text("Renderer Name: %s", renderer->name_.c_str());
+
+			// Rendererのタイプ表示
+			Renderer3DType rType = renderer->GetType();
+			switch (rType) {
+			case Renderer3DType::Primitive:
+				ImGui::Text("Renderer Type: Primitive");
+				{
+					PrimitiveRenderer3D* primitive = dynamic_cast<PrimitiveRenderer3D*>(renderer);
+					if (primitive) {
+						Primitive3DType pType = primitive->GetPrimitiveType();
+						std::string primitiveStr = PrimitiveTypeToString(pType);
+						ImGui::Text("Primitive Type: %s", primitiveStr.c_str());
+					}
+				}
+				break;
+			case Renderer3DType::Static:
+				ImGui::Text("Renderer Type: Static");
+				break;
+			case Renderer3DType::Skinning:
+				ImGui::Text("Renderer Type: Skinning");
+				break;
+			default:
+				ImGui::Text("Renderer Type: Unknown");
+				break;
+			}
+		}
+	}
 }
 
 void GUI::ShowColliderManager() {
@@ -786,40 +816,40 @@ void GUI::ShowColliderInformation(const std::vector<std::unique_ptr<BaseCollider
 			// コライダータイプの表示
 			Collider3DType cType = collider->GetType();
 			switch (cType) {
-				case Collider3DType::Sphere:
-					ImGui::Text("Collider Type: Sphere");
-					// 半径を表示
-					{
-						SphereCollider* sphere = dynamic_cast<SphereCollider*>(collider);
-						if (sphere) {
-							ImGui::Text("Radius: %.2f", sphere->GetRadius());
-						}
+			case Collider3DType::Sphere:
+				ImGui::Text("Collider Type: Sphere");
+				// 半径を表示
+				{
+					SphereCollider* sphere = dynamic_cast<SphereCollider*>(collider);
+					if (sphere) {
+						ImGui::Text("Radius: %.2f", sphere->GetRadius());
 					}
-					break;
-				case Collider3DType::AABB:
-					ImGui::Text("Collider Type: AABB");
-					// 情報を表示
-					{
-						AABBCollider* aabb = dynamic_cast<AABBCollider*>(collider);
-						if (aabb) {
-							Vector3 offsetMin = aabb->GetOffsetMin();
-							Vector3 offsetMax = aabb->GetOffsetMax();
-							Vector3 min = aabb->GetMin();
-							Vector3 max = aabb->GetMax();
+				}
+				break;
+			case Collider3DType::AABB:
+				ImGui::Text("Collider Type: AABB");
+				// 情報を表示
+				{
+					AABBCollider* aabb = dynamic_cast<AABBCollider*>(collider);
+					if (aabb) {
+						Vector3 offsetMin = aabb->GetOffsetMin();
+						Vector3 offsetMax = aabb->GetOffsetMax();
+						Vector3 min = aabb->GetMin();
+						Vector3 max = aabb->GetMax();
 
-							ImGui::Text("Offset Min: (%.2f, %.2f, %.2f)", offsetMin.x, offsetMin.y, offsetMin.z);
-							ImGui::Text("Offset Max: (%.2f, %.2f, %.2f)", offsetMax.x, offsetMax.y, offsetMax.z);
-							ImGui::Text("World Min: (%.2f, %.2f, %.2f)", min.x, min.y, min.z);
-							ImGui::Text("World Max: (%.2f, %.2f, %.2f)", max.x, max.y, max.z);
-						}
+						ImGui::Text("Offset Min: (%.2f, %.2f, %.2f)", offsetMin.x, offsetMin.y, offsetMin.z);
+						ImGui::Text("Offset Max: (%.2f, %.2f, %.2f)", offsetMax.x, offsetMax.y, offsetMax.z);
+						ImGui::Text("World Min: (%.2f, %.2f, %.2f)", min.x, min.y, min.z);
+						ImGui::Text("World Max: (%.2f, %.2f, %.2f)", max.x, max.y, max.z);
 					}
-					break;
-				case Collider3DType::OBB:
-					ImGui::Text("Collider Type: OBB");
-					break;
-				default:
-					ImGui::Text("Collider Type: Unknown");
-					break;
+				}
+				break;
+			case Collider3DType::OBB:
+				ImGui::Text("Collider Type: OBB");
+				break;
+			default:
+				ImGui::Text("Collider Type: Unknown");
+				break;
 			}
 
 			// コライダーのオフセット
