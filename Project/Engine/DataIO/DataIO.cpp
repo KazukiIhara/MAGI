@@ -48,6 +48,9 @@ void DataIO::EndFrame() {
 }
 
 void DataIO::LoadRenderer3DDataFile(const std::string& fileName) {
+	// Renderer3Dのリストをクリア（既存オブジェクト削除）
+	renderer3DManager_->Clear();
+
 	// パスを組み立て (例: "Assets/Datas/Renderer3D/<fileName>")
 	std::filesystem::path directoryPath = "Assets/Datas/Renderer3D";
 	std::filesystem::path inputPath = directoryPath / fileName;
@@ -95,12 +98,114 @@ void DataIO::LoadRenderer3DDataFile(const std::string& fileName) {
 	}
 
 	// Renderer3Dデータが含まれているか確認
-	if (!jsonData.contains("Renderer3D") || !jsonData["Renderer3D"].is_object()) {
-		Logger::Log("No 'Renderer3D' object in JSON: " + inputPath.string() + "\n");
+	if (!jsonData.contains("Renderer3D") || !jsonData["Renderer3D"].is_array()) {
+		Logger::Log("No 'Renderer3D' array in JSON: " + inputPath.string() + "\n");
 		return;
 	}
 
-	// 現時点ではパラメータのロードはなし
+	// JSON 配列を走査してRenderer3Dを生成
+	auto& renderersArray = jsonData["Renderer3D"];
+	for (auto& rendererJson : renderersArray) {
+		// 必要なフィールドがあるかチェック
+		if (!rendererJson.contains("name") || !rendererJson.contains("type")) {
+			Logger::Log("Invalid renderer entry: missing 'name' or 'type'.\n");
+			continue;
+		}
+
+		// それぞれ読み取る
+		std::string rendererName = rendererJson["name"].get<std::string>();
+		int typeValue = rendererJson["type"].get<int>();
+		Renderer3DType rendererType = static_cast<Renderer3DType>(typeValue);
+
+		std::string createdRendererName;
+
+		// タイプごとに適切な作成関数を呼ぶ
+		switch (rendererType) {
+		case Renderer3DType::Primitive:
+		{
+			if (!rendererJson.contains("primitiveType")) {
+				Logger::Log("Primitive Renderer missing 'primitiveType'. Skipping...\n");
+				continue;
+			}
+			int primitiveTypeValue = rendererJson["primitiveType"].get<int>();
+			Primitive3DType primitiveType = static_cast<Primitive3DType>(primitiveTypeValue);
+			std::string textureName = rendererJson.value("texture", "");
+
+			createdRendererName = renderer3DManager_->CreatePrimitiveRenderer(rendererName, primitiveType, textureName);
+		}
+		break;
+		case Renderer3DType::Static:
+		{
+			if (!rendererJson.contains("modelName")) {
+				Logger::Log("Static Renderer missing 'modelName'. Skipping...\n");
+				continue;
+			}
+			std::string modelName = rendererJson["modelName"].get<std::string>();
+
+			createdRendererName = renderer3DManager_->CreateStaticRenderer(rendererName, modelName);
+		}
+		break;
+		case Renderer3DType::Skinning:
+		{
+			if (!rendererJson.contains("modelName")) {
+				Logger::Log("Skinning Renderer missing 'modelName'. Skipping...\n");
+				continue;
+			}
+			std::string modelName = rendererJson["modelName"].get<std::string>();
+
+			createdRendererName = renderer3DManager_->CreateSkinningRenderer(rendererName, modelName);
+		}
+		break;
+		default:
+			Logger::Log("Unknown Renderer3DType: " + std::to_string(typeValue) + ". Skipping...\n");
+			continue;
+		}
+
+		// 作成したRendererを検索
+		BaseRenderable3D* newRenderer = renderer3DManager_->Find(createdRendererName);
+
+		if (!newRenderer) {
+			Logger::Log("Failed to create renderer: " + createdRendererName + "\n");
+			continue;
+		}
+
+		// ------------------------------------------------
+		// トランスフォームの読み込み (scale → rotate → translate)
+		// ------------------------------------------------
+		if (rendererJson.contains("transform")) {
+			auto& transformJson = rendererJson["transform"];
+
+			// Scale
+			if (transformJson.contains("scale") && transformJson["scale"].is_array()) {
+				newRenderer->GetScale() = {
+					transformJson["scale"][0].get<float>(),
+					transformJson["scale"][1].get<float>(),
+					transformJson["scale"][2].get<float>()
+				};
+			}
+
+			// Rotate
+			if (transformJson.contains("rotate") && transformJson["rotate"].is_array()) {
+				newRenderer->GetRotate() = {
+					transformJson["rotate"][0].get<float>(),
+					transformJson["rotate"][1].get<float>(),
+					transformJson["rotate"][2].get<float>()
+				};
+			}
+
+			// Translate
+			if (transformJson.contains("translate") && transformJson["translate"].is_array()) {
+				newRenderer->GetTranslate() = {
+					transformJson["translate"][0].get<float>(),
+					transformJson["translate"][1].get<float>(),
+					transformJson["translate"][2].get<float>()
+				};
+			}
+		}
+
+		Logger::Log("Renderer loaded: " + createdRendererName + "\n");
+	}
+
 	Logger::Log("Renderer3D data loaded from: " + inputPath.string() + "\n");
 
 #ifdef _WIN32
@@ -109,7 +214,6 @@ void DataIO::LoadRenderer3DDataFile(const std::string& fileName) {
 	std::wstring wTitle = Logger::ConvertString("Load Renderer3D Data");
 	MessageBoxW(nullptr, wMessage.c_str(), wTitle.c_str(), MB_OK | MB_ICONINFORMATION);
 #endif
-
 }
 
 void DataIO::LoadColliderDataFile(const std::string& fileName) {
@@ -239,7 +343,6 @@ void DataIO::LoadColliderDataFile(const std::string& fileName) {
 #endif
 }
 
-
 void DataIO::SaveRenderer3DDataFile(const std::string& fileName) {
 	// 出力先ディレクトリ
 	std::filesystem::path directoryPath = "Assets/Datas/Renderer3D";
@@ -255,7 +358,7 @@ void DataIO::SaveRenderer3DDataFile(const std::string& fileName) {
 		std::filesystem::create_directories(directoryPath, ec);
 
 		if (ec) {
-			// ログを出して
+			// ログを出す
 			Logger::Log("Failed to create directory: " + directoryPath.string() + "\n");
 #ifdef _WIN32
 			// メッセージボックス (ワイド文字列に変換)
@@ -285,7 +388,54 @@ void DataIO::SaveRenderer3DDataFile(const std::string& fileName) {
 		// JSON に名前を追加
 		json objectJson;
 		objectJson["name"] = obj->name_; // オブジェクト名を取得
+		objectJson["type"] = static_cast<int>(obj->GetType()); // Renderer3Dの種類を保存
 
+		// Renderer3Dの種類に応じた追加情報を保存
+		switch (obj->GetType()) {
+		case Renderer3DType::Primitive:
+		{
+			auto primitiveRenderer = dynamic_cast<PrimitiveRenderer3D*>(obj.get());
+			if (primitiveRenderer) {
+				objectJson["primitiveType"] = static_cast<int>(primitiveRenderer->GetPrimitiveType());
+				objectJson["texture"] = primitiveRenderer->GetTextureFileName();
+			}
+		}
+		break;
+		case Renderer3DType::Static:
+		{
+			auto staticRenderer = dynamic_cast<StaticRenderer3D*>(obj.get());
+			if (staticRenderer) {
+				objectJson["modelName"] = staticRenderer->GetModelName();
+			}
+		}
+		break;
+		case Renderer3DType::Skinning:
+		{
+			auto skinningRenderer = dynamic_cast<SkinningRenderer3D*>(obj.get());
+			if (skinningRenderer) {
+				objectJson["modelName"] = skinningRenderer->GetModelName();
+			}
+		}
+		break;
+		default:
+			break;
+		}
+
+		// トランスフォーム情報を追加（順番: Scale → Rotate → Translate）
+		objectJson["transform"]["scale"] = { obj->GetScale().x, obj->GetScale().y, obj->GetScale().z };
+		objectJson["transform"]["rotate"] = { obj->GetRotate().x, obj->GetRotate().y, obj->GetRotate().z };
+		objectJson["transform"]["translate"] = { obj->GetTranslate().x, obj->GetTranslate().y, obj->GetTranslate().z };
+
+		// UVトランスフォーム情報を追加
+		const auto& uvTransform = obj->GetUvTransform();
+		objectJson["uvTransform"]["scale"] = { uvTransform.scale.x, uvTransform.scale.y };
+		objectJson["uvTransform"]["rotateZ"] = uvTransform.rotateZ;
+		objectJson["uvTransform"]["translate"] = { uvTransform.translate.x, uvTransform.translate.y };
+
+		// マテリアル情報を追加（カラー）
+		objectJson["material"]["color"] = { obj->GetMaterial().color.x, obj->GetMaterial().color.y, obj->GetMaterial().color.z, obj->GetMaterial().color.w };
+
+		// JSON配列に追加
 		jsonData["Renderer3D"].push_back(objectJson);
 	}
 

@@ -396,7 +396,7 @@ void GUI::ShowRenderer3DList(const std::vector<std::unique_ptr<BaseRenderable3D>
 	// 左側に一覧を表示（スクロール可）
 	//
 	ImGui::Text("3D Renderer List");
-	ImGui::BeginChild("Renderer3DList", ImVec2(200, 120), true);
+	ImGui::BeginChild("Renderer3DList", ImVec2(200, 150), true);
 
 	for (int i = 0; i < static_cast<int>(renderers3D.size()); i++) {
 		// 名前を取得
@@ -427,70 +427,84 @@ void GUI::ShowRenderer3DList(const std::vector<std::unique_ptr<BaseRenderable3D>
 
 void GUI::ShowRenderer3DSetting(const std::vector<std::unique_ptr<BaseRenderable3D>>& renderers, int& selectedIndex) {
 	// 描画オブジェクトの設定
-	ImGui::BeginChild("RendererSettings", ImVec2(0, 120), true);
+	ImGui::BeginChild("RendererSettings", ImVec2(0, 200), true);
 	if (selectedIndex >= 0 && selectedIndex < static_cast<int>(renderers.size())) {
 		BaseRenderable3D* renderer = renderers[selectedIndex].get();
 		if (renderer) {
 
-			//
-			// トランスフォームの編集
-			//
-			{
-				// スケール
-				auto scale = renderer->GetScale();
-				if (ImGui::DragFloat3("Scale", &scale.x, 0.01f, 0.01f, 1000.0f)) {
-					renderer->GetScale() = scale;
+			// タブバーの開始
+			if (ImGui::BeginTabBar("RendererSettingsTabs")) {
+				
+				//
+				// トランスフォームのタブ
+				//
+				if (ImGui::BeginTabItem("Transform")) {
+					// スケール
+					auto scale = renderer->GetScale();
+					if (ImGui::DragFloat3("Scale", &scale.x, 0.01f, 0.01f, 1000.0f)) {
+						renderer->GetScale() = scale;
+					}
+
+					// 回転
+					auto rotate = renderer->GetRotate();
+					if (ImGui::DragFloat3("Rotation", &rotate.x, 0.01f, -std::numbers::pi_v<float>, std::numbers::pi_v<float>)) {
+						renderer->GetRotate() = rotate;
+					}
+
+					// 位置
+					auto translate = renderer->GetTranslate();
+					if (ImGui::DragFloat3("Translate", &translate.x, 0.01f, -10000.0f, 10000.0f)) {
+						renderer->GetTranslate() = translate;
+					}
+
+					ImGui::EndTabItem();
 				}
 
-				// 回転
-				auto rotate = renderer->GetRotate();
-				if (ImGui::DragFloat3("Rotation", &rotate.x, 0.01f, -std::numbers::pi_v<float>, std::numbers::pi_v<float>)) {
-					renderer->GetRotate() = rotate;
+				//
+				// UVトランスフォームのタブ
+				//
+				if (ImGui::BeginTabItem("UV Transform")) {
+					// スケール
+					auto uvScale = renderer->GetUvTransform().scale;
+					if (ImGui::DragFloat2("UV Scale", &uvScale.x, 0.01f, 0.0f, 1000.0f)) {
+						renderer->GetUvTransform().scale = uvScale;
+					}
+
+					// 回転
+					auto uvRotate = renderer->GetUvTransform().rotateZ;
+					if (ImGui::DragFloat("UV Rotate", &uvRotate, 0.01f, -std::numbers::pi_v<float>, std::numbers::pi_v<float>)) {
+						renderer->GetUvTransform().rotateZ = uvRotate;
+					}
+
+					// 位置
+					auto uvTranslate = renderer->GetUvTransform().translate;
+					if (ImGui::DragFloat2("UV Translate", &uvTranslate.x, 0.01f, -1000.0f, 1000.0f)) {
+						renderer->GetUvTransform().translate = uvTranslate;
+					}
+
+					ImGui::EndTabItem();
 				}
 
-				// 位置
-				auto translate = renderer->GetTranslate();
-				if (ImGui::DragFloat3("Translate", &translate.x, 0.01f, -10000.0f, 10000.0f)) {
-					renderer->GetTranslate() = translate;
-				}
-			}
+				//
+				// マテリアルのタブ
+				//
+				if (ImGui::BeginTabItem("Material")) {
+					auto color = renderer->GetMaterial().color;
+					if (ImGui::ColorEdit4("Color", &color.x)) {
+						renderer->GetMaterial().color = color;
+					}
 
-			// 
-			// UVトランスフォームの編集
-			// 
-			{
-				// スケール　
-				auto uvScale = renderer->GetUvTransform().scale;
-				if (ImGui::DragFloat2("UVScale", &uvScale.x, 0.01f, 0.0f, 1000.0f)) {
-					renderer->GetUvTransform().scale = uvScale;
+					ImGui::EndTabItem();
 				}
 
-				// 回転
-				auto uvRotate = renderer->GetUvTransform().rotateZ;
-				if (ImGui::DragFloat("UVRotate", &uvRotate, 0.01f, -std::numbers::pi_v<float>, std::numbers::pi_v<float>)) {
-					renderer->GetUvTransform().rotateZ = uvRotate;
-				}
-
-				// 位置
-				auto uvTranslate = renderer->GetUvTransform().translate;
-				if (ImGui::DragFloat2("UVTranslate", &uvTranslate.x, 0.01f, -1000.0f, 1000.0f)) {
-					renderer->GetUvTransform().translate = uvTranslate;
-				}
-			}
-
-			//
-			// カラーの編集
-			//
-			{
-				auto color = renderer->GetMaterial().color;
-				if (ImGui::ColorEdit4("Color", &color.x)) {
-					renderer->GetMaterial().color = color;
-				}
+				// タブバーの終了
+				ImGui::EndTabBar();
 			}
 		}
 	}
 	ImGui::EndChild();
 }
+
 
 void GUI::ShowRenderer3DInformation(const std::vector<std::unique_ptr<BaseRenderable3D>>& renderers, int& selectedIndex) {
 	// 有効なインデックスなら、詳細情報を表示

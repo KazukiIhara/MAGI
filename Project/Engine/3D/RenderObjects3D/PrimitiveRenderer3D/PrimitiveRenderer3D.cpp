@@ -55,6 +55,10 @@ Primitive3DType PrimitiveRenderer3D::GetPrimitiveType() const {
 	return primitiveType_;
 }
 
+std::string PrimitiveRenderer3D::GetTextureFileName() const {
+	return textureName_;
+}
+
 void PrimitiveRenderer3D::AssignShape() {
 	switch (primitiveType_) {
 		case Primitive3DType::Plane:
