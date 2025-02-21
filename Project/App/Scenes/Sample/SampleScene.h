@@ -44,8 +44,6 @@ inline void SampleScene<Data>::Initialize() {
 
 	// ライト
 	MAGISYSTEM::AddPunctualLight("sampleLight");
-	auto& sampleLight = MAGISYSTEM::GetLightData("sampleLight");
-	sampleLight.intensity = 0.5f;
 
 }
 

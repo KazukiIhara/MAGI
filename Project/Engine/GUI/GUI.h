@@ -36,9 +36,6 @@ private:
 	// AssetsContainer
 	// 
 	void ShowTextureDatas();
-	void ShowModelDatas();
-	void ShowAnimaionDatas();
-	void ShowSoundDatas();
 
 	// 
 	// ObjectsManager

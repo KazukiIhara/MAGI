@@ -182,18 +182,6 @@ void GUI::ShowTextureDatas() {
 	ImGui::End();
 }
 
-void GUI::ShowModelDatas() {
-
-}
-
-void GUI::ShowAnimaionDatas() {
-
-}
-
-void GUI::ShowSoundDatas() {
-
-}
-
 void GUI::ShowRenderer3DManager() {
 	// 3D描画オブジェクトの一覧を取得
 	const auto& renderers = renderer3DManager_->GetRenderers();
@@ -512,15 +500,6 @@ void GUI::ShowRenderer3DSetting(const std::vector<std::unique_ptr<BaseRenderable
 					float shininess = material.shininess;
 					if (ImGui::DragFloat("Shininess", &shininess, 0.1f, 0.0f, 128.0f)) {
 						renderer->GetMaterial().shininess = shininess;
-					}
-
-					// UV変換行列の編集
-					Matrix4x4 uvMatrix = material.uvTransformMatrix;
-					if (ImGui::InputFloat4("UV Matrix Row 1", &uvMatrix.m[0][0]) ||
-						ImGui::InputFloat4("UV Matrix Row 2", &uvMatrix.m[1][0]) ||
-						ImGui::InputFloat4("UV Matrix Row 3", &uvMatrix.m[2][0]) ||
-						ImGui::InputFloat4("UV Matrix Row 4", &uvMatrix.m[3][0])) {
-						renderer->GetMaterial().uvTransformMatrix = uvMatrix;
 					}
 
 					ImGui::EndTabItem();
