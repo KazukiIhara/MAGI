@@ -459,7 +459,7 @@ void GUI::ShowRenderer3DSetting(const std::vector<std::unique_ptr<BaseRenderable
 			// UVトランスフォームの編集
 			// 
 			{
-				// スケール
+				// スケール　
 				auto uvScale = renderer->GetUvTransform().scale;
 				if (ImGui::DragFloat2("UVScale", &uvScale.x, 0.01f, 0.0f, 1000.0f)) {
 					renderer->GetUvTransform().scale = uvScale;
@@ -476,9 +476,7 @@ void GUI::ShowRenderer3DSetting(const std::vector<std::unique_ptr<BaseRenderable
 				if (ImGui::DragFloat2("UVTranslate", &uvTranslate.x, 0.01f, -1000.0f, 1000.0f)) {
 					renderer->GetUvTransform().translate = uvTranslate;
 				}
-
 			}
-
 
 			//
 			// カラーの編集
