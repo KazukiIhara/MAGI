@@ -58,7 +58,9 @@
 // 
 #include "Camera3DManager/Camera3DManager.h"
 #include "PunctualLightManager/PunctualLightManager.h"
+#include "Renderer3DManager/Renderer3DManager.h"
 #include "ColliderManager/ColliderManager.h"
+#include "GameObject3DManager/GameObject3DManager.h"
 
 // 
 // Drawer
@@ -68,7 +70,6 @@
 // 
 // GameManager
 // 
-#include "Renderer3DManager/Renderer3DManager.h"
 #include "CollisionManager/CollisionManager.h"
 #include "SceneManager/SceneManager.h"
 
@@ -267,6 +268,12 @@ public: // エンジンの機能
 	static void RemoveCollider(const std::string& name);
 	// コライダーの取得
 	static BaseCollider3D* FindCollider(const std::string& name);
+#pragma endregion
+
+#pragma region GameObject3DManager
+
+
+
 #pragma endregion
 
 #pragma region LineDrawer3D
