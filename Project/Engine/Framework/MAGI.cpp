@@ -150,6 +150,8 @@ void MAGISYSTEM::Initialize() {
 
 	// Camera3DManager
 	camera3DManager_ = std::make_unique<Camera3DManager>();
+	// GameObject3DManager
+	gameObjectManager_ = std::make_unique<GameObjectManager>();
 	// PunctualLightManager
 	punctualLightManager_ = std::make_unique<PunctualLightManager>(dxgi_.get(), directXCommand_.get(), srvuavManager_.get());
 	// ColliderManager

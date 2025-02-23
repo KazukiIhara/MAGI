@@ -57,10 +57,10 @@
 // ObjectManager
 // 
 #include "Camera3DManager/Camera3DManager.h"
+#include "GameObject3DManager/GameObject3DManager.h"
 #include "PunctualLightManager/PunctualLightManager.h"
 #include "Renderer3DManager/Renderer3DManager.h"
 #include "ColliderManager/ColliderManager.h"
-#include "GameObject3DManager/GameObject3DManager.h"
 
 // 
 // Drawer
@@ -236,6 +236,12 @@ public: // エンジンの機能
 	static void TransferCamera(const uint32_t& rootParameterIndex);
 #pragma endregion
 
+#pragma region GameObject3DManager
+
+
+
+#pragma endregion
+
 #pragma region PunctualLightManager
 	// ライトの追加
 	static void AddPunctualLight(const std::string& lightName, const PunctualLightData& lightData = PunctualLightData{});
@@ -268,12 +274,6 @@ public: // エンジンの機能
 	static void RemoveCollider(const std::string& name);
 	// コライダーの取得
 	static BaseCollider3D* FindCollider(const std::string& name);
-#pragma endregion
-
-#pragma region GameObject3DManager
-
-
-
 #pragma endregion
 
 #pragma region LineDrawer3D
@@ -367,6 +367,7 @@ protected:
 	// ObjectManager
 	//
 	static std::unique_ptr<Camera3DManager> camera3DManager_;
+	static std::unique_ptr<GameObjectManager> gameObjectManager_;
 	static std::unique_ptr<PunctualLightManager> punctualLightManager_;
 	static std::unique_ptr<ColliderManager> colliderManager_;
 

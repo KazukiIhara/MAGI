@@ -11,11 +11,20 @@ GameObjectManager::~GameObjectManager() {
 }
 
 void GameObjectManager::Update() {
-	
+	for (auto& gameObject : gameObjects_) {
+		if (gameObject) {
+			gameObject->Update();
+			gameObject->UpdateWorldTransform();
+		}
+	}
 }
 
 void GameObjectManager::Draw() {
-	
+	for (auto& gameObject : gameObjects_) {
+		if (gameObject) {
+			gameObject->Draw();
+		}
+	}
 }
 
 std::string GameObjectManager::Create(const std::string& name) {
