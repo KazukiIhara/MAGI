@@ -24,9 +24,9 @@ public:
 
 	virtual void Initialize();
 	virtual void Update();
+
 	void UpdateWorldTransform();
-	void UpdateRenderer();
-	virtual void Draw();
+	void Draw();
 
 	//
 	// トランスフォーム取得関数

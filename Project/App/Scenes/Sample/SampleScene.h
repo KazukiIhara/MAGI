@@ -49,7 +49,7 @@ inline void SampleScene<Data>::Initialize() {
 
 template<typename Data>
 inline void SampleScene<Data>::Update() {
-
+	
 }
 
 template<typename Data>

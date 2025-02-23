@@ -36,5 +36,4 @@ public:
 private:
 	// 描画オブジェクトコンテナ
 	std::vector<std::unique_ptr<BaseRenderable3D>> renderers_;
-
 };
