@@ -14,7 +14,7 @@ public:
 
 	void Initialize();
 	void Update();
-	void TransferCamera(const uint32_t& rootParameterIndex);
+	void TransferCamera(uint32_t rootParameterIndex);
 
 	bool& GetIsDebugCamera();
 

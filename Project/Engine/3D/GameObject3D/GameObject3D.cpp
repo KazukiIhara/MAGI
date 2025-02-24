@@ -84,6 +84,8 @@ BaseCollider3D* GameObject3D::GetCollider3D(const std::string& name) {
 void GameObject3D::AddRenderer3D(BaseRenderable3D* renderer3D) {
 	// nullチェック
 	assert(renderer3D && "Add Renderer3D is nullptr");
+	// ワールドトランスフォームの親子付け
+	renderer3D->GetWorldTransform()->parent_ = worldTransform_.get();
 	// 3D描画オブジェクトマップにセット
 	renderers3D_.insert(std::pair(renderer3D->name_, renderer3D));
 }

@@ -9,9 +9,11 @@
 
 #include "2D/Object2D/Object2D.h"
 
+#include "GameObjects/Player/Player.h"
+
 // サンプルシーン
 template <typename Data>
-class SampleScene: public BaseScene<Data> {
+class SampleScene : public BaseScene<Data> {
 public:
 	using BaseScene<Data>::BaseScene; // 親クラスのコンストラクタをそのまま継承
 	~SampleScene()override = default;
@@ -22,6 +24,8 @@ public:
 	void Finalize() override;
 
 private:
+
+	std::unique_ptr<Player> player_ = nullptr;
 
 };
 
@@ -47,11 +51,20 @@ inline void SampleScene<Data>::Initialize() {
 
 	// レンダラー
 	MAGISYSTEM::CreateStaticRenderer3D("terrain", "terrain");
+
+	// プレイヤーを作成
+	player_ = std::make_unique<Player>("player");
+	player_->AddRenderer3D(MAGISYSTEM::FindRenderer3D("terrain"));
+
+	// マネージャにプレイヤーを追加
+	MAGISYSTEM::CreateGameObject3D(std::move(player_));
+
+
 }
 
 template<typename Data>
 inline void SampleScene<Data>::Update() {
-	
+
 }
 
 template<typename Data>

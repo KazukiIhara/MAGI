@@ -29,7 +29,7 @@ void Camera3DManager::Update() {
 	sceneCamera_->Update();
 }
 
-void Camera3DManager::TransferCamera(const uint32_t& rootParameterIndex) {
+void Camera3DManager::TransferCamera(uint32_t rootParameterIndex) {
 #ifdef _DEBUG
 	if (isDebugCamera_) {
 		debugCamera_->TransferCamera(rootParameterIndex);

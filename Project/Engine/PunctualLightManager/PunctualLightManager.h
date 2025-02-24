@@ -25,7 +25,7 @@ public:
 	void Update();
 	void Clear();
 
-	void TransferLightsData();
+	void TransferLightsData(uint32_t parmIndex);
 
 	void AddNewLight(const std::string& lightName, const PunctualLightData& lightData);
 
@@ -45,7 +45,7 @@ private:
 	void SetSrvUavManager(SRVUAVManager* srvuavManager);
 private:
 	// ライトの最大数
-	const uint32_t kMaxLightNum_ = 3;
+	const uint32_t kMaxLightNum_ = 100;
 
 	// ライト
 	std::unordered_map<std::string, PunctualLightData> light_;

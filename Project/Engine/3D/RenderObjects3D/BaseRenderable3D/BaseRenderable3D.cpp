@@ -98,10 +98,10 @@ void BaseRenderable3D::PrepareForRendering() {
 	commandList->SetGraphicsRootConstantBufferView(0, materialResource_->GetGPUVirtualAddress());
 	// wvp用のCBufferの場所を設定
 	commandList->SetGraphicsRootConstantBufferView(1, transformationResource_->GetGPUVirtualAddress());
-	// ライトを転送
-	MAGISYSTEM::TransferPunctualLight();
 	// カメラ情報を転送
-	MAGISYSTEM::TransferCamera(2);
+	MAGISYSTEM::TransferCamera(cameraRootParamaterIndex_);
+	// ライトを転送
+	MAGISYSTEM::TransferPunctualLight(lightRootParamaterIndex_);
 }
 
 void BaseRenderable3D::CreateWVPResource() {
