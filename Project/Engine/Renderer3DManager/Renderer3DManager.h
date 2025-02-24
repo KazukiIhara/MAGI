@@ -21,9 +21,9 @@ public:
 	void Update();
 	void Draw();
 
-	void CreatePrimitiveRenderer(const std::string& name, Primitive3DType primitiveRenderer, const std::string& textureName);
-	void CreateStaticRenderer(const std::string& name, const std::string& modelName);
-	void CreateSkinningRenderer(const std::string& name, const std::string& modelName);
+	std::string CreatePrimitiveRenderer(const std::string& name, Primitive3DType primitiveRenderer, const std::string& textureName);
+	std::string CreateStaticRenderer(const std::string& name, const std::string& modelName);
+	std::string CreateSkinningRenderer(const std::string& name, const std::string& modelName);
 	void Remove(const std::string& name);
 
 	BaseRenderable3D* Find(const std::string& name);
@@ -36,5 +36,4 @@ public:
 private:
 	// 描画オブジェクトコンテナ
 	std::vector<std::unique_ptr<BaseRenderable3D>> renderers_;
-
 };

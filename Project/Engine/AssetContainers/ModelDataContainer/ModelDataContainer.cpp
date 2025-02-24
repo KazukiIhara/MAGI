@@ -26,14 +26,14 @@ void ModelDataContainer::Initialize(TextureDataContainer* textureDataContainer) 
 	modelDatas_.clear();
 }
 
-void ModelDataContainer::Load(const std::string& modelName, bool isNormalMap) {
+void ModelDataContainer::Load(const std::string& modelName) {
 	// 読み込み済みモデルを検索
 	if (modelDatas_.contains(modelName)) {
 		// 読み込み済みなら早期リターン
 		return;
 	}
 	// モデルを読み込みコンテナに挿入
-	modelDatas_.insert(std::make_pair(modelName, LoadModel(modelName, isNormalMap)));
+	modelDatas_.insert(std::make_pair(modelName, LoadModel(modelName)));
 }
 
 ModelData ModelDataContainer::FindModelData(const std::string& modelName) const {
@@ -48,7 +48,7 @@ ModelData ModelDataContainer::FindModelData(const std::string& modelName) const 
 	return ModelData{};
 }
 
-ModelData ModelDataContainer::LoadModel(const std::string& modelName, bool isNormalMap) {
+ModelData ModelDataContainer::LoadModel(const std::string& modelName) {
 	// 対応する拡張子のリスト
 	std::vector<std::string> supportedExtensions = { ".obj", ".gltf" };
 
@@ -127,35 +127,6 @@ ModelData ModelDataContainer::LoadModel(const std::string& modelName, bool isNor
 				textureDataContainer_->LoadNormalMap(materialData.normalMapTextureFilePath);
 			} else {
 
-			}
-
-			// 
-			// TODO:この下の処理はそのうち消す
-			// 
-
-			// 主導で割り当てる法線マップがある場合の処理
-			if (isNormalMap) {
-				// 拡張子の前に"_normal"を挿入する
-				std::string baseName;
-				std::string ext;
-
-				// 拡張子を切り出す
-				const size_t dotPos = diffuseTexName.find_last_of('.');
-				if (dotPos != std::string::npos) {
-					baseName = diffuseTexName.substr(0, dotPos);
-					ext = diffuseTexName.substr(dotPos);
-				} else {
-					// 拡張子が見つからない場合はそのまま
-					baseName = diffuseTexName;
-					ext = "";
-				}
-
-				// 拡張子の前に "_normal" をつける
-				const std::string normalMapName = baseName + "_normal" + ext;
-
-				// パスを作ってロード
-				materialData.normalMapTextureFilePath = fileDirectoryPath + "/" + normalMapName;
-				textureDataContainer_->LoadNormalMap(materialData.normalMapTextureFilePath);
 			}
 
 			// UVスケール情報の取得

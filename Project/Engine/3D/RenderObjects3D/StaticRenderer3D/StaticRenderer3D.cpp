@@ -36,3 +36,7 @@ void StaticRenderer3D::Draw() {
 	// 3Dモデル描画
 	model_->Draw();
 }
+
+std::string StaticRenderer3D::GetModelName() const {
+	return modelData_.name;
+}

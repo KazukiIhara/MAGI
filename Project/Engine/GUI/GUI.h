@@ -32,47 +32,8 @@ private:
 	// DeltaTime表示
 	void ShowDeltaTime();
 
-	// 
-	// AssetsContainer
-	// 
-	void ShowTextureDatas();
-	void ShowModelDatas();
-	void ShowAnimaionDatas();
-	void ShowSoundDatas();
-
-	// 
-	// ObjectsManager
-	// 
-
-	// 3D描画オブジェクト
-	void ShowRenderer3DManager();
-	void ShowRenderer3DDataSaveUI();
-	void ShowRenderer3DDataLoadUI();
-	void ShowCreateRenderer3DUI();
-	void ShowCreateRenderer3DWindow();
-	void ShowRenderer3DList(const std::vector<std::unique_ptr<BaseRenderable3D>>& renderers, int& selectedIndex);
-	void ShowRenderer3DSetting(const std::vector<std::unique_ptr<BaseRenderable3D>>& renderers, int& selectedIndex);
-	void ShowRenderer3DInformation(const std::vector<std::unique_ptr<BaseRenderable3D>>& renderers, int& selectedIndex);
-
-	// Collider
-	void ShowColliderManager();
-	void ShowColliderDataSaveUI();
-	void ShowColliderDataLoadUI();
-	void ShowCreateColliderUI();
-	void ShowCreateColliderWindow();
-	void ShowColliderList(const std::vector<std::unique_ptr<BaseCollider3D>>& colliders, int& selectedIndex);
-	void ShowColliderSetting(const std::vector<std::unique_ptr<BaseCollider3D>>& colliders, int& selectedIndex);
-	void ShowColliderInformation(const std::vector<std::unique_ptr<BaseCollider3D>>& colliders, int& selectedIndex);
 private:
-	//
-	// ウィンドウ表示フラグ
-	//
-	
-	// 3D描画オブジェクト作成ウィンドウの表示管理フラグ
-	bool showRenderer3DCreateWindow_ = false;
 
-	// コライダー作成ウィンドウの表示非表示を管理するフラグ
-	bool showColliderCreateWindow_ = false;
 
 private:
 	// DeltaTimerのインスタンス

@@ -59,6 +59,7 @@ std::unique_ptr<ComputePipelineManager> MAGISYSTEM::computePipelineManager_ = nu
 std::unique_ptr<Camera3DManager> MAGISYSTEM::camera3DManager_ = nullptr;
 std::unique_ptr<PunctualLightManager> MAGISYSTEM::punctualLightManager_ = nullptr;
 std::unique_ptr<ColliderManager> MAGISYSTEM::colliderManager_ = nullptr;
+std::unique_ptr<GameObject3DManager> MAGISYSTEM::gameObject3DManager_ = nullptr;
 
 // 
 // Drawer
@@ -154,6 +155,8 @@ void MAGISYSTEM::Initialize() {
 	punctualLightManager_ = std::make_unique<PunctualLightManager>(dxgi_.get(), directXCommand_.get(), srvuavManager_.get());
 	// ColliderManager
 	colliderManager_ = std::make_unique<ColliderManager>();
+	// GameObject3DManager
+	gameObject3DManager_ = std::make_unique<GameObject3DManager>();
 
 
 	// LineDrawer3D
@@ -640,8 +643,8 @@ PrimitiveData MAGISYSTEM::GetPrimitiveShape(const Primitive3DType& primitive3dTy
 	return primitiveDataContainer_->GetPrimitiveShapeData(primitive3dType);
 }
 
-void MAGISYSTEM::LoadModel(const std::string& modelName, bool isNormalMap) {
-	modelDataContainer_->Load(modelName, isNormalMap);
+void MAGISYSTEM::LoadModel(const std::string& modelName) {
+	modelDataContainer_->Load(modelName);
 }
 
 ModelData MAGISYSTEM::FindModel(const std::string& modelName) {

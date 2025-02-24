@@ -57,7 +57,9 @@
 // ObjectManager
 // 
 #include "Camera3DManager/Camera3DManager.h"
+#include "GameObject3DManager/GameObject3DManager.h"
 #include "PunctualLightManager/PunctualLightManager.h"
+#include "Renderer3DManager/Renderer3DManager.h"
 #include "ColliderManager/ColliderManager.h"
 
 // 
@@ -68,7 +70,6 @@
 // 
 // GameManager
 // 
-#include "Renderer3DManager/Renderer3DManager.h"
 #include "CollisionManager/CollisionManager.h"
 #include "SceneManager/SceneManager.h"
 
@@ -218,7 +219,7 @@ public: // エンジンの機能
 
 #pragma region ModelDataContainer
 	// モデルの読み込み
-	static void LoadModel(const std::string& modelName, bool isNormalMap = false);
+	static void LoadModel(const std::string& modelName);
 	// 読み込み済みモデル検索
 	static ModelData FindModel(const std::string& modelName);
 #pragma endregion
@@ -233,6 +234,12 @@ public: // エンジンの機能
 #pragma region Camera3DManager
 	// カメラの転送
 	static void TransferCamera(const uint32_t& rootParameterIndex);
+#pragma endregion
+
+#pragma region GameObject3DManager
+
+
+
 #pragma endregion
 
 #pragma region PunctualLightManager
@@ -362,6 +369,7 @@ protected:
 	static std::unique_ptr<Camera3DManager> camera3DManager_;
 	static std::unique_ptr<PunctualLightManager> punctualLightManager_;
 	static std::unique_ptr<ColliderManager> colliderManager_;
+	static std::unique_ptr<GameObject3DManager> gameObject3DManager_;
 
 	// 
 	// Drawer

@@ -17,6 +17,9 @@ public:
 	void AssignShape()override;
 	void Update()override;
 	void Draw()override;
+
+	Primitive3DType GetPrimitiveType()const;
+	std::string GetTextureFileName()const;
 private:
 	// 形状の設定
 	Primitive3DType primitiveType_{};

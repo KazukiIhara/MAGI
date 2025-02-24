@@ -18,20 +18,19 @@ void GameObject3D::Initialize() {
 }
 
 void GameObject3D::Update() {
+
+
+
+}
+
+void GameObject3D::UpdateWorldTransform() {
 	if (worldTransform_) {
 		worldTransform_->Update();
-	}
-
-	if (renderer3D_) {
-		renderer3D_->Update();
 	}
 }
 
 void GameObject3D::Draw() {
-
-	if (renderer3D_) {
-		renderer3D_->Draw();
-	}
+	
 }
 
 Vector3& GameObject3D::GetScale() {

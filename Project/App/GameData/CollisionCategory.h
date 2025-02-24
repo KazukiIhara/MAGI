@@ -14,6 +14,8 @@ enum class CollisionCategory {
 	Count,
 };
 
+// TODO: テンプレートを使ってもっとスマートな実装をする
+
 /// <summary>
 /// 当たり判定のカテゴリを文字列型に変換する
 /// </summary>
@@ -28,6 +30,11 @@ inline std::string CollisionCategoryToString(CollisionCategory category) {
 	}
 }
 
+/// <summary>
+/// 文字列から当たり判定カテゴリに変換する
+/// </summary>
+/// <param name="categoryName">カテゴリ文字列</param>
+/// <returns>カテゴリ</returns>
 inline CollisionCategory StringToCollisionCategory(const std::string& categoryName) {
 	if (categoryName == "None") {
 		return CollisionCategory::None;

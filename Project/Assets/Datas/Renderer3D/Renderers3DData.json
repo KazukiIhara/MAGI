@@ -1,7 +1,213 @@
 {
     "Renderer3D": [
         {
-            "name": "terrain"
+            "material": {
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "name": "NewRenderer",
+            "primitiveType": 1,
+            "texture": "EngineAssets/Images/uvChecker.png",
+            "transform": {
+                "rotate": [
+                    -0.7099999785423279,
+                    -0.47999998927116394,
+                    0.0
+                ],
+                "scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "translate": [
+                    1.899999976158142,
+                    7.150000095367432,
+                    0.0
+                ]
+            },
+            "type": 0,
+            "uvTransform": {
+                "rotateZ": 0.0,
+                "scale": [
+                    1.0,
+                    1.0
+                ],
+                "translate": [
+                    0.0,
+                    0.0
+                ]
+            }
+        },
+        {
+            "material": {
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "name": "NewRenderer_1",
+            "primitiveType": 0,
+            "texture": "EngineAssets/Images/uvChecker.png",
+            "transform": {
+                "rotate": [
+                    0.8600000143051147,
+                    0.0,
+                    0.0
+                ],
+                "scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "translate": [
+                    -3.1600000858306885,
+                    0.0,
+                    0.0
+                ]
+            },
+            "type": 0,
+            "uvTransform": {
+                "rotateZ": 0.0,
+                "scale": [
+                    1.0,
+                    1.0
+                ],
+                "translate": [
+                    0.0,
+                    0.0
+                ]
+            }
+        },
+        {
+            "material": {
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "modelName": "terrain",
+            "name": "NewRenderer_2",
+            "transform": {
+                "rotate": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "translate": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
+            },
+            "type": 1,
+            "uvTransform": {
+                "rotateZ": 0.0,
+                "scale": [
+                    1.0,
+                    1.0
+                ],
+                "translate": [
+                    0.0,
+                    0.0
+                ]
+            }
+        },
+        {
+            "material": {
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "name": "NewRenderer_3",
+            "primitiveType": 1,
+            "texture": "EngineAssets/Images/uvChecker.png",
+            "transform": {
+                "rotate": [
+                    0.2199999988079071,
+                    1.2200000286102295,
+                    1.649999976158142
+                ],
+                "scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "translate": [
+                    7.010000228881836,
+                    5.699999809265137,
+                    -8.460000038146973
+                ]
+            },
+            "type": 0,
+            "uvTransform": {
+                "rotateZ": 0.0,
+                "scale": [
+                    1.0,
+                    1.0
+                ],
+                "translate": [
+                    0.0,
+                    0.0
+                ]
+            }
+        },
+        {
+            "material": {
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "name": "NewRenderer_4",
+            "primitiveType": 0,
+            "texture": "pronama_chan.png",
+            "transform": {
+                "rotate": [
+                    0.6299999952316284,
+                    0.0,
+                    0.019999999552965164
+                ],
+                "scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "translate": [
+                    0.25999999046325684,
+                    8.260000228881836,
+                    -15.550000190734863
+                ]
+            },
+            "type": 0,
+            "uvTransform": {
+                "rotateZ": 0.0,
+                "scale": [
+                    1.0,
+                    1.0
+                ],
+                "translate": [
+                    0.0,
+                    0.0
+                ]
+            }
         }
     ]
 }

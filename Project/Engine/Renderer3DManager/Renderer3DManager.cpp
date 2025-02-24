@@ -29,28 +29,94 @@ void Renderer3DManager::Draw() {
 	}
 }
 
-void Renderer3DManager::CreatePrimitiveRenderer(const std::string& name, Primitive3DType primitiveRenderer, const std::string& textureName) {
+std::string Renderer3DManager::CreatePrimitiveRenderer(const std::string& name, Primitive3DType primitiveRenderer, const std::string& textureName) {
+	// 新しいレンダラー名を決定
+	std::string uniqueName = name;
+	int suffix = 1;
+
+	// 同じ名前が既に存在する場合、一意な名前を生成
+	auto isNameUsed = [&](const std::string& testName) {
+		return std::any_of(renderers_.begin(), renderers_.end(), [&](const auto& renderer) {
+			return renderer->name_ == testName;
+			});
+		};
+
+	while (isNameUsed(uniqueName)) {
+		uniqueName = name + "_" + std::to_string(suffix);
+		suffix++;
+	}
+
 	// 追加する描画オブジェクト
-	std::unique_ptr<BaseRenderable3D> newRenderer3D = std::make_unique<PrimitiveRenderer3D>(name, primitiveRenderer, textureName);
+	std::unique_ptr<BaseRenderable3D> newRenderer3D = std::make_unique<PrimitiveRenderer3D>(uniqueName, primitiveRenderer, textureName);
+	// 形状を設定
 	newRenderer3D->AssignShape();
+	// 形状タイプを設定
+	newRenderer3D->SetRenderer3DType(Renderer3DType::Primitive);
 	// コンテナに登録
 	renderers_.push_back(std::move(newRenderer3D));
+
+	// 作成したRendererの名前を返す
+	return uniqueName;
 }
 
-void Renderer3DManager::CreateStaticRenderer(const std::string& name, const std::string& modelName) {
+std::string Renderer3DManager::CreateStaticRenderer(const std::string& name, const std::string& modelName) {
+	// 新しいレンダラー名を決定
+	std::string uniqueName = name;
+	int suffix = 1;
+
+	// 同じ名前が既に存在する場合、一意な名前を生成
+	auto isNameUsed = [&](const std::string& testName) {
+		return std::any_of(renderers_.begin(), renderers_.end(), [&](const auto& renderer) {
+			return renderer->name_ == testName;
+			});
+		};
+
+	while (isNameUsed(uniqueName)) {
+		uniqueName = name + "_" + std::to_string(suffix);
+		suffix++;
+	}
+
 	// 追加する描画オブジェクト
-	std::unique_ptr<BaseRenderable3D> newRenderer3D = std::make_unique<StaticRenderer3D>(name, modelName);
+	std::unique_ptr<BaseRenderable3D> newRenderer3D = std::make_unique<StaticRenderer3D>(uniqueName, modelName);
+	// 形状を設定
 	newRenderer3D->AssignShape();
+	// 形状タイプを設定
+	newRenderer3D->SetRenderer3DType(Renderer3DType::Static);
 	// コンテナに登録
 	renderers_.push_back(std::move(newRenderer3D));
+
+	// 作成したRendererの名前を返す
+	return uniqueName;
 }
 
-void Renderer3DManager::CreateSkinningRenderer(const std::string& name, const std::string& modelName) {
+std::string Renderer3DManager::CreateSkinningRenderer(const std::string& name, const std::string& modelName) {
+	// 新しいレンダラー名を決定
+	std::string uniqueName = name;
+	int suffix = 1;
+
+	// 同じ名前が既に存在する場合、一意な名前を生成
+	auto isNameUsed = [&](const std::string& testName) {
+		return std::any_of(renderers_.begin(), renderers_.end(), [&](const auto& renderer) {
+			return renderer->name_ == testName;
+			});
+		};
+
+	while (isNameUsed(uniqueName)) {
+		uniqueName = name + "_" + std::to_string(suffix);
+		suffix++;
+	}
+
 	// 追加する描画オブジェクト
-	std::unique_ptr<BaseRenderable3D> newRenderer3D = std::make_unique<SkinningRenderer3D>(name, modelName);
+	std::unique_ptr<BaseRenderable3D> newRenderer3D = std::make_unique<SkinningRenderer3D>(uniqueName, modelName);
+	// 形状を設定
 	newRenderer3D->AssignShape();
+	// 形状タイプを設定
+	newRenderer3D->SetRenderer3DType(Renderer3DType::Skinning);
 	// コンテナに登録
 	renderers_.push_back(std::move(newRenderer3D));
+
+	// 作成したRendererの名前を返す
+	return uniqueName;
 }
 
 void Renderer3DManager::Remove(const std::string& name) {

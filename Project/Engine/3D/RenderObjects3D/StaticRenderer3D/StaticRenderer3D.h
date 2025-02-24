@@ -14,6 +14,7 @@ public:
 	virtual void Update()override;
 	void Draw()override;
 
+	std::string GetModelName()const;
 protected:
 	// 受け取るモデルのデータ
 	ModelData modelData_{};

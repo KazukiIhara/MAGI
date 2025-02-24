@@ -42,6 +42,10 @@ private:
 	std::pair<uint32_t, uint32_t> MakeOrderedPair(uint32_t idA, uint32_t idB);
 	std::pair<Collider3DType, Collider3DType> MakeOrderedPair(Collider3DType typeA, Collider3DType typeB);
 
+	// 
+	// 当たり判定チェック処理
+	// 
+
 	// 同形状同士
 
 	// 球体同士の当たり判定
