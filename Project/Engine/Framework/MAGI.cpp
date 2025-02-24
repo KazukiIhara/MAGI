@@ -171,7 +171,7 @@ void MAGISYSTEM::Initialize() {
 
 
 	// DataIO
-	dataIO_ = std::make_unique<DataIO>(renderer3DManager_.get(), colliderManager_.get());
+	dataIO_ = std::make_unique<DataIO>(renderer3DManager_.get(), colliderManager_.get(), gameObject3DManager_.get());
 
 
 	// ImGuiController
