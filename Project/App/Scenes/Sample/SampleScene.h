@@ -52,6 +52,8 @@ inline void SampleScene<Data>::Initialize() {
 	// レンダラー
 	MAGISYSTEM::CreateStaticRenderer3D("terrain", "terrain");
 
+	// ゲームオブジェクト
+
 	// プレイヤーを作成
 	player_ = std::make_unique<Player>("player");
 	player_->AddRenderer3D(MAGISYSTEM::FindRenderer3D("terrain"));
