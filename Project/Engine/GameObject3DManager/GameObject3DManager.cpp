@@ -2,15 +2,15 @@
 
 #include "Logger/Logger.h"
 
-GameObjectManager::GameObjectManager() {
+GameObject3DManager::GameObject3DManager() {
 	Logger::Log("GameObject3DManager Initialize\n");
 }
 
-GameObjectManager::~GameObjectManager() {
+GameObject3DManager::~GameObject3DManager() {
 	Logger::Log("GameObject3DManager Finalize\n");
 }
 
-void GameObjectManager::Update() {
+void GameObject3DManager::Update() {
 	for (auto& gameObject : gameObjects_) {
 		if (gameObject) {
 			gameObject->Update();
@@ -19,7 +19,7 @@ void GameObjectManager::Update() {
 	}
 }
 
-void GameObjectManager::Draw() {
+void GameObject3DManager::Draw() {
 	for (auto& gameObject : gameObjects_) {
 		if (gameObject) {
 			gameObject->Draw();
@@ -27,7 +27,7 @@ void GameObjectManager::Draw() {
 	}
 }
 
-std::string GameObjectManager::Create(const std::string& name) {
+std::string GameObject3DManager::Create(const std::string& name) {
 	// 新しいオブジェクト名を決定
 	std::string uniqueName = name;
 	int suffix = 1;
@@ -53,6 +53,6 @@ std::string GameObjectManager::Create(const std::string& name) {
 	return uniqueName;
 }
 
-void GameObjectManager::Remove(const std::string& name) {
-
+void GameObject3DManager::Remove(const std::string& name) {
+	name;
 }

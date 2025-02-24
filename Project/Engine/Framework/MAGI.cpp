@@ -59,6 +59,7 @@ std::unique_ptr<ComputePipelineManager> MAGISYSTEM::computePipelineManager_ = nu
 std::unique_ptr<Camera3DManager> MAGISYSTEM::camera3DManager_ = nullptr;
 std::unique_ptr<PunctualLightManager> MAGISYSTEM::punctualLightManager_ = nullptr;
 std::unique_ptr<ColliderManager> MAGISYSTEM::colliderManager_ = nullptr;
+std::unique_ptr<GameObject3DManager> MAGISYSTEM::gameObject3DManager_ = nullptr;
 
 // 
 // Drawer
@@ -150,12 +151,12 @@ void MAGISYSTEM::Initialize() {
 
 	// Camera3DManager
 	camera3DManager_ = std::make_unique<Camera3DManager>();
-	// GameObject3DManager
-	gameObjectManager_ = std::make_unique<GameObjectManager>();
 	// PunctualLightManager
 	punctualLightManager_ = std::make_unique<PunctualLightManager>(dxgi_.get(), directXCommand_.get(), srvuavManager_.get());
 	// ColliderManager
 	colliderManager_ = std::make_unique<ColliderManager>();
+	// GameObject3DManager
+	gameObject3DManager_ = std::make_unique<GameObject3DManager>();
 
 
 	// LineDrawer3D

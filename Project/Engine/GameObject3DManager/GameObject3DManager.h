@@ -6,10 +6,10 @@
 
 #include "3D/GameObject3D/GameObject3D.h"
 
-class GameObjectManager {
+class GameObject3DManager {
 public:
-	GameObjectManager();
-	~GameObjectManager();
+	GameObject3DManager();
+	~GameObject3DManager();
 
 	void Update();
 	void Draw();

@@ -367,9 +367,9 @@ protected:
 	// ObjectManager
 	//
 	static std::unique_ptr<Camera3DManager> camera3DManager_;
-	static std::unique_ptr<GameObjectManager> gameObjectManager_;
 	static std::unique_ptr<PunctualLightManager> punctualLightManager_;
 	static std::unique_ptr<ColliderManager> colliderManager_;
+	static std::unique_ptr<GameObject3DManager> gameObject3DManager_;
 
 	// 
 	// Drawer
