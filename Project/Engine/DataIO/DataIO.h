@@ -9,13 +9,18 @@
 class BaseCollider3D;
 class Renderer3DManager;
 class ColliderManager;
+class GameObject3DManager;
 
 /// <summary>
 /// データ入出力クラス
 /// </summary>
 class DataIO {
 public:
-	DataIO(Renderer3DManager* renderer3DManager, ColliderManager* colliderManager);
+	DataIO(
+		Renderer3DManager* renderer3DManager,
+		ColliderManager* colliderManager,
+		GameObject3DManager* gameObject3DManager
+	);
 	~DataIO();
 
 	// 初期化
@@ -54,6 +59,8 @@ public:
 	Renderer3DManager* GetRenderer3DManager();
 	// コライダーマネージャ
 	ColliderManager* GetColliderManager();
+	// 3Dゲームオブジェクトマネージャ
+	GameObject3DManager* GetGameObject3DManager();
 
 private:
 
@@ -63,6 +70,8 @@ private:
 	void SetRenderer3DManager(Renderer3DManager* renderer3DManager);
 	// コライダーマネージャのセット
 	void SetColliderManager(ColliderManager* colliderManager);
+	// 3Dゲームオブジェクトマネージャをセット
+	void SetGameObject3DManager(GameObject3DManager* gameObject3DManager);
 private:
 	// 
 	// マネージャクラスのポインタ
@@ -72,4 +81,6 @@ private:
 	Renderer3DManager* renderer3DManager_ = nullptr;
 	// コライダーマネージャクラス
 	ColliderManager* colliderManager_ = nullptr;
+	// 3Dゲームオブジェクトマネージャ
+	GameObject3DManager* gameObject3DManager_ = nullptr;
 };
