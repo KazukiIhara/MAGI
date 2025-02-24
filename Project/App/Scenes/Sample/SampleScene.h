@@ -57,7 +57,7 @@ inline void SampleScene<Data>::Initialize() {
 	player_->AddRenderer3D(MAGISYSTEM::FindRenderer3D("terrain"));
 
 	// マネージャにプレイヤーを追加
-	MAGISYSTEM::CreateGameObject3D(std::move(player_));
+	MAGISYSTEM::AddGameObject3D(std::move(player_));
 
 
 }

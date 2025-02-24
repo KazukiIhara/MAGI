@@ -272,9 +272,11 @@ public: // エンジンの機能
 
 #pragma region GameObject3DManager
 	// 3Dゲームオブジェクトの追加
-	static void CreateGameObject3D(std::unique_ptr<GameObject3D> newGameObject3D);
-
-
+	static void AddGameObject3D(std::unique_ptr<GameObject3D> newGameObject3D);
+	// 3Dゲームオブジェクトの削除
+	static void RemoveGameObject3D(const std::string& objectName);
+	// 3Dゲームオブジェクトを取得
+	static GameObject3D* FindGameObject3D(const std::string& objectName);
 #pragma endregion
 
 #pragma region LineDrawer3D

@@ -727,8 +727,16 @@ BaseCollider3D* MAGISYSTEM::FindCollider(const std::string& name) {
 	return colliderManager_->Find(name);
 }
 
-void MAGISYSTEM::CreateGameObject3D(std::unique_ptr<GameObject3D> newGameObject3D) {
-	gameObject3DManager_->Create(std::move(newGameObject3D));
+void MAGISYSTEM::AddGameObject3D(std::unique_ptr<GameObject3D> newGameObject3D) {
+	gameObject3DManager_->Add(std::move(newGameObject3D));
+}
+
+void MAGISYSTEM::RemoveGameObject3D(const std::string& objectName) {
+	gameObject3DManager_->Remove(objectName);
+}
+
+GameObject3D* MAGISYSTEM::FindGameObject3D(const std::string& objectName) {
+	return gameObject3DManager_->Find(objectName);
 }
 
 void MAGISYSTEM::DrawLine3D(const Vector3& start, const Vector3& end, const RGBA& color) {
