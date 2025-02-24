@@ -26,6 +26,7 @@ public:
 	virtual void AssignShape() = 0;
 	virtual void Update();
 	virtual void Draw() = 0;
+
 	WorldTransform* GetWorldTransform();
 
 	Vector3& GetScale();

@@ -34,6 +34,12 @@ void Model::Draw() {
 	}
 }
 
+void Model::DrawInstanced(uint32_t instanceCount) {
+	for (auto& mesh : meshes_) {
+		mesh->DrawInstanced(instanceCount);
+	}
+}
+
 void Model::CreateMeshes() {
 	for (uint32_t i = 0; i < modelData_.meshes.size(); i++) {
 		std::unique_ptr<Mesh> newMesh = std::make_unique<Mesh>(modelData_.meshes[i]);
