@@ -6,9 +6,9 @@
 
 using namespace MAGIMath;
 
-BaseCollider3D::BaseCollider3D(const std::string& name, uint32_t id, Collider3DType type) {
+BaseCollider3D::BaseCollider3D(const std::string& colliderName, uint32_t id, Collider3DType type) {
 	// 名前をセット
-	name_ = name;
+	name = colliderName;
 	// 識別IDをセット
 	id_ = id;
 	// コライダーのタイプを登録
@@ -24,7 +24,7 @@ void BaseCollider3D::Update() {
 	worldTransform_->Update();
 
 	// 行列からワールド座標を計算
-	worldPosition_ = ExtractionWorldPos(worldTransform_->worldMatrix_);
+	worldPosition = ExtractionWorldPos(worldTransform_->worldMatrix_);
 
 	// アクティブ状態かどうかによって色を変える処理
 	if (isActive_) {

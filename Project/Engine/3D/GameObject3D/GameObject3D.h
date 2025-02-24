@@ -58,10 +58,10 @@ public:
 	// 
 
 	// 3D描画用オブジェクト
-	BaseRenderable3D* GetRenderer3D(const std::string& name);
+	BaseRenderable3D* GetRenderer3D(const std::string& object3DName);
 
 	// 3Dコライダー
-	BaseCollider3D* GetCollider3D(const std::string& name);
+	BaseCollider3D* GetCollider3D(const std::string& object3DName);
 
 	//
 	// コンポーネント追加関数

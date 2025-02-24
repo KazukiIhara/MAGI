@@ -13,7 +13,7 @@ void BaseRenderable3D::Update() {
 	// ワールド行列更新
 	worldTransform_->Update();
 	// 中心座標の更新
-	worldPosition_ = ExtractionWorldPos(worldTransform_->worldMatrix_);
+	worldPosition = ExtractionWorldPos(worldTransform_->worldMatrix_);
 
 	// uvTransformの更新
 	material_.uvTransformMatrix = MakeUVMatrix(uvTransform_.scale, uvTransform_.rotateZ, uvTransform_.translate);
@@ -61,7 +61,7 @@ Renderer3DType BaseRenderable3D::GetType() const {
 
 void BaseRenderable3D::Initialize(const std::string& objectName) {
 	// 名前のセット
-	name_ = objectName;
+	name = objectName;
 	// ワールド行列初期化
 	worldTransform_ = std::make_unique<WorldTransform>();
 	worldTransform_->Initialize();

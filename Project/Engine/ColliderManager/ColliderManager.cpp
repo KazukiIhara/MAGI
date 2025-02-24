@@ -29,7 +29,7 @@ std::string ColliderManager::Create(const std::string& name, Collider3DType coll
 	// 同じ名前が既に存在する場合、一意な名前を生成
 	auto isNameUsed = [&](const std::string& testName) {
 		return std::any_of(colliders_.begin(), colliders_.end(), [&](const auto& collider) {
-			return collider->name_ == testName;
+			return collider->name == testName;
 			});
 		};
 
@@ -65,7 +65,7 @@ void ColliderManager::Remove(const std::string& name) {
 	// ベクターを走査して、名前が一致するコライダーを探す
 	for (auto it = colliders_.begin(); it != colliders_.end(); ++it) {
 		// (*it)->name_ でコライダー名を取得
-		if ((*it)->name_ == name) {
+		if ((*it)->name == name) {
 			colliders_.erase(it);
 			return;  // 見つかったら削除して関数を抜ける
 		}
@@ -77,7 +77,7 @@ void ColliderManager::Remove(const std::string& name) {
 BaseCollider3D* ColliderManager::Find(const std::string& name) {
 	// ベクターを走査して、名前が一致するコライダーを探す
 	for (auto& collider : colliders_) {
-		if (collider && collider->name_ == name) {
+		if (collider && collider->name == name) {
 			return collider.get();  // ポインタを返す
 		}
 	}

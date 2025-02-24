@@ -3,6 +3,6 @@
 using namespace MAGIMath;
 
 WorldEntity::WorldEntity() {
-	name_ = "";
-	worldPosition_ = MakeZeroVector3();
+	name = "";
+	worldPosition = MakeZeroVector3();
 }

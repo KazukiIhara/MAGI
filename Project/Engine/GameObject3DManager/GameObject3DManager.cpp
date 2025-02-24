@@ -31,23 +31,23 @@ void GameObject3DManager::Draw() {
 
 std::string GameObject3DManager::Create(std::unique_ptr<GameObject3D> newGameObject3D) {
 	// 新しいオブジェクト名を決定
-	std::string uniqueName = newGameObject3D->name_;
+	std::string uniqueName = newGameObject3D->name;
 	int suffix = 1;
 
 	// 同じ名前が既に存在する場合、ユニークな名前を生成
 	auto isNameUsed = [&](const std::string& testName) {
 		return std::any_of(gameObjects_.begin(), gameObjects_.end(), [&](const auto& gameObject) {
-			return gameObject.second->name_ == testName;
+			return gameObject.second->name == testName;
 			});
 		};
 
 	while (isNameUsed(uniqueName)) {
-		uniqueName = newGameObject3D->name_ + "_" + std::to_string(suffix);
+		uniqueName = newGameObject3D->name + "_" + std::to_string(suffix);
 		suffix++;
 	}
 
 	// ユニークな名前に改名
-	newGameObject3D->name_ = uniqueName;
+	newGameObject3D->name = uniqueName;
 
 	// コンテナに登録
 	gameObjects_.insert(std::pair(uniqueName, std::move(newGameObject3D)));

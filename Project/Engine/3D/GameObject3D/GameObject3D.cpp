@@ -7,7 +7,7 @@ using namespace MAGIUtility;
 GameObject3D::GameObject3D(const std::string& objectName, const EulerTransform3D& transform)
 	:WorldEntity() {
 	// 名前をセット
-	name_ = objectName;
+	name = objectName;
 	// ワールドトランスフォーム作成
 	CreateWorldTransform(transform);
 }
@@ -61,24 +61,24 @@ void GameObject3D::OnCollisionExit([[maybe_unused]] BaseCollider3D* other) {
 
 }
 
-BaseRenderable3D* GameObject3D::GetRenderer3D(const std::string& name) {
+BaseRenderable3D* GameObject3D::GetRenderer3D(const std::string& object3DName) {
 	// 描画オブジェクトを検索
-	if (!renderers3D_.contains(name)) {
+	if (!renderers3D_.contains(object3DName)) {
 		// エラーを出して止める
 		assert(false && "Not Found Renderer3D");
 	}
 	// 見つかった描画オブジェクトを返す
-	return renderers3D_.at(name);
+	return renderers3D_.at(object3DName);
 }
 
-BaseCollider3D* GameObject3D::GetCollider3D(const std::string& name) {
+BaseCollider3D* GameObject3D::GetCollider3D(const std::string& object3DName) {
 	// 作成済みコライダーを検索
-	if (!colliders3D_.contains(name)) {
+	if (!colliders3D_.contains(object3DName)) {
 		// エラーメッセージ
 		assert(false && "Not Found Collider");
 	}
 	// コライダーのオフセットの参照を返す
-	return colliders3D_.at(name);
+	return colliders3D_.at(object3DName);
 }
 
 void GameObject3D::AddRenderer3D(BaseRenderable3D* renderer3D) {
@@ -87,7 +87,7 @@ void GameObject3D::AddRenderer3D(BaseRenderable3D* renderer3D) {
 	// ワールドトランスフォームの親子付け
 	renderer3D->GetWorldTransform()->parent_ = worldTransform_.get();
 	// 3D描画オブジェクトマップにセット
-	renderers3D_.insert(std::pair(renderer3D->name_, renderer3D));
+	renderers3D_.insert(std::pair(renderer3D->name, renderer3D));
 }
 
 void GameObject3D::AddCollider(BaseCollider3D* collider3D) {
@@ -96,7 +96,7 @@ void GameObject3D::AddCollider(BaseCollider3D* collider3D) {
 	// オーナーをセット
 	collider3D->SetOwner(this);
 	// コライダーマップにセット
-	colliders3D_.insert(std::pair(collider3D->name_, collider3D));
+	colliders3D_.insert(std::pair(collider3D->name, collider3D));
 }
 
 void GameObject3D::CreateWorldTransform(const EulerTransform3D& transform) {

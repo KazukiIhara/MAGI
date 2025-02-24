@@ -387,7 +387,7 @@ void DataIO::SaveRenderer3DDataFile(const std::string& fileName) {
 
 		// JSON に名前を追加
 		json objectJson;
-		objectJson["name"] = obj->name_; // オブジェクト名を取得
+		objectJson["name"] = obj->name; // オブジェクト名を取得
 		objectJson["type"] = static_cast<int>(obj->GetType()); // Renderer3Dの種類を保存
 
 		// Renderer3Dの種類に応じた追加情報を保存
@@ -512,7 +512,7 @@ void DataIO::SaveColliderDataFile(const std::string& fileName) {
 
 		// 基本情報
 		json colliderJson;
-		colliderJson["name"] = collider->name_;
+		colliderJson["name"] = collider->name;
 		colliderJson["type"] = static_cast<int>(collider->GetType());
 		// カテゴリを文字列で保存
 		colliderJson["category"] = CollisionCategoryToString(collider->GetCategory());

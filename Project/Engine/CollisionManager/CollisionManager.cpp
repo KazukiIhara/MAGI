@@ -216,8 +216,8 @@ bool CollisionManager::CheckSphereToSphereCollision(BaseCollider3D* colliderA, B
 	assert(sphereA && sphereB && "Colliders must be SphereCollider!");
 
 	// 中心座標を取得
-	Vector3 centerA = sphereA->worldPosition_;
-	Vector3 centerB = sphereB->worldPosition_;
+	Vector3 centerA = sphereA->worldPosition;
+	Vector3 centerB = sphereB->worldPosition;
 
 	// 半径を取得
 	float radiusA = sphereA->GetRadius();
@@ -262,7 +262,7 @@ bool CollisionManager::CheckSphereToAABBCollision(BaseCollider3D* colliderA, Bas
 	assert(sphere && aabb && "Colliders must be SphereCollider and AABBCollider!");
 
 	// 球の中心座標を取得
-	Vector3 sphereCenter = sphere->worldPosition_;
+	Vector3 sphereCenter = sphere->worldPosition;
 	float sphereRadius = sphere->GetRadius();
 
 	// AABB の最小点・最大点を取得

@@ -13,7 +13,9 @@ public:
 
 public:
 	// 名前
-	std::string name_;
+	std::string name;
 	// ワールド座標
-	Vector3 worldPosition_{};
+	Vector3 worldPosition{};
+	// 生存フラグ
+	bool isAlive = true;
 };

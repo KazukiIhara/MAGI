@@ -22,7 +22,7 @@ void Camera3D::Initialize() {
 	worldTransform_.Update();
 
 	// ワールド座標を取得
-	worldPosition_ = ExtractionWorldPos(worldTransform_.worldMatrix_);
+	worldPosition = ExtractionWorldPos(worldTransform_.worldMatrix_);
 
 	// ビュー行列やらあれこれ
 	Matrix4x4 viewMatrix = Inverse(worldTransform_.worldMatrix_);
@@ -38,7 +38,7 @@ void Camera3D::Initialize() {
 
 void Camera3D::Update() {
 	worldTransform_.Update();
-	worldPosition_ = ExtractionWorldPos(worldTransform_.worldMatrix_);
+	worldPosition = ExtractionWorldPos(worldTransform_.worldMatrix_);
 	Matrix4x4 viewMatrix = Inverse(worldTransform_.worldMatrix_);
 	viewProjectionMatrix_ = viewMatrix * projectionMatrix_;
 
@@ -70,6 +70,6 @@ void Camera3D::MapCameraData() {
 }
 
 void Camera3D::UpdateCameraData() {
-	cameraData_->worldPosition = worldPosition_;
+	cameraData_->worldPosition = worldPosition;
 	cameraData_->viewProjection = viewProjectionMatrix_;
 }
