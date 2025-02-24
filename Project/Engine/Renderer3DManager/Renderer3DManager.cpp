@@ -86,7 +86,7 @@ std::string Renderer3DManager::CreateStaticRenderer(const std::string& name, con
 	renderers_.push_back(std::move(newRenderer3D));
 
 	// 作成したRendererの名前を返す
-	return uniqueName;
+ 	return uniqueName;
 }
 
 std::string Renderer3DManager::CreateSkinningRenderer(const std::string& name, const std::string& modelName) {
