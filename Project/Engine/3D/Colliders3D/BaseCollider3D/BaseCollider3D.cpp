@@ -47,7 +47,7 @@ GameObject3D* BaseCollider3D::GetOwner() const {
 	return owner_;
 }
 
-Collider3DType& BaseCollider3D::GetType() {
+Collider3DType& BaseCollider3D::GetType() { 
 	return type_.value();
 }
 

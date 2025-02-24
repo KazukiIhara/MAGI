@@ -13,13 +13,12 @@ GameObject3D::GameObject3D(const std::string& objectName, const EulerTransform3D
 }
 
 void GameObject3D::Initialize() {
-
+	// オブジェクトごとの初期化処理
 
 }
 
 void GameObject3D::Update() {
-
-
+	// オブジェクトごとの更新処理
 
 }
 
@@ -79,6 +78,14 @@ BaseCollider3D* GameObject3D::GetCollider3D(const std::string& object3DName) {
 	}
 	// コライダーのオフセットの参照を返す
 	return colliders3D_.at(object3DName);
+}
+
+std::map<std::string, BaseRenderable3D*> GameObject3D::GetRenderers3D() {
+	return renderers3D_;
+}
+
+std::map<std::string, BaseCollider3D*> GameObject3D::GetColliders() {
+	return colliders3D_;
 }
 
 void GameObject3D::AddRenderer3D(BaseRenderable3D* renderer3D) {

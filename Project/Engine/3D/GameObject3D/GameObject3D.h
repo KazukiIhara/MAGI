@@ -63,6 +63,16 @@ public:
 	// 3Dコライダー
 	BaseCollider3D* GetCollider3D(const std::string& object3DName);
 
+	// 
+	// コンポーネントのリストを取得
+	// 
+
+	// 3D描画用オブジェクト
+	std::map<std::string, BaseRenderable3D*> GetRenderers3D();
+
+	// 3Dコライダー
+	std::map<std::string, BaseCollider3D*> GetColliders();
+
 	//
 	// コンポーネント追加関数
 	//
