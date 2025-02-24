@@ -37,7 +37,7 @@ std::string Renderer3DManager::CreatePrimitiveRenderer(const std::string& name, 
 	// 同じ名前が既に存在する場合、一意な名前を生成
 	auto isNameUsed = [&](const std::string& testName) {
 		return std::any_of(renderers_.begin(), renderers_.end(), [&](const auto& renderer) {
-			return renderer->name_ == testName;
+			return renderer->name == testName;
 			});
 		};
 
@@ -67,7 +67,7 @@ std::string Renderer3DManager::CreateStaticRenderer(const std::string& name, con
 	// 同じ名前が既に存在する場合、一意な名前を生成
 	auto isNameUsed = [&](const std::string& testName) {
 		return std::any_of(renderers_.begin(), renderers_.end(), [&](const auto& renderer) {
-			return renderer->name_ == testName;
+			return renderer->name == testName;
 			});
 		};
 
@@ -97,7 +97,7 @@ std::string Renderer3DManager::CreateSkinningRenderer(const std::string& name, c
 	// 同じ名前が既に存在する場合、一意な名前を生成
 	auto isNameUsed = [&](const std::string& testName) {
 		return std::any_of(renderers_.begin(), renderers_.end(), [&](const auto& renderer) {
-			return renderer->name_ == testName;
+			return renderer->name == testName;
 			});
 		};
 
@@ -123,7 +123,7 @@ void Renderer3DManager::Remove(const std::string& name) {
 	// ベクターを走査して、名前が一致する描画オブジェクトを探す
 	for (auto it = renderers_.begin(); it != renderers_.end(); ++it) {
 		// (*it)->name_ で描画オブジェクト名名を取得
-		if ((*it)->name_ == name) {
+		if ((*it)->name == name) {
 			renderers_.erase(it);
 			return;  // 見つかったら削除して関数を抜ける
 		}
@@ -135,7 +135,7 @@ void Renderer3DManager::Remove(const std::string& name) {
 BaseRenderable3D* Renderer3DManager::Find(const std::string& name) {
 	// ベクターを走査して、名前が一致する描画オブジェクトを探す
 	for (auto& renderer : renderers_) {
-		if (renderer && renderer->name_ == name) {
+		if (renderer && renderer->name == name) {
 			return renderer.get();  // ポインタを返す
 		}
 	}

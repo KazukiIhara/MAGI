@@ -233,13 +233,7 @@ public: // エンジンの機能
 
 #pragma region Camera3DManager
 	// カメラの転送
-	static void TransferCamera(const uint32_t& rootParameterIndex);
-#pragma endregion
-
-#pragma region GameObject3DManager
-
-
-
+	static void TransferCamera(uint32_t rootParameterIndex);
 #pragma endregion
 
 #pragma region PunctualLightManager
@@ -250,7 +244,7 @@ public: // エンジンの機能
 	// ライトの取得
 	static PunctualLightData& GetLightData(const std::string& lightName);
 	// ライトの転送
-	static void TransferPunctualLight();
+	static void TransferPunctualLight(uint32_t parmIndex);
 #pragma endregion
 
 #pragma region Renderer3DManager
@@ -274,6 +268,15 @@ public: // エンジンの機能
 	static void RemoveCollider(const std::string& name);
 	// コライダーの取得
 	static BaseCollider3D* FindCollider(const std::string& name);
+#pragma endregion
+
+#pragma region GameObject3DManager
+	// 3Dゲームオブジェクトの追加
+	static void AddGameObject3D(std::unique_ptr<GameObject3D> newGameObject3D);
+	// 3Dゲームオブジェクトの削除
+	static void RemoveGameObject3D(const std::string& objectName);
+	// 3Dゲームオブジェクトを取得
+	static GameObject3D* FindGameObject3D(const std::string& objectName);
 #pragma endregion
 
 #pragma region LineDrawer3D

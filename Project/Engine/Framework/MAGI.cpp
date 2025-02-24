@@ -211,19 +211,24 @@ void MAGISYSTEM::Finalize() {
 		collisionManager_.reset();
 	}
 
-	// Renderer3DManager
-	if (renderer3DManager_) {
-		renderer3DManager_.reset();
-	}
-
 	// LineDrawer3D
 	if (lineDrawer3D_) {
 		lineDrawer3D_.reset();
 	}
 
+	// GameObject3DManager
+	if (gameObject3DManager_) {
+		gameObject3DManager_.reset();
+	}
+
 	// ColliderManager
 	if (colliderManager_) {
 		colliderManager_.reset();
+	}
+
+	// Renderer3DManager
+	if (renderer3DManager_) {
+		renderer3DManager_.reset();
 	}
 
 	// PunctualLightManager
@@ -386,6 +391,9 @@ void MAGISYSTEM::Update() {
 	// シーンの更新処理
 	sceneManager_->Update();
 
+	// ゲームオブジェクトマネージャの更新
+	gameObject3DManager_->Update();
+
 	// 描画オブジェクトクラスの更新処理
 	renderer3DManager_->Update();
 
@@ -449,6 +457,13 @@ void MAGISYSTEM::Draw() {
 	// シーンの描画処理
 	//
 	sceneManager_->Draw();
+
+
+	// 
+	// ゲームオブジェクトマネージャの描画処理(まだない)
+	// 
+
+	gameObject3DManager_->Draw();
 
 	// 
 	// Object3Dの描画前処理
@@ -659,7 +674,7 @@ AnimationData MAGISYSTEM::FindAnimation(const std::string& animationName) {
 	return animationDataContainer_->FindAnimationData(animationName);
 }
 
-void MAGISYSTEM::TransferCamera(const uint32_t& rootParameterIndex) {
+void MAGISYSTEM::TransferCamera(uint32_t rootParameterIndex) {
 	camera3DManager_->TransferCamera(rootParameterIndex);
 }
 
@@ -676,8 +691,8 @@ PunctualLightData& MAGISYSTEM::GetLightData(const std::string& lightName) {
 }
 
 
-void MAGISYSTEM::TransferPunctualLight() {
-	punctualLightManager_->TransferLightsData();
+void MAGISYSTEM::TransferPunctualLight(uint32_t parmIndex) {
+	punctualLightManager_->TransferLightsData(parmIndex);
 }
 
 void MAGISYSTEM::CreatePrimitiveRenderer3D(const std::string& name, Primitive3DType primitiveRenderer, const std::string& textureName) {
@@ -710,6 +725,18 @@ void MAGISYSTEM::RemoveCollider(const std::string& name) {
 
 BaseCollider3D* MAGISYSTEM::FindCollider(const std::string& name) {
 	return colliderManager_->Find(name);
+}
+
+void MAGISYSTEM::AddGameObject3D(std::unique_ptr<GameObject3D> newGameObject3D) {
+	gameObject3DManager_->Add(std::move(newGameObject3D));
+}
+
+void MAGISYSTEM::RemoveGameObject3D(const std::string& objectName) {
+	gameObject3DManager_->Remove(objectName);
+}
+
+GameObject3D* MAGISYSTEM::FindGameObject3D(const std::string& objectName) {
+	return gameObject3DManager_->Find(objectName);
 }
 
 void MAGISYSTEM::DrawLine3D(const Vector3& start, const Vector3& end, const RGBA& color) {

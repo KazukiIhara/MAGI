@@ -47,41 +47,41 @@ public:
 	// 
 
 	// 衝突した
-	virtual void OnCollisionEnter([[maybe_unused]] GameObject3D* other);
+	virtual void OnCollisionEnter([[maybe_unused]] BaseCollider3D* other);
 	// 衝突中
-	virtual void OnCollisionStay([[maybe_unused]] GameObject3D* other);
+	virtual void OnCollisionStay([[maybe_unused]] BaseCollider3D* other);
 	// 離れた
-	virtual void OnCollisionExit([[maybe_unused]] GameObject3D* other);
+	virtual void OnCollisionExit([[maybe_unused]] BaseCollider3D* other);
 
-	//
-	// コライダーの設定関数
-	//
-
-	// アクティブフラグの設定
-	bool& GetColliderIsActive(const std::string& name);
-	// オフセットの取得
-	Vector3& GetColliderOffset(const std::string& name);
-
-	//
-	// スフィアコライダー用の設定
+	// 
+	// コンポーネントのポインタを取得
 	// 
 
-	// 半径を設定
-	float& GetColliderRadius(const std::string& name);
+	// 3D描画用オブジェクト
+	BaseRenderable3D* GetRenderer3D(const std::string& object3DName);
+
+	// 3Dコライダー
+	BaseCollider3D* GetCollider3D(const std::string& object3DName);
+
+	// 
+	// コンポーネントのリストを取得
+	// 
+
+	// 3D描画用オブジェクト
+	std::map<std::string, BaseRenderable3D*> GetRenderers3D();
+
+	// 3Dコライダー
+	std::map<std::string, BaseCollider3D*> GetColliders();
 
 	//
 	// コンポーネント追加関数
 	//
 
-	// シンプル形状描画オブジェクト生成
-	void CreatePrimitiveRenderer(const std::string& rendererName, const Primitive3DType& primitiveType, const std::string& textureName = "");
-	// スキニングなしモデル描画オブジェクト生成
-	void CreateStaticRenderer(const std::string& rendererName, const std::string& modelName);
-	// スキニングありモデル描画オブジェクト生成
-	void CreateSkinningRenderer(const std::string& rendererName, const std::string& modelName);
+	// 描画オブジェクト追加関数
+	void AddRenderer3D(BaseRenderable3D* renderer3D);
 
 	// コライダーの追加関数
-	void AddCollider(BaseCollider3D* collider);
+	void AddCollider(BaseCollider3D* collider3D);
 
 private:
 	// ワールドトランスフォーム作成
@@ -89,8 +89,9 @@ private:
 private:
 	// ワールド上の姿勢
 	std::unique_ptr<WorldTransform> worldTransform_ = nullptr;
-	// 描画用クラス
-	std::unique_ptr<BaseRenderable3D> renderer3D_ = nullptr;
+
+	// 3D描画用オブジェクトを受け取る箱
+	std::map<std::string, BaseRenderable3D*> renderers3D_;
 	// コライダーを受け取る箱
 	std::map<std::string, BaseCollider3D*> colliders3D_;
 };

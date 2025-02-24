@@ -67,13 +67,13 @@ void PunctualLightManager::Clear() {
 	light_.clear();
 }
 
-void PunctualLightManager::TransferLightsData() {
+void PunctualLightManager::TransferLightsData(uint32_t parmIndex) {
 	// コマンドリストを取得
 	ID3D12GraphicsCommandList* commandList = directXCommand_->GetList();
 	// ライトの総数を送る
-	commandList->SetGraphicsRootConstantBufferView(5, lightCountResource_->GetGPUVirtualAddress());
+	commandList->SetGraphicsRootConstantBufferView(parmIndex, lightCountResource_->GetGPUVirtualAddress());
 	// ライトのSrvStructuredBufferを送る
-	commandList->SetGraphicsRootDescriptorTable(6, srvuavManager_->GetDescriptorHandleGPU(srvIndex_));
+	commandList->SetGraphicsRootDescriptorTable(parmIndex + 1, srvuavManager_->GetDescriptorHandleGPU(srvIndex_));
 }
 
 void PunctualLightManager::AddNewLight(const std::string& lightName, const PunctualLightData& lightData) {

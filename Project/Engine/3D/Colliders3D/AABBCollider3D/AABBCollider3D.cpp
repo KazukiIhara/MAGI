@@ -46,9 +46,9 @@ Vector3& AABBCollider::GetOffsetMax() {
 }
 
 Vector3 AABBCollider::GetMin() const {
-	return worldPosition_ + offsetMin_;
+	return worldPosition + offsetMin_;
 }
 
 Vector3 AABBCollider::GetMax() const {
-	return worldPosition_ + offsetMax_;
+	return worldPosition + offsetMax_;
 }

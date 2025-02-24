@@ -70,6 +70,11 @@ void Object3DGraphicsPipeline::CreateRootSignature() {
 	rootParameters[4].ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL;	//PixelShaderで使う
 	rootParameters[4].Descriptor.ShaderRegister = 2;					//レジスタ番号2とバインド
 
+
+	// 
+	// ライトの総数と、ライトのデータを送るルートパラメータのインデックスは並べる。
+	// 
+
 	// ライト総数
 	rootParameters[5].ParameterType = D3D12_ROOT_PARAMETER_TYPE_CBV;
 	rootParameters[5].ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL;
