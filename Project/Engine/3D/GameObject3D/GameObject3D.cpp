@@ -30,7 +30,7 @@ void GameObject3D::UpdateWorldTransform() {
 }
 
 void GameObject3D::Draw() {
-	
+
 }
 
 Vector3& GameObject3D::GetScale() {
@@ -49,78 +49,52 @@ WorldTransform* GameObject3D::GetWorldTransform() {
 	return worldTransform_.get();
 }
 
-void GameObject3D::OnCollisionEnter([[maybe_unused]] GameObject3D* other) {
+void GameObject3D::OnCollisionEnter([[maybe_unused]] BaseCollider3D* other) {
 
 }
 
-void GameObject3D::OnCollisionStay([[maybe_unused]] GameObject3D* other) {
+void GameObject3D::OnCollisionStay([[maybe_unused]] BaseCollider3D* other) {
 
 }
 
-void GameObject3D::OnCollisionExit([[maybe_unused]] GameObject3D* other) {
+void GameObject3D::OnCollisionExit([[maybe_unused]] BaseCollider3D* other) {
 
 }
 
-bool& GameObject3D::GetColliderIsActive(const std::string& name) {
-	// 作成済みコライダーを検索
-	if (!colliders3D_.contains(name)) {
-		// エラーメッセージ
-		assert(false && "Not Found Collider");
+BaseRenderable3D* GameObject3D::GetRenderer3D(const std::string& name) {
+	// 描画オブジェクトを検索
+	if (!renderers3D_.contains(name)) {
+		// エラーを出して止める
+		assert(false && "Not Found Renderer3D");
 	}
-	// アクティブフラグの参照を返す
-	return colliders3D_.at(name)->GetIsActive();
+	// 見つかった描画オブジェクトを返す
+	return renderers3D_.at(name);
 }
 
-Vector3& GameObject3D::GetColliderOffset(const std::string& name) {
+BaseCollider3D* GameObject3D::GetCollider3D(const std::string& name) {
 	// 作成済みコライダーを検索
 	if (!colliders3D_.contains(name)) {
 		// エラーメッセージ
 		assert(false && "Not Found Collider");
 	}
 	// コライダーのオフセットの参照を返す
-	return colliders3D_.at(name)->GetOffset();
+	return colliders3D_.at(name);
 }
 
-float& GameObject3D::GetColliderRadius(const std::string& name) {
-	if (!colliders3D_.contains(name)) {
-		// エラーメッセージ
-		assert(false && "Not Found Collider");
-	}
-	auto collider = colliders3D_.at(name);
-	auto sphere = dynamic_cast<SphereCollider*>(collider);
-	if (!sphere) {
-		// エラーメッセージ
-		assert(false && "Not Sphere Collider");
-	}
-
-	return sphere->GetRadius();
-}
-
-void GameObject3D::CreatePrimitiveRenderer(const std::string& rendererName, const Primitive3DType& primitiveType, const std::string& textureName) {
-	renderer3D_ = std::make_unique<PrimitiveRenderer3D>(rendererName, primitiveType, textureName);
-	renderer3D_->AssignShape();
-	renderer3D_->GetWorldTransform()->parent_ = worldTransform_.get();
-}
-
-void GameObject3D::CreateStaticRenderer(const std::string& rendererName, const std::string& modelName) {
-	renderer3D_ = std::make_unique<StaticRenderer3D>(rendererName, modelName);
-	renderer3D_->AssignShape();
-	renderer3D_->GetWorldTransform()->parent_ = worldTransform_.get();
-}
-
-void GameObject3D::CreateSkinningRenderer(const std::string& rendererName, const std::string& modelName) {
-	renderer3D_ = std::make_unique<SkinningRenderer3D>(rendererName, modelName);
-	renderer3D_->AssignShape();
-	renderer3D_->GetWorldTransform()->parent_ = worldTransform_.get();
-}
-
-void GameObject3D::AddCollider(BaseCollider3D* collider) {
+void GameObject3D::AddRenderer3D(BaseRenderable3D* renderer3D) {
 	// nullチェック
-	assert(collider);
+	assert(renderer3D && "Add Renderer3D is nullptr");
+	// 3D描画オブジェクトマップにセット
+	renderers3D_.insert(std::pair(renderer3D->name_, renderer3D));
+}
+
+void GameObject3D::AddCollider(BaseCollider3D* collider3D) {
+	// nullチェック
+	assert(collider3D && "Add Collider3D is nullptr");
 	// オーナーをセット
-	collider->SetOwner(this);
+	collider3D->SetOwner(this);
 	// コライダーマップにセット
-	colliders3D_.insert(std::pair(collider->name_, collider));
+	colliders3D_.insert(std::pair(collider3D->name_, collider3D));
 }
 
 void GameObject3D::CreateWorldTransform(const EulerTransform3D& transform) {

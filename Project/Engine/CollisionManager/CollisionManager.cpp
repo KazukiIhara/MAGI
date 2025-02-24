@@ -149,8 +149,8 @@ void CollisionManager::ResolveCollisions(const std::set<std::pair<uint32_t, uint
 			}
 
 			// 衝突終了
-			ownerA->OnCollisionExit(ownerB);
-			ownerB->OnCollisionExit(ownerA);
+			ownerA->OnCollisionExit(colliderB);
+			ownerB->OnCollisionExit(colliderA);
 		}
 	}
 
@@ -176,12 +176,12 @@ void CollisionManager::ResolveCollisions(const std::set<std::pair<uint32_t, uint
 		}
 
 		if (isNew) {
-			ownerA->OnCollisionEnter(ownerB);
-			ownerB->OnCollisionEnter(ownerA);
+			ownerA->OnCollisionEnter(colliderB);
+			ownerB->OnCollisionEnter(colliderA);
 		} else {
 			// 衝突継続
-			ownerA->OnCollisionStay(ownerB);
-			ownerB->OnCollisionStay(ownerA);
+			ownerA->OnCollisionStay(colliderB);
+			ownerB->OnCollisionStay(colliderA);
 		}
 	}
 

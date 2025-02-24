@@ -1,6 +1,6 @@
 #pragma once
 
-#include <vector>
+#include <map>
 #include <string>
 #include <memory>
 
@@ -14,10 +14,10 @@ public:
 	void Update();
 	void Draw();
 
-	std::string Create(const std::string& name);
+	std::string Create(std::unique_ptr<GameObject3D> newGameObject);
 	void Remove(const std::string& name);
 
 private:
 	// ゲームオブジェクトコンテナ
-	std::vector<std::unique_ptr<GameObject3D>> gameObjects_;
+	std::map<std::string, std::unique_ptr<GameObject3D>> gameObjects_;
 };

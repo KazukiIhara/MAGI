@@ -45,6 +45,8 @@ inline void SampleScene<Data>::Initialize() {
 	// ライト
 	MAGISYSTEM::AddPunctualLight("sampleLight");
 
+	// レンダラー
+	MAGISYSTEM::CreateStaticRenderer3D("terrain", "terrain");
 }
 
 template<typename Data>
