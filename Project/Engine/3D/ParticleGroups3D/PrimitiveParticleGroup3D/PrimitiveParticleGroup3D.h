@@ -16,8 +16,9 @@ public:
 	PrimitiveParticleGroup3D(const std::string& particleGroupName, const Primitive3DType& primitiveType, const std::string& textureName);
 	~PrimitiveParticleGroup3D()override = default;
 
-	void AssignShape();
-	void Draw();
+	void AssignShape()override;
+	void Update()override;
+	void Draw()override;
 
 private:
 	// プリミティブ形状タイプ

@@ -61,6 +61,7 @@ std::unique_ptr<Camera3DManager> MAGISYSTEM::camera3DManager_ = nullptr;
 std::unique_ptr<PunctualLightManager> MAGISYSTEM::punctualLightManager_ = nullptr;
 std::unique_ptr<Renderer3DManager> MAGISYSTEM::renderer3DManager_ = nullptr;
 std::unique_ptr<ColliderManager> MAGISYSTEM::colliderManager_ = nullptr;
+std::unique_ptr<Emitter3DManager> MAGISYSTEM::emitter3DManager_ = nullptr;
 std::unique_ptr<ParticleGroup3DManager> MAGISYSTEM::particleGroup3DManager_ = nullptr;
 
 // 
@@ -160,7 +161,9 @@ void MAGISYSTEM::Initialize() {
 	punctualLightManager_ = std::make_unique<PunctualLightManager>(dxgi_.get(), directXCommand_.get(), srvuavManager_.get());
 	// ColliderManager
 	colliderManager_ = std::make_unique<ColliderManager>();
-	// Particle3DGroupManager
+	// Emitter3DManager
+	emitter3DManager_ = std::make_unique<Emitter3DManager>();
+	// ParticleGroup3DManager
 	particleGroup3DManager_ = std::make_unique<ParticleGroup3DManager>();
 
 
@@ -223,6 +226,11 @@ void MAGISYSTEM::Finalize() {
 	// ParticleGroup3DManager
 	if (particleGroup3DManager_) {
 		particleGroup3DManager_.reset();
+	}
+
+	// Emitter3DManager
+	if (emitter3DManager_) {
+		emitter3DManager_.reset();
 	}
 
 	// ColliderManager
@@ -415,8 +423,11 @@ void MAGISYSTEM::Update() {
 	// コライダーマネージャの更新
 	colliderManager_->Update();
 
-	// 3Dパーティクルグループマネージャの更新処理
+	// 3Dエミッターマネージャの更新処理
+	emitter3DManager_->Update();
 
+	// 3Dパーティクルグループマネージャの更新処理
+	particleGroup3DManager_->Update();
 
 	// コリジョンマネージャの更新処理
 	collisionManager_->Update();
@@ -498,6 +509,15 @@ void MAGISYSTEM::Draw() {
 	// 
 	lineDrawer3D_->Draw();
 
+	//
+	// ParticleGroup3Dの描画前処理
+	//
+
+
+	//
+	// ParticleGroup3Dの描画処理
+	//
+	particleGroup3DManager_->Draw();
 
 	//
 	// ImGui描画処理

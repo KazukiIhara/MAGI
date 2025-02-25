@@ -632,6 +632,7 @@
     </ClInclude>
     <ClInclude Include="Engine\ObjectManagers\ParticleGroup3DManager\ParticleGroup3DManager.h" />
     <ClInclude Include="Engine\3D\ParticleGroups3D\PrimitiveParticleGroup3D\PrimitiveParticleGroup3D.h" />
+    <ClInclude Include="Engine\ObjectManagers\Emitter3DManager\Emitter3DManager.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="App\Game\Game.cpp">
@@ -853,6 +854,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Engine\ObjectManagers\ParticleGroup3DManager\ParticleGroup3DManager.cpp" />
     <ClCompile Include="Engine\3D\ParticleGroups3D\PrimitiveParticleGroup3D\PrimitiveParticleGroup3D.cpp" />
+    <ClCompile Include="Engine\ObjectManagers\Emitter3DManager\Emitter3DManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Engine\SceneManager\SceneManager.ipp">

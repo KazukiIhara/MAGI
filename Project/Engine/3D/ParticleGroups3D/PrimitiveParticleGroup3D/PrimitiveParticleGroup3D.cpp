@@ -12,7 +12,10 @@ PrimitiveParticleGroup3D::PrimitiveParticleGroup3D(const std::string& particleGr
 
 	// 貼り付けるテクスチャの名前を設定
 	textureName_ = textureName;
-
+	// テクスチャが未設定の場合、デフォルトのテクスチャを割り当てる(uvCheckerはエンジン用のリソースのためフルパス指定)
+	if (textureName_ == "") {
+		textureName_ = "EngineAssets/Images/uvChecker.png";
+	}
 }
 
 void PrimitiveParticleGroup3D::AssignShape() {
@@ -28,6 +31,13 @@ void PrimitiveParticleGroup3D::AssignShape() {
 		case Primitive3DType::Cylinder:
 			break;
 	}
+}
+
+void PrimitiveParticleGroup3D::Update() {
+	// Primitive更新
+	primitive_->Update();
+	// 基底クラスの更新
+	BaseParticleGroup3D::Update();
 }
 
 void PrimitiveParticleGroup3D::Draw() {
