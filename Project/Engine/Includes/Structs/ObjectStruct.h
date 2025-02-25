@@ -37,7 +37,7 @@ struct TransformationMatrix {
 
 // 3D用マテリアル構造体
 struct Material3D {
-	Vector4 color;
+	Vector4 color = { 1.0f,1.0f,1.0f,1.0f };
 	bool enableLighting;
 	bool enableSpecularRef;
 	UVTransform uvTransform;

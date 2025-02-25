@@ -46,8 +46,22 @@ void BasePrimitiveShape3D::Draw() {
 
 	// ModelMaterial用CBufferの場所を設定
 	commandList->SetGraphicsRootConstantBufferView(4, materialResource_->GetGPUVirtualAddress());
-	// 描画！(DrawCall/ドローコール)。3頂点で1つのインスタンス。インスタンスについては今後
+	// 描画
 	commandList->DrawIndexedInstanced(UINT(primitiveData_.indices.size()), 1, 0, 0, 0);
+}
+
+void BasePrimitiveShape3D::DrawInstanced(uint32_t instanceCount) {
+	// コマンドリストを取得
+	ID3D12GraphicsCommandList* commandList = MAGISYSTEM::GetDirectXCommandList();
+	// VBVを設定
+	commandList->IASetVertexBuffers(0, 1, &vertexBufferView_);
+	// IBVを設定
+	commandList->IASetIndexBuffer(&indexBufferView_);
+
+	// ModelMaterial用CBufferの場所を設定
+	commandList->SetGraphicsRootConstantBufferView(4, materialResource_->GetGPUVirtualAddress());
+	// 描画
+	commandList->DrawIndexedInstanced(UINT(primitiveData_.indices.size()), instanceCount, 0, 0, 0);
 }
 
 void BasePrimitiveShape3D::SetIsNormalMap(bool enableNormalMap) {

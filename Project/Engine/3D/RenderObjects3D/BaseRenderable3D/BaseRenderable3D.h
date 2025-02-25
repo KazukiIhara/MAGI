@@ -26,15 +26,14 @@ public:
 	virtual void AssignShape() = 0;
 	virtual void Update();
 	virtual void Draw() = 0;
+
 	WorldTransform* GetWorldTransform();
 
 	Vector3& GetScale();
 	Vector3& GetRotate();
 	Vector3& GetTranslate();
 
-	UVTransform& GetUvTransform();
-
-	Material3DForGPU& GetMaterial();
+	Material3D& GetMaterial();
 
 	BlendMode& GetBlendMode();
 
@@ -80,5 +79,5 @@ private:
 	// マテリアルデータ
 	Material3DForGPU* materialData_ = nullptr;
 	// マテリアル
-	Material3DForGPU material_{};
+	Material3D material_{};
 };

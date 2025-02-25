@@ -23,6 +23,7 @@ public:
 	virtual void SetShape() = 0;
 	virtual void Update();
 	void Draw();
+	void DrawInstanced(uint32_t instanceCount);
 
 	void SetIsNormalMap(bool enableNormalMap);
 

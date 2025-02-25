@@ -23,6 +23,7 @@ public:
 	virtual void Initialize();
 	void Update();
 	virtual void Draw();
+	virtual void DrawInstanced(uint32_t instancedCount);
 
 protected:
 	// 頂点リソースの作成
@@ -50,7 +51,7 @@ protected:
 
 	// 頂点リソース
 	ComPtr<ID3D12Resource> vertexResource_ = nullptr;
-	
+
 	// VBV
 	D3D12_VERTEX_BUFFER_VIEW vertexBufferView_{};
 

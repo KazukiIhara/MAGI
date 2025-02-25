@@ -17,6 +17,7 @@ public:
 	virtual void Initialize();
 	virtual void Update();
 	void Draw();
+	void DrawInstanced(uint32_t instanceCount);
 
 private:
 	// 受け取ったモデルからメッシュを作成

@@ -56,11 +56,11 @@
 // 
 // ObjectManager
 // 
-#include "Camera3DManager/Camera3DManager.h"
-#include "GameObject3DManager/GameObject3DManager.h"
-#include "PunctualLightManager/PunctualLightManager.h"
-#include "Renderer3DManager/Renderer3DManager.h"
-#include "ColliderManager/ColliderManager.h"
+#include "ObjectManagers/Camera3DManager/Camera3DManager.h"
+#include "ObjectManagers/GameObject3DManager/GameObject3DManager.h"
+#include "ObjectManagers/PunctualLightManager/PunctualLightManager.h"
+#include "ObjectManagers/Renderer3DManager/Renderer3DManager.h"
+#include "ObjectManagers/ColliderManager/ColliderManager.h"
 
 // 
 // Drawer

@@ -1,8 +1,8 @@
 #include "DataIO.h"
 
-#include "Renderer3DManager/Renderer3DManager.h"
-#include "ColliderManager/ColliderManager.h"
-#include "GameObject3DManager/GameObject3DManager.h"
+#include "ObjectManagers/Renderer3DManager/Renderer3DManager.h"
+#include "ObjectManagers/ColliderManager/ColliderManager.h"
+#include "ObjectManagers/GameObject3DManager/GameObject3DManager.h"
 
 #include "Logger/Logger.h"
 
@@ -434,7 +434,7 @@ void DataIO::SaveRenderer3DDataFile(const std::string& fileName) {
 		objectJson["transform"]["translate"] = { obj->GetTranslate().x, obj->GetTranslate().y, obj->GetTranslate().z };
 
 		// UVトランスフォーム情報を追加
-		const auto& uvTransform = obj->GetUvTransform();
+		const auto& uvTransform = obj->GetMaterial().uvTransform;
 		objectJson["uvTransform"]["scale"] = { uvTransform.scale.x, uvTransform.scale.y };
 		objectJson["uvTransform"]["rotateZ"] = uvTransform.rotateZ;
 		objectJson["uvTransform"]["translate"] = { uvTransform.translate.x, uvTransform.translate.y };

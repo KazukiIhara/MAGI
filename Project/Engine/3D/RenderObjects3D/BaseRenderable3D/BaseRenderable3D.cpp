@@ -15,9 +15,6 @@ void BaseRenderable3D::Update() {
 	// 中心座標の更新
 	worldPosition = ExtractionWorldPos(worldTransform_->worldMatrix_);
 
-	// uvTransformの更新
-	material_.uvTransformMatrix = MakeUVMatrix(uvTransform_.scale, uvTransform_.rotateZ, uvTransform_.translate);
-
 	// GPUに送るデータの更新
 	UpdateWVPData();
 	UpdateMaterialData();
@@ -39,11 +36,7 @@ WorldTransform* BaseRenderable3D::GetWorldTransform() {
 	return worldTransform_.get();
 }
 
-UVTransform& BaseRenderable3D::GetUvTransform() {
-	return uvTransform_;
-}
-
-Material3DForGPU& BaseRenderable3D::GetMaterial() {
+Material3D& BaseRenderable3D::GetMaterial() {
 	return material_;
 }
 
@@ -75,7 +68,7 @@ void BaseRenderable3D::Initialize(const std::string& objectName) {
 	material_.enableLighting = true;
 	material_.enableSpecularRef = false;
 	material_.shininess = 100.0f;
-	material_.uvTransformMatrix = MakeIdentityMatrix4x4();
+	material_.uvTransform = {};
 
 	// WVP用のリソース作成
 	CreateWVPResource();
@@ -131,7 +124,7 @@ void BaseRenderable3D::MapMateiralData() {
 	materialData_->enableLighting = material_.enableLighting;
 	materialData_->enableSpecularRef = material_.enableSpecularRef;
 	materialData_->shininess = material_.shininess;
-	materialData_->uvTransformMatrix = material_.uvTransformMatrix;
+	materialData_->uvTransformMatrix = MakeUVMatrix(material_.uvTransform.scale, material_.uvTransform.rotateZ, material_.uvTransform.translate);
 }
 
 void BaseRenderable3D::UpdateWVPData() {
@@ -143,6 +136,6 @@ void BaseRenderable3D::UpdateMaterialData() {
 	materialData_->color = material_.color;
 	materialData_->enableLighting = material_.enableLighting;
 	materialData_->enableSpecularRef = material_.enableSpecularRef;
-	materialData_->uvTransformMatrix = material_.uvTransformMatrix;
+	materialData_->uvTransformMatrix = MakeUVMatrix(material_.uvTransform.scale, material_.uvTransform.rotateZ, material_.uvTransform.translate);
 	materialData_->shininess = material_.shininess;
 }
