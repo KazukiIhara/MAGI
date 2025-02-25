@@ -112,10 +112,10 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="App\GameData\CollisionCategory.h" />
-    <ClInclude Include="App\GameObjects\Player\Player.h" />
     <ClInclude Include="App\Game\Game.h" />
+    <ClInclude Include="App\GameData\CollisionCategory.h" />
     <ClInclude Include="App\GameData\GameData.h" />
+    <ClInclude Include="App\GameObjects\Player\Player.h" />
     <ClInclude Include="App\Scenes\Sample\SampleScene.h" />
     <ClInclude Include="Engine\2D\Object2D\Object2D.h" />
     <ClInclude Include="Engine\2D\WorldTransform2D\WorldTransform2D.h" />
@@ -127,11 +127,12 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Engine\3D\Colliders3D\BaseCollider3D\BaseCollider3D.h" />
     <ClInclude Include="Engine\3D\Colliders3D\SphereCollider\SphereCollider.h" />
     <ClInclude Include="Engine\3D\Emitter3D\Emitter3D.h" />
+    <ClInclude Include="Engine\3D\GameObject3D\GameObject3D.h" />
     <ClInclude Include="Engine\3D\ParticleGroups3D\BaseParticleGroup3D\BaseParticleGroup3D.h" />
     <ClInclude Include="Engine\3D\RenderObjects3D\BaseRenderable3D\BaseRenderable3D.h" />
-    <ClInclude Include="Engine\3D\RenderObjects3D\StaticRenderer3D\StaticRenderer3D.h" />
-    <ClInclude Include="Engine\3D\RenderObjects3D\SkinningRenderer3D\SkinningRenderer3D.h" />
     <ClInclude Include="Engine\3D\RenderObjects3D\PrimitiveRenderer3D\PrimitiveRenderer3D.h" />
+    <ClInclude Include="Engine\3D\RenderObjects3D\SkinningRenderer3D\SkinningRenderer3D.h" />
+    <ClInclude Include="Engine\3D\RenderObjects3D\StaticRenderer3D\StaticRenderer3D.h" />
     <ClInclude Include="Engine\3D\Shapes3D\Mesh\Mesh.h" />
     <ClInclude Include="Engine\3D\Shapes3D\Model\Model.h" />
     <ClInclude Include="Engine\3D\Shapes3D\PrimitiveShapes3D\BasePrimitiveShape3D\BasePrimitiveShape3D.h" />
@@ -146,10 +147,9 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Engine\AssetContainers\SoundDataContainer\SoundDataContainer.h" />
     <ClInclude Include="Engine\AssetContainers\TextureDataContainer\TextureDataContainer.h" />
     <ClInclude Include="Engine\BaseScene\BaseScene.h" />
-    <ClInclude Include="Engine\ObjectManagers\Camera3DManager\Camera3DManager.h" />
-    <ClInclude Include="Engine\ObjectManagers\ColliderManager\ColliderManager.h" />
     <ClInclude Include="Engine\CollisionManager\CollisionManager.h" />
     <ClInclude Include="Engine\ComputePipelines\SkinningComputePipeline\SkinningComputePipeline.h" />
+    <ClInclude Include="Engine\DataIO\DataIO.h" />
     <ClInclude Include="Engine\DeltaTimer\DeltaTimer.h" />
     <ClInclude Include="Engine\DirectInput\DirectInput.h" />
     <ClInclude Include="Engine\DirectX\ComPtr\ComPtr.h" />
@@ -165,10 +165,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Engine\DirectX\Viewport\Viewport.h" />
     <ClInclude Include="Engine\FPSController\FPSController.h" />
     <ClInclude Include="Engine\Framework\MAGI.h" />
-    <ClInclude Include="Engine\DataIO\DataIO.h" />
-    <ClInclude Include="Engine\ObjectManagers\GameObject3DManager\GameObject3DManager.h" />
     <ClInclude Include="Engine\GUI\GUI.h" />
-    <ClInclude Include="Engine\3D\GameObject3D\GameObject3D.h" />
     <ClInclude Include="Engine\GraphicsPipelines\BaseGraphicsPipeline\BaseGraphicsPipeline.h" />
     <ClInclude Include="Engine\GraphicsPipelines\Line3DGraphicsPipeline\Line3DGraphicsPipeline.h" />
     <ClInclude Include="Engine\GraphicsPipelines\Object2DGraphicsPipeline\Object2DGraphicsPipeline.h" />
@@ -182,8 +179,8 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Engine\Includes\Enums\MouseInputEnum.h" />
     <ClInclude Include="Engine\Includes\Enums\Primitive3DEnum.h" />
     <ClInclude Include="Engine\Includes\Enums\PunctualLightDataEnum.h" />
-    <ClInclude Include="Engine\Includes\Enums\Renderer3DEnum.h" />
     <ClInclude Include="Engine\Includes\Enums\RenderTargetEnumh.h" />
+    <ClInclude Include="Engine\Includes\Enums\Renderer3DEnum.h" />
     <ClInclude Include="Engine\Includes\Enums\XInputEnum.h" />
     <ClInclude Include="Engine\Includes\Logger\Logger.h" />
     <ClInclude Include="Engine\Includes\MAGIUitility\MAGIUtility.h" />
@@ -209,10 +206,13 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Engine\Includes\Structs\TextureStruct.h" />
     <ClInclude Include="Engine\LeakChecker\D3DResourceLeakChecker.h" />
     <ClInclude Include="Engine\LineDrawer3D\LineDrawer3D.h" />
-    <ClInclude Include="Engine\PipelineManagers\ComputePipelineManager\ComputePipelineManager.h" />
-    <ClInclude Include="Engine\PipelineManagers\GraphicsPipelineManager\GraphicsPipelineManager.h" />
+    <ClInclude Include="Engine\ObjectManagers\Camera3DManager\Camera3DManager.h" />
+    <ClInclude Include="Engine\ObjectManagers\ColliderManager\ColliderManager.h" />
+    <ClInclude Include="Engine\ObjectManagers\GameObject3DManager\GameObject3DManager.h" />
     <ClInclude Include="Engine\ObjectManagers\PunctualLightManager\PunctualLightManager.h" />
     <ClInclude Include="Engine\ObjectManagers\Renderer3DManager\Renderer3DManager.h" />
+    <ClInclude Include="Engine\PipelineManagers\ComputePipelineManager\ComputePipelineManager.h" />
+    <ClInclude Include="Engine\PipelineManagers\GraphicsPipelineManager\GraphicsPipelineManager.h" />
     <ClInclude Include="Engine\SceneManager\SceneManager.h" />
     <ClInclude Include="Engine\ViewManagers\BaseViewManager\BaseViewManager.h" />
     <ClInclude Include="Engine\ViewManagers\DSVManager\DSVManager.h" />
@@ -221,8 +221,8 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Engine\WindowApp\WindowApp.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="App\GameObjects\Player\Player.cpp" />
     <ClCompile Include="App\Game\Game.cpp" />
+    <ClCompile Include="App\GameObjects\Player\Player.cpp" />
     <ClCompile Include="Engine\2D\Object2D\Object2D.cpp" />
     <ClCompile Include="Engine\2D\WorldTransform2D\WorldTransform2D.cpp" />
     <ClCompile Include="Engine\3D\Base3D\WorldEntity\WorldEntity.cpp" />
@@ -233,11 +233,12 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Engine\3D\Colliders3D\BaseCollider3D\BaseCollider3D.cpp" />
     <ClCompile Include="Engine\3D\Colliders3D\SphereCollider\SphereCollider.cpp" />
     <ClCompile Include="Engine\3D\Emitter3D\Emitter3D.cpp" />
+    <ClCompile Include="Engine\3D\GameObject3D\GameObject3D.cpp" />
     <ClCompile Include="Engine\3D\ParticleGroups3D\BaseParticleGroup3D\BaseParticleGroup3D.cpp" />
     <ClCompile Include="Engine\3D\RenderObjects3D\BaseRenderable3D\BaseRenderable3D.cpp" />
-    <ClCompile Include="Engine\3D\RenderObjects3D\StaticRenderer3D\StaticRenderer3D.cpp" />
-    <ClCompile Include="Engine\3D\RenderObjects3D\SkinningRenderer3D\SkinningRenderer3D.cpp" />
     <ClCompile Include="Engine\3D\RenderObjects3D\PrimitiveRenderer3D\PrimitiveRenderer3D.cpp" />
+    <ClCompile Include="Engine\3D\RenderObjects3D\SkinningRenderer3D\SkinningRenderer3D.cpp" />
+    <ClCompile Include="Engine\3D\RenderObjects3D\StaticRenderer3D\StaticRenderer3D.cpp" />
     <ClCompile Include="Engine\3D\Shapes3D\Mesh\Mesh.cpp" />
     <ClCompile Include="Engine\3D\Shapes3D\Model\Model.cpp" />
     <ClCompile Include="Engine\3D\Shapes3D\PrimitiveShapes3D\BasePrimitiveShape3D\BasePrimitiveShape3D.cpp" />
@@ -251,10 +252,9 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Engine\AssetContainers\PrimitiveShapeDataContainer\PrimitiveShapeDataContainer.cpp" />
     <ClCompile Include="Engine\AssetContainers\SoundDataContainer\SoundDataContainer.cpp" />
     <ClCompile Include="Engine\AssetContainers\TextureDataContainer\TextureDataContainer.cpp" />
-    <ClCompile Include="Engine\ObjectManagers\Camera3DManager\Camera3DManager.cpp" />
-    <ClCompile Include="Engine\ObjectManagers\ColliderManager\ColliderManager.cpp" />
     <ClCompile Include="Engine\CollisionManager\CollisionManager.cpp" />
     <ClCompile Include="Engine\ComputePipelines\SkinningComputePipeline\SkinningComputePipeline.cpp" />
+    <ClCompile Include="Engine\DataIO\DataIO.cpp" />
     <ClCompile Include="Engine\DeltaTimer\DeltaTimer.cpp" />
     <ClCompile Include="Engine\DirectInput\DirectInput.cpp" />
     <ClCompile Include="Engine\DirectX\DXGI\DXGI.cpp" />
@@ -269,10 +269,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Engine\DirectX\Viewport\Viewport.cpp" />
     <ClCompile Include="Engine\FPSController\FPSController.cpp" />
     <ClCompile Include="Engine\Framework\MAGI.cpp" />
-    <ClCompile Include="Engine\DataIO\DataIO.cpp" />
-    <ClCompile Include="Engine\ObjectManagers\GameObject3DManager\GameObject3DManager.cpp" />
     <ClCompile Include="Engine\GUI\GUI.cpp" />
-    <ClCompile Include="Engine\3D\GameObject3D\GameObject3D.cpp" />
     <ClCompile Include="Engine\GraphicsPipelines\BaseGraphicsPipeline\BaseGraphicsPipeline.cpp" />
     <ClCompile Include="Engine\GraphicsPipelines\Line3DGraphicsPipeline\Line3DGraphicsPipeline.cpp" />
     <ClCompile Include="Engine\GraphicsPipelines\Object2DGraphicsPipeline\Object2DGraphicsPipeline.cpp" />
@@ -284,10 +281,13 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Engine\Includes\Random\Random.cpp" />
     <ClCompile Include="Engine\LeakChecker\D3DResourceLeakChecker.cpp" />
     <ClCompile Include="Engine\LineDrawer3D\LineDrawer3D.cpp" />
-    <ClCompile Include="Engine\PipelineManagers\ComputePipelineManager\ComputePipelineManager.cpp" />
-    <ClCompile Include="Engine\PipelineManagers\GraphicsPipelineManager\GraphicsPipelineManager.cpp" />
+    <ClCompile Include="Engine\ObjectManagers\Camera3DManager\Camera3DManager.cpp" />
+    <ClCompile Include="Engine\ObjectManagers\ColliderManager\ColliderManager.cpp" />
+    <ClCompile Include="Engine\ObjectManagers\GameObject3DManager\GameObject3DManager.cpp" />
     <ClCompile Include="Engine\ObjectManagers\PunctualLightManager\PunctualLightManager.cpp" />
     <ClCompile Include="Engine\ObjectManagers\Renderer3DManager\Renderer3DManager.cpp" />
+    <ClCompile Include="Engine\PipelineManagers\ComputePipelineManager\ComputePipelineManager.cpp" />
+    <ClCompile Include="Engine\PipelineManagers\GraphicsPipelineManager\GraphicsPipelineManager.cpp" />
     <ClCompile Include="Engine\ViewManagers\BaseViewManager\BaseViewManager.cpp" />
     <ClCompile Include="Engine\ViewManagers\DSVManager\DSVManager.cpp" />
     <ClCompile Include="Engine\ViewManagers\RTVManager\RTVManager.cpp" />

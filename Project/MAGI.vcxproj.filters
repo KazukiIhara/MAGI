@@ -10,6 +10,12 @@
     <Filter Include="App\GameData">
       <UniqueIdentifier>{E90015FD-D563-A4A1-7EE9-DC576A2B7024}</UniqueIdentifier>
     </Filter>
+    <Filter Include="App\GameObjects">
+      <UniqueIdentifier>{397AD9B1-A505-4776-AE16-CA6A1A21A376}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="App\GameObjects\Player">
+      <UniqueIdentifier>{35113CE2-210B-6534-0A78-FB44F610CBA0}</UniqueIdentifier>
+    </Filter>
     <Filter Include="App\Scenes">
       <UniqueIdentifier>{B65C617A-A214-A3C7-0B1C-7C23F7F23DB8}</UniqueIdentifier>
     </Filter>
@@ -40,14 +46,38 @@
     <Filter Include="Engine\3D\Base3D\WorldTransform">
       <UniqueIdentifier>{951E359A-0102-44DA-0A05-721676670A2B}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Engine\3D\Camera3Ds">
-      <UniqueIdentifier>{A3B5DC05-0F17-BA13-9884-00C604E5F0D2}</UniqueIdentifier>
+    <Filter Include="Engine\3D\Cameras3D">
+      <UniqueIdentifier>{83C3DD05-EF24-BB13-7892-01C6E4F2F1D2}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Engine\3D\Camera3Ds\Camera3D">
-      <UniqueIdentifier>{52563DD1-3E11-2D7D-E7C8-A5C7D362770D}</UniqueIdentifier>
+    <Filter Include="Engine\3D\Cameras3D\Camera3D">
+      <UniqueIdentifier>{3200FC74-1EBB-EB20-C772-646BB30C36B1}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Engine\3D\Camera3Ds\DebugCamera3D">
-      <UniqueIdentifier>{7951129E-E5BF-671D-2EA9-221D9A565DB9}</UniqueIdentifier>
+    <Filter Include="Engine\3D\Cameras3D\DebugCamera3D">
+      <UniqueIdentifier>{5927E68A-C595-3B0A-0E7F-F6097A2C31A6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\3D\Colliders3D">
+      <UniqueIdentifier>{E85B9A7F-54C8-557A-1DBC-EDD789E777E2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\3D\Colliders3D\AABBCollider3D">
+      <UniqueIdentifier>{A244763C-8E2B-3834-377C-9E512342B19A}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\3D\Colliders3D\BaseCollider3D">
+      <UniqueIdentifier>{D755D9FD-C33C-9BF5-6C8D-01135853145C}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\3D\Colliders3D\SphereCollider">
+      <UniqueIdentifier>{ACC843C2-98AF-05BA-4100-6CD72DC67E20}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\3D\Emitter3D">
+      <UniqueIdentifier>{C16C27F1-2DCE-04FF-B63B-4BB1229C3BBE}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\3D\GameObject3D">
+      <UniqueIdentifier>{B89F5732-A499-8084-8D06-1795799FE6F0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\3D\ParticleGroups3D">
+      <UniqueIdentifier>{7BE16EB1-67F1-1A82-D0AA-7FA0BCD9091B}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\3D\ParticleGroups3D\BaseParticleGroup3D">
+      <UniqueIdentifier>{5D6FD449-49ED-24E3-32E5-E27A1E02670B}</UniqueIdentifier>
     </Filter>
     <Filter Include="Engine\3D\RenderObjects3D">
       <UniqueIdentifier>{D1CC20B2-3D8F-543C-863F-E3C8F2402D1A}</UniqueIdentifier>
@@ -55,14 +85,14 @@
     <Filter Include="Engine\3D\RenderObjects3D\BaseRenderable3D">
       <UniqueIdentifier>{464F0611-32B7-CCDE-9B22-E1F487A9E3CA}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Engine\3D\RenderObjects3D\Object3D">
-      <UniqueIdentifier>{CE35FA8F-BA71-FDF9-2384-15F10FDFA514}</UniqueIdentifier>
+    <Filter Include="Engine\3D\RenderObjects3D\PrimitiveRenderer3D">
+      <UniqueIdentifier>{C7E62910-3357-2C89-FC75-A61168A5648A}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Engine\3D\RenderObjects3D\Object3DSkinning">
-      <UniqueIdentifier>{CFDD632C-BB45-2AFA-24B1-3E10103841E6}</UniqueIdentifier>
+    <Filter Include="Engine\3D\RenderObjects3D\SkinningRenderer3D">
+      <UniqueIdentifier>{6F63BFD6-5B76-BF2F-0460-9C1CF0515C7D}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Engine\3D\RenderObjects3D\Primitive3D">
-      <UniqueIdentifier>{90BF9EE8-FC83-9DD8-C5E9-CDA2316D390E}</UniqueIdentifier>
+    <Filter Include="Engine\3D\RenderObjects3D\StaticRenderer3D">
+      <UniqueIdentifier>{F6B874FC-E220-3BCA-4B8C-4FE0371352B6}</UniqueIdentifier>
     </Filter>
     <Filter Include="Engine\3D\Shapes3D">
       <UniqueIdentifier>{2B183A19-17FC-FA6E-805C-F5C16C5FE5F0}</UniqueIdentifier>
@@ -115,14 +145,17 @@
     <Filter Include="Engine\BaseScene">
       <UniqueIdentifier>{F34FD70C-DF48-F65E-087B-DBE3F4D2D56A}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Engine\Camera3DManager">
-      <UniqueIdentifier>{256F4171-1169-6AC3-FAD5-00D4E66ED02F}</UniqueIdentifier>
+    <Filter Include="Engine\CollisionManager">
+      <UniqueIdentifier>{D1084DDE-3D40-9575-464A-F998B200BC6E}</UniqueIdentifier>
     </Filter>
     <Filter Include="Engine\ComputePipelines">
       <UniqueIdentifier>{F0A2B4EE-5CDA-FC85-65E4-60A9D19A237F}</UniqueIdentifier>
     </Filter>
     <Filter Include="Engine\ComputePipelines\SkinningComputePipeline">
       <UniqueIdentifier>{D39AF44C-3FD6-5410-48CB-D19FB485D940}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\DataIO">
+      <UniqueIdentifier>{DC80EB35-4841-676C-117C-B0E97DFBAB48}</UniqueIdentifier>
     </Filter>
     <Filter Include="Engine\DeltaTimer">
       <UniqueIdentifier>{B5E83FAE-21FF-3D44-6A76-C965D6CB0ECC}</UniqueIdentifier>
@@ -175,9 +208,6 @@
     <Filter Include="Engine\GUI">
       <UniqueIdentifier>{6F3CF502-5BF4-3650-C4FB-0FACB0D2D140}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Engine\GameObject">
-      <UniqueIdentifier>{7B030729-E719-05BF-3091-90E09CE6D546}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Engine\GraphicsPipelines">
       <UniqueIdentifier>{04191357-F03D-62D7-1989-4767050D61F5}</UniqueIdentifier>
     </Filter>
@@ -229,6 +259,24 @@
     <Filter Include="Engine\LineDrawer3D">
       <UniqueIdentifier>{2EE59E3F-9A46-7C4D-23B4-C2FF8F14B30C}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Engine\ObjectManagers">
+      <UniqueIdentifier>{AF64C9CC-1BD1-84C7-E4C4-1C2550F0A62F}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\ObjectManagers\Camera3DManager">
+      <UniqueIdentifier>{F9335E39-65F8-5C29-2E5E-8DF39AE1F85E}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\ObjectManagers\ColliderManager">
+      <UniqueIdentifier>{A785290E-134A-28FE-DCAF-58C84833C433}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\ObjectManagers\GameObject3DManager">
+      <UniqueIdentifier>{816256B9-ED7C-B95A-369F-C9EEA2F8E061}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\ObjectManagers\PunctualLightManager">
+      <UniqueIdentifier>{DD552493-C9BD-EA60-3229-FF761EB0014D}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\ObjectManagers\Renderer3DManager">
+      <UniqueIdentifier>{A73ED4B7-13CE-95A2-1CCA-76BA88D8D0AE}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Engine\PipelineManagers">
       <UniqueIdentifier>{0ED9C9FB-7A10-1293-831A-76B6EFD0388C}</UniqueIdentifier>
     </Filter>
@@ -237,9 +285,6 @@
     </Filter>
     <Filter Include="Engine\PipelineManagers\GraphicsPipelineManager">
       <UniqueIdentifier>{5F42992D-CB7D-F9F0-D472-7680402D7E21}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Engine\PunctualLightManager">
-      <UniqueIdentifier>{896CE737-F579-151E-7E60-1109EA6CE1D4}</UniqueIdentifier>
     </Filter>
     <Filter Include="Engine\SceneManager">
       <UniqueIdentifier>{1385C7BD-7FE6-A4CB-0854-EB7D74B4DB8A}</UniqueIdentifier>
@@ -267,8 +312,14 @@
     <ClInclude Include="App\Game\Game.h">
       <Filter>App\Game</Filter>
     </ClInclude>
+    <ClInclude Include="App\GameData\CollisionCategory.h">
+      <Filter>App\GameData</Filter>
+    </ClInclude>
     <ClInclude Include="App\GameData\GameData.h">
       <Filter>App\GameData</Filter>
+    </ClInclude>
+    <ClInclude Include="App\GameObjects\Player\Player.h">
+      <Filter>App\GameObjects\Player</Filter>
     </ClInclude>
     <ClInclude Include="App\Scenes\Sample\SampleScene.h">
       <Filter>App\Scenes\Sample</Filter>
@@ -286,22 +337,40 @@
       <Filter>Engine\3D\Base3D\WorldTransform</Filter>
     </ClInclude>
     <ClInclude Include="Engine\3D\Cameras3D\Camera3D\Camera3D.h">
-      <Filter>Engine\3D\Camera3Ds\Camera3D</Filter>
+      <Filter>Engine\3D\Cameras3D\Camera3D</Filter>
     </ClInclude>
     <ClInclude Include="Engine\3D\Cameras3D\DebugCamera3D\DebugCamera3D.h">
-      <Filter>Engine\3D\Camera3Ds\DebugCamera3D</Filter>
+      <Filter>Engine\3D\Cameras3D\DebugCamera3D</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\3D\Colliders3D\AABBCollider3D\AABBCollider3D.h">
+      <Filter>Engine\3D\Colliders3D\AABBCollider3D</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\3D\Colliders3D\BaseCollider3D\BaseCollider3D.h">
+      <Filter>Engine\3D\Colliders3D\BaseCollider3D</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\3D\Colliders3D\SphereCollider\SphereCollider.h">
+      <Filter>Engine\3D\Colliders3D\SphereCollider</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\3D\Emitter3D\Emitter3D.h">
+      <Filter>Engine\3D\Emitter3D</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\3D\GameObject3D\GameObject3D.h">
+      <Filter>Engine\3D\GameObject3D</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\3D\ParticleGroups3D\BaseParticleGroup3D\BaseParticleGroup3D.h">
+      <Filter>Engine\3D\ParticleGroups3D\BaseParticleGroup3D</Filter>
     </ClInclude>
     <ClInclude Include="Engine\3D\RenderObjects3D\BaseRenderable3D\BaseRenderable3D.h">
       <Filter>Engine\3D\RenderObjects3D\BaseRenderable3D</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\3D\RenderObjects3D\StaticRenderer3D\StaticRenderer3D.h">
-      <Filter>Engine\3D\RenderObjects3D\Object3D</Filter>
+    <ClInclude Include="Engine\3D\RenderObjects3D\PrimitiveRenderer3D\PrimitiveRenderer3D.h">
+      <Filter>Engine\3D\RenderObjects3D\PrimitiveRenderer3D</Filter>
     </ClInclude>
     <ClInclude Include="Engine\3D\RenderObjects3D\SkinningRenderer3D\SkinningRenderer3D.h">
-      <Filter>Engine\3D\RenderObjects3D\Object3DSkinning</Filter>
+      <Filter>Engine\3D\RenderObjects3D\SkinningRenderer3D</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\3D\RenderObjects3D\PrimitiveRenderer3D\PrimitiveRenderer3D.h">
-      <Filter>Engine\3D\RenderObjects3D\Primitive3D</Filter>
+    <ClInclude Include="Engine\3D\RenderObjects3D\StaticRenderer3D\StaticRenderer3D.h">
+      <Filter>Engine\3D\RenderObjects3D\StaticRenderer3D</Filter>
     </ClInclude>
     <ClInclude Include="Engine\3D\Shapes3D\Mesh\Mesh.h">
       <Filter>Engine\3D\Shapes3D\Mesh</Filter>
@@ -345,11 +414,14 @@
     <ClInclude Include="Engine\BaseScene\BaseScene.h">
       <Filter>Engine\BaseScene</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\ObjectManagers\Camera3DManager\Camera3DManager.h">
-      <Filter>Engine\Camera3DManager</Filter>
+    <ClInclude Include="Engine\CollisionManager\CollisionManager.h">
+      <Filter>Engine\CollisionManager</Filter>
     </ClInclude>
     <ClInclude Include="Engine\ComputePipelines\SkinningComputePipeline\SkinningComputePipeline.h">
       <Filter>Engine\ComputePipelines\SkinningComputePipeline</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\DataIO\DataIO.h">
+      <Filter>Engine\DataIO</Filter>
     </ClInclude>
     <ClInclude Include="Engine\DeltaTimer\DeltaTimer.h">
       <Filter>Engine\DeltaTimer</Filter>
@@ -399,9 +471,6 @@
     <ClInclude Include="Engine\GUI\GUI.h">
       <Filter>Engine\GUI</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\3D\GameObject3D\GameObject3D.h">
-      <Filter>Engine\GameObject</Filter>
-    </ClInclude>
     <ClInclude Include="Engine\GraphicsPipelines\BaseGraphicsPipeline\BaseGraphicsPipeline.h">
       <Filter>Engine\GraphicsPipelines\BaseGraphicsPipeline</Filter>
     </ClInclude>
@@ -420,7 +489,13 @@
     <ClInclude Include="Engine\Includes\Enums\BlendModeEnum.h">
       <Filter>Engine\Includes\Enums</Filter>
     </ClInclude>
+    <ClInclude Include="Engine\Includes\Enums\Collider3DType.h">
+      <Filter>Engine\Includes\Enums</Filter>
+    </ClInclude>
     <ClInclude Include="Engine\Includes\Enums\ComputePipelineEnum.h">
+      <Filter>Engine\Includes\Enums</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Includes\Enums\EmitterEnum.h">
       <Filter>Engine\Includes\Enums</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Includes\Enums\GraphicsPipelineEnum.h">
@@ -436,6 +511,9 @@
       <Filter>Engine\Includes\Enums</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Includes\Enums\RenderTargetEnumh.h">
+      <Filter>Engine\Includes\Enums</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Includes\Enums\Renderer3DEnum.h">
       <Filter>Engine\Includes\Enums</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Includes\Enums\XInputEnum.h">
@@ -483,10 +561,16 @@
     <ClInclude Include="Engine\Includes\Structs\ColorStruct.h">
       <Filter>Engine\Includes\Structs</Filter>
     </ClInclude>
+    <ClInclude Include="Engine\Includes\Structs\EmitterStruct.h">
+      <Filter>Engine\Includes\Structs</Filter>
+    </ClInclude>
     <ClInclude Include="Engine\Includes\Structs\ModelStruct.h">
       <Filter>Engine\Includes\Structs</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Includes\Structs\ObjectStruct.h">
+      <Filter>Engine\Includes\Structs</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Includes\Structs\ParticleStruct.h">
       <Filter>Engine\Includes\Structs</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Includes\Structs\PunctualLightStruct.h">
@@ -507,14 +591,26 @@
     <ClInclude Include="Engine\LineDrawer3D\LineDrawer3D.h">
       <Filter>Engine\LineDrawer3D</Filter>
     </ClInclude>
+    <ClInclude Include="Engine\ObjectManagers\Camera3DManager\Camera3DManager.h">
+      <Filter>Engine\ObjectManagers\Camera3DManager</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\ObjectManagers\ColliderManager\ColliderManager.h">
+      <Filter>Engine\ObjectManagers\ColliderManager</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\ObjectManagers\GameObject3DManager\GameObject3DManager.h">
+      <Filter>Engine\ObjectManagers\GameObject3DManager</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\ObjectManagers\PunctualLightManager\PunctualLightManager.h">
+      <Filter>Engine\ObjectManagers\PunctualLightManager</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\ObjectManagers\Renderer3DManager\Renderer3DManager.h">
+      <Filter>Engine\ObjectManagers\Renderer3DManager</Filter>
+    </ClInclude>
     <ClInclude Include="Engine\PipelineManagers\ComputePipelineManager\ComputePipelineManager.h">
       <Filter>Engine\PipelineManagers\ComputePipelineManager</Filter>
     </ClInclude>
     <ClInclude Include="Engine\PipelineManagers\GraphicsPipelineManager\GraphicsPipelineManager.h">
       <Filter>Engine\PipelineManagers\GraphicsPipelineManager</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\ObjectManagers\PunctualLightManager\PunctualLightManager.h">
-      <Filter>Engine\PunctualLightManager</Filter>
     </ClInclude>
     <ClInclude Include="Engine\SceneManager\SceneManager.h">
       <Filter>Engine\SceneManager</Filter>
@@ -534,27 +630,13 @@
     <ClInclude Include="Engine\WindowApp\WindowApp.h">
       <Filter>Engine\WindowApp</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\Includes\Enums\Renderer3DEnum.h" />
-    <ClInclude Include="Engine\3D\Colliders3D\BaseCollider3D\BaseCollider3D.h" />
-    <ClInclude Include="Engine\Includes\Enums\Collider3DType.h" />
-    <ClInclude Include="App\GameData\CollisionCategory.h" />
-    <ClInclude Include="Engine\3D\Colliders3D\SphereCollider\SphereCollider.h" />
-    <ClInclude Include="Engine\CollisionManager\CollisionManager.h" />
-    <ClInclude Include="Engine\ObjectManagers\ColliderManager\ColliderManager.h" />
-    <ClInclude Include="Engine\DataIO\DataIO.h" />
-    <ClInclude Include="Engine\ObjectManagers\Renderer3DManager\Renderer3DManager.h" />
-    <ClInclude Include="Engine\3D\Colliders3D\AABBCollider3D\AABBCollider3D.h" />
-    <ClInclude Include="Engine\ObjectManagers\GameObject3DManager\GameObject3DManager.h" />
-    <ClInclude Include="App\GameObjects\Player\Player.h" />
-    <ClInclude Include="Engine\3D\Emitter3D\Emitter3D.h" />
-    <ClInclude Include="Engine\3D\ParticleGroups3D\BaseParticleGroup3D\BaseParticleGroup3D.h" />
-    <ClInclude Include="Engine\Includes\Structs\ParticleStruct.h" />
-    <ClInclude Include="Engine\Includes\Enums\EmitterEnum.h" />
-    <ClInclude Include="Engine\Includes\Structs\EmitterStruct.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="App\Game\Game.cpp">
       <Filter>App\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="App\GameObjects\Player\Player.cpp">
+      <Filter>App\GameObjects\Player</Filter>
     </ClCompile>
     <ClCompile Include="Engine\2D\Object2D\Object2D.cpp">
       <Filter>Engine\2D\Object2D</Filter>
@@ -569,22 +651,40 @@
       <Filter>Engine\3D\Base3D\WorldTransform</Filter>
     </ClCompile>
     <ClCompile Include="Engine\3D\Cameras3D\Camera3D\Camera3D.cpp">
-      <Filter>Engine\3D\Camera3Ds\Camera3D</Filter>
+      <Filter>Engine\3D\Cameras3D\Camera3D</Filter>
     </ClCompile>
     <ClCompile Include="Engine\3D\Cameras3D\DebugCamera3D\DebugCamera3D.cpp">
-      <Filter>Engine\3D\Camera3Ds\DebugCamera3D</Filter>
+      <Filter>Engine\3D\Cameras3D\DebugCamera3D</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\3D\Colliders3D\AABBCollider3D\AABBCollider3D.cpp">
+      <Filter>Engine\3D\Colliders3D\AABBCollider3D</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\3D\Colliders3D\BaseCollider3D\BaseCollider3D.cpp">
+      <Filter>Engine\3D\Colliders3D\BaseCollider3D</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\3D\Colliders3D\SphereCollider\SphereCollider.cpp">
+      <Filter>Engine\3D\Colliders3D\SphereCollider</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\3D\Emitter3D\Emitter3D.cpp">
+      <Filter>Engine\3D\Emitter3D</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\3D\GameObject3D\GameObject3D.cpp">
+      <Filter>Engine\3D\GameObject3D</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\3D\ParticleGroups3D\BaseParticleGroup3D\BaseParticleGroup3D.cpp">
+      <Filter>Engine\3D\ParticleGroups3D\BaseParticleGroup3D</Filter>
     </ClCompile>
     <ClCompile Include="Engine\3D\RenderObjects3D\BaseRenderable3D\BaseRenderable3D.cpp">
       <Filter>Engine\3D\RenderObjects3D\BaseRenderable3D</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\3D\RenderObjects3D\StaticRenderer3D\StaticRenderer3D.cpp">
-      <Filter>Engine\3D\RenderObjects3D\Object3D</Filter>
+    <ClCompile Include="Engine\3D\RenderObjects3D\PrimitiveRenderer3D\PrimitiveRenderer3D.cpp">
+      <Filter>Engine\3D\RenderObjects3D\PrimitiveRenderer3D</Filter>
     </ClCompile>
     <ClCompile Include="Engine\3D\RenderObjects3D\SkinningRenderer3D\SkinningRenderer3D.cpp">
-      <Filter>Engine\3D\RenderObjects3D\Object3DSkinning</Filter>
+      <Filter>Engine\3D\RenderObjects3D\SkinningRenderer3D</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\3D\RenderObjects3D\PrimitiveRenderer3D\PrimitiveRenderer3D.cpp">
-      <Filter>Engine\3D\RenderObjects3D\Primitive3D</Filter>
+    <ClCompile Include="Engine\3D\RenderObjects3D\StaticRenderer3D\StaticRenderer3D.cpp">
+      <Filter>Engine\3D\RenderObjects3D\StaticRenderer3D</Filter>
     </ClCompile>
     <ClCompile Include="Engine\3D\Shapes3D\Mesh\Mesh.cpp">
       <Filter>Engine\3D\Shapes3D\Mesh</Filter>
@@ -625,11 +725,14 @@
     <ClCompile Include="Engine\AssetContainers\TextureDataContainer\TextureDataContainer.cpp">
       <Filter>Engine\AssetContainers\TextureDataContainer</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\ObjectManagers\Camera3DManager\Camera3DManager.cpp">
-      <Filter>Engine\Camera3DManager</Filter>
+    <ClCompile Include="Engine\CollisionManager\CollisionManager.cpp">
+      <Filter>Engine\CollisionManager</Filter>
     </ClCompile>
     <ClCompile Include="Engine\ComputePipelines\SkinningComputePipeline\SkinningComputePipeline.cpp">
       <Filter>Engine\ComputePipelines\SkinningComputePipeline</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\DataIO\DataIO.cpp">
+      <Filter>Engine\DataIO</Filter>
     </ClCompile>
     <ClCompile Include="Engine\DeltaTimer\DeltaTimer.cpp">
       <Filter>Engine\DeltaTimer</Filter>
@@ -676,9 +779,6 @@
     <ClCompile Include="Engine\GUI\GUI.cpp">
       <Filter>Engine\GUI</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\3D\GameObject3D\GameObject3D.cpp">
-      <Filter>Engine\GameObject</Filter>
-    </ClCompile>
     <ClCompile Include="Engine\GraphicsPipelines\BaseGraphicsPipeline\BaseGraphicsPipeline.cpp">
       <Filter>Engine\GraphicsPipelines\BaseGraphicsPipeline</Filter>
     </ClCompile>
@@ -712,14 +812,26 @@
     <ClCompile Include="Engine\LineDrawer3D\LineDrawer3D.cpp">
       <Filter>Engine\LineDrawer3D</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\ObjectManagers\Camera3DManager\Camera3DManager.cpp">
+      <Filter>Engine\ObjectManagers\Camera3DManager</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\ObjectManagers\ColliderManager\ColliderManager.cpp">
+      <Filter>Engine\ObjectManagers\ColliderManager</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\ObjectManagers\GameObject3DManager\GameObject3DManager.cpp">
+      <Filter>Engine\ObjectManagers\GameObject3DManager</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\ObjectManagers\PunctualLightManager\PunctualLightManager.cpp">
+      <Filter>Engine\ObjectManagers\PunctualLightManager</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\ObjectManagers\Renderer3DManager\Renderer3DManager.cpp">
+      <Filter>Engine\ObjectManagers\Renderer3DManager</Filter>
+    </ClCompile>
     <ClCompile Include="Engine\PipelineManagers\ComputePipelineManager\ComputePipelineManager.cpp">
       <Filter>Engine\PipelineManagers\ComputePipelineManager</Filter>
     </ClCompile>
     <ClCompile Include="Engine\PipelineManagers\GraphicsPipelineManager\GraphicsPipelineManager.cpp">
       <Filter>Engine\PipelineManagers\GraphicsPipelineManager</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\ObjectManagers\PunctualLightManager\PunctualLightManager.cpp">
-      <Filter>Engine\PunctualLightManager</Filter>
     </ClCompile>
     <ClCompile Include="Engine\ViewManagers\BaseViewManager\BaseViewManager.cpp">
       <Filter>Engine\ViewManagers\BaseViewManager</Filter>
@@ -737,17 +849,6 @@
       <Filter>Engine\WindowApp</Filter>
     </ClCompile>
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="Engine\3D\Colliders3D\BaseCollider3D\BaseCollider3D.cpp" />
-    <ClCompile Include="Engine\3D\Colliders3D\SphereCollider\SphereCollider.cpp" />
-    <ClCompile Include="Engine\CollisionManager\CollisionManager.cpp" />
-    <ClCompile Include="Engine\ObjectManagers\ColliderManager\ColliderManager.cpp" />
-    <ClCompile Include="Engine\DataIO\DataIO.cpp" />
-    <ClCompile Include="Engine\ObjectManagers\Renderer3DManager\Renderer3DManager.cpp" />
-    <ClCompile Include="Engine\3D\Colliders3D\AABBCollider3D\AABBCollider3D.cpp" />
-    <ClCompile Include="Engine\ObjectManagers\GameObject3DManager\GameObject3DManager.cpp" />
-    <ClCompile Include="App\GameObjects\Player\Player.cpp" />
-    <ClCompile Include="Engine\3D\Emitter3D\Emitter3D.cpp" />
-    <ClCompile Include="Engine\3D\ParticleGroups3D\BaseParticleGroup3D\BaseParticleGroup3D.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Engine\SceneManager\SceneManager.ipp">
