@@ -123,7 +123,7 @@ void Object2D::Draw() {
 	commandList->SetGraphicsRootConstantBufferView(1, transformationResource_->GetGPUVirtualAddress());
 	// テクスチャのSRVを設定
 	uint32_t textureSrv = MAGISYSTEM::GetTexture()[textureName_].srvIndex;
-	commandList->SetGraphicsRootDescriptorTable(2, MAGISYSTEM::GetSrvDescriptorHandleGPU(textureSrv));
+	commandList->SetGraphicsRootDescriptorTable(2, MAGISYSTEM::GetSrvUavDescriptorHandleGPU(textureSrv));
 	// 描画！(DrawCall/ドローコール)
 	commandList->DrawIndexedInstanced(6, 1, 0, 0, 0);
 }

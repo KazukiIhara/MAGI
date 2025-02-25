@@ -10,6 +10,7 @@ enum class GraphicsPipelineStateType {
 	Object2D,
 	Line3D,
 	Object3D,
+	Particle3D,
 
 	Num,
 };

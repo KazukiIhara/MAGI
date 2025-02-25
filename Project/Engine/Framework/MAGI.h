@@ -56,11 +56,12 @@
 // 
 // ObjectManager
 // 
-#include "ObjectManagers/Camera3DManager/Camera3DManager.h"
 #include "ObjectManagers/GameObject3DManager/GameObject3DManager.h"
+#include "ObjectManagers/Camera3DManager/Camera3DManager.h"
 #include "ObjectManagers/PunctualLightManager/PunctualLightManager.h"
 #include "ObjectManagers/Renderer3DManager/Renderer3DManager.h"
 #include "ObjectManagers/ColliderManager/ColliderManager.h"
+#include "ObjectManagers/ParticleGroup3DManager/ParticleGroup3DManager.h"
 
 // 
 // Drawer
@@ -177,9 +178,9 @@ public: // エンジンの機能
 	static ID3D12DescriptorHeap* GetSrvUavDescriptorHeap();
 
 	// SRVのCPUディスクリプタハンドルを取得
-	static D3D12_CPU_DESCRIPTOR_HANDLE GetSrvDescriptorHandleCPU(uint32_t index);
+	static D3D12_CPU_DESCRIPTOR_HANDLE GetSrvUavDescriptorHandleCPU(uint32_t index);
 	// SRVのGPUディスクリプタハンドルを取得
-	static D3D12_GPU_DESCRIPTOR_HANDLE GetSrvDescriptorHandleGPU(uint32_t index);
+	static D3D12_GPU_DESCRIPTOR_HANDLE GetSrvUavDescriptorHandleGPU(uint32_t index);
 	// Allocate
 	static uint32_t ViewAllocate();
 	// StructuredBuffer用のsrv作成
@@ -369,10 +370,12 @@ protected:
 	//
 	// ObjectManager
 	//
+	static std::unique_ptr<GameObject3DManager> gameObject3DManager_;
 	static std::unique_ptr<Camera3DManager> camera3DManager_;
+	static std::unique_ptr<Renderer3DManager> renderer3DManager_;
 	static std::unique_ptr<PunctualLightManager> punctualLightManager_;
 	static std::unique_ptr<ColliderManager> colliderManager_;
-	static std::unique_ptr<GameObject3DManager> gameObject3DManager_;
+	static std::unique_ptr<ParticleGroup3DManager> particleGroup3DManager_;
 
 	// 
 	// Drawer
@@ -382,7 +385,6 @@ protected:
 	// 
 	// GameManager
 	// 
-	static std::unique_ptr<Renderer3DManager> renderer3DManager_;
 	static std::unique_ptr<CollisionManager> collisionManager_;
 	static std::unique_ptr<SceneManager<GameData>> sceneManager_;
 
