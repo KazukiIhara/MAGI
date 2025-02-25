@@ -434,7 +434,7 @@ void DataIO::SaveRenderer3DDataFile(const std::string& fileName) {
 		objectJson["transform"]["translate"] = { obj->GetTranslate().x, obj->GetTranslate().y, obj->GetTranslate().z };
 
 		// UVトランスフォーム情報を追加
-		const auto& uvTransform = obj->GetUvTransform();
+		const auto& uvTransform = obj->GetMaterial().uvTransform;
 		objectJson["uvTransform"]["scale"] = { uvTransform.scale.x, uvTransform.scale.y };
 		objectJson["uvTransform"]["rotateZ"] = uvTransform.rotateZ;
 		objectJson["uvTransform"]["translate"] = { uvTransform.translate.x, uvTransform.translate.y };
