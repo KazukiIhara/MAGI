@@ -40,7 +40,7 @@ private:
 	void MapMaterialData();
 private:
 	// パーティクルの最大数
-	static const uint32_t kNumMaxInstance = 512;
+	static const uint32_t kNumMaxInstance = 1024;
 
 	// 描画タイプ
 	std::optional<Renderer3DType> rendererType_ = std::nullopt;
