@@ -7,12 +7,13 @@ class DXGI;
 class ShaderCompiler;
 
 /// <summary>
-/// 3D描画パイプライン
+/// 3Dパーティクル描画パイプライン
 /// </summary>
-class Object3DGraphicsPipeline:public BaseGraphicsPipeline {
+class Particle3DGraphicsPipeline:public BaseGraphicsPipeline {
 public:
-	Object3DGraphicsPipeline(DXGI* dxgi, ShaderCompiler* shaderCompiler);
-	~Object3DGraphicsPipeline()override;
+	Particle3DGraphicsPipeline(DXGI* dxgi, ShaderCompiler* shaderCompiler);
+	~Particle3DGraphicsPipeline()override;
+
 private:
 	// ルートシグネチャを作成する
 	void CreateRootSignature()override;
@@ -28,5 +29,4 @@ private:
 	D3D12_INPUT_LAYOUT_DESC InputLayoutSetting()override;
 	// RasterizerStateの設定を行う
 	D3D12_RASTERIZER_DESC RasterizerStateSetting()override;
-
 };
