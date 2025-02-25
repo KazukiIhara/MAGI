@@ -4,6 +4,7 @@
 #include <cstdint>
 #include <list>
 #include <optional>
+#include <string>
 
 #include "Structs/ParticleStruct.h"
 #include "Enums/Renderer3DEnum.h"
@@ -38,21 +39,28 @@ private:
 	void CreateMaterialResource();
 	// マテリアルデータの書き込み
 	void MapMaterialData();
-private:
-	// パーティクルの最大数
-	static const uint32_t kNumMaxInstance = 1024;
 
+public:
+	// パーティクルグループの名前
+	std::string name = "";
+private:
+	// パーティクルのリスト
+	std::list<ParticleData> particles_;
+	// パーティクルの最大数
+	const uint32_t kNumMaxInstance_ = 1024;
 	// 描画タイプ
 	std::optional<Renderer3DType> rendererType_ = std::nullopt;
-
 	// ブレンドモード
 	BlendMode blendMode_ = BlendMode::Add;
-
+	// instance描画する際に使う変数
+	uint32_t instanceCount_ = 0;
 private:
 	// instancing描画用リソース
-	ComPtr<ID3D12Resource> instansingResource_ = nullptr;
+	ComPtr<ID3D12Resource> instancingResource_ = nullptr;
 	// instancing描画用データ
 	ParticleForGPU* instancingData_ = nullptr;
+	// SrvIndex
+	uint32_t srvIndex_ = 0;
 
 	// マテリアルリソース
 	ComPtr<ID3D12Resource> materialResource_ = nullptr;
