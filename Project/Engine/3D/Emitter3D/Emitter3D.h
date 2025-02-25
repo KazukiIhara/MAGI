@@ -6,6 +6,7 @@
 #include "Structs/EmitterStruct.h"
 
 #include "3D/Base3D/WorldEntity/WorldEntity.h"
+#include "3D/Base3D/WorldTransform/WorldTransform.h"
 #include "3D/ParticleGroups3D/BaseParticleGroup3D/BaseParticleGroup3D.h"
 
 /// <summary>
@@ -29,6 +30,9 @@ public:
 	void AddParticleGroup(BaseParticleGroup3D* particleGroup);
 
 private:
+	// ワールドトランスフォーム
+	WorldTransform worldTransform_{};
+
 	// エミッターの設定構造体
 	EmitterSetting emitterSetting_{};
 

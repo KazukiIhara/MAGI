@@ -4,7 +4,17 @@
 
 using namespace MAGIMath;
 
-BaseParticleGroup3D::BaseParticleGroup3D() {}
+BaseParticleGroup3D::BaseParticleGroup3D() {
+	// Instancingリソースを作る
+	CreateInstancingResource();
+	// Instancingデータを書き込む
+	MapInstancingData();
+
+	// マテリアルリソース作成
+	CreateMaterialResource();
+	// マテリアルデータ書き込み
+	MapMaterialData();
+}
 
 BaseParticleGroup3D::~BaseParticleGroup3D() {}
 
@@ -84,6 +94,10 @@ void BaseParticleGroup3D::AddNewParticle(const EmitParamater& emitSetting) {
 void BaseParticleGroup3D::CreateInstancingResource() {
 	// instancing用のリソースを作る
 	instancingResource_ = MAGISYSTEM::CreateBufferResource(sizeof(ParticleForGPU) * kNumMaxInstance_);
+	// srvのインデックスを割り当て
+	srvIndex_ = MAGISYSTEM::ViewAllocate();
+	// Srvを作成
+	MAGISYSTEM::CreateSrvStructuredBuffer(srvIndex_, instancingResource_.Get(), kNumMaxInstance_, sizeof(ParticleForGPU));
 }
 
 void BaseParticleGroup3D::MapInstancingData() {

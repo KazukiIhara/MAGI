@@ -2,7 +2,7 @@
 
 #include <cassert>
 
-#include "ColliderManager/ColliderManager.h"
+#include "ObjectManagers/ColliderManager/ColliderManager.h"
 #include "3D/GameObject3D/GameObject3D.h"
 #include "Math/Utility/MathUtility.h"
 

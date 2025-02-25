@@ -9,8 +9,8 @@
 #include "DataIO/DataIO.h"
 #include "AssetContainers/TextureDataContainer/TextureDataContainer.h"
 
-#include "Renderer3DManager/Renderer3DManager.h"
-#include "ColliderManager/ColliderManager.h"
+#include "ObjectManagers/Renderer3DManager/Renderer3DManager.h"
+#include "ObjectManagers/ColliderManager/ColliderManager.h"
 
 #include "Logger/Logger.h"
 

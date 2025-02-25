@@ -1,8 +1,8 @@
 #include "DataIO.h"
 
-#include "Renderer3DManager/Renderer3DManager.h"
-#include "ColliderManager/ColliderManager.h"
-#include "GameObject3DManager/GameObject3DManager.h"
+#include "ObjectManagers/Renderer3DManager/Renderer3DManager.h"
+#include "ObjectManagers/ColliderManager/ColliderManager.h"
+#include "ObjectManagers/GameObject3DManager/GameObject3DManager.h"
 
 #include "Logger/Logger.h"
 

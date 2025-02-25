@@ -61,12 +61,10 @@ inline void SampleScene<Data>::Initialize() {
 	// マネージャにプレイヤーを追加
 	MAGISYSTEM::AddGameObject3D(std::move(player_));
 
-
 }
 
 template<typename Data>
 inline void SampleScene<Data>::Update() {
-
 }
 
 template<typename Data>
