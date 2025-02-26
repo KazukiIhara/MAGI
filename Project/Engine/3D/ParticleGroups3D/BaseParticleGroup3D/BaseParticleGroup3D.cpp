@@ -133,7 +133,7 @@ void BaseParticleGroup3D::UpdateInstancingData() {
 
 void BaseParticleGroup3D::CreateMaterialResource() {
 	// マテリアル用のリソース作成
-	materialResource_ = MAGISYSTEM::CreateBufferResource(sizeof(Material3D));
+	materialResource_ = MAGISYSTEM::CreateBufferResource(sizeof(Material3DForGPU));
 }
 
 void BaseParticleGroup3D::MapMaterialData() {

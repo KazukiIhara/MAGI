@@ -292,7 +292,7 @@ public: // エンジンの機能
 
 #pragma region ParticleGroup3DManager
 	// シンプル形状パーティクルグループの追加
-	static std::string CreatePrimitiveParticleGroup3D(const std::string& particleGroupName, const Primitive3DType& primitiveType, const std::string& textureName);
+	static std::string CreatePrimitiveParticleGroup3D(const std::string& particleGroupName, const Primitive3DType& primitiveType, const std::string& textureName = "");
 	// パーティクルグループの削除
 	static void RemoveParticleGroup3D(const std::string& particleGraoupName);
 	// パーティクルグループの取得

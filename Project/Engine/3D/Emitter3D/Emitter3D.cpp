@@ -1,11 +1,13 @@
 #include "Emitter3D.h"
 
 #include "Framework/MAGI.h"
+#include "MAGIUitility/MAGIUtility.h"
 #include "Random/Random.h"
 
 #include <cassert>
 
 using namespace MAGIMath;
+using namespace MAGIUtility;
 
 Emitter3D::Emitter3D(const std::string& emitterName, const Vector3& position) {
 	name = emitterName;
@@ -68,6 +70,15 @@ void Emitter3D::EmitAll() {
 				emitParamater.position.y = worldPosition.y + Random::GenerateFloat(emitterSetting_.minTranslate.y, emitterSetting_.maxTranslate.y);
 				emitParamater.position.z = worldPosition.z + Random::GenerateFloat(emitterSetting_.minTranslate.z, emitterSetting_.maxTranslate.z);
 
+				// 色
+				emitParamater.color.x = Random::GenerateFloat(emitterSetting_.minColor.r, emitterSetting_.maxColor.r);
+				emitParamater.color.y = Random::GenerateFloat(emitterSetting_.minColor.g, emitterSetting_.maxColor.g);
+				emitParamater.color.z = Random::GenerateFloat(emitterSetting_.minColor.b, emitterSetting_.maxColor.b);
+				emitParamater.color.w = Random::GenerateFloat(emitterSetting_.minColor.a, emitterSetting_.maxColor.a);
+
+				// 生存時間
+				emitParamater.lifeTime = Random::GenerateFloat(emitterSetting_.minLifeTime, emitterSetting_.maxLifeTime);
+
 				particleGroup.second->AddNewParticle(emitParamater);
 			}
 		}
@@ -80,4 +91,8 @@ void Emitter3D::AddParticleGroup(BaseParticleGroup3D* particleGroup) {
 	assert(particleGroup);
 	// 名前を取得してマップに入れる
 	particleGroups_.insert(std::pair(particleGroup->name, particleGroup));
+}
+
+EmitterSetting& Emitter3D::GetEmitterSetting() {
+	return emitterSetting_;
 }

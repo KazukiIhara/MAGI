@@ -29,6 +29,9 @@ public:
 	// 新規パーティクルグループ追加
 	void AddParticleGroup(BaseParticleGroup3D* particleGroup);
 
+	// 設定構造体の取得
+	EmitterSetting& GetEmitterSetting();
+
 private:
 	// ワールドトランスフォーム
 	WorldTransform worldTransform_{};
