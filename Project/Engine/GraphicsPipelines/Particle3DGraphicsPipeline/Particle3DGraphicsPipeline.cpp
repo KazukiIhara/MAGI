@@ -56,7 +56,7 @@ void Particle3DGraphicsPipeline::CreateRootSignature() {
 
 	// カメラ
 	rootParameters[4].ParameterType = D3D12_ROOT_PARAMETER_TYPE_CBV;	//CBVを使う
-	rootParameters[4].ShaderVisibility = D3D12_SHADER_VISIBILITY_ALL;	//すべてのシェーダーで使える
+	rootParameters[4].ShaderVisibility = D3D12_SHADER_VISIBILITY_VERTEX;//VirtexShaderで使う
 	rootParameters[4].Descriptor.ShaderRegister = 0;					//レジスタ番号1とバインド
 
 	descriptionRootSignature.pParameters = rootParameters;				//ルートパラメータ配列へのポインタ
