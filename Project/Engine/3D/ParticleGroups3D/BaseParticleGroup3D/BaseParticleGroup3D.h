@@ -62,6 +62,9 @@ protected:
 	// instance描画する際に使う変数
 	uint32_t instanceCount_ = 0;
 private:
+	// カメラのルートパラメタインデックス番号
+	const uint32_t cameraRootParamaterIndex_ = 4;
+
 	// instancing描画用リソース
 	ComPtr<ID3D12Resource> instancingResource_ = nullptr;
 	// instancing描画用データ

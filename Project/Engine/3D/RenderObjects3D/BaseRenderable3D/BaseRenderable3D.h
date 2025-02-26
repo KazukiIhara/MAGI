@@ -57,8 +57,8 @@ protected:
 	// マテリアルデータの更新
 	void UpdateMaterialData();
 private:
-	uint32_t cameraRootParamaterIndex_ = 2;
-	uint32_t lightRootParamaterIndex_ = 5;
+	const uint32_t cameraRootParamaterIndex_ = 2;
+	const uint32_t lightRootParamaterIndex_ = 5;
 private:
 	// ワールドトランスフォーム
 	std::unique_ptr<WorldTransform> worldTransform_{};

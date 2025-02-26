@@ -61,6 +61,8 @@ void BaseParticleGroup3D::PrepareForRendering() {
 	commandList->SetGraphicsRootConstantBufferView(0, materialResource_->GetGPUVirtualAddress());
 	// StructuredBufferのSRVを設定する
 	commandList->SetGraphicsRootDescriptorTable(1, MAGISYSTEM::GetSrvUavDescriptorHandleGPU(srvIndex_));
+	// カメラを転送
+	MAGISYSTEM::TransferCamera(cameraRootParamaterIndex_);
 }
 
 void BaseParticleGroup3D::CreateInstancingResource() {

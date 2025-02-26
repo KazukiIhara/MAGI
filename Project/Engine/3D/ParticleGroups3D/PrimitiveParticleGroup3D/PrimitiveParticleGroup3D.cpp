@@ -46,7 +46,7 @@ void PrimitiveParticleGroup3D::Draw() {
 
 	// Texture用のSRVをセット
 	uint32_t textureSrvIndex = MAGISYSTEM::GetTexture()[textureName_].srvIndex;
-	MAGISYSTEM::GetDirectXCommandList()->SetGraphicsRootDescriptorTable(3, MAGISYSTEM::GetSrvUavDescriptorHandleGPU(textureSrvIndex));
+	MAGISYSTEM::GetDirectXCommandList()->SetGraphicsRootDescriptorTable(2, MAGISYSTEM::GetSrvUavDescriptorHandleGPU(textureSrvIndex));
 
 	// 描画
 	primitive_->DrawInstanced(instanceCount_);
