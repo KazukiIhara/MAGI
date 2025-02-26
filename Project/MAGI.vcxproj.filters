@@ -862,5 +862,10 @@
     <None Include="Engine\SceneManager\SceneManager.ipp">
       <Filter>Engine\SceneManager</Filter>
     </None>
+    <None Include="EngineAssets\Shaders\Particle3D\Particle3D.hlsli" />
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="EngineAssets\Shaders\Particle3D\Particle3D.PS.hlsl" />
+    <FxCompile Include="EngineAssets\Shaders\Particle3D\Particle3D.VS.hlsl" />
   </ItemGroup>
 </Project>
