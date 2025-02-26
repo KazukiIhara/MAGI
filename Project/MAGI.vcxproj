@@ -129,6 +129,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Engine\3D\Emitter3D\Emitter3D.h" />
     <ClInclude Include="Engine\3D\GameObject3D\GameObject3D.h" />
     <ClInclude Include="Engine\3D\ParticleGroups3D\BaseParticleGroup3D\BaseParticleGroup3D.h" />
+    <ClInclude Include="Engine\3D\ParticleGroups3D\PrimitiveParticleGroup3D\PrimitiveParticleGroup3D.h" />
     <ClInclude Include="Engine\3D\RenderObjects3D\BaseRenderable3D\BaseRenderable3D.h" />
     <ClInclude Include="Engine\3D\RenderObjects3D\PrimitiveRenderer3D\PrimitiveRenderer3D.h" />
     <ClInclude Include="Engine\3D\RenderObjects3D\SkinningRenderer3D\SkinningRenderer3D.h" />
@@ -165,6 +166,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Engine\DirectX\Viewport\Viewport.h" />
     <ClInclude Include="Engine\FPSController\FPSController.h" />
     <ClInclude Include="Engine\Framework\MAGI.h" />
+    <ClInclude Include="Engine\GraphicsPipelines\Particle3DGraphicsPipeline\Particle3DGraphicsPipeline.h" />
     <ClInclude Include="Engine\GUI\GUI.h" />
     <ClInclude Include="Engine\GraphicsPipelines\BaseGraphicsPipeline\BaseGraphicsPipeline.h" />
     <ClInclude Include="Engine\GraphicsPipelines\Line3DGraphicsPipeline\Line3DGraphicsPipeline.h" />
@@ -208,7 +210,9 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Engine\LineDrawer3D\LineDrawer3D.h" />
     <ClInclude Include="Engine\ObjectManagers\Camera3DManager\Camera3DManager.h" />
     <ClInclude Include="Engine\ObjectManagers\ColliderManager\ColliderManager.h" />
+    <ClInclude Include="Engine\ObjectManagers\Emitter3DManager\Emitter3DManager.h" />
     <ClInclude Include="Engine\ObjectManagers\GameObject3DManager\GameObject3DManager.h" />
+    <ClInclude Include="Engine\ObjectManagers\ParticleGroup3DManager\ParticleGroup3DManager.h" />
     <ClInclude Include="Engine\ObjectManagers\PunctualLightManager\PunctualLightManager.h" />
     <ClInclude Include="Engine\ObjectManagers\Renderer3DManager\Renderer3DManager.h" />
     <ClInclude Include="Engine\PipelineManagers\ComputePipelineManager\ComputePipelineManager.h" />
@@ -235,6 +239,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Engine\3D\Emitter3D\Emitter3D.cpp" />
     <ClCompile Include="Engine\3D\GameObject3D\GameObject3D.cpp" />
     <ClCompile Include="Engine\3D\ParticleGroups3D\BaseParticleGroup3D\BaseParticleGroup3D.cpp" />
+    <ClCompile Include="Engine\3D\ParticleGroups3D\PrimitiveParticleGroup3D\PrimitiveParticleGroup3D.cpp" />
     <ClCompile Include="Engine\3D\RenderObjects3D\BaseRenderable3D\BaseRenderable3D.cpp" />
     <ClCompile Include="Engine\3D\RenderObjects3D\PrimitiveRenderer3D\PrimitiveRenderer3D.cpp" />
     <ClCompile Include="Engine\3D\RenderObjects3D\SkinningRenderer3D\SkinningRenderer3D.cpp" />
@@ -269,6 +274,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Engine\DirectX\Viewport\Viewport.cpp" />
     <ClCompile Include="Engine\FPSController\FPSController.cpp" />
     <ClCompile Include="Engine\Framework\MAGI.cpp" />
+    <ClCompile Include="Engine\GraphicsPipelines\Particle3DGraphicsPipeline\Particle3DGraphicsPipeline.cpp" />
     <ClCompile Include="Engine\GUI\GUI.cpp" />
     <ClCompile Include="Engine\GraphicsPipelines\BaseGraphicsPipeline\BaseGraphicsPipeline.cpp" />
     <ClCompile Include="Engine\GraphicsPipelines\Line3DGraphicsPipeline\Line3DGraphicsPipeline.cpp" />
@@ -283,7 +289,9 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Engine\LineDrawer3D\LineDrawer3D.cpp" />
     <ClCompile Include="Engine\ObjectManagers\Camera3DManager\Camera3DManager.cpp" />
     <ClCompile Include="Engine\ObjectManagers\ColliderManager\ColliderManager.cpp" />
+    <ClCompile Include="Engine\ObjectManagers\Emitter3DManager\Emitter3DManager.cpp" />
     <ClCompile Include="Engine\ObjectManagers\GameObject3DManager\GameObject3DManager.cpp" />
+    <ClCompile Include="Engine\ObjectManagers\ParticleGroup3DManager\ParticleGroup3DManager.cpp" />
     <ClCompile Include="Engine\ObjectManagers\PunctualLightManager\PunctualLightManager.cpp" />
     <ClCompile Include="Engine\ObjectManagers\Renderer3DManager\Renderer3DManager.cpp" />
     <ClCompile Include="Engine\PipelineManagers\ComputePipelineManager\ComputePipelineManager.cpp" />
@@ -296,6 +304,10 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="EngineAssets\Shaders\Particle3D\Particle3D.hlsli">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </None>
     <None Include="Engine\SceneManager\SceneManager.ipp" />
   </ItemGroup>
   <ItemGroup>
@@ -305,6 +317,20 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ProjectReference Include="Externals\imgui\imgui.vcxproj">
       <Project>{22345678-ABCD-4321-DCBA-1234567890AB}</Project>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="EngineAssets\Shaders\Particle3D\Particle3D.PS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </FxCompile>
+    <FxCompile Include="EngineAssets\Shaders\Particle3D\Particle3D.VS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </FxCompile>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

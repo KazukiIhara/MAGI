@@ -36,15 +36,15 @@ void PrimitiveRenderer3D::Draw() {
 
 	// Texture用のSRVをセット
 	uint32_t textureSrvIndex = MAGISYSTEM::GetTexture()[textureName_].srvIndex;
-	commandList->SetGraphicsRootDescriptorTable(3, MAGISYSTEM::GetSrvDescriptorHandleGPU(textureSrvIndex));
+	commandList->SetGraphicsRootDescriptorTable(3, MAGISYSTEM::GetSrvUavDescriptorHandleGPU(textureSrvIndex));
 
 	// NormalMap用のSrvをセット
 	if (normalMapTextureName_ != "") {
 		uint32_t normalMapTextureSrvIndex = MAGISYSTEM::GetTexture()[normalMapTextureName_].srvIndex;
-		commandList->SetGraphicsRootDescriptorTable(7, MAGISYSTEM::GetSrvDescriptorHandleGPU(normalMapTextureSrvIndex));
+		commandList->SetGraphicsRootDescriptorTable(7, MAGISYSTEM::GetSrvUavDescriptorHandleGPU(normalMapTextureSrvIndex));
 	} else {// 未定義動作を防ぐため、デフォルトのテクスチャのsrvIndexをセットしておく
 		uint32_t defaultNormalMapTextureSrvIndex = MAGISYSTEM::GetTexture()["EngineAssets/Images/uvChecker.png"].srvIndex;
-		commandList->SetGraphicsRootDescriptorTable(7, MAGISYSTEM::GetSrvDescriptorHandleGPU(defaultNormalMapTextureSrvIndex));
+		commandList->SetGraphicsRootDescriptorTable(7, MAGISYSTEM::GetSrvUavDescriptorHandleGPU(defaultNormalMapTextureSrvIndex));
 	}
 
 	// Primitive描画

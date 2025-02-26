@@ -35,12 +35,12 @@ void SkinningMesh::Draw() {
 
 	// Texture用のSRVをセット
 	uint32_t textureSrvIndex = MAGISYSTEM::GetTexture()[meshData_.material.textureFilePath].srvIndex;
-	commandList->SetGraphicsRootDescriptorTable(3, MAGISYSTEM::GetSrvDescriptorHandleGPU(textureSrvIndex));
+	commandList->SetGraphicsRootDescriptorTable(3, MAGISYSTEM::GetSrvUavDescriptorHandleGPU(textureSrvIndex));
 
 	// NormalMap用のSrvをセット
 	if (meshData_.material.normalMapTextureFilePath != "") {
 		uint32_t normalMapTextureSrvIndex = MAGISYSTEM::GetTexture()[meshData_.material.normalMapTextureFilePath].srvIndex;
-		commandList->SetGraphicsRootDescriptorTable(7, MAGISYSTEM::GetSrvDescriptorHandleGPU(normalMapTextureSrvIndex));
+		commandList->SetGraphicsRootDescriptorTable(7, MAGISYSTEM::GetSrvUavDescriptorHandleGPU(normalMapTextureSrvIndex));
 	}
 
 	// ModelMaterial用CBufferの場所を設定
@@ -60,12 +60,12 @@ void SkinningMesh::DrawInstanced(uint32_t instancedCount) {
 
 	// Texture用のSRVをセット
 	uint32_t textureSrvIndex = MAGISYSTEM::GetTexture()[meshData_.material.textureFilePath].srvIndex;
-	commandList->SetGraphicsRootDescriptorTable(3, MAGISYSTEM::GetSrvDescriptorHandleGPU(textureSrvIndex));
+	commandList->SetGraphicsRootDescriptorTable(3, MAGISYSTEM::GetSrvUavDescriptorHandleGPU(textureSrvIndex));
 
 	// NormalMap用のSrvをセット
 	if (meshData_.material.normalMapTextureFilePath != "") {
 		uint32_t normalMapTextureSrvIndex = MAGISYSTEM::GetTexture()[meshData_.material.normalMapTextureFilePath].srvIndex;
-		commandList->SetGraphicsRootDescriptorTable(7, MAGISYSTEM::GetSrvDescriptorHandleGPU(normalMapTextureSrvIndex));
+		commandList->SetGraphicsRootDescriptorTable(7, MAGISYSTEM::GetSrvUavDescriptorHandleGPU(normalMapTextureSrvIndex));
 	}
 
 	// ModelMaterial用CBufferの場所を設定
@@ -85,10 +85,10 @@ void SkinningMesh::Skinning(const uint32_t& paletteSrvIndex) {
 	commandList->SetDescriptorHeaps(1, descriptorHeaps->GetAddressOf());
 
 	// コマンドを積む
-	commandList->SetComputeRootDescriptorTable(0, MAGISYSTEM::GetSrvDescriptorHandleGPU(paletteSrvIndex));
-	commandList->SetComputeRootDescriptorTable(1, MAGISYSTEM::GetSrvDescriptorHandleGPU(vertexSrvIndex_));
-	commandList->SetComputeRootDescriptorTable(2, MAGISYSTEM::GetSrvDescriptorHandleGPU(influenceSrvIndex));
-	commandList->SetComputeRootDescriptorTable(3, MAGISYSTEM::GetSrvDescriptorHandleGPU(vertexUavIndex_));
+	commandList->SetComputeRootDescriptorTable(0, MAGISYSTEM::GetSrvUavDescriptorHandleGPU(paletteSrvIndex));
+	commandList->SetComputeRootDescriptorTable(1, MAGISYSTEM::GetSrvUavDescriptorHandleGPU(vertexSrvIndex_));
+	commandList->SetComputeRootDescriptorTable(2, MAGISYSTEM::GetSrvUavDescriptorHandleGPU(influenceSrvIndex));
+	commandList->SetComputeRootDescriptorTable(3, MAGISYSTEM::GetSrvUavDescriptorHandleGPU(vertexUavIndex_));
 	commandList->SetComputeRootConstantBufferView(4, skinningInformationResource_->GetGPUVirtualAddress());
 
 	// コマンド発行

@@ -59,7 +59,7 @@ void BasePrimitiveShape3D::DrawInstanced(uint32_t instanceCount) {
 	commandList->IASetIndexBuffer(&indexBufferView_);
 
 	// ModelMaterial用CBufferの場所を設定
-	commandList->SetGraphicsRootConstantBufferView(4, materialResource_->GetGPUVirtualAddress());
+	commandList->SetGraphicsRootConstantBufferView(3, materialResource_->GetGPUVirtualAddress());
 	// 描画
 	commandList->DrawIndexedInstanced(UINT(primitiveData_.indices.size()), instanceCount, 0, 0, 0);
 }

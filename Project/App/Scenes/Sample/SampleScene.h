@@ -26,7 +26,7 @@ public:
 private:
 	// プレイヤー
 	std::unique_ptr<Player> player_ = nullptr;
-
+	Emitter3D* emitter_ = nullptr;
 };
 
 template<typename Data>
@@ -61,10 +61,21 @@ inline void SampleScene<Data>::Initialize() {
 	// マネージャにプレイヤーを追加
 	MAGISYSTEM::AddGameObject3D(std::move(player_));
 
+	// パーティクルを作成
+	MAGISYSTEM::CreatePrimitiveParticleGroup3D("Plane", Primitive3DType::Sphere);
+
+	// エミッターを作成
+	MAGISYSTEM::CreateEmitter3D("Emitter", Vector3(0.0f, 0.0f, 0.0f));
+	emitter_ = MAGISYSTEM::FindEmitter3D("Emitter");
+
+	// エミッターにパーティクルを挿入
+	emitter_->AddParticleGroup(MAGISYSTEM::FindParticleGroup3D("Plane"));
+	emitter_->GetEmitterSetting().isRepeat = true;
 }
 
 template<typename Data>
 inline void SampleScene<Data>::Update() {
+
 }
 
 template<typename Data>
@@ -74,7 +85,6 @@ inline void SampleScene<Data>::Draw() {
 	// オブジェクト2Dの描画前処理
 	// 
 	MAGISYSTEM::PreDrawObject2D();
-
 
 }
 

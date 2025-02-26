@@ -1,10 +1,10 @@
 #pragma once
 
 // C++
+#include <string>
 #include <cstdint>
 #include <list>
 #include <optional>
-#include <string>
 
 #include "Structs/ParticleStruct.h"
 #include "Enums/Renderer3DEnum.h"
@@ -19,8 +19,8 @@
 /// </summary>
 class BaseParticleGroup3D {
 public:
-	BaseParticleGroup3D();
-	~BaseParticleGroup3D();
+	BaseParticleGroup3D(const std::string& particleGroupName);
+	virtual ~BaseParticleGroup3D() = default;
 
 	virtual void AssignShape() = 0;
 	virtual void Update();
@@ -28,22 +28,29 @@ public:
 
 	// 新規パーティクルの追加
 	void AddNewParticle(const EmitParamater& emitSetting);
+protected:
+	// 描画前処理
+	void PrepareForRendering();
 
 private:
 	// instancingリソース作成
 	void CreateInstancingResource();
 	// instancingリソース書き込み
 	void MapInstancingData();
+	// instancingデータ更新
+	void UpdateInstancingData();
 
 	// マテリアルリソースの作成
 	void CreateMaterialResource();
 	// マテリアルデータの書き込み
 	void MapMaterialData();
+	// マテリアルデータの更新
+	void UpdateMaterialData();
 
 public:
 	// パーティクルグループの名前
 	std::string name = "";
-private:
+protected:
 	// パーティクルのリスト
 	std::list<ParticleData> particles_;
 	// パーティクルの最大数
@@ -55,6 +62,9 @@ private:
 	// instance描画する際に使う変数
 	uint32_t instanceCount_ = 0;
 private:
+	// カメラのルートパラメタインデックス番号
+	const uint32_t cameraRootParamaterIndex_ = 4;
+
 	// instancing描画用リソース
 	ComPtr<ID3D12Resource> instancingResource_ = nullptr;
 	// instancing描画用データ

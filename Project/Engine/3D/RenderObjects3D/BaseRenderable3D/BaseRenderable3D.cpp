@@ -84,7 +84,6 @@ void BaseRenderable3D::PrepareForRendering() {
 	// コマンドリストを取得
 	ID3D12GraphicsCommandList* commandList = MAGISYSTEM::GetDirectXCommandList();
 	// PSOを設定
-	// NormalMapを使う
 	commandList->SetPipelineState(MAGISYSTEM::GetGraphicsPipelineState(GraphicsPipelineStateType::Object3D, blendMode_));
 
 	// マテリアルCBufferの場所を設定

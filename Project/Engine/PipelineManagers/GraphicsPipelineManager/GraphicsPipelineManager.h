@@ -14,6 +14,7 @@
 #include "GraphicsPipelines/Line3DGraphicsPipeline/Line3DGraphicsPipeline.h"
 #include "GraphicsPipelines/Object2DGraphicsPipeline/Object2DGraphicsPipeline.h"
 #include "GraphicsPipelines/Object3DGraphicsPipeline/Object3DGraphicsPipeline.h"
+#include "GraphicsPipelines/Particle3DGraphicsPipeline/Particle3DGraphicsPipeline.h"
 
 // 前方宣言
 class DXGI;
@@ -53,4 +54,6 @@ private:
 	std::unique_ptr<Line3DGraphicsPipeline> line3DGraphicsPipeline_ = nullptr;
 	// Object3DGraphicsPipeline
 	std::unique_ptr<Object3DGraphicsPipeline> object3DGraphicsPipeline_ = nullptr;
+	// Particle3DGraphicsPipeline
+	std::unique_ptr<Particle3DGraphicsPipeline> particle3DGraphicsPipeline_ = nullptr;
 };

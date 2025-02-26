@@ -56,11 +56,13 @@
 // 
 // ObjectManager
 // 
-#include "ObjectManagers/Camera3DManager/Camera3DManager.h"
 #include "ObjectManagers/GameObject3DManager/GameObject3DManager.h"
+#include "ObjectManagers/Camera3DManager/Camera3DManager.h"
 #include "ObjectManagers/PunctualLightManager/PunctualLightManager.h"
 #include "ObjectManagers/Renderer3DManager/Renderer3DManager.h"
 #include "ObjectManagers/ColliderManager/ColliderManager.h"
+#include "ObjectManagers/Emitter3DManager/Emitter3DManager.h"
+#include "ObjectManagers/ParticleGroup3DManager/ParticleGroup3DManager.h"
 
 // 
 // Drawer
@@ -177,9 +179,9 @@ public: // エンジンの機能
 	static ID3D12DescriptorHeap* GetSrvUavDescriptorHeap();
 
 	// SRVのCPUディスクリプタハンドルを取得
-	static D3D12_CPU_DESCRIPTOR_HANDLE GetSrvDescriptorHandleCPU(uint32_t index);
+	static D3D12_CPU_DESCRIPTOR_HANDLE GetSrvUavDescriptorHandleCPU(uint32_t index);
 	// SRVのGPUディスクリプタハンドルを取得
-	static D3D12_GPU_DESCRIPTOR_HANDLE GetSrvDescriptorHandleGPU(uint32_t index);
+	static D3D12_GPU_DESCRIPTOR_HANDLE GetSrvUavDescriptorHandleGPU(uint32_t index);
 	// Allocate
 	static uint32_t ViewAllocate();
 	// StructuredBuffer用のsrv作成
@@ -231,6 +233,15 @@ public: // エンジンの機能
 	static AnimationData FindAnimation(const std::string& animationName);
 #pragma endregion
 
+#pragma region GameObject3DManager
+	// 3Dゲームオブジェクトの追加
+	static void AddGameObject3D(std::unique_ptr<GameObject3D> newGameObject3D);
+	// 3Dゲームオブジェクトの削除
+	static void RemoveGameObject3D(const std::string& objectName);
+	// 3Dゲームオブジェクトを取得
+	static GameObject3D* FindGameObject3D(const std::string& objectName);
+#pragma endregion
+
 #pragma region Camera3DManager
 	// カメラの転送
 	static void TransferCamera(uint32_t rootParameterIndex);
@@ -270,13 +281,22 @@ public: // エンジンの機能
 	static BaseCollider3D* FindCollider(const std::string& name);
 #pragma endregion
 
-#pragma region GameObject3DManager
-	// 3Dゲームオブジェクトの追加
-	static void AddGameObject3D(std::unique_ptr<GameObject3D> newGameObject3D);
-	// 3Dゲームオブジェクトの削除
-	static void RemoveGameObject3D(const std::string& objectName);
-	// 3Dゲームオブジェクトを取得
-	static GameObject3D* FindGameObject3D(const std::string& objectName);
+#pragma region Emitter3DManager
+	// エミッターの追加
+	static std::string CreateEmitter3D(const std::string& emitterName, const Vector3& position);
+	// エミッターの削除
+	static void RemoveEmitter3D(const std::string& emitterName);
+	// エミッターの取得
+	static Emitter3D* FindEmitter3D(const std::string& emitterName);
+#pragma endregion
+
+#pragma region ParticleGroup3DManager
+	// シンプル形状パーティクルグループの追加
+	static std::string CreatePrimitiveParticleGroup3D(const std::string& particleGroupName, const Primitive3DType& primitiveType, const std::string& textureName = "");
+	// パーティクルグループの削除
+	static void RemoveParticleGroup3D(const std::string& particleGraoupName);
+	// パーティクルグループの取得
+	static BaseParticleGroup3D* FindParticleGroup3D(const std::string& particleGraoupName);
 #pragma endregion
 
 #pragma region LineDrawer3D
@@ -369,10 +389,13 @@ protected:
 	//
 	// ObjectManager
 	//
+	static std::unique_ptr<GameObject3DManager> gameObject3DManager_;
 	static std::unique_ptr<Camera3DManager> camera3DManager_;
+	static std::unique_ptr<Renderer3DManager> renderer3DManager_;
 	static std::unique_ptr<PunctualLightManager> punctualLightManager_;
 	static std::unique_ptr<ColliderManager> colliderManager_;
-	static std::unique_ptr<GameObject3DManager> gameObject3DManager_;
+	static std::unique_ptr<Emitter3DManager> emitter3DManager_;
+	static std::unique_ptr<ParticleGroup3DManager> particleGroup3DManager_;
 
 	// 
 	// Drawer
@@ -382,7 +405,6 @@ protected:
 	// 
 	// GameManager
 	// 
-	static std::unique_ptr<Renderer3DManager> renderer3DManager_;
 	static std::unique_ptr<CollisionManager> collisionManager_;
 	static std::unique_ptr<SceneManager<GameData>> sceneManager_;
 

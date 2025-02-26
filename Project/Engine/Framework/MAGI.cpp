@@ -56,10 +56,13 @@ std::unique_ptr<ComputePipelineManager> MAGISYSTEM::computePipelineManager_ = nu
 //
 // ObjectManager
 //
+std::unique_ptr<GameObject3DManager> MAGISYSTEM::gameObject3DManager_ = nullptr;
 std::unique_ptr<Camera3DManager> MAGISYSTEM::camera3DManager_ = nullptr;
 std::unique_ptr<PunctualLightManager> MAGISYSTEM::punctualLightManager_ = nullptr;
+std::unique_ptr<Renderer3DManager> MAGISYSTEM::renderer3DManager_ = nullptr;
 std::unique_ptr<ColliderManager> MAGISYSTEM::colliderManager_ = nullptr;
-std::unique_ptr<GameObject3DManager> MAGISYSTEM::gameObject3DManager_ = nullptr;
+std::unique_ptr<Emitter3DManager> MAGISYSTEM::emitter3DManager_ = nullptr;
+std::unique_ptr<ParticleGroup3DManager> MAGISYSTEM::particleGroup3DManager_ = nullptr;
 
 // 
 // Drawer
@@ -69,7 +72,6 @@ std::unique_ptr<LineDrawer3D> MAGISYSTEM::lineDrawer3D_ = nullptr;
 // 
 // GameManager
 // 
-std::unique_ptr<Renderer3DManager> MAGISYSTEM::renderer3DManager_ = nullptr;
 std::unique_ptr<CollisionManager> MAGISYSTEM::collisionManager_ = nullptr;
 std::unique_ptr<SceneManager<GameData>> MAGISYSTEM::sceneManager_ = nullptr;
 
@@ -149,21 +151,26 @@ void MAGISYSTEM::Initialize() {
 	computePipelineManager_ = std::make_unique<ComputePipelineManager>(dxgi_.get(), shaderCompiler_.get());
 
 
+	// GameObject3DManager
+	gameObject3DManager_ = std::make_unique<GameObject3DManager>();
+	// Renderer3DManager
+	renderer3DManager_ = std::make_unique<Renderer3DManager>();
 	// Camera3DManager
 	camera3DManager_ = std::make_unique<Camera3DManager>();
 	// PunctualLightManager
 	punctualLightManager_ = std::make_unique<PunctualLightManager>(dxgi_.get(), directXCommand_.get(), srvuavManager_.get());
 	// ColliderManager
 	colliderManager_ = std::make_unique<ColliderManager>();
-	// GameObject3DManager
-	gameObject3DManager_ = std::make_unique<GameObject3DManager>();
+	// Emitter3DManager
+	emitter3DManager_ = std::make_unique<Emitter3DManager>();
+	// ParticleGroup3DManager
+	particleGroup3DManager_ = std::make_unique<ParticleGroup3DManager>();
 
 
 	// LineDrawer3D
 	lineDrawer3D_ = std::make_unique<LineDrawer3D>(dxgi_.get(), directXCommand_.get(), srvuavManager_.get(), graphicsPipelineManager_.get(), camera3DManager_.get());
 
-	// Renderer3DManager
-	renderer3DManager_ = std::make_unique<Renderer3DManager>();
+
 	// CollisionManager
 	collisionManager_ = std::make_unique<CollisionManager>(colliderManager_.get());
 	// SceneManager
@@ -216,9 +223,14 @@ void MAGISYSTEM::Finalize() {
 		lineDrawer3D_.reset();
 	}
 
-	// GameObject3DManager
-	if (gameObject3DManager_) {
-		gameObject3DManager_.reset();
+	// ParticleGroup3DManager
+	if (particleGroup3DManager_) {
+		particleGroup3DManager_.reset();
+	}
+
+	// Emitter3DManager
+	if (emitter3DManager_) {
+		emitter3DManager_.reset();
 	}
 
 	// ColliderManager
@@ -239,6 +251,11 @@ void MAGISYSTEM::Finalize() {
 	// Camera3DManager
 	if (camera3DManager_) {
 		camera3DManager_.reset();
+	}
+
+	// GameObject3DManager
+	if (gameObject3DManager_) {
+		gameObject3DManager_.reset();
 	}
 
 	// CompuetPipelineManager
@@ -394,20 +411,27 @@ void MAGISYSTEM::Update() {
 	// ゲームオブジェクトマネージャの更新
 	gameObject3DManager_->Update();
 
+	// カメラマネージャの更新処理
+	camera3DManager_->Update();
+
+	// ライトマネージャの更新
+	punctualLightManager_->Update();
+
 	// 描画オブジェクトクラスの更新処理
 	renderer3DManager_->Update();
 
 	// コライダーマネージャの更新
 	colliderManager_->Update();
 
+	// 3Dエミッターマネージャの更新処理
+	emitter3DManager_->Update();
+
+	// 3Dパーティクルグループマネージャの更新処理
+	particleGroup3DManager_->Update();
+
 	// コリジョンマネージャの更新処理
 	collisionManager_->Update();
 
-	// カメラマネージャの更新処理
-	camera3DManager_->Update();
-
-	// ライトマネージャの更新
-	punctualLightManager_->Update();
 
 	// 3Dライン描画クラスの更新
 	lineDrawer3D_->Update();
@@ -485,6 +509,16 @@ void MAGISYSTEM::Draw() {
 	// 
 	lineDrawer3D_->Draw();
 
+	//
+	// ParticleGroup3Dの描画前処理
+	//
+	commandList->SetGraphicsRootSignature(graphicsPipelineManager_->GetRootSignature(GraphicsPipelineStateType::Particle3D));
+	commandList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+
+	//
+	// ParticleGroup3Dの描画処理
+	//
+	particleGroup3DManager_->Draw();
 
 	//
 	// ImGui描画処理
@@ -606,11 +640,11 @@ ID3D12DescriptorHeap* MAGISYSTEM::GetSrvUavDescriptorHeap() {
 	return srvuavManager_->GetDescriptorHeap();
 }
 
-D3D12_CPU_DESCRIPTOR_HANDLE MAGISYSTEM::GetSrvDescriptorHandleCPU(uint32_t index) {
+D3D12_CPU_DESCRIPTOR_HANDLE MAGISYSTEM::GetSrvUavDescriptorHandleCPU(uint32_t index) {
 	return srvuavManager_->GetDescriptorHandleCPU(index);
 }
 
-D3D12_GPU_DESCRIPTOR_HANDLE MAGISYSTEM::GetSrvDescriptorHandleGPU(uint32_t index) {
+D3D12_GPU_DESCRIPTOR_HANDLE MAGISYSTEM::GetSrvUavDescriptorHandleGPU(uint32_t index) {
 	return srvuavManager_->GetDescriptorHandleGPU(index);
 }
 
@@ -725,6 +759,30 @@ void MAGISYSTEM::RemoveCollider(const std::string& name) {
 
 BaseCollider3D* MAGISYSTEM::FindCollider(const std::string& name) {
 	return colliderManager_->Find(name);
+}
+
+std::string MAGISYSTEM::CreateEmitter3D(const std::string& emitterName, const Vector3& position) {
+	return emitter3DManager_->CreateEmitter(emitterName, position);
+}
+
+void MAGISYSTEM::RemoveEmitter3D(const std::string& emitterName) {
+	emitter3DManager_->Remove(emitterName);
+}
+
+Emitter3D* MAGISYSTEM::FindEmitter3D(const std::string& emitterName) {
+	return emitter3DManager_->Find(emitterName);
+}
+
+std::string MAGISYSTEM::CreatePrimitiveParticleGroup3D(const std::string& particleGroupName, const Primitive3DType& primitiveType, const std::string& textureName) {
+	return particleGroup3DManager_->CreatePrimitiveParticleGroup(particleGroupName, primitiveType, textureName);
+}
+
+void MAGISYSTEM::RemoveParticleGroup3D(const std::string& particleGraoupName) {
+	return particleGroup3DManager_->Remove(particleGraoupName);
+}
+
+BaseParticleGroup3D* MAGISYSTEM::FindParticleGroup3D(const std::string& particleGraoupName) {
+	return particleGroup3DManager_->Find(particleGraoupName);
 }
 
 void MAGISYSTEM::AddGameObject3D(std::unique_ptr<GameObject3D> newGameObject3D) {

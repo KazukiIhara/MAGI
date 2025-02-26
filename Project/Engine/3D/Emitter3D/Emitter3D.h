@@ -12,13 +12,13 @@
 /// <summary>
 /// 3Dパーティクルエミッター
 /// </summary>
-class Emitter3D:public WorldEntity {
+class Emitter3D :public WorldEntity {
 public:
-	Emitter3D();
+	Emitter3D(const std::string& emitterName, const Vector3& position);
 	~Emitter3D();
 
 	// 初期化
-	void Initialize();
+	void Initialize(const Vector3& position);
 
 	// 更新
 	void Update();
@@ -28,6 +28,9 @@ public:
 
 	// 新規パーティクルグループ追加
 	void AddParticleGroup(BaseParticleGroup3D* particleGroup);
+
+	// 設定構造体の取得
+	EmitterSetting& GetEmitterSetting();
 
 private:
 	// ワールドトランスフォーム

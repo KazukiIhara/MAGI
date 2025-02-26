@@ -6,9 +6,9 @@
 /// 発生時のパラメータ
 /// </summary>
 struct EmitParamater {
-	Vector3 position;
-	Vector3 rotate;
 	Vector3 scale;
+	Vector3 rotate;
+	Vector3 position;
 	Vector3 velocity;
 	Vector4 color;
 	float lifeTime;

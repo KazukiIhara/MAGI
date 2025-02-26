@@ -3,7 +3,6 @@
 #include <vector>
 #include <string>
 
-#include "Enums/Renderer3DEnum.h"
 #include "Enums/Primitive3DEnum.h"
 #include "3D/RenderObjects3D/BaseRenderable3D/BaseRenderable3D.h"
 #include "3D/RenderObjects3D/PrimitiveRenderer3D/PrimitiveRenderer3D.h"
