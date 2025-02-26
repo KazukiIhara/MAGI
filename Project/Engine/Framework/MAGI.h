@@ -282,13 +282,21 @@ public: // エンジンの機能
 #pragma endregion
 
 #pragma region Emitter3DManager
-
-
+	// エミッターの追加
+	static std::string CreateEmitter3D(const std::string& emitterName, const Vector3& position);
+	// エミッターの削除
+	static void RemoveEmitter3D(const std::string& emitterName);
+	// エミッターの取得
+	static Emitter3D* FindEmitter3D(const std::string& emitterName);
 #pragma endregion
 
 #pragma region ParticleGroup3DManager
-
-
+	// シンプル形状パーティクルグループの追加
+	static std::string CreatePrimitiveParticleGroup3D(const std::string& particleGroupName, const Primitive3DType& primitiveType, const std::string& textureName);
+	// パーティクルグループの削除
+	static void RemoveParticleGroup3D(const std::string& particleGraoupName);
+	// パーティクルグループの取得
+	static BaseParticleGroup3D* FindParticleGroup3D(const std::string& particleGraoupName);
 #pragma endregion
 
 #pragma region LineDrawer3D

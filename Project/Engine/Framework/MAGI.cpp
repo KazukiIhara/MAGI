@@ -761,6 +761,30 @@ BaseCollider3D* MAGISYSTEM::FindCollider(const std::string& name) {
 	return colliderManager_->Find(name);
 }
 
+std::string MAGISYSTEM::CreateEmitter3D(const std::string& emitterName, const Vector3& position) {
+	return emitter3DManager_->CreateEmitter(emitterName, position);
+}
+
+void MAGISYSTEM::RemoveEmitter3D(const std::string& emitterName) {
+	emitter3DManager_->Remove(emitterName);
+}
+
+Emitter3D* MAGISYSTEM::FindEmitter3D(const std::string& emitterName) {
+	return emitter3DManager_->Find(emitterName);
+}
+
+std::string MAGISYSTEM::CreatePrimitiveParticleGroup3D(const std::string& particleGroupName, const Primitive3DType& primitiveType, const std::string& textureName) {
+	return particleGroup3DManager_->CreatePrimitiveParticleGroup(particleGroupName, primitiveType, textureName);
+}
+
+void MAGISYSTEM::RemoveParticleGroup3D(const std::string& particleGraoupName) {
+	return particleGroup3DManager_->Remove(particleGraoupName);
+}
+
+BaseParticleGroup3D* MAGISYSTEM::FindParticleGroup3D(const std::string& particleGraoupName) {
+	return particleGroup3DManager_->Find(particleGraoupName);
+}
+
 void MAGISYSTEM::AddGameObject3D(std::unique_ptr<GameObject3D> newGameObject3D) {
 	gameObject3DManager_->Add(std::move(newGameObject3D));
 }
