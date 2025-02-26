@@ -512,7 +512,8 @@ void MAGISYSTEM::Draw() {
 	//
 	// ParticleGroup3Dの描画前処理
 	//
-
+	commandList->SetGraphicsRootSignature(graphicsPipelineManager_->GetRootSignature(GraphicsPipelineStateType::Particle3D));
+	commandList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
 	//
 	// ParticleGroup3Dの描画処理
