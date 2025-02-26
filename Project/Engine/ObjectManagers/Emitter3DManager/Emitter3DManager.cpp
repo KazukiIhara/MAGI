@@ -41,7 +41,7 @@ std::string Emitter3DManager::CreateEmitter(const std::string& emitterName, cons
 	std::unique_ptr<Emitter3D> newEmitter3D = std::make_unique<Emitter3D>(uniqueName, position);
 
 	// コンテナに追加
-	emitters3D_.push_back(newEmitter3D);
+	emitters3D_.push_back(std::move(newEmitter3D));
 
 	return uniqueName;
 }
