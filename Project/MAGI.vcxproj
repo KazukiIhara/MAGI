@@ -218,6 +218,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Engine\PipelineManagers\ComputePipelineManager\ComputePipelineManager.h" />
     <ClInclude Include="Engine\PipelineManagers\GraphicsPipelineManager\GraphicsPipelineManager.h" />
     <ClInclude Include="Engine\SceneManager\SceneManager.h" />
+    <ClInclude Include="Engine\Scenes\ParticleEditScene.h" />
     <ClInclude Include="Engine\ViewManagers\BaseViewManager\BaseViewManager.h" />
     <ClInclude Include="Engine\ViewManagers\DSVManager\DSVManager.h" />
     <ClInclude Include="Engine\ViewManagers\RTVManager\RTVManager.h" />

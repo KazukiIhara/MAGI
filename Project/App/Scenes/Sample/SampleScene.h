@@ -62,7 +62,7 @@ inline void SampleScene<Data>::Initialize() {
 	MAGISYSTEM::AddGameObject3D(std::move(player_));
 
 	// パーティクルを作成
-	MAGISYSTEM::CreatePrimitiveParticleGroup3D("Plane", Primitive3DType::Sphere);
+	MAGISYSTEM::CreatePrimitiveParticleGroup3D("Plane", Primitive3DType::Plane);
 
 	// エミッターを作成
 	MAGISYSTEM::CreateEmitter3D("Emitter", Vector3(0.0f, 0.0f, 0.0f));
