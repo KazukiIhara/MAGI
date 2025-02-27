@@ -70,6 +70,8 @@ inline void SampleScene<Data>::Initialize() {
 
 	// エミッターにパーティクルを挿入
 	emitter_->AddParticleGroup(MAGISYSTEM::FindParticleGroup3D("Plane"));
+
+	// エミッターの設定
 	emitter_->GetEmitterSetting().isRepeat = true;
 }
 
