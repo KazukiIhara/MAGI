@@ -235,7 +235,16 @@ public: // エンジンの機能
 #pragma endregion
 
 #pragma region SoundDataContainer
-
+	// サウンドの読み込み
+	static void LoadWaveSound(const std::string& fileName);
+	// サウンドの再生
+	static void PlayWaveSound(const std::string& fileName);
+	// サウンドループ再生
+	static void PlayLoopWaveSound(const std::string& fileName);
+	// サウンドの停止
+	static void StopWaveSound(const std::string& fileName);
+	// サウンドループ再生停止
+	static void StopLoopWaveSound(const std::string& fileName);
 
 #pragma endregion
 

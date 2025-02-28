@@ -20,7 +20,7 @@ public:
 	// コンテナをクリア
 	void ClearContainer();
 	// 読み込み
-	void LoadWave(const std::string& filename, const std::string& directoryPath);
+	void LoadWave(const std::string& filename);
 
 	// 通常再生
 	void PlayWave(const std::string& filename);

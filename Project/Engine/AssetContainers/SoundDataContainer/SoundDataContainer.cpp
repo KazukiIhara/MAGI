@@ -37,7 +37,9 @@ void SoundDataContainer::ClearContainer() {
 	sounds_.clear();
 }
 
-void SoundDataContainer::LoadWave(const std::string& filename, const std::string& directoryPath) {
+void SoundDataContainer::LoadWave(const std::string& filename) {
+	// サウンドデータのディレクトリパス
+	const std::string directoryPath = "Assets/Sounds";
 	// 連結してフルパス作成
 	const std::string fullpath = directoryPath + "/" + filename;
 	// ファイル入力ストリームのインスタンス

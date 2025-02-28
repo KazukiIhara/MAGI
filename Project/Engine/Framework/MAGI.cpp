@@ -716,6 +716,27 @@ AnimationData MAGISYSTEM::FindAnimation(const std::string& animationName) {
 	return animationDataContainer_->FindAnimationData(animationName);
 }
 
+void MAGISYSTEM::LoadWaveSound(const std::string& fileName) {
+	soundDataContainer_->LoadWave(fileName);
+}
+
+void MAGISYSTEM::PlayWaveSound(const std::string& fileName) {
+	soundDataContainer_->PlayWave(fileName);
+}
+
+
+void MAGISYSTEM::PlayLoopWaveSound(const std::string& fileName) {
+	soundDataContainer_->PlayWaveLoop(fileName);
+}
+
+void MAGISYSTEM::StopWaveSound(const std::string& fileName) {
+	soundDataContainer_->StopWave(fileName);
+}
+
+void MAGISYSTEM::StopLoopWaveSound(const std::string& fileName) {
+	soundDataContainer_->StopWaveLoop(fileName);
+}
+
 void MAGISYSTEM::TransferCamera(uint32_t rootParameterIndex) {
 	camera3DManager_->TransferCamera(rootParameterIndex);
 }
