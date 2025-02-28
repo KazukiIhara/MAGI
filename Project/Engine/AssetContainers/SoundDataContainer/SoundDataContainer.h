@@ -12,11 +12,6 @@ class SoundDataContainer {
 public:
 	SoundDataContainer();
 	~SoundDataContainer();
-
-	// 初期化
-	void Initialize();
-	// 終了
-	void Finalize();
 	// コンテナをクリア
 	void ClearContainer();
 	// 読み込み
@@ -38,7 +33,11 @@ public:
 	void CleanupFinishedVoices();
 	// 検索
 	SoundData* FindWave(const std::string& filename);
-
+private:
+	// 初期化
+	void Initialize();
+	// 終了
+	void Finalize();
 private:
 	Microsoft::WRL::ComPtr<IXAudio2> xAudio2;
 	IXAudio2MasteringVoice* masterVoice;

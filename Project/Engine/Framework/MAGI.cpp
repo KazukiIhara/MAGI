@@ -272,7 +272,6 @@ void MAGISYSTEM::Finalize() {
 
 	// SoundDataContainer
 	if (soundDataContainer_) {
-		soundDataContainer_->Finalize();
 		soundDataContainer_.reset();
 	}
 

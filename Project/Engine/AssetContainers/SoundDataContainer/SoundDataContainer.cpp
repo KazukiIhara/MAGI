@@ -17,6 +17,7 @@ SoundDataContainer::SoundDataContainer() {
 }
 
 SoundDataContainer::~SoundDataContainer() {
+	Finalize();
 	Logger::Log("SoundDataContainer Finalize\n");
 }
 
@@ -29,9 +30,26 @@ void SoundDataContainer::Initialize() {
 }
 
 void SoundDataContainer::Finalize() {
+	// 再生中のすべての音声を停止し、リソースを解放
+	for (auto& [filename, voices] : playingVoices_) {
+		for (IXAudio2SourceVoice* voice : voices) {
+			voice->Stop();
+			voice->DestroyVoice();
+		}
+	}
+	playingVoices_.clear();
+
+	for (auto& [filename, voice] : loopingVoices_) {
+		voice->Stop();
+		voice->DestroyVoice();
+	}
+	loopingVoices_.clear();
+
+	// XAudio2 をリセット
 	xAudio2.Reset();
 	ClearContainer();
 }
+
 
 void SoundDataContainer::ClearContainer() {
 	sounds_.clear();
