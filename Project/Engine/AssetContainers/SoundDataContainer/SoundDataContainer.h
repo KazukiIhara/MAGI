@@ -8,10 +8,10 @@
 // MyHedder
 #include "Structs/SoundStruct.h"
 
-class SoundManager {
+class SoundDataContainer {
 public:
-	SoundManager() = default;
-	~SoundManager() = default;
+	SoundDataContainer();
+	~SoundDataContainer();
 
 	// 初期化
 	void Initialize();

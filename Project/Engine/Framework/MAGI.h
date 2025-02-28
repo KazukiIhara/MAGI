@@ -46,6 +46,7 @@
 #include "AssetContainers/PrimitiveShapeDataContainer/PrimitiveShapeDataContainer.h"
 #include "AssetContainers/ModelDataContainer/ModelDataContainer.h"
 #include "AssetContainers/AnimationDataContainer/AnimationDataContainer.h"
+#include "AssetContainers/SoundDataContainer/SoundDataContainer.h"
 
 // 
 // PipelineManager
@@ -233,6 +234,11 @@ public: // エンジンの機能
 	static AnimationData FindAnimation(const std::string& animationName);
 #pragma endregion
 
+#pragma region SoundDataContainer
+
+
+#pragma endregion
+
 #pragma region GameObject3DManager
 	// 3Dゲームオブジェクトの追加
 	static void AddGameObject3D(std::unique_ptr<GameObject3D> newGameObject3D);
@@ -385,6 +391,7 @@ protected:
 	static std::unique_ptr<PrimitiveShapeDataContainer> primitiveDataContainer_;
 	static std::unique_ptr<ModelDataContainer> modelDataContainer_;
 	static std::unique_ptr<AnimationDataContainer> animationDataContainer_;
+	static std::unique_ptr<SoundDataContainer> soundDataContainer_;
 
 	//
 	// ObjectManager

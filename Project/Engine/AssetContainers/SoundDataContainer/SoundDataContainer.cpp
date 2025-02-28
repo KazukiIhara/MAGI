@@ -4,12 +4,23 @@
 #include <cassert>
 #include <unordered_map>
 
+#include "Logger/Logger.h"
+
 // 通常再生中のVoiceを管理するコンテナ
 std::unordered_map<std::string, std::vector<IXAudio2SourceVoice*>> playingVoices_;
 // ループ再生中のVoiceを管理するコンテナ
 std::unordered_map<std::string, IXAudio2SourceVoice*> loopingVoices_;
 
-void SoundManager::Initialize() {
+SoundDataContainer::SoundDataContainer() {
+	Initialize();
+	Logger::Log("SoundDataContainer Initialize\n");
+}
+
+SoundDataContainer::~SoundDataContainer() {
+	Logger::Log("SoundDataContainer Finalize\n");
+}
+
+void SoundDataContainer::Initialize() {
 	HRESULT result;
 	// XAudioエンジンのインスタンスを生成
 	result = XAudio2Create(&xAudio2, 0, XAUDIO2_DEFAULT_PROCESSOR);
@@ -17,16 +28,16 @@ void SoundManager::Initialize() {
 	result = xAudio2->CreateMasteringVoice(&masterVoice);
 }
 
-void SoundManager::Finalize() {
+void SoundDataContainer::Finalize() {
 	xAudio2.Reset();
 	ClearContainer();
 }
 
-void SoundManager::ClearContainer() {
+void SoundDataContainer::ClearContainer() {
 	sounds_.clear();
 }
 
-void SoundManager::LoadWave(const std::string& filename, const std::string& directoryPath) {
+void SoundDataContainer::LoadWave(const std::string& filename, const std::string& directoryPath) {
 	// 連結してフルパス作成
 	const std::string fullpath = directoryPath + "/" + filename;
 	// ファイル入力ストリームのインスタンス
@@ -93,7 +104,7 @@ void SoundManager::LoadWave(const std::string& filename, const std::string& dire
 	sounds_.insert(std::make_pair(filename, std::move(soundData)));
 }
 
-void SoundManager::PlayWave(const std::string& filename) {
+void SoundDataContainer::PlayWave(const std::string& filename) {
 	SoundData* soundData = FindWave(filename);
 	assert(soundData);
 
@@ -120,7 +131,7 @@ void SoundManager::PlayWave(const std::string& filename) {
 	playingVoices_[filename].push_back(pSourceVoice);
 }
 
-void SoundManager::StopWave(const std::string& filename) {
+void SoundDataContainer::StopWave(const std::string& filename) {
 	auto it = playingVoices_.find(filename);
 	if (it != playingVoices_.end()) {
 		// 登録されているすべてのSourceVoiceを停止して破棄
@@ -133,7 +144,7 @@ void SoundManager::StopWave(const std::string& filename) {
 	}
 }
 
-void SoundManager::PlayWaveLoop(const std::string& filename, uint32_t loopCount) {
+void SoundDataContainer::PlayWaveLoop(const std::string& filename, uint32_t loopCount) {
 	auto it = loopingVoices_.find(filename);
 	if (it != loopingVoices_.end()) {
 		// すでにループ再生中なら再生しない
@@ -167,7 +178,7 @@ void SoundManager::PlayWaveLoop(const std::string& filename, uint32_t loopCount)
 	loopingVoices_[filename] = pSourceVoice;
 }
 
-void SoundManager::StopWaveLoop(const std::string& filename) {
+void SoundDataContainer::StopWaveLoop(const std::string& filename) {
 	auto it = loopingVoices_.find(filename);
 	if (it != loopingVoices_.end()) {
 		it->second->Stop();
@@ -176,14 +187,14 @@ void SoundManager::StopWaveLoop(const std::string& filename) {
 	}
 }
 
-void SoundManager::StopAll(const std::string& filename) {
+void SoundDataContainer::StopAll(const std::string& filename) {
 	// 通常再生を停止
 	StopWave(filename);
 	// ループ再生を停止
 	StopWaveLoop(filename);
 }
 
-void SoundManager::CleanupFinishedVoices() {
+void SoundDataContainer::CleanupFinishedVoices() {
 	for (auto it = playingVoices_.begin(); it != playingVoices_.end(); ) {
 		auto& voices = it->second;
 		voices.erase(std::remove_if(voices.begin(), voices.end(), [](IXAudio2SourceVoice* voice) {
@@ -204,7 +215,7 @@ void SoundManager::CleanupFinishedVoices() {
 	}
 }
 
-SoundData* SoundManager::FindWave(const std::string& filename) {
+SoundData* SoundDataContainer::FindWave(const std::string& filename) {
 	// 読み込み済み音声を検索
 	if (sounds_.contains(filename)) {
 		// 読み込み音声を戻り値としてreturn
