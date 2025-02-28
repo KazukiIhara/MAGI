@@ -635,6 +635,7 @@
     <ClInclude Include="Engine\ObjectManagers\Emitter3DManager\Emitter3DManager.h" />
     <ClInclude Include="Engine\GraphicsPipelines\Particle3DGraphicsPipeline\Particle3DGraphicsPipeline.h" />
     <ClInclude Include="Engine\Scenes\ParticleEditScene.h" />
+    <ClInclude Include="Engine\Includes\Structs\SoundStruct.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="App\Game\Game.cpp">

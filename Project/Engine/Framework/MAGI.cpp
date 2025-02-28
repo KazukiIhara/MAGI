@@ -42,16 +42,17 @@ std::unique_ptr<ScissorRect> MAGISYSTEM::scissorRect_ = nullptr;
 //
 // PipelineManager
 //
-std::unique_ptr<TextureDataContainer> MAGISYSTEM::textureDataCantainer_ = nullptr;
-std::unique_ptr<PrimitiveShapeDataContainer> MAGISYSTEM::primitiveDataContainer_ = nullptr;
-std::unique_ptr<ModelDataContainer> MAGISYSTEM::modelDataContainer_ = nullptr;
-std::unique_ptr<AnimationDataContainer> MAGISYSTEM::animationDataContainer_ = nullptr;
+std::unique_ptr<GraphicsPipelineManager> MAGISYSTEM::graphicsPipelineManager_ = nullptr;
+std::unique_ptr<ComputePipelineManager> MAGISYSTEM::computePipelineManager_ = nullptr;
 
 // 
 // AssetContainer
 // 
-std::unique_ptr<GraphicsPipelineManager> MAGISYSTEM::graphicsPipelineManager_ = nullptr;
-std::unique_ptr<ComputePipelineManager> MAGISYSTEM::computePipelineManager_ = nullptr;
+std::unique_ptr<TextureDataContainer> MAGISYSTEM::textureDataCantainer_ = nullptr;
+std::unique_ptr<PrimitiveShapeDataContainer> MAGISYSTEM::primitiveDataContainer_ = nullptr;
+std::unique_ptr<ModelDataContainer> MAGISYSTEM::modelDataContainer_ = nullptr;
+std::unique_ptr<AnimationDataContainer> MAGISYSTEM::animationDataContainer_ = nullptr;
+std::unique_ptr<SoundDataContainer> MAGISYSTEM::soundDataContainer_ = nullptr;
 
 //
 // ObjectManager
@@ -143,7 +144,8 @@ void MAGISYSTEM::Initialize() {
 	modelDataContainer_ = std::make_unique<ModelDataContainer>(textureDataCantainer_.get());
 	// AnimationDataContainer
 	animationDataContainer_ = std::make_unique<AnimationDataContainer>();
-
+	// SoundDataCOntainer
+	soundDataContainer_ = std::make_unique<SoundDataContainer>();
 
 	// GraphicsPipelineManager
 	graphicsPipelineManager_ = std::make_unique<GraphicsPipelineManager>(dxgi_.get(), shaderCompiler_.get());
@@ -266,6 +268,11 @@ void MAGISYSTEM::Finalize() {
 	// GraphicsPipelineManager
 	if (graphicsPipelineManager_) {
 		graphicsPipelineManager_.reset();
+	}
+
+	// SoundDataContainer
+	if (soundDataContainer_) {
+		soundDataContainer_.reset();
 	}
 
 	// AnimationDataContainer
@@ -706,6 +713,27 @@ void MAGISYSTEM::LoadAnimation(const std::string& animationFileName, bool isInSa
 
 AnimationData MAGISYSTEM::FindAnimation(const std::string& animationName) {
 	return animationDataContainer_->FindAnimationData(animationName);
+}
+
+void MAGISYSTEM::LoadWaveSound(const std::string& fileName) {
+	soundDataContainer_->LoadWave(fileName);
+}
+
+void MAGISYSTEM::PlayWaveSound(const std::string& fileName) {
+	soundDataContainer_->PlayWave(fileName);
+}
+
+
+void MAGISYSTEM::PlayLoopWaveSound(const std::string& fileName) {
+	soundDataContainer_->PlayWaveLoop(fileName);
+}
+
+void MAGISYSTEM::StopWaveSound(const std::string& fileName) {
+	soundDataContainer_->StopWave(fileName);
+}
+
+void MAGISYSTEM::StopLoopWaveSound(const std::string& fileName) {
+	soundDataContainer_->StopWaveLoop(fileName);
 }
 
 void MAGISYSTEM::TransferCamera(uint32_t rootParameterIndex) {

@@ -42,6 +42,9 @@ inline void SampleScene<Data>::Initialize() {
 	// モデル
 	MAGISYSTEM::LoadModel("terrain");
 
+	// サウンド
+	MAGISYSTEM::LoadWaveSound("Alarm01.wav");
+
 	//
 	// オブジェクトの作成
 	//
@@ -73,6 +76,9 @@ inline void SampleScene<Data>::Initialize() {
 
 	// エミッターの設定
 	emitter_->GetEmitterSetting().isRepeat = true;
+
+
+	MAGISYSTEM::PlayLoopWaveSound("Alarm01.wav");
 }
 
 template<typename Data>
