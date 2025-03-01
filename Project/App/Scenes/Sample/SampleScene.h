@@ -77,7 +77,7 @@ inline void SampleScene<Data>::Initialize() {
 	// エミッターの設定
 	emitter_->GetEmitterSetting().isRepeat = true;
 
-
+	// 音声再生
 	MAGISYSTEM::PlayLoopWaveSound("Alarm01.wav");
 }
 
