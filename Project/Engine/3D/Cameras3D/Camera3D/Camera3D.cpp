@@ -6,7 +6,8 @@
 
 using namespace MAGIMath;
 
-Camera3D::Camera3D() {
+Camera3D::Camera3D(const std::string& cameraName) {
+	name = cameraName;
 	Initialize();
 }
 
@@ -29,20 +30,17 @@ void Camera3D::Initialize() {
 	projectionMatrix_ = MakePerspectiveFovMatrix(fovY_, aspectRaito_, nearClipRange_, farClipRange_);
 	viewProjectionMatrix_ = viewMatrix * projectionMatrix_;
 
-	// 一回転行列を作成
-	backFrontMatrix_ = MakeRotateYMatrix(std::numbers::pi_v<float>);
-
 	CreateCameraResource();
 	MapCameraData();
 }
 
-void Camera3D::Update() {
+void Camera3D::UpdateData() {
 	worldTransform_.Update();
 	worldPosition = ExtractionWorldPos(worldTransform_.worldMatrix_);
 	Matrix4x4 viewMatrix = Inverse(worldTransform_.worldMatrix_);
 	viewProjectionMatrix_ = viewMatrix * projectionMatrix_;
 
-	billboardMatrix_ = backFrontMatrix_ * worldTransform_.worldMatrix_;
+	billboardMatrix_ = worldTransform_.worldMatrix_;
 	// 平行移動成分を削除
 	billboardMatrix_.m[3][0] = 0.0f;
 	billboardMatrix_.m[3][1] = 0.0f;
@@ -51,7 +49,7 @@ void Camera3D::Update() {
 	UpdateCameraData();
 }
 
-void Camera3D::TransferCamera(const uint32_t& rootParameterIndex) {
+void Camera3D::TransferCamera(uint32_t rootParameterIndex) {
 	MAGISYSTEM::GetDirectXCommandList()->SetGraphicsRootConstantBufferView(rootParameterIndex, cameraResource_->GetGPUVirtualAddress());
 }
 

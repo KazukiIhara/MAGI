@@ -13,7 +13,7 @@
 
 // サンプルシーン
 template <typename Data>
-class SampleScene : public BaseScene<Data> {
+class SampleScene: public BaseScene<Data> {
 public:
 	using BaseScene<Data>::BaseScene; // 親クラスのコンストラクタをそのまま継承
 	~SampleScene()override = default;
@@ -24,9 +24,11 @@ public:
 	void Finalize() override;
 
 private:
+	// カメラ
+	std::unique_ptr<Camera3D> sceneCamera_ = nullptr;
+
 	// プレイヤー
 	std::unique_ptr<Player> player_ = nullptr;
-	Emitter3D* emitter_ = nullptr;
 };
 
 template<typename Data>
@@ -49,6 +51,15 @@ inline void SampleScene<Data>::Initialize() {
 	// オブジェクトの作成
 	//
 
+	// カメラ
+
+	// シーンカメラ作成
+	sceneCamera_ = std::make_unique<Camera3D>("SceneCamera");
+	MAGISYSTEM::AddCamera3D(std::move(sceneCamera_));
+
+	// カメラの設定
+	MAGISYSTEM::SetCurrentCamera("SceneCamera");
+
 	// ライト
 	MAGISYSTEM::AddPunctualLight("sampleLight");
 
@@ -69,13 +80,12 @@ inline void SampleScene<Data>::Initialize() {
 
 	// エミッターを作成
 	MAGISYSTEM::CreateEmitter3D("Emitter", Vector3(0.0f, 0.0f, 0.0f));
-	emitter_ = MAGISYSTEM::FindEmitter3D("Emitter");
 
 	// エミッターにパーティクルを挿入
-	emitter_->AddParticleGroup(MAGISYSTEM::FindParticleGroup3D("Plane"));
+	MAGISYSTEM::FindEmitter3D("Emitter")->AddParticleGroup(MAGISYSTEM::FindParticleGroup3D("Plane"));
 
 	// エミッターの設定
-	emitter_->GetEmitterSetting().isRepeat = true;
+	MAGISYSTEM::FindEmitter3D("Emitter")->GetEmitterSetting().isRepeat = true;
 
 	// 音声再生
 	MAGISYSTEM::PlayLoopWaveSound("Alarm01.wav");

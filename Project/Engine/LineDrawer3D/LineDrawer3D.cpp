@@ -42,7 +42,7 @@ void LineDrawer3D::Draw() {
 	// PSOを設定
 	commandList->SetPipelineState(graphicsPipelineManager_->GetPipelineState(GraphicsPipelineStateType::Line3D, blendMode_));
 	// Cameraを転送
-	camera3DManager_->TransferCamera(0);
+	camera3DManager_->TransferCurrentCamera(0);
 	// StructuredBufferのSRVを設定する
 	commandList->SetGraphicsRootDescriptorTable(1, srvUavManager_->GetDescriptorHandleGPU(srvIndex_));
 	// 描画！(DrawCall/ドローコール)。3頂点で1つのインスタンス。インスタンスについては今後

@@ -15,17 +15,17 @@
 /// <summary>
 /// 3D用カメラ
 /// </summary>
-class Camera3D :public WorldEntity {
+class Camera3D:public WorldEntity {
 public:
-	Camera3D();
+	Camera3D(const std::string& cameraName);
 	virtual ~Camera3D()override;
 
 	// 初期化
 	virtual void Initialize();
 	// 更新
-	virtual void Update();
+	virtual void UpdateData();
 	// 定数バッファに転送
-	void TransferCamera(const uint32_t& rootParameterIndex);
+	void TransferCamera(uint32_t rootParameterIndex);
 
 
 	// ビュープロジェクションマトリックスを送る
@@ -59,11 +59,11 @@ protected:
 	float nearClipRange_ = 0.1f;
 	// ファークリップ距離
 	float farClipRange_ = 1000.0f;
-	// 180度回す回転行列を作成する
-	Matrix4x4 backFrontMatrix_{};
 	// ビルボード行列
 	Matrix4x4 billboardMatrix_{};
-
+	// 有効フラグ
+	bool isActive_ = true;
+private:
 	// Camera用リソース
 	ComPtr<ID3D12Resource> cameraResource_ = nullptr;
 	// Camera用データ

@@ -737,7 +737,7 @@ void MAGISYSTEM::StopLoopWaveSound(const std::string& fileName) {
 }
 
 void MAGISYSTEM::TransferCamera(uint32_t rootParameterIndex) {
-	camera3DManager_->TransferCamera(rootParameterIndex);
+	camera3DManager_->TransferCurrentCamera(rootParameterIndex);
 }
 
 void MAGISYSTEM::AddPunctualLight(const std::string& lightName, const PunctualLightData& lightData) {
@@ -823,6 +823,22 @@ void MAGISYSTEM::RemoveGameObject3D(const std::string& objectName) {
 
 GameObject3D* MAGISYSTEM::FindGameObject3D(const std::string& objectName) {
 	return gameObject3DManager_->Find(objectName);
+}
+
+void MAGISYSTEM::AddCamera3D(std::unique_ptr<Camera3D> newCamera3D) {
+	camera3DManager_->Add(std::move(newCamera3D));
+}
+
+void MAGISYSTEM::RemoveCamera3D(const std::string& cameraName) {
+	camera3DManager_->Remove(cameraName);
+}
+
+Camera3D* MAGISYSTEM::FindCamera3D(const std::string& cameraName) {
+	return camera3DManager_->Find(cameraName);
+}
+
+void MAGISYSTEM::SetCurrentCamera(const std::string& cameraName) {
+	camera3DManager_->SetCurrentCameraName(cameraName);
 }
 
 void MAGISYSTEM::DrawLine3D(const Vector3& start, const Vector3& end, const RGBA& color) {
