@@ -4,11 +4,13 @@
 
 class DebugCamera3D:public Camera3D {
 public:
+
+	DebugCamera3D(const std::string& cameraName);
 	~DebugCamera3D()override = default;
 
 	void Initialize()override;
 
-	void Update()override;
+	void UpdateData()override;
 
 	void HandleCameraRotation(Vector3& cameraRotate, const POINT& delta);
 

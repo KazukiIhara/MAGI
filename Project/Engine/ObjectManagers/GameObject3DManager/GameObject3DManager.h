@@ -6,6 +6,9 @@
 
 #include "3D/GameObject3D/GameObject3D.h"
 
+/// <summary>
+/// 3Dゲームオブジェクトのマネージャー
+/// </summary>
 class GameObject3DManager {
 public:
 	GameObject3DManager();

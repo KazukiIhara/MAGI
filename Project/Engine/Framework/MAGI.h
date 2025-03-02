@@ -258,6 +258,14 @@ public: // エンジンの機能
 #pragma endregion
 
 #pragma region Camera3DManager
+	// カメラの追加
+	static void AddCamera3D(std::unique_ptr<Camera3D> newCamera3D);
+	// カメラの削除
+	static void RemoveCamera3D(const std::string& cameraName);
+	// カメラの取得
+	static Camera3D* FindCamera3D(const std::string& cameraName);
+	// 使用するカメラのセット
+	static void SetCurrentCamera(const std::string& cameraName);
 	// カメラの転送
 	static void TransferCamera(uint32_t rootParameterIndex);
 #pragma endregion

@@ -4,13 +4,18 @@
 
 using namespace MAGIMath;
 
+DebugCamera3D::DebugCamera3D(const std::string& cameraName)
+	:Camera3D(cameraName) {
+
+}
+
 void DebugCamera3D::Initialize() {
 	Camera3D::Initialize();
 	// クオータニオン角を使用しない
 	worldTransform_.isUseQuaternion_ = false;
 }
 
-void DebugCamera3D::Update() {
+void DebugCamera3D::UpdateData() {
 	// マウス入力の取得
 	POINT cursorPos;
 	GetCursorPos(&cursorPos);
@@ -36,7 +41,7 @@ void DebugCamera3D::Update() {
 	lastCursorPos = cursorPos;
 
 	// 既定クラスの更新処理
-	Camera3D::Update();
+	Camera3D::UpdateData();
 }
 
 void DebugCamera3D::HandleCameraRotation(Vector3& cameraRotate, const POINT& delta) {
