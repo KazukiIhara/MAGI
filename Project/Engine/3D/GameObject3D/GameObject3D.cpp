@@ -80,6 +80,42 @@ BaseCollider3D* GameObject3D::GetCollider3D(const std::string& object3DName) {
 	return colliders3D_.at(object3DName);
 }
 
+SphereCollider* GameObject3D::GetSphereCollider3D(const std::string& collider3DName) {
+	// コライダーを検索
+	auto it = colliders3D_.find(collider3DName);
+	if (it == colliders3D_.end()) {
+		// エラーログ出力
+		assert(false && "Not Found Collider");
+		return nullptr;
+	}
+
+	// 型チェック（SphereCollider かどうか）
+	if (auto sphereCollider3D = dynamic_cast<SphereCollider*>(it->second)) {
+		return sphereCollider3D;
+	} else {
+		assert(false && "This Collider Is Not SphereCollider");
+		return nullptr;
+	}
+}
+
+AABBCollider* GameObject3D::GetAABBCollider3D(const std::string& collider3DName) {
+	// コライダーを検索
+	auto it = colliders3D_.find(collider3DName);
+	if (it == colliders3D_.end()) {
+		// エラーログ出力
+		assert(false && "Not Found Collider");
+		return nullptr;
+	}
+
+	// 見つかったコライダーがAABBコライダーかどうかを判定
+	if (auto aabbCollider3D = dynamic_cast<AABBCollider*>(colliders3D_.at(collider3DName))) {
+		return aabbCollider3D;
+	} else {
+		assert(false && "This Collider Is Not AABBCollider");
+		return nullptr;
+	}
+}
+
 std::map<std::string, BaseRenderable3D*> GameObject3D::GetRenderers3D() {
 	return renderers3D_;
 }

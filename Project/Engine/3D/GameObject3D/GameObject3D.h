@@ -13,6 +13,7 @@
 
 #include "3D/Colliders3D/BaseCollider3D/BaseCollider3D.h"
 #include "3D/Colliders3D/SphereCollider/SphereCollider.h"
+#include "3D/Colliders3D/AABBCollider3D/AABBCollider3D.h"
 
 /// <summary>
 /// 3Dゲームオブジェクトクラス
@@ -61,7 +62,11 @@ public:
 	BaseRenderable3D* GetRenderer3D(const std::string& object3DName);
 
 	// 3Dコライダー
-	BaseCollider3D* GetCollider3D(const std::string& object3DName);
+	BaseCollider3D* GetCollider3D(const std::string& collider3DName);
+	// 球体コライダーにキャストして返す
+	SphereCollider* GetSphereCollider3D(const std::string& collider3DName);
+	// AABBコライダーにキャストして返す
+	AABBCollider* GetAABBCollider3D(const std::string& collider3DName);
 
 	// 
 	// コンポーネントのリストを取得
