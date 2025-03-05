@@ -638,6 +638,9 @@
     <ClInclude Include="Engine\Includes\Structs\SoundStruct.h" />
     <ClInclude Include="Engine\PostEffectPipelines\NonePostEffectPipeline\NonePostEffectPipeline.h" />
     <ClInclude Include="Engine\PostEffectPipelines\BasePostEffectPipeline\BasePostEffectPipeline.h" />
+    <ClInclude Include="Engine\RenderTextureManager\RenderTextureManager.h" />
+    <ClInclude Include="Engine\PipelineManagers\PostEffectPipelineManager\PostEffectPipelineManager.h" />
+    <ClInclude Include="Engine\Includes\Enums\PostEffectPipelineEnum.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="App\Game\Game.cpp">
@@ -863,6 +866,8 @@
     <ClCompile Include="Engine\GraphicsPipelines\Particle3DGraphicsPipeline\Particle3DGraphicsPipeline.cpp" />
     <ClCompile Include="Engine\PostEffectPipelines\NonePostEffectPipeline\NonePostEffectPipeline.cpp" />
     <ClCompile Include="Engine\PostEffectPipelines\BasePostEffectPipeline\BasePostEffectPipeline.cpp" />
+    <ClCompile Include="Engine\RenderTextureManager\RenderTextureManager.cpp" />
+    <ClCompile Include="Engine\PipelineManagers\PostEffectPipelineManager\PostEffectPipelineManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Engine\SceneManager\SceneManager.ipp">

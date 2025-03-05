@@ -179,6 +179,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Engine\Includes\Enums\EmitterEnum.h" />
     <ClInclude Include="Engine\Includes\Enums\GraphicsPipelineEnum.h" />
     <ClInclude Include="Engine\Includes\Enums\MouseInputEnum.h" />
+    <ClInclude Include="Engine\Includes\Enums\PostEffectPipelineEnum.h" />
     <ClInclude Include="Engine\Includes\Enums\Primitive3DEnum.h" />
     <ClInclude Include="Engine\Includes\Enums\PunctualLightDataEnum.h" />
     <ClInclude Include="Engine\Includes\Enums\RenderTargetEnumh.h" />
@@ -218,8 +219,10 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Engine\ObjectManagers\Renderer3DManager\Renderer3DManager.h" />
     <ClInclude Include="Engine\PipelineManagers\ComputePipelineManager\ComputePipelineManager.h" />
     <ClInclude Include="Engine\PipelineManagers\GraphicsPipelineManager\GraphicsPipelineManager.h" />
+    <ClInclude Include="Engine\PipelineManagers\PostEffectPipelineManager\PostEffectPipelineManager.h" />
     <ClInclude Include="Engine\PostEffectPipelines\BasePostEffectPipeline\BasePostEffectPipeline.h" />
     <ClInclude Include="Engine\PostEffectPipelines\NonePostEffectPipeline\NonePostEffectPipeline.h" />
+    <ClInclude Include="Engine\RenderTextureManager\RenderTextureManager.h" />
     <ClInclude Include="Engine\SceneManager\SceneManager.h" />
     <ClInclude Include="Engine\Scenes\ParticleEditScene.h" />
     <ClInclude Include="Engine\ViewManagers\BaseViewManager\BaseViewManager.h" />
@@ -300,8 +303,10 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Engine\ObjectManagers\Renderer3DManager\Renderer3DManager.cpp" />
     <ClCompile Include="Engine\PipelineManagers\ComputePipelineManager\ComputePipelineManager.cpp" />
     <ClCompile Include="Engine\PipelineManagers\GraphicsPipelineManager\GraphicsPipelineManager.cpp" />
+    <ClCompile Include="Engine\PipelineManagers\PostEffectPipelineManager\PostEffectPipelineManager.cpp" />
     <ClCompile Include="Engine\PostEffectPipelines\BasePostEffectPipeline\BasePostEffectPipeline.cpp" />
     <ClCompile Include="Engine\PostEffectPipelines\NonePostEffectPipeline\NonePostEffectPipeline.cpp" />
+    <ClCompile Include="Engine\RenderTextureManager\RenderTextureManager.cpp" />
     <ClCompile Include="Engine\ViewManagers\BaseViewManager\BaseViewManager.cpp" />
     <ClCompile Include="Engine\ViewManagers\DSVManager\DSVManager.cpp" />
     <ClCompile Include="Engine\ViewManagers\RTVManager\RTVManager.cpp" />
