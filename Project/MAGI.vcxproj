@@ -223,6 +223,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Engine\PostEffectPipelines\BasePostEffectPipeline\BasePostEffectPipeline.h" />
     <ClInclude Include="Engine\PostEffectPipelines\NonePostEffectPipeline\NonePostEffectPipeline.h" />
     <ClInclude Include="Engine\RenderTextureManager\RenderTextureManager.h" />
+    <ClInclude Include="Engine\RenderTextures\BaseRenderTexture\BaseRenderTexture.h" />
     <ClInclude Include="Engine\SceneManager\SceneManager.h" />
     <ClInclude Include="Engine\Scenes\ParticleEditScene.h" />
     <ClInclude Include="Engine\ViewManagers\BaseViewManager\BaseViewManager.h" />
@@ -307,6 +308,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Engine\PostEffectPipelines\BasePostEffectPipeline\BasePostEffectPipeline.cpp" />
     <ClCompile Include="Engine\PostEffectPipelines\NonePostEffectPipeline\NonePostEffectPipeline.cpp" />
     <ClCompile Include="Engine\RenderTextureManager\RenderTextureManager.cpp" />
+    <ClCompile Include="Engine\RenderTextures\BaseRenderTexture\BaseRenderTexture.cpp" />
     <ClCompile Include="Engine\ViewManagers\BaseViewManager\BaseViewManager.cpp" />
     <ClCompile Include="Engine\ViewManagers\DSVManager\DSVManager.cpp" />
     <ClCompile Include="Engine\ViewManagers\RTVManager\RTVManager.cpp" />
