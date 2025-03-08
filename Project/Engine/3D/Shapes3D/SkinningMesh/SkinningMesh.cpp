@@ -106,13 +106,13 @@ std::span<VertexInfluenceJoints>& SkinningMesh::GetMappdInfluence() {
 
 void SkinningMesh::CreateVertexResource() {
 	vertexResource_ = MAGISYSTEM::CreateBufferResource(sizeof(VertexData3D) * meshData_.vertices.size());
-	vertexSrvIndex_ = MAGISYSTEM::ViewAllocate();
+	vertexSrvIndex_ = MAGISYSTEM::SrvUavAllocate();
 	MAGISYSTEM::CreateSrvStructuredBuffer(vertexSrvIndex_, vertexResource_.Get(), static_cast<uint32_t>(meshData_.vertices.size()), sizeof(VertexData3D));
 }
 
 void SkinningMesh::CreateSkinningVertexResources() {
 	skinningVertexResource_ = MAGISYSTEM::CreateBufferResource(sizeof(VertexData3D) * meshData_.vertices.size(), true);
-	vertexUavIndex_ = MAGISYSTEM::ViewAllocate();
+	vertexUavIndex_ = MAGISYSTEM::SrvUavAllocate();
 	MAGISYSTEM::CreateUavStructuredBuffer(vertexUavIndex_, skinningVertexResource_.Get(), static_cast<uint32_t>(meshData_.vertices.size()), sizeof(VertexData3D));
 }
 
@@ -141,7 +141,7 @@ void SkinningMesh::CreateInfluenceResource() {
 	std::memset(mappedInfluence, 0, sizeof(VertexInfluenceJoints) * meshData_.vertices.size());
 	mappedInfluence_ = { mappedInfluence, meshData_.vertices.size() };
 	// インデックス割り当て
-	influenceSrvIndex = MAGISYSTEM::ViewAllocate();
+	influenceSrvIndex = MAGISYSTEM::SrvUavAllocate();
 	// srv作成
 	MAGISYSTEM::CreateSrvStructuredBuffer(influenceSrvIndex, influenceResource_.Get(), static_cast<uint32_t>(meshData_.vertices.size()), sizeof(VertexInfluenceJoints));
 }

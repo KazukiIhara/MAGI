@@ -8,10 +8,11 @@ public:
 	RTVManager(DXGI* dxgi);
 	~RTVManager()override;
 
-	// ディスクリプタヒープの作成
-	void CreateDescriptorHeap()override;
 	// Texture2d用のRTVの作成
 	void CreateRTVTexture2d(uint32_t rtvIndex, ID3D12Resource* pResource);
+private:
+	// ディスクリプタヒープの作成
+	void CreateDescriptorHeap()override;
 private:
 	// 最大RTV数
 	const uint32_t kMaxRTVCount = 3;

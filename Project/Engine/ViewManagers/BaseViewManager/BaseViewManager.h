@@ -19,8 +19,6 @@ public:
 
 	// 初期化
 	void Initialize(const uint32_t& maxViewCount);
-	// ディスクリプタヒープの作成
-	virtual void CreateDescriptorHeap() = 0;
 	// 割り当て関数
 	uint32_t Allocate();
 	// CPUの特定のインデックスハンドルを取得
@@ -33,6 +31,9 @@ public:
 	uint32_t GetDescriptorSize() const;
 	// Viewの数が最大数を上回っているかどうか
 	bool IsLowerViewMax() const;
+protected:
+	// ディスクリプタヒープの作成
+	virtual void CreateDescriptorHeap() = 0;
 private:
 	// DXGIのセット
 	void SetDXGI(DXGI* dxgi);

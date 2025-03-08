@@ -643,6 +643,26 @@ void MAGISYSTEM::WaitGPU() {
 	fence_->WaitGPU();
 }
 
+ID3D12DescriptorHeap* MAGISYSTEM::GetRTVDescriptorHeap() {
+	return rtvManager_->GetDescriptorHeap();
+}
+
+D3D12_CPU_DESCRIPTOR_HANDLE MAGISYSTEM::GetRTVDescriptorHandleCPU(uint32_t index) {
+	return rtvManager_->GetDescriptorHandleCPU(index);
+}
+
+D3D12_GPU_DESCRIPTOR_HANDLE MAGISYSTEM::GetRTVDescriptorHandleGPU(uint32_t index) {
+	return rtvManager_->GetDescriptorHandleGPU(index);
+}
+
+uint32_t MAGISYSTEM::RTVAllocate() {
+	return rtvManager_->Allocate();
+}
+
+void MAGISYSTEM::CreateRTVTexture2d(uint32_t rtvIndex, ID3D12Resource* pResource) {
+	rtvManager_->CreateRTVTexture2d(rtvIndex, pResource);
+}
+
 ID3D12DescriptorHeap* MAGISYSTEM::GetSrvUavDescriptorHeap() {
 	return srvuavManager_->GetDescriptorHeap();
 }
@@ -655,7 +675,7 @@ D3D12_GPU_DESCRIPTOR_HANDLE MAGISYSTEM::GetSrvUavDescriptorHandleGPU(uint32_t in
 	return srvuavManager_->GetDescriptorHandleGPU(index);
 }
 
-uint32_t MAGISYSTEM::ViewAllocate() {
+uint32_t MAGISYSTEM::SrvUavAllocate() {
 	return srvuavManager_->Allocate();
 }
 

@@ -175,6 +175,19 @@ public: // エンジンの機能
 	static void WaitGPU();
 #pragma endregion
 
+#pragma region RTVManagerの機能
+	// RTVのディスクリプタヒープを取得
+	static ID3D12DescriptorHeap* GetRTVDescriptorHeap();
+	// RTVのCPUディスクリプタハンドルを取得
+	static D3D12_CPU_DESCRIPTOR_HANDLE GetRTVDescriptorHandleCPU(uint32_t index);
+	// RTVのGPUディスクリプタハンドルを取得
+	static D3D12_GPU_DESCRIPTOR_HANDLE GetRTVDescriptorHandleGPU(uint32_t index);
+	// RTVIndex割り当て関数
+	static uint32_t RTVAllocate();
+	// Texture2D用のRTVの作成
+	static void CreateRTVTexture2d(uint32_t rtvIndex, ID3D12Resource* pResource);
+#pragma endregion
+
 #pragma region SRVUAVManagerの機能
 	// SRVUAVのディスクリプタヒープを取得
 	static ID3D12DescriptorHeap* GetSrvUavDescriptorHeap();
@@ -184,7 +197,7 @@ public: // エンジンの機能
 	// SRVのGPUディスクリプタハンドルを取得
 	static D3D12_GPU_DESCRIPTOR_HANDLE GetSrvUavDescriptorHandleGPU(uint32_t index);
 	// Allocate
-	static uint32_t ViewAllocate();
+	static uint32_t SrvUavAllocate();
 	// StructuredBuffer用のsrv作成
 	static void CreateSrvStructuredBuffer(uint32_t viewIndex, ID3D12Resource* pResource, uint32_t numElements, UINT structureByteStride);
 	// StructuredBuffer用のUAV作成

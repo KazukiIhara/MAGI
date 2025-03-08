@@ -69,7 +69,7 @@ void SkinningModel::CreateSkinPaletteResource() {
 	mappedPalette_ = { mappedPalette,skeleton_->joints.size() };
 
 	// srvのインデックスを割り当て
-	paletteSrvIndex_ = MAGISYSTEM::ViewAllocate();
+	paletteSrvIndex_ = MAGISYSTEM::SrvUavAllocate();
 
 	// srvを作成
 	MAGISYSTEM::CreateSrvStructuredBuffer(paletteSrvIndex_, paletteResource_.Get(), UINT(skeleton_->joints.size()), sizeof(WellForGPU));

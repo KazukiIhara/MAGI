@@ -28,6 +28,10 @@ public:
 
 	// クリアカラーを取得
 	Vector4 GetClearColor();
+	// RTVハンドルを取得
+	D3D12_CPU_DESCRIPTOR_HANDLE GetRTVHandle();
+	// リソースを取得
+	ID3D12Resource* GetResource();
 
 private:
 	// レンダーテクスチャのリソースを作成
