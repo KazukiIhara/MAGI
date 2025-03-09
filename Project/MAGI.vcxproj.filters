@@ -881,5 +881,7 @@
   <ItemGroup>
     <FxCompile Include="EngineAssets\Shaders\Graphics\Particle3D\Particle3D.PS.hlsl" />
     <FxCompile Include="EngineAssets\Shaders\Graphics\Particle3D\Particle3D.VS.hlsl" />
+    <FxCompile Include="EngineAssets\Shaders\PostEffect\None\None.PS.hlsl" />
+    <FxCompile Include="EngineAssets\Shaders\PostEffect\None\None.VS.hlsl" />
   </ItemGroup>
 </Project>

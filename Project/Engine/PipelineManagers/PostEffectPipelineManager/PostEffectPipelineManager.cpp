@@ -18,6 +18,7 @@ PostEffectPipelineManager::~PostEffectPipelineManager() {
 }
 
 void PostEffectPipelineManager::Initialize(DXGI* dxgi, ShaderCompiler* shaderCompiler) {
+
 }
 
 ID3D12RootSignature* PostEffectPipelineManager::GetRootSignature(PostEffectPipelineStateType pipelineState) {
