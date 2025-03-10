@@ -18,19 +18,37 @@ PostEffectPipelineManager::~PostEffectPipelineManager() {
 }
 
 void PostEffectPipelineManager::Initialize(DXGI* dxgi, ShaderCompiler* shaderCompiler) {
-
+	// Noneのパイプラインを生成、初期化
+	nonePostEffectPipeline_ = std::make_unique<NonePostEffectPipeline>(dxgi, shaderCompiler);
+	nonePostEffectPipeline_->Initialize();
+	SetRootSignature(PostEffectPipelineStateType::None);
+	SetPipelineState(PostEffectPipelineStateType::None);
 }
 
 ID3D12RootSignature* PostEffectPipelineManager::GetRootSignature(PostEffectPipelineStateType pipelineState) {
-	return nullptr;
+	return rootSignatures_[static_cast<uint32_t>(pipelineState)].Get();
 }
 
 ID3D12PipelineState* PostEffectPipelineManager::GetPipelineState(PostEffectPipelineStateType pipelineState, BlendMode blendMode) {
-	return nullptr;
+	return postEffectPipelineStates_[static_cast<uint32_t>(pipelineState)][static_cast<uint32_t>(blendMode)].Get();
 }
 
 void PostEffectPipelineManager::SetRootSignature(PostEffectPipelineStateType pipelineState) {
+	// パイプラインごとに対応するルートシグネイチャを設定
+	switch (pipelineState) {
+	case PostEffectPipelineStateType::None:
+		rootSignatures_[static_cast<uint32_t>(pipelineState)] = nonePostEffectPipeline_->GetRootSignature();
+		break;
+	}
 }
 
 void PostEffectPipelineManager::SetPipelineState(PostEffectPipelineStateType pipelineState) {
+	// パイプラインごとに対応するパイプラインステートを設定
+	switch (pipelineState) {
+	case PostEffectPipelineStateType::None:
+		for (int mode = static_cast<uint32_t>(BlendMode::None); mode < static_cast<uint32_t>(BlendMode::Num); ++mode) {
+			postEffectPipelineStates_[static_cast<uint32_t>(pipelineState)][mode] = nonePostEffectPipeline_->GetPipelineState(static_cast<BlendMode>(mode));
+		}
+		break;
+	}
 }

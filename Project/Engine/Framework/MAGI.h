@@ -53,6 +53,7 @@
 // 
 #include "PipelineManagers/GraphicsPipelineManager/GraphicsPipelineManager.h"
 #include "PipelineManagers/ComputePipelineManager/ComputePipelineManager.h"
+#include "PipelineManagers/PostEffectPipelineManager/PostEffectPipelineManager.h"
 
 // 
 // ObjectManager
@@ -200,6 +201,8 @@ public: // エンジンの機能
 	static uint32_t SrvUavAllocate();
 	// StructuredBuffer用のsrv作成
 	static void CreateSrvStructuredBuffer(uint32_t viewIndex, ID3D12Resource* pResource, uint32_t numElements, UINT structureByteStride);
+	// Texure2D用のSrv作成
+	static void CreateSrvTexture2D(uint32_t srvIndex, ID3D12Resource* pResource, DXGI_FORMAT format, UINT mipLevels);
 	// StructuredBuffer用のUAV作成
 	static void CreateUavStructuredBuffer(uint32_t viewIndex, ID3D12Resource* pResource, uint32_t numElements, UINT structureByteStride);
 #pragma endregion
@@ -215,6 +218,13 @@ public: // エンジンの機能
 	static ID3D12RootSignature* GetComputeRootSignature(ComputePipelineStateType pipelineState);
 	// パイプライン取得関数
 	static ID3D12PipelineState* GetComputePipelineState(ComputePipelineStateType pipelineState);
+#pragma endregion
+
+#pragma region PostEffectPipelineManager
+	// ルートシグネイチャ取得関数
+	static ID3D12RootSignature* GetPostEffectRootSignature(PostEffectPipelineStateType pipelineState);
+	// パイプライン取得関数
+	static ID3D12PipelineState* GetPostEffectPipelineState(PostEffectPipelineStateType pipelineState, BlendMode blendMode);
 #pragma endregion
 
 #pragma region TextureDataContainer
@@ -413,6 +423,7 @@ protected:
 	//
 	static std::unique_ptr<GraphicsPipelineManager> graphicsPipelineManager_;
 	static std::unique_ptr<ComputePipelineManager> computePipelineManager_;
+	static std::unique_ptr<PostEffectPipelineManager> postEffectPipelineManager_;
 
 	// 
 	// AssetContainer

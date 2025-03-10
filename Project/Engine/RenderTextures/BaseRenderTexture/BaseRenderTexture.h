@@ -15,10 +15,13 @@
 #include "Structs/ColorStruct.h"
 #include "Math/Types/Vector4.h"
 
+/// <summary>
+/// レンダーテクスチャの基底クラス
+/// </summary>
 class BaseRenderTexture {
 public:
 	BaseRenderTexture();
-	~BaseRenderTexture();
+	virtual ~BaseRenderTexture();
 
 	// 初期化
 	void Initialize();

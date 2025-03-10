@@ -44,6 +44,7 @@ std::unique_ptr<ScissorRect> MAGISYSTEM::scissorRect_ = nullptr;
 //
 std::unique_ptr<GraphicsPipelineManager> MAGISYSTEM::graphicsPipelineManager_ = nullptr;
 std::unique_ptr<ComputePipelineManager> MAGISYSTEM::computePipelineManager_ = nullptr;
+std::unique_ptr<PostEffectPipelineManager> MAGISYSTEM::postEffectPipelineManager_ = nullptr;
 
 // 
 // AssetContainer
@@ -683,6 +684,10 @@ void MAGISYSTEM::CreateSrvStructuredBuffer(uint32_t viewIndex, ID3D12Resource* p
 	srvuavManager_->CreateSrvStructuredBuffer(viewIndex, pResource, numElements, structureByteStride);
 }
 
+void MAGISYSTEM::CreateSrvTexture2D(uint32_t srvIndex, ID3D12Resource* pResource, DXGI_FORMAT format, UINT mipLevels) {
+	srvuavManager_->CreateSrvTexture2d(srvIndex, pResource, format, mipLevels);
+}
+
 void MAGISYSTEM::CreateUavStructuredBuffer(uint32_t viewIndex, ID3D12Resource* pResource, uint32_t numElements, UINT structureByteStride) {
 	srvuavManager_->CreateUavStructuredBuffer(viewIndex, pResource, numElements, structureByteStride);
 }
@@ -697,6 +702,14 @@ ID3D12RootSignature* MAGISYSTEM::GetComputeRootSignature(ComputePipelineStateTyp
 
 ID3D12PipelineState* MAGISYSTEM::GetComputePipelineState(ComputePipelineStateType pipelineState) {
 	return computePipelineManager_->GetPipelineState(pipelineState);
+}
+
+ID3D12RootSignature* MAGISYSTEM::GetPostEffectRootSignature(PostEffectPipelineStateType pipelineState) {
+	return postEffectPipelineManager_->GetRootSignature(pipelineState);
+}
+
+ID3D12PipelineState* MAGISYSTEM::GetPostEffectPipelineState(PostEffectPipelineStateType pipelineState, BlendMode blendMode) {
+	return postEffectPipelineManager_->GetPipelineState(pipelineState, blendMode);
 }
 
 void MAGISYSTEM::LoadTexture(const std::string& filePath, bool isFullPath) {
