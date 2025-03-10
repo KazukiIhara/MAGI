@@ -6,6 +6,7 @@
 #include <memory>
 
 // MyHedder
+#include "Enums/RenderTextureType.h"
 #include "RenderTextures/BaseRenderTexture/BaseRenderTexture.h"
 
 /// <summary>
@@ -15,10 +16,17 @@ class RenderTextureManager {
 public:
 	RenderTextureManager();
 	~RenderTextureManager();
+
+	// 指定されているレンダーテクスチャを描画
+	void Draw(const RenderTextureType& renderTextureType);
+
+	void AddRenderTexture(const RenderTextureType& renderTextureType, std::unique_ptr<BaseRenderTexture> renderTexture);
+	BaseRenderTexture* GetRenderTexture(const RenderTextureType& renderTextureType);
+
 private:
+	// 初期化処理
 	void Initialize();
-	void AddRenderTexture(const std::string& renderTextureName, std::unique_ptr<BaseRenderTexture> renderTexture);
 private:
 	// レンダーテクスチャコンテナ
-	std::map<std::string, std::unique_ptr<BaseRenderTexture>> renderTextures_;
+	std::map<RenderTextureType, std::unique_ptr<BaseRenderTexture>> renderTextures_;
 };

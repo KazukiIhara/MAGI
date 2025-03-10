@@ -14,7 +14,9 @@
 class DXGI;
 class ShaderCompiler;
 
-
+/// <summary>
+/// ポストエフェクトパイプラインの基底クラス
+/// </summary>
 class BasePostEffectPipeline {
 public:
 	BasePostEffectPipeline(DXGI* dxgi, ShaderCompiler* shaderCompiler);

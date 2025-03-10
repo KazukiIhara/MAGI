@@ -11,7 +11,6 @@
 // MyHedder
 #include "DirectX/ComPtr/ComPtr.h"
 #include "Enums/BlendModeEnum.h"
-#include "Enums/PostEffectPipelineEnum.h"
 #include "Structs/ColorStruct.h"
 #include "Math/Types/Vector4.h"
 
@@ -52,8 +51,6 @@ protected:
 	uint32_t srvIndex_ = 0;
 	// クリアカラー
 	RGBA kClearColor_ = Color::White;
-	// ポストエフェクトのタイプ
-	PostEffectPipelineStateType postEffectType_ = PostEffectPipelineStateType::None;
 	// ブレンドモード
 	BlendMode blendMode_ = BlendMode::None;
 	// エラー判別君

@@ -6,14 +6,18 @@
 class DirectXCommand;
 class SwapChain;
 class DepthStencil;
+class RenderTextureManager;
 
+/// <summary>
+/// レンダーターゲットを指定するクラス
+/// </summary>
 class RenderTarget {
 public:
-	RenderTarget(DirectXCommand* command, SwapChain* swapChain, DepthStencil* depthStencil);
+	RenderTarget(DirectXCommand* command, SwapChain* swapChain, DepthStencil* depthStencil, RenderTextureManager* renderTextureManager);
 	~RenderTarget();
 
 	// 初期化
-	void Initialize(DirectXCommand* command, SwapChain* swapChain, DepthStencil* depthStencil);
+	void Initialize(DirectXCommand* command, SwapChain* swapChain, DepthStencil* depthStencil, RenderTextureManager* renderTextureManager);
 	// レンダーターゲットのセット
 	void SetRenderTarget(const RenderTargetType& type);
 	// レンダーターゲットのクリア
@@ -26,6 +30,8 @@ private:
 	void SetSwapChain(SwapChain* swapChain);
 	// デプスステンシルをセット
 	void SetDepthStencil(DepthStencil* depthStencil);
+	// レンダーテクスチャマネージャをセット
+	void SetRenderTextureManager(RenderTextureManager* renderTextureManager);
 
 private:
 	// スワップチェーンのクリアカラー
@@ -37,5 +43,6 @@ private:
 	SwapChain* swapChain_ = nullptr;
 	// デプスステンシルのインスタンスを受け取る箱
 	DepthStencil* depthStencil_ = nullptr;
-
+	// レンダーテクスチャマネージャのインスタンスを受け取る箱
+	RenderTextureManager* renderTextureManager_ = nullptr;
 };

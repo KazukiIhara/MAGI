@@ -29,6 +29,11 @@
 #include "ViewManagers/DSVManager/DSVManager.h"
 #include "ViewManagers/SRVUAVManager/SRVUAVManager.h"
 
+//
+// RenderTextureManager
+//
+#include "RenderTextureManager/RenderTextureManager.h"
+
 // 
 // DirectXRenderSystems
 // 
@@ -74,9 +79,13 @@
 // 
 // GameManager
 // 
-#include "RenderTextureManager/RenderTextureManager.h"
 #include "CollisionManager/CollisionManager.h"
 #include "SceneManager/SceneManager.h"
+
+//
+// AppSystems
+//
+#include "PostEffectSwitcher/PostEffectSwitcher.h"
 
 // 
 // Data入出力クラス
@@ -206,6 +215,11 @@ public: // エンジンの機能
 	static void CreateSrvTexture2D(uint32_t srvIndex, ID3D12Resource* pResource, DXGI_FORMAT format, UINT mipLevels);
 	// StructuredBuffer用のUAV作成
 	static void CreateUavStructuredBuffer(uint32_t viewIndex, ID3D12Resource* pResource, uint32_t numElements, UINT structureByteStride);
+#pragma endregion
+
+#pragma region RenderTextureManager
+
+
 #pragma endregion
 
 #pragma region GraphicsPipelineManager
@@ -351,11 +365,6 @@ public: // エンジンの機能
 	static void DrawLine3D(const Vector3& start, const Vector3& end, const RGBA& color);
 #pragma endregion
 
-#pragma region RenderTextureManager
-	
-
-#pragma endregion
-
 #pragma region CollisionManager
 
 
@@ -414,6 +423,11 @@ protected:
 	static std::unique_ptr<DSVManager> dsvManager_;
 	static std::unique_ptr<SRVUAVManager> srvuavManager_;
 
+	//
+	// RenderTextureManager
+	//
+	static std::unique_ptr<RenderTextureManager> renderTextureManager_;
+
 	// 
 	// DirectXRenderSystems
 	// 
@@ -459,9 +473,13 @@ protected:
 	// 
 	// GameManager
 	// 
-	static std::unique_ptr<RenderTextureManager> renderTextureManager_;
 	static std::unique_ptr<CollisionManager> collisionManager_;
 	static std::unique_ptr<SceneManager<GameData>> sceneManager_;
+
+	//
+	// AppSystems
+	//
+	static std::unique_ptr<PostEffectSwitcher> postEffectSwitcher_;
 
 	//
 	// Data入出力クラス

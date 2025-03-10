@@ -79,6 +79,11 @@ std::unique_ptr<CollisionManager> MAGISYSTEM::collisionManager_ = nullptr;
 std::unique_ptr<SceneManager<GameData>> MAGISYSTEM::sceneManager_ = nullptr;
 
 //
+// AppSystem
+//
+std::unique_ptr<PostEffectSwitcher> MAGISYSTEM::postEffectSwitcher_ = nullptr;
+
+//
 // Data入出力クラス
 //
 std::unique_ptr<DataIO> MAGISYSTEM::dataIO_ = nullptr;
@@ -124,14 +129,18 @@ void MAGISYSTEM::Initialize() {
 	srvuavManager_ = std::make_unique<SRVUAVManager>(dxgi_.get());
 
 
+	// RenderTextureManager
+	renderTextureManager_ = std::make_unique<RenderTextureManager>();
+
+
 	// SwapChain
 	swapChain_ = std::make_unique<SwapChain>(windowApp_.get(), dxgi_.get(), directXCommand_.get(), rtvManager_.get());
 	// DepthStencil
 	depthStencil_ = std::make_unique<DepthStencil>(dxgi_.get(), directXCommand_.get(), dsvManager_.get());
 	// ResouceBarrier
-	resourceBarrier_ = std::make_unique<ResourceBarrier>(directXCommand_.get(), swapChain_.get());
+	resourceBarrier_ = std::make_unique<ResourceBarrier>(directXCommand_.get(), swapChain_.get(), renderTextureManager_.get());
 	// RenderTarget
-	renderTarget_ = std::make_unique<RenderTarget>(directXCommand_.get(), swapChain_.get(), depthStencil_.get());
+	renderTarget_ = std::make_unique<RenderTarget>(directXCommand_.get(), swapChain_.get(), depthStencil_.get(), renderTextureManager_.get());
 	// Viewport
 	viewport_ = std::make_unique<Viewport>(directXCommand_.get());
 	// Scissor
@@ -178,12 +187,14 @@ void MAGISYSTEM::Initialize() {
 	lineDrawer3D_ = std::make_unique<LineDrawer3D>(dxgi_.get(), directXCommand_.get(), srvuavManager_.get(), graphicsPipelineManager_.get(), camera3DManager_.get());
 
 
-	// RenderTextureManager
-	renderTextureManager_ = std::make_unique<RenderTextureManager>();
 	// CollisionManager
 	collisionManager_ = std::make_unique<CollisionManager>(colliderManager_.get());
 	// SceneManager
 	sceneManager_ = std::make_unique<SceneManager<GameData>>();
+
+	
+	// PostEffectSwitcher
+	postEffectSwitcher_ = std::make_unique<PostEffectSwitcher>(directXCommand_.get(), renderTarget_.get(), renderTextureManager_.get(), postEffectPipelineManager_.get());
 
 
 	// DataIO
@@ -217,6 +228,11 @@ void MAGISYSTEM::Finalize() {
 		dataIO_.reset();
 	}
 
+	// PostEffectSwitcher
+	if (postEffectSwitcher_) {
+		postEffectSwitcher_.reset();
+	}
+
 	// SceneManager
 	if (sceneManager_) {
 		sceneManager_.reset();
@@ -225,11 +241,6 @@ void MAGISYSTEM::Finalize() {
 	// CollisionManager
 	if (collisionManager_) {
 		collisionManager_.reset();
-	}
-
-	// RenderTextureManager
-	if (renderTextureManager_) {
-		renderTextureManager_.reset();
 	}
 
 	// LineDrawer3D
@@ -340,6 +351,11 @@ void MAGISYSTEM::Finalize() {
 	// SwapChain
 	if (swapChain_) {
 		swapChain_.reset();
+	}
+
+	// RenderTextureManager
+	if (renderTextureManager_) {
+		renderTextureManager_.reset();
 	}
 
 	// SRVUAVManager
@@ -476,14 +492,11 @@ void MAGISYSTEM::Draw() {
 	// DirectX描画前処理
 	// 
 
-	// リソースバリアを設定
-	resourceBarrier_->PreDrawSwapChainResourceBarrierTransition();
-	// レンダーターゲットをスワップチェーンに設定
-	renderTarget_->SetRenderTarget(RenderTargetType::SwapChain);
+	// レンダーターゲットをセット、クリア
+	postEffectSwitcher_->SetClearRenderTarget();
+
 	// 深度をクリア
 	depthStencil_->ClearDepthView();
-	// レンダーターゲットをクリア
-	renderTarget_->ClearRenderTarget(RenderTargetType::SwapChain);
 	// ビューポートの設定
 	viewport_->SettingViewport();
 	// シザー矩形の設定
@@ -544,19 +557,39 @@ void MAGISYSTEM::Draw() {
 	//
 	particleGroup3DManager_->Draw();
 
-	//
-	// ImGui描画処理
-	//
-
-	imguiController_->Draw();
-
 
 	// 
 	// DirectX描画後処理
 	// 
 
+	// リソースバリアを設定
+	resourceBarrier_->PreDrawRenderTextureResourceBarrierTransition();
+	resourceBarrier_->PreDrawSwapChainResourceBarrierTransition();
+
+	// レンダーターゲットを設定
+	renderTarget_->SetRenderTarget(RenderTargetType::SwapChain);
+	// 画面をクリア
+	renderTarget_->ClearRenderTarget(RenderTargetType::SwapChain);
+	// ビューポートの設定
+	viewport_->SettingViewport();
+	// シザー矩形の設定
+	scissorRect_->SettingScissorRect();
+
+	//
+	// レンダーテクスチャ描画
+	//
+
+	postEffectSwitcher_->DrawCurrentRenderTexture();
+
+	//
+	// ImGui描画処理
+	//
+	imguiController_->Draw();
+
 	// リソースバリアを描画後の状態にする
+	resourceBarrier_->PostDrawRenderTextureResourceBarrierTransition();
 	resourceBarrier_->PostDrawSwapChainResourceBarrierTransition();
+
 	// コマンドを閉じて実行
 	directXCommand_->KickCommand();
 	// GPUとOSに画面の交換を行うように通知

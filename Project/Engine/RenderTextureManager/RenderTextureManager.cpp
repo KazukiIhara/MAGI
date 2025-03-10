@@ -2,8 +2,6 @@
 
 #include "Logger/Logger.h"
 
-#include "RenderTextures/NonePostEffectRenderTexture/NonePostEffectRenderTexture.h"
-
 RenderTextureManager::RenderTextureManager() {
 	Initialize();
 	Logger::Log("RenderTexture Initialize\n");
@@ -13,14 +11,29 @@ RenderTextureManager::~RenderTextureManager() {
 	Logger::Log("RenderTexture Finalize\n");
 }
 
-void RenderTextureManager::Initialize() {
-	// Noneポストエフェクト
-	std::unique_ptr<NonePostEffectRenderTexture> nonePostEffectRenderTexture = std::make_unique<NonePostEffectRenderTexture>();
-	AddRenderTexture("NonePostEffect", std::move(nonePostEffectRenderTexture));
-
-
+void RenderTextureManager::Draw(const RenderTextureType& renderTextureType) {
+	GetRenderTexture(renderTextureType)->Draw();
 }
 
-void RenderTextureManager::AddRenderTexture(const std::string& renderTextureName, std::unique_ptr<BaseRenderTexture> renderTexture) {
-	renderTextures_.insert(std::pair(renderTextureName, std::move(renderTexture)));
+void RenderTextureManager::AddRenderTexture(const RenderTextureType& renderTextureType, std::unique_ptr<BaseRenderTexture> renderTexture) {
+	renderTextures_.insert(std::pair(renderTextureType, std::move(renderTexture)));
+}
+
+BaseRenderTexture* RenderTextureManager::GetRenderTexture(const RenderTextureType& renderTextureType) {
+	if (renderTextures_.contains(renderTextureType)) {
+		return renderTextures_.at(renderTextureType).get();
+	}
+	return nullptr;
+}
+
+void RenderTextureManager::Initialize() {
+	// 
+	// エンジン標準搭載のレンダーテクスチャを挿入していく
+	// 
+
+	// Simple
+	std::unique_ptr<BaseRenderTexture> nonePostEffectRenderTexture = std::make_unique<BaseRenderTexture>();
+	nonePostEffectRenderTexture->Initialize();
+	AddRenderTexture(RenderTextureType::Simple, std::move(nonePostEffectRenderTexture));
+
 }
