@@ -29,6 +29,11 @@
 #include "ViewManagers/DSVManager/DSVManager.h"
 #include "ViewManagers/SRVUAVManager/SRVUAVManager.h"
 
+//
+// RenderTextureManager
+//
+#include "RenderTextureManager/RenderTextureManager.h"
+
 // 
 // DirectXRenderSystems
 // 
@@ -74,7 +79,6 @@
 // 
 // GameManager
 // 
-#include "RenderTextureManager/RenderTextureManager.h"
 #include "CollisionManager/CollisionManager.h"
 #include "SceneManager/SceneManager.h"
 
@@ -206,6 +210,11 @@ public: // エンジンの機能
 	static void CreateSrvTexture2D(uint32_t srvIndex, ID3D12Resource* pResource, DXGI_FORMAT format, UINT mipLevels);
 	// StructuredBuffer用のUAV作成
 	static void CreateUavStructuredBuffer(uint32_t viewIndex, ID3D12Resource* pResource, uint32_t numElements, UINT structureByteStride);
+#pragma endregion
+
+#pragma region RenderTextureManager
+
+
 #pragma endregion
 
 #pragma region GraphicsPipelineManager
@@ -349,11 +358,6 @@ public: // エンジンの機能
 #pragma region LineDrawer3D
 	// ライン描画
 	static void DrawLine3D(const Vector3& start, const Vector3& end, const RGBA& color);
-#pragma endregion
-
-#pragma region RenderTextureManager
-	
-
 #pragma endregion
 
 #pragma region CollisionManager

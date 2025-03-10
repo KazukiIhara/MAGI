@@ -124,6 +124,10 @@ void MAGISYSTEM::Initialize() {
 	srvuavManager_ = std::make_unique<SRVUAVManager>(dxgi_.get());
 
 
+	// RenderTextureManager
+	renderTextureManager_ = std::make_unique<RenderTextureManager>();
+
+
 	// SwapChain
 	swapChain_ = std::make_unique<SwapChain>(windowApp_.get(), dxgi_.get(), directXCommand_.get(), rtvManager_.get());
 	// DepthStencil
@@ -131,7 +135,7 @@ void MAGISYSTEM::Initialize() {
 	// ResouceBarrier
 	resourceBarrier_ = std::make_unique<ResourceBarrier>(directXCommand_.get(), swapChain_.get());
 	// RenderTarget
-	renderTarget_ = std::make_unique<RenderTarget>(directXCommand_.get(), swapChain_.get(), depthStencil_.get());
+	renderTarget_ = std::make_unique<RenderTarget>(directXCommand_.get(), swapChain_.get(), depthStencil_.get(), renderTextureManager_.get());
 	// Viewport
 	viewport_ = std::make_unique<Viewport>(directXCommand_.get());
 	// Scissor
@@ -178,8 +182,6 @@ void MAGISYSTEM::Initialize() {
 	lineDrawer3D_ = std::make_unique<LineDrawer3D>(dxgi_.get(), directXCommand_.get(), srvuavManager_.get(), graphicsPipelineManager_.get(), camera3DManager_.get());
 
 
-	// RenderTextureManager
-	renderTextureManager_ = std::make_unique<RenderTextureManager>();
 	// CollisionManager
 	collisionManager_ = std::make_unique<CollisionManager>(colliderManager_.get());
 	// SceneManager
@@ -225,11 +227,6 @@ void MAGISYSTEM::Finalize() {
 	// CollisionManager
 	if (collisionManager_) {
 		collisionManager_.reset();
-	}
-
-	// RenderTextureManager
-	if (renderTextureManager_) {
-		renderTextureManager_.reset();
 	}
 
 	// LineDrawer3D
@@ -340,6 +337,11 @@ void MAGISYSTEM::Finalize() {
 	// SwapChain
 	if (swapChain_) {
 		swapChain_.reset();
+	}
+
+	// RenderTextureManager
+	if (renderTextureManager_) {
+		renderTextureManager_.reset();
 	}
 
 	// SRVUAVManager

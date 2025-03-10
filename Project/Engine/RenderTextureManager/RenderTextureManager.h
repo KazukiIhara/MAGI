@@ -15,9 +15,11 @@ class RenderTextureManager {
 public:
 	RenderTextureManager();
 	~RenderTextureManager();
+
+	void AddRenderTexture(const std::string& renderTextureName, std::unique_ptr<BaseRenderTexture> renderTexture);
+	BaseRenderTexture* Find(const std::string& renderTextureName);
 private:
 	void Initialize();
-	void AddRenderTexture(const std::string& renderTextureName, std::unique_ptr<BaseRenderTexture> renderTexture);
 private:
 	// レンダーテクスチャコンテナ
 	std::map<std::string, std::unique_ptr<BaseRenderTexture>> renderTextures_;
