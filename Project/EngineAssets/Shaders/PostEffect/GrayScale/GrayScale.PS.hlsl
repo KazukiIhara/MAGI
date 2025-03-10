@@ -1,4 +1,4 @@
-#include "None.hlsli"
+#include "GrayScale.hlsli"
 
 Texture2D<float4> gTexture : register(t0);
 SamplerState gSampler : register(s0);

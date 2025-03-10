@@ -545,7 +545,6 @@ void MAGISYSTEM::Draw() {
 	particleGroup3DManager_->Draw();
 
 
-
 	// 
 	// DirectX描画後処理
 	// 
