@@ -8,6 +8,7 @@
 /// </summary>
 enum class PostEffectPipelineStateType {
 	None, // ポストエフェクトなし
+	Grayscale, // グレースケール
 
 	Num,
 };

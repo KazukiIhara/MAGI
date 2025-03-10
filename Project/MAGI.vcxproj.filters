@@ -643,6 +643,8 @@
     <ClInclude Include="Engine\Includes\Enums\PostEffectPipelineEnum.h" />
     <ClInclude Include="Engine\RenderTextures\BaseRenderTexture\BaseRenderTexture.h" />
     <ClInclude Include="Engine\RenderTextures\NonePostEffectRenderTexture\NonePostEffectRenderTexture.h" />
+    <ClInclude Include="Engine\PostEffectPipelines\GrayscalePostEffectPipeline\GrayscalePostEffectPipeline.h" />
+    <ClInclude Include="Engine\PostEffectPipelines\BaseSimplePostEffectPipeline\BaseSimplePostEffectPipeline.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="App\Game\Game.cpp">
@@ -872,6 +874,8 @@
     <ClCompile Include="Engine\PipelineManagers\PostEffectPipelineManager\PostEffectPipelineManager.cpp" />
     <ClCompile Include="Engine\RenderTextures\BaseRenderTexture\BaseRenderTexture.cpp" />
     <ClCompile Include="Engine\RenderTextures\NonePostEffectRenderTexture\NonePostEffectRenderTexture.cpp" />
+    <ClCompile Include="Engine\PostEffectPipelines\GrayscalePostEffectPipeline\GrayscalePostEffectPipeline.cpp" />
+    <ClCompile Include="Engine\PostEffectPipelines\BaseSimplePostEffectPipeline\BaseSimplePostEffectPipeline.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Engine\SceneManager\SceneManager.ipp">

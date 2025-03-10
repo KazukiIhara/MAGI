@@ -221,6 +221,8 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Engine\PipelineManagers\GraphicsPipelineManager\GraphicsPipelineManager.h" />
     <ClInclude Include="Engine\PipelineManagers\PostEffectPipelineManager\PostEffectPipelineManager.h" />
     <ClInclude Include="Engine\PostEffectPipelines\BasePostEffectPipeline\BasePostEffectPipeline.h" />
+    <ClInclude Include="Engine\PostEffectPipelines\BaseSimplePostEffectPipeline\BaseSimplePostEffectPipeline.h" />
+    <ClInclude Include="Engine\PostEffectPipelines\GrayscalePostEffectPipeline\GrayscalePostEffectPipeline.h" />
     <ClInclude Include="Engine\PostEffectPipelines\NonePostEffectPipeline\NonePostEffectPipeline.h" />
     <ClInclude Include="Engine\RenderTextureManager\RenderTextureManager.h" />
     <ClInclude Include="Engine\RenderTextures\BaseRenderTexture\BaseRenderTexture.h" />
@@ -307,6 +309,8 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Engine\PipelineManagers\GraphicsPipelineManager\GraphicsPipelineManager.cpp" />
     <ClCompile Include="Engine\PipelineManagers\PostEffectPipelineManager\PostEffectPipelineManager.cpp" />
     <ClCompile Include="Engine\PostEffectPipelines\BasePostEffectPipeline\BasePostEffectPipeline.cpp" />
+    <ClCompile Include="Engine\PostEffectPipelines\BaseSimplePostEffectPipeline\BaseSimplePostEffectPipeline.cpp" />
+    <ClCompile Include="Engine\PostEffectPipelines\GrayscalePostEffectPipeline\GrayscalePostEffectPipeline.cpp" />
     <ClCompile Include="Engine\PostEffectPipelines\NonePostEffectPipeline\NonePostEffectPipeline.cpp" />
     <ClCompile Include="Engine\RenderTextureManager\RenderTextureManager.cpp" />
     <ClCompile Include="Engine\RenderTextures\BaseRenderTexture\BaseRenderTexture.cpp" />
