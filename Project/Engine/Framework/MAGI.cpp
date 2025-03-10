@@ -133,7 +133,7 @@ void MAGISYSTEM::Initialize() {
 	// DepthStencil
 	depthStencil_ = std::make_unique<DepthStencil>(dxgi_.get(), directXCommand_.get(), dsvManager_.get());
 	// ResouceBarrier
-	resourceBarrier_ = std::make_unique<ResourceBarrier>(directXCommand_.get(), swapChain_.get());
+	resourceBarrier_ = std::make_unique<ResourceBarrier>(directXCommand_.get(), swapChain_.get(),renderTextureManager_.get());
 	// RenderTarget
 	renderTarget_ = std::make_unique<RenderTarget>(directXCommand_.get(), swapChain_.get(), depthStencil_.get(), renderTextureManager_.get());
 	// Viewport
@@ -478,14 +478,12 @@ void MAGISYSTEM::Draw() {
 	// DirectX描画前処理
 	// 
 
-	// リソースバリアを設定
-	resourceBarrier_->PreDrawSwapChainResourceBarrierTransition();
 	// レンダーターゲットをスワップチェーンに設定
-	renderTarget_->SetRenderTarget(RenderTargetType::SwapChain);
+	renderTarget_->SetRenderTarget(RenderTargetType::RenderTexture);
 	// 深度をクリア
 	depthStencil_->ClearDepthView();
 	// レンダーターゲットをクリア
-	renderTarget_->ClearRenderTarget(RenderTargetType::SwapChain);
+	renderTarget_->ClearRenderTarget(RenderTargetType::RenderTexture);
 	// ビューポートの設定
 	viewport_->SettingViewport();
 	// シザー矩形の設定
@@ -546,19 +544,39 @@ void MAGISYSTEM::Draw() {
 	//
 	particleGroup3DManager_->Draw();
 
-	//
-	// ImGui描画処理
-	//
-
-	imguiController_->Draw();
 
 
 	// 
 	// DirectX描画後処理
 	// 
 
+	// リソースバリアを設定
+	resourceBarrier_->PreDrawRenderTextureResourceBarrierTransition();
+	resourceBarrier_->PreDrawSwapChainResourceBarrierTransition();
+
+	// レンダーターゲットを設定
+	renderTarget_->SetRenderTarget(RenderTargetType::SwapChain);
+	// 画面をクリア
+	renderTarget_->ClearRenderTarget(RenderTargetType::SwapChain);
+	// ビューポートの設定
+	viewport_->SettingViewport();
+	// シザー矩形の設定
+	scissorRect_->SettingScissorRect();
+
+	//
+	// レンダーテクスチャ描画
+	//
+	renderTextureManager_->DrawCurrentRenderTexture();
+
+	//
+	// ImGui描画処理
+	//
+	imguiController_->Draw();
+
 	// リソースバリアを描画後の状態にする
+	resourceBarrier_->PostDrawRenderTextureResourceBarrierTransition();
 	resourceBarrier_->PostDrawSwapChainResourceBarrierTransition();
+
 	// コマンドを閉じて実行
 	directXCommand_->KickCommand();
 	// GPUとOSに画面の交換を行うように通知

@@ -6,9 +6,10 @@
 
 #include "DirectX/DirectXCommand/DirectXCommand.h"
 #include "DirectX/SwapChain/SwapChain.h"
+#include "RenderTextureManager/RenderTextureManager.h"
 
-ResourceBarrier::ResourceBarrier(DirectXCommand* directXCommand, SwapChain* swapChain) {
-	Initialize(directXCommand, swapChain);
+ResourceBarrier::ResourceBarrier(DirectXCommand* directXCommand, SwapChain* swapChain, RenderTextureManager* renderTextureManager) {
+	Initialize(directXCommand, swapChain, renderTextureManager);
 	Logger::Log("ResourceBarrier Initialize\n");
 }
 
@@ -16,14 +17,24 @@ ResourceBarrier::~ResourceBarrier() {
 	Logger::Log("ResourceBarrier Finalize\n");
 }
 
-void ResourceBarrier::Initialize(DirectXCommand* directXCommand, SwapChain* swapChain) {
+void ResourceBarrier::Initialize(DirectXCommand* directXCommand, SwapChain* swapChain, RenderTextureManager* renderTextureManager) {
 	// インスタンスをセット
 	SetSwapChain(swapChain);
 	SetDirectXCommand(directXCommand);
+	SetRenderTextureManager(renderTextureManager);
 	// タイプはトランジション
 	swapChainBarrier_.Type = D3D12_RESOURCE_BARRIER_TYPE_TRANSITION;
 	// None
 	swapChainBarrier_.Flags = D3D12_RESOURCE_BARRIER_FLAG_NONE;
+
+	// レンダーテクスチャのポインタを取得
+	renderTexture_ = renderTextureManager_->Find("NonePostEffect");
+	// タイプはトランジション
+	renderTextureBarrier_.Type = D3D12_RESOURCE_BARRIER_TYPE_TRANSITION;
+	// None
+	renderTextureBarrier_.Flags = D3D12_RESOURCE_BARRIER_FLAG_NONE;
+	// RenderTexture用のリソースを受け取る
+	renderTextureBarrier_.Transition.pResource = renderTexture_->GetResource();
 }
 
 void ResourceBarrier::PreDrawSwapChainResourceBarrierTransition() {
@@ -46,6 +57,24 @@ void ResourceBarrier::PostDrawSwapChainResourceBarrierTransition() {
 	directXCommand_->GetList()->ResourceBarrier(1, &swapChainBarrier_);
 }
 
+void ResourceBarrier::PreDrawRenderTextureResourceBarrierTransition() {
+	// 遷移前のリソースステート
+	renderTextureBarrier_.Transition.StateBefore = D3D12_RESOURCE_STATE_RENDER_TARGET;
+	// 遷移後のリソースステート
+	renderTextureBarrier_.Transition.StateAfter = D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE;
+	// トランジションバリアを張る
+	directXCommand_->GetList()->ResourceBarrier(1, &renderTextureBarrier_);
+}
+
+void ResourceBarrier::PostDrawRenderTextureResourceBarrierTransition() {
+	// 遷移前のリソースステート
+	renderTextureBarrier_.Transition.StateBefore = D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE;
+	// 遷移後のリソースステート
+	renderTextureBarrier_.Transition.StateAfter = D3D12_RESOURCE_STATE_RENDER_TARGET;
+	// トランジションバリアを張る
+	directXCommand_->GetList()->ResourceBarrier(1, &renderTextureBarrier_);
+}
+
 void ResourceBarrier::SetDirectXCommand(DirectXCommand* directXCommand) {
 	assert(directXCommand);
 	directXCommand_ = directXCommand;
@@ -54,4 +83,9 @@ void ResourceBarrier::SetDirectXCommand(DirectXCommand* directXCommand) {
 void ResourceBarrier::SetSwapChain(SwapChain* swapChain) {
 	assert(swapChain);
 	swapChian_ = swapChain;
+}
+
+void ResourceBarrier::SetRenderTextureManager(RenderTextureManager* renderTextureManager) {
+	assert(renderTextureManager);
+	renderTextureManager_ = renderTextureManager;
 }
