@@ -82,6 +82,11 @@
 #include "CollisionManager/CollisionManager.h"
 #include "SceneManager/SceneManager.h"
 
+//
+// AppSystems
+//
+#include "PostEffectSwitcher/PostEffectSwitcher.h"
+
 // 
 // Data入出力クラス
 // 
@@ -418,6 +423,11 @@ protected:
 	static std::unique_ptr<DSVManager> dsvManager_;
 	static std::unique_ptr<SRVUAVManager> srvuavManager_;
 
+	//
+	// RenderTextureManager
+	//
+	static std::unique_ptr<RenderTextureManager> renderTextureManager_;
+
 	// 
 	// DirectXRenderSystems
 	// 
@@ -463,9 +473,13 @@ protected:
 	// 
 	// GameManager
 	// 
-	static std::unique_ptr<RenderTextureManager> renderTextureManager_;
 	static std::unique_ptr<CollisionManager> collisionManager_;
 	static std::unique_ptr<SceneManager<GameData>> sceneManager_;
+
+	//
+	// AppSystems
+	//
+	static std::unique_ptr<PostEffectSwitcher> postEffectSwitcher_;
 
 	//
 	// Data入出力クラス

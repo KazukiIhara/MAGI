@@ -1,0 +1,44 @@
+#pragma once
+
+// MyHedder
+#include "Enums/PostEffectPipelineEnum.h"
+
+// 前方宣言
+class DirectXCommand;
+class RenderTarget;
+class RenderTextureManager;
+class PostEffectPipelineManager;
+
+/// <summary>
+/// ポストエフェクトを切り替えるクラス
+/// </summary>
+class PostEffectSwitcher {
+public:
+	PostEffectSwitcher(DirectXCommand* directXCommand, RenderTarget* renderTarget, RenderTextureManager* renderTextureManager, PostEffectPipelineManager* postEffectPipelineManager);
+	~PostEffectSwitcher();
+
+	// ポストエフェクトを設定
+	void SetCurrentPostEffect(const PostEffectPipelineStateType& postEffectPipelineType);
+	// ポストエフェクトを取得
+	PostEffectPipelineStateType GetCurrentPostEffect() const;
+
+	// レンダーターゲットをセット
+	void SetClearRenderTarget();
+	// ポストエフェクトをかけたレンダーテクスチャを描画
+	void DrawCurrentRenderTexture();
+
+private:
+	void SetDirectXCommand(DirectXCommand* directXCommand);
+	void SetRenderTarget(RenderTarget* renderTarget);
+	void SetRenderTextureManager(RenderTextureManager* renderTextureManager);
+	void SetPostEffectPipelineManager(PostEffectPipelineManager* postEffectPipelineManger);
+private:
+	// 現在のポストエフェクト
+	PostEffectPipelineStateType currentPostEffect_ = PostEffectPipelineStateType::None;
+
+private:
+	DirectXCommand* directXCommand_ = nullptr;
+	RenderTarget* renderTarget_ = nullptr;
+	RenderTextureManager* renderTextureManager_ = nullptr;
+	PostEffectPipelineManager* postEffectPipelineManager_ = nullptr;
+};

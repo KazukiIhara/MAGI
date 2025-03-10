@@ -5,5 +5,5 @@
 /// </summary>
 enum class RenderTargetType {
 	SwapChain,
-	RenderTexture,
+	SimpleRenderTexture,
 };

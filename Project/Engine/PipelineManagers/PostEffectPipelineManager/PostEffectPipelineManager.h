@@ -16,6 +16,7 @@ class ShaderCompiler;
 #include "Enums/PostEffectPipelineEnum.h"
 
 #include "PostEffectPipelines/NonePostEffectPipeline/NonePostEffectPipeline.h"
+#include "PostEffectPipelines/GrayscalePostEffectPipeline/GrayscalePostEffectPipeline.h"
 
 /// <summary>
 /// ポストエフェクトパイプラインマネージャ
@@ -47,4 +48,6 @@ private:
 private:
 	// NonePostEffectPipeline
 	std::unique_ptr<NonePostEffectPipeline> nonePostEffectPipeline_ = nullptr;
+	// GrayscalePostEffectPipeline
+	std::unique_ptr<GrayscalePostEffectPipeline> grayscalePostEffectPipeline_ = nullptr;
 };

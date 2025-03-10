@@ -25,10 +25,6 @@ void BaseRenderTexture::Initialize() {
 void BaseRenderTexture::Draw() {
 	// コマンドリストを取得
 	ID3D12GraphicsCommandList* commandList = MAGISYSTEM::GetDirectXCommandList();
-	// ルートシグネイチャを設定
-	commandList->SetGraphicsRootSignature(MAGISYSTEM::GetPostEffectRootSignature(postEffectType_));
-	// PSOを設定
-	commandList->SetPipelineState(MAGISYSTEM::GetPostEffectPipelineState(postEffectType_, blendMode_));
 	// ディスクリプタテーブルを設定
 	commandList->SetGraphicsRootDescriptorTable(0, MAGISYSTEM::GetSrvUavDescriptorHandleGPU(srvIndex_));
 	// ドローコール

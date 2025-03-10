@@ -33,9 +33,9 @@ void RenderTarget::SetRenderTarget(const RenderTargetType& type) {
 			// SwapChainの現在のバックバッファのRTVハンドルを取得
 			rtvHandle = swapChain_->GetCurrentBackBufferRTVHandle();
 			break;
-		case RenderTargetType::RenderTexture:
+		case RenderTargetType::SimpleRenderTexture:
 			// RenderTextureのRTVハンドルを取得
-			BaseRenderTexture* renderTexture = renderTextureManager_->Find("NonePostEffect");
+			BaseRenderTexture* renderTexture = renderTextureManager_->GetRenderTexture(RenderTextureType::Simple);
 			rtvHandle = renderTexture->GetRTVHandle();
 			break;
 	}
@@ -60,9 +60,9 @@ void RenderTarget::ClearRenderTarget(const RenderTargetType& type) {
 			clearColor[2] = clearColor_.b;
 			clearColor[3] = clearColor_.a;
 			break;
-		case RenderTargetType::RenderTexture:
+		case RenderTargetType::SimpleRenderTexture:
 			// RenderTextureのRTVハンドルを取得
-			BaseRenderTexture* renderTexture = renderTextureManager_->Find("NonePostEffect");
+			BaseRenderTexture* renderTexture = renderTextureManager_->GetRenderTexture(RenderTextureType::Simple);
 			rtvHandle = renderTexture->GetRTVHandle();
 			// RenderTextureのクリアカラーを取得
 			Vector4 renderTextureClearColor = renderTexture->GetClearColor();

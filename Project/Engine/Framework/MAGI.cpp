@@ -79,6 +79,11 @@ std::unique_ptr<CollisionManager> MAGISYSTEM::collisionManager_ = nullptr;
 std::unique_ptr<SceneManager<GameData>> MAGISYSTEM::sceneManager_ = nullptr;
 
 //
+// AppSystem
+//
+std::unique_ptr<PostEffectSwitcher> MAGISYSTEM::postEffectSwitcher_ = nullptr;
+
+//
 // Data入出力クラス
 //
 std::unique_ptr<DataIO> MAGISYSTEM::dataIO_ = nullptr;
@@ -133,7 +138,7 @@ void MAGISYSTEM::Initialize() {
 	// DepthStencil
 	depthStencil_ = std::make_unique<DepthStencil>(dxgi_.get(), directXCommand_.get(), dsvManager_.get());
 	// ResouceBarrier
-	resourceBarrier_ = std::make_unique<ResourceBarrier>(directXCommand_.get(), swapChain_.get(),renderTextureManager_.get());
+	resourceBarrier_ = std::make_unique<ResourceBarrier>(directXCommand_.get(), swapChain_.get(), renderTextureManager_.get());
 	// RenderTarget
 	renderTarget_ = std::make_unique<RenderTarget>(directXCommand_.get(), swapChain_.get(), depthStencil_.get(), renderTextureManager_.get());
 	// Viewport
@@ -187,6 +192,10 @@ void MAGISYSTEM::Initialize() {
 	// SceneManager
 	sceneManager_ = std::make_unique<SceneManager<GameData>>();
 
+	
+	// PostEffectSwitcher
+	postEffectSwitcher_ = std::make_unique<PostEffectSwitcher>(directXCommand_.get(), renderTarget_.get(), renderTextureManager_.get(), postEffectPipelineManager_.get());
+
 
 	// DataIO
 	dataIO_ = std::make_unique<DataIO>(renderer3DManager_.get(), colliderManager_.get(), gameObject3DManager_.get());
@@ -217,6 +226,11 @@ void MAGISYSTEM::Finalize() {
 	// DataIO
 	if (dataIO_) {
 		dataIO_.reset();
+	}
+
+	// PostEffectSwitcher
+	if (postEffectSwitcher_) {
+		postEffectSwitcher_.reset();
 	}
 
 	// SceneManager
@@ -478,12 +492,11 @@ void MAGISYSTEM::Draw() {
 	// DirectX描画前処理
 	// 
 
-	// レンダーターゲットをスワップチェーンに設定
-	renderTarget_->SetRenderTarget(RenderTargetType::RenderTexture);
+	// レンダーターゲットをセット、クリア
+	postEffectSwitcher_->SetClearRenderTarget();
+
 	// 深度をクリア
 	depthStencil_->ClearDepthView();
-	// レンダーターゲットをクリア
-	renderTarget_->ClearRenderTarget(RenderTargetType::RenderTexture);
 	// ビューポートの設定
 	viewport_->SettingViewport();
 	// シザー矩形の設定
@@ -565,7 +578,8 @@ void MAGISYSTEM::Draw() {
 	//
 	// レンダーテクスチャ描画
 	//
-	renderTextureManager_->DrawCurrentRenderTexture();
+
+	postEffectSwitcher_->DrawCurrentRenderTexture();
 
 	//
 	// ImGui描画処理

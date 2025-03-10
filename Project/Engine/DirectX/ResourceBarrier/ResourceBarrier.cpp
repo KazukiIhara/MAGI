@@ -28,13 +28,13 @@ void ResourceBarrier::Initialize(DirectXCommand* directXCommand, SwapChain* swap
 	swapChainBarrier_.Flags = D3D12_RESOURCE_BARRIER_FLAG_NONE;
 
 	// レンダーテクスチャのポインタを取得
-	renderTexture_ = renderTextureManager_->Find("NonePostEffect");
+	simpleRenderTexture_ = renderTextureManager_->GetRenderTexture(RenderTextureType::Simple);
 	// タイプはトランジション
-	renderTextureBarrier_.Type = D3D12_RESOURCE_BARRIER_TYPE_TRANSITION;
+	simpleRenderTextureBarrier_.Type = D3D12_RESOURCE_BARRIER_TYPE_TRANSITION;
 	// None
-	renderTextureBarrier_.Flags = D3D12_RESOURCE_BARRIER_FLAG_NONE;
+	simpleRenderTextureBarrier_.Flags = D3D12_RESOURCE_BARRIER_FLAG_NONE;
 	// RenderTexture用のリソースを受け取る
-	renderTextureBarrier_.Transition.pResource = renderTexture_->GetResource();
+	simpleRenderTextureBarrier_.Transition.pResource = simpleRenderTexture_->GetResource();
 }
 
 void ResourceBarrier::PreDrawSwapChainResourceBarrierTransition() {
@@ -59,20 +59,20 @@ void ResourceBarrier::PostDrawSwapChainResourceBarrierTransition() {
 
 void ResourceBarrier::PreDrawRenderTextureResourceBarrierTransition() {
 	// 遷移前のリソースステート
-	renderTextureBarrier_.Transition.StateBefore = D3D12_RESOURCE_STATE_RENDER_TARGET;
+	simpleRenderTextureBarrier_.Transition.StateBefore = D3D12_RESOURCE_STATE_RENDER_TARGET;
 	// 遷移後のリソースステート
-	renderTextureBarrier_.Transition.StateAfter = D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE;
+	simpleRenderTextureBarrier_.Transition.StateAfter = D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE;
 	// トランジションバリアを張る
-	directXCommand_->GetList()->ResourceBarrier(1, &renderTextureBarrier_);
+	directXCommand_->GetList()->ResourceBarrier(1, &simpleRenderTextureBarrier_);
 }
 
 void ResourceBarrier::PostDrawRenderTextureResourceBarrierTransition() {
 	// 遷移前のリソースステート
-	renderTextureBarrier_.Transition.StateBefore = D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE;
+	simpleRenderTextureBarrier_.Transition.StateBefore = D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE;
 	// 遷移後のリソースステート
-	renderTextureBarrier_.Transition.StateAfter = D3D12_RESOURCE_STATE_RENDER_TARGET;
+	simpleRenderTextureBarrier_.Transition.StateAfter = D3D12_RESOURCE_STATE_RENDER_TARGET;
 	// トランジションバリアを張る
-	directXCommand_->GetList()->ResourceBarrier(1, &renderTextureBarrier_);
+	directXCommand_->GetList()->ResourceBarrier(1, &simpleRenderTextureBarrier_);
 }
 
 void ResourceBarrier::SetDirectXCommand(DirectXCommand* directXCommand) {

@@ -36,9 +36,9 @@ private:
 	// リソースバリア(スワップチェーン用)
 	D3D12_RESOURCE_BARRIER swapChainBarrier_{};
 	// リソースバリア(レンダーテクスチャ用)
-	D3D12_RESOURCE_BARRIER renderTextureBarrier_{};
+	D3D12_RESOURCE_BARRIER simpleRenderTextureBarrier_{};
 	// レンダーテクスチャを受け取る
-	BaseRenderTexture* renderTexture_ = nullptr;
+	BaseRenderTexture* simpleRenderTexture_ = nullptr;
 private:
 	// コマンドのインスタンスを受け取る箱
 	DirectXCommand* directXCommand_ = nullptr;
