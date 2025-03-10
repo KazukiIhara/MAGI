@@ -74,6 +74,7 @@
 // 
 // GameManager
 // 
+#include "RenderTextureManager/RenderTextureManager.h"
 #include "CollisionManager/CollisionManager.h"
 #include "SceneManager/SceneManager.h"
 
@@ -350,6 +351,11 @@ public: // エンジンの機能
 	static void DrawLine3D(const Vector3& start, const Vector3& end, const RGBA& color);
 #pragma endregion
 
+#pragma region RenderTextureManager
+	
+
+#pragma endregion
+
 #pragma region CollisionManager
 
 
@@ -453,6 +459,7 @@ protected:
 	// 
 	// GameManager
 	// 
+	static std::unique_ptr<RenderTextureManager> renderTextureManager_;
 	static std::unique_ptr<CollisionManager> collisionManager_;
 	static std::unique_ptr<SceneManager<GameData>> sceneManager_;
 

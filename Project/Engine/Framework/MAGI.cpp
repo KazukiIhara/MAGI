@@ -74,6 +74,7 @@ std::unique_ptr<LineDrawer3D> MAGISYSTEM::lineDrawer3D_ = nullptr;
 // 
 // GameManager
 // 
+std::unique_ptr<RenderTextureManager> MAGISYSTEM::renderTextureManager_ = nullptr;
 std::unique_ptr<CollisionManager> MAGISYSTEM::collisionManager_ = nullptr;
 std::unique_ptr<SceneManager<GameData>> MAGISYSTEM::sceneManager_ = nullptr;
 
@@ -148,10 +149,13 @@ void MAGISYSTEM::Initialize() {
 	// SoundDataCOntainer
 	soundDataContainer_ = std::make_unique<SoundDataContainer>();
 
+
 	// GraphicsPipelineManager
 	graphicsPipelineManager_ = std::make_unique<GraphicsPipelineManager>(dxgi_.get(), shaderCompiler_.get());
 	// ComputePipelineManager
 	computePipelineManager_ = std::make_unique<ComputePipelineManager>(dxgi_.get(), shaderCompiler_.get());
+	// PostEffectPipelineManager
+	postEffectPipelineManager_ = std::make_unique<PostEffectPipelineManager>(dxgi_.get(), shaderCompiler_.get());
 
 
 	// GameObject3DManager
@@ -174,6 +178,8 @@ void MAGISYSTEM::Initialize() {
 	lineDrawer3D_ = std::make_unique<LineDrawer3D>(dxgi_.get(), directXCommand_.get(), srvuavManager_.get(), graphicsPipelineManager_.get(), camera3DManager_.get());
 
 
+	// RenderTextureManager
+	renderTextureManager_ = std::make_unique<RenderTextureManager>();
 	// CollisionManager
 	collisionManager_ = std::make_unique<CollisionManager>(colliderManager_.get());
 	// SceneManager
@@ -221,6 +227,11 @@ void MAGISYSTEM::Finalize() {
 		collisionManager_.reset();
 	}
 
+	// RenderTextureManager
+	if (renderTextureManager_) {
+		renderTextureManager_.reset();
+	}
+
 	// LineDrawer3D
 	if (lineDrawer3D_) {
 		lineDrawer3D_.reset();
@@ -259,6 +270,11 @@ void MAGISYSTEM::Finalize() {
 	// GameObject3DManager
 	if (gameObject3DManager_) {
 		gameObject3DManager_.reset();
+	}
+
+	// PostEffectPipelineManager
+	if (postEffectPipelineManager_) {
+		postEffectPipelineManager_.reset();
 	}
 
 	// CompuetPipelineManager

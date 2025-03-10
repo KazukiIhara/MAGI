@@ -69,11 +69,11 @@ void NonePostEffectPipeline::CreateRootSignature() {
 
 void NonePostEffectPipeline::CompileShaders() {
 	vertexShaderBlob_ = nullptr;
-	vertexShaderBlob_ = shaderCompiler_->CompileShader(L"EngineAssets/Shaders/Object3D/Object3D.VS.hlsl", L"vs_6_0");
+	vertexShaderBlob_ = shaderCompiler_->CompileShader(L"EngineAssets/Shaders/PostEffect/None/None.VS.hlsl", L"vs_6_0");
 	assert(vertexShaderBlob_ != nullptr);
 
 	pixelShaderBlob_ = nullptr;
-	pixelShaderBlob_ = shaderCompiler_->CompileShader(L"EngineAssets/Shaders/Object3D/Object3D.PS.hlsl", L"ps_6_0");
+	pixelShaderBlob_ = shaderCompiler_->CompileShader(L"EngineAssets/Shaders/PostEffect/None/None.PS.hlsl", L"ps_6_0");
 	assert(pixelShaderBlob_ != nullptr);
 }
 
