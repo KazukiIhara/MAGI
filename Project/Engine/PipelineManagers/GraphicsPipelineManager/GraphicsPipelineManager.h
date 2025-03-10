@@ -9,7 +9,7 @@
 #include <dxcapi.h>
 
 // MyHedder
-#include "Includes/Enums/GraphicsPipelineEnum.h"
+#include "Enums/GraphicsPipelineEnum.h"
 
 #include "GraphicsPipelines/Line3DGraphicsPipeline/Line3DGraphicsPipeline.h"
 #include "GraphicsPipelines/Object2DGraphicsPipeline/Object2DGraphicsPipeline.h"

@@ -53,6 +53,7 @@
 // 
 #include "PipelineManagers/GraphicsPipelineManager/GraphicsPipelineManager.h"
 #include "PipelineManagers/ComputePipelineManager/ComputePipelineManager.h"
+#include "PipelineManagers/PostEffectPipelineManager/PostEffectPipelineManager.h"
 
 // 
 // ObjectManager
@@ -73,6 +74,7 @@
 // 
 // GameManager
 // 
+#include "RenderTextureManager/RenderTextureManager.h"
 #include "CollisionManager/CollisionManager.h"
 #include "SceneManager/SceneManager.h"
 
@@ -175,6 +177,19 @@ public: // エンジンの機能
 	static void WaitGPU();
 #pragma endregion
 
+#pragma region RTVManagerの機能
+	// RTVのディスクリプタヒープを取得
+	static ID3D12DescriptorHeap* GetRTVDescriptorHeap();
+	// RTVのCPUディスクリプタハンドルを取得
+	static D3D12_CPU_DESCRIPTOR_HANDLE GetRTVDescriptorHandleCPU(uint32_t index);
+	// RTVのGPUディスクリプタハンドルを取得
+	static D3D12_GPU_DESCRIPTOR_HANDLE GetRTVDescriptorHandleGPU(uint32_t index);
+	// RTVIndex割り当て関数
+	static uint32_t RTVAllocate();
+	// Texture2D用のRTVの作成
+	static void CreateRTVTexture2d(uint32_t rtvIndex, ID3D12Resource* pResource);
+#pragma endregion
+
 #pragma region SRVUAVManagerの機能
 	// SRVUAVのディスクリプタヒープを取得
 	static ID3D12DescriptorHeap* GetSrvUavDescriptorHeap();
@@ -184,9 +199,11 @@ public: // エンジンの機能
 	// SRVのGPUディスクリプタハンドルを取得
 	static D3D12_GPU_DESCRIPTOR_HANDLE GetSrvUavDescriptorHandleGPU(uint32_t index);
 	// Allocate
-	static uint32_t ViewAllocate();
+	static uint32_t SrvUavAllocate();
 	// StructuredBuffer用のsrv作成
 	static void CreateSrvStructuredBuffer(uint32_t viewIndex, ID3D12Resource* pResource, uint32_t numElements, UINT structureByteStride);
+	// Texure2D用のSrv作成
+	static void CreateSrvTexture2D(uint32_t srvIndex, ID3D12Resource* pResource, DXGI_FORMAT format, UINT mipLevels);
 	// StructuredBuffer用のUAV作成
 	static void CreateUavStructuredBuffer(uint32_t viewIndex, ID3D12Resource* pResource, uint32_t numElements, UINT structureByteStride);
 #pragma endregion
@@ -202,6 +219,13 @@ public: // エンジンの機能
 	static ID3D12RootSignature* GetComputeRootSignature(ComputePipelineStateType pipelineState);
 	// パイプライン取得関数
 	static ID3D12PipelineState* GetComputePipelineState(ComputePipelineStateType pipelineState);
+#pragma endregion
+
+#pragma region PostEffectPipelineManager
+	// ルートシグネイチャ取得関数
+	static ID3D12RootSignature* GetPostEffectRootSignature(PostEffectPipelineStateType pipelineState);
+	// パイプライン取得関数
+	static ID3D12PipelineState* GetPostEffectPipelineState(PostEffectPipelineStateType pipelineState, BlendMode blendMode);
 #pragma endregion
 
 #pragma region TextureDataContainer
@@ -327,6 +351,11 @@ public: // エンジンの機能
 	static void DrawLine3D(const Vector3& start, const Vector3& end, const RGBA& color);
 #pragma endregion
 
+#pragma region RenderTextureManager
+	
+
+#pragma endregion
+
 #pragma region CollisionManager
 
 
@@ -400,6 +429,7 @@ protected:
 	//
 	static std::unique_ptr<GraphicsPipelineManager> graphicsPipelineManager_;
 	static std::unique_ptr<ComputePipelineManager> computePipelineManager_;
+	static std::unique_ptr<PostEffectPipelineManager> postEffectPipelineManager_;
 
 	// 
 	// AssetContainer
@@ -429,6 +459,7 @@ protected:
 	// 
 	// GameManager
 	// 
+	static std::unique_ptr<RenderTextureManager> renderTextureManager_;
 	static std::unique_ptr<CollisionManager> collisionManager_;
 	static std::unique_ptr<SceneManager<GameData>> sceneManager_;
 

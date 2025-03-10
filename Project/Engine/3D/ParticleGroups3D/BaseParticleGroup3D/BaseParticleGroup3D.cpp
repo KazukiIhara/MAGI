@@ -69,7 +69,7 @@ void BaseParticleGroup3D::CreateInstancingResource() {
 	// instancing用のリソースを作る
 	instancingResource_ = MAGISYSTEM::CreateBufferResource(sizeof(ParticleForGPU) * kNumMaxInstance_);
 	// srvのインデックスを割り当て
-	srvIndex_ = MAGISYSTEM::ViewAllocate();
+	srvIndex_ = MAGISYSTEM::SrvUavAllocate();
 	// Srvを作成
 	MAGISYSTEM::CreateSrvStructuredBuffer(srvIndex_, instancingResource_.Get(), kNumMaxInstance_, sizeof(ParticleForGPU));
 }
