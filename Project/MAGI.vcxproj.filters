@@ -732,6 +732,7 @@
     <ClInclude Include="Engine\WindowApp\WindowApp.h">
       <Filter>Engine\WindowApp</Filter>
     </ClInclude>
+    <ClInclude Include="Engine\GrobalDataManager\GrobalDataManager.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="App\Game\Game.cpp">
@@ -990,6 +991,7 @@
       <Filter>Engine\WindowApp</Filter>
     </ClCompile>
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Engine\GrobalDataManager\GrobalDataManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Engine\SceneManager\SceneManager.ipp">
