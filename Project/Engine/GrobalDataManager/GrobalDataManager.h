@@ -104,7 +104,7 @@ private:
 	// 全データ
 	std::map<std::string, Group> datas_;
 	// グローバル変数の保存先ファイルパス
-	const std::string kDirectoryPath = "resources/globalDatas/";
+	const std::string kDirectoryPath = "Assets/Datas/Global/";
 
 private:
 };

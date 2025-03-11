@@ -328,6 +328,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Assets\Datas\Global\Sample.json" />
     <None Include="Engine\SceneManager\SceneManager.ipp" />
   </ItemGroup>
   <ItemGroup>
