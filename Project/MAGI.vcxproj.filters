@@ -79,6 +79,9 @@
     <Filter Include="Engine\3D\ParticleGroups3D\BaseParticleGroup3D">
       <UniqueIdentifier>{5D6FD449-49ED-24E3-32E5-E27A1E02670B}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Engine\3D\ParticleGroups3D\PrimitiveParticleGroup3D">
+      <UniqueIdentifier>{5B508EF3-C761-369A-50B3-C8D9BCC3BFD3}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Engine\3D\RenderObjects3D">
       <UniqueIdentifier>{D1CC20B2-3D8F-543C-863F-E3C8F2402D1A}</UniqueIdentifier>
     </Filter>
@@ -160,9 +163,6 @@
     <Filter Include="Engine\DeltaTimer">
       <UniqueIdentifier>{B5E83FAE-21FF-3D44-6A76-C965D6CB0ECC}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Engine\DirectInput">
-      <UniqueIdentifier>{35AACD4B-218E-8EA1-8AEE-88F476F17823}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Engine\DirectX">
       <UniqueIdentifier>{9D55E305-8923-D70B-72B7-47325E24B370}</UniqueIdentifier>
     </Filter>
@@ -223,6 +223,9 @@
     <Filter Include="Engine\GraphicsPipelines\Object3DGraphicsPipeline">
       <UniqueIdentifier>{680091E8-D4C6-ED04-1D22-7C6789275C69}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Engine\GraphicsPipelines\Particle3DGraphicsPipeline">
+      <UniqueIdentifier>{25B5FA7B-91C6-A222-1A18-356286282C5C}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Engine\ImGuiController">
       <UniqueIdentifier>{2954621B-154E-8B6D-FEBA-217EEA53F1D9}</UniqueIdentifier>
     </Filter>
@@ -253,6 +256,15 @@
     <Filter Include="Engine\Includes\Structs">
       <UniqueIdentifier>{88101382-F447-5B19-FD51-BF3C69088212}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Engine\Input">
+      <UniqueIdentifier>{1AB06895-0613-F839-AF98-30F09BDAC3BC}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Input\MAGIDirectInput">
+      <UniqueIdentifier>{D29D537C-BE58-4328-6710-BC7253AA8DB8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Input\MAGIXInput">
+      <UniqueIdentifier>{2F5A6840-9B91-B0D7-A49B-14FB1052D7D0}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Engine\LeakChecker">
       <UniqueIdentifier>{DC9A7F7A-C87E-40D0-31DF-3A231DE22A52}</UniqueIdentifier>
     </Filter>
@@ -268,8 +280,14 @@
     <Filter Include="Engine\ObjectManagers\ColliderManager">
       <UniqueIdentifier>{A785290E-134A-28FE-DCAF-58C84833C433}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Engine\ObjectManagers\Emitter3DManager">
+      <UniqueIdentifier>{2A42E028-1694-B718-FFB2-F428EBA3D001}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Engine\ObjectManagers\GameObject3DManager">
       <UniqueIdentifier>{816256B9-ED7C-B95A-369F-C9EEA2F8E061}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\ObjectManagers\ParticleGroup3DManager">
+      <UniqueIdentifier>{31741864-1D87-18BD-C670-F5A9B262B50A}</UniqueIdentifier>
     </Filter>
     <Filter Include="Engine\ObjectManagers\PunctualLightManager">
       <UniqueIdentifier>{DD552493-C9BD-EA60-3229-FF761EB0014D}</UniqueIdentifier>
@@ -286,8 +304,41 @@
     <Filter Include="Engine\PipelineManagers\GraphicsPipelineManager">
       <UniqueIdentifier>{5F42992D-CB7D-F9F0-D472-7680402D7E21}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Engine\PipelineManagers\PostEffectPipelineManager">
+      <UniqueIdentifier>{E1429944-4D09-F660-9664-84C3026A64C5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\PostEffectPipelines">
+      <UniqueIdentifier>{469759F4-32A7-05C5-9B60-6AE3878FF45D}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\PostEffectPipelines\BasePostEffectPipeline">
+      <UniqueIdentifier>{1962CBA3-8528-28C0-CE83-B6223A899624}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\PostEffectPipelines\BaseSimplePostEffectPipeline">
+      <UniqueIdentifier>{C3BD72A4-2FA5-5D9A-3893-5F16A4F9005D}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\PostEffectPipelines\GrayscalePostEffectPipeline">
+      <UniqueIdentifier>{79E9A02B-6593-D63A-4E64-DE553AAD7629}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\PostEffectPipelines\NonePostEffectPipeline">
+      <UniqueIdentifier>{CEACD075-3A73-2D92-83CE-BBF4EFD39BF6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\PostEffectSwitcher">
+      <UniqueIdentifier>{06B87376-727A-A700-BB2A-368D272C80DE}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\RenderTextureManager">
+      <UniqueIdentifier>{364DFE98-A25A-2C7F-2B41-286A974DF835}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\RenderTextures">
+      <UniqueIdentifier>{8E3E9D8C-FAAA-5887-C39E-F0E42FCA7AEF}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\RenderTextures\BaseRenderTexture">
+      <UniqueIdentifier>{E949D92A-55D9-9A15-5ED5-7B2DCAE3D521}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Engine\SceneManager">
       <UniqueIdentifier>{1385C7BD-7FE6-A4CB-0854-EB7D74B4DB8A}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Scenes">
+      <UniqueIdentifier>{AB140559-17D5-808F-E00F-CA0C4C8FC56B}</UniqueIdentifier>
     </Filter>
     <Filter Include="Engine\ViewManagers">
       <UniqueIdentifier>{D3B4F983-3F16-D791-C883-1D4434E40D51}</UniqueIdentifier>
@@ -360,6 +411,9 @@
     <ClInclude Include="Engine\3D\ParticleGroups3D\BaseParticleGroup3D\BaseParticleGroup3D.h">
       <Filter>Engine\3D\ParticleGroups3D\BaseParticleGroup3D</Filter>
     </ClInclude>
+    <ClInclude Include="Engine\3D\ParticleGroups3D\PrimitiveParticleGroup3D\PrimitiveParticleGroup3D.h">
+      <Filter>Engine\3D\ParticleGroups3D\PrimitiveParticleGroup3D</Filter>
+    </ClInclude>
     <ClInclude Include="Engine\3D\RenderObjects3D\BaseRenderable3D\BaseRenderable3D.h">
       <Filter>Engine\3D\RenderObjects3D\BaseRenderable3D</Filter>
     </ClInclude>
@@ -426,9 +480,6 @@
     <ClInclude Include="Engine\DeltaTimer\DeltaTimer.h">
       <Filter>Engine\DeltaTimer</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\Input\MAGIDirectInput\MAGIDirectInput.h">
-      <Filter>Engine\DirectInput</Filter>
-    </ClInclude>
     <ClInclude Include="Engine\DirectX\ComPtr\ComPtr.h">
       <Filter>Engine\DirectX\ComPtr</Filter>
     </ClInclude>
@@ -483,6 +534,9 @@
     <ClInclude Include="Engine\GraphicsPipelines\Object3DGraphicsPipeline\Object3DGraphicsPipeline.h">
       <Filter>Engine\GraphicsPipelines\Object3DGraphicsPipeline</Filter>
     </ClInclude>
+    <ClInclude Include="Engine\GraphicsPipelines\Particle3DGraphicsPipeline\Particle3DGraphicsPipeline.h">
+      <Filter>Engine\GraphicsPipelines\Particle3DGraphicsPipeline</Filter>
+    </ClInclude>
     <ClInclude Include="Engine\ImGuiController\ImGuiController.h">
       <Filter>Engine\ImGuiController</Filter>
     </ClInclude>
@@ -504,6 +558,9 @@
     <ClInclude Include="Engine\Includes\Enums\MouseInputEnum.h">
       <Filter>Engine\Includes\Enums</Filter>
     </ClInclude>
+    <ClInclude Include="Engine\Includes\Enums\PostEffectPipelineEnum.h">
+      <Filter>Engine\Includes\Enums</Filter>
+    </ClInclude>
     <ClInclude Include="Engine\Includes\Enums\Primitive3DEnum.h">
       <Filter>Engine\Includes\Enums</Filter>
     </ClInclude>
@@ -511,6 +568,9 @@
       <Filter>Engine\Includes\Enums</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Includes\Enums\RenderTargetEnumh.h">
+      <Filter>Engine\Includes\Enums</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Includes\Enums\RenderTextureType.h">
       <Filter>Engine\Includes\Enums</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Includes\Enums\Renderer3DEnum.h">
@@ -582,8 +642,17 @@
     <ClInclude Include="Engine\Includes\Structs\SkinningStruct.h">
       <Filter>Engine\Includes\Structs</Filter>
     </ClInclude>
+    <ClInclude Include="Engine\Includes\Structs\SoundStruct.h">
+      <Filter>Engine\Includes\Structs</Filter>
+    </ClInclude>
     <ClInclude Include="Engine\Includes\Structs\TextureStruct.h">
       <Filter>Engine\Includes\Structs</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Input\MAGIDirectInput\MAGIDirectInput.h">
+      <Filter>Engine\Input\MAGIDirectInput</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Input\MAGIXInput\MAGIXInput.h">
+      <Filter>Engine\Input\MAGIXInput</Filter>
     </ClInclude>
     <ClInclude Include="Engine\LeakChecker\D3DResourceLeakChecker.h">
       <Filter>Engine\LeakChecker</Filter>
@@ -597,8 +666,14 @@
     <ClInclude Include="Engine\ObjectManagers\ColliderManager\ColliderManager.h">
       <Filter>Engine\ObjectManagers\ColliderManager</Filter>
     </ClInclude>
+    <ClInclude Include="Engine\ObjectManagers\Emitter3DManager\Emitter3DManager.h">
+      <Filter>Engine\ObjectManagers\Emitter3DManager</Filter>
+    </ClInclude>
     <ClInclude Include="Engine\ObjectManagers\GameObject3DManager\GameObject3DManager.h">
       <Filter>Engine\ObjectManagers\GameObject3DManager</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\ObjectManagers\ParticleGroup3DManager\ParticleGroup3DManager.h">
+      <Filter>Engine\ObjectManagers\ParticleGroup3DManager</Filter>
     </ClInclude>
     <ClInclude Include="Engine\ObjectManagers\PunctualLightManager\PunctualLightManager.h">
       <Filter>Engine\ObjectManagers\PunctualLightManager</Filter>
@@ -612,8 +687,35 @@
     <ClInclude Include="Engine\PipelineManagers\GraphicsPipelineManager\GraphicsPipelineManager.h">
       <Filter>Engine\PipelineManagers\GraphicsPipelineManager</Filter>
     </ClInclude>
+    <ClInclude Include="Engine\PipelineManagers\PostEffectPipelineManager\PostEffectPipelineManager.h">
+      <Filter>Engine\PipelineManagers\PostEffectPipelineManager</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\PostEffectPipelines\BasePostEffectPipeline\BasePostEffectPipeline.h">
+      <Filter>Engine\PostEffectPipelines\BasePostEffectPipeline</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\PostEffectPipelines\BaseSimplePostEffectPipeline\BaseSimplePostEffectPipeline.h">
+      <Filter>Engine\PostEffectPipelines\BaseSimplePostEffectPipeline</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\PostEffectPipelines\GrayscalePostEffectPipeline\GrayscalePostEffectPipeline.h">
+      <Filter>Engine\PostEffectPipelines\GrayscalePostEffectPipeline</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\PostEffectPipelines\NonePostEffectPipeline\NonePostEffectPipeline.h">
+      <Filter>Engine\PostEffectPipelines\NonePostEffectPipeline</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\PostEffectSwitcher\PostEffectSwitcher.h">
+      <Filter>Engine\PostEffectSwitcher</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\RenderTextureManager\RenderTextureManager.h">
+      <Filter>Engine\RenderTextureManager</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\RenderTextures\BaseRenderTexture\BaseRenderTexture.h">
+      <Filter>Engine\RenderTextures\BaseRenderTexture</Filter>
+    </ClInclude>
     <ClInclude Include="Engine\SceneManager\SceneManager.h">
       <Filter>Engine\SceneManager</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Scenes\ParticleEditScene.h">
+      <Filter>Engine\Scenes</Filter>
     </ClInclude>
     <ClInclude Include="Engine\ViewManagers\BaseViewManager\BaseViewManager.h">
       <Filter>Engine\ViewManagers\BaseViewManager</Filter>
@@ -630,23 +732,6 @@
     <ClInclude Include="Engine\WindowApp\WindowApp.h">
       <Filter>Engine\WindowApp</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\ObjectManagers\ParticleGroup3DManager\ParticleGroup3DManager.h" />
-    <ClInclude Include="Engine\3D\ParticleGroups3D\PrimitiveParticleGroup3D\PrimitiveParticleGroup3D.h" />
-    <ClInclude Include="Engine\ObjectManagers\Emitter3DManager\Emitter3DManager.h" />
-    <ClInclude Include="Engine\GraphicsPipelines\Particle3DGraphicsPipeline\Particle3DGraphicsPipeline.h" />
-    <ClInclude Include="Engine\Scenes\ParticleEditScene.h" />
-    <ClInclude Include="Engine\Includes\Structs\SoundStruct.h" />
-    <ClInclude Include="Engine\PostEffectPipelines\NonePostEffectPipeline\NonePostEffectPipeline.h" />
-    <ClInclude Include="Engine\PostEffectPipelines\BasePostEffectPipeline\BasePostEffectPipeline.h" />
-    <ClInclude Include="Engine\RenderTextureManager\RenderTextureManager.h" />
-    <ClInclude Include="Engine\PipelineManagers\PostEffectPipelineManager\PostEffectPipelineManager.h" />
-    <ClInclude Include="Engine\Includes\Enums\PostEffectPipelineEnum.h" />
-    <ClInclude Include="Engine\RenderTextures\BaseRenderTexture\BaseRenderTexture.h" />
-    <ClInclude Include="Engine\PostEffectPipelines\GrayscalePostEffectPipeline\GrayscalePostEffectPipeline.h" />
-    <ClInclude Include="Engine\PostEffectPipelines\BaseSimplePostEffectPipeline\BaseSimplePostEffectPipeline.h" />
-    <ClInclude Include="Engine\PostEffectSwitcher\PostEffectSwitcher.h" />
-    <ClInclude Include="Engine\Includes\Enums\RenderTextureType.h" />
-    <ClInclude Include="Engine\Input\MAGIXInput\MAGIXInput.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="App\Game\Game.cpp">
@@ -690,6 +775,9 @@
     </ClCompile>
     <ClCompile Include="Engine\3D\ParticleGroups3D\BaseParticleGroup3D\BaseParticleGroup3D.cpp">
       <Filter>Engine\3D\ParticleGroups3D\BaseParticleGroup3D</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\3D\ParticleGroups3D\PrimitiveParticleGroup3D\PrimitiveParticleGroup3D.cpp">
+      <Filter>Engine\3D\ParticleGroups3D\PrimitiveParticleGroup3D</Filter>
     </ClCompile>
     <ClCompile Include="Engine\3D\RenderObjects3D\BaseRenderable3D\BaseRenderable3D.cpp">
       <Filter>Engine\3D\RenderObjects3D\BaseRenderable3D</Filter>
@@ -754,9 +842,6 @@
     <ClCompile Include="Engine\DeltaTimer\DeltaTimer.cpp">
       <Filter>Engine\DeltaTimer</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\Input\MAGIDirectInput\MAGIDirectInput.cpp">
-      <Filter>Engine\DirectInput</Filter>
-    </ClCompile>
     <ClCompile Include="Engine\DirectX\DXGI\DXGI.cpp">
       <Filter>Engine\DirectX\DXGI</Filter>
     </ClCompile>
@@ -808,6 +893,9 @@
     <ClCompile Include="Engine\GraphicsPipelines\Object3DGraphicsPipeline\Object3DGraphicsPipeline.cpp">
       <Filter>Engine\GraphicsPipelines\Object3DGraphicsPipeline</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\GraphicsPipelines\Particle3DGraphicsPipeline\Particle3DGraphicsPipeline.cpp">
+      <Filter>Engine\GraphicsPipelines\Particle3DGraphicsPipeline</Filter>
+    </ClCompile>
     <ClCompile Include="Engine\ImGuiController\ImGuiController.cpp">
       <Filter>Engine\ImGuiController</Filter>
     </ClCompile>
@@ -823,6 +911,12 @@
     <ClCompile Include="Engine\Includes\Random\Random.cpp">
       <Filter>Engine\Includes\Random</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\Input\MAGIDirectInput\MAGIDirectInput.cpp">
+      <Filter>Engine\Input\MAGIDirectInput</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Input\MAGIXInput\MAGIXInput.cpp">
+      <Filter>Engine\Input\MAGIXInput</Filter>
+    </ClCompile>
     <ClCompile Include="Engine\LeakChecker\D3DResourceLeakChecker.cpp">
       <Filter>Engine\LeakChecker</Filter>
     </ClCompile>
@@ -835,8 +929,14 @@
     <ClCompile Include="Engine\ObjectManagers\ColliderManager\ColliderManager.cpp">
       <Filter>Engine\ObjectManagers\ColliderManager</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\ObjectManagers\Emitter3DManager\Emitter3DManager.cpp">
+      <Filter>Engine\ObjectManagers\Emitter3DManager</Filter>
+    </ClCompile>
     <ClCompile Include="Engine\ObjectManagers\GameObject3DManager\GameObject3DManager.cpp">
       <Filter>Engine\ObjectManagers\GameObject3DManager</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\ObjectManagers\ParticleGroup3DManager\ParticleGroup3DManager.cpp">
+      <Filter>Engine\ObjectManagers\ParticleGroup3DManager</Filter>
     </ClCompile>
     <ClCompile Include="Engine\ObjectManagers\PunctualLightManager\PunctualLightManager.cpp">
       <Filter>Engine\ObjectManagers\PunctualLightManager</Filter>
@@ -849,6 +949,30 @@
     </ClCompile>
     <ClCompile Include="Engine\PipelineManagers\GraphicsPipelineManager\GraphicsPipelineManager.cpp">
       <Filter>Engine\PipelineManagers\GraphicsPipelineManager</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\PipelineManagers\PostEffectPipelineManager\PostEffectPipelineManager.cpp">
+      <Filter>Engine\PipelineManagers\PostEffectPipelineManager</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\PostEffectPipelines\BasePostEffectPipeline\BasePostEffectPipeline.cpp">
+      <Filter>Engine\PostEffectPipelines\BasePostEffectPipeline</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\PostEffectPipelines\BaseSimplePostEffectPipeline\BaseSimplePostEffectPipeline.cpp">
+      <Filter>Engine\PostEffectPipelines\BaseSimplePostEffectPipeline</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\PostEffectPipelines\GrayscalePostEffectPipeline\GrayscalePostEffectPipeline.cpp">
+      <Filter>Engine\PostEffectPipelines\GrayscalePostEffectPipeline</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\PostEffectPipelines\NonePostEffectPipeline\NonePostEffectPipeline.cpp">
+      <Filter>Engine\PostEffectPipelines\NonePostEffectPipeline</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\PostEffectSwitcher\PostEffectSwitcher.cpp">
+      <Filter>Engine\PostEffectSwitcher</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\RenderTextureManager\RenderTextureManager.cpp">
+      <Filter>Engine\RenderTextureManager</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\RenderTextures\BaseRenderTexture\BaseRenderTexture.cpp">
+      <Filter>Engine\RenderTextures\BaseRenderTexture</Filter>
     </ClCompile>
     <ClCompile Include="Engine\ViewManagers\BaseViewManager\BaseViewManager.cpp">
       <Filter>Engine\ViewManagers\BaseViewManager</Filter>
@@ -866,34 +990,10 @@
       <Filter>Engine\WindowApp</Filter>
     </ClCompile>
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="Engine\ObjectManagers\ParticleGroup3DManager\ParticleGroup3DManager.cpp" />
-    <ClCompile Include="Engine\3D\ParticleGroups3D\PrimitiveParticleGroup3D\PrimitiveParticleGroup3D.cpp" />
-    <ClCompile Include="Engine\ObjectManagers\Emitter3DManager\Emitter3DManager.cpp" />
-    <ClCompile Include="Engine\GraphicsPipelines\Particle3DGraphicsPipeline\Particle3DGraphicsPipeline.cpp" />
-    <ClCompile Include="Engine\PostEffectPipelines\NonePostEffectPipeline\NonePostEffectPipeline.cpp" />
-    <ClCompile Include="Engine\PostEffectPipelines\BasePostEffectPipeline\BasePostEffectPipeline.cpp" />
-    <ClCompile Include="Engine\RenderTextureManager\RenderTextureManager.cpp" />
-    <ClCompile Include="Engine\PipelineManagers\PostEffectPipelineManager\PostEffectPipelineManager.cpp" />
-    <ClCompile Include="Engine\RenderTextures\BaseRenderTexture\BaseRenderTexture.cpp" />
-    <ClCompile Include="Engine\PostEffectPipelines\GrayscalePostEffectPipeline\GrayscalePostEffectPipeline.cpp" />
-    <ClCompile Include="Engine\PostEffectPipelines\BaseSimplePostEffectPipeline\BaseSimplePostEffectPipeline.cpp" />
-    <ClCompile Include="Engine\PostEffectSwitcher\PostEffectSwitcher.cpp" />
-    <ClCompile Include="Engine\Input\MAGIXInput\MAGIXInput.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Engine\SceneManager\SceneManager.ipp">
       <Filter>Engine\SceneManager</Filter>
     </None>
-    <None Include="EngineAssets\Shaders\Graphics\Particle3D\Particle3D.hlsli" />
-    <None Include="EngineAssets\Shaders\PostEffect\None\None.hlsli" />
-    <None Include="EngineAssets\Shaders\PostEffect\GrayScale\GrayScale.hlsli" />
-  </ItemGroup>
-  <ItemGroup>
-    <FxCompile Include="EngineAssets\Shaders\Graphics\Particle3D\Particle3D.PS.hlsl" />
-    <FxCompile Include="EngineAssets\Shaders\Graphics\Particle3D\Particle3D.VS.hlsl" />
-    <FxCompile Include="EngineAssets\Shaders\PostEffect\None\None.PS.hlsl" />
-    <FxCompile Include="EngineAssets\Shaders\PostEffect\None\None.VS.hlsl" />
-    <FxCompile Include="EngineAssets\Shaders\PostEffect\GrayScale\GrayScale.PS.hlsl" />
-    <FxCompile Include="EngineAssets\Shaders\PostEffect\GrayScale\GrayScale.VS.hlsl" />
   </ItemGroup>
 </Project>
