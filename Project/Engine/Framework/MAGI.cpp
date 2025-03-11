@@ -88,6 +88,7 @@ std::unique_ptr<PostEffectSwitcher> MAGISYSTEM::postEffectSwitcher_ = nullptr;
 // Data入出力クラス
 //
 std::unique_ptr<DataIO> MAGISYSTEM::dataIO_ = nullptr;
+std::unique_ptr<GrobalDataManager> MAGISYSTEM::grobalDataManager_ = nullptr;
 
 //
 // UIクラス
@@ -194,13 +195,15 @@ void MAGISYSTEM::Initialize() {
 	// SceneManager
 	sceneManager_ = std::make_unique<SceneManager<GameData>>();
 
-	
+
 	// PostEffectSwitcher
 	postEffectSwitcher_ = std::make_unique<PostEffectSwitcher>(directXCommand_.get(), renderTarget_.get(), renderTextureManager_.get(), postEffectPipelineManager_.get());
 
 
 	// DataIO
 	dataIO_ = std::make_unique<DataIO>(renderer3DManager_.get(), colliderManager_.get(), gameObject3DManager_.get());
+	// GrobalDataManager
+	grobalDataManager_ = std::make_unique<GrobalDataManager>();
 
 
 	// ImGuiController
@@ -223,6 +226,11 @@ void MAGISYSTEM::Finalize() {
 	// ImGuiController
 	if (imguiController_) {
 		imguiController_.reset();
+	}
+
+	// GrobalDataManager
+	if (grobalDataManager_) {
+		grobalDataManager_.reset();
 	}
 
 	// DataIO
@@ -486,6 +494,8 @@ void MAGISYSTEM::Update() {
 
 	// Dataクラスフレーム終了処理
 	dataIO_->EndFrame();
+	// グローバルデータ
+	grobalDataManager_->Update();
 
 	// GUI更新処理
 	gui_->Update();
@@ -1005,6 +1015,58 @@ void MAGISYSTEM::DrawLine3D(const Vector3& start, const Vector3& end, const RGBA
 
 void MAGISYSTEM::LoadColliderDataFile(const std::string& fileName) {
 	dataIO_->LoadColliderDataFile(fileName);
+}
+
+void MAGISYSTEM::AddGrobalDataGroup(const std::string& groupname) {
+	grobalDataManager_->CreateGroup(groupname);
+}
+
+void MAGISYSTEM::AddGrobalDataItem(const std::string& groupname, const std::string& itemname, int32_t value) {
+	grobalDataManager_->AddItem(groupname, itemname, value);
+}
+
+void MAGISYSTEM::AddGrobalDataItem(const std::string& groupname, const std::string& itemname, float value) {
+	grobalDataManager_->AddItem(groupname, itemname, value);
+}
+
+void MAGISYSTEM::AddGrobalDataItem(const std::string& groupname, const std::string& itemname, Vector3 value) {
+	grobalDataManager_->AddItem(groupname, itemname, value);
+}
+
+void MAGISYSTEM::AddGrobalDataItem(const std::string& groupname, const std::string& itemname, bool value) {
+	grobalDataManager_->AddItem(groupname, itemname, value);
+}
+
+void MAGISYSTEM::SetGrobalDataValue(const std::string& groupname, const std::string& itemname, int32_t value) {
+	grobalDataManager_->SetValue(groupname, itemname, value);
+}
+
+void MAGISYSTEM::SetGrobalDataValue(const std::string& groupname, const std::string& itemname, float value) {
+	grobalDataManager_->SetValue(groupname, itemname, value);
+}
+
+void MAGISYSTEM::SetGrobalDataValue(const std::string& groupname, const std::string& itemname, Vector3 value) {
+	grobalDataManager_->SetValue(groupname, itemname, value);
+}
+
+void MAGISYSTEM::SetGrobalDataValue(const std::string& groupname, const std::string& itemname, bool value) {
+	grobalDataManager_->SetValue(groupname, itemname, value);
+}
+
+int32_t MAGISYSTEM::GetGrobalDataValueInt(const std::string& groupName, const std::string& key) {
+	return grobalDataManager_->GetValueInt(groupName, key);
+}
+
+float MAGISYSTEM::GetGrobalDataValueFloat(const std::string& groupName, const std::string& key) {
+	return grobalDataManager_->GetValueFloat(groupName, key);
+}
+
+Vector3 MAGISYSTEM::GetGrobalDataValueVector3(const std::string& groupName, const std::string& key) {
+	return grobalDataManager_->GetValueVector3(groupName, key);
+}
+
+bool MAGISYSTEM::GetGrobalDataValueBool(const std::string& groupName, const std::string& key) {
+	return grobalDataManager_->GetValueBool(groupName, key);
 }
 
 void MAGISYSTEM::PreDrawObject3D() {

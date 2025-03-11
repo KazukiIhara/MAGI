@@ -2,6 +2,10 @@
 
 #include "Framework/MAGI.h"
 
+GrobalDataManager::GrobalDataManager() {
+	Initialize();
+}
+
 void GrobalDataManager::Initialize() {
 	// 配列をクリア
 	datas_.clear();

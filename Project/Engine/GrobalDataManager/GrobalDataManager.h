@@ -34,6 +34,8 @@ public:
 	};
 
 public:
+	GrobalDataManager();
+
 	/// <summary>
 	/// 初期化
 	/// </summary>
