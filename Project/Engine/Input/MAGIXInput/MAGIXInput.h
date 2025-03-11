@@ -1,6 +1,6 @@
 #pragma once
 
-#include <XInput.h>
+#include <Windows.h>
 #include "Enums/XInputEnum.h"
 
 /// <summary>
