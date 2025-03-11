@@ -1,4 +1,4 @@
-#include "DirectInput.h"
+#include "MAGIDirectInput.h"
 
 #include <cassert>
 

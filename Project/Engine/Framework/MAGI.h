@@ -12,7 +12,7 @@
 // 
 #include "WindowApp/WindowApp.h"
 #include "DeltaTimer/DeltaTimer.h"    
-#include "DirectInput/DirectInput.h"
+#include "Input/MAGIDirectInput/MAGIDirectInput.h"
 
 // 
 // DirectXBaseSystems
