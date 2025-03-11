@@ -2,6 +2,7 @@
 
 #include <cassert>
 #include <Windows.h>
+#include "math.h"
 
 MAGIXInput::MAGIXInput() {}
 
@@ -45,28 +46,32 @@ bool MAGIXInput::ReleaseButton(int controllerID, int buttonNumber) const {
 		!(gamepadStates[controllerID].Gamepad.wButtons & buttonNumber);
 }
 
-int MAGIXInput::GetLeftStickX(int controllerID) const {
-	return ProcessDeadZone(gamepadStates[controllerID].Gamepad.sThumbLX);
+float MAGIXInput::GetLeftStickX(int controllerID) const {
+    float rawValue = gamepadStates[controllerID].Gamepad.sThumbLX / 32767.0f;
+    return ProcessDeadZone(rawValue);
 }
 
-int MAGIXInput::GetLeftStickY(int controllerID) const {
-	return ProcessDeadZone(gamepadStates[controllerID].Gamepad.sThumbLY);
+float MAGIXInput::GetLeftStickY(int controllerID) const {
+    float rawValue = gamepadStates[controllerID].Gamepad.sThumbLY / 32767.0f;
+    return ProcessDeadZone(rawValue);
 }
 
-int MAGIXInput::GetRightStickX(int controllerID) const {
-	return ProcessDeadZone(gamepadStates[controllerID].Gamepad.sThumbRX);
+float MAGIXInput::GetRightStickX(int controllerID) const {
+    float rawValue = gamepadStates[controllerID].Gamepad.sThumbRX / 32767.0f;
+    return ProcessDeadZone(rawValue);
 }
 
-int MAGIXInput::GetRightStickY(int controllerID) const {
-	return ProcessDeadZone(gamepadStates[controllerID].Gamepad.sThumbRY);
+float MAGIXInput::GetRightStickY(int controllerID) const {
+    float rawValue = gamepadStates[controllerID].Gamepad.sThumbRY / 32767.0f;
+    return ProcessDeadZone(rawValue);
 }
 
-int MAGIXInput::GetLeftTrigger(int controllerID) const {
-	return gamepadStates[controllerID].Gamepad.bLeftTrigger;
+float MAGIXInput::GetLeftTrigger(int controllerID) const {
+    return gamepadStates[controllerID].Gamepad.bLeftTrigger / 255.0f;
 }
 
-int MAGIXInput::GetRightTrigger(int controllerID) const {
-	return gamepadStates[controllerID].Gamepad.bRightTrigger;
+float MAGIXInput::GetRightTrigger(int controllerID) const {
+    return gamepadStates[controllerID].Gamepad.bRightTrigger / 255.0f;
 }
 
 bool MAGIXInput::IsPadUp(int controllerID) const {
@@ -93,14 +98,15 @@ int MAGIXInput::GetDeadZone() const {
 	return deadZone_;
 }
 
-int MAGIXInput::ProcessDeadZone(int value) const {
-	int maxValue = 32767; // XInputのスティックの最大値
-	int threshold = maxValue * deadZone_ / 100;
+float MAGIXInput::ProcessDeadZone(float value) const {
+	float maxValue = 32767.0f; // XInputのスティックの最大値
+	float threshold = maxValue * (deadZone_ / 100.0f); // デッドゾーンを割合で計算
 
-	if (abs(value) < threshold) {
-		return 0;
+	if (fabs(value) < threshold) {
+		return 0.0f; // デッドゾーン内の値は0にする
 	} else {
-		return (value > 0) ? (value - threshold) * maxValue / (maxValue - threshold)
-			: (value + threshold) * maxValue / (maxValue - threshold);
+		// デッドゾーンを超えたら、リマップ
+		return (value > 0) ? (value - threshold) / (maxValue - threshold)
+			: (value + threshold) / (maxValue - threshold);
 	}
 }

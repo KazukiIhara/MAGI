@@ -167,6 +167,35 @@ public: // エンジンの機能
 #pragma endregion
 
 #pragma region XInputの機能
+	// パッドの接続状況を確認
+	static bool IsPadConnected(int controllerID);
+
+	// コントローラのボタン入力
+	static bool PushButton(int controllerID, int buttonNumber);
+	static bool TriggerButton(int controllerID, int buttonNumber);
+	static bool HoldButton(int controllerID, int buttonNumber);
+	static bool ReleaseButton(int controllerID, int buttonNumber);
+
+	// スティックの位置取得
+	static float GetLeftStickX(int controllerID);
+	static float GetLeftStickY(int controllerID);
+	static float GetRightStickX(int controllerID);
+	static float GetRightStickY(int controllerID);
+
+	// トリガーの位置取得
+	static float GetLeftTrigger(int controllerID);
+	static float GetRightTrigger(int controllerID);
+
+	// 方向キー
+	static bool IsPadUp(int controllerID);
+	static bool IsPadRight(int controllerID);
+	static bool IsPadDown(int controllerID);
+	static bool IsPadLeft(int controllerID);
+
+	// デッドゾーンの設定
+	static void SetDeadZone(int deadZone);
+	// デッドゾーンの取得
+	static int GetDeadZone();
 
 #pragma endregion
 
@@ -411,7 +440,8 @@ protected:
 	// 
 	static std::unique_ptr<WindowApp> windowApp_;
 	static std::unique_ptr<DeltaTimer> deltaTimer_;
-	static std::unique_ptr<DirectInput> directInput_;
+	static std::unique_ptr<MAGIDirectInput> directInput_;
+	static std::unique_ptr<MAGIXInput> xInput_;
 
 	// 
 	// DirectXBaseSystems
