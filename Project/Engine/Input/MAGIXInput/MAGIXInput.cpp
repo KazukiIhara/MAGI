@@ -2,7 +2,6 @@
 
 #include <cassert>
 #include "math.h"
-#include "math.h"
 
 MAGIXInput::MAGIXInput() {}
 
