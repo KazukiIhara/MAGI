@@ -1,7 +1,6 @@
 #pragma once
 
 #include <XInput.h>
-#pragma comment(lib, "xinput.lib")
 
 class MAGIXInput {
 public:
