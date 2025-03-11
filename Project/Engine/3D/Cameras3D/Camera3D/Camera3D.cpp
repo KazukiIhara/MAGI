@@ -53,6 +53,14 @@ void Camera3D::TransferCamera(uint32_t rootParameterIndex) {
 	MAGISYSTEM::GetDirectXCommandList()->SetGraphicsRootConstantBufferView(rootParameterIndex, cameraResource_->GetGPUVirtualAddress());
 }
 
+Vector3& Camera3D::GetRotate() {
+	return worldTransform_.rotate_;
+}
+
+Vector3& Camera3D::GetTranslate() {
+	return worldTransform_.translate_;
+}
+
 Matrix4x4 Camera3D::GetViewProjectionMatrix() const {
 	return viewProjectionMatrix_;
 }

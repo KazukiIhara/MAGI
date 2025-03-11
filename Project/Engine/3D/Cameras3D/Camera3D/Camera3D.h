@@ -27,6 +27,10 @@ public:
 	// 定数バッファに転送
 	void TransferCamera(uint32_t rootParameterIndex);
 
+	// 回転を送る
+	Vector3& GetRotate();
+	// 移動量を送る
+	Vector3& GetTranslate();
 
 	// ビュープロジェクションマトリックスを送る
 	Matrix4x4 GetViewProjectionMatrix()const;
