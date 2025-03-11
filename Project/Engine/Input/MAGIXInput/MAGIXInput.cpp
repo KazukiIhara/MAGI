@@ -1,7 +1,6 @@
 #include "MAGIXInput.h"
 
 #include <cassert>
-#include <Windows.h>
 #include "math.h"
 
 MAGIXInput::MAGIXInput() {}

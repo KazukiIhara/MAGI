@@ -152,7 +152,6 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Engine\ComputePipelines\SkinningComputePipeline\SkinningComputePipeline.h" />
     <ClInclude Include="Engine\DataIO\DataIO.h" />
     <ClInclude Include="Engine\DeltaTimer\DeltaTimer.h" />
-    <ClInclude Include="Engine\Input\MAGIDirectInput\MAGIDirectInput.h" />
     <ClInclude Include="Engine\DirectX\ComPtr\ComPtr.h" />
     <ClInclude Include="Engine\DirectX\DXGI\DXGI.h" />
     <ClInclude Include="Engine\DirectX\DepthStencil\DepthStencil.h" />
@@ -166,12 +165,12 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Engine\DirectX\Viewport\Viewport.h" />
     <ClInclude Include="Engine\FPSController\FPSController.h" />
     <ClInclude Include="Engine\Framework\MAGI.h" />
-    <ClInclude Include="Engine\GraphicsPipelines\Particle3DGraphicsPipeline\Particle3DGraphicsPipeline.h" />
     <ClInclude Include="Engine\GUI\GUI.h" />
     <ClInclude Include="Engine\GraphicsPipelines\BaseGraphicsPipeline\BaseGraphicsPipeline.h" />
     <ClInclude Include="Engine\GraphicsPipelines\Line3DGraphicsPipeline\Line3DGraphicsPipeline.h" />
     <ClInclude Include="Engine\GraphicsPipelines\Object2DGraphicsPipeline\Object2DGraphicsPipeline.h" />
     <ClInclude Include="Engine\GraphicsPipelines\Object3DGraphicsPipeline\Object3DGraphicsPipeline.h" />
+    <ClInclude Include="Engine\GraphicsPipelines\Particle3DGraphicsPipeline\Particle3DGraphicsPipeline.h" />
     <ClInclude Include="Engine\ImGuiController\ImGuiController.h" />
     <ClInclude Include="Engine\Includes\Enums\BlendModeEnum.h" />
     <ClInclude Include="Engine\Includes\Enums\Collider3DType.h" />
@@ -183,8 +182,8 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Engine\Includes\Enums\Primitive3DEnum.h" />
     <ClInclude Include="Engine\Includes\Enums\PunctualLightDataEnum.h" />
     <ClInclude Include="Engine\Includes\Enums\RenderTargetEnumh.h" />
-    <ClInclude Include="Engine\Includes\Enums\Renderer3DEnum.h" />
     <ClInclude Include="Engine\Includes\Enums\RenderTextureType.h" />
+    <ClInclude Include="Engine\Includes\Enums\Renderer3DEnum.h" />
     <ClInclude Include="Engine\Includes\Enums\XInputEnum.h" />
     <ClInclude Include="Engine\Includes\Logger\Logger.h" />
     <ClInclude Include="Engine\Includes\MAGIUitility\MAGIUtility.h" />
@@ -209,6 +208,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Engine\Includes\Structs\SkinningStruct.h" />
     <ClInclude Include="Engine\Includes\Structs\SoundStruct.h" />
     <ClInclude Include="Engine\Includes\Structs\TextureStruct.h" />
+    <ClInclude Include="Engine\Input\MAGIDirectInput\MAGIDirectInput.h" />
     <ClInclude Include="Engine\Input\MAGIXInput\MAGIXInput.h" />
     <ClInclude Include="Engine\LeakChecker\D3DResourceLeakChecker.h" />
     <ClInclude Include="Engine\LineDrawer3D\LineDrawer3D.h" />
@@ -274,7 +274,6 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Engine\ComputePipelines\SkinningComputePipeline\SkinningComputePipeline.cpp" />
     <ClCompile Include="Engine\DataIO\DataIO.cpp" />
     <ClCompile Include="Engine\DeltaTimer\DeltaTimer.cpp" />
-    <ClCompile Include="Engine\Input\MAGIDirectInput\MAGIDirectInput.cpp" />
     <ClCompile Include="Engine\DirectX\DXGI\DXGI.cpp" />
     <ClCompile Include="Engine\DirectX\DepthStencil\DepthStencil.cpp" />
     <ClCompile Include="Engine\DirectX\DirectXCommand\DirectXCommand.cpp" />
@@ -287,17 +286,18 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Engine\DirectX\Viewport\Viewport.cpp" />
     <ClCompile Include="Engine\FPSController\FPSController.cpp" />
     <ClCompile Include="Engine\Framework\MAGI.cpp" />
-    <ClCompile Include="Engine\GraphicsPipelines\Particle3DGraphicsPipeline\Particle3DGraphicsPipeline.cpp" />
     <ClCompile Include="Engine\GUI\GUI.cpp" />
     <ClCompile Include="Engine\GraphicsPipelines\BaseGraphicsPipeline\BaseGraphicsPipeline.cpp" />
     <ClCompile Include="Engine\GraphicsPipelines\Line3DGraphicsPipeline\Line3DGraphicsPipeline.cpp" />
     <ClCompile Include="Engine\GraphicsPipelines\Object2DGraphicsPipeline\Object2DGraphicsPipeline.cpp" />
     <ClCompile Include="Engine\GraphicsPipelines\Object3DGraphicsPipeline\Object3DGraphicsPipeline.cpp" />
+    <ClCompile Include="Engine\GraphicsPipelines\Particle3DGraphicsPipeline\Particle3DGraphicsPipeline.cpp" />
     <ClCompile Include="Engine\ImGuiController\ImGuiController.cpp" />
     <ClCompile Include="Engine\Includes\Logger\Logger.cpp" />
     <ClCompile Include="Engine\Includes\MAGIUitility\MAGIUtility.cpp" />
     <ClCompile Include="Engine\Includes\Math\Utility\MathUtility.cpp" />
     <ClCompile Include="Engine\Includes\Random\Random.cpp" />
+    <ClCompile Include="Engine\Input\MAGIDirectInput\MAGIDirectInput.cpp" />
     <ClCompile Include="Engine\Input\MAGIXInput\MAGIXInput.cpp" />
     <ClCompile Include="Engine\LeakChecker\D3DResourceLeakChecker.cpp" />
     <ClCompile Include="Engine\LineDrawer3D\LineDrawer3D.cpp" />
@@ -326,18 +326,6 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="EngineAssets\Shaders\Graphics\Particle3D\Particle3D.hlsli">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-    </None>
-    <None Include="EngineAssets\Shaders\PostEffect\GrayScale\GrayScale.hlsli">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-    </None>
-    <None Include="EngineAssets\Shaders\PostEffect\None\None.hlsli">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-    </None>
     <None Include="Engine\SceneManager\SceneManager.ipp" />
   </ItemGroup>
   <ItemGroup>
@@ -347,44 +335,6 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ProjectReference Include="Externals\imgui\imgui.vcxproj">
       <Project>{22345678-ABCD-4321-DCBA-1234567890AB}</Project>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <FxCompile Include="EngineAssets\Shaders\Graphics\Particle3D\Particle3D.PS.hlsl">
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-    </FxCompile>
-    <FxCompile Include="EngineAssets\Shaders\Graphics\Particle3D\Particle3D.VS.hlsl">
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-    </FxCompile>
-    <FxCompile Include="EngineAssets\Shaders\PostEffect\GrayScale\GrayScale.PS.hlsl">
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-    </FxCompile>
-    <FxCompile Include="EngineAssets\Shaders\PostEffect\GrayScale\GrayScale.VS.hlsl">
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-    </FxCompile>
-    <FxCompile Include="EngineAssets\Shaders\PostEffect\None\None.PS.hlsl">
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-    </FxCompile>
-    <FxCompile Include="EngineAssets\Shaders\PostEffect\None\None.VS.hlsl">
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-    </FxCompile>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
