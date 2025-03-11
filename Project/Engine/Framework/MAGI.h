@@ -13,6 +13,7 @@
 #include "WindowApp/WindowApp.h"
 #include "DeltaTimer/DeltaTimer.h"    
 #include "Input/MAGIDirectInput/MAGIDirectInput.h"
+#include "Input/MAGIXInput/MAGIXInput.h"
 
 // 
 // DirectXBaseSystems
@@ -163,6 +164,10 @@ public: // エンジンの機能
 	static bool ReleaseMouseButton(MouseButton mouseButton);
 	// マウスホイールの入力を取得
 	static int64_t GetMouseWheelDelta();
+#pragma endregion
+
+#pragma region XInputの機能
+
 #pragma endregion
 
 #pragma region DXGIの機能
