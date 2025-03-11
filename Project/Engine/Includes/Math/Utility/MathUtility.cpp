@@ -266,6 +266,35 @@ Vector3 MAGIMath::Lerp(const Vector3& v1, const Vector3& v2, float t) {
 	);
 }
 
+Vector3 MAGIMath::CatmullRomSpline(const std::vector<Vector3>& controlPoints, float t) {
+	int numPoints = static_cast<int>(controlPoints.size());
+	if (numPoints < 4) {
+		// 4つ未満のポイントではCatmull-Romスプラインが機能しないため、直接返す
+		return controlPoints[0];
+	}
+
+	// ttの計算
+	float tt = t * (numPoints - 1);
+	int p1 = static_cast<int>(tt);
+	p1 = std::clamp(p1, 1, numPoints - 3); // p1を範囲内に制限
+	int p0 = p1 - 1;
+	int p2 = p1 + 1;
+	int p3 = p2 + 1;
+
+	tt = tt - p1; // 局所的なtを取得
+
+	// Catmull-Romスプラインの計算式に基づく補間
+	float tt2 = tt * tt;
+	float tt3 = tt2 * tt;
+
+	Vector3 a = controlPoints[p0] * (-0.5f) + controlPoints[p1] * (1.5f) - controlPoints[p2] * (1.5f) + controlPoints[p3] * (0.5f);
+	Vector3 b = controlPoints[p0] - controlPoints[p1] * (2.5f) + controlPoints[p2] * (2.0f) - controlPoints[p3] * (0.5f);
+	Vector3 c = controlPoints[p2] * 0.5f - controlPoints[p0] * 0.5f;
+	Vector3 d = controlPoints[p1];
+
+	return a * tt3 + b * tt2 + c * tt + d;
+}
+
 Vector3 MAGIMath::Cross(const Vector3& a, const Vector3& b) {
 	return {
 		a.y * b.z - a.z * b.y,
