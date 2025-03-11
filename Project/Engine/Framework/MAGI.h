@@ -463,7 +463,7 @@ protected:
 	// 
 	static std::unique_ptr<WindowApp> windowApp_;
 	static std::unique_ptr<DeltaTimer> deltaTimer_;
-	static std::unique_ptr<DirectInput> directInput_;
+	static std::unique_ptr<MAGIDirectInput> directInput_;
 	static std::unique_ptr<MAGIXInput> xInput_;
 
 	// 

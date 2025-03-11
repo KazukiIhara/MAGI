@@ -12,7 +12,7 @@ std::unique_ptr<D3DResourceLeakChecker> MAGISYSTEM::leakCheck_ = nullptr;
 // 
 std::unique_ptr<WindowApp> MAGISYSTEM::windowApp_ = nullptr;
 std::unique_ptr<DeltaTimer> MAGISYSTEM::deltaTimer_ = nullptr;
-std::unique_ptr<DirectInput> MAGISYSTEM::directInput_ = nullptr;
+std::unique_ptr<MAGIDirectInput> MAGISYSTEM::directInput_ = nullptr;
 std::unique_ptr<MAGIXInput> MAGISYSTEM::xInput_ = nullptr;
 
 // 
@@ -110,7 +110,7 @@ void MAGISYSTEM::Initialize() {
 	// DeltaTimer
 	deltaTimer_ = std::make_unique<DeltaTimer>();
 	// DirectInput
-	directInput_ = std::make_unique<DirectInput>(windowApp_.get());
+	directInput_ = std::make_unique<MAGIDirectInput>(windowApp_.get());
 	// XInput
 	xInput_ = std::make_unique<MAGIXInput>();
 
