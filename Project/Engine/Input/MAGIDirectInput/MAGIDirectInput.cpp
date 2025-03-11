@@ -5,74 +5,74 @@
 #include "Logger/Logger.h"
 #include "WindowApp/WindowApp.h"
 
-MAGIDirectInput::MAGIDirectInput(WindowApp* windowApp) {
+DirectInput::DirectInput(WindowApp* windowApp) {
 	Initialize(windowApp);
 	Logger::Log("DirectInput Initialize\n");
 }
 
-MAGIDirectInput::~MAGIDirectInput() {
+DirectInput::~DirectInput() {
 	Logger::Log("DirectInput Finalize\n");
 }
 
-void MAGIDirectInput::Initialize(WindowApp* windowApp) {
+void DirectInput::Initialize(WindowApp* windowApp) {
 	SetWindowApp(windowApp);
 	InitializeDirectInput();
 	InitializeKeybord();
 	InitializeMouse();
 }
 
-void MAGIDirectInput::Update() {
+void DirectInput::Update() {
 	// キーボード入力を更新
 	UpdateKeybord();
 	// マウス入力の更新
 	UpdateMouse();
 }
 
-bool MAGIDirectInput::PushKey(BYTE keyNumber) const {
+bool DirectInput::PushKey(BYTE keyNumber) const {
 	return keys_[keyNumber] != 0;
 }
 
-bool MAGIDirectInput::TriggerKey(BYTE keyNumber) const {
+bool DirectInput::TriggerKey(BYTE keyNumber) const {
 	return !preKeys_[keyNumber] && keys_[keyNumber];
 }
 
-bool MAGIDirectInput::HoldKey(BYTE keyNumber) const {
+bool DirectInput::HoldKey(BYTE keyNumber) const {
 	return preKeys_[keyNumber] && keys_[keyNumber];
 }
 
-bool MAGIDirectInput::ReleaseKey(BYTE keyNumber) const {
+bool DirectInput::ReleaseKey(BYTE keyNumber) const {
 	return preKeys_[keyNumber] && !keys_[keyNumber];
 }
 
-bool MAGIDirectInput::PushMouseButton(MouseButton mouseButton) const {
+bool DirectInput::PushMouseButton(MouseButton mouseButton) const {
 	// 現在のフレームでマウスボタンが押されているかを判定
 	return (mouseState_.rgbButtons[static_cast<int>(mouseButton)] & 0x80) != 0;
 }
 
-bool MAGIDirectInput::TriggerMouseButton(MouseButton mouseButton) const {
+bool DirectInput::TriggerMouseButton(MouseButton mouseButton) const {
 	// 前フレームでは押されておらず、現在フレームで押されたかを判定
 	return !(prevMouseState_.rgbButtons[static_cast<int>(mouseButton)] & 0x80) &&
 		(mouseState_.rgbButtons[static_cast<int>(mouseButton)] & 0x80);
 }
 
-bool MAGIDirectInput::HoldMouseButton(MouseButton mouseButton) const {
+bool DirectInput::HoldMouseButton(MouseButton mouseButton) const {
 	// 前フレームでも現在フレームでも押され続けているかを判定
 	return (prevMouseState_.rgbButtons[static_cast<int>(mouseButton)] & 0x80) &&
 		(mouseState_.rgbButtons[static_cast<int>(mouseButton)] & 0x80);
 }
 
-bool MAGIDirectInput::ReleaseMouseButton(MouseButton mouseButton) const {
+bool DirectInput::ReleaseMouseButton(MouseButton mouseButton) const {
 	// 前フレームでは押されており、現在フレームで離されたかを判定
 	return (prevMouseState_.rgbButtons[static_cast<int>(mouseButton)] & 0x80) &&
 		!(mouseState_.rgbButtons[static_cast<int>(mouseButton)] & 0x80);
 }
 
-int64_t MAGIDirectInput::GetMouseWheelDelta() const {
+int64_t DirectInput::GetMouseWheelDelta() const {
 	// マウスのホイール回転量を取得（DIMOUSESTATEのz軸移動量がホイール回転に対応）
 	return static_cast<int64_t>(mouseState_.lZ);
 }
 
-void MAGIDirectInput::InitializeDirectInput() {
+void DirectInput::InitializeDirectInput() {
 	// DirectInput本体の初期化
 	HRESULT result = S_FALSE;
 	directInput_ = nullptr;
@@ -86,7 +86,7 @@ void MAGIDirectInput::InitializeDirectInput() {
 	assert(SUCCEEDED(result));
 }
 
-void MAGIDirectInput::InitializeKeybord() {
+void DirectInput::InitializeKeybord() {
 	// キーボードの初期化
 	HRESULT result = S_FALSE;
 	keybord_ = nullptr;
@@ -103,7 +103,7 @@ void MAGIDirectInput::InitializeKeybord() {
 	memset(preKeys_, 0, sizeof(preKeys_));
 }
 
-void MAGIDirectInput::InitializeMouse() {
+void DirectInput::InitializeMouse() {
 	// マウスの初期化
 	HRESULT result = S_FALSE;
 	result = directInput_->CreateDevice(GUID_SysMouse, &mouse_, NULL);
@@ -122,7 +122,7 @@ void MAGIDirectInput::InitializeMouse() {
 	assert(SUCCEEDED(result));
 }
 
-void MAGIDirectInput::UpdateKeybord() {
+void DirectInput::UpdateKeybord() {
 	// デバイスを取得 (Acquire)
 	keybord_->Acquire();
 	// 前フレームの状態を保存
@@ -131,7 +131,7 @@ void MAGIDirectInput::UpdateKeybord() {
 	keybord_->GetDeviceState(sizeof(keys_), keys_);
 }
 
-void MAGIDirectInput::UpdateMouse() {
+void DirectInput::UpdateMouse() {
 	// デバイスを取得 (Acquire)
 	mouse_->Acquire();
 	// 前フレームのマウス状態を保存（押し始め/離し始めを判定したい場合に使う）
@@ -141,7 +141,7 @@ void MAGIDirectInput::UpdateMouse() {
 	mouse_->GetDeviceState(sizeof(DIMOUSESTATE), &mouseState_);
 }
 
-void MAGIDirectInput::SetWindowApp(WindowApp* windowApp) {
+void DirectInput::SetWindowApp(WindowApp* windowApp) {
 	assert(windowApp);
 	windowApp_ = windowApp;
 }

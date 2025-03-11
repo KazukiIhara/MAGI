@@ -11,10 +11,10 @@
 class WindowApp;
 
 // DirectInputクラス
-class MAGIDirectInput {
+class DirectInput {
 public:
-	MAGIDirectInput(WindowApp* windowApp);
-	~MAGIDirectInput();
+	DirectInput(WindowApp* windowApp);
+	~DirectInput();
 	// 初期化
 	void Initialize(WindowApp* windowApp);
 	// 更新

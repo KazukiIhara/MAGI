@@ -24,12 +24,12 @@ public:
 	bool ReleaseButton(int controllerID, int buttonNumber) const;
 
 	// スティックやトリガーの位置取得
-	float GetLeftStickX(int controllerID) const;
-	float GetLeftStickY(int controllerID) const;
-	float GetRightStickX(int controllerID) const;
-	float GetRightStickY(int controllerID) const;
-	float GetLeftTrigger(int controllerID) const;
-	float GetRightTrigger(int controllerID) const;
+	int GetLeftStickX(int controllerID) const;
+	int GetLeftStickY(int controllerID) const;
+	int GetRightStickX(int controllerID) const;
+	int GetRightStickY(int controllerID) const;
+	int GetLeftTrigger(int controllerID) const;
+	int GetRightTrigger(int controllerID) const;
 
 	// 方向キー
 	bool IsPadUp(int controllerID) const;
@@ -43,7 +43,7 @@ public:
 	int GetDeadZone() const;
 
 private:
-	float ProcessDeadZone(float value) const;
+	int ProcessDeadZone(int value) const;
 private:
 	// 最大4つのコントローラの状態を管理
 	XINPUT_STATE gamepadStates[4]{};

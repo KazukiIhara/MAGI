@@ -12,8 +12,7 @@ std::unique_ptr<D3DResourceLeakChecker> MAGISYSTEM::leakCheck_ = nullptr;
 // 
 std::unique_ptr<WindowApp> MAGISYSTEM::windowApp_ = nullptr;
 std::unique_ptr<DeltaTimer> MAGISYSTEM::deltaTimer_ = nullptr;
-std::unique_ptr<MAGIDirectInput> MAGISYSTEM::directInput_ = nullptr;
-std::unique_ptr<MAGIXInput> MAGISYSTEM::xInput_ = nullptr;
+std::unique_ptr<DirectInput> MAGISYSTEM::directInput_ = nullptr;
 
 // 
 // DirectXBaseSystems
@@ -109,9 +108,7 @@ void MAGISYSTEM::Initialize() {
 	// DeltaTimer
 	deltaTimer_ = std::make_unique<DeltaTimer>();
 	// DirectInput
-	directInput_ = std::make_unique<MAGIDirectInput>(windowApp_.get());
-	// XInput
-	xInput_ = std::make_unique<MAGIXInput>();
+	directInput_ = std::make_unique<DirectInput>(windowApp_.get());
 
 
 	// DXGI
@@ -195,7 +192,7 @@ void MAGISYSTEM::Initialize() {
 	// SceneManager
 	sceneManager_ = std::make_unique<SceneManager<GameData>>();
 
-
+	
 	// PostEffectSwitcher
 	postEffectSwitcher_ = std::make_unique<PostEffectSwitcher>(directXCommand_.get(), renderTarget_.get(), renderTextureManager_.get(), postEffectPipelineManager_.get());
 
@@ -396,11 +393,6 @@ void MAGISYSTEM::Finalize() {
 		dxgi_.reset();
 	}
 
-	// XInput
-	if (xInput_) {
-		xInput_.reset();
-	}
-
 	// DirectInput
 	if (directInput_) {
 		directInput_.reset();
@@ -431,8 +423,6 @@ void MAGISYSTEM::Update() {
 
 	// 入力の更新
 	directInput_->Update();
-	// パッド入力更新
-	xInput_->Update();
 
 	// F11キーでフルスクリーンの切り替え処理
 	if (directInput_->TriggerKey(DIK_F11)) {
@@ -679,73 +669,6 @@ int64_t MAGISYSTEM::GetMouseWheelDelta() {
 	return directInput_->GetMouseWheelDelta();
 }
 
-bool MAGISYSTEM::IsPadConnected(int controllerID) {
-	return xInput_->IsConnected(controllerID);
-}
-
-bool MAGISYSTEM::PushButton(int controllerID, int buttonNumber) {
-	return xInput_->PushButton(controllerID, buttonNumber);
-}
-
-bool MAGISYSTEM::TriggerButton(int controllerID, int buttonNumber) {
-	return xInput_->TriggerButton(controllerID, buttonNumber);
-}
-
-bool MAGISYSTEM::HoldButton(int controllerID, int buttonNumber) {
-	return xInput_->HoldButton(controllerID, buttonNumber);
-}
-
-bool MAGISYSTEM::ReleaseButton(int controllerID, int buttonNumber) {
-	return xInput_->ReleaseButton(controllerID, buttonNumber);
-}
-
-float MAGISYSTEM::GetLeftStickX(int controllerID) {
-	return xInput_->GetLeftStickX(controllerID);
-}
-
-float MAGISYSTEM::GetLeftStickY(int controllerID) {
-	return xInput_->GetLeftStickY(controllerID);
-}
-
-float MAGISYSTEM::GetRightStickX(int controllerID) {
-	return xInput_->GetRightStickX(controllerID);
-}
-
-float MAGISYSTEM::GetRightStickY(int controllerID) {
-	return xInput_->GetRightStickY(controllerID);
-}
-
-float MAGISYSTEM::GetLeftTrigger(int controllerID) {
-	return xInput_->GetLeftTrigger(controllerID);
-}
-
-float MAGISYSTEM::GetRightTrigger(int controllerID) {
-	return xInput_->GetRightTrigger(controllerID);
-}
-
-bool MAGISYSTEM::IsPadUp(int controllerID) {
-	return xInput_->IsPadUp(controllerID);
-}
-
-bool MAGISYSTEM::IsPadRight(int controllerID) {
-	return xInput_->IsPadRight(controllerID);
-}
-
-bool MAGISYSTEM::IsPadDown(int controllerID) {
-	return xInput_->IsPadDown(controllerID);
-}
-
-bool MAGISYSTEM::IsPadLeft(int controllerID) {
-	return xInput_->IsPadLeft(controllerID);
-}
-
-void MAGISYSTEM::SetDeadZone(int deadZone) {
-	xInput_->SetDeadZone(deadZone);
-}
-
-int MAGISYSTEM::GetDeadZone() {
-	return xInput_->GetDeadZone();
-}
 ID3D12Device* MAGISYSTEM::GetDirectXDevice() {
 	return dxgi_->GetDevice();
 }
