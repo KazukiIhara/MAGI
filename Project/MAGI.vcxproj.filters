@@ -997,6 +997,5 @@
     <None Include="Engine\SceneManager\SceneManager.ipp">
       <Filter>Engine\SceneManager</Filter>
     </None>
-    <None Include="Assets\Datas\Global\Sample.json" />
   </ItemGroup>
 </Project>
