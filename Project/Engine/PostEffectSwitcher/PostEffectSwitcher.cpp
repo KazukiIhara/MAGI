@@ -9,7 +9,7 @@
 #include "RenderTextureManager/RenderTextureManager.h"
 #include "PipelineManagers/PostEffectPipelineManager/PostEffectPipelineManager.h"
 
-PostEffectSwitcher::PostEffectSwitcher(DirectXCommand* directXCommand, RenderTarget* renderTarget, RenderTextureManager* renderTextureManager, PostEffectPipelineManager* postEffectPipelineManager) {
+OffScreenRenderer::OffScreenRenderer(DirectXCommand* directXCommand, RenderTarget* renderTarget, RenderTextureManager* renderTextureManager, PostEffectPipelineManager* postEffectPipelineManager) {
 	SetDirectXCommand(directXCommand);
 	SetRenderTarget(renderTarget);
 	SetRenderTextureManager(renderTextureManager);
@@ -17,19 +17,19 @@ PostEffectSwitcher::PostEffectSwitcher(DirectXCommand* directXCommand, RenderTar
 	Logger::Log("PostEffectSwitcher Initialize\n");
 }
 
-PostEffectSwitcher::~PostEffectSwitcher() {
+OffScreenRenderer::~OffScreenRenderer() {
 	Logger::Log("PostEffectSwitcher Finalize\n");
 }
 
-void PostEffectSwitcher::SetCurrentPostEffect(const PostEffectPipelineStateType& postEffectPipelineType) {
+void OffScreenRenderer::SetCurrentPostEffect(const PostEffectPipelineStateType& postEffectPipelineType) {
 	currentPostEffect_ = postEffectPipelineType;
 }
 
-PostEffectPipelineStateType PostEffectSwitcher::GetCurrentPostEffect() const {
+PostEffectPipelineStateType OffScreenRenderer::GetCurrentPostEffect() const {
 	return currentPostEffect_;
 }
 
-void PostEffectSwitcher::SetClearRenderTarget() {
+void OffScreenRenderer::SetClearRenderTarget() {
 	// レンダーテクスチャのタイプ
 	RenderTargetType renderTargetType{};
 	// ポストエフェクトに応じて最適なレンダーテクスチャを選択
@@ -47,7 +47,7 @@ void PostEffectSwitcher::SetClearRenderTarget() {
 	renderTarget_->ClearRenderTarget(renderTargetType);
 }
 
-void PostEffectSwitcher::DrawCurrentRenderTexture() {
+void OffScreenRenderer::DrawCurrentRenderTexture() {
 	// コマンドリスト取得
 	ID3D12GraphicsCommandList* commandList = directXCommand_->GetList();
 
@@ -72,22 +72,22 @@ void PostEffectSwitcher::DrawCurrentRenderTexture() {
 	renderTextureManager_->Draw(renderTextureType);
 }
 
-void PostEffectSwitcher::SetDirectXCommand(DirectXCommand* directXCommand) {
+void OffScreenRenderer::SetDirectXCommand(DirectXCommand* directXCommand) {
 	assert(directXCommand);
 	directXCommand_ = directXCommand;
 }
 
-void PostEffectSwitcher::SetRenderTarget(RenderTarget* renderTarget) {
+void OffScreenRenderer::SetRenderTarget(RenderTarget* renderTarget) {
 	assert(renderTarget);
 	renderTarget_ = renderTarget;
 }
 
-void PostEffectSwitcher::SetRenderTextureManager(RenderTextureManager* renderTextureManager) {
+void OffScreenRenderer::SetRenderTextureManager(RenderTextureManager* renderTextureManager) {
 	assert(renderTextureManager);
 	renderTextureManager_ = renderTextureManager;
 }
 
-void PostEffectSwitcher::SetPostEffectPipelineManager(PostEffectPipelineManager* postEffectPipelineManger) {
+void OffScreenRenderer::SetPostEffectPipelineManager(PostEffectPipelineManager* postEffectPipelineManger) {
 	assert(postEffectPipelineManger);
 	postEffectPipelineManager_ = postEffectPipelineManger;
 }

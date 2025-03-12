@@ -10,12 +10,12 @@ class RenderTextureManager;
 class PostEffectPipelineManager;
 
 /// <summary>
-/// ポストエフェクトを切り替えるクラス
+/// パイプラインやレンダーターゲットを切り替えてオフスクリーンレンダリングをするクラス
 /// </summary>
-class PostEffectSwitcher {
+class OffScreenRenderer {
 public:
-	PostEffectSwitcher(DirectXCommand* directXCommand, RenderTarget* renderTarget, RenderTextureManager* renderTextureManager, PostEffectPipelineManager* postEffectPipelineManager);
-	~PostEffectSwitcher();
+	OffScreenRenderer(DirectXCommand* directXCommand, RenderTarget* renderTarget, RenderTextureManager* renderTextureManager, PostEffectPipelineManager* postEffectPipelineManager);
+	~OffScreenRenderer();
 
 	// ポストエフェクトを設定
 	void SetCurrentPostEffect(const PostEffectPipelineStateType& postEffectPipelineType);

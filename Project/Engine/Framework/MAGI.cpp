@@ -82,7 +82,7 @@ std::unique_ptr<SceneManager<GameData>> MAGISYSTEM::sceneManager_ = nullptr;
 //
 // AppSystem
 //
-std::unique_ptr<PostEffectSwitcher> MAGISYSTEM::postEffectSwitcher_ = nullptr;
+std::unique_ptr<OffScreenRenderer> MAGISYSTEM::offScreenRenderer = nullptr;
 
 //
 // Data入出力クラス
@@ -197,7 +197,7 @@ void MAGISYSTEM::Initialize() {
 
 
 	// PostEffectSwitcher
-	postEffectSwitcher_ = std::make_unique<PostEffectSwitcher>(directXCommand_.get(), renderTarget_.get(), renderTextureManager_.get(), postEffectPipelineManager_.get());
+	offScreenRenderer = std::make_unique<OffScreenRenderer>(directXCommand_.get(), renderTarget_.get(), renderTextureManager_.get(), postEffectPipelineManager_.get());
 
 
 	// DataIO
@@ -239,8 +239,8 @@ void MAGISYSTEM::Finalize() {
 	}
 
 	// PostEffectSwitcher
-	if (postEffectSwitcher_) {
-		postEffectSwitcher_.reset();
+	if (offScreenRenderer) {
+		offScreenRenderer.reset();
 	}
 
 	// SceneManager
@@ -511,7 +511,7 @@ void MAGISYSTEM::Draw() {
 	// 
 
 	// レンダーターゲットをセット、クリア
-	postEffectSwitcher_->SetClearRenderTarget();
+	offScreenRenderer->SetClearRenderTarget();
 
 	// 深度をクリア
 	depthStencil_->ClearDepthView();
@@ -597,7 +597,7 @@ void MAGISYSTEM::Draw() {
 	// レンダーテクスチャ描画
 	//
 
-	postEffectSwitcher_->DrawCurrentRenderTexture();
+	offScreenRenderer->DrawCurrentRenderTexture();
 
 	//
 	// ImGui描画処理

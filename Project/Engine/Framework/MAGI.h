@@ -537,7 +537,7 @@ protected:
 	//
 	// AppSystems
 	//
-	static std::unique_ptr<PostEffectSwitcher> postEffectSwitcher_;
+	static std::unique_ptr<OffScreenRenderer> offScreenRenderer;
 
 	//
 	// Data入出力クラス
