@@ -32,7 +32,7 @@ public:
 	const DirectX::TexMetadata& GetMetaData(const std::string& filePath);
 
 	// コンテナごと渡す
-	const std::map<std::string, Texture>& GetTextureDatas()const;
+	const std::map<std::string, Texture>& GetTextureContainer()const;
 private:
 	// Texture読み込み
 	DirectX::ScratchImage LoadTexture(const std::string& filePath);

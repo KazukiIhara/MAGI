@@ -863,6 +863,10 @@ const DirectX::TexMetadata& MAGISYSTEM::GetTextureMetaData(const std::string& fi
 	return textureDataCantainer_->GetMetaData(filePath);
 }
 
+const std::map<std::string, Texture>& MAGISYSTEM::GetTextureContainer() {
+	return textureDataCantainer_->GetTextureContainer();
+}
+
 PrimitiveData MAGISYSTEM::GetPrimitiveShape(const Primitive3DType& primitive3dType) {
 	return primitiveDataContainer_->GetPrimitiveShapeData(primitive3dType);
 }

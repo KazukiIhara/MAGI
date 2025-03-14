@@ -2,10 +2,7 @@
 
 #include <memory>
 
-#include "BaseScene/BaseScene.h"
 #include "Framework/MAGI.h"
-
-#include "3D/GameObject3D/GameObject3D.h"
 
 #include "2D/Object2D/Object2D.h"
 

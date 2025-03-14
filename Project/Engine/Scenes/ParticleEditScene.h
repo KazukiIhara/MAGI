@@ -6,14 +6,9 @@
 #include "BaseScene/BaseScene.h"
 #include "Framework/MAGI.h"
 
-#include "3D/GameObject3D/GameObject3D.h"
-
-#include "3D/ParticleGroups3D/BaseParticleGroup3D/BaseParticleGroup3D.h"
-#include "3D/ParticleGroups3D/PrimitiveParticleGroup3D/PrimitiveParticleGroup3D.h"
-
 // パーティクル作成シーン
 template <typename Data>
-class ParticleEditScene : public BaseScene<Data> {
+class ParticleEditScene: public BaseScene<Data> {
 public:
 	using BaseScene<Data>::BaseScene; // 親クラスのコンストラクタをそのまま継承
 	~ParticleEditScene()override = default;
@@ -37,6 +32,8 @@ private:
 
 	// パーティクルのリストを表示する関数
 	void ShowParticleListUI();
+	// テクスチャのリストを表示する関数
+	void ShowTextureListUI();
 
 private:
 	// カメラ
@@ -48,10 +45,20 @@ private:
 	std::vector<BaseParticleGroup3D*> particles_;
 	// 選択中のパーティクル
 	BaseParticleGroup3D* selectedParticle_ = nullptr;
+
+	//
+	// Window表示フラグ
+	//
+
+	// テクスチャのリストウィンドウを表示するかどうか
+	bool isShowTextureWindow_ = false;
 };
 
 template<typename Data>
 inline void ParticleEditScene<Data>::Initialize() {
+
+	MAGISYSTEM::LoadTexture("pronama_chan.png");
+	MAGISYSTEM::LoadTexture("circle.png");
 
 	// シーンカメラ作成
 	sceneCamera_ = std::make_unique<Camera3D>("SceneCamera");
@@ -59,7 +66,6 @@ inline void ParticleEditScene<Data>::Initialize() {
 
 	// カメラの設定
 	MAGISYSTEM::SetCurrentCamera("SceneCamera");
-
 
 	// エディター用のエミッターを作成
 	MAGISYSTEM::CreatePrimitiveParticleGroup3D("EditParticle", Primitive3DType::Plane);
@@ -178,8 +184,6 @@ inline void ParticleEditScene<Data>::ShowParticleEditUI() {
 
 		// パーティクルリストのUIを作成
 		ShowParticleListUI();
-		// パーティクルのパラメータ
-		ImGui::Text("ParticleParamater");
 		// 選択中のパーティクルがあれば
 		if (selectedParticle_) {
 			// パーティクル名を描画
@@ -188,20 +192,36 @@ inline void ParticleEditScene<Data>::ShowParticleEditUI() {
 			Renderer3DType type = selectedParticle_->GetRendererType();
 			// タイプごとにキャスト
 			switch (type) {
-			case Renderer3DType::Primitive: {
-				PrimitiveParticleGroup3D* primitive = dynamic_cast<PrimitiveParticleGroup3D*>(selectedParticle_);
-				if (primitive) {
-					// 張られているテクスチャ名を描画
-					ImGui::Text("%s", primitive->GetTextureName().c_str());
+				case Renderer3DType::Primitive: {
+					PrimitiveParticleGroup3D* primitive = dynamic_cast<PrimitiveParticleGroup3D*>(selectedParticle_);
+					if (primitive) {
+
+						ImGui::Text("TextureList");
+
+						// 右側にパーティクルリスト
+						ImGui::BeginChild("TextureList", ImVec2(400, 50), true);
+
+						// 読み込んでいるテクスチャリストを取得
+						const auto& textures = MAGISYSTEM::GetTextureContainer();
+						for (const auto& texture : textures) {
+							// テクスチャ名を取得
+							const std::string& textureName = texture.first;
+							// 選択可能にする選択したら現在のプリミティブパーティクルグループにセット
+							if (ImGui::Selectable(textureName.c_str())) {
+								primitive->GetTextureName() = textureName;
+							}
+						}
+						ImGui::EndChild();
+
+					}
+					break;
 				}
-				break;
-			}
-			case Renderer3DType::Static:
+				case Renderer3DType::Static:
 
-				break;
-			case Renderer3DType::Skinning:
+					break;
+				case Renderer3DType::Skinning:
 
-				break;
+					break;
 			}
 		}
 
@@ -239,4 +259,9 @@ inline void ParticleEditScene<Data>::ShowParticleListUI() {
 	}
 
 	ImGui::EndChild();
+}
+
+template<typename Data>
+inline void ParticleEditScene<Data>::ShowTextureListUI() {
+
 }

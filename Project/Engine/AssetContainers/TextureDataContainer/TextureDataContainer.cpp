@@ -111,7 +111,7 @@ const DirectX::TexMetadata& TextureDataContainer::GetMetaData(const std::string&
 	return texture.metaData;
 }
 
-const std::map<std::string, Texture>& TextureDataContainer::GetTextureDatas()const {
+const std::map<std::string, Texture>& TextureDataContainer::GetTextureContainer()const {
 	return textureDatas_;
 }
 
