@@ -57,6 +57,7 @@ inline void SampleScene<Data>::Initialize() {
 	sceneCamera_ = std::make_unique<Camera3D>("SceneCamera");
 	MAGISYSTEM::AddCamera3D(std::move(sceneCamera_));
 
+
 	// カメラの設定
 	MAGISYSTEM::SetCurrentCamera("SceneCamera");
 

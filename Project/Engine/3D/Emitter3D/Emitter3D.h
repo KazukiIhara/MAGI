@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include <vector>
 #include <map>
 
 #include "Structs/EmitterStruct.h"
@@ -38,10 +39,12 @@ private:
 
 	// エミッターの設定構造体
 	EmitterSetting emitterSetting_{};
-
+	
+	// パーティクルの名前リスト
+	std::vector<std::string> particleNames_;
 	// パーティクルグループのマップ
 	std::map<std::string, BaseParticleGroup3D*> particleGroups_;
 
 	// 頻度用時刻
-	float frequencyTime_ = 0.0f;
+	float frequencyTimer_ = 0.0f;
 };

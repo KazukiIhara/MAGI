@@ -35,13 +35,13 @@ void Emitter3D::Update() {
 
 		// エミッターの処理
 		// 時刻を進める
-		frequencyTime_ += MAGISYSTEM::GetDeltaTime();
+		frequencyTimer_ += MAGISYSTEM::GetDeltaTime();
 
 		// 頻度より大きいなら発生
-		if (emitterSetting_.frequency <= frequencyTime_) {
+		if (emitterSetting_.frequency <= frequencyTimer_) {
 			EmitAll();
 			// 余計に過ぎた時間も加味して頻度計算する
-			frequencyTime_ -= emitterSetting_.frequency;
+			frequencyTimer_ -= emitterSetting_.frequency;
 		}
 	}
 }
