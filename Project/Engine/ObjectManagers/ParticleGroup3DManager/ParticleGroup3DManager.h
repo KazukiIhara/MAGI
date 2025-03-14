@@ -25,6 +25,8 @@ public:
 
 	BaseParticleGroup3D* Find(const std::string& name);
 
+	const std::vector<std::unique_ptr<BaseParticleGroup3D>>& GetParticleGroups();
+
 private:
 	// パーティクルグループコンテナ
 	std::vector<std::unique_ptr<BaseParticleGroup3D>> particleGroups3D_;

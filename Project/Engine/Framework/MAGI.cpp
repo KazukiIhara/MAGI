@@ -981,6 +981,10 @@ BaseParticleGroup3D* MAGISYSTEM::FindParticleGroup3D(const std::string& particle
 	return particleGroup3DManager_->Find(particleGraoupName);
 }
 
+const std::vector<std::unique_ptr<BaseParticleGroup3D>>& MAGISYSTEM::GetParticleGroupList() {
+	return particleGroup3DManager_->GetParticleGroups();
+}
+
 void MAGISYSTEM::AddGameObject3D(std::unique_ptr<GameObject3D> newGameObject3D) {
 	gameObject3DManager_->Add(std::move(newGameObject3D));
 }

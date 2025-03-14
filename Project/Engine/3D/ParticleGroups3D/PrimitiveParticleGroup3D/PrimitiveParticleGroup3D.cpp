@@ -7,6 +7,8 @@
 
 PrimitiveParticleGroup3D::PrimitiveParticleGroup3D(const std::string& particleGroupName, const Primitive3DType& primitiveType, const std::string& textureName)
 	:BaseParticleGroup3D(particleGroupName) {
+	// 描画タイプを設定
+	rendererType_ = Renderer3DType::Primitive;
 	// シンプル形状のタイプを設定
 	primitiveType_ = primitiveType;
 
@@ -50,4 +52,8 @@ void PrimitiveParticleGroup3D::Draw() {
 
 	// 描画
 	primitive_->DrawInstanced(instanceCount_);
+}
+
+std::string& PrimitiveParticleGroup3D::GetTextureName() {
+	return textureName_;
 }

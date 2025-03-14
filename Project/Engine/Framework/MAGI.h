@@ -318,7 +318,6 @@ public: // エンジンの機能
 	static void StopWaveSound(const std::string& fileName);
 	// サウンドループ再生停止
 	static void StopLoopWaveSound(const std::string& fileName);
-
 #pragma endregion
 
 #pragma region GameObject3DManager
@@ -393,6 +392,8 @@ public: // エンジンの機能
 	static void RemoveParticleGroup3D(const std::string& particleGraoupName);
 	// パーティクルグループの取得
 	static BaseParticleGroup3D* FindParticleGroup3D(const std::string& particleGraoupName);
+	// パーティクルリストを取得
+	static const std::vector<std::unique_ptr<BaseParticleGroup3D>> &GetParticleGroupList();
 #pragma endregion
 
 #pragma region LineDrawer3D

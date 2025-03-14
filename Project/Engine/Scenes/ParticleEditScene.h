@@ -8,6 +8,9 @@
 
 #include "3D/GameObject3D/GameObject3D.h"
 
+#include "3D/ParticleGroups3D/BaseParticleGroup3D/BaseParticleGroup3D.h"
+#include "3D/ParticleGroups3D/PrimitiveParticleGroup3D/PrimitiveParticleGroup3D.h"
+
 // パーティクル作成シーン
 template <typename Data>
 class ParticleEditScene : public BaseScene<Data> {
@@ -29,6 +32,12 @@ private:
 	// パーティクルのエディットUI表示
 	void ShowParticleEditUI();
 
+	// パーティクルの追加ウィンドウ
+	void ShowAddParticleUI();
+
+	// パーティクルのリストを表示する関数
+	void ShowParticleListUI();
+
 private:
 	// カメラ
 	std::unique_ptr<Camera3D> sceneCamera_ = nullptr;
@@ -37,6 +46,8 @@ private:
 	Emitter3D* emitter3D_ = nullptr;
 	// パーティクルリスト
 	std::vector<BaseParticleGroup3D*> particles_;
+	// 選択中のパーティクル
+	BaseParticleGroup3D* selectedParticle_ = nullptr;
 };
 
 template<typename Data>
@@ -101,15 +112,19 @@ template<typename Data>
 inline void ParticleEditScene<Data>::ShowEmitterEditUI() {
 	// タブのアイテムとして作成
 	if (ImGui::BeginTabItem("EmitterSettings")) {
-
+		// 名前を描画
+		ImGui::Text("%s", emitter3D_->name.c_str());
 		// 発生ボタン
 		if (ImGui::Button("Emit")) {
 			emitter3D_->EmitAll();
 		}
-		// 発生とセーブを同じ行に
 		ImGui::SameLine();
 		// セーブボタン
 		if (ImGui::Button("Save")) {
+
+		}
+		ImGui::SameLine();
+		if (ImGui::Button("Load")) {
 
 		}
 
@@ -157,14 +172,71 @@ inline void ParticleEditScene<Data>::ShowEmitterEditUI() {
 
 template<typename Data>
 inline void ParticleEditScene<Data>::ShowParticleEditUI() {
+
 	// タブのアイテムとして作成
 	if (ImGui::BeginTabItem("ParticleSettings")) {
-		// 描画サンプルのパーティクルをいじるUI
-		ImGui::Text("ParticleParamater");
 
+		// パーティクルリストのUIを作成
+		ShowParticleListUI();
+		// パーティクルのパラメータ
+		ImGui::Text("ParticleParamater");
+		// 選択中のパーティクルがあれば
+		if (selectedParticle_) {
+			// パーティクル名を描画
+			ImGui::Text("%s", selectedParticle_->name.c_str());
+			// 描画タイプ取得
+			Renderer3DType type = selectedParticle_->GetRendererType();
+			// タイプごとにキャスト
+			switch (type) {
+			case Renderer3DType::Primitive: {
+				PrimitiveParticleGroup3D* primitive = dynamic_cast<PrimitiveParticleGroup3D*>(selectedParticle_);
+				if (primitive) {
+					// 張られているテクスチャ名を描画
+					ImGui::Text("%s", primitive->GetTextureName().c_str());
+				}
+				break;
+			}
+			case Renderer3DType::Static:
+
+				break;
+			case Renderer3DType::Skinning:
+
+				break;
+			}
+		}
 
 
 		// タブ終了
 		ImGui::EndTabItem();
 	}
+}
+
+template<typename Data>
+inline void ParticleEditScene<Data>::ShowAddParticleUI() {
+
+}
+
+template<typename Data>
+inline void ParticleEditScene<Data>::ShowParticleListUI() {
+	// リストであることを明示する
+	ImGui::Text("Particle List");
+
+	// 右側にパーティクルリスト
+	ImGui::BeginChild("ParticleList", ImVec2(400, 50), true);
+	// パーティクルマネージャーからパーティクルグループを取得
+	const auto& particleGroups = MAGISYSTEM::GetParticleGroupList();
+
+	for (const auto& particle : particleGroups) {
+		if (particle) {
+			// パーティクル名を取得
+			const std::string& particleName = particle->name;
+
+			// 選択されたら `selectedParticle_` を更新
+			if (ImGui::Selectable(particleName.c_str(), selectedParticle_ == particle.get())) {
+				selectedParticle_ = particle.get();
+			}
+		}
+	}
+
+	ImGui::EndChild();
 }
