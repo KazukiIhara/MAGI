@@ -104,7 +104,11 @@ inline void SampleScene<Data>::Initialize() {
 
 template<typename Data>
 inline void SampleScene<Data>::Update() {
-
+	ImGui::Begin("SampleScene");
+	if (ImGui::Button("ChangeParticleEditScene")) {
+		this->ChangeScene("ParticleEdit");
+	}
+	ImGui::End();
 }
 
 template<typename Data>
