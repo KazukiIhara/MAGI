@@ -55,8 +55,9 @@ void Emitter3D::EmitAll() {
 	switch (emitterSetting_.emitType) {
 		// デフォルト
 	case EmitType::Default:
-		// 発生個数分ループ
+		// パーティクルグループの個数分ループ
 		for (auto particleGroup : particleGroups_) {
+			// 発生個数分ループ
 			for (uint32_t i = 0; i < emitterSetting_.count; i++) {
 
 				// サイズ
@@ -75,6 +76,36 @@ void Emitter3D::EmitAll() {
 				emitParamater.color.y = Random::GenerateFloat(emitterSetting_.minColor.g, emitterSetting_.maxColor.g);
 				emitParamater.color.z = Random::GenerateFloat(emitterSetting_.minColor.b, emitterSetting_.maxColor.b);
 				emitParamater.color.w = Random::GenerateFloat(emitterSetting_.minColor.a, emitterSetting_.maxColor.a);
+
+				// 生存時間
+				emitParamater.lifeTime = Random::GenerateFloat(emitterSetting_.minLifeTime, emitterSetting_.maxLifeTime);
+
+				particleGroup.second->AddNewParticle(emitParamater);
+			}
+		}
+		break;
+	case EmitType::Random:
+		// パーティクルグループの個数分ループ
+		for (auto particleGroup : particleGroups_) {
+			// 発生個数分ループ
+			for (uint32_t i = 0; i < emitterSetting_.count; i++) {
+				// 発生座標
+				emitParamater.position.x = worldPosition.x + Random::GenerateFloat(emitterSetting_.minTranslate.x, emitterSetting_.maxTranslate.x);
+				emitParamater.position.y = worldPosition.y + Random::GenerateFloat(emitterSetting_.minTranslate.y, emitterSetting_.maxTranslate.y);
+				emitParamater.position.z = worldPosition.z + Random::GenerateFloat(emitterSetting_.minTranslate.z, emitterSetting_.maxTranslate.z);
+				// サイズ
+				float size = Random::GenerateFloat(emitterSetting_.minScale, emitterSetting_.maxScale);
+				emitParamater.scale.x = size;
+				emitParamater.scale.y = size;
+				emitParamater.scale.z = size;
+				// 移動量
+				emitParamater.velocity.x = Random::GenerateFloat(emitterSetting_.minVelocity.x, emitterSetting_.maxVelocity.x);
+				emitParamater.velocity.y = Random::GenerateFloat(emitterSetting_.minVelocity.y, emitterSetting_.maxVelocity.y);
+				emitParamater.velocity.z = Random::GenerateFloat(emitterSetting_.minVelocity.z, emitterSetting_.maxVelocity.z);
+				// 色
+				emitParamater.color.x = Random::GenerateFloat(emitterSetting_.minColor.r, emitterSetting_.maxColor.r);
+				emitParamater.color.y = Random::GenerateFloat(emitterSetting_.minColor.g, emitterSetting_.maxColor.g);
+				emitParamater.color.z = Random::GenerateFloat(emitterSetting_.minColor.b, emitterSetting_.maxColor.b);
 
 				// 生存時間
 				emitParamater.lifeTime = Random::GenerateFloat(emitterSetting_.minLifeTime, emitterSetting_.maxLifeTime);
