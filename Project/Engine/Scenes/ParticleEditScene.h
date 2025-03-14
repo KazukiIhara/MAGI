@@ -26,6 +26,8 @@ private:
 
 	// エミッターのエディットUI表示
 	void ShowEmitterEditUI();
+	// パーティクルのエディットUI表示
+	void ShowParticleEditUI();
 
 private:
 	// カメラ
@@ -59,12 +61,11 @@ inline void ParticleEditScene<Data>::Initialize() {
 	emitter3D_->AddParticleGroup(MAGISYSTEM::FindParticleGroup3D("EditParticle"));
 	// エミットタイプ変更
 	emitter3D_->GetEmitterSetting().emitType = EmitType::Random;
-	// リピートオン
-	emitter3D_->GetEmitterSetting().isRepeat = true;
 }
 
 template<typename Data>
 inline void ParticleEditScene<Data>::Update() {
+	// シーンのUI描画
 	ShowSceneUI();
 }
 
@@ -80,53 +81,90 @@ inline void ParticleEditScene<Data>::Finalize() {
 
 template<typename Data>
 inline void ParticleEditScene<Data>::ShowSceneUI() {
+	// ウィンドウを作成
 	ImGui::Begin("EmitterEditUI");
 
-	ShowEmitterEditUI();
-
+	// タブを作成
+	if (ImGui::BeginTabBar("ParticleEditTab")) {
+		// エミッターのエディットUI描画
+		ShowEmitterEditUI();
+		// パーティクルのエディットUI描画
+		ShowParticleEditUI();
+		// タブ終了
+		ImGui::EndTabBar();
+	}
+	// ウィンドウを終了
 	ImGui::End();
 }
 
 template<typename Data>
 inline void ParticleEditScene<Data>::ShowEmitterEditUI() {
-	// 描画サンプルのエミッターをいじるUI
-	ImGui::Text("EmitterParamater");
-	// 発生パターン
+	// タブのアイテムとして作成
+	if (ImGui::BeginTabItem("EmitterSettings")) {
 
-	// 1度の発生個数
-	int count = static_cast<int>(emitter3D_->GetEmitterSetting().count);
-	ImGui::DragInt("EmitCount", &count);
-	// 発生個数が0未満にならないようにする
-	count = std::max(0, count);
-	emitter3D_->GetEmitterSetting().count = static_cast<int>(count);
-	// 発生頻度
-	ImGui::DragFloat("Frequency", &emitter3D_->GetEmitterSetting().frequency, 0.01f);
-	// 繰り返し発生するかどうか
-	ImGui::Checkbox("IsRepeat", &emitter3D_->GetEmitterSetting().isRepeat);
-	// 最小の発生地点
-	ImGui::DragFloat3("MinTranslate", &emitter3D_->GetEmitterSetting().minTranslate.x, 0.01f);
-	// 最大の発生地点
-	ImGui::DragFloat3("MaxTranslate", &emitter3D_->GetEmitterSetting().maxTranslate.x, 0.01f);
-	// 最小移動量
-	ImGui::DragFloat3("MinVelocity", &emitter3D_->GetEmitterSetting().minVelocity.x, 0.01f);
-	// 最大移動量
-	ImGui::DragFloat3("MaxVelocity", &emitter3D_->GetEmitterSetting().maxVelocity.x, 0.01f);
-	// 最小サイズ
-	ImGui::DragFloat("MinScale", &emitter3D_->GetEmitterSetting().minScale, 0.01f);
-	// 最大サイズ
-	ImGui::DragFloat("MaxScale", &emitter3D_->GetEmitterSetting().maxScale, 0.01f);
-	// 最短生存時間
-	ImGui::DragFloat("MinLifeTime", &emitter3D_->GetEmitterSetting().minLifeTime, 0.01f);
-	// 最長生存時間
-	ImGui::DragFloat("MaxLifeTime", &emitter3D_->GetEmitterSetting().maxLifeTime, 0.01f);
-	// 最小の色
-	ImGui::ColorEdit4("MinColor", &emitter3D_->GetEmitterSetting().minColor.r);
-	// 最大の色
-	ImGui::ColorEdit4("MaxColor", &emitter3D_->GetEmitterSetting().maxColor.r);
+		// 発生ボタン
+		if (ImGui::Button("Emit")) {
+			emitter3D_->EmitAll();
+		}
+		// 発生とセーブを同じ行に
+		ImGui::SameLine();
+		// セーブボタン
+		if (ImGui::Button("Save")) {
 
-	// パーティクル追加ボタン
-	if (ImGui::Button("AddParticle")) {
+		}
 
+		// 描画サンプルのエミッターをいじるUI
+		ImGui::Text("EmitterParamater");
+		// 発生パターン
+
+		// 1度の発生個数
+		int count = static_cast<int>(emitter3D_->GetEmitterSetting().count);
+		ImGui::DragInt("EmitCount", &count);
+		// 発生個数が0未満にならないようにする
+		count = std::max(0, count);
+		emitter3D_->GetEmitterSetting().count = static_cast<int>(count);
+		// 発生頻度
+		ImGui::DragFloat("Frequency", &emitter3D_->GetEmitterSetting().frequency, 0.01f);
+		// 繰り返し発生するかどうか
+		ImGui::Checkbox("IsRepeat", &emitter3D_->GetEmitterSetting().isRepeat);
+		// 最小の発生地点
+		ImGui::DragFloat3("MinTranslate", &emitter3D_->GetEmitterSetting().minTranslate.x, 0.01f);
+		// 最大の発生地点
+		ImGui::DragFloat3("MaxTranslate", &emitter3D_->GetEmitterSetting().maxTranslate.x, 0.01f);
+		// 最小移動量
+		ImGui::DragFloat3("MinVelocity", &emitter3D_->GetEmitterSetting().minVelocity.x, 0.01f);
+		// 最大移動量
+		ImGui::DragFloat3("MaxVelocity", &emitter3D_->GetEmitterSetting().maxVelocity.x, 0.01f);
+		// 最小サイズ
+		ImGui::DragFloat("MinScale", &emitter3D_->GetEmitterSetting().minScale, 0.01f);
+		// 最大サイズ
+		ImGui::DragFloat("MaxScale", &emitter3D_->GetEmitterSetting().maxScale, 0.01f);
+		// 最短生存時間
+		ImGui::DragFloat("MinLifeTime", &emitter3D_->GetEmitterSetting().minLifeTime, 0.01f);
+		// 最長生存時間
+		ImGui::DragFloat("MaxLifeTime", &emitter3D_->GetEmitterSetting().maxLifeTime, 0.01f);
+		// 最小の色
+		ImGui::ColorEdit4("MinColor", &emitter3D_->GetEmitterSetting().minColor.r);
+		// 最大の色
+		ImGui::ColorEdit4("MaxColor", &emitter3D_->GetEmitterSetting().maxColor.r);
+
+
+		// タブ終了
+		ImGui::EndTabItem();
 	}
 
+}
+
+template<typename Data>
+inline void ParticleEditScene<Data>::ShowParticleEditUI() {
+	// タブのアイテムとして作成
+	if (ImGui::BeginTabItem("ParticleSettings")) {
+		// 描画サンプルのパーティクルをいじるUI
+		ImGui::Text("ParticleParamater");
+
+
+
+		// タブ終了
+		ImGui::EndTabItem();
+	}
 }
