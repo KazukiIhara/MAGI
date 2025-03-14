@@ -31,6 +31,8 @@ private:
 	void ShowFPS();
 	// DeltaTime表示
 	void ShowDeltaTime();
+	// メインUI描画
+	void ShowMainUI();
 
 private:
 

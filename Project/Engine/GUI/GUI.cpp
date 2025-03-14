@@ -57,8 +57,14 @@ void GUI::Update() {
 	//
 	// デバッグ描画
 	//
+	
+	// FPS描画
 	ShowFPS();
+	// デルタタイム描画
+
 	ShowDeltaTime();
+	// メインUI描画
+	ShowMainUI();
 
 }
 
@@ -93,6 +99,12 @@ void GUI::ShowDeltaTime() {
 	ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(0, 255, 0, 255)); // 緑色
 	ImGui::Text("DeltaTime: %.3f", deltaTimer_->GetDeltaTime());
 	ImGui::PopStyleColor();
+
+	ImGui::End();
+}
+
+void GUI::ShowMainUI() {
+	ImGui::Begin("MAGIEngine MainUI");
 
 	ImGui::End();
 }

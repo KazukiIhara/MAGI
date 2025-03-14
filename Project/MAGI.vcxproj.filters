@@ -372,7 +372,7 @@
     <ClInclude Include="App\GameObjects\Player\Player.h">
       <Filter>App\GameObjects\Player</Filter>
     </ClInclude>
-    <ClInclude Include="App\Scenes\Sample\SampleScene.h">
+    <ClInclude Include="App\Scenes\SampleScene.h">
       <Filter>App\Scenes\Sample</Filter>
     </ClInclude>
     <ClInclude Include="Engine\2D\Object2D\Object2D.h">
