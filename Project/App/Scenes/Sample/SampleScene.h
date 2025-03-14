@@ -13,7 +13,7 @@
 
 // サンプルシーン
 template <typename Data>
-class SampleScene: public BaseScene<Data> {
+class SampleScene : public BaseScene<Data> {
 public:
 	using BaseScene<Data>::BaseScene; // 親クラスのコンストラクタをそのまま継承
 	~SampleScene()override = default;
@@ -81,11 +81,22 @@ inline void SampleScene<Data>::Initialize() {
 	// エミッターを作成
 	MAGISYSTEM::CreateEmitter3D("Emitter", Vector3(0.0f, 0.0f, 0.0f));
 
+	// エミッターをマネージャから取得
+	Emitter3D* emitter = MAGISYSTEM::FindEmitter3D("Emitter");
+
 	// エミッターにパーティクルを挿入
-	MAGISYSTEM::FindEmitter3D("Emitter")->AddParticleGroup(MAGISYSTEM::FindParticleGroup3D("Plane"));
+	emitter->AddParticleGroup(MAGISYSTEM::FindParticleGroup3D("Plane"));
 
 	// エミッターの設定
-	MAGISYSTEM::FindEmitter3D("Emitter")->GetEmitterSetting().isRepeat = true;
+	// ランダム拡散
+	emitter->GetEmitterSetting().emitType = EmitType::Random;
+	// 発生個数を5に
+	emitter->GetEmitterSetting().count = 5;
+	// 移動量を-1～1に
+	emitter->GetEmitterSetting().maxVelocity = { 1.0f,1.0f,1.0f };
+	emitter->GetEmitterSetting().minVelocity = { -1.0f,-1.0f,-1.0f };
+	// リピートオン
+	emitter->GetEmitterSetting().isRepeat = true;
 
 	// 音声再生
 	MAGISYSTEM::PlayLoopWaveSound("Alarm01.wav");
