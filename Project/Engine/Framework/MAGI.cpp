@@ -863,6 +863,10 @@ const DirectX::TexMetadata& MAGISYSTEM::GetTextureMetaData(const std::string& fi
 	return textureDataCantainer_->GetMetaData(filePath);
 }
 
+const std::map<std::string, Texture>& MAGISYSTEM::GetTextureContainer() {
+	return textureDataCantainer_->GetTextureContainer();
+}
+
 PrimitiveData MAGISYSTEM::GetPrimitiveShape(const Primitive3DType& primitive3dType) {
 	return primitiveDataContainer_->GetPrimitiveShapeData(primitive3dType);
 }
@@ -979,6 +983,10 @@ void MAGISYSTEM::RemoveParticleGroup3D(const std::string& particleGraoupName) {
 
 BaseParticleGroup3D* MAGISYSTEM::FindParticleGroup3D(const std::string& particleGraoupName) {
 	return particleGroup3DManager_->Find(particleGraoupName);
+}
+
+const std::vector<std::unique_ptr<BaseParticleGroup3D>>& MAGISYSTEM::GetParticleGroupList() {
+	return particleGroup3DManager_->GetParticleGroups();
 }
 
 void MAGISYSTEM::AddGameObject3D(std::unique_ptr<GameObject3D> newGameObject3D) {

@@ -28,6 +28,12 @@ public:
 
 	// 新規パーティクルの追加
 	void AddNewParticle(const EmitParamater& emitSetting);
+
+	// 描画タイプを取得
+	Renderer3DType GetRendererType()const;
+
+	// ブレンドモードを取得
+	BlendMode& GetBlendMode();
 protected:
 	// 描画前処理
 	void PrepareForRendering();

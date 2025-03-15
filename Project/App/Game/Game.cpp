@@ -17,5 +17,5 @@ void Game::Initialize() {
 	sceneManager_->AddScene<ParticleEditScene>("ParticleEdit");
 
 	// 最初のシーンを設定
-	sceneManager_->ChangeScene("Sample");
+	sceneManager_->ChangeScene("ParticleEdit");
 }

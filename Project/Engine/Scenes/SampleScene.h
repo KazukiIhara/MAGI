@@ -2,10 +2,7 @@
 
 #include <memory>
 
-#include "BaseScene/BaseScene.h"
 #include "Framework/MAGI.h"
-
-#include "3D/GameObject3D/GameObject3D.h"
 
 #include "2D/Object2D/Object2D.h"
 
@@ -56,6 +53,7 @@ inline void SampleScene<Data>::Initialize() {
 	// シーンカメラ作成
 	sceneCamera_ = std::make_unique<Camera3D>("SceneCamera");
 	MAGISYSTEM::AddCamera3D(std::move(sceneCamera_));
+
 
 	// カメラの設定
 	MAGISYSTEM::SetCurrentCamera("SceneCamera");

@@ -20,6 +20,9 @@ public:
 	void Update()override;
 	void Draw()override;
 
+	// テクスチャを取得
+	std::string& GetTextureName();
+
 private:
 	// プリミティブ形状タイプ
 	std::optional<Primitive3DType> primitiveType_ = std::nullopt;

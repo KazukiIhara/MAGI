@@ -50,7 +50,7 @@ protected:
 	// SRVリソースのインデックス
 	uint32_t srvIndex_ = 0;
 	// クリアカラー
-	RGBA kClearColor_ = Color::White;
+	RGBA kClearColor_ = Color::Black;
 	// ブレンドモード
 	BlendMode blendMode_ = BlendMode::None;
 	// エラー判別君

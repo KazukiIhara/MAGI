@@ -80,3 +80,7 @@ BaseParticleGroup3D* ParticleGroup3DManager::Find(const std::string& name) {
 	assert(false && "Not Found ParticleGroup3D");
 	return nullptr;
 }
+
+const std::vector<std::unique_ptr<BaseParticleGroup3D>>& ParticleGroup3DManager::GetParticleGroups() {
+	return particleGroups3D_;
+}

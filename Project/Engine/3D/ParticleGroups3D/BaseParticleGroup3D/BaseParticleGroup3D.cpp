@@ -52,6 +52,14 @@ void BaseParticleGroup3D::AddNewParticle(const EmitParamater& emitSetting) {
 	particles_.push_back(particle);
 }
 
+Renderer3DType BaseParticleGroup3D::GetRendererType()const {
+	return rendererType_.value();
+}
+
+BlendMode& BaseParticleGroup3D::GetBlendMode() {
+	return blendMode_;
+}
+
 void BaseParticleGroup3D::PrepareForRendering() {
 	// コマンドリストを取得
 	ID3D12GraphicsCommandList* commandList = MAGISYSTEM::GetDirectXCommandList();
