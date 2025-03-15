@@ -8,7 +8,7 @@
 
 // パーティクル作成シーン
 template <typename Data>
-class ParticleEditScene: public BaseScene<Data> {
+class ParticleEditScene : public BaseScene<Data> {
 public:
 	using BaseScene<Data>::BaseScene; // 親クラスのコンストラクタをそのまま継承
 	~ParticleEditScene()override = default;
@@ -27,13 +27,11 @@ private:
 	// パーティクルのエディットUI表示
 	void ShowParticleEditUI();
 
-	// パーティクルの追加ウィンドウ
-	void ShowAddParticleUI();
-
 	// パーティクルのリストを表示する関数
 	void ShowParticleListUI();
-	// テクスチャのリストを表示する関数
-	void ShowTextureListUI();
+
+	// Primitiveパーティクルの設定を描画する関数
+	void ShowPrimitiveParticleSettingUI();
 
 private:
 	// カメラ
@@ -45,13 +43,6 @@ private:
 	std::vector<BaseParticleGroup3D*> particles_;
 	// 選択中のパーティクル
 	BaseParticleGroup3D* selectedParticle_ = nullptr;
-
-	//
-	// Window表示フラグ
-	//
-
-	// テクスチャのリストウィンドウを表示するかどうか
-	bool isShowTextureWindow_ = false;
 };
 
 template<typename Data>
@@ -192,36 +183,16 @@ inline void ParticleEditScene<Data>::ShowParticleEditUI() {
 			Renderer3DType type = selectedParticle_->GetRendererType();
 			// タイプごとにキャスト
 			switch (type) {
-				case Renderer3DType::Primitive: {
-					PrimitiveParticleGroup3D* primitive = dynamic_cast<PrimitiveParticleGroup3D*>(selectedParticle_);
-					if (primitive) {
+			case Renderer3DType::Primitive: {
+				ShowPrimitiveParticleSettingUI();
+				break;
+			}
+			case Renderer3DType::Static:
 
-						ImGui::Text("TextureList");
+				break;
+			case Renderer3DType::Skinning:
 
-						// 右側にパーティクルリスト
-						ImGui::BeginChild("TextureList", ImVec2(400, 50), true);
-
-						// 読み込んでいるテクスチャリストを取得
-						const auto& textures = MAGISYSTEM::GetTextureContainer();
-						for (const auto& texture : textures) {
-							// テクスチャ名を取得
-							const std::string& textureName = texture.first;
-							// 選択可能にする選択したら現在のプリミティブパーティクルグループにセット
-							if (ImGui::Selectable(textureName.c_str())) {
-								primitive->GetTextureName() = textureName;
-							}
-						}
-						ImGui::EndChild();
-
-					}
-					break;
-				}
-				case Renderer3DType::Static:
-
-					break;
-				case Renderer3DType::Skinning:
-
-					break;
+				break;
 			}
 		}
 
@@ -229,11 +200,6 @@ inline void ParticleEditScene<Data>::ShowParticleEditUI() {
 		// タブ終了
 		ImGui::EndTabItem();
 	}
-}
-
-template<typename Data>
-inline void ParticleEditScene<Data>::ShowAddParticleUI() {
-
 }
 
 template<typename Data>
@@ -262,6 +228,23 @@ inline void ParticleEditScene<Data>::ShowParticleListUI() {
 }
 
 template<typename Data>
-inline void ParticleEditScene<Data>::ShowTextureListUI() {
+inline void ParticleEditScene<Data>::ShowPrimitiveParticleSettingUI() {
+	PrimitiveParticleGroup3D* primitive = dynamic_cast<PrimitiveParticleGroup3D*>(selectedParticle_);
+	if (primitive) {
+		// テクスチャリストを表示
+		ImGui::Text("TextureList");
+		ImGui::BeginChild("TextureList", ImVec2(400, 50), true);
+		// 読み込んでいるテクスチャリストを取得
+		const auto& textures = MAGISYSTEM::GetTextureContainer();
+		for (const auto& texture : textures) {
+			// テクスチャ名を取得
+			const std::string& textureName = texture.first;
+			// 選択可能にする選択したら現在のプリミティブパーティクルグループにセット
+			if (ImGui::Selectable(textureName.c_str())) {
+				primitive->GetTextureName() = textureName;
+			}
+		}
+		ImGui::EndChild();
 
+	}
 }
