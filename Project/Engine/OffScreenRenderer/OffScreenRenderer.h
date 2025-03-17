@@ -30,6 +30,8 @@ public:
 
 	uint32_t GetCurrentRenderTextureSrvIndex();
 
+	uint32_t GetForEngineUIRenderTexSrvIndex();
+
 private:
 	void SetDirectXCommand(DirectXCommand* directXCommand);
 	void SetRenderTarget(RenderTarget* renderTarget);

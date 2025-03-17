@@ -578,6 +578,7 @@ void MAGISYSTEM::Draw() {
 	resourceBarrier_->PreDrawRenderTextureResourceBarrierTransition();
 	resourceBarrier_->PreDrawSwapChainResourceBarrierTransition();
 
+
 	// レンダーターゲットを設定
 	renderTarget_->SetRenderTarget(RenderTargetType::SwapChain);
 	// 画面をクリア
@@ -596,17 +597,18 @@ void MAGISYSTEM::Draw() {
 		offScreenRenderer_->DrawCurrentRenderTexture();
 	}
 
-	// ImGui内部コマンド生成
-	imguiController_->EndFrame();
 
 	//
 	// ImGui描画処理
 	//
+
+	// ImGui内部コマンド生成
+	imguiController_->EndFrame();
+	// 描画
 	imguiController_->Draw();
 
 	// リソースバリアを描画後の状態にする
 	resourceBarrier_->PostDrawRenderTextureResourceBarrierTransition();
-
 	resourceBarrier_->PostDrawSwapChainResourceBarrierTransition();
 
 	// コマンドを閉じて実行

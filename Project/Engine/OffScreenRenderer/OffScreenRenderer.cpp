@@ -73,6 +73,10 @@ uint32_t OffScreenRenderer::GetCurrentRenderTextureSrvIndex() {
 	return renderTextureManager_->GetRenderTexture(currentRenderTextureType_)->GetSrvIndex();
 }
 
+uint32_t OffScreenRenderer::GetForEngineUIRenderTexSrvIndex() {
+	return 0;
+}
+
 void OffScreenRenderer::SetDirectXCommand(DirectXCommand* directXCommand) {
 	assert(directXCommand);
 	directXCommand_ = directXCommand;
