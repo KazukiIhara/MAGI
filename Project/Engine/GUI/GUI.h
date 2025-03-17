@@ -31,7 +31,8 @@ public:
 	//
 
 	// エンジンウィンドウの表示フラグ
-	bool& GetIsShowEngineWindow();
+	bool& GetIsShowMainUI();
+
 private:
 	// FPS表示
 	void ShowFPS();
@@ -52,7 +53,7 @@ private:
 
 private:
 	// エンジンのウィンドウを描画するフラグ
-	bool isShowEngineWindow_ = false;
+	bool isShowMainUI_ = false;
 
 private:
 	// 

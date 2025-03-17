@@ -28,9 +28,8 @@ public:
 	// ポストエフェクトをかけたレンダーテクスチャを描画
 	void DrawCurrentRenderTexture();
 
+	// 現在描画中のレンダーテクスチャのsrvインデックスを取得
 	uint32_t GetCurrentRenderTextureSrvIndex();
-
-	uint32_t GetForEngineUIRenderTexSrvIndex();
 
 private:
 	void SetDirectXCommand(DirectXCommand* directXCommand);

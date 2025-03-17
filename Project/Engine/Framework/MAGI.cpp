@@ -457,7 +457,7 @@ void MAGISYSTEM::Update() {
 
 	// エンジンUI描画切り替え
 	if (directInput_->TriggerKey(DIK_O)) {
-		gui_->GetIsShowEngineWindow() = !gui_->GetIsShowEngineWindow();
+		gui_->GetIsShowMainUI() = !gui_->GetIsShowMainUI();
 	}
 
 	// ImGui開始処理
@@ -590,7 +590,7 @@ void MAGISYSTEM::Draw() {
 
 
 	// UI描画フラグによって処理を変更
-	if (gui_->GetIsShowEngineWindow()) {
+	if (gui_->GetIsShowMainUI()) {
 		// エンジンUIを描画
 		gui_->ShowMainUI();
 	} else {

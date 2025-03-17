@@ -83,6 +83,8 @@ void GUI::ShowSceneWindow() {
 
 	// レンダーテクスチャに描画する内容をウィンドウ内に描画する
 	uint32_t srvIndex = offScreenRenderer_->GetCurrentRenderTextureSrvIndex();
+
+	// 
 	ImGui::ImageWithBg(static_cast<ImTextureID>(srvUavManager_->GetDescriptorHandleGPU(srvIndex).ptr), sceneTextureSize_, ImVec2(0.0f, 0.0f), ImVec2(1.0f, 1.0f), ImVec4(0.0f, 0.0f, 0.0f, 1.0f));
 
 	ImGui::End();
@@ -117,6 +119,6 @@ void GUI::ShowMainUI() {
 	ShowProjectWindow();
 }
 
-bool& GUI::GetIsShowEngineWindow() {
-	return isShowEngineWindow_;
+bool& GUI::GetIsShowMainUI() {
+	return isShowMainUI_;
 }
