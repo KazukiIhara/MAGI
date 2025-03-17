@@ -3,53 +3,34 @@
 #include <cassert>
 
 #include "imgui/imgui.h"
+#include "Logger/Logger.h"
 
 #include "DeltaTimer/DeltaTimer.h"
 #include "ViewManagers/SRVUAVManager/SRVUAVManager.h"
 #include "DataIO/DataIO.h"
-#include "AssetContainers/TextureDataContainer/TextureDataContainer.h"
-
-#include "ObjectManagers/Renderer3DManager/Renderer3DManager.h"
-#include "ObjectManagers/ColliderManager/ColliderManager.h"
-
-#include "Logger/Logger.h"
-
-#include "3D/GameObject3D/GameObject3D.h"
+#include "OffScreenRenderer/OffScreenRenderer.h"
 
 // Windows環境限定
 #ifdef _WIN32
 #include <Windows.h>
 #endif
-
-GUI::GUI(
-	DeltaTimer* deltaTimer,
-	SRVUAVManager* srvUavManager,
-	DataIO* dataIO,
-	TextureDataContainer* textureDataContainer
-) {
-
+GUI::GUI(DeltaTimer* deltaTimer, SRVUAVManager* srvUavManager, DataIO* dataIO, OffScreenRenderer* offScreenRenderer) {
 	// 
 	// インスタンスのセット
 	// 
 	assert(deltaTimer);
 	assert(srvUavManager);
 	assert(dataIO);
-	assert(textureDataContainer);
+	assert(offScreenRenderer);
 	deltaTimer_ = deltaTimer;
 	srvUavManager_ = srvUavManager;
 	dataIO_ = dataIO;
-	textureDataContainer_ = textureDataContainer;
-
+	offScreenRenderer_ = offScreenRenderer;
 
 	// 
 	// データIOクラスから受け取るインスタンス
 	// 
 
-	renderer3DManager_ = dataIO_->GetRenderer3DManager();
-	assert(renderer3DManager_);
-
-	colliderManager_ = dataIO_->GetColliderManager();
-	assert(colliderManager_);
 
 }
 
@@ -89,13 +70,15 @@ void GUI::ShowDeltaTime() {
 }
 
 void GUI::ShowMainUI() {
-	
+	ImGui::Begin("Scene");
+
+	// レンダーテクスチャに描画する内容をウィンドウ内に描画する
+	uint32_t srvIndex = offScreenRenderer_->GetCurrentRenderTextureSrvIndex();
+	ImGui::Image(reinterpret_cast<ImTextureID>(srvUavManager_->GetDescriptorHandleGPU(srvIndex).ptr), ImVec2(1280.0f, 720.0f));
+
+	ImGui::End();
 }
 
-bool GUI::GetIsShowEngineWindow() const {
+bool& GUI::GetIsShowEngineWindow() {
 	return isShowEngineWindow_;
-}
-
-void GUI::SetIsShowEngineWindow(bool isShowWindow) {
-	isShowEngineWindow_ = isShowWindow;
 }

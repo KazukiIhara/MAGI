@@ -82,7 +82,7 @@ std::unique_ptr<SceneManager<GameData>> MAGISYSTEM::sceneManager_ = nullptr;
 //
 // AppSystem
 //
-std::unique_ptr<OffScreenRenderer> MAGISYSTEM::offScreenRenderer = nullptr;
+std::unique_ptr<OffScreenRenderer> MAGISYSTEM::offScreenRenderer_ = nullptr;
 
 //
 // Data入出力クラス
@@ -197,7 +197,7 @@ void MAGISYSTEM::Initialize() {
 
 
 	// PostEffectSwitcher
-	offScreenRenderer = std::make_unique<OffScreenRenderer>(directXCommand_.get(), renderTarget_.get(), renderTextureManager_.get(), postEffectPipelineManager_.get());
+	offScreenRenderer_ = std::make_unique<OffScreenRenderer>(directXCommand_.get(), renderTarget_.get(), renderTextureManager_.get(), postEffectPipelineManager_.get());
 
 
 	// DataIO
@@ -210,7 +210,7 @@ void MAGISYSTEM::Initialize() {
 	imguiController_ = std::make_unique<ImGuiController>(windowApp_.get(), dxgi_.get(), directXCommand_.get(), srvuavManager_.get());
 
 	// GUI
-	gui_ = std::make_unique<GUI>(deltaTimer_.get(), srvuavManager_.get(), dataIO_.get(), textureDataCantainer_.get());
+	gui_ = std::make_unique<GUI>(deltaTimer_.get(), srvuavManager_.get(), dataIO_.get(), offScreenRenderer_.get());
 
 	// 初期化完了ログ
 	Logger::Log("MAGISYSTEM Initialize\n");
@@ -239,8 +239,8 @@ void MAGISYSTEM::Finalize() {
 	}
 
 	// PostEffectSwitcher
-	if (offScreenRenderer) {
-		offScreenRenderer.reset();
+	if (offScreenRenderer_) {
+		offScreenRenderer_.reset();
 	}
 
 	// SceneManager
@@ -450,9 +450,14 @@ void MAGISYSTEM::Update() {
 		endRequest_ = true;
 	}
 
-	// デバッグモード切替
+	// デバッグカメラモード切替
 	if (directInput_->TriggerKey(DIK_P)) {
 		camera3DManager_->GetIsDebugCamera() = !camera3DManager_->GetIsDebugCamera();
+	}
+
+	// エンジンUI描画切り替え
+	if (directInput_->TriggerKey(DIK_O)) {
+		gui_->GetIsShowEngineWindow() = !gui_->GetIsShowEngineWindow();
 	}
 
 	// ImGui開始処理
@@ -513,7 +518,7 @@ void MAGISYSTEM::Draw() {
 	// 
 
 	// レンダーターゲットをセット、クリア
-	offScreenRenderer->SetClearRenderTarget();
+	offScreenRenderer_->SetClearRenderTarget();
 
 	// 深度をクリア
 	depthStencil_->ClearDepthView();
@@ -601,8 +606,8 @@ void MAGISYSTEM::Draw() {
 	//
 	// RenderTextureをSwapChainに描画
 	//
-	if (gui_->GetIsShowEngineWindow()) {
-		offScreenRenderer->DrawCurrentRenderTexture();
+	if (!gui_->GetIsShowEngineWindow()) {
+		offScreenRenderer_->DrawCurrentRenderTexture();
 	}
 
 	//

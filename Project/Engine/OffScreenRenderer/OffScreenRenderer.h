@@ -2,6 +2,7 @@
 
 // MyHedder
 #include "Enums/PostEffectPipelineEnum.h"
+#include "Enums/RenderTextureType.h"
 
 // 前方宣言
 class DirectXCommand;
