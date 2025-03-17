@@ -39,6 +39,9 @@ private:
 	// DeltaTime表示
 	void ShowDeltaTime();
 
+	// メインタブ描画
+	void ShowMainTab();
+
 	// シーンウィンドウ描画
 	void ShowSceneWindow();
 
@@ -60,8 +63,12 @@ private:
 	// UI変数
 	// 
 
-	// シーンウィンドウ
+	// ヒエラルキーウィンドウ
+	ImVec2 hierarchyWindowPosition_ = { 0.0f,64.0f };
+
+		// シーンウィンドウ
 	ImVec2 sceneTextureSize_ = { 1024.0f,576.0f };
+
 private:
 	// DeltaTimerのインスタンス
 	DeltaTimer* deltaTimer_ = nullptr;

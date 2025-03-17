@@ -69,6 +69,50 @@ void GUI::ShowDeltaTime() {
 	ImGui::End();
 }
 
+void GUI::ShowMainTab() {
+	// メインメニューバー作成
+	if (ImGui::BeginMainMenuBar()) {
+
+		// ファイルの処理
+		if (ImGui::BeginMenu("File")) {
+			if (ImGui::MenuItem("New Scene")) { /* 新しいシーンの処理 */ }
+			if (ImGui::MenuItem("Open Scene")) { /* シーンを開く処理 */ }
+			if (ImGui::MenuItem("Save Scene")) { /* シーンを保存する処理 */ }
+			ImGui::Separator();
+			if (ImGui::MenuItem("Exit")) { /* アプリ終了処理 */ }
+			ImGui::EndMenu();
+		}
+
+		// オブジェクトの処理
+		if (ImGui::BeginMenu("Object")) {
+			// Object3D
+			if (ImGui::BeginMenu("GameObject3D")) {
+
+
+				ImGui::EndMenu();
+			}
+
+			// Renderer3D
+			if (ImGui::BeginMenu("Renderer3D")) {
+
+
+				ImGui::EndMenu();
+			}
+
+			// ParticleGroup
+			if (ImGui::BeginMenu("ParticleGroup3D")) {
+
+
+				ImGui::EndMenu();
+			}
+
+			ImGui::EndMenu();
+		}
+
+		ImGui::EndMainMenuBar();
+	}
+}
+
 void GUI::ShowSceneWindow() {
 	// ウィンドウの装飾（パディングやタイトルバー）を考慮
 	ImVec2 padding = ImGui::GetStyle().WindowPadding; // ウィンドウの左右パディング
@@ -109,6 +153,8 @@ void GUI::ShowProjectWindow() {
 }
 
 void GUI::ShowMainUI() {
+	// メインタブ
+	ShowMainTab();
 	// シーンウィンドウ
 	ShowSceneWindow();
 	// ヒエラルキーウィンドウ
