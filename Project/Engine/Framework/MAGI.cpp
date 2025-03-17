@@ -497,8 +497,10 @@ void MAGISYSTEM::Update() {
 	// グローバルデータ
 	grobalDataManager_->Update();
 
-	// GUI更新処理
-	gui_->Update();
+	// UI描画フラグがtrueなら描画
+	if (gui_->GetIsShowEngineWindow()) {
+		gui_->ShowMainUI();
+	}
 
 	// ImGui内部コマンド生成
 	imguiController_->EndFrame();
@@ -577,8 +579,11 @@ void MAGISYSTEM::Draw() {
 
 
 	// 
-	// DirectX描画後処理
+	// UI描画切り替え
 	// 
+
+
+
 
 	// リソースバリアを設定
 	resourceBarrier_->PreDrawRenderTextureResourceBarrierTransition();
@@ -594,10 +599,11 @@ void MAGISYSTEM::Draw() {
 	scissorRect_->SettingScissorRect();
 
 	//
-	// レンダーテクスチャ描画
+	// RenderTextureをSwapChainに描画
 	//
-
-	offScreenRenderer->DrawCurrentRenderTexture();
+	if (gui_->GetIsShowEngineWindow()) {
+		offScreenRenderer->DrawCurrentRenderTexture();
+	}
 
 	//
 	// ImGui描画処理
@@ -605,7 +611,10 @@ void MAGISYSTEM::Draw() {
 	imguiController_->Draw();
 
 	// リソースバリアを描画後の状態にする
+
+
 	resourceBarrier_->PostDrawRenderTextureResourceBarrierTransition();
+
 	resourceBarrier_->PostDrawSwapChainResourceBarrierTransition();
 
 	// コマンドを閉じて実行
