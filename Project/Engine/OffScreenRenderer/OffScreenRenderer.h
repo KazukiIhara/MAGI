@@ -27,6 +27,8 @@ public:
 	// ポストエフェクトをかけたレンダーテクスチャを描画
 	void DrawCurrentRenderTexture();
 
+	uint32_t GetCurrentRenderTextureSrvIndex();
+
 private:
 	void SetDirectXCommand(DirectXCommand* directXCommand);
 	void SetRenderTarget(RenderTarget* renderTarget);
@@ -35,7 +37,7 @@ private:
 private:
 	// 現在のポストエフェクト
 	PostEffectPipelineStateType currentPostEffect_ = PostEffectPipelineStateType::None;
-
+	RenderTextureType currentRenderTextureType_{};
 private:
 	DirectXCommand* directXCommand_ = nullptr;
 	RenderTarget* renderTarget_ = nullptr;

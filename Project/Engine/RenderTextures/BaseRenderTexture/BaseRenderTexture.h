@@ -30,8 +30,12 @@ public:
 
 	// クリアカラーを取得
 	Vector4 GetClearColor();
-	// RTVハンドルを取得
+	// RTVCPUハンドルを取得
 	D3D12_CPU_DESCRIPTOR_HANDLE GetRTVHandle();
+
+	// SrvIndexを取得
+	uint32_t GetSrvIndex()const;
+
 	// リソースを取得
 	ID3D12Resource* GetResource();
 

@@ -89,9 +89,7 @@ void GUI::ShowDeltaTime() {
 }
 
 void GUI::ShowMainUI() {
-	ImGui::Begin("MAGIEngine MainUI");
-
-	ImGui::End();
+	
 }
 
 bool GUI::GetIsShowEngineWindow() const {

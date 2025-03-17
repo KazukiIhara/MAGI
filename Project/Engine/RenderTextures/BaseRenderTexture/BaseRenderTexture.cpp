@@ -43,6 +43,10 @@ ID3D12Resource* BaseRenderTexture::GetResource() {
 	return resource_.Get();
 }
 
+uint32_t BaseRenderTexture::GetSrvIndex() const {
+	return srvIndex_;
+}
+
 void BaseRenderTexture::CreateResource() {
 	// リソースの設定
 	D3D12_RESOURCE_DESC resourceDesc{};
