@@ -589,8 +589,9 @@ void MAGISYSTEM::Draw() {
 	scissorRect_->SettingScissorRect();
 
 
-	// UI描画フラグがtrueなら描画
+	// UI描画フラグによって処理を変更
 	if (gui_->GetIsShowEngineWindow()) {
+		// エンジンUIを描画
 		gui_->ShowMainUI();
 	} else {
 		// RenderTextureをSwapChainに描画

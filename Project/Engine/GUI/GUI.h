@@ -4,6 +4,8 @@
 #include <vector>
 #include <memory>
 
+// ImGui
+#include "imgui/imgui.h"
 
 // 前方宣言
 class DeltaTimer;
@@ -36,10 +38,29 @@ private:
 	// DeltaTime表示
 	void ShowDeltaTime();
 
+	// シーンウィンドウ描画
+	void ShowSceneWindow();
+
+	// ヒエラルキー描画
+	void ShowHierarchyWindow();
+
+	// インスペクター描画
+	void ShowInspectorWindow();
+
+	// プロジェクトファイル描画
+	void ShowProjectWindow();
+
 private:
 	// エンジンのウィンドウを描画するフラグ
 	bool isShowEngineWindow_ = false;
 
+private:
+	// 
+	// UI変数
+	// 
+
+	// シーンウィンドウ
+	ImVec2 sceneTextureSize_ = { 1024.0f,576.0f };
 private:
 	// DeltaTimerのインスタンス
 	DeltaTimer* deltaTimer_ = nullptr;

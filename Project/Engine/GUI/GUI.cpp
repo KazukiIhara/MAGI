@@ -2,7 +2,7 @@
 
 #include <cassert>
 
-#include "imgui/imgui.h"
+
 #include "Logger/Logger.h"
 
 #include "DeltaTimer/DeltaTimer.h"
@@ -69,14 +69,52 @@ void GUI::ShowDeltaTime() {
 	ImGui::End();
 }
 
-void GUI::ShowMainUI() {
-	ImGui::Begin("Scene");
+void GUI::ShowSceneWindow() {
+	// ウィンドウの装飾（パディングやタイトルバー）を考慮
+	ImVec2 padding = ImGui::GetStyle().WindowPadding; // ウィンドウの左右パディング
+	float titleBarHeight = ImGui::GetFontSize() + ImGui::GetStyle().FramePadding.y * 2; // タイトルバーの高さ
+
+	// ウィンドウサイズを設定
+	ImVec2 windowSize = { sceneTextureSize_.x + padding.x * 2, sceneTextureSize_.y + padding.y * 2 + titleBarHeight };
+	ImGui::SetNextWindowSize(windowSize);
+
+	// シーンウィンドウ開始
+	ImGui::Begin("Scene", nullptr, ImGuiWindowFlags_NoResize);
 
 	// レンダーテクスチャに描画する内容をウィンドウ内に描画する
 	uint32_t srvIndex = offScreenRenderer_->GetCurrentRenderTextureSrvIndex();
-	ImGui::ImageWithBg(static_cast<ImTextureID>(srvUavManager_->GetDescriptorHandleGPU(srvIndex).ptr), ImVec2(1280.0f, 720.0f), ImVec2(0.0f, 0.0f), ImVec2(1.0f, 1.0f),ImVec4(0.0f, 0.0f, 0.0f, 1.0f));
+	ImGui::ImageWithBg(static_cast<ImTextureID>(srvUavManager_->GetDescriptorHandleGPU(srvIndex).ptr), sceneTextureSize_, ImVec2(0.0f, 0.0f), ImVec2(1.0f, 1.0f), ImVec4(0.0f, 0.0f, 0.0f, 1.0f));
 
 	ImGui::End();
+}
+
+void GUI::ShowHierarchyWindow() {
+	ImGui::Begin("Hierarchy");
+
+	ImGui::End();
+}
+
+void GUI::ShowInspectorWindow() {
+	ImGui::Begin("Inspector");
+
+	ImGui::End();
+}
+
+void GUI::ShowProjectWindow() {
+	ImGui::Begin("Project");
+
+	ImGui::End();
+}
+
+void GUI::ShowMainUI() {
+	// シーンウィンドウ
+	ShowSceneWindow();
+	// ヒエラルキーウィンドウ
+	ShowHierarchyWindow();
+	// インスペクターウィンドウ
+	ShowInspectorWindow();
+	// プロジェクトウィンドウを描画
+	ShowProjectWindow();
 }
 
 bool& GUI::GetIsShowEngineWindow() {
