@@ -227,7 +227,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Engine\PostEffectPipelines\BaseSimplePostEffectPipeline\BaseSimplePostEffectPipeline.h" />
     <ClInclude Include="Engine\PostEffectPipelines\GrayscalePostEffectPipeline\GrayscalePostEffectPipeline.h" />
     <ClInclude Include="Engine\PostEffectPipelines\NonePostEffectPipeline\NonePostEffectPipeline.h" />
-    <ClInclude Include="Engine\PostEffectSwitcher\PostEffectSwitcher.h" />
+    <ClInclude Include="Engine\OffScreenRenderer\OffScreenRenderer.h" />
     <ClInclude Include="Engine\RenderTextureManager\RenderTextureManager.h" />
     <ClInclude Include="Engine\RenderTextures\BaseRenderTexture\BaseRenderTexture.h" />
     <ClInclude Include="Engine\SceneManager\SceneManager.h" />
@@ -317,7 +317,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Engine\PostEffectPipelines\BaseSimplePostEffectPipeline\BaseSimplePostEffectPipeline.cpp" />
     <ClCompile Include="Engine\PostEffectPipelines\GrayscalePostEffectPipeline\GrayscalePostEffectPipeline.cpp" />
     <ClCompile Include="Engine\PostEffectPipelines\NonePostEffectPipeline\NonePostEffectPipeline.cpp" />
-    <ClCompile Include="Engine\PostEffectSwitcher\PostEffectSwitcher.cpp" />
+    <ClCompile Include="Engine\OffScreenRenderer\OffScreenRenderer.cpp" />
     <ClCompile Include="Engine\RenderTextureManager\RenderTextureManager.cpp" />
     <ClCompile Include="Engine\RenderTextures\BaseRenderTexture\BaseRenderTexture.cpp" />
     <ClCompile Include="Engine\ViewManagers\BaseViewManager\BaseViewManager.cpp" />
