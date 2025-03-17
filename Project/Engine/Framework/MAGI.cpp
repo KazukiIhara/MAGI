@@ -143,7 +143,7 @@ void MAGISYSTEM::Initialize() {
 	// ResouceBarrier
 	resourceBarrier_ = std::make_unique<ResourceBarrier>(directXCommand_.get(), swapChain_.get(), renderTextureManager_.get());
 	// RenderTarget
-	renderTarget_ = std::make_unique<RenderTarget>(directXCommand_.get(), swapChain_.get(), depthStencil_.get(), renderTextureManager_.get());
+	renderTarget_ = std::make_unique<RenderTarget>(directXCommand_.get(), swapChain_.get(), depthStencil_.get(), rtvManager_.get(), renderTextureManager_.get());
 	// Viewport
 	viewport_ = std::make_unique<Viewport>(directXCommand_.get());
 	// Scissor
@@ -531,18 +531,11 @@ void MAGISYSTEM::Draw() {
 	// 描画処理
 	// 
 
-
 	//
 	// シーンの描画処理
 	//
 	sceneManager_->Draw();
 
-
-	// 
-	// ゲームオブジェクトマネージャの描画処理(まだない)
-	// 
-
-	gameObject3DManager_->Draw();
 
 	// 
 	// Object3Dの描画前処理

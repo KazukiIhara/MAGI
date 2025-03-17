@@ -74,7 +74,7 @@ void GUI::ShowMainUI() {
 
 	// レンダーテクスチャに描画する内容をウィンドウ内に描画する
 	uint32_t srvIndex = offScreenRenderer_->GetCurrentRenderTextureSrvIndex();
-	ImGui::Image(reinterpret_cast<ImTextureID>(srvUavManager_->GetDescriptorHandleGPU(srvIndex).ptr), ImVec2(1280.0f, 720.0f));
+	ImGui::ImageWithBg(static_cast<ImTextureID>(srvUavManager_->GetDescriptorHandleGPU(srvIndex).ptr), ImVec2(1280.0f, 720.0f), ImVec2(0.0f, 0.0f), ImVec2(1.0f, 1.0f),ImVec4(0.0f, 0.0f, 0.0f, 1.0f));
 
 	ImGui::End();
 }
