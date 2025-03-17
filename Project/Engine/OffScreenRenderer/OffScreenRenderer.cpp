@@ -1,4 +1,4 @@
-#include "PostEffectSwitcher.h"
+#include "OffScreenRenderer.h"
 
 #include <cassert>
 
