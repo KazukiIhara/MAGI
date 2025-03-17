@@ -59,7 +59,7 @@ inline void SampleScene<Data>::Initialize() {
 	MAGISYSTEM::SetCurrentCamera("SceneCamera");
 
 	// ライト
-	MAGISYSTEM::AddPunctualLight("sampleLight");
+	MAGISYSTEM::AddPunctualLight("SampleLight");
 
 	// レンダラー
 	MAGISYSTEM::CreateStaticRenderer3D("terrain", "terrain");
@@ -102,11 +102,7 @@ inline void SampleScene<Data>::Initialize() {
 
 template<typename Data>
 inline void SampleScene<Data>::Update() {
-	ImGui::Begin("SampleScene");
-	if (ImGui::Button("ChangeParticleEditScene")) {
-		this->ChangeScene("ParticleEdit");
-	}
-	ImGui::End();
+
 }
 
 template<typename Data>

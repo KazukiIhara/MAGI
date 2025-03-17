@@ -702,7 +702,7 @@
     <ClInclude Include="Engine\PostEffectPipelines\NonePostEffectPipeline\NonePostEffectPipeline.h">
       <Filter>Engine\PostEffectPipelines\NonePostEffectPipeline</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\PostEffectSwitcher\PostEffectSwitcher.h">
+    <ClInclude Include="Engine\OffScreenRenderer\OffScreenRenderer.h">
       <Filter>Engine\PostEffectSwitcher</Filter>
     </ClInclude>
     <ClInclude Include="Engine\RenderTextureManager\RenderTextureManager.h">
@@ -966,7 +966,7 @@
     <ClCompile Include="Engine\PostEffectPipelines\NonePostEffectPipeline\NonePostEffectPipeline.cpp">
       <Filter>Engine\PostEffectPipelines\NonePostEffectPipeline</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\PostEffectSwitcher\PostEffectSwitcher.cpp">
+    <ClCompile Include="Engine\OffScreenRenderer\OffScreenRenderer.cpp">
       <Filter>Engine\PostEffectSwitcher</Filter>
     </ClCompile>
     <ClCompile Include="Engine\RenderTextureManager\RenderTextureManager.cpp">

@@ -53,21 +53,6 @@ GUI::GUI(
 
 }
 
-void GUI::Update() {
-	//
-	// デバッグ描画
-	//
-	
-	// FPS描画
-	ShowFPS();
-	// デルタタイム描画
-
-	ShowDeltaTime();
-	// メインUI描画
-	ShowMainUI();
-
-}
-
 void GUI::ShowFPS() {
 	// フレームレート表示の設定
 	ImGuiIO& io = ImGui::GetIO();
@@ -107,4 +92,12 @@ void GUI::ShowMainUI() {
 	ImGui::Begin("MAGIEngine MainUI");
 
 	ImGui::End();
+}
+
+bool GUI::GetIsShowEngineWindow() const {
+	return isShowEngineWindow_;
+}
+
+void GUI::SetIsShowEngineWindow(bool isShowWindow) {
+	isShowEngineWindow_ = isShowWindow;
 }

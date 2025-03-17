@@ -25,17 +25,26 @@ public:
 		DataIO* dataIO,
 		TextureDataContainer* textureDataContainer
 	);
-	void Update();
+
+	// メインUI描画
+	void ShowMainUI();
+
+	//
+	// アクセッサ
+	//
+
+	// エンジンウィンドウの表示フラグ
+	bool GetIsShowEngineWindow()const;
+	void SetIsShowEngineWindow(bool isShowWindow);
 private:
 	// FPS表示
 	void ShowFPS();
 	// DeltaTime表示
 	void ShowDeltaTime();
-	// メインUI描画
-	void ShowMainUI();
 
 private:
-
+	// エンジンのウィンドウを描画するフラグ
+	bool isShowEngineWindow_ = false;
 
 private:
 	// DeltaTimerのインスタンス
