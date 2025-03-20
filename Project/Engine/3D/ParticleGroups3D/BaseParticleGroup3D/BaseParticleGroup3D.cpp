@@ -60,6 +60,10 @@ BlendMode& BaseParticleGroup3D::GetBlendMode() {
 	return blendMode_;
 }
 
+bool& BaseParticleGroup3D::GetIsShow() {
+	return isShow_;
+}
+
 void BaseParticleGroup3D::PrepareForRendering() {
 	// コマンドリストを取得
 	ID3D12GraphicsCommandList* commandList = MAGISYSTEM::GetDirectXCommandList();

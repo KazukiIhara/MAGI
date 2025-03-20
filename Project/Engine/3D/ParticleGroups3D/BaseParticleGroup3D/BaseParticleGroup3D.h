@@ -29,11 +29,16 @@ public:
 	// 新規パーティクルの追加
 	void AddNewParticle(const EmitParamater& emitSetting);
 
+	// 
+	// アクセッサ
+	// 
+
 	// 描画タイプを取得
 	Renderer3DType GetRendererType()const;
-
 	// ブレンドモードを取得
 	BlendMode& GetBlendMode();
+	// 描画フラグを取得
+	bool& GetIsShow();
 protected:
 	// 描画前処理
 	void PrepareForRendering();
@@ -67,6 +72,9 @@ protected:
 	BlendMode blendMode_ = BlendMode::Add;
 	// instance描画する際に使う変数
 	uint32_t instanceCount_ = 0;
+
+	// 描画フラグ
+	bool isShow_ = true;
 private:
 	// カメラのルートパラメタインデックス番号
 	const uint32_t cameraRootParamaterIndex_ = 4;

@@ -128,6 +128,42 @@ void Object2D::Draw() {
 	commandList->DrawIndexedInstanced(6, 1, 0, 0, 0);
 }
 
+void Object2D::SetTextureName(const std::string& textureName) {
+	textureName_ = textureName;
+}
+
+Vector2& Object2D::GetPosition() {
+	return worldTransform_.position;
+}
+
+Vector2& Object2D::GetSize() {
+	return worldTransform_.size;
+}
+
+float& Object2D::GetRotate() {
+	return worldTransform_.rotateZ;
+}
+
+Vector2& Object2D::GetUVTranslate() {
+	return uvTransform_.translate;
+}
+
+Vector2& Object2D::GetUVScale() {
+	return uvTransform_.scale;
+}
+
+float& Object2D::GetUVRotate() {
+	return uvTransform_.rotateZ;
+}
+
+bool& Object2D::GetIsAlive() {
+	return isAlive_;
+}
+
+bool& Object2D::GetIsShow() {
+	return isShow_;
+}
+
 void Object2D::CreateVertexResource() {
 	vertexResource_ = MAGISYSTEM::CreateBufferResource(sizeof(VertexData2D) * 6);
 }

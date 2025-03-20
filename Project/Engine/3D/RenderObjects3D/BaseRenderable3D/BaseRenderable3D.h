@@ -68,6 +68,9 @@ private:
 	BlendMode blendMode_ = BlendMode::Normal;
 	// 描画オブジェクトのタイプ
 	std::optional<Renderer3DType> renderer3DType_ = std::nullopt;
+
+	// 描画フラグ
+	bool isShow_ = true;
 private:
 	// WVP用のリソース
 	ComPtr<ID3D12Resource> transformationResource_ = nullptr;
