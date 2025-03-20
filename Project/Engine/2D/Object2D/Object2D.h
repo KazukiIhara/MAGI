@@ -24,6 +24,28 @@ public:
 	void Update();
 	void Draw();
 
+	// 
+	// アクセッサ
+	// 
+
+	// テクスチャの名前をセット
+	void SetTextureName(const std::string& textureName);
+
+	// トランスフォーム
+	Vector2& GetPosition();
+	Vector2& GetSize();
+	float& GetRotate();
+
+	// UVトランスフォーム
+	Vector2& GetUVTranslate();
+	Vector2& GetUVScale();
+	float& GetUVRotate();
+
+	// 生存フラグを取得
+	bool& GetIsAlive();
+	// 描画フラグを取得
+	bool& GetIsShow();
+
 private:
 	// 頂点リソースの作成
 	void CreateVertexResource();
@@ -75,6 +97,11 @@ private:
 	bool isFlipX_ = false;
 	// 上下フリップ
 	bool isFlipY_ = false;
+
+	// 生存フラグ
+	bool isAlive_ = true;
+	// 描画フラグ
+	bool isShow_ = true;
 
 private:
 	// WVP用のリソース
