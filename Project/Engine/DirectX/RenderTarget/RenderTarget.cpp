@@ -7,10 +7,11 @@
 #include "DirectX/DirectXCommand/DirectXCommand.h"
 #include "DirectX/SwapChain/SwapChain.h"
 #include "DirectX/DepthStencil/DepthStencil.h"
+#include "ViewManagers/RTVManager/RTVManager.h"
 #include "RenderTextureManager/RenderTextureManager.h"
 
-RenderTarget::RenderTarget(DirectXCommand* command, SwapChain* swapChain, DepthStencil* depthStencil, RenderTextureManager* renderTextureManager) {
-	Initialize(command, swapChain, depthStencil, renderTextureManager);
+RenderTarget::RenderTarget(DirectXCommand* command, SwapChain* swapChain, DepthStencil* depthStencil, RTVManager* rtvManager, RenderTextureManager* renderTextureManager) {
+	Initialize(command, swapChain, depthStencil, rtvManager, renderTextureManager);
 	Logger::Log("RenderTarget Initialize\n");
 }
 
@@ -18,10 +19,11 @@ RenderTarget::~RenderTarget() {
 	Logger::Log("RenderTarget Finalize\n");
 }
 
-void RenderTarget::Initialize(DirectXCommand* command, SwapChain* swapChain, DepthStencil* depthStencil, RenderTextureManager* renderTextureManager) {
+void RenderTarget::Initialize(DirectXCommand* command, SwapChain* swapChain, DepthStencil* depthStencil, RTVManager* rtvManager, RenderTextureManager* renderTextureManager) {
 	SetDirectXCommand(command);
 	SetSwapChain(swapChain);
 	SetDepthStencil(depthStencil);
+	SetRTVManager(rtvManager);
 	SetRenderTextureManager(renderTextureManager);
 }
 
@@ -29,15 +31,15 @@ void RenderTarget::SetRenderTarget(const RenderTargetType& type) {
 	// RTVハンドルの受取先
 	D3D12_CPU_DESCRIPTOR_HANDLE rtvHandle{};
 	switch (type) {
-		case RenderTargetType::SwapChain:
-			// SwapChainの現在のバックバッファのRTVハンドルを取得
-			rtvHandle = swapChain_->GetCurrentBackBufferRTVHandle();
-			break;
-		case RenderTargetType::SimpleRenderTexture:
-			// RenderTextureのRTVハンドルを取得
-			BaseRenderTexture* renderTexture = renderTextureManager_->GetRenderTexture(RenderTextureType::Simple);
-			rtvHandle = renderTexture->GetRTVHandle();
-			break;
+	case RenderTargetType::SwapChain:
+		// SwapChainの現在のバックバッファのRTVハンドルを取得
+		rtvHandle = swapChain_->GetCurrentBackBufferRTVHandle();
+		break;
+	case RenderTargetType::SimpleRenderTexture:
+		// RenderTextureのRTVハンドルを取得
+		BaseRenderTexture* renderTexture = renderTextureManager_->GetRenderTexture(RenderTextureType::Simple);
+		rtvHandle = renderTexture->GetRTVHandle();
+		break;
 	}
 	// デプスステンシルのDSVハンドルを取得
 	D3D12_CPU_DESCRIPTOR_HANDLE dsvhandle = depthStencil_->GetDepthStencilResorceCPUHandle();
@@ -51,27 +53,27 @@ void RenderTarget::ClearRenderTarget(const RenderTargetType& type) {
 	// クリアカラー
 	float clearColor[4]{};
 	switch (type) {
-		case RenderTargetType::SwapChain:
-			// SwapChainの現在のバックバッファのRTVハンドルを取得
-			rtvHandle = swapChain_->GetCurrentBackBufferRTVHandle();
-			// クリアカラー変換
-			clearColor[0] = clearColor_.r;
-			clearColor[1] = clearColor_.g;
-			clearColor[2] = clearColor_.b;
-			clearColor[3] = clearColor_.a;
-			break;
-		case RenderTargetType::SimpleRenderTexture:
-			// RenderTextureのRTVハンドルを取得
-			BaseRenderTexture* renderTexture = renderTextureManager_->GetRenderTexture(RenderTextureType::Simple);
-			rtvHandle = renderTexture->GetRTVHandle();
-			// RenderTextureのクリアカラーを取得
-			Vector4 renderTextureClearColor = renderTexture->GetClearColor();
-			// クリアカラー変換
-			clearColor[0] = renderTextureClearColor.x;
-			clearColor[1] = renderTextureClearColor.y;
-			clearColor[2] = renderTextureClearColor.z;
-			clearColor[3] = renderTextureClearColor.w;
-			break;
+	case RenderTargetType::SwapChain:
+		// SwapChainの現在のバックバッファのRTVハンドルを取得
+		rtvHandle = swapChain_->GetCurrentBackBufferRTVHandle();
+		// クリアカラー変換
+		clearColor[0] = clearColor_.r;
+		clearColor[1] = clearColor_.g;
+		clearColor[2] = clearColor_.b;
+		clearColor[3] = clearColor_.a;
+		break;
+	case RenderTargetType::SimpleRenderTexture:
+		// RenderTextureのRTVハンドルを取得
+		BaseRenderTexture* renderTexture = renderTextureManager_->GetRenderTexture(RenderTextureType::Simple);
+		rtvHandle = renderTexture->GetRTVHandle();
+		// RenderTextureのクリアカラーを取得
+		Vector4 renderTextureClearColor = renderTexture->GetClearColor();
+		// クリアカラー変換
+		clearColor[0] = renderTextureClearColor.x;
+		clearColor[1] = renderTextureClearColor.y;
+		clearColor[2] = renderTextureClearColor.z;
+		clearColor[3] = renderTextureClearColor.w;
+		break;
 	}
 	// 指定したレンダーターゲットと色で画面全体をクリアする
 	directXCommand_->GetList()->ClearRenderTargetView(rtvHandle, clearColor, 0, nullptr);
@@ -90,6 +92,11 @@ void RenderTarget::SetSwapChain(SwapChain* swapChain) {
 void RenderTarget::SetDepthStencil(DepthStencil* depthStencil) {
 	assert(depthStencil);
 	depthStencil_ = depthStencil;
+}
+
+void RenderTarget::SetRTVManager(RTVManager* rtvManager) {
+	assert(rtvManager);
+	rtvManager_ = rtvManager;
 }
 
 void RenderTarget::SetRenderTextureManager(RenderTextureManager* renderTextureManager) {

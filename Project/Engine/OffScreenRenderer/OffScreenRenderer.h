@@ -2,6 +2,7 @@
 
 // MyHedder
 #include "Enums/PostEffectPipelineEnum.h"
+#include "Enums/RenderTextureType.h"
 
 // 前方宣言
 class DirectXCommand;
@@ -27,6 +28,9 @@ public:
 	// ポストエフェクトをかけたレンダーテクスチャを描画
 	void DrawCurrentRenderTexture();
 
+	// 現在描画中のレンダーテクスチャのsrvインデックスを取得
+	uint32_t GetCurrentRenderTextureSrvIndex();
+
 private:
 	void SetDirectXCommand(DirectXCommand* directXCommand);
 	void SetRenderTarget(RenderTarget* renderTarget);
@@ -35,7 +39,7 @@ private:
 private:
 	// 現在のポストエフェクト
 	PostEffectPipelineStateType currentPostEffect_ = PostEffectPipelineStateType::None;
-
+	RenderTextureType currentRenderTextureType_{};
 private:
 	DirectXCommand* directXCommand_ = nullptr;
 	RenderTarget* renderTarget_ = nullptr;

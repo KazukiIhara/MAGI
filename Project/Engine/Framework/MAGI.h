@@ -86,7 +86,7 @@
 //
 // AppSystems
 //
-#include "PostEffectSwitcher/PostEffectSwitcher.h"
+#include "OffScreenRenderer/OffScreenRenderer.h"
 
 // 
 // Data入出力クラス
@@ -540,7 +540,7 @@ protected:
 	//
 	// AppSystems
 	//
-	static std::unique_ptr<OffScreenRenderer> offScreenRenderer;
+	static std::unique_ptr<OffScreenRenderer> offScreenRenderer_;
 
 	//
 	// Data入出力クラス

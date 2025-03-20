@@ -82,7 +82,7 @@ std::unique_ptr<SceneManager<GameData>> MAGISYSTEM::sceneManager_ = nullptr;
 //
 // AppSystem
 //
-std::unique_ptr<OffScreenRenderer> MAGISYSTEM::offScreenRenderer = nullptr;
+std::unique_ptr<OffScreenRenderer> MAGISYSTEM::offScreenRenderer_ = nullptr;
 
 //
 // Data入出力クラス
@@ -143,7 +143,7 @@ void MAGISYSTEM::Initialize() {
 	// ResouceBarrier
 	resourceBarrier_ = std::make_unique<ResourceBarrier>(directXCommand_.get(), swapChain_.get(), renderTextureManager_.get());
 	// RenderTarget
-	renderTarget_ = std::make_unique<RenderTarget>(directXCommand_.get(), swapChain_.get(), depthStencil_.get(), renderTextureManager_.get());
+	renderTarget_ = std::make_unique<RenderTarget>(directXCommand_.get(), swapChain_.get(), depthStencil_.get(), rtvManager_.get(), renderTextureManager_.get());
 	// Viewport
 	viewport_ = std::make_unique<Viewport>(directXCommand_.get());
 	// Scissor
@@ -197,7 +197,7 @@ void MAGISYSTEM::Initialize() {
 
 
 	// PostEffectSwitcher
-	offScreenRenderer = std::make_unique<OffScreenRenderer>(directXCommand_.get(), renderTarget_.get(), renderTextureManager_.get(), postEffectPipelineManager_.get());
+	offScreenRenderer_ = std::make_unique<OffScreenRenderer>(directXCommand_.get(), renderTarget_.get(), renderTextureManager_.get(), postEffectPipelineManager_.get());
 
 
 	// DataIO
@@ -210,7 +210,7 @@ void MAGISYSTEM::Initialize() {
 	imguiController_ = std::make_unique<ImGuiController>(windowApp_.get(), dxgi_.get(), directXCommand_.get(), srvuavManager_.get());
 
 	// GUI
-	gui_ = std::make_unique<GUI>(deltaTimer_.get(), srvuavManager_.get(), dataIO_.get(), textureDataCantainer_.get());
+	gui_ = std::make_unique<GUI>(deltaTimer_.get(), srvuavManager_.get(), dataIO_.get(), offScreenRenderer_.get());
 
 	// 初期化完了ログ
 	Logger::Log("MAGISYSTEM Initialize\n");
@@ -239,8 +239,8 @@ void MAGISYSTEM::Finalize() {
 	}
 
 	// PostEffectSwitcher
-	if (offScreenRenderer) {
-		offScreenRenderer.reset();
+	if (offScreenRenderer_) {
+		offScreenRenderer_.reset();
 	}
 
 	// SceneManager
@@ -450,9 +450,14 @@ void MAGISYSTEM::Update() {
 		endRequest_ = true;
 	}
 
-	// デバッグモード切替
+	// デバッグカメラモード切替
 	if (directInput_->TriggerKey(DIK_P)) {
 		camera3DManager_->GetIsDebugCamera() = !camera3DManager_->GetIsDebugCamera();
+	}
+
+	// エンジンUI描画切り替え
+	if (directInput_->TriggerKey(DIK_O)) {
+		gui_->GetIsShowMainUI() = !gui_->GetIsShowMainUI();
 	}
 
 	// ImGui開始処理
@@ -497,13 +502,6 @@ void MAGISYSTEM::Update() {
 	// グローバルデータ
 	grobalDataManager_->Update();
 
-	// UI描画フラグがtrueなら描画
-	if (gui_->GetIsShowEngineWindow()) {
-		gui_->ShowMainUI();
-	}
-
-	// ImGui内部コマンド生成
-	imguiController_->EndFrame();
 }
 
 void MAGISYSTEM::Draw() {
@@ -513,7 +511,7 @@ void MAGISYSTEM::Draw() {
 	// 
 
 	// レンダーターゲットをセット、クリア
-	offScreenRenderer->SetClearRenderTarget();
+	offScreenRenderer_->SetClearRenderTarget();
 
 	// 深度をクリア
 	depthStencil_->ClearDepthView();
@@ -533,18 +531,11 @@ void MAGISYSTEM::Draw() {
 	// 描画処理
 	// 
 
-
 	//
 	// シーンの描画処理
 	//
 	sceneManager_->Draw();
 
-
-	// 
-	// ゲームオブジェクトマネージャの描画処理(まだない)
-	// 
-
-	gameObject3DManager_->Draw();
 
 	// 
 	// Object3Dの描画前処理
@@ -583,11 +574,10 @@ void MAGISYSTEM::Draw() {
 	// 
 
 
-
-
 	// リソースバリアを設定
 	resourceBarrier_->PreDrawRenderTextureResourceBarrierTransition();
 	resourceBarrier_->PreDrawSwapChainResourceBarrierTransition();
+
 
 	// レンダーターゲットを設定
 	renderTarget_->SetRenderTarget(RenderTargetType::SwapChain);
@@ -598,23 +588,28 @@ void MAGISYSTEM::Draw() {
 	// シザー矩形の設定
 	scissorRect_->SettingScissorRect();
 
-	//
-	// RenderTextureをSwapChainに描画
-	//
-	if (gui_->GetIsShowEngineWindow()) {
-		offScreenRenderer->DrawCurrentRenderTexture();
+
+	// UI描画フラグによって処理を変更
+	if (gui_->GetIsShowMainUI()) {
+		// エンジンUIを描画
+		gui_->ShowMainUI();
+	} else {
+		// RenderTextureをSwapChainに描画
+		offScreenRenderer_->DrawCurrentRenderTexture();
 	}
+
 
 	//
 	// ImGui描画処理
 	//
+
+	// ImGui内部コマンド生成
+	imguiController_->EndFrame();
+	// 描画
 	imguiController_->Draw();
 
 	// リソースバリアを描画後の状態にする
-
-
 	resourceBarrier_->PostDrawRenderTextureResourceBarrierTransition();
-
 	resourceBarrier_->PostDrawSwapChainResourceBarrierTransition();
 
 	// コマンドを閉じて実行

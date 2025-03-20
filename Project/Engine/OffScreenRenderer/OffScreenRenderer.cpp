@@ -56,20 +56,21 @@ void OffScreenRenderer::DrawCurrentRenderTexture() {
 	// PSOを設定
 	commandList->SetPipelineState(postEffectPipelineManager_->GetPipelineState(currentPostEffect_, BlendMode::None));
 
-	// レンダーテクスチャのタイプ
-	RenderTextureType renderTextureType{};
-
 	// ポストエフェクトに応じて最適なレンダーテクスチャを選択
 	switch (currentPostEffect_) {
 		case PostEffectPipelineStateType::None:
-			renderTextureType = RenderTextureType::Simple;
+			currentRenderTextureType_ = RenderTextureType::Simple;
 			break;
 		case PostEffectPipelineStateType::Grayscale:
-			renderTextureType = RenderTextureType::Simple;
+			currentRenderTextureType_ = RenderTextureType::Simple;
 			break;
 	}
 	// レンダーテクスチャ描画
-	renderTextureManager_->Draw(renderTextureType);
+	renderTextureManager_->Draw(currentRenderTextureType_);
+}
+
+uint32_t OffScreenRenderer::GetCurrentRenderTextureSrvIndex() {
+	return renderTextureManager_->GetRenderTexture(currentRenderTextureType_)->GetSrvIndex();
 }
 
 void OffScreenRenderer::SetDirectXCommand(DirectXCommand* directXCommand) {

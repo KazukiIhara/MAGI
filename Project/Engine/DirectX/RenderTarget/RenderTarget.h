@@ -6,6 +6,7 @@
 class DirectXCommand;
 class SwapChain;
 class DepthStencil;
+class RTVManager;
 class RenderTextureManager;
 
 /// <summary>
@@ -13,11 +14,11 @@ class RenderTextureManager;
 /// </summary>
 class RenderTarget {
 public:
-	RenderTarget(DirectXCommand* command, SwapChain* swapChain, DepthStencil* depthStencil, RenderTextureManager* renderTextureManager);
+	RenderTarget(DirectXCommand* command, SwapChain* swapChain, DepthStencil* depthStencil, RTVManager* rtvManager, RenderTextureManager* renderTextureManager);
 	~RenderTarget();
 
 	// 初期化
-	void Initialize(DirectXCommand* command, SwapChain* swapChain, DepthStencil* depthStencil, RenderTextureManager* renderTextureManager);
+	void Initialize(DirectXCommand* command, SwapChain* swapChain, DepthStencil* depthStencil, RTVManager* rtvManager,RenderTextureManager* renderTextureManager);
 	// レンダーターゲットのセット
 	void SetRenderTarget(const RenderTargetType& type);
 	// レンダーターゲットのクリア
@@ -30,6 +31,8 @@ private:
 	void SetSwapChain(SwapChain* swapChain);
 	// デプスステンシルをセット
 	void SetDepthStencil(DepthStencil* depthStencil);
+	// RTVマネージャをセット
+	void SetRTVManager(RTVManager* rtvManager);
 	// レンダーテクスチャマネージャをセット
 	void SetRenderTextureManager(RenderTextureManager* renderTextureManager);
 
@@ -43,6 +46,8 @@ private:
 	SwapChain* swapChain_ = nullptr;
 	// デプスステンシルのインスタンスを受け取る箱
 	DepthStencil* depthStencil_ = nullptr;
+	// RTVマネージャ
+	RTVManager* rtvManager_ = nullptr;
 	// レンダーテクスチャマネージャのインスタンスを受け取る箱
 	RenderTextureManager* renderTextureManager_ = nullptr;
 };

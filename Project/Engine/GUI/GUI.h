@@ -4,17 +4,14 @@
 #include <vector>
 #include <memory>
 
+// ImGui
+#include "imgui/imgui.h"
+
 // 前方宣言
 class DeltaTimer;
-class SRVUAVManager;
 class DataIO;
-class TextureDataContainer;
-
-class Renderer3DManager;
-class ColliderManager;
-
-class BaseRenderable3D;
-class BaseCollider3D;
+class SRVUAVManager;
+class OffScreenRenderer;
 
 // エンジンのグラフィックUIクラス
 class GUI {
@@ -23,7 +20,7 @@ public:
 		DeltaTimer* deltaTimer,
 		SRVUAVManager* srvUavManager,
 		DataIO* dataIO,
-		TextureDataContainer* textureDataContainer
+		OffScreenRenderer* offScreenRenderer
 	);
 
 	// メインUI描画
@@ -34,17 +31,43 @@ public:
 	//
 
 	// エンジンウィンドウの表示フラグ
-	bool GetIsShowEngineWindow()const;
-	void SetIsShowEngineWindow(bool isShowWindow);
+	bool& GetIsShowMainUI();
+
 private:
 	// FPS表示
 	void ShowFPS();
 	// DeltaTime表示
 	void ShowDeltaTime();
 
+	// メインタブ描画
+	void ShowMainTab();
+
+	// シーンウィンドウ描画
+	void ShowSceneWindow();
+
+	// ヒエラルキー描画
+	void ShowHierarchyWindow();
+
+	// インスペクター描画
+	void ShowInspectorWindow();
+
+	// プロジェクトファイル描画
+	void ShowProjectWindow();
+
 private:
 	// エンジンのウィンドウを描画するフラグ
-	bool isShowEngineWindow_ = false;
+	bool isShowMainUI_ = false;
+
+private:
+	// 
+	// UI変数
+	// 
+
+	// ヒエラルキーウィンドウ
+	ImVec2 hierarchyWindowPosition_ = { 0.0f,64.0f };
+
+		// シーンウィンドウ
+	ImVec2 sceneTextureSize_ = { 1024.0f,576.0f };
 
 private:
 	// DeltaTimerのインスタンス
@@ -53,11 +76,6 @@ private:
 	SRVUAVManager* srvUavManager_ = nullptr;
 	// DataIOのインスタンス
 	DataIO* dataIO_ = nullptr;
-	// TextureDataContainerのインスタンス
-	TextureDataContainer* textureDataContainer_ = nullptr;
-
-	// 3D描画マネージャのインスタンス
-	Renderer3DManager* renderer3DManager_ = nullptr;
-	// コライダーマネージャのインスタンス
-	ColliderManager* colliderManager_ = nullptr;
+	// OffScreenRendererのインスタンス
+	OffScreenRenderer* offScreenRenderer_ = nullptr;
 };
