@@ -23,6 +23,8 @@ public:
 	// 初期化
 	virtual void Initialize();
 	// 更新
+	virtual void Update();
+	// データ更新
 	virtual void UpdateData();
 	// 定数バッファに転送
 	void TransferCamera(uint32_t rootParameterIndex);

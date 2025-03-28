@@ -34,6 +34,12 @@ void Camera3D::Initialize() {
 	MapCameraData();
 }
 
+void Camera3D::Update() {
+	// カメラ特有の処理
+
+
+}
+
 void Camera3D::UpdateData() {
 	worldTransform_.Update();
 	worldPosition = ExtractionWorldPos(worldTransform_.worldMatrix_);

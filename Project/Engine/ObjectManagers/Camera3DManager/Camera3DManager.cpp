@@ -25,7 +25,12 @@ void Camera3DManager::Update() {
 		return;
 	}
 #endif // _DEBUG
-
+	// 現在選択中のカメラを見つけて更新
+	Camera3D* currentCamera = Find(currentCameraName_);
+	if (currentCamera) {
+		currentCamera->Update();
+		currentCamera->UpdateData();
+	}
 }
 
 void Camera3DManager::TransferCurrentCamera(uint32_t rootParameterIndex) {
