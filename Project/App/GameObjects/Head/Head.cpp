@@ -15,6 +15,6 @@ void Head::Initialize() {
 
 void Head::Update() {
 	if (MAGISYSTEM::TriggerKey(DIK_V)) {
-		isAlive = false;
+		DetachParent();
 	}
 }

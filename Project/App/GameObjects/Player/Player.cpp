@@ -20,7 +20,6 @@ void Player::Update() {
 	}
 
 	if (MAGISYSTEM::TriggerKey(DIK_G)) {
-		isAlive = false;
 	}
 
 }

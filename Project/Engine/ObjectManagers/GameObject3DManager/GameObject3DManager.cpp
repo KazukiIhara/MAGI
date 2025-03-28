@@ -86,7 +86,7 @@ void GameObject3DManager::DeleteGarbages() {
 
 			// 子がいる場合
 			if (!it->second->GetChildren()->empty()) {
-				// すべての子から親を削除
+				// すべての子から自身を削除
 				for (auto& child : *it->second->GetChildren()) {
 					child->DetachParent();
 				}

@@ -83,8 +83,6 @@ void GameObject3D::AddChild(GameObject3D* child) {
 
 void GameObject3D::DetachParent() {
 	if (parent_) {
-		// 親のリストから自身を削除
-		parent_->GetChildren()->remove(this);
 		// ワールドトランスフォームのペアレントを削除
 		worldTransform_->parent_ = nullptr;
 		// 親を削除
@@ -102,6 +100,9 @@ void GameObject3D::DetachChild(GameObject3D* child) {
 	if (child->GetParent() != this) {
 		return;
 	}
+
+	// 子リストから指定した子を削除
+	children_.remove(child);
 
 	// 子から親を削除
 	child->DetachParent();
