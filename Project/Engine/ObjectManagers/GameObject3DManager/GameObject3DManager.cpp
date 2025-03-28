@@ -81,6 +81,22 @@ void GameObject3DManager::DeleteGarbages() {
 		if (!it->second->isAlive) {
 			// 付随するコンポーネントの削除フラグを立てる関数を呼ぶ
 			it->second->DeleteComponents();
+
+			// 親子関係の解消
+
+			// 子がいる場合
+			if (!it->second->GetChildren()->empty()) {
+				// すべての子から親を削除
+				for (auto& child : *it->second->GetChildren()) {
+					child->RemoveParent();
+				}
+			}
+
+			// 親がいる場合
+			if (auto* parent = it->second->GetParent()) {
+				parent->RemoveChild(it->second.get());
+			}
+
 			// 削除
 			it = gameObjects3D_.erase(it);
 		} else {

@@ -46,11 +46,20 @@ public:
 	// 親オブジェクトをセット
 	void SetParent(GameObject3D* parent);
 
+	// 親から離れる
+	void RemoveParent();
+
+	// 子を削除
+	void RemoveChild(GameObject3D* child);
+
 	// 親のポインタを取得
 	GameObject3D* GetParent();
 
 	// 子のリストのポインタを取得
-	std::list<GameObject3D*> GetChildren();
+	std::list<GameObject3D*>* GetChildren();
+
+	// 名前から子のポインタを取得
+	GameObject3D* GetChild(const std::string& childName);
 
 	//
 	// トランスフォーム取得関数

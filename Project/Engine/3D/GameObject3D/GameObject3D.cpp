@@ -33,7 +33,15 @@ void GameObject3D::Draw() {
 }
 
 void GameObject3D::UpdateChildren() {
-
+	if (!children_.empty()) {
+		for (auto& child : children_) {
+			if (child) {
+				child->Update();
+				child->UpdateWorldTransform();
+				child->UpdateChildren();
+			}
+		}
+	}
 }
 
 void GameObject3D::DeleteComponents() {
@@ -63,15 +71,38 @@ void GameObject3D::SetParent(GameObject3D* parent) {
 	worldTransform_->parent_ = parent->GetWorldTransform();
 
 	// 親の子リストに自身を挿入
-	parent_->GetChildren().push_back(this);
+	parent_->GetChildren()->push_back(this);
+}
+
+void GameObject3D::RemoveParent() {
+	// ワールドトランスフォームのペアレントを削除
+	worldTransform_->parent_ = nullptr;
+
+	// 親を消す
+	parent_ = nullptr;
+}
+
+void GameObject3D::RemoveChild(GameObject3D* child) {
+	children_.remove(child);
+	// 子の親ポインタをクリア
+	child->RemoveParent();
 }
 
 GameObject3D* GameObject3D::GetParent() {
 	return parent_;
 }
 
-std::list<GameObject3D*> GameObject3D::GetChildren() {
-	return children_;
+std::list<GameObject3D*>* GameObject3D::GetChildren() {
+	return &children_;
+}
+
+GameObject3D* GameObject3D::GetChild(const std::string& childName) {
+	for (auto& child : children_) {
+		if (child->name == childName) {
+			return child;
+		}
+	}
+	return nullptr; // 見つからなかった場合
 }
 
 Vector3& GameObject3D::GetScale() {

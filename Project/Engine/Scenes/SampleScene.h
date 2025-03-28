@@ -7,6 +7,7 @@
 #include "2D/Object2D/Object2D.h"
 
 #include "GameObjects/Player/Player.h"
+#include "GameObjects/Head/Head.h"
 
 // サンプルシーン
 template <typename Data>
@@ -26,6 +27,8 @@ private:
 
 	// プレイヤー
 	std::unique_ptr<Player> player_ = nullptr;
+	// 頭
+	std::unique_ptr<Head> head_ = nullptr;
 };
 
 template<typename Data>
@@ -62,16 +65,32 @@ inline void SampleScene<Data>::Initialize() {
 	MAGISYSTEM::AddPunctualLight("SampleLight");
 
 	// レンダラー
-	MAGISYSTEM::CreatePrimitiveRenderer3D("Sphere1",Primitive3DType::Sphere);
 
+	// プレイヤー
+	MAGISYSTEM::CreatePrimitiveRenderer3D("Sphere1", Primitive3DType::Sphere);
+
+	// 頭
+	MAGISYSTEM::CreatePrimitiveRenderer3D("Sphere2", Primitive3DType::Sphere);
+
+	//
 	// ゲームオブジェクト
+	//
 
 	// プレイヤーを作成
-	player_ = std::make_unique<Player>("player");
+	player_ = std::make_unique<Player>("Player");
 	player_->AddRenderer3D(MAGISYSTEM::FindRenderer3D("Sphere1"));
 
 	// マネージャにプレイヤーを追加
 	MAGISYSTEM::AddGameObject3D(std::move(player_));
+
+	// 頭を作成
+	head_ = std::make_unique<Head>("Head");
+	head_->Initialize();
+	head_->AddRenderer3D(MAGISYSTEM::FindRenderer3D("Sphere2"));
+	
+	// マネージャに頭を追加
+	MAGISYSTEM::AddGameObject3D(std::move(head_));
+
 
 	// パーティクルを作成
 	MAGISYSTEM::CreatePrimitiveParticleGroup3D("Plane", Primitive3DType::Plane);
