@@ -88,13 +88,13 @@ void GameObject3DManager::DeleteGarbages() {
 			if (!it->second->GetChildren()->empty()) {
 				// すべての子から親を削除
 				for (auto& child : *it->second->GetChildren()) {
-					child->RemoveParent();
+					child->DetachParent();
 				}
 			}
 
 			// 親がいる場合
 			if (auto* parent = it->second->GetParent()) {
-				parent->RemoveChild(it->second.get());
+				parent->DetachChild(it->second.get());
 			}
 
 			// 削除

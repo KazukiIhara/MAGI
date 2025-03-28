@@ -46,11 +46,14 @@ public:
 	// 親オブジェクトをセット
 	void SetParent(GameObject3D* parent);
 
+	// 子供を追加
+	void AddChild(GameObject3D* child);
+
 	// 親から離れる
-	void RemoveParent();
+	void DetachParent();
 
 	// 子を削除
-	void RemoveChild(GameObject3D* child);
+	void DetachChild(GameObject3D* child);
 
 	// 親のポインタを取得
 	GameObject3D* GetParent();

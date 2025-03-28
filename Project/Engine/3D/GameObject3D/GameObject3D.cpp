@@ -33,6 +33,7 @@ void GameObject3D::Draw() {
 }
 
 void GameObject3D::UpdateChildren() {
+	// 子がいる場合
 	if (!children_.empty()) {
 		for (auto& child : children_) {
 			if (child) {
@@ -74,18 +75,33 @@ void GameObject3D::SetParent(GameObject3D* parent) {
 	parent_->GetChildren()->push_back(this);
 }
 
-void GameObject3D::RemoveParent() {
-	// ワールドトランスフォームのペアレントを削除
-	worldTransform_->parent_ = nullptr;
-
-	// 親を消す
-	parent_ = nullptr;
+void GameObject3D::AddChild(GameObject3D* child) {
+	child->SetParent(this);
 }
 
-void GameObject3D::RemoveChild(GameObject3D* child) {
-	children_.remove(child);
-	// 子の親ポインタをクリア
-	child->RemoveParent();
+void GameObject3D::DetachParent() {
+	if (parent_) {
+		// 親のリストから自身を削除
+		parent_->GetChildren()->remove(this);
+		// ワールドトランスフォームのペアレントを削除
+		worldTransform_->parent_ = nullptr;
+		// 親を削除
+		parent_ = nullptr;
+	}
+}
+
+void GameObject3D::DetachChild(GameObject3D* child) {
+	// 子がいなければ何もしない
+	if (!child) {
+		return;
+	}
+	// 自分が親でなければ何もしない
+	if (child->GetParent() != this) {
+		return;
+	}
+
+	// 子から親を削除
+	child->DetachParent();
 }
 
 GameObject3D* GameObject3D::GetParent() {
