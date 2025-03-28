@@ -59,17 +59,6 @@ std::string GameObject3DManager::Add(std::unique_ptr<GameObject3D> newGameObject
 	return uniqueName;
 }
 
-void GameObject3DManager::Remove(const std::string& objectName) {
-	// 指定した名前のオブジェクトを検索
-	if (gameObjects3D_.contains(objectName)) {
-		// 見つかったら消す
-		gameObjects3D_.erase(objectName);
-	} else {
-		// 指定した名前のオブジェクトがない場合止める
-		assert(false && "GameObject3D Not Found");
-	}
-}
-
 GameObject3D* GameObject3DManager::Find(const std::string& objectName) {
 	// 指定した名前のオブジェクトを検索
 	auto it = gameObjects3D_.find(objectName);
@@ -81,4 +70,18 @@ GameObject3D* GameObject3DManager::Find(const std::string& objectName) {
 
 	// 見つからなかった場合は nullptr を返す
 	return nullptr;
+}
+
+void GameObject3DManager::DeleteGarbages() {
+	for (auto it = gameObjects3D_.begin(); it != gameObjects3D_.end(); ) {
+		// isAlive が false なら要素を削除
+		if (!it->second->isAlive) {
+			// 付随するコンポーネントの削除フラグを立てる関数を呼ぶ
+			it->second->DeleteComponents();
+			// 削除
+			it = gameObjects3D_.erase(it);
+		} else {
+			++it;
+		}
+	}
 }

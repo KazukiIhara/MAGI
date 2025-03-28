@@ -26,7 +26,7 @@ public:
 	// コライダーをクリア
 	void Clear();
 	// 削除フラグが立っているコライダーを削除
-	void DeleteGarbage();
+	void DeleteGarbages();
 
 	// 生成された全コライダーのリストを取得
 	const std::vector<std::unique_ptr<BaseCollider3D>>& GetColliders() const;

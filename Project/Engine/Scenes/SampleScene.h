@@ -98,6 +98,8 @@ inline void SampleScene<Data>::Initialize() {
 
 	// 音声再生
 	MAGISYSTEM::PlayLoopWaveSound("Alarm01.wav");
+
+
 }
 
 template<typename Data>

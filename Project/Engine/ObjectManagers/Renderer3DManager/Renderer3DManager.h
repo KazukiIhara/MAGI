@@ -25,9 +25,14 @@ public:
 	std::string CreateSkinningRenderer(const std::string& name, const std::string& modelName);
 	void Remove(const std::string& name);
 
+	// 名前からレンダラーを検索
 	BaseRenderable3D* Find(const std::string& name);
 
+	// レンダラーをクリア
 	void Clear();
+
+	// 削除フラグの立っているレンダラーを削除
+	void DeleteGarbages();
 
 	// 生成してある全オブジェクトのリストを取得
 	const std::vector<std::unique_ptr<BaseRenderable3D>>& GetRenderers() const;

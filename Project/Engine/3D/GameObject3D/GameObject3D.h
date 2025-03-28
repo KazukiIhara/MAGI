@@ -29,6 +29,9 @@ public:
 	void UpdateWorldTransform();
 	void Draw();
 
+	// 全コンポーネントを削除
+	void DeleteComponents();
+
 	//
 	// トランスフォーム取得関数
 	//

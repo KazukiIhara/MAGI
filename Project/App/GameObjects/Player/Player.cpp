@@ -18,4 +18,9 @@ void Player::Update() {
 	if (MAGISYSTEM::PushKey(DIK_A)) {
 		GetTranslate().x -= 0.01f;
 	}
+
+	if (MAGISYSTEM::TriggerKey(DIK_G)) {
+		isAlive = false;
+	}
+
 }

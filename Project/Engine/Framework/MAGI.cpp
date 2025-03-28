@@ -622,6 +622,23 @@ void MAGISYSTEM::Draw() {
 	directXCommand_->ResetCommand();
 }
 
+void MAGISYSTEM::DeleteGarbages() {
+	// 
+	// 3Dオブジェクト
+	// 
+
+	// ゲームオブジェクト3D
+	gameObject3DManager_->DeleteGarbages();
+	// 描画オブジェクト3D
+	renderer3DManager_->DeleteGarbages();
+	// コライダー3D
+	colliderManager_->DeleteGarbages();
+
+
+
+
+}
+
 void MAGISYSTEM::Run() {
 	// 初期化
 	Initialize();
@@ -637,6 +654,10 @@ void MAGISYSTEM::Run() {
 
 		// 描画
 		Draw();
+
+		// 使用済みオブジェクトを削除
+		DeleteGarbages();
+
 	}
 
 	// 終了
@@ -920,10 +941,6 @@ void MAGISYSTEM::AddPunctualLight(const std::string& lightName, const PunctualLi
 	punctualLightManager_->AddNewLight(lightName, lightData);
 }
 
-void MAGISYSTEM::RemovePunctualLight(const std::string& lightName) {
-	punctualLightManager_->RemoveLight(lightName);
-}
-
 PunctualLightData& MAGISYSTEM::GetLightData(const std::string& lightName) {
 	return punctualLightManager_->GetPunctualLight(lightName);
 }
@@ -943,10 +960,6 @@ void MAGISYSTEM::CreateStaticRenderer3D(const std::string& name, const std::stri
 
 void MAGISYSTEM::CreateSkinningRenderer3D(const std::string& name, const std::string& modelName) {
 	renderer3DManager_->CreateSkinningRenderer(name, modelName);
-}
-
-void MAGISYSTEM::RemoveRenderer3D(const std::string& name) {
-	renderer3DManager_->Remove(name);
 }
 
 BaseRenderable3D* MAGISYSTEM::FindRenderer3D(const std::string& name) {
@@ -981,10 +994,6 @@ std::string MAGISYSTEM::CreatePrimitiveParticleGroup3D(const std::string& partic
 	return particleGroup3DManager_->CreatePrimitiveParticleGroup(particleGroupName, primitiveType, textureName);
 }
 
-void MAGISYSTEM::RemoveParticleGroup3D(const std::string& particleGraoupName) {
-	return particleGroup3DManager_->Remove(particleGraoupName);
-}
-
 BaseParticleGroup3D* MAGISYSTEM::FindParticleGroup3D(const std::string& particleGraoupName) {
 	return particleGroup3DManager_->Find(particleGraoupName);
 }
@@ -995,10 +1004,6 @@ const std::vector<std::unique_ptr<BaseParticleGroup3D>>& MAGISYSTEM::GetParticle
 
 void MAGISYSTEM::AddGameObject3D(std::unique_ptr<GameObject3D> newGameObject3D) {
 	gameObject3DManager_->Add(std::move(newGameObject3D));
-}
-
-void MAGISYSTEM::RemoveGameObject3D(const std::string& objectName) {
-	gameObject3DManager_->Remove(objectName);
 }
 
 GameObject3D* MAGISYSTEM::FindGameObject3D(const std::string& objectName) {
