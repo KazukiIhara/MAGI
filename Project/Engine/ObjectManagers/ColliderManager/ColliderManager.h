@@ -17,12 +17,16 @@ public:
 
 	void Update();
 
+	// 新規コライダー作成
 	std::string Create(const std::string& name, Collider3DType colliderType);
+	// 指定した名前のコライダーを削除
 	void Remove(const std::string& name);
-
+	// 指定し棚前のコライダーを取得
 	BaseCollider3D* Find(const std::string& name);
-
+	// コライダーをクリア
 	void Clear();
+	// 削除フラグが立っているコライダーを削除
+	void DeleteGarbages();
 
 	// 生成された全コライダーのリストを取得
 	const std::vector<std::unique_ptr<BaseCollider3D>>& GetColliders() const;

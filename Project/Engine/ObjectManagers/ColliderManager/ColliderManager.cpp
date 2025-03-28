@@ -92,6 +92,19 @@ void ColliderManager::Clear() {
 	currentID_ = 0;
 }
 
+void ColliderManager::DeleteGarbages() {
+	colliders_.erase(
+		std::remove_if(
+			colliders_.begin(),
+			colliders_.end(),
+			[](const std::unique_ptr<BaseCollider3D>& collider) {
+				return !collider->isAlive;
+			}
+		),
+		colliders_.end()
+	);
+}
+
 const std::vector<std::unique_ptr<BaseCollider3D>>& ColliderManager::GetColliders() const {
 	return colliders_;
 }

@@ -17,9 +17,12 @@ public:
 	void Update();
 	void Draw();
 
+	// 新規オブジェクトを追加
 	std::string Add(std::unique_ptr<GameObject3D> newGameObject);
-	void Remove(const std::string& objectName);
+	// 名前からオブジェクトを検索
 	GameObject3D* Find(const std::string& objectName);
+	// 削除フラグの立ったオブジェクトを削除する
+	void DeleteGarbages();
 
 private:
 	// ゲームオブジェクトコンテナ

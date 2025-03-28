@@ -32,6 +32,24 @@ void GameObject3D::Draw() {
 
 }
 
+void GameObject3D::DeleteComponents() {
+	// 付随する全レンダラーの削除フラグを立てる
+	for (auto& renderer3D : renderers3D_) {
+		if (renderer3D.second) {
+			renderer3D.second->isAlive = false;
+			renderer3D.second = nullptr;
+		}
+	}
+
+	// 付随する全コライダーの削除フラグを立てる
+	for (auto& collider3D : colliders3D_) {
+		if (collider3D.second) {
+			collider3D.second->isAlive = false;
+			collider3D.second = nullptr;
+		}
+	}
+}
+
 Vector3& GameObject3D::GetScale() {
 	return worldTransform_->scale_;
 }

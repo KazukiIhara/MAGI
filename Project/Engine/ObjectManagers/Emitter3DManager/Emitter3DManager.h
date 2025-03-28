@@ -18,9 +18,14 @@ public:
 
 	// エミッター作成
 	std::string CreateEmitter(const std::string& emitterName, const Vector3& position);
-
+	// 名前からエミッターを削除する
 	void Remove(const std::string& emitterName);
+	// 名前からエミッターを検索する
 	Emitter3D* Find(const std::string& emitterName);
+	// エミッターをクリア
+	void Clear();
+	// 削除フラグが立っているエミッターを削除
+	void DeleteGarbage();
 
 private:
 	// エミッターコンテナ

@@ -71,3 +71,20 @@ Emitter3D* Emitter3DManager::Find(const std::string& emitterName) {
 	assert(false && "Not Found Emitter3D");
 	return nullptr;
 }
+
+void Emitter3DManager::Clear() {
+	emitters3D_.clear();
+}
+
+void Emitter3DManager::DeleteGarbage() {
+	emitters3D_.erase(
+		std::remove_if(
+			emitters3D_.begin(),
+			emitters3D_.end(),
+			[](const std::unique_ptr<Emitter3D>& emitter) {
+				return !emitter->isAlive;
+			}
+		),
+		emitters3D_.end()
+	);
+}

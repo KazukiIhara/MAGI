@@ -110,9 +110,12 @@ public:
 	// 終了
 	void Finalize();
 	// 更新
-	virtual void Update();
+	void Update();
 	// 描画
-	virtual void Draw();
+	void Draw();
+
+	// 削除フラグの立っているオブジェクトを削除
+	void DeleteGarbages();
 
 	// 実行
 	void Run();
@@ -325,8 +328,6 @@ public: // エンジンの機能
 #pragma region GameObject3DManager
 	// 3Dゲームオブジェクトの追加
 	static void AddGameObject3D(std::unique_ptr<GameObject3D> newGameObject3D);
-	// 3Dゲームオブジェクトの削除
-	static void RemoveGameObject3D(const std::string& objectName);
 	// 3Dゲームオブジェクトを取得
 	static GameObject3D* FindGameObject3D(const std::string& objectName);
 #pragma endregion
@@ -347,8 +348,6 @@ public: // エンジンの機能
 #pragma region PunctualLightManager
 	// ライトの追加
 	static void AddPunctualLight(const std::string& lightName, const PunctualLightData& lightData = PunctualLightData{});
-	// ライトの削除
-	static void RemovePunctualLight(const std::string& lightName);
 	// ライトの取得
 	static PunctualLightData& GetLightData(const std::string& lightName);
 	// ライトの転送
@@ -363,8 +362,6 @@ public: // エンジンの機能
 	static void CreateStaticRenderer3D(const std::string& name, const std::string& modelName);
 	// スキニングモデル
 	static void CreateSkinningRenderer3D(const std::string& name, const std::string& modelName);
-	// 描画オブジェクトの削除
-	static void RemoveRenderer3D(const std::string& name);
 	// 描画オブジェクトの取得
 	static BaseRenderable3D* FindRenderer3D(const std::string& name);
 #pragma endregion
@@ -390,12 +387,10 @@ public: // エンジンの機能
 #pragma region ParticleGroup3DManager
 	// シンプル形状パーティクルグループの追加
 	static std::string CreatePrimitiveParticleGroup3D(const std::string& particleGroupName, const Primitive3DType& primitiveType, const std::string& textureName = "");
-	// パーティクルグループの削除
-	static void RemoveParticleGroup3D(const std::string& particleGraoupName);
 	// パーティクルグループの取得
 	static BaseParticleGroup3D* FindParticleGroup3D(const std::string& particleGraoupName);
 	// パーティクルリストを取得
-	static const std::vector<std::unique_ptr<BaseParticleGroup3D>> &GetParticleGroupList();
+	static const std::vector<std::unique_ptr<BaseParticleGroup3D>>& GetParticleGroupList();
 #pragma endregion
 
 #pragma region LineDrawer3D

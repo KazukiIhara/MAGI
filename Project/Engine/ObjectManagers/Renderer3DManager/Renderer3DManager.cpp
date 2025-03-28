@@ -86,7 +86,7 @@ std::string Renderer3DManager::CreateStaticRenderer(const std::string& name, con
 	renderers_.push_back(std::move(newRenderer3D));
 
 	// 作成したRendererの名前を返す
- 	return uniqueName;
+	return uniqueName;
 }
 
 std::string Renderer3DManager::CreateSkinningRenderer(const std::string& name, const std::string& modelName) {
@@ -147,6 +147,19 @@ BaseRenderable3D* Renderer3DManager::Find(const std::string& name) {
 
 void Renderer3DManager::Clear() {
 	renderers_.clear();
+}
+
+void Renderer3DManager::DeleteGarbages() {
+	renderers_.erase(
+		std::remove_if(
+			renderers_.begin(),
+			renderers_.end(),
+			[](const std::unique_ptr<BaseRenderable3D>& renderer3D) {
+				return !renderer3D->isAlive;
+			}
+		),
+		renderers_.end()
+	);
 }
 
 const std::vector<std::unique_ptr<BaseRenderable3D>>& Renderer3DManager::GetRenderers() const {

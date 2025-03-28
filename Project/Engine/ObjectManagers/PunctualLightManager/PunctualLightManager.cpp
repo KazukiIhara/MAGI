@@ -33,7 +33,7 @@ void PunctualLightManager::Initialize(DXGI* dxgi, DirectXCommand* directXCommand
 
 	// Srvの作成
 	srvIndex_ = srvuavManager_->Allocate();
-	srvuavManager_->CreateSrvStructuredBuffer(srvIndex_, lightsResource_.Get(), kMaxLightNum_, sizeof(PunctualLightData));
+	srvuavManager_->CreateSrvStructuredBuffer(srvIndex_, lightsResource_.Get(), kMaxLightNum_, sizeof(PunctualLightDataForGPU));
 }
 
 void PunctualLightManager::Update() {
@@ -52,13 +52,25 @@ void PunctualLightManager::Update() {
 			assert(false && "ライトの最大数を超えています。");
 			break;
 		}
-		lightsData_[index] = lightData;
+
+		// CPU側のデータをGPUに送るデータにコピー
+
+		lightsData_[index].type = lightData.type;
+		lightsData_[index].color = lightData.color;
+		lightsData_[index].intensity = lightData.intensity;
+		lightsData_[index].position = lightData.position;
+		lightsData_[index].radius = lightData.radius;
+		lightsData_[index].decay = lightData.decay;
+		lightsData_[index].direction = lightData.direction;
+		lightsData_[index].cosAngle = lightData.cosAngle;
+		lightsData_[index].cosFalloffStart = lightData.cosFalloffStart;
+
 		index++;
 	}
 
 	// 残りのライトデータをデフォルト値で埋める
 	for (; index < kMaxLightNum_; ++index) {
-		PunctualLightData defaultLight{};
+		PunctualLightDataForGPU defaultLight{};
 		lightsData_[index] = defaultLight;
 	}
 }
@@ -88,16 +100,6 @@ void PunctualLightManager::AddNewLight(const std::string& lightName, const Punct
 	light_.emplace(lightName, lightData);
 }
 
-void PunctualLightManager::RemoveLight(const std::string& lightName) {
-	// ライト名でライトを検索
-	auto it = light_.find(lightName);
-	if (it != light_.end()) {
-		light_.erase(it);
-	} else {
-		assert(false && "ライト名が存在しません。");
-	}
-}
-
 PunctualLightData& PunctualLightManager::GetPunctualLight(const std::string& lightName) {
 	// ライト名でライトを検索
 	auto it = light_.find(lightName);
@@ -109,8 +111,19 @@ PunctualLightData& PunctualLightManager::GetPunctualLight(const std::string& lig
 	}
 }
 
+void PunctualLightManager::DeleteGarbages() {
+	for (auto it = light_.begin(); it != light_.end(); ) {
+		if (!it->second.isAlive) {
+			// erase の戻り値が次の要素を指すイテレータになる
+			it = light_.erase(it);
+		} else {
+			++it;
+		}
+	}
+}
+
 void PunctualLightManager::CreateLightsResource() {
-	lightsResource_ = dxgi_->CreateBufferResource(sizeof(PunctualLightData) * kMaxLightNum_);
+	lightsResource_ = dxgi_->CreateBufferResource(sizeof(PunctualLightDataForGPU) * kMaxLightNum_);
 }
 
 void PunctualLightManager::MapLightsData() {
@@ -118,7 +131,7 @@ void PunctualLightManager::MapLightsData() {
 	lightsResource_->Map(0, nullptr, reinterpret_cast<void**>(&lightsData_));
 
 	for (uint32_t i = 0; i < kMaxLightNum_; i++) {
-		PunctualLightData lightDefault{};
+		PunctualLightDataForGPU lightDefault{};
 		lightsData_[i] = lightDefault;
 	}
 }
