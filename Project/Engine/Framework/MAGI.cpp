@@ -634,7 +634,8 @@ void MAGISYSTEM::DeleteGarbages() {
 	// コライダー3D
 	colliderManager_->DeleteGarbages();
 
-
+	// ライト
+	punctualLightManager_->DeleteGarbages();
 
 
 }
@@ -944,7 +945,6 @@ void MAGISYSTEM::AddPunctualLight(const std::string& lightName, const PunctualLi
 PunctualLightData& MAGISYSTEM::GetLightData(const std::string& lightName) {
 	return punctualLightManager_->GetPunctualLight(lightName);
 }
-
 
 void MAGISYSTEM::TransferPunctualLight(uint32_t parmIndex) {
 	punctualLightManager_->TransferLightsData(parmIndex);

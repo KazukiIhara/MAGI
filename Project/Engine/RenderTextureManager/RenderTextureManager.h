@@ -17,14 +17,15 @@ public:
 	RenderTextureManager();
 	~RenderTextureManager();
 
-	// 指定されているレンダーテクスチャを描画
+	// 指定したレンダーテクスチャを描画
 	void Draw(const RenderTextureType& renderTextureType);
-
-	void AddRenderTexture(const RenderTextureType& renderTextureType, std::unique_ptr<BaseRenderTexture> renderTexture);
+	// 指定したレンダーテクスチャを取得
 	BaseRenderTexture* GetRenderTexture(const RenderTextureType& renderTextureType);
 private:
 	// 初期化処理
 	void Initialize();
+	// レンダーテクスチャを追加
+	void AddRenderTexture(const RenderTextureType& renderTextureType, std::unique_ptr<BaseRenderTexture> renderTexture);
 private:
 	// レンダーテクスチャコンテナ
 	std::map<RenderTextureType, std::unique_ptr<BaseRenderTexture>> renderTextures_;

@@ -29,9 +29,9 @@ public:
 
 	void AddNewLight(const std::string& lightName, const PunctualLightData& lightData);
 
-	void RemoveLight(const std::string& lightName);
-
 	PunctualLightData& GetPunctualLight(const std::string& lightName);
+
+	void DeleteGarbages();
 private:
 	void CreateLightsResource();
 	void MapLightsData();
@@ -53,7 +53,7 @@ private:
 	// ライトのリソース(instancing用)
 	ComPtr<ID3D12Resource> lightsResource_ = nullptr;
 	// GPUに送るライトのデータ
-	PunctualLightData* lightsData_ = nullptr;
+	PunctualLightDataForGPU* lightsData_ = nullptr;
 	// SrvIndex
 	uint32_t srvIndex_ = 0;
 

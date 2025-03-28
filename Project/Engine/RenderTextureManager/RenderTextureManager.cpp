@@ -15,10 +15,6 @@ void RenderTextureManager::Draw(const RenderTextureType& renderTextureType) {
 	GetRenderTexture(renderTextureType)->Draw();
 }
 
-void RenderTextureManager::AddRenderTexture(const RenderTextureType& renderTextureType, std::unique_ptr<BaseRenderTexture> renderTexture) {
-	renderTextures_.insert(std::pair(renderTextureType, std::move(renderTexture)));
-}
-
 BaseRenderTexture* RenderTextureManager::GetRenderTexture(const RenderTextureType& renderTextureType) {
 	if (renderTextures_.contains(renderTextureType)) {
 		return renderTextures_.at(renderTextureType).get();
@@ -36,4 +32,8 @@ void RenderTextureManager::Initialize() {
 	nonePostEffectRenderTexture->Initialize();
 	AddRenderTexture(RenderTextureType::Simple, std::move(nonePostEffectRenderTexture));
 
+}
+
+void RenderTextureManager::AddRenderTexture(const RenderTextureType& renderTextureType, std::unique_ptr<BaseRenderTexture> renderTexture) {
+	renderTextures_.insert(std::pair(renderTextureType, std::move(renderTexture)));
 }
