@@ -14,7 +14,9 @@ public:
 	GameObject3DManager();
 	~GameObject3DManager();
 
+	// 更新
 	void Update();
+	// 描画
 	void Draw();
 
 	// 新規オブジェクトを追加

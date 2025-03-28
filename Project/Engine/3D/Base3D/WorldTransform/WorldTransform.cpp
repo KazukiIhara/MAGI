@@ -13,8 +13,6 @@ void WorldTransform::Initialize() {
 }
 
 void WorldTransform::Update() {
-	
-
 	// クオータニオンorオイラー
 	isUseQuaternion_ ? UpdateQuaternion() : UpdateEuler();
 

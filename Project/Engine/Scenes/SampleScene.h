@@ -62,13 +62,13 @@ inline void SampleScene<Data>::Initialize() {
 	MAGISYSTEM::AddPunctualLight("SampleLight");
 
 	// レンダラー
-	MAGISYSTEM::CreateStaticRenderer3D("terrain", "terrain");
+	MAGISYSTEM::CreatePrimitiveRenderer3D("Sphere1",Primitive3DType::Sphere);
 
 	// ゲームオブジェクト
 
 	// プレイヤーを作成
 	player_ = std::make_unique<Player>("player");
-	player_->AddRenderer3D(MAGISYSTEM::FindRenderer3D("terrain"));
+	player_->AddRenderer3D(MAGISYSTEM::FindRenderer3D("Sphere1"));
 
 	// マネージャにプレイヤーを追加
 	MAGISYSTEM::AddGameObject3D(std::move(player_));

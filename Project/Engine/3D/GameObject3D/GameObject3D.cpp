@@ -32,6 +32,10 @@ void GameObject3D::Draw() {
 
 }
 
+void GameObject3D::UpdateChildren() {
+
+}
+
 void GameObject3D::DeleteComponents() {
 	// 付随する全レンダラーの削除フラグを立てる
 	for (auto& renderer3D : renderers3D_) {
@@ -48,6 +52,26 @@ void GameObject3D::DeleteComponents() {
 			collider3D.second = nullptr;
 		}
 	}
+}
+
+void GameObject3D::SetParent(GameObject3D* parent) {
+	// 親をセット
+	assert(parent);
+	parent_ = parent;
+
+	// 親のワールドトランスフォームをセット
+	worldTransform_->parent_ = parent->GetWorldTransform();
+
+	// 親の子リストに自身を挿入
+	parent_->GetChildren().push_back(this);
+}
+
+GameObject3D* GameObject3D::GetParent() {
+	return parent_;
+}
+
+std::list<GameObject3D*> GameObject3D::GetChildren() {
+	return children_;
 }
 
 Vector3& GameObject3D::GetScale() {

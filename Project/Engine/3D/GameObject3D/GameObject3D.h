@@ -23,14 +23,34 @@ public:
 	GameObject3D(const std::string& objectName, const EulerTransform3D& transform = EulerTransform3D{});
 	~GameObject3D()override = default;
 
+	// 初期化
 	virtual void Initialize();
+	// 更新
 	virtual void Update();
 
+	// 行列の更新
 	void UpdateWorldTransform();
+	// 描画
 	void Draw();
+
+	// 子の更新
+	void UpdateChildren();
 
 	// 全コンポーネントを削除
 	void DeleteComponents();
+
+	// 
+	// アクセッサ
+	// 
+
+	// 親オブジェクトをセット
+	void SetParent(GameObject3D* parent);
+
+	// 親のポインタを取得
+	GameObject3D* GetParent();
+
+	// 子のリストのポインタを取得
+	std::list<GameObject3D*> GetChildren();
 
 	//
 	// トランスフォーム取得関数
@@ -97,6 +117,12 @@ private:
 private:
 	// ワールド上の姿勢
 	std::unique_ptr<WorldTransform> worldTransform_ = nullptr;
+
+	// 親オブジェクトのポインタ
+	GameObject3D* parent_ = nullptr;
+
+	// 子オブジェクトのポインタのリスト
+	std::list<GameObject3D*> children_;
 
 	// 3D描画用オブジェクトを受け取る箱
 	std::map<std::string, BaseRenderable3D*> renderers3D_;

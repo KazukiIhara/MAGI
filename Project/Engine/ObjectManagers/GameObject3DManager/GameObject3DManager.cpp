@@ -14,11 +14,14 @@ GameObject3DManager::~GameObject3DManager() {
 
 void GameObject3DManager::Update() {
 	for (auto& gameObject : gameObjects3D_) {
-		if (gameObject.second) {
+		// ポインタが有効かつ親がいない場合更新
+		if (gameObject.second && !gameObject.second->GetParent()) {
 			// オブジェクトごとの更新処理
 			gameObject.second->Update();
 			// ワールド行列の更新書影
 			gameObject.second->UpdateWorldTransform();
+			// オブジェクトの子を更新
+			gameObject.second->UpdateChildren();
 		}
 	}
 }
