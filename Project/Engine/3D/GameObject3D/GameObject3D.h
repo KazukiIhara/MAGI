@@ -18,7 +18,7 @@
 /// <summary>
 /// 3Dゲームオブジェクトクラス
 /// </summary>
-class GameObject3D :public WorldEntity {
+class GameObject3D:public WorldEntity {
 public:
 	GameObject3D(const std::string& objectName, const EulerTransform3D& transform = EulerTransform3D{});
 	~GameObject3D()override = default;
@@ -28,13 +28,14 @@ public:
 	// 更新
 	virtual void Update();
 
-	// 行列の更新
-	void UpdateWorldTransform();
 	// 描画
 	void Draw();
 
+	// 行列の更新
+	void UpdateWorldTransformHierarchy();
+
 	// 子の更新
-	void UpdateChildren();
+	void UpdateHierarchy();
 
 	// 全コンポーネントを削除
 	void DeleteComponents();

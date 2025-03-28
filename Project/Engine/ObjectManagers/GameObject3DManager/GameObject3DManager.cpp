@@ -16,12 +16,10 @@ void GameObject3DManager::Update() {
 	for (auto& gameObject : gameObjects3D_) {
 		// ポインタが有効かつ親がいない場合更新
 		if (gameObject.second && !gameObject.second->GetParent()) {
-			// オブジェクトごとの更新処理
-			gameObject.second->Update();
-			// ワールド行列の更新書影
-			gameObject.second->UpdateWorldTransform();
 			// オブジェクトの子を更新
-			gameObject.second->UpdateChildren();
+			gameObject.second->UpdateHierarchy();
+			// ワールド行列の更新書影
+			gameObject.second->UpdateWorldTransformHierarchy();
 		}
 	}
 }
@@ -88,7 +86,7 @@ void GameObject3DManager::DeleteGarbages() {
 			if (!it->second->GetChildren()->empty()) {
 				// すべての子から自身を削除
 				for (auto& child : *it->second->GetChildren()) {
-					child->DetachParent();
+					it->second->DetachChild(child);
 				}
 			}
 

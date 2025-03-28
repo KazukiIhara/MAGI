@@ -22,25 +22,43 @@ void GameObject3D::Update() {
 
 }
 
-void GameObject3D::UpdateWorldTransform() {
-	if (worldTransform_) {
-		worldTransform_->Update();
-	}
-}
-
 void GameObject3D::Draw() {
 
 }
 
-void GameObject3D::UpdateChildren() {
-	// 子がいる場合
-	if (!children_.empty()) {
-		for (auto& child : children_) {
-			if (child) {
-				child->Update();
-				child->UpdateWorldTransform();
-				child->UpdateChildren();
-			}
+void GameObject3D::UpdateWorldTransformHierarchy() {
+	// まず自分のトランスフォームを更新
+	if (worldTransform_) {
+		worldTransform_->Update();
+	}
+	// 子を再帰的に更新
+	for (auto it = children_.begin(); it != children_.end(); ) {
+		GameObject3D* child = *it;
+		child->UpdateWorldTransformHierarchy();
+		if (child->parent_ != this) {
+			it = children_.erase(it);
+		} else {
+			++it;
+		}
+	}
+}
+
+void GameObject3D::UpdateHierarchy() {
+	// 自分自身の処理
+	Update();
+
+	// 子リストをイテレート
+	for (auto it = children_.begin(); it != children_.end(); ) {
+		auto child = *it;
+		// 再帰的に UpdateHierarchy
+		child->UpdateHierarchy();
+
+		// 子が「DetachParent()」した場合、parent_ == nullptr になる
+		if (child->GetParent() != this) {
+			// リストから削除
+			it = children_.erase(it);
+		} else {
+			++it;
 		}
 	}
 }
@@ -64,48 +82,55 @@ void GameObject3D::DeleteComponents() {
 }
 
 void GameObject3D::SetParent(GameObject3D* parent) {
+	if (parent_ == parent) {
+		return; // すでに同じ親なら何もしない
+	}
+	// もし現在の親がいるなら、いったんデタッチ
+	if (parent_) {
+		DetachParent();
+	}
+
 	// Nullチェック
-	assert(parent);
-	// 親をセット
+	assert(parent != nullptr && "SetParent to nullptr is not allowed.");
+
 	parent_ = parent;
-	// 親のワールドトランスフォームをセット
-	worldTransform_->parent_ = parent->GetWorldTransform();
-	// 親の子リストに自身を挿入
-	parent_->GetChildren()->push_back(this);
+	// 親の子リストに登録
+	parent_->children_.push_back(this);
+
+	// 親のワールドトランスフォームを参照する場合
+	if (worldTransform_) {
+		worldTransform_->parent_ = parent->GetWorldTransform();
+	}
 }
 
 void GameObject3D::AddChild(GameObject3D* child) {
 	// Nullチェック
-	assert(child);
+	assert(child != nullptr && "AddChild is nullptr.");
 	// 子に自身をセット
 	child->SetParent(this);
 }
 
 void GameObject3D::DetachParent() {
 	if (parent_) {
-		// ワールドトランスフォームのペアレントを削除
-		worldTransform_->parent_ = nullptr;
-		// 親を削除
 		parent_ = nullptr;
+		if (worldTransform_) {
+			worldTransform_->parent_ = nullptr;
+		}
 	}
 }
 
 void GameObject3D::DetachChild(GameObject3D* child) {
-	// 子がいなければ何もしない
-	if (!child) {
-		return;
-	}
+	if (!child) return;
+	// もし引数の子の親が自分でなければ何もしない
+	if (child->parent_ != this) return;
 
-	// 自分が親でなければ何もしない
-	if (child->GetParent() != this) {
-		return;
+	// 子のほうの parent_ を nullptr にする(一方的に切る)
+	child->parent_ = nullptr;
+	if (child->worldTransform_) {
+		child->worldTransform_->parent_ = nullptr;
 	}
-
-	// 子リストから指定した子を削除
+	// 自分の子リストからも削除(安全な方法で remove)
 	children_.remove(child);
-
-	// 子から親を削除
-	child->DetachParent();
 }
 
 GameObject3D* GameObject3D::GetParent() {
