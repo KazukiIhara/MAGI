@@ -26,8 +26,6 @@ private:
 	// 初期化処理
 	void Initialize();
 private:
-	// エンジンUI用のレンダーテクスチャ
-	std::unique_ptr<BaseRenderTexture> engineUIRenderTexture_ = nullptr;
 	// レンダーテクスチャコンテナ
 	std::map<RenderTextureType, std::unique_ptr<BaseRenderTexture>> renderTextures_;
 };
