@@ -13,10 +13,10 @@ void Player::Initialize() {
 
 void Player::Update() {
 	if (MAGISYSTEM::PushKey(DIK_D)) {
-		GetTranslate().x += 0.01f;
+		GetTranslate().x += 1.0f * MAGISYSTEM::GetDeltaTime();
 	}
 	if (MAGISYSTEM::PushKey(DIK_A)) {
-		GetTranslate().x -= 0.01f;
+		GetTranslate().x -= 1.0f * MAGISYSTEM::GetDeltaTime();
 	}
 
 	if (MAGISYSTEM::TriggerKey(DIK_G)) {
