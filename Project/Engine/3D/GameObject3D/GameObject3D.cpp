@@ -95,6 +95,7 @@ void GameObject3D::DetachChild(GameObject3D* child) {
 	if (!child) {
 		return;
 	}
+
 	// 自分が親でなければ何もしない
 	if (child->GetParent() != this) {
 		return;
