@@ -64,18 +64,20 @@ void GameObject3D::DeleteComponents() {
 }
 
 void GameObject3D::SetParent(GameObject3D* parent) {
-	// 親をセット
+	// Nullチェック
 	assert(parent);
+	// 親をセット
 	parent_ = parent;
-
 	// 親のワールドトランスフォームをセット
 	worldTransform_->parent_ = parent->GetWorldTransform();
-
 	// 親の子リストに自身を挿入
 	parent_->GetChildren()->push_back(this);
 }
 
 void GameObject3D::AddChild(GameObject3D* child) {
+	// Nullチェック
+	assert(child);
+	// 子に自身をセット
 	child->SetParent(this);
 }
 
