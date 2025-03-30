@@ -362,11 +362,11 @@ public: // エンジンの機能
 #pragma region Renderer3DManager
 	// 描画オブジェクトの追加
 	// シンプル形状
-	static void CreatePrimitiveRenderer3D(const std::string& name, Primitive3DType primitiveRenderer, const std::string& textureName = "");
+	static std::string CreatePrimitiveRenderer3D(const std::string& name, Primitive3DType primitiveRenderer, const std::string& textureName = "");
 	// 静的モデル
-	static void CreateStaticRenderer3D(const std::string& name, const std::string& modelName);
+	static std::string CreateStaticRenderer3D(const std::string& name, const std::string& modelName);
 	// スキニングモデル
-	static void CreateSkinningRenderer3D(const std::string& name, const std::string& modelName);
+	static std::string CreateSkinningRenderer3D(const std::string& name, const std::string& modelName);
 	// 描画オブジェクトの取得
 	static BaseRenderable3D* FindRenderer3D(const std::string& name);
 #pragma endregion
