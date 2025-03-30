@@ -55,6 +55,33 @@ std::string ParticleGroup3DManager::CreatePrimitiveParticleGroup(const std::stri
 	return uniqueName;
 }
 
+std::string ParticleGroup3DManager::CreateStaticParticleGroup(const std::string& particleGroupName, const std::string& modelName) {
+	// 新しいパーティクルグループ名を決定
+	std::string uniqueName = particleGroupName;
+	int suffix = 1;
+
+	// 同じ名前が既に存在する場合、一意な名前を生成
+	auto isNameUsed = [&](const std::string& testName) {
+		return std::any_of(particleGroups3D_.begin(), particleGroups3D_.end(), [&](const auto& particleGroup3D) {
+			return particleGroup3D->name == testName;
+			});
+		};
+
+	while (isNameUsed(uniqueName)) {
+		uniqueName = particleGroupName + "_" + std::to_string(suffix);
+		suffix++;
+	}
+
+	// 追加するパーティクルグループ
+	std::unique_ptr<BaseParticleGroup3D> newParticleGroupManager = std::make_unique<StaticParticleGroup3D>(uniqueName, modelName);
+	newParticleGroupManager->AssignShape();
+
+	// 追加
+	particleGroups3D_.push_back(std::move(newParticleGroupManager));
+
+	return uniqueName;
+}
+
 void ParticleGroup3DManager::Remove(const std::string& name) {
 	// ベクターを走査して、名前が一致するパーティクルグループを探す
 	for (auto it = particleGroups3D_.begin(); it != particleGroups3D_.end(); ++it) {

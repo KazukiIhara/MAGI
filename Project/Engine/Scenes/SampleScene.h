@@ -93,7 +93,7 @@ inline void SampleScene<Data>::Initialize() {
 
 
 	// パーティクルを作成
-	MAGISYSTEM::CreatePrimitiveParticleGroup3D("Plane", Primitive3DType::Plane);
+	MAGISYSTEM::CreateStaticParticleGroup3D("Plane", "terrain");
 
 	// エミッターを作成
 	MAGISYSTEM::CreateEmitter3D("Emitter", Vector3(0.0f, 0.0f, 0.0f));

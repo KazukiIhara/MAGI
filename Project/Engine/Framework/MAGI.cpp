@@ -958,16 +958,16 @@ void MAGISYSTEM::TransferPunctualLight(uint32_t parmIndex) {
 	punctualLightManager_->TransferLightsData(parmIndex);
 }
 
-void MAGISYSTEM::CreatePrimitiveRenderer3D(const std::string& name, Primitive3DType primitiveRenderer, const std::string& textureName) {
-	renderer3DManager_->CreatePrimitiveRenderer(name, primitiveRenderer, textureName);
+std::string MAGISYSTEM::CreatePrimitiveRenderer3D(const std::string& name, Primitive3DType primitiveRenderer, const std::string& textureName) {
+	return renderer3DManager_->CreatePrimitiveRenderer(name, primitiveRenderer, textureName);
 }
 
-void MAGISYSTEM::CreateStaticRenderer3D(const std::string& name, const std::string& modelName) {
-	renderer3DManager_->CreateStaticRenderer(name, modelName);
+std::string MAGISYSTEM::CreateStaticRenderer3D(const std::string& name, const std::string& modelName) {
+	return renderer3DManager_->CreateStaticRenderer(name, modelName);
 }
 
-void MAGISYSTEM::CreateSkinningRenderer3D(const std::string& name, const std::string& modelName) {
-	renderer3DManager_->CreateSkinningRenderer(name, modelName);
+std::string MAGISYSTEM::CreateSkinningRenderer3D(const std::string& name, const std::string& modelName) {
+	return renderer3DManager_->CreateSkinningRenderer(name, modelName);
 }
 
 BaseRenderable3D* MAGISYSTEM::FindRenderer3D(const std::string& name) {
@@ -1000,6 +1000,10 @@ Emitter3D* MAGISYSTEM::FindEmitter3D(const std::string& emitterName) {
 
 std::string MAGISYSTEM::CreatePrimitiveParticleGroup3D(const std::string& particleGroupName, const Primitive3DType& primitiveType, const std::string& textureName) {
 	return particleGroup3DManager_->CreatePrimitiveParticleGroup(particleGroupName, primitiveType, textureName);
+}
+
+std::string MAGISYSTEM::CreateStaticParticleGroup3D(const std::string& particleGroupName, const std::string& modelName) {
+	return particleGroup3DManager_->CreateStaticParticleGroup(particleGroupName, modelName);
 }
 
 BaseParticleGroup3D* MAGISYSTEM::FindParticleGroup3D(const std::string& particleGraoupName) {

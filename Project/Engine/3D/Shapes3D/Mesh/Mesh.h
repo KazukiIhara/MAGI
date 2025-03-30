@@ -23,7 +23,7 @@ public:
 	virtual void Initialize();
 	void Update();
 	virtual void Draw();
-	virtual void DrawInstanced(uint32_t instancedCount);
+	virtual void DrawInstancedForParticle(uint32_t instancedCount);
 
 protected:
 	// 頂点リソースの作成

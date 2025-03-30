@@ -8,6 +8,7 @@
 
 #include "3D/ParticleGroups3D/BaseParticleGroup3D/BaseParticleGroup3D.h"
 #include "3D/ParticleGroups3D/PrimitiveParticleGroup3D/PrimitiveParticleGroup3D.h"
+#include "3D/ParticleGroups3D/StaticParticleGroup3D/StaticParticleGroup3D.h"
 
 /// <summary>
 /// パーティクルグループのマネージャ
@@ -21,6 +22,9 @@ public:
 	void Draw();
 
 	std::string CreatePrimitiveParticleGroup(const std::string& particleGroupName, const Primitive3DType& primitiveType, const std::string& textureName);
+
+	std::string CreateStaticParticleGroup(const std::string& particleGroupName, const std::string& modelName);
+
 	void Remove(const std::string& name);
 
 	BaseParticleGroup3D* Find(const std::string& name);
