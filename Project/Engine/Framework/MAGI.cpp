@@ -112,7 +112,7 @@ void MAGISYSTEM::Initialize() {
 	// DirectInput
 	directInput_ = std::make_unique<MAGIDirectInput>(windowApp_.get());
 	// XInput
-	xInput_ = std::make_unique<MAGIXInput>();
+	xInput_ = std::make_unique<MAGIXInput>(deltaTimer_.get());
 
 	// DXGI
 	dxgi_ = std::make_unique<DXGI>();
@@ -779,6 +779,14 @@ void MAGISYSTEM::SetDeadZone(int deadZone) {
 
 int MAGISYSTEM::GetDeadZone() {
 	return xInput_->GetDeadZone();
+}
+
+void MAGISYSTEM::StartPadVibration(int controllerID, float duration, float leftPower, float rightPower) {
+	xInput_->StartVibration(controllerID, duration, leftPower, rightPower);
+}
+
+void MAGISYSTEM::StopPadVibration(int controllerID) {
+	xInput_->StopVibration(controllerID);
 }
 
 ID3D12Device* MAGISYSTEM::GetDirectXDevice() {

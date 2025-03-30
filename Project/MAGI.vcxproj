@@ -117,6 +117,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="App\GameData\CollisionCategory.h" />
     <ClInclude Include="App\GameData\GameData.h" />
     <ClInclude Include="App\GameObjects\Player\Player.h" />
+    <ClInclude Include="Engine\Includes\Structs\XInputStruct.h" />
     <ClInclude Include="Engine\Scenes\SampleScene.h" />
     <ClInclude Include="Engine\2D\Object2D\Object2D.h" />
     <ClInclude Include="Engine\2D\WorldTransform2D\WorldTransform2D.h" />

@@ -5,7 +5,7 @@
 /// <summary>
 /// パッドのボタン
 /// </summary>
-enum class PadNumber {
+enum PadNumber {
 	ButtonA = XINPUT_GAMEPAD_A,
 	ButtonB = XINPUT_GAMEPAD_B,
 	ButtonX = XINPUT_GAMEPAD_X,

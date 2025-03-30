@@ -734,6 +734,7 @@
     </ClInclude>
     <ClInclude Include="Engine\GrobalDataManager\GrobalDataManager.h" />
     <ClInclude Include="App\GameObjects\Head\Head.h" />
+    <ClInclude Include="Engine\Includes\Structs\XInputStruct.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="App\Game\Game.cpp">
