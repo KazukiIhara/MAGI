@@ -23,7 +23,7 @@ void Player::Update() {
 		DetachChild(GetChild("Head"));
 	}
 
-	if (MAGISYSTEM::TriggerButton(0, static_cast<int>(PadNumber::ButtonA))) {
+	if (MAGISYSTEM::TriggerButton(0, ButtonA)) {
 		MAGISYSTEM::StartPadVibration(0, 1.0f, 1.0f, 1.0f);
 	}
 
