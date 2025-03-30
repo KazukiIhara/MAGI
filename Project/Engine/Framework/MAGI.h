@@ -201,6 +201,11 @@ public: // エンジンの機能
 	// デッドゾーンの取得
 	static int GetDeadZone();
 
+	// 振動開始
+	static void StartPadVibration(int controllerID, float duration, float leftPower, float rightPower);
+	// 振動終了
+	static void StopPadVibration(int controllerID);
+
 #pragma endregion
 
 #pragma region DXGIの機能
