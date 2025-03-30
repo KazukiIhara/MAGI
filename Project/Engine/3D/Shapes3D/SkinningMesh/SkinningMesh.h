@@ -9,7 +9,7 @@ public:
 
 	void Initialize()override;
 	void Draw()override;
-	void DrawInstanced(uint32_t instancedCount)override;
+	void DrawInstancedForParticle(uint32_t instancedCount)override;
 
 	// スキニング
 	void Skinning(const uint32_t& paletteSrvIndex);

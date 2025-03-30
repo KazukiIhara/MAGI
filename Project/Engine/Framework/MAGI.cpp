@@ -1002,6 +1002,10 @@ std::string MAGISYSTEM::CreatePrimitiveParticleGroup3D(const std::string& partic
 	return particleGroup3DManager_->CreatePrimitiveParticleGroup(particleGroupName, primitiveType, textureName);
 }
 
+std::string MAGISYSTEM::CreateStaticParticleGroup3D(const std::string& particleGroupName, const std::string& modelName) {
+	return particleGroup3DManager_->CreateStaticParticleGroup(particleGroupName, modelName);
+}
+
 BaseParticleGroup3D* MAGISYSTEM::FindParticleGroup3D(const std::string& particleGraoupName) {
 	return particleGroup3DManager_->Find(particleGraoupName);
 }

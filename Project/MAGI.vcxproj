@@ -117,6 +117,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="App\GameData\CollisionCategory.h" />
     <ClInclude Include="App\GameData\GameData.h" />
     <ClInclude Include="App\GameObjects\Player\Player.h" />
+    <ClInclude Include="Engine\3D\ParticleGroups3D\StaticParticleGroup3D\StaticParticleGroup3D.h" />
     <ClInclude Include="Engine\Includes\Structs\XInputStruct.h" />
     <ClInclude Include="Engine\Scenes\SampleScene.h" />
     <ClInclude Include="Engine\2D\Object2D\Object2D.h" />
@@ -257,6 +258,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Engine\3D\GameObject3D\GameObject3D.cpp" />
     <ClCompile Include="Engine\3D\ParticleGroups3D\BaseParticleGroup3D\BaseParticleGroup3D.cpp" />
     <ClCompile Include="Engine\3D\ParticleGroups3D\PrimitiveParticleGroup3D\PrimitiveParticleGroup3D.cpp" />
+    <ClCompile Include="Engine\3D\ParticleGroups3D\StaticParticleGroup3D\StaticParticleGroup3D.cpp" />
     <ClCompile Include="Engine\3D\RenderObjects3D\BaseRenderable3D\BaseRenderable3D.cpp" />
     <ClCompile Include="Engine\3D\RenderObjects3D\PrimitiveRenderer3D\PrimitiveRenderer3D.cpp" />
     <ClCompile Include="Engine\3D\RenderObjects3D\SkinningRenderer3D\SkinningRenderer3D.cpp" />
