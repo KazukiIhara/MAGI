@@ -142,7 +142,7 @@ void MAGIXInput::StopVibration(int controllerID) {
 }
 
 float MAGIXInput::ProcessDeadZone(float value) const {
-	float maxValue = 32767.0f; // XInputのスティックの最大値
+	float maxValue = 1.0f; // スティックの最大値
 	float threshold = maxValue * (deadZone_ / 100.0f); // デッドゾーンを割合で計算
 
 	if (fabs(value) < threshold) {
