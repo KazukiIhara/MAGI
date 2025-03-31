@@ -17,6 +17,7 @@ public:
 	virtual void Initialize();
 	virtual void Update();
 	void Draw();
+	void DrawInstanced(uint32_t instanceCount);
 	void DrawInstancedForParticle(uint32_t instanceCount);
 
 private:

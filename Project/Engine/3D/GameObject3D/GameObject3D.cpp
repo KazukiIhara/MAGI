@@ -26,6 +26,12 @@ void GameObject3D::Draw() {
 
 }
 
+void GameObject3D::DrawInstanced(uint32_t instancingCount) {
+	for (auto& renderer : renderers3D_) {
+		renderer.second->DrawInstanced(instancingCount);
+	}
+}
+
 void GameObject3D::UpdateWorldTransformHierarchy() {
 	// まず自分のトランスフォームを更新
 	if (worldTransform_) {

@@ -34,6 +34,12 @@ void Model::Draw() {
 	}
 }
 
+void Model::DrawInstanced(uint32_t instanceCount) {
+	for (auto& mesh : meshes_) {
+		mesh->DrawInstanced(instanceCount);
+	}
+}
+
 void Model::DrawInstancedForParticle(uint32_t instanceCount) {
 	for (auto& mesh : meshes_) {
 		mesh->DrawInstancedForParticle(instanceCount);

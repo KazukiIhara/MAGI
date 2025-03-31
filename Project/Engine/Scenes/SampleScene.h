@@ -66,31 +66,6 @@ inline void SampleScene<Data>::Initialize() {
 
 	// レンダラー
 
-	// プレイヤー
-	MAGISYSTEM::CreatePrimitiveRenderer3D("Sphere1", Primitive3DType::Sphere);
-
-	// 頭
-	MAGISYSTEM::CreatePrimitiveRenderer3D("Sphere2", Primitive3DType::Sphere);
-
-	//
-	// ゲームオブジェクト
-	//
-
-	// プレイヤーを作成
-	player_ = std::make_unique<Player>("Player");
-	player_->AddRenderer3D(MAGISYSTEM::FindRenderer3D("Sphere1"));
-
-	// マネージャにプレイヤーを追加
-	MAGISYSTEM::AddGameObject3D(std::move(player_));
-
-	// 頭を作成
-	head_ = std::make_unique<Head>("Head");
-	head_->Initialize();
-	head_->AddRenderer3D(MAGISYSTEM::FindRenderer3D("Sphere2"));
-	
-	// マネージャに頭を追加
-	MAGISYSTEM::AddGameObject3D(std::move(head_));
-
 
 	// パーティクルを作成
 	MAGISYSTEM::CreateStaticParticleGroup3D("Plane", "terrain");
@@ -112,8 +87,6 @@ inline void SampleScene<Data>::Initialize() {
 	// 移動量を-1～1に
 	emitter->GetEmitterSetting().maxVelocity = { 1.0f,1.0f,1.0f };
 	emitter->GetEmitterSetting().minVelocity = { -1.0f,-1.0f,-1.0f };
-	// リピートオン
-	emitter->GetEmitterSetting().isRepeat = true;
 
 	// 音声再生
 	MAGISYSTEM::PlayLoopWaveSound("Alarm01.wav");

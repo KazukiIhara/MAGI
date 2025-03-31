@@ -31,6 +31,9 @@ public:
 	// 描画
 	void Draw();
 
+	// instancing描画
+	void DrawInstanced(uint32_t instancingCount);
+
 	// 行列の更新
 	void UpdateWorldTransformHierarchy();
 
@@ -140,5 +143,5 @@ private:
 	// 3D描画用オブジェクトを受け取る箱
 	std::map<std::string, BaseRenderable3D*> renderers3D_;
 	// コライダーを受け取る箱
-	std::map<std::string, BaseCollider3D*> colliders3D_;
+	std::map<std::string, BaseCollider3D*> colliders3D_; 
 };

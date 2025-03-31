@@ -736,6 +736,9 @@
     <ClInclude Include="App\GameObjects\Head\Head.h" />
     <ClInclude Include="Engine\Includes\Structs\XInputStruct.h" />
     <ClInclude Include="Engine\3D\ParticleGroups3D\StaticParticleGroup3D\StaticParticleGroup3D.h" />
+    <ClInclude Include="Engine\3D\GameObject3DGroup\GameObject3DGroup.h" />
+    <ClInclude Include="Engine\Includes\Structs\GameObject3DStruct.h" />
+    <ClInclude Include="Engine\ObjectManagers\GameObject3DGroupManager\GameObject3DGroupManager.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="App\Game\Game.cpp">
@@ -997,6 +1000,8 @@
     <ClCompile Include="Engine\GrobalDataManager\GrobalDataManager.cpp" />
     <ClCompile Include="App\GameObjects\Head\Head.cpp" />
     <ClCompile Include="Engine\3D\ParticleGroups3D\StaticParticleGroup3D\StaticParticleGroup3D.cpp" />
+    <ClCompile Include="Engine\3D\GameObject3DGroup\GameObject3DGroup.cpp" />
+    <ClCompile Include="Engine\ObjectManagers\GameObject3DGroupManager\GameObject3DGroupManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Engine\SceneManager\SceneManager.ipp">
