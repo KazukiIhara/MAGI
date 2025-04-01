@@ -60,6 +60,7 @@ std::unique_ptr<SoundDataContainer> MAGISYSTEM::soundDataContainer_ = nullptr;
 // ObjectManager
 //
 std::unique_ptr<GameObject3DManager> MAGISYSTEM::gameObject3DManager_ = nullptr;
+std::unique_ptr<GameObject3DGroupManager> MAGISYSTEM::gameObject3DGroupManager_ = nullptr;
 std::unique_ptr<Camera3DManager> MAGISYSTEM::camera3DManager_ = nullptr;
 std::unique_ptr<PunctualLightManager> MAGISYSTEM::punctualLightManager_ = nullptr;
 std::unique_ptr<Renderer3DManager> MAGISYSTEM::renderer3DManager_ = nullptr;
@@ -172,6 +173,8 @@ void MAGISYSTEM::Initialize() {
 
 	// GameObject3DManager
 	gameObject3DManager_ = std::make_unique<GameObject3DManager>();
+	// GameObject3DGroupManager
+	gameObject3DGroupManager_ = std::make_unique<GameObject3DGroupManager>();
 	// Renderer3DManager
 	renderer3DManager_ = std::make_unique<Renderer3DManager>();
 	// Camera3DManager
@@ -286,6 +289,11 @@ void MAGISYSTEM::Finalize() {
 	// Camera3DManager
 	if (camera3DManager_) {
 		camera3DManager_.reset();
+	}
+
+	// GameObject3DGroupManager
+	if (gameObject3DGroupManager_) {
+		gameObject3DGroupManager_.reset();
 	}
 
 	// GameObject3DManager
@@ -472,6 +480,9 @@ void MAGISYSTEM::Update() {
 	// ゲームオブジェクトマネージャの更新
 	gameObject3DManager_->Update();
 
+	// 3Dオブジェクトグループマネージャの更新処理
+	gameObject3DGroupManager_->Update();
+
 	// カメラマネージャの更新処理
 	camera3DManager_->Update();
 
@@ -489,6 +500,7 @@ void MAGISYSTEM::Update() {
 
 	// 3Dパーティクルグループマネージャの更新処理
 	particleGroup3DManager_->Update();
+
 
 	// コリジョンマネージャの更新処理
 	collisionManager_->Update();
@@ -545,6 +557,15 @@ void MAGISYSTEM::Draw() {
 
 	// 3Dオブジェクト描画処理
 	renderer3DManager_->Draw();
+
+
+	//
+	// Object3DGroupの描画前処理
+	//
+
+	// 3Dオブジェクトグループの描画処理
+
+
 
 	// 
 	// LineDrawer3Dの描画前処理

@@ -11,6 +11,7 @@ enum class GraphicsPipelineStateType {
 	Line3D,
 	Object3D,
 	Particle3D,
+	Object3DGroup,
 
 	Num,
 };

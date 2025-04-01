@@ -15,8 +15,13 @@ GameObject3DGroup::GameObject3DGroup(GameObject3D* gameObject3D, const std::stri
 void GameObject3DGroup::Update() {
 	// オブジェクトを更新
 	for (auto& gameObject : gameObjects_) {
-		gameObject.second->UpdateHierarchy();
-		gameObject.second->UpdateWorldTransformHierarchy();
+		// ポインタが有効かつ親がいない場合更新
+		if (gameObject.second && !gameObject.second->GetParent()) {
+			// オブジェクトの子を更新
+			gameObject.second->UpdateHierarchy();
+			// ワールド行列の更新書影
+			gameObject.second->UpdateWorldTransformHierarchy();
+		}
 	}
 	// Update
 	UpdateData();
