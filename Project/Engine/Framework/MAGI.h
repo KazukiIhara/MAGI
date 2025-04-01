@@ -71,6 +71,7 @@
 #include "ObjectManagers/ColliderManager/ColliderManager.h"
 #include "ObjectManagers/Emitter3DManager/Emitter3DManager.h"
 #include "ObjectManagers/ParticleGroup3DManager/ParticleGroup3DManager.h"
+#include "ObjectManagers/GameObject3DGroupManager/GameObject3DGroupManager.h"
 
 // 
 // Drawer
@@ -401,6 +402,11 @@ public: // エンジンの機能
 	static const std::vector<std::unique_ptr<BaseParticleGroup3D>>& GetParticleGroupList();
 #pragma endregion
 
+#pragma region GameObject3DGroupManager
+
+
+#pragma endregion
+
 #pragma region LineDrawer3D
 	// ライン描画
 	static void DrawLine3D(const Vector3& start, const Vector3& end, const RGBA& color);
@@ -528,6 +534,7 @@ protected:
 	static std::unique_ptr<ColliderManager> colliderManager_;
 	static std::unique_ptr<Emitter3DManager> emitter3DManager_;
 	static std::unique_ptr<ParticleGroup3DManager> particleGroup3DManager_;
+	static std::unique_ptr<GameObject3DGroupManager> gameObject3DGroupManager_;
 
 	// 
 	// Drawer

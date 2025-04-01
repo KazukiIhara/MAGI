@@ -44,6 +44,13 @@ private:
 	// 描画用データ更新
 	void UpdateData();
 
+	// マテリアルリソースの作成
+	void CreateMaterialResource();
+	// マテリアルデータの書き込み
+	void MapMaterialData();
+	// マテリアルデータの更新
+	void UpdateMaterialData();
+
 private:
 	// 名前
 	std::string name_ = "";
@@ -61,7 +68,7 @@ private:
 	BlendMode blendMode_ = BlendMode::Normal;
 private:
 	// カメラのルートパラメタインデックス番号
-	const uint32_t cameraRootParamaterIndex_ = 4;
+	const uint32_t cameraRootParamaterIndex_ = 2;
 	// ライトのルートパラメータイデックス番号
 	const uint32_t lightRootParamaterIndex_ = 5;
 	// instancing描画用リソース

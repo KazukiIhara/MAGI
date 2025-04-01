@@ -111,3 +111,26 @@ void GameObject3DGroup::UpdateInstancingData() {
 void GameObject3DGroup::UpdateData() {
 
 }
+
+void GameObject3DGroup::CreateMaterialResource() {
+	// マテリアル用のリソース作成
+	materialResource_ = MAGISYSTEM::CreateBufferResource(sizeof(Material3DForGPU));
+}
+
+void GameObject3DGroup::MapMaterialData() {
+	materialData_ = nullptr;
+	materialResource_->Map(0, nullptr, reinterpret_cast<void**>(&materialData_));
+	materialData_->color = material_.color;
+	materialData_->enableSpecularRef = material_.enableSpecularRef;
+	materialData_->enableLighting = material_.enableLighting;
+	materialData_->shininess = material_.shininess;
+	materialData_->uvTransformMatrix = MakeUVMatrix(material_.uvTransform.scale, material_.uvTransform.rotateZ, material_.uvTransform.translate);
+}
+
+void GameObject3DGroup::UpdateMaterialData() {
+	materialData_->color = material_.color;
+	materialData_->enableSpecularRef = material_.enableSpecularRef;
+	materialData_->enableLighting = material_.enableLighting;
+	materialData_->shininess = material_.shininess;
+	materialData_->uvTransformMatrix = MakeUVMatrix(material_.uvTransform.scale, material_.uvTransform.rotateZ, material_.uvTransform.translate);
+}
