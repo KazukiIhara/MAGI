@@ -3,7 +3,7 @@
 StructuredBuffer<ParticleForGPU> gParticle : register(t0);
 ConstantBuffer<Camera> gCamera : register(b0);
 
-VertexShaderOutput main(VertexShaderInput input, uint32_t instanceId : SV_InstanceID)
+VertexShaderOutput main(VertexShaderInput input, uint instanceId : SV_InstanceID)
 {
     VertexShaderOutput output;
     output.position = mul(input.position, mul(gParticle[instanceId].World, gCamera.viewProjection));
