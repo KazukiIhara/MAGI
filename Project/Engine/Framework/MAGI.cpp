@@ -562,6 +562,8 @@ void MAGISYSTEM::Draw() {
 	//
 	// Object3DGroupの描画前処理
 	//
+	commandList->SetGraphicsRootSignature(graphicsPipelineManager_->GetRootSignature(GraphicsPipelineStateType::Object3DGroup));
+	commandList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
 	// 3Dオブジェクトグループの描画処理
 
