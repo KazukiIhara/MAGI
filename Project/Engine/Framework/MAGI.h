@@ -403,7 +403,8 @@ public: // エンジンの機能
 #pragma endregion
 
 #pragma region GameObject3DGroupManager
-
+	// ゲームオブジェクトグループの追加
+	static std::string CreateGameObject3DGroup(const std::string& objectGroupName, );
 
 #pragma endregion
 
