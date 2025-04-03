@@ -6,9 +6,6 @@
 
 #include "2D/Object2D/Object2D.h"
 
-#include "GameObjects/Player/Player.h"
-#include "GameObjects/Head/Head.h"
-
 // サンプルシーン
 template <typename Data>
 class SampleScene: public BaseScene<Data> {
@@ -24,11 +21,6 @@ public:
 private:
 	// カメラ
 	std::unique_ptr<Camera3D> sceneCamera_ = nullptr;
-
-	// プレイヤー
-	std::unique_ptr<Player> player_ = nullptr;
-	// 頭
-	std::unique_ptr<Head> head_ = nullptr;
 };
 
 template<typename Data>
@@ -73,12 +65,17 @@ inline void SampleScene<Data>::Initialize() {
 	// ゲームオブジェクト作成
 	std::unique_ptr<GameObject3D> terrainObject = std::make_unique<GameObject3D>("terrain");
 
+	std::unique_ptr<GameObject3D> terrainObject2 = std::make_unique<GameObject3D>("terrain2");
+	terrainObject2->GetTranslate().y = 1.0f;
+
 	// ゲームオブジェクトグループ作成
 	std::unique_ptr<GameObject3DGroup> terrainGroup = std::make_unique<GameObject3DGroup>("TerrainGroup");
 	// グループにレンダラーを追加
 	terrainGroup->AddRenderer(std::move(terrain));
-	// グループにオブジェクトを追加
+
+	// グループにゲームオブジェクトを追加
 	terrainGroup->AddObject(std::move(terrainObject));
+	terrainGroup->AddObject(std::move(terrainObject2));
 
 	MAGISYSTEM::AddGameObejct3DGroup(std::move(terrainGroup));
 
