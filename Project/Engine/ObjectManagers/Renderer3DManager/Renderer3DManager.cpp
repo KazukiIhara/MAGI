@@ -23,7 +23,7 @@ void Renderer3DManager::Update() {
 
 void Renderer3DManager::Draw() {
 	for (auto& renderer : renderers_) {
-		if (renderer) {
+		if (renderer && renderer->GetIsShow()) {
 			renderer->Draw();
 		}
 	}

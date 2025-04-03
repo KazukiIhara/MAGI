@@ -26,6 +26,7 @@ public:
 	virtual void AssignShape() = 0;
 	virtual void Update();
 	virtual void Draw() = 0;
+	virtual void DrawInstanced(uint32_t instanceCount) = 0;
 
 	WorldTransform* GetWorldTransform();
 
@@ -34,8 +35,8 @@ public:
 	Vector3& GetTranslate();
 
 	Material3D& GetMaterial();
-
 	BlendMode& GetBlendMode();
+	bool& GetIsShow();
 
 	void SetRenderer3DType(Renderer3DType type);
 	Renderer3DType GetType()const;
@@ -70,7 +71,7 @@ private:
 	std::optional<Renderer3DType> renderer3DType_ = std::nullopt;
 
 	// 描画フラグ
-	bool isShow_ = true;
+	bool isShow_ = false;
 private:
 	// WVP用のリソース
 	ComPtr<ID3D12Resource> transformationResource_ = nullptr;

@@ -71,6 +71,7 @@
 #include "ObjectManagers/ColliderManager/ColliderManager.h"
 #include "ObjectManagers/Emitter3DManager/Emitter3DManager.h"
 #include "ObjectManagers/ParticleGroup3DManager/ParticleGroup3DManager.h"
+#include "ObjectManagers/GameObject3DGroupManager/GameObject3DGroupManager.h"
 
 // 
 // Drawer
@@ -337,6 +338,12 @@ public: // エンジンの機能
 	static GameObject3D* FindGameObject3D(const std::string& objectName);
 #pragma endregion
 
+#pragma region GameObject3DGroupManager
+	// 3Dゲームオブジェクトグループを作成
+	static void AddGameObejct3DGroup(std::unique_ptr<GameObject3DGroup> newGameObjectGroup);
+
+#pragma endregion
+
 #pragma region Camera3DManager
 	// カメラの追加
 	static void AddCamera3D(std::unique_ptr<Camera3D> newCamera3D);
@@ -373,7 +380,7 @@ public: // エンジンの機能
 
 #pragma region ColliderManager
 	// コライダーの追加
-	static void CreateCollider(const std::string& name, Collider3DType colliderType);
+	static std::string CreateCollider(const std::string& name, Collider3DType colliderType);
 	// コライダーの削除
 	static void RemoveCollider(const std::string& name);
 	// コライダーの取得
@@ -528,6 +535,7 @@ protected:
 	static std::unique_ptr<ColliderManager> colliderManager_;
 	static std::unique_ptr<Emitter3DManager> emitter3DManager_;
 	static std::unique_ptr<ParticleGroup3DManager> particleGroup3DManager_;
+	static std::unique_ptr<GameObject3DGroupManager> gameObject3DGroupManager_;
 
 	// 
 	// Drawer

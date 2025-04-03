@@ -6,12 +6,9 @@
 
 #include "2D/Object2D/Object2D.h"
 
-#include "GameObjects/Player/Player.h"
-#include "GameObjects/Head/Head.h"
-
 // サンプルシーン
 template <typename Data>
-class SampleScene : public BaseScene<Data> {
+class SampleScene: public BaseScene<Data> {
 public:
 	using BaseScene<Data>::BaseScene; // 親クラスのコンストラクタをそのまま継承
 	~SampleScene()override = default;
@@ -24,11 +21,6 @@ public:
 private:
 	// カメラ
 	std::unique_ptr<Camera3D> sceneCamera_ = nullptr;
-
-	// プレイヤー
-	std::unique_ptr<Player> player_ = nullptr;
-	// 頭
-	std::unique_ptr<Head> head_ = nullptr;
 };
 
 template<typename Data>
@@ -64,33 +56,28 @@ inline void SampleScene<Data>::Initialize() {
 	// ライト
 	MAGISYSTEM::AddPunctualLight("SampleLight");
 
-	// レンダラー
 
-	// プレイヤー
-	MAGISYSTEM::CreatePrimitiveRenderer3D("Sphere1", Primitive3DType::Sphere);
+	// レンダラー作成
+	std::unique_ptr<BaseRenderable3D> terrain = std::make_unique<StaticRenderer3D>("terrain", "terrain");
+	terrain->AssignShape();
+	terrain->SetRenderer3DType(Renderer3DType::Static);
 
-	// 頭
-	MAGISYSTEM::CreatePrimitiveRenderer3D("Sphere2", Primitive3DType::Sphere);
+	// ゲームオブジェクト作成
+	std::unique_ptr<GameObject3D> terrainObject = std::make_unique<GameObject3D>("terrain");
 
-	//
-	// ゲームオブジェクト
-	//
+	std::unique_ptr<GameObject3D> terrainObject2 = std::make_unique<GameObject3D>("terrain2");
+	terrainObject2->GetTranslate().y = 1.0f;
 
-	// プレイヤーを作成
-	player_ = std::make_unique<Player>("Player");
-	player_->AddRenderer3D(MAGISYSTEM::FindRenderer3D("Sphere1"));
+	// ゲームオブジェクトグループ作成
+	std::unique_ptr<GameObject3DGroup> terrainGroup = std::make_unique<GameObject3DGroup>("TerrainGroup");
+	// グループにレンダラーを追加
+	terrainGroup->AddRenderer(std::move(terrain));
 
-	// マネージャにプレイヤーを追加
-	MAGISYSTEM::AddGameObject3D(std::move(player_));
+	// グループにゲームオブジェクトを追加
+	terrainGroup->AddObject(std::move(terrainObject));
+	terrainGroup->AddObject(std::move(terrainObject2));
 
-	// 頭を作成
-	head_ = std::make_unique<Head>("Head");
-	head_->Initialize();
-	head_->AddRenderer3D(MAGISYSTEM::FindRenderer3D("Sphere2"));
-	
-	// マネージャに頭を追加
-	MAGISYSTEM::AddGameObject3D(std::move(head_));
-
+	MAGISYSTEM::AddGameObejct3DGroup(std::move(terrainGroup));
 
 	// パーティクルを作成
 	MAGISYSTEM::CreateStaticParticleGroup3D("Plane", "terrain");
@@ -112,8 +99,6 @@ inline void SampleScene<Data>::Initialize() {
 	// 移動量を-1～1に
 	emitter->GetEmitterSetting().maxVelocity = { 1.0f,1.0f,1.0f };
 	emitter->GetEmitterSetting().minVelocity = { -1.0f,-1.0f,-1.0f };
-	// リピートオン
-	emitter->GetEmitterSetting().isRepeat = true;
 
 	// 音声再生
 	MAGISYSTEM::PlayLoopWaveSound("Alarm01.wav");

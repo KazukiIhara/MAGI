@@ -13,6 +13,7 @@ public:
 	virtual void AssignShape()override;
 	virtual void Update()override;
 	void Draw()override;
+	void DrawInstanced(uint32_t instanceCount)override;
 
 	std::string GetModelName()const;
 protected:

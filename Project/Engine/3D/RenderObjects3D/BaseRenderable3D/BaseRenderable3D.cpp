@@ -44,6 +44,10 @@ BlendMode& BaseRenderable3D::GetBlendMode() {
 	return blendMode_;
 }
 
+bool& BaseRenderable3D::GetIsShow() {
+	return isShow_;
+}
+
 void BaseRenderable3D::SetRenderer3DType(Renderer3DType type) {
 	renderer3DType_ = type;
 }
@@ -85,7 +89,6 @@ void BaseRenderable3D::PrepareForRendering() {
 	ID3D12GraphicsCommandList* commandList = MAGISYSTEM::GetDirectXCommandList();
 	// PSOを設定
 	commandList->SetPipelineState(MAGISYSTEM::GetGraphicsPipelineState(GraphicsPipelineStateType::Object3D, blendMode_));
-
 	// マテリアルCBufferの場所を設定
 	commandList->SetGraphicsRootConstantBufferView(0, materialResource_->GetGPUVirtualAddress());
 	// wvp用のCBufferの場所を設定

@@ -247,6 +247,8 @@ void GameObject3D::AddRenderer3D(BaseRenderable3D* renderer3D) {
 	assert(renderer3D && "Add Renderer3D is nullptr");
 	// ワールドトランスフォームの親子付け
 	renderer3D->GetWorldTransform()->parent_ = worldTransform_.get();
+	// 描画フラグオン
+	renderer3D->GetIsShow() = true;
 	// 3D描画オブジェクトマップにセット
 	renderers3D_.insert(std::pair(renderer3D->name, renderer3D));
 }

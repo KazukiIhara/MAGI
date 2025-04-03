@@ -18,6 +18,7 @@ public:
 	void AssignShape()override;
 	void Update()override;
 	void Draw()override;
+	void DrawInstanced(uint32_t instanceCount)override;
 
 	Primitive3DType GetPrimitiveType()const;
 	std::string GetTextureFileName()const;

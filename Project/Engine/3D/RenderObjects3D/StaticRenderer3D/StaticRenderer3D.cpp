@@ -37,6 +37,11 @@ void StaticRenderer3D::Draw() {
 	model_->Draw();
 }
 
+void StaticRenderer3D::DrawInstanced(uint32_t instanceCount) {
+	// 3Dモデル描画
+	model_->DrawInstanced(instanceCount);
+}
+
 std::string StaticRenderer3D::GetModelName() const {
 	return modelData_.name;
 }
