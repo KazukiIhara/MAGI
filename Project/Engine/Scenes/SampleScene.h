@@ -11,7 +11,7 @@
 
 // サンプルシーン
 template <typename Data>
-class SampleScene : public BaseScene<Data> {
+class SampleScene: public BaseScene<Data> {
 public:
 	using BaseScene<Data>::BaseScene; // 親クラスのコンストラクタをそのまま継承
 	~SampleScene()override = default;
@@ -64,8 +64,23 @@ inline void SampleScene<Data>::Initialize() {
 	// ライト
 	MAGISYSTEM::AddPunctualLight("SampleLight");
 
-	// レンダラー
 
+	// レンダラー作成
+	std::unique_ptr<BaseRenderable3D> terrain = std::make_unique<StaticRenderer3D>("terrain", "terrain");
+	terrain->AssignShape();
+	terrain->SetRenderer3DType(Renderer3DType::Static);
+
+	// ゲームオブジェクト作成
+	std::unique_ptr<GameObject3D> terrainObject = std::make_unique<GameObject3D>("terrain");
+
+	// ゲームオブジェクトグループ作成
+	std::unique_ptr<GameObject3DGroup> terrainGroup = std::make_unique<GameObject3DGroup>("TerrainGroup");
+	// グループにレンダラーを追加
+	terrainGroup->AddRenderer(std::move(terrain));
+	// グループにオブジェクトを追加
+	terrainGroup->AddObject(std::move(terrainObject));
+
+	MAGISYSTEM::AddGameObejct3DGroup(std::move(terrainGroup));
 
 	// パーティクルを作成
 	MAGISYSTEM::CreateStaticParticleGroup3D("Plane", "terrain");

@@ -566,7 +566,7 @@ void MAGISYSTEM::Draw() {
 	commandList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
 	// 3Dオブジェクトグループの描画処理
-
+	gameObject3DGroupManager_->Draw();
 
 
 	// 
@@ -997,8 +997,8 @@ BaseRenderable3D* MAGISYSTEM::FindRenderer3D(const std::string& name) {
 	return renderer3DManager_->Find(name);
 }
 
-void MAGISYSTEM::CreateCollider(const std::string& name, Collider3DType colliderType) {
-	colliderManager_->Create(name, colliderType);
+std::string MAGISYSTEM::CreateCollider(const std::string& name, Collider3DType colliderType) {
+	return colliderManager_->Create(name, colliderType);
 }
 
 void MAGISYSTEM::RemoveCollider(const std::string& name) {
@@ -1043,6 +1043,10 @@ void MAGISYSTEM::AddGameObject3D(std::unique_ptr<GameObject3D> newGameObject3D) 
 
 GameObject3D* MAGISYSTEM::FindGameObject3D(const std::string& objectName) {
 	return gameObject3DManager_->Find(objectName);
+}
+
+void MAGISYSTEM::AddGameObejct3DGroup(std::unique_ptr<GameObject3DGroup> newGameObjectGroup) {
+	gameObject3DGroupManager_->Add(std::move(newGameObjectGroup));
 }
 
 void MAGISYSTEM::AddCamera3D(std::unique_ptr<Camera3D> newCamera3D) {

@@ -5,10 +5,9 @@
 
 struct GameObject3DData {
 	EulerTransform3D transform;
-	Vector4 color;
 };
 
 struct GameObject3DDataForGPU {
 	Matrix4x4 worldMatrix;
-	Vector4 color;
+	Matrix4x4 worldInverseTranspose;
 };

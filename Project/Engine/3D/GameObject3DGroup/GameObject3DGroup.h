@@ -13,14 +13,17 @@
 /// </summary>
 class GameObject3DGroup {
 public:
-	GameObject3DGroup(GameObject3D* gameObject3D, const std::string& groupName);
+	GameObject3DGroup(const std::string& groupName);
 	~GameObject3DGroup() = default;
 
 	// オブジェクトを追加
-	void AddObject();
+	void AddObject(std::unique_ptr<GameObject3D> newObject);
+
+	// 描画用のレンダラーを追加
+	void AddRenderer(std::unique_ptr<BaseRenderable3D> newRenderer);
 
 	// 更新
-	void Update();
+	void UpdateData();
 	// 描画
 	void Draw();
 
@@ -42,7 +45,7 @@ private:
 	// instancingデータ更新
 	void UpdateInstancingData();
 	// 描画用データ更新
-	void UpdateData();
+	void UpdateDrawData();
 
 	// マテリアルリソースの作成
 	void CreateMaterialResource();
@@ -56,8 +59,8 @@ private:
 	std::string name_ = "";
 	// instance最大数
 	const uint32_t kMaxInstance_ = 500;
-	// 受け取るゲームオブジェクト3D
-	GameObject3D* thisGameObject_ = nullptr;
+	// 受け取るレンダラー3D
+	std::unique_ptr<BaseRenderable3D> thisGameObjectRenderer_ = nullptr;
 	// 実際に更新するゲームオブジェクトたち
 	std::unordered_map<std::string, std::unique_ptr<GameObject3D>> gameObjects_;
 	// 描画用のデータリスト

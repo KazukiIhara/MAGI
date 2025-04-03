@@ -8,11 +8,9 @@
 
 Object3DGroupGraphicsPipeline::Object3DGroupGraphicsPipeline(DXGI* dxgi, ShaderCompiler* shaderCompiler)
 	:BaseGraphicsPipeline(dxgi, shaderCompiler) {
-
 }
 
 Object3DGroupGraphicsPipeline::~Object3DGroupGraphicsPipeline() {
-
 }
 
 void Object3DGroupGraphicsPipeline::CreateRootSignature() {

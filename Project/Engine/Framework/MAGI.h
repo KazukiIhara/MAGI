@@ -338,6 +338,12 @@ public: // エンジンの機能
 	static GameObject3D* FindGameObject3D(const std::string& objectName);
 #pragma endregion
 
+#pragma region GameObject3DGroupManager
+	// 3Dゲームオブジェクトグループを作成
+	static void AddGameObejct3DGroup(std::unique_ptr<GameObject3DGroup> newGameObjectGroup);
+
+#pragma endregion
+
 #pragma region Camera3DManager
 	// カメラの追加
 	static void AddCamera3D(std::unique_ptr<Camera3D> newCamera3D);
@@ -374,7 +380,7 @@ public: // エンジンの機能
 
 #pragma region ColliderManager
 	// コライダーの追加
-	static void CreateCollider(const std::string& name, Collider3DType colliderType);
+	static std::string CreateCollider(const std::string& name, Collider3DType colliderType);
 	// コライダーの削除
 	static void RemoveCollider(const std::string& name);
 	// コライダーの取得
@@ -400,12 +406,6 @@ public: // エンジンの機能
 	static BaseParticleGroup3D* FindParticleGroup3D(const std::string& particleGraoupName);
 	// パーティクルリストを取得
 	static const std::vector<std::unique_ptr<BaseParticleGroup3D>>& GetParticleGroupList();
-#pragma endregion
-
-#pragma region GameObject3DGroupManager
-	// ゲームオブジェクトグループの追加
-	static std::string CreateGameObject3DGroup(const std::string& objectGroupName, );
-
 #pragma endregion
 
 #pragma region LineDrawer3D

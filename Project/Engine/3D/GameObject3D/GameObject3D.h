@@ -31,9 +31,6 @@ public:
 	// 描画
 	void Draw();
 
-	// instancing描画
-	void DrawInstanced(uint32_t instancingCount);
-
 	// 行列の更新
 	void UpdateWorldTransformHierarchy();
 

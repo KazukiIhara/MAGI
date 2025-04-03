@@ -78,5 +78,4 @@ struct Object3DForGPU
 {
     float4x4 World;
     float4x4 WorldInverseTranspose;
-    float4 color;
 };

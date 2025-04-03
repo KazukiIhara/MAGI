@@ -44,7 +44,7 @@ void GraphicsPipelineManager::Initialize(DXGI* dxgi, ShaderCompiler* shaderCompi
 
 	// 3Dオブジェクトグループのグラフィックスパイプラインを生成、初期化
 	object3DGroupGraphicsPipeline_ = std::make_unique<Object3DGroupGraphicsPipeline>(dxgi, shaderCompiler);
-	object3DGraphicsPipeline_->Initialize();
+	object3DGroupGraphicsPipeline_->Initialize();
 	SetRootSignature(GraphicsPipelineStateType::Object3DGroup);
 	SetPipelineState(GraphicsPipelineStateType::Object3DGroup);
 

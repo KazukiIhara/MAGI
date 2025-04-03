@@ -4,15 +4,23 @@
 
 using namespace MAGIMath;
 
-GameObject3DGroup::GameObject3DGroup(GameObject3D* gameObject3D, const std::string& groupName) {
-	assert(gameObject3D);
-	thisGameObject_ = gameObject3D;
+GameObject3DGroup::GameObject3DGroup(const std::string& groupName) {
 	name_ = groupName;
 	CreateInstancingResource();
 	MapInstancingData();
+	CreateMaterialResource();
+	MapMaterialData();
 }
 
-void GameObject3DGroup::Update() {
+void GameObject3DGroup::AddObject(std::unique_ptr<GameObject3D> newObject) {
+	gameObjects_.insert(std::pair(newObject->name, std::move(newObject)));
+}
+
+void GameObject3DGroup::AddRenderer(std::unique_ptr<BaseRenderable3D> newRenderer) {
+	thisGameObjectRenderer_ = std::move(newRenderer);
+}
+
+void GameObject3DGroup::UpdateData() {
 	// オブジェクトを更新
 	for (auto& gameObject : gameObjects_) {
 		// ポインタが有効かつ親がいない場合更新
@@ -24,7 +32,7 @@ void GameObject3DGroup::Update() {
 		}
 	}
 	// Update
-	UpdateData();
+	UpdateDrawData();
 	// instance
 	UpdateInstancingData();
 }
@@ -33,7 +41,7 @@ void GameObject3DGroup::Draw() {
 	// 描画前処理
 	PrepareForRendering();
 	// 描画
-	thisGameObject_->DrawInstanced(instanceCount_);
+	thisGameObjectRenderer_->DrawInstanced(instanceCount_);
 }
 
 void GameObject3DGroup::DeleteGarbage() {
@@ -48,7 +56,7 @@ void GameObject3DGroup::PrepareForRendering() {
 	// コマンドリストを取得
 	ID3D12GraphicsCommandList* commandList = MAGISYSTEM::GetDirectXCommandList();
 	// PSOを設定
-	commandList->SetPipelineState(MAGISYSTEM::GetGraphicsPipelineState(GraphicsPipelineStateType::Object3D, blendMode_));
+	commandList->SetPipelineState(MAGISYSTEM::GetGraphicsPipelineState(GraphicsPipelineStateType::Object3DGroup, blendMode_));
 	// マテリアルCBufferの場所を設定
 	commandList->SetGraphicsRootConstantBufferView(0, materialResource_->GetGPUVirtualAddress());
 	// StructuredBufferのSRVを設定する
@@ -71,9 +79,6 @@ void GameObject3DGroup::CreateInstancingResource() {
 void GameObject3DGroup::MapInstancingData() {
 	instancingData_ = nullptr;
 	instancingResource_->Map(0, nullptr, reinterpret_cast<void**>(&instancingData_));
-	for (uint32_t index = 0; index < kMaxInstance_; ++index) {
-		instancingData_[index].color = Vector4(1.0f, 1.0f, 1.0f, 1.0f);
-	}
 }
 
 void GameObject3DGroup::UpdateInstancingData() {
@@ -98,13 +103,9 @@ void GameObject3DGroup::UpdateInstancingData() {
 
 			// ワールド行列
 			instancingData_[instanceCount_].worldMatrix = worldMatrix;
-			// 色を入力
-			instancingData_[instanceCount_].color.x = (*objectIterator).color.x;
-			instancingData_[instanceCount_].color.y = (*objectIterator).color.y;
-			instancingData_[instanceCount_].color.z = (*objectIterator).color.z;
-			instancingData_[instanceCount_].color.w = (*objectIterator).color.w;
+			instancingData_[instanceCount_].worldInverseTranspose = MakeInverseTransposeMatrix(worldMatrix);
 
-			// 生きているParticleの数を1つカウントする
+			// 描画するオブジェクトの数を1つカウントする
 			instanceCount_++;
 		}
 		// 次のイテレーターに進める
@@ -113,8 +114,18 @@ void GameObject3DGroup::UpdateInstancingData() {
 
 }
 
-void GameObject3DGroup::UpdateData() {
+void GameObject3DGroup::UpdateDrawData() {
+	// 描画データをクリア
+	gameObjectsData_.clear();
 
+	for (auto& gameobject : gameObjects_) {
+		GameObject3DData newObjectData{};
+		newObjectData.transform.scale = gameobject.second->GetScale();
+		newObjectData.transform.rotate = gameobject.second->GetRotate();
+		newObjectData.transform.translate = gameobject.second->GetTranslate();
+
+		gameObjectsData_.push_back(newObjectData);
+	}
 }
 
 void GameObject3DGroup::CreateMaterialResource() {

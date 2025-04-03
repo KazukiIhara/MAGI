@@ -15,7 +15,7 @@ GameObject3DGroupManager::~GameObject3DGroupManager() {
 void GameObject3DGroupManager::Update() {
 	for (auto& gameObject3DGroup : gameObject3DGroups_) {
 		if (gameObject3DGroup.second) {
-			gameObject3DGroup.second->Update();
+			gameObject3DGroup.second->UpdateData();
 		}
 	}
 }
