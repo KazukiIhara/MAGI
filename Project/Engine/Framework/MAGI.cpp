@@ -993,6 +993,10 @@ std::unique_ptr<SkinningRenderer3D> MAGISYSTEM::CreateSkinningRenderer3D(const s
 	return renderer3DManager_->CreateSkinningRenderer(name, modelName);
 }
 
+void MAGISYSTEM::AddRenderer(std::unique_ptr<BaseRenderable3D> newRederer) {
+	renderer3DManager_->AddRenderer(std::move(newRederer));
+}
+
 BaseRenderable3D* MAGISYSTEM::FindRenderer3D(const std::string& name) {
 	return renderer3DManager_->Find(name);
 }
@@ -1069,9 +1073,6 @@ void MAGISYSTEM::DrawLine3D(const Vector3& start, const Vector3& end, const RGBA
 	lineDrawer3D_->AddLine(start, end, color);
 }
 
-void MAGISYSTEM::LoadColliderDataFile(const std::string& fileName) {
-	dataIO_->LoadColliderDataFile(fileName);
-}
 
 void MAGISYSTEM::AddGrobalDataGroup(const std::string& groupname) {
 	grobalDataManager_->CreateGroup(groupname);
