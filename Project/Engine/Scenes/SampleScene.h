@@ -8,7 +8,7 @@
 
 // サンプルシーン
 template <typename Data>
-class SampleScene: public BaseScene<Data> {
+class SampleScene : public BaseScene<Data> {
 public:
 	using BaseScene<Data>::BaseScene; // 親クラスのコンストラクタをそのまま継承
 	~SampleScene()override = default;
@@ -68,6 +68,10 @@ inline void SampleScene<Data>::Initialize() {
 	std::unique_ptr<GameObject3D> terrainObject2 = std::make_unique<GameObject3D>("terrain2");
 	terrainObject2->GetTranslate().y = 1.0f;
 
+	std::unique_ptr<GameObject3D> terrainObject3 = std::make_unique<GameObject3D>("terrain3");
+	terrainObject3->GetTranslate().y = -1.0f;
+
+
 	// ゲームオブジェクトグループ作成
 	std::unique_ptr<GameObject3DGroup> terrainGroup = std::make_unique<GameObject3DGroup>("TerrainGroup");
 	// グループにレンダラーを追加
@@ -76,6 +80,7 @@ inline void SampleScene<Data>::Initialize() {
 	// グループにゲームオブジェクトを追加
 	terrainGroup->AddObject(std::move(terrainObject));
 	terrainGroup->AddObject(std::move(terrainObject2));
+	terrainGroup->AddObject(std::move(terrainObject3));
 
 	MAGISYSTEM::AddGameObejct3DGroup(std::move(terrainGroup));
 
