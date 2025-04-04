@@ -981,15 +981,15 @@ void MAGISYSTEM::TransferPunctualLight(uint32_t parmIndex) {
 	punctualLightManager_->TransferLightsData(parmIndex);
 }
 
-std::string MAGISYSTEM::CreatePrimitiveRenderer3D(const std::string& name, Primitive3DType primitiveRenderer, const std::string& textureName) {
+std::unique_ptr<PrimitiveRenderer3D> MAGISYSTEM::CreatePrimitiveRenderer3D(const std::string& name, Primitive3DType primitiveRenderer, const std::string& textureName) {
 	return renderer3DManager_->CreatePrimitiveRenderer(name, primitiveRenderer, textureName);
 }
 
-std::string MAGISYSTEM::CreateStaticRenderer3D(const std::string& name, const std::string& modelName) {
+std::unique_ptr<StaticRenderer3D> MAGISYSTEM::CreateStaticRenderer3D(const std::string& name, const std::string& modelName) {
 	return renderer3DManager_->CreateStaticRenderer(name, modelName);
 }
 
-std::string MAGISYSTEM::CreateSkinningRenderer3D(const std::string& name, const std::string& modelName) {
+std::unique_ptr<SkinningRenderer3D> MAGISYSTEM::CreateSkinningRenderer3D(const std::string& name, const std::string& modelName) {
 	return renderer3DManager_->CreateSkinningRenderer(name, modelName);
 }
 

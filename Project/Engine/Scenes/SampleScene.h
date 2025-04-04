@@ -58,9 +58,7 @@ inline void SampleScene<Data>::Initialize() {
 
 
 	// レンダラー作成
-	std::unique_ptr<BaseRenderable3D> terrain = std::make_unique<StaticRenderer3D>("terrain", "terrain");
-	terrain->AssignShape();
-	terrain->SetRenderer3DType(Renderer3DType::Static);
+	std::unique_ptr<StaticRenderer3D> terrain = MAGISYSTEM::CreateStaticRenderer3D("terrain", "terrain");
 
 	// ゲームオブジェクト作成
 	std::unique_ptr<GameObject3D> terrainObject = std::make_unique<GameObject3D>("terrain");
