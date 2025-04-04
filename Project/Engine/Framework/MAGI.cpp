@@ -981,16 +981,20 @@ void MAGISYSTEM::TransferPunctualLight(uint32_t parmIndex) {
 	punctualLightManager_->TransferLightsData(parmIndex);
 }
 
-std::string MAGISYSTEM::CreatePrimitiveRenderer3D(const std::string& name, Primitive3DType primitiveRenderer, const std::string& textureName) {
+std::unique_ptr<PrimitiveRenderer3D> MAGISYSTEM::CreatePrimitiveRenderer3D(const std::string& name, Primitive3DType primitiveRenderer, const std::string& textureName) {
 	return renderer3DManager_->CreatePrimitiveRenderer(name, primitiveRenderer, textureName);
 }
 
-std::string MAGISYSTEM::CreateStaticRenderer3D(const std::string& name, const std::string& modelName) {
+std::unique_ptr<StaticRenderer3D> MAGISYSTEM::CreateStaticRenderer3D(const std::string& name, const std::string& modelName) {
 	return renderer3DManager_->CreateStaticRenderer(name, modelName);
 }
 
-std::string MAGISYSTEM::CreateSkinningRenderer3D(const std::string& name, const std::string& modelName) {
+std::unique_ptr<SkinningRenderer3D> MAGISYSTEM::CreateSkinningRenderer3D(const std::string& name, const std::string& modelName) {
 	return renderer3DManager_->CreateSkinningRenderer(name, modelName);
+}
+
+void MAGISYSTEM::AddRenderer(std::unique_ptr<BaseRenderable3D> newRederer) {
+	renderer3DManager_->AddRenderer(std::move(newRederer));
 }
 
 BaseRenderable3D* MAGISYSTEM::FindRenderer3D(const std::string& name) {
@@ -1069,9 +1073,6 @@ void MAGISYSTEM::DrawLine3D(const Vector3& start, const Vector3& end, const RGBA
 	lineDrawer3D_->AddLine(start, end, color);
 }
 
-void MAGISYSTEM::LoadColliderDataFile(const std::string& fileName) {
-	dataIO_->LoadColliderDataFile(fileName);
-}
 
 void MAGISYSTEM::AddGrobalDataGroup(const std::string& groupname) {
 	grobalDataManager_->CreateGroup(groupname);

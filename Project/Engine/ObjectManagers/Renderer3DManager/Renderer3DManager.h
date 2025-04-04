@@ -20,10 +20,12 @@ public:
 	void Update();
 	void Draw();
 
-	std::string CreatePrimitiveRenderer(const std::string& name, Primitive3DType primitiveRenderer, const std::string& textureName);
-	std::string CreateStaticRenderer(const std::string& name, const std::string& modelName);
-	std::string CreateSkinningRenderer(const std::string& name, const std::string& modelName);
-	void Remove(const std::string& name);
+	std::unique_ptr<PrimitiveRenderer3D> CreatePrimitiveRenderer(const std::string& name, Primitive3DType primitiveRenderer, const std::string& textureName);
+	std::unique_ptr<StaticRenderer3D> CreateStaticRenderer(const std::string& name, const std::string& modelName);
+	std::unique_ptr<SkinningRenderer3D> CreateSkinningRenderer(const std::string& name, const std::string& modelName);
+
+	// マネージャにレンダラーを追加
+	void AddRenderer(std::unique_ptr<BaseRenderable3D> newRenderer);
 
 	// 名前からレンダラーを検索
 	BaseRenderable3D* Find(const std::string& name);
