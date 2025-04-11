@@ -118,6 +118,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Engine\3D\GameObject3DGroup\GameObject3DGroup.h" />
     <ClInclude Include="Engine\3D\ParticleGroups3D\StaticParticleGroup3D\StaticParticleGroup3D.h" />
     <ClInclude Include="Engine\GraphicsPipelines\Object3DGroupGraphicsPipeline\Object3DGroupGraphicsPipeline.h" />
+    <ClInclude Include="Engine\GraphicsPipelines\Plane3DGraphicsPipeline\Plane3DGraphicsPipeline.h" />
     <ClInclude Include="Engine\Includes\Structs\GameObject3DStruct.h" />
     <ClInclude Include="Engine\Includes\Structs\XInputStruct.h" />
     <ClInclude Include="Engine\ObjectManagers\GameObject3DGroupManager\GameObject3DGroupManager.h" />
@@ -295,6 +296,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Engine\FPSController\FPSController.cpp" />
     <ClCompile Include="Engine\Framework\MAGI.cpp" />
     <ClCompile Include="Engine\GraphicsPipelines\Object3DGroupGraphicsPipeline\Object3DGroupGraphicsPipeline.cpp" />
+    <ClCompile Include="Engine\GraphicsPipelines\Plane3DGraphicsPipeline\Plane3DGraphicsPipeline.cpp" />
     <ClCompile Include="Engine\GrobalDataManager\GrobalDataManager.cpp" />
     <ClCompile Include="Engine\GUI\GUI.cpp" />
     <ClCompile Include="Engine\GraphicsPipelines\BaseGraphicsPipeline\BaseGraphicsPipeline.cpp" />
