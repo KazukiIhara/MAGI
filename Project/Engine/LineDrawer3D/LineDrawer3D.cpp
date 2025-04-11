@@ -15,6 +15,7 @@ using namespace MAGIUtility;
 
 LineDrawer3D::LineDrawer3D(DXGI* dxgi, DirectXCommand* directXCommand, SRVUAVManager* srvUavManager, GraphicsPipelineManager* graphicsPipelineManager, Camera3DManager* camera3DManager) {
 	Initialize(dxgi, directXCommand, srvUavManager, graphicsPipelineManager, camera3DManager);
+	lines_.reserve(kNumMaxInstance);
 	Logger::Log("LineDrawer3D Initialize\n");
 }
 
@@ -23,14 +24,18 @@ LineDrawer3D::~LineDrawer3D() {
 }
 
 void LineDrawer3D::Update() {
+
+	// 最大数を超えていたら止める
+	if (lines_.size() >= kNumMaxInstance) {
+		assert(false && "Line size is over !");
+	}
+
 	// 描画すべきインスタンス数
 	instanceCount_ = static_cast<uint32_t>(lines_.size());
 
-	if (instancingData_ != nullptr) {
-		for (uint32_t i = 0; i < instanceCount_; ++i) {
-			// GPUにデータを転送
-			instancingData_[i] = lines_[i];
-		}
+	if (instancingData_ != nullptr && !lines_.empty()) {
+		// コピー
+		::memcpy(instancingData_, lines_.data(), instanceCount_ * sizeof(LineData3D));
 	}
 	// ラインのコンテナをクリア
 	ClearLines();
@@ -50,10 +55,6 @@ void LineDrawer3D::Draw() {
 }
 
 void LineDrawer3D::AddLine(const Vector3& start, const Vector3& end, const RGBA& color) {
-	// 最大数を超えていたら追加しない
-	if (lines_.size() >= kNumMaxInstance) {
-		return;
-	}
 	// 追加するLine
 	LineData3D newLineData{};
 	newLineData.start = start;

@@ -68,3 +68,16 @@ struct LineData3D {
 	Vector3 end;
 	Vector4 color;
 };
+
+/// <summary>
+/// 3Dの板ポリデータ
+/// </summary>
+struct PlaneData3D {
+	Matrix4x4 worldMatrix;
+	Matrix4x4 worldInverseTranspose;
+	float leftTop;
+	float rightTop;
+	float leftBottom;
+	float rightBottom;
+	Vector3 color;
+};

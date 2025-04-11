@@ -736,6 +736,7 @@
     <ClInclude Include="Engine\Includes\Structs\GameObject3DStruct.h" />
     <ClInclude Include="Engine\ObjectManagers\GameObject3DGroupManager\GameObject3DGroupManager.h" />
     <ClInclude Include="Engine\GraphicsPipelines\Object3DGroupGraphicsPipeline\Object3DGroupGraphicsPipeline.h" />
+    <ClInclude Include="Engine\PrimitiveDrawers\PlaneDrawer3D\PlaneDrawer3D.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="App\Game\Game.cpp">
@@ -996,6 +997,7 @@
     <ClCompile Include="Engine\3D\GameObject3DGroup\GameObject3DGroup.cpp" />
     <ClCompile Include="Engine\ObjectManagers\GameObject3DGroupManager\GameObject3DGroupManager.cpp" />
     <ClCompile Include="Engine\GraphicsPipelines\Object3DGroupGraphicsPipeline\Object3DGroupGraphicsPipeline.cpp" />
+    <ClCompile Include="Engine\PrimitiveDrawers\PlaneDrawer3D\PlaneDrawer3D.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Engine\SceneManager\SceneManager.ipp">

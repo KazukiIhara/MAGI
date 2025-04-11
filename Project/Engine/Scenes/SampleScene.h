@@ -8,7 +8,7 @@
 
 // サンプルシーン
 template <typename Data>
-class SampleScene : public BaseScene<Data> {
+class SampleScene: public BaseScene<Data> {
 public:
 	using BaseScene<Data>::BaseScene; // 親クラスのコンストラクタをそのまま継承
 	~SampleScene()override = default;
@@ -60,25 +60,23 @@ inline void SampleScene<Data>::Initialize() {
 	// レンダラー作成
 	std::unique_ptr<StaticRenderer3D> terrain = MAGISYSTEM::CreateStaticRenderer3D("terrain", "terrain");
 
-	// ゲームオブジェクト作成
-	std::unique_ptr<GameObject3D> terrainObject = std::make_unique<GameObject3D>("terrain");
-
-	std::unique_ptr<GameObject3D> terrainObject2 = std::make_unique<GameObject3D>("terrain2");
-	terrainObject2->GetTranslate().y = 1.0f;
-
-	std::unique_ptr<GameObject3D> terrainObject3 = std::make_unique<GameObject3D>("terrain3");
-	terrainObject3->GetTranslate().y = -1.0f;
-
 
 	// ゲームオブジェクトグループ作成
 	std::unique_ptr<GameObject3DGroup> terrainGroup = std::make_unique<GameObject3DGroup>("TerrainGroup");
 	// グループにレンダラーを追加
 	terrainGroup->AddRenderer(std::move(terrain));
 
-	// グループにゲームオブジェクトを追加
-	terrainGroup->AddObject(std::move(terrainObject));
-	terrainGroup->AddObject(std::move(terrainObject2));
-	terrainGroup->AddObject(std::move(terrainObject3));
+	// ゲームオブジェクト作成
+	std::array<std::unique_ptr<GameObject3D>, 1500> terrainObject;
+
+	for (uint32_t i = 0; i < 1500; i++) {
+		std::string number = std::to_string(i);
+
+		terrainObject[i] = std::make_unique<GameObject3D>("terrain" + number);
+		terrainObject[i]->GetTranslate().x = static_cast<float>(i);
+		// グループにゲームオブジェクトを追加
+		terrainGroup->AddObject(std::move(terrainObject[i]));
+	}
 
 	MAGISYSTEM::AddGameObejct3DGroup(std::move(terrainGroup));
 
@@ -102,9 +100,6 @@ inline void SampleScene<Data>::Initialize() {
 	// 移動量を-1～1に
 	emitter->GetEmitterSetting().maxVelocity = { 1.0f,1.0f,1.0f };
 	emitter->GetEmitterSetting().minVelocity = { -1.0f,-1.0f,-1.0f };
-
-	// 音声再生
-	MAGISYSTEM::PlayLoopWaveSound("Alarm01.wav");
 
 }
 

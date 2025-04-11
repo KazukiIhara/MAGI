@@ -71,7 +71,7 @@ private:
 	// SrvIndex
 	uint32_t srvIndex_ = 0;
 	// instance描画する際に使う変数
-	uint32_t instanceCount_ = kNumMaxInstance;
+	uint32_t instanceCount_ = 0;
 
 private:
 	DXGI* dxgi_ = nullptr;
