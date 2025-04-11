@@ -2,7 +2,7 @@
 
 #include "GraphicsPipelines/BaseGraphicsPipeline/BaseGraphicsPipeline.h"
 
-class Plane3DGraphicsPipeline : public BaseGraphicsPipeline {
+class Plane3DGraphicsPipeline: public BaseGraphicsPipeline {
 public:
 	Plane3DGraphicsPipeline(DXGI* dxgi, ShaderCompiler* shaderCompiler);
 	~Plane3DGraphicsPipeline();
@@ -22,5 +22,8 @@ private:
 	D3D12_INPUT_LAYOUT_DESC InputLayoutSetting()override;
 	// RasterizerStateの設定を行う
 	D3D12_RASTERIZER_DESC RasterizerStateSetting()override;
+private:
+	// ジオメトリシェーダーの塊
+	Microsoft::WRL::ComPtr<ID3DBlob> geometryShaderBlob_;
 };
 

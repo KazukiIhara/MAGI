@@ -1006,9 +1006,13 @@
       <Filter>Engine\SceneManager</Filter>
     </None>
     <None Include="EngineAssets\Shaders\Graphics\Object3DGroup\Object3DGroup.hlsli" />
+    <None Include="EngineAssets\Shaders\Graphics\Plane3D\Plane3D.hlsli" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="EngineAssets\Shaders\Graphics\Object3DGroup\Object3DGroup.PS.hlsl" />
     <FxCompile Include="EngineAssets\Shaders\Graphics\Object3DGroup\Object3DGroup.VS.hlsl" />
+    <FxCompile Include="EngineAssets\Shaders\Graphics\Plane3D\Plane3D.GS.hlsl" />
+    <FxCompile Include="EngineAssets\Shaders\Graphics\Plane3D\Plane3D.PS.hlsl" />
+    <FxCompile Include="EngineAssets\Shaders\Graphics\Plane3D\Plane3D.VS.hlsl" />
   </ItemGroup>
 </Project>
