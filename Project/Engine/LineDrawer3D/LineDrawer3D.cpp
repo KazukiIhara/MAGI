@@ -24,9 +24,8 @@ LineDrawer3D::~LineDrawer3D() {
 }
 
 void LineDrawer3D::Update() {
-
 	// 最大数を超えていたら止める
-	if (lines_.size() >= kNumMaxInstance) {
+	if (lines_.size() > kNumMaxInstance) {
 		assert(false && "Line size is over !");
 	}
 
@@ -35,7 +34,7 @@ void LineDrawer3D::Update() {
 
 	if (instancingData_ != nullptr && !lines_.empty()) {
 		// コピー
-		::memcpy(instancingData_, lines_.data(), instanceCount_ * sizeof(LineData3D));
+		std::memcpy(instancingData_, lines_.data(), instanceCount_ * sizeof(LineData3D));
 	}
 	// ラインのコンテナをクリア
 	ClearLines();
@@ -62,10 +61,12 @@ void LineDrawer3D::AddLine(const Vector3& start, const Vector3& end, const RGBA&
 	newLineData.color = RGBAToVector4(color);
 	// コンテナに挿入
 	lines_.push_back(newLineData);
+	currentIndex_++;
 }
 
 void LineDrawer3D::ClearLines() {
 	lines_.clear();
+	currentIndex_ = 0;
 }
 
 void LineDrawer3D::Initialize(DXGI* dxgi, DirectXCommand* directXCommand, SRVUAVManager* srvUavManager, GraphicsPipelineManager* graphicsPipelineManager, Camera3DManager* camera3DManager) {

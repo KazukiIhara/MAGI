@@ -73,6 +73,8 @@ private:
 	// instance描画する際に使う変数
 	uint32_t instanceCount_ = 0;
 
+	// 現在のインデックス
+	uint32_t currentIndex_ = 0;
 private:
 	DXGI* dxgi_ = nullptr;
 	DirectXCommand* directXCommand_ = nullptr;
