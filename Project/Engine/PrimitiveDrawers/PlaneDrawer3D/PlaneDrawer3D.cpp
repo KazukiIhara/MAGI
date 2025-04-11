@@ -12,6 +12,7 @@
 #include <cassert>
 
 using namespace MAGIUtility;
+using namespace MAGIMath;
 
 PlaneDrawer3D::PlaneDrawer3D(DXGI* dxgi, DirectXCommand* directXCommand, SRVUAVManager* srvUavManager, GraphicsPipelineManager* graphicsPipelineManager, Camera3DManager* camera3DManager) {
 	SetDXGI(dxgi);
@@ -40,7 +41,7 @@ PlaneDrawer3D::~PlaneDrawer3D() {
 void PlaneDrawer3D::Update() {
 	// 最大数を超えていたら止める
 	if (planes_.size() > kNumMaxInstance) {
-		assert(false && "Line size is over !");
+		assert(false && "Plane size is over !");
 	}
 
 	// 描画すべきインスタンス数
@@ -55,14 +56,33 @@ void PlaneDrawer3D::Update() {
 }
 
 void PlaneDrawer3D::Draw() {
-
+	// コマンドリストを取得
+	ID3D12GraphicsCommandList* commandList = directXCommand_->GetList();
+	// PSOを設定
+	commandList->SetPipelineState(graphicsPipelineManager_->GetPipelineState(GraphicsPipelineStateType::Plane3D, blendMode_));
+	// Cameraを転送
+	camera3DManager_->TransferCurrentCamera(0);
+	// StructuredBufferのSRVを設定する
+	commandList->SetGraphicsRootDescriptorTable(1, srvUavManager_->GetDescriptorHandleGPU(srvIndex_));
+	// 描画
+	commandList->DrawInstanced(4, instanceCount_, 0, 0);
 }
 
 void PlaneDrawer3D::AddPlane(const WorldTransform& worldTransform, float leftTop, float rightTop, float leftBottom, float rightBottom, const RGBA& color) {
+	PlaneData3D newPlaneData{};
+	newPlaneData.worldMatrix = worldTransform.worldMatrix_;
+	newPlaneData.worldInverseTranspose = MakeInverseTransposeMatrix(worldTransform.worldMatrix_);
+	newPlaneData.leftTop = leftTop;
+	newPlaneData.rightTop = rightTop;
+	newPlaneData.leftBottom = leftBottom;
+	newPlaneData.rightBottom = rightBottom;
+	newPlaneData.color = RGBAToVector4(color);
 
+	planes_.push_back(newPlaneData);
 }
 
 void PlaneDrawer3D::ClearPlanes() {
+	planes_.clear();
 }
 
 void PlaneDrawer3D::SetDXGI(DXGI* dxgi) {

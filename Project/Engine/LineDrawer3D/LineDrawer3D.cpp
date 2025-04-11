@@ -63,7 +63,7 @@ void LineDrawer3D::Draw() {
 	camera3DManager_->TransferCurrentCamera(0);
 	// StructuredBufferのSRVを設定する
 	commandList->SetGraphicsRootDescriptorTable(1, srvUavManager_->GetDescriptorHandleGPU(srvIndex_));
-	// 描画！(DrawCall/ドローコール)。3頂点で1つのインスタンス。インスタンスについては今後
+	// 描画
 	commandList->DrawInstanced(2, instanceCount_, 0, 0);
 }
 
