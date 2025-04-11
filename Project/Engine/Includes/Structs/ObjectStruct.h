@@ -79,5 +79,5 @@ struct PlaneData3D {
 	float rightTop;
 	float leftBottom;
 	float rightBottom;
-	Vector3 color;
+	Vector4 color;
 };

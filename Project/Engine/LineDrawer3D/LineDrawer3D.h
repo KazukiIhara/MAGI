@@ -37,12 +37,6 @@ public:
 	void AddLine(const Vector3& start, const Vector3& end, const RGBA& color);
 
 private:
-	void Initialize(
-		DXGI* dxgi,
-		DirectXCommand* directXCommand,
-		SRVUAVManager* srvUavManager,
-		GraphicsPipelineManager* graphicsPipelineManager,
-		Camera3DManager* camera3DManager);
 	void ClearLines();
 	void SetDXGI(DXGI* dxgi);
 	void SetDirectXCommand(DirectXCommand* directXCommand);
@@ -72,9 +66,6 @@ private:
 	uint32_t srvIndex_ = 0;
 	// instance描画する際に使う変数
 	uint32_t instanceCount_ = 0;
-
-	// 現在のインデックス
-	uint32_t currentIndex_ = 0;
 private:
 	DXGI* dxgi_ = nullptr;
 	DirectXCommand* directXCommand_ = nullptr;

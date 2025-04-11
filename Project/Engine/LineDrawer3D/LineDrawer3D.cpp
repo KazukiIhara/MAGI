@@ -14,7 +14,21 @@
 using namespace MAGIUtility;
 
 LineDrawer3D::LineDrawer3D(DXGI* dxgi, DirectXCommand* directXCommand, SRVUAVManager* srvUavManager, GraphicsPipelineManager* graphicsPipelineManager, Camera3DManager* camera3DManager) {
-	Initialize(dxgi, directXCommand, srvUavManager, graphicsPipelineManager, camera3DManager);
+	SetDXGI(dxgi);
+	SetDirectXCommand(directXCommand);
+	SetSRVUAVManager(srvUavManager);
+	SetGraphicsPipelineManager(graphicsPipelineManager);
+	SetCamera3DManager(camera3DManager);
+	// Instancingリソースを作る
+	CreateInstancingResource();
+	// Instancingデータを書き込む
+	MapInstancingData();
+
+	// srvのインデックスを割り当て
+	srvIndex_ = srvUavManager_->Allocate();
+	// Srvを作成
+	srvUavManager_->CreateSrvStructuredBuffer(srvIndex_, instancingResource_.Get(), kNumMaxInstance, sizeof(LineData3D));
+
 	lines_.reserve(kNumMaxInstance);
 	Logger::Log("LineDrawer3D Initialize\n");
 }
@@ -61,29 +75,10 @@ void LineDrawer3D::AddLine(const Vector3& start, const Vector3& end, const RGBA&
 	newLineData.color = RGBAToVector4(color);
 	// コンテナに挿入
 	lines_.push_back(newLineData);
-	currentIndex_++;
 }
 
 void LineDrawer3D::ClearLines() {
 	lines_.clear();
-	currentIndex_ = 0;
-}
-
-void LineDrawer3D::Initialize(DXGI* dxgi, DirectXCommand* directXCommand, SRVUAVManager* srvUavManager, GraphicsPipelineManager* graphicsPipelineManager, Camera3DManager* camera3DManager) {
-	SetDXGI(dxgi);
-	SetDirectXCommand(directXCommand);
-	SetSRVUAVManager(srvUavManager);
-	SetGraphicsPipelineManager(graphicsPipelineManager);
-	SetCamera3DManager(camera3DManager);
-	// Instancingリソースを作る
-	CreateInstancingResource();
-	// Instancingデータを書き込む
-	MapInstancingData();
-
-	// srvのインデックスを割り当て
-	srvIndex_ = srvUavManager_->Allocate();
-	// Srvを作成
-	srvUavManager_->CreateSrvStructuredBuffer(srvIndex_, instancingResource_.Get(), kNumMaxInstance, sizeof(LineData3D));
 }
 
 void LineDrawer3D::SetDXGI(DXGI* dxgi) {

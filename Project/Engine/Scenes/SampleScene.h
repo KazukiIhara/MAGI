@@ -78,6 +78,7 @@ inline void SampleScene<Data>::Initialize() {
 		terrainGroup->AddObject(std::move(terrainObject[i]));
 	}
 
+	// ゲームオブジェクトグループを追加
 	MAGISYSTEM::AddGameObejct3DGroup(std::move(terrainGroup));
 
 	// パーティクルを作成
@@ -105,9 +106,7 @@ inline void SampleScene<Data>::Initialize() {
 
 template<typename Data>
 inline void SampleScene<Data>::Update() {
-	for (size_t i = 0; i < 32768; i++) {
-		MAGISYSTEM::DrawLine3D(Vector3(static_cast<float>(i), 0.0f, 0.0f), Vector3(static_cast<float>(i), 1.0f, 0.0f), Color::Red);
-	}
+
 
 }
 
