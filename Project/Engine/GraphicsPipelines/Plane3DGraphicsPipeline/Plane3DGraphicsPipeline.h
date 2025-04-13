@@ -24,6 +24,6 @@ private:
 	D3D12_RASTERIZER_DESC RasterizerStateSetting()override;
 private:
 	// ジオメトリシェーダーの塊
-	Microsoft::WRL::ComPtr<ID3DBlob> geometryShaderBlob_;
+	ComPtr<ID3DBlob> geometryShaderBlob_;
 };
 

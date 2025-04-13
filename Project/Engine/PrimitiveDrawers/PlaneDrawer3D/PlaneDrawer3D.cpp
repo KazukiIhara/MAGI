@@ -49,7 +49,7 @@ void PlaneDrawer3D::Update() {
 
 	if (instancingData_ != nullptr && !planes_.empty()) {
 		// コピー
-		std::memcpy(instancingData_, planes_.data(), instanceCount_ * sizeof(LineData3D));
+		std::memcpy(instancingData_, planes_.data(), instanceCount_ * sizeof(PlaneData3D));
 	}
 	// 板ポリのコンテナをクリア
 	ClearPlanes();
@@ -120,6 +120,7 @@ void PlaneDrawer3D::MapInstancingData() {
 	instancingResource_->Map(0, nullptr, reinterpret_cast<void**>(&instancingData_));
 
 	for (uint32_t index = 0; index < kNumMaxInstance; ++index) {
+
 		instancingData_[index].color = Vector4(1.0f, 1.0f, 1.0f, 1.0f);
 	}
 }

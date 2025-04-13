@@ -14,7 +14,7 @@ Plane3DGraphicsPipeline::~Plane3DGraphicsPipeline() {}
 void Plane3DGraphicsPipeline::CreateRootSignature() {
 	HRESULT hr = S_FALSE;
 
-	// DescriptorRange設定
+	// instancingResourceのDescriptorRange設定
 	D3D12_DESCRIPTOR_RANGE instanceDescriptorRange[1] = {};
 	instanceDescriptorRange[0].BaseShaderRegister = 0;
 	instanceDescriptorRange[0].NumDescriptors = 1;
@@ -29,14 +29,14 @@ void Plane3DGraphicsPipeline::CreateRootSignature() {
 	// RootParameter作成
 	D3D12_ROOT_PARAMETER rootParameters[2] = {};
 
-	// CBV の設定
+	// カメラの設定
 	rootParameters[0].ParameterType = D3D12_ROOT_PARAMETER_TYPE_CBV;
-	rootParameters[0].ShaderVisibility = D3D12_SHADER_VISIBILITY_VERTEX; // 頂点シェーダーで使用
+	rootParameters[0].ShaderVisibility = D3D12_SHADER_VISIBILITY_GEOMETRY; //  ジオメトリシェーダーで使用
 	rootParameters[0].Descriptor.ShaderRegister = 0; // b0にバインド
 
-	// SRV の設定
+	// instancingResourceの設定
 	rootParameters[1].ParameterType = D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE;
-	rootParameters[1].ShaderVisibility = D3D12_SHADER_VISIBILITY_VERTEX; // 頂点シェーダーで使用
+	rootParameters[1].ShaderVisibility = D3D12_SHADER_VISIBILITY_GEOMETRY; // すべてのシェーダーで使用
 	rootParameters[1].DescriptorTable.pDescriptorRanges = instanceDescriptorRange;
 	rootParameters[1].DescriptorTable.NumDescriptorRanges = 1;
 

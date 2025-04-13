@@ -30,6 +30,12 @@ void GraphicsPipelineManager::Initialize(DXGI* dxgi, ShaderCompiler* shaderCompi
 	SetRootSignature(GraphicsPipelineStateType::Line3D);
 	SetPipelineState(GraphicsPipelineStateType::Line3D);
 
+	// 3D板ポリのグラフィックスパイプラインを生成、初期か
+	plane3DGraphicsPipeline_ = std::make_unique<Plane3DGraphicsPipeline>(dxgi, shaderCompiler);
+	plane3DGraphicsPipeline_->Initialize();
+	SetRootSignature(GraphicsPipelineStateType::Plane3D);
+	SetPipelineState(GraphicsPipelineStateType::Plane3D);
+
 	// 3Dオブジェクトのグラフィックスパイプラインを生成、初期化
 	object3DGraphicsPipeline_ = std::make_unique<Object3DGraphicsPipeline>(dxgi, shaderCompiler);
 	object3DGraphicsPipeline_->Initialize();
@@ -70,6 +76,10 @@ void GraphicsPipelineManager::SetRootSignature(GraphicsPipelineStateType pipelin
 			// 3Dライン描画用のルートシグネチャを設定
 			rootSignatures_[static_cast<uint32_t>(pipelineState)] = line3DGraphicsPipeline_->GetRootSignature();
 			break;
+		case GraphicsPipelineStateType::Plane3D:
+			// 3D板ポリ用のルートシグネイチャを設定
+			rootSignatures_[static_cast<uint32_t>(pipelineState)] = plane3DGraphicsPipeline_->GetRootSignature();
+			break;
 		case GraphicsPipelineStateType::Object3D:
 			// 3Dオブジェクト描画用のルートシグネチャを設定
 			rootSignatures_[static_cast<uint32_t>(pipelineState)] = object3DGraphicsPipeline_->GetRootSignature();
@@ -77,7 +87,6 @@ void GraphicsPipelineManager::SetRootSignature(GraphicsPipelineStateType pipelin
 		case GraphicsPipelineStateType::Particle3D:
 			rootSignatures_[static_cast<uint32_t>(pipelineState)] = particle3DGraphicsPipeline_->GetRootSignature();
 			break;
-
 		case GraphicsPipelineStateType::Object3DGroup:
 			rootSignatures_[static_cast<uint32_t>(pipelineState)] = object3DGroupGraphicsPipeline_->GetRootSignature();
 			break;
@@ -95,6 +104,11 @@ void GraphicsPipelineManager::SetPipelineState(GraphicsPipelineStateType pipelin
 		case GraphicsPipelineStateType::Line3D:
 			for (int mode = static_cast<uint32_t>(BlendMode::None); mode < static_cast<uint32_t>(BlendMode::Num); ++mode) {
 				graphicsPipelineStates_[static_cast<uint32_t>(pipelineState)][mode] = line3DGraphicsPipeline_->GetPipelineState(static_cast<BlendMode>(mode));
+			}
+			break;
+		case GraphicsPipelineStateType::Plane3D:
+			for (int mode = static_cast<uint32_t>(BlendMode::None); mode < static_cast<uint32_t>(BlendMode::Num); ++mode) {
+				graphicsPipelineStates_[static_cast<uint32_t>(pipelineState)][mode] = plane3DGraphicsPipeline_->GetPipelineState(static_cast<BlendMode>(mode));
 			}
 			break;
 		case GraphicsPipelineStateType::Object3D:

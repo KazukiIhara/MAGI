@@ -67,7 +67,7 @@ private:
 	// instancing描画用のリソース
 	ComPtr<ID3D12Resource> instancingResource_ = nullptr;
 	// instancing描画用のデータ
-	PlaneData3D* instancingData_ = nullptr;
+	PlaneData3D* instancingData_ = nullptr;	
 
 	// SrvIndex
 	uint32_t srvIndex_ = 0;
