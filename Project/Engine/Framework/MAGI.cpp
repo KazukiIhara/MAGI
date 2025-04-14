@@ -593,7 +593,7 @@ void MAGISYSTEM::Draw() {
 	// PlaneDrawer3Dの描画前処理
 	// 
 	commandList->SetGraphicsRootSignature(graphicsPipelineManager_->GetRootSignature(GraphicsPipelineStateType::Plane3D));
-	commandList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+	commandList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_POINTLIST);
 
 	// 
 	// PlaneDrawer3Dの描画処理
@@ -1093,7 +1093,7 @@ void MAGISYSTEM::DrawLine3D(const Vector3& start, const Vector3& end, const RGBA
 	lineDrawer3D_->AddLine(start, end, color);
 }
 
-void MAGISYSTEM::DrawPlane3D(const WorldTransform& worldTransform, float leftTop, float rightTop, float leftBottom, float rightBottom, const RGBA& color) {
+void MAGISYSTEM::DrawPlane3D(const WorldTransform& worldTransform, const Vector3& leftTop, const Vector3& rightTop, const Vector3& leftBottom, const Vector3& rightBottom, const RGBA& color) {
 	planeDrawer3D_->AddPlane(worldTransform, leftTop, rightTop, leftBottom, rightBottom, color);
 }
 

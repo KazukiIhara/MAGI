@@ -418,7 +418,7 @@ public: // エンジンの機能
 
 #pragma region PlaneDrawer3D
 	// 板ポリ描画
-	static void DrawPlane3D(const WorldTransform& worldTransform, float leftTop, float rightTop, float leftBottom, float rightBottom, const RGBA& color);
+	static void DrawPlane3D(const WorldTransform& worldTransform, const Vector3& leftTop, const Vector3& rightTop, const Vector3& leftBottom, const Vector3& rightBottom, const RGBA& color);
 
 #pragma endregion
 

@@ -37,10 +37,10 @@ public:
 	void Draw();
 
 	void AddPlane(const WorldTransform& worldTransform,
-		float leftTop,
-		float rightTop,
-		float leftBottom,
-		float rightBottom,
+		const Vector3& leftTop,
+		const Vector3& rightTop,
+		const Vector3& leftBottom,
+		const Vector3& rightBottom,
 		const RGBA& color
 	);
 

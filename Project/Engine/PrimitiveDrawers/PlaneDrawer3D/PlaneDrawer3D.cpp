@@ -68,14 +68,14 @@ void PlaneDrawer3D::Draw() {
 	commandList->DrawInstanced(4, instanceCount_, 0, 0);
 }
 
-void PlaneDrawer3D::AddPlane(const WorldTransform& worldTransform, float leftTop, float rightTop, float leftBottom, float rightBottom, const RGBA& color) {
+void PlaneDrawer3D::AddPlane(const WorldTransform& worldTransform, const Vector3& leftTop, const Vector3& rightTop, const Vector3& leftBottom, const Vector3& rightBottom, const RGBA& color) {
 	PlaneData3D newPlaneData{};
 	newPlaneData.worldMatrix = worldTransform.worldMatrix_;
 	newPlaneData.worldInverseTranspose = MakeInverseTransposeMatrix(worldTransform.worldMatrix_);
-	newPlaneData.leftTop = leftTop;
-	newPlaneData.rightTop = rightTop;
-	newPlaneData.leftBottom = leftBottom;
-	newPlaneData.rightBottom = rightBottom;
+	newPlaneData.offsets[0] = leftTop;
+	newPlaneData.offsets[1] = rightTop;
+	newPlaneData.offsets[2] = leftBottom;
+	newPlaneData.offsets[3] = rightBottom;
 	newPlaneData.color = RGBAToVector4(color);
 
 	planes_.push_back(newPlaneData);

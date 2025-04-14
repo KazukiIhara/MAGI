@@ -33,10 +33,10 @@ struct PlaneData3D
 {
     float4x4 worldMatrix;
     float4x4 worldInverseTranspose;
-    float leftTop;
-    float rightTop;
-    float leftBottom;
-    float rightBottom;
+    float3 leftTop;
+    float3 rightTop;
+    float3 leftBottom;
+    float3 rightBottom;
     float4 color;
 };
 
