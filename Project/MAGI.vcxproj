@@ -219,7 +219,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Engine\Input\MAGIDirectInput\MAGIDirectInput.h" />
     <ClInclude Include="Engine\Input\MAGIXInput\MAGIXInput.h" />
     <ClInclude Include="Engine\LeakChecker\D3DResourceLeakChecker.h" />
-    <ClInclude Include="Engine\LineDrawer3D\LineDrawer3D.h" />
+    <ClInclude Include="Engine\PrimitiveDrawers\LineDrawer3D\LineDrawer3D.h" />
     <ClInclude Include="Engine\ObjectManagers\Camera3DManager\Camera3DManager.h" />
     <ClInclude Include="Engine\ObjectManagers\ColliderManager\ColliderManager.h" />
     <ClInclude Include="Engine\ObjectManagers\Emitter3DManager\Emitter3DManager.h" />
@@ -312,7 +312,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Engine\Input\MAGIDirectInput\MAGIDirectInput.cpp" />
     <ClCompile Include="Engine\Input\MAGIXInput\MAGIXInput.cpp" />
     <ClCompile Include="Engine\LeakChecker\D3DResourceLeakChecker.cpp" />
-    <ClCompile Include="Engine\LineDrawer3D\LineDrawer3D.cpp" />
+    <ClCompile Include="Engine\PrimitiveDrawers\LineDrawer3D\LineDrawer3D.cpp" />
     <ClCompile Include="Engine\ObjectManagers\Camera3DManager\Camera3DManager.cpp" />
     <ClCompile Include="Engine\ObjectManagers\ColliderManager\ColliderManager.cpp" />
     <ClCompile Include="Engine\ObjectManagers\Emitter3DManager\Emitter3DManager.cpp" />

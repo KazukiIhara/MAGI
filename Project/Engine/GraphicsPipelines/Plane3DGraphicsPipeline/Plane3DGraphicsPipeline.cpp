@@ -36,7 +36,7 @@ void Plane3DGraphicsPipeline::CreateRootSignature() {
 
 	// instancingResourceの設定
 	rootParameters[1].ParameterType = D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE;
-	rootParameters[1].ShaderVisibility = D3D12_SHADER_VISIBILITY_GEOMETRY; // すべてのシェーダーで使用
+	rootParameters[1].ShaderVisibility = D3D12_SHADER_VISIBILITY_GEOMETRY; // ジオメトリシェーダーで使用
 	rootParameters[1].DescriptorTable.pDescriptorRanges = instanceDescriptorRange;
 	rootParameters[1].DescriptorTable.NumDescriptorRanges = 1;
 

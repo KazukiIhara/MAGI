@@ -654,7 +654,7 @@
     <ClInclude Include="Engine\LeakChecker\D3DResourceLeakChecker.h">
       <Filter>Engine\LeakChecker</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\LineDrawer3D\LineDrawer3D.h">
+    <ClInclude Include="Engine\PrimitiveDrawers\LineDrawer3D\LineDrawer3D.h">
       <Filter>Engine\LineDrawer3D</Filter>
     </ClInclude>
     <ClInclude Include="Engine\ObjectManagers\Camera3DManager\Camera3DManager.h">
@@ -923,7 +923,7 @@
     <ClCompile Include="Engine\LeakChecker\D3DResourceLeakChecker.cpp">
       <Filter>Engine\LeakChecker</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\LineDrawer3D\LineDrawer3D.cpp">
+    <ClCompile Include="Engine\PrimitiveDrawers\LineDrawer3D\LineDrawer3D.cpp">
       <Filter>Engine\LineDrawer3D</Filter>
     </ClCompile>
     <ClCompile Include="Engine\ObjectManagers\Camera3DManager\Camera3DManager.cpp">

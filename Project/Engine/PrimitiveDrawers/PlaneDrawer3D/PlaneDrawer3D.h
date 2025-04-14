@@ -82,6 +82,4 @@ private:
 	SRVUAVManager* srvUavManager_ = nullptr;
 	GraphicsPipelineManager* graphicsPipelineManager_ = nullptr;
 	Camera3DManager* camera3DManager_ = nullptr;
-
-
 };

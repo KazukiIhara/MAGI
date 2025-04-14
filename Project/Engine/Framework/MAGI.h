@@ -76,7 +76,8 @@
 // 
 // Drawer
 // 
-#include "LineDrawer3D/LineDrawer3D.h"
+#include "PrimitiveDrawers/LineDrawer3D/LineDrawer3D.h"
+#include "PrimitiveDrawers/PlaneDrawer3D/PlaneDrawer3D.h"
 
 // 
 // GameManager
