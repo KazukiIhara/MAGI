@@ -1,4 +1,8 @@
-float4 main() : SV_TARGET
+#include "Plane3D.hlsli"
+
+PixelShaderOutput main(GeometryShaderOutput input)
 {
-	return float4(1.0f, 1.0f, 1.0f, 1.0f);
+    PixelShaderOutput output;
+    output.color = input.color;
+    return output;
 }

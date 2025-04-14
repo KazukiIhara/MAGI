@@ -1,18 +1,40 @@
-struct GSOutput
-{
-	float4 pos : SV_POSITION;
-};
+#include "Plane3D.hlsli"
 
-[maxvertexcount(3)]
+StructuredBuffer<PlaneData3D> gInstanceData : register(t0);
+ConstantBuffer<Camera> gCamera : register(b0);
+
+[maxvertexcount(4)]
 void main(
-	triangle float4 input[3] : SV_POSITION, 
-	inout TriangleStream< GSOutput > output
+    point VertexShaderOutput input[1],
+    uint instanceID : SV_PrimitiveID,
+    inout TriangleStream<GeometryShaderOutput> stream
 )
 {
-	for (uint i = 0; i < 3; i++)
-	{
-		GSOutput element;
-		element.pos = input[i];
-		output.Append(element);
-	}
+    PlaneData3D plane = gInstanceData[instanceID];
+
+    // UV順（左上, 右上, 左下, 右下）
+    float2 uvs[4] =
+    {
+        float2(0.0f, 0.0f),
+        float2(1.0f, 0.0f),
+        float2(0.0f, 1.0f),
+        float2(1.0f, 1.0f)
+    };
+
+    // 三角形ストリップ順序でループ（0,1,2,3）
+    [unroll]
+    for (uint i = 0; i < 4; ++i)
+    {
+        float4 localPos = float4(plane.vertices[i], 1.0f);
+        float4 worldPos = mul(localPos, plane.worldMatrix);
+
+        GeometryShaderOutput output;
+        output.position = mul(worldPos, gCamera.viewProjection);
+        output.texcoord = uvs[i];
+        output.normal = normalize(mul(float4(0.0f, 1.0f, 0.0f, 0.0f), plane.worldInverseTranspose).xyz);
+        output.tangent = normalize(mul(float4(1.0f, 0.0f, 0.0f, 0.0f), plane.worldInverseTranspose).xyz);
+        output.color = plane.color;
+
+        stream.Append(output);
+    }
 }
