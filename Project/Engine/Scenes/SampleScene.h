@@ -21,6 +21,11 @@ public:
 private:
 	// カメラ
 	std::unique_ptr<Camera3D> sceneCamera_ = nullptr;
+
+	static const uint32_t planeSize_ = 10000;
+
+	// 板ポリ用の
+	std::array<std::unique_ptr<WorldTransform>, planeSize_> planeWorldTransform_;
 };
 
 template<typename Data>
@@ -60,26 +65,25 @@ inline void SampleScene<Data>::Initialize() {
 	// レンダラー作成
 	std::unique_ptr<StaticRenderer3D> terrain = MAGISYSTEM::CreateStaticRenderer3D("terrain", "terrain");
 
-	// ゲームオブジェクト作成
-	std::unique_ptr<GameObject3D> terrainObject = std::make_unique<GameObject3D>("terrain");
-
-	std::unique_ptr<GameObject3D> terrainObject2 = std::make_unique<GameObject3D>("terrain2");
-	terrainObject2->GetTranslate().y = 1.0f;
-
-	std::unique_ptr<GameObject3D> terrainObject3 = std::make_unique<GameObject3D>("terrain3");
-	terrainObject3->GetTranslate().y = -1.0f;
-
 
 	// ゲームオブジェクトグループ作成
 	std::unique_ptr<GameObject3DGroup> terrainGroup = std::make_unique<GameObject3DGroup>("TerrainGroup");
 	// グループにレンダラーを追加
 	terrainGroup->AddRenderer(std::move(terrain));
 
-	// グループにゲームオブジェクトを追加
-	terrainGroup->AddObject(std::move(terrainObject));
-	terrainGroup->AddObject(std::move(terrainObject2));
-	terrainGroup->AddObject(std::move(terrainObject3));
+	// ゲームオブジェクト作成
+	std::array<std::unique_ptr<GameObject3D>, 1500> terrainObject;
 
+	//for (uint32_t i = 0; i < 1500; i++) {
+	//	std::string number = std::to_string(i);
+
+	//	terrainObject[i] = std::make_unique<GameObject3D>("terrain" + number);
+	//	terrainObject[i]->GetTranslate().x = static_cast<float>(i);
+	//	// グループにゲームオブジェクトを追加
+	//	terrainGroup->AddObject(std::move(terrainObject[i]));
+	//}
+
+	// ゲームオブジェクトグループを追加
 	MAGISYSTEM::AddGameObejct3DGroup(std::move(terrainGroup));
 
 	// パーティクルを作成
@@ -103,18 +107,36 @@ inline void SampleScene<Data>::Initialize() {
 	emitter->GetEmitterSetting().maxVelocity = { 1.0f,1.0f,1.0f };
 	emitter->GetEmitterSetting().minVelocity = { -1.0f,-1.0f,-1.0f };
 
-	// 音声再生
-	MAGISYSTEM::PlayLoopWaveSound("Alarm01.wav");
+	for (uint32_t i = 0; i < planeSize_; i++) {
+		planeWorldTransform_[i] = std::make_unique<WorldTransform>();
+		planeWorldTransform_[i]->Initialize();
+		planeWorldTransform_[i]->translate_.x = static_cast<float>(i) * 2.0f;
+	}
 
 }
 
 template<typename Data>
 inline void SampleScene<Data>::Update() {
 
+	for (uint32_t i = 0; i < planeSize_; i++) {
+		planeWorldTransform_[i]->Update();
+	}
+
 }
 
 template<typename Data>
 inline void SampleScene<Data>::Draw() {
+
+	for (uint32_t i = 0; i < planeSize_; i++) {
+		// 板ポリ描画
+		MAGISYSTEM::DrawPlane3D(
+			*planeWorldTransform_[i],
+			Vector3(-1.0f, 1.0f, 0.0f),
+			Vector3(1.0, 1.0f, 0.0f),
+			Vector3(-1.0f, -1.0f, 0.0f),
+			Vector3(1.0f, -1.0f, 0.0f),
+			RGBA(i * 0.1f, i * 0.01f, i * 0.001f, 1.0f));
+	}
 
 	// 
 	// オブジェクト2Dの描画前処理

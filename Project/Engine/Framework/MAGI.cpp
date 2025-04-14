@@ -72,6 +72,7 @@ std::unique_ptr<ParticleGroup3DManager> MAGISYSTEM::particleGroup3DManager_ = nu
 // Drawer
 // 
 std::unique_ptr<LineDrawer3D> MAGISYSTEM::lineDrawer3D_ = nullptr;
+std::unique_ptr<PlaneDrawer3D> MAGISYSTEM::planeDrawer3D_ = nullptr;
 
 // 
 // GameManager
@@ -191,7 +192,8 @@ void MAGISYSTEM::Initialize() {
 
 	// LineDrawer3D
 	lineDrawer3D_ = std::make_unique<LineDrawer3D>(dxgi_.get(), directXCommand_.get(), srvuavManager_.get(), graphicsPipelineManager_.get(), camera3DManager_.get());
-
+	// PlaneDrawer3D
+	planeDrawer3D_ = std::make_unique<PlaneDrawer3D>(dxgi_.get(), directXCommand_.get(), srvuavManager_.get(), graphicsPipelineManager_.get(), camera3DManager_.get());
 
 	// CollisionManager
 	collisionManager_ = std::make_unique<CollisionManager>(colliderManager_.get());
@@ -254,6 +256,11 @@ void MAGISYSTEM::Finalize() {
 	// CollisionManager
 	if (collisionManager_) {
 		collisionManager_.reset();
+	}
+
+	// PlaneDrawer3D
+	if (planeDrawer3D_) {
+		planeDrawer3D_.reset();
 	}
 
 	// LineDrawer3D
@@ -474,6 +481,9 @@ void MAGISYSTEM::Update() {
 	// Dataクラスフレーム開始処理
 	dataIO_->BeginFrame();
 
+	// デバッグ表示(FPS、DELTATIME)
+	gui_->ShowDebugUI();
+
 	// シーンの更新処理
 	sceneManager_->Update();
 
@@ -508,6 +518,8 @@ void MAGISYSTEM::Update() {
 
 	// 3Dライン描画クラスの更新
 	lineDrawer3D_->Update();
+	// 3D板ポリ描画クラスの更新
+	planeDrawer3D_->Update();
 
 	// Dataクラスフレーム終了処理
 	dataIO_->EndFrame();
@@ -579,6 +591,17 @@ void MAGISYSTEM::Draw() {
 	// LineDrawer3Dの描画処理
 	// 
 	lineDrawer3D_->Draw();
+
+	// 
+	// PlaneDrawer3Dの描画前処理
+	// 
+	commandList->SetGraphicsRootSignature(graphicsPipelineManager_->GetRootSignature(GraphicsPipelineStateType::Plane3D));
+	commandList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_POINTLIST);
+
+	// 
+	// PlaneDrawer3Dの描画処理
+	// 
+	planeDrawer3D_->Draw();
 
 	//
 	// ParticleGroup3Dの描画前処理
@@ -1073,6 +1096,9 @@ void MAGISYSTEM::DrawLine3D(const Vector3& start, const Vector3& end, const RGBA
 	lineDrawer3D_->AddLine(start, end, color);
 }
 
+void MAGISYSTEM::DrawPlane3D(const WorldTransform& worldTransform, const Vector3& leftTop, const Vector3& rightTop, const Vector3& leftBottom, const Vector3& rightBottom, const RGBA& color) {
+	planeDrawer3D_->AddPlane(worldTransform, leftTop, rightTop, leftBottom, rightBottom, color);
+}
 
 void MAGISYSTEM::AddGrobalDataGroup(const std::string& groupname) {
 	grobalDataManager_->CreateGroup(groupname);

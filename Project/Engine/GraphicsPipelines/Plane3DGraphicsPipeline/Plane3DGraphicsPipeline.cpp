@@ -1,4 +1,4 @@
-#include "Line3DGraphicsPipeline.h"
+#include "Plane3DGraphicsPipeline.h"
 
 #include <cassert>
 
@@ -6,22 +6,21 @@
 #include "DirectX/DXGI/DXGI.h"
 #include "DirectX/ShaderCompiler/ShaderCompiler.h"
 
-Line3DGraphicsPipeline::Line3DGraphicsPipeline(DXGI* dxgi, ShaderCompiler* shaderCompiler)
+Plane3DGraphicsPipeline::Plane3DGraphicsPipeline(DXGI* dxgi, ShaderCompiler* shaderCompiler)
 	:BaseGraphicsPipeline(dxgi, shaderCompiler) {
 }
 
-Line3DGraphicsPipeline::~Line3DGraphicsPipeline() {
-}
+Plane3DGraphicsPipeline::~Plane3DGraphicsPipeline() {}
 
-void Line3DGraphicsPipeline::CreateRootSignature() {
+void Plane3DGraphicsPipeline::CreateRootSignature() {
 	HRESULT hr = S_FALSE;
 
-	// DescriptorRange設定
-	D3D12_DESCRIPTOR_RANGE descriptorRange[1] = {};
-	descriptorRange[0].BaseShaderRegister = 0; 
-	descriptorRange[0].NumDescriptors = 1;
-	descriptorRange[0].RangeType = D3D12_DESCRIPTOR_RANGE_TYPE_SRV;
-	descriptorRange[0].OffsetInDescriptorsFromTableStart = D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND;
+	// instancingResourceのDescriptorRange設定
+	D3D12_DESCRIPTOR_RANGE instanceDescriptorRange[1] = {};
+	instanceDescriptorRange[0].BaseShaderRegister = 0;
+	instanceDescriptorRange[0].NumDescriptors = 1;
+	instanceDescriptorRange[0].RangeType = D3D12_DESCRIPTOR_RANGE_TYPE_SRV;
+	instanceDescriptorRange[0].OffsetInDescriptorsFromTableStart = D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND;
 
 	// RootSignature作成
 	D3D12_ROOT_SIGNATURE_DESC descriptionRootSignature{};
@@ -31,15 +30,15 @@ void Line3DGraphicsPipeline::CreateRootSignature() {
 	// RootParameter作成
 	D3D12_ROOT_PARAMETER rootParameters[2] = {};
 
-	// CBV の設定
+	// カメラの設定
 	rootParameters[0].ParameterType = D3D12_ROOT_PARAMETER_TYPE_CBV;
-	rootParameters[0].ShaderVisibility = D3D12_SHADER_VISIBILITY_VERTEX; // 頂点シェーダーで使用
+	rootParameters[0].ShaderVisibility = D3D12_SHADER_VISIBILITY_GEOMETRY; //  ジオメトリシェーダーで使用
 	rootParameters[0].Descriptor.ShaderRegister = 0; // b0にバインド
 
-	// SRV の設定
+	// instancingResourceの設定
 	rootParameters[1].ParameterType = D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE;
-	rootParameters[1].ShaderVisibility = D3D12_SHADER_VISIBILITY_VERTEX; // 頂点シェーダーで使用
-	rootParameters[1].DescriptorTable.pDescriptorRanges = descriptorRange;
+	rootParameters[1].ShaderVisibility = D3D12_SHADER_VISIBILITY_GEOMETRY; // ジオメトリシェーダーで使用
+	rootParameters[1].DescriptorTable.pDescriptorRanges = instanceDescriptorRange;
 	rootParameters[1].DescriptorTable.NumDescriptorRanges = 1;
 
 	descriptionRootSignature.pParameters = rootParameters;
@@ -66,52 +65,53 @@ void Line3DGraphicsPipeline::CreateRootSignature() {
 	assert(SUCCEEDED(hr));
 }
 
-void Line3DGraphicsPipeline::CompileShaders() {
+void Plane3DGraphicsPipeline::CompileShaders() {
 	vertexShaderBlob_ = nullptr;
-	vertexShaderBlob_ = shaderCompiler_->CompileShader(L"EngineAssets/Shaders/Graphics/Line3D/Line3D.VS.hlsl", L"vs_6_0");
+	vertexShaderBlob_ = shaderCompiler_->CompileShader(L"EngineAssets/Shaders/Graphics/Plane3D/Plane3D.VS.hlsl", L"vs_6_0");
 	assert(vertexShaderBlob_ != nullptr);
 
 	pixelShaderBlob_ = nullptr;
-	pixelShaderBlob_ = shaderCompiler_->CompileShader(L"EngineAssets/Shaders/Graphics/Line3D/Line3D.PS.hlsl", L"ps_6_0");
+	pixelShaderBlob_ = shaderCompiler_->CompileShader(L"EngineAssets/Shaders/Graphics/Plane3D/Plane3D.PS.hlsl", L"ps_6_0");
 	assert(pixelShaderBlob_ != nullptr);
+
+	geometryShaderBlob_ = nullptr;
+	geometryShaderBlob_ = shaderCompiler_->CompileShader(L"EngineAssets/Shaders/Graphics/Plane3D/Plane3D.GS.hlsl", L"gs_6_0");
+	assert(geometryShaderBlob_ != nullptr);
 }
 
-void Line3DGraphicsPipeline::CreateGraphicsPipelineObject() {
+void Plane3DGraphicsPipeline::CreateGraphicsPipelineObject() {
 	HRESULT hr;
 
-	// 必須のリソースが存在することを確認
 	assert(rootSignature_);
 	assert(vertexShaderBlob_);
 	assert(pixelShaderBlob_);
+	assert(geometryShaderBlob_);
 
-	// グラフィックスパイプラインステートの設定
 	D3D12_GRAPHICS_PIPELINE_STATE_DESC graphicsPipelineStateDesc{};
-	graphicsPipelineStateDesc.pRootSignature = rootSignature_.Get(); // ルートシグネチャ
-	graphicsPipelineStateDesc.InputLayout = InputLayoutSetting();    // 入力レイアウト
+	graphicsPipelineStateDesc.pRootSignature = rootSignature_.Get();
+	graphicsPipelineStateDesc.InputLayout = InputLayoutSetting();
 	graphicsPipelineStateDesc.VS = { vertexShaderBlob_->GetBufferPointer(),
-									 vertexShaderBlob_->GetBufferSize() }; // 頂点シェーダー
+	vertexShaderBlob_->GetBufferSize() };
 	graphicsPipelineStateDesc.PS = { pixelShaderBlob_->GetBufferPointer(),
-									 pixelShaderBlob_->GetBufferSize() }; // ピクセルシェーダー
-	graphicsPipelineStateDesc.RasterizerState = RasterizerStateSetting(); // ラスタライザ設定
-
-	// 書き込むRTVの情報
+	pixelShaderBlob_->GetBufferSize() };
+	graphicsPipelineStateDesc.GS = { geometryShaderBlob_->GetBufferPointer(),
+	geometryShaderBlob_->GetBufferSize() };
+	graphicsPipelineStateDesc.RasterizerState = RasterizerStateSetting();
+	//書き込むRTVの情報
 	graphicsPipelineStateDesc.NumRenderTargets = 1;
 	graphicsPipelineStateDesc.RTVFormats[0] = DXGI_FORMAT_R8G8B8A8_UNORM_SRGB;
-
-	// 利用するトポロジ (ライン用に設定)
-	graphicsPipelineStateDesc.PrimitiveTopologyType = D3D12_PRIMITIVE_TOPOLOGY_TYPE_LINE;
-
-	// サンプル設定
+	//利用するトポロジ(形状)のタイプ、三角形
+	graphicsPipelineStateDesc.PrimitiveTopologyType = D3D12_PRIMITIVE_TOPOLOGY_TYPE_POINT;
+	//どのように画面に色を打ち込むかの設定(気にしなくて良い)
 	graphicsPipelineStateDesc.SampleDesc.Count = 1;
 	graphicsPipelineStateDesc.SampleMask = D3D12_DEFAULT_SAMPLE_MASK;
-
-	// DepthStencilの設定
+	/*DepthStencilの設定*/
 	graphicsPipelineStateDesc.DepthStencilState = DepthStecilDescSetting();
 	graphicsPipelineStateDesc.DSVFormat = DXGI_FORMAT_D24_UNORM_S8_UINT;
 
-	// 実際に生成
+	//実際に生成
 	for (uint32_t i = 0; i < kBlendModeNum; i++) {
-		graphicsPipelineStateDesc.BlendState = BlendStateSetting(i); // ブレンド設定
+		graphicsPipelineStateDesc.BlendState = BlendStateSetting(i);
 		pipelineState_[i] = nullptr;
 		hr = dxgi_->GetDevice()->CreateGraphicsPipelineState(&graphicsPipelineStateDesc,
 			IID_PPV_ARGS(&pipelineState_[i]));
@@ -119,7 +119,7 @@ void Line3DGraphicsPipeline::CreateGraphicsPipelineObject() {
 	}
 }
 
-D3D12_BLEND_DESC Line3DGraphicsPipeline::BlendStateSetting(uint32_t blendModeNum) {
+D3D12_BLEND_DESC Plane3DGraphicsPipeline::BlendStateSetting(uint32_t blendModeNum) {
 	D3D12_BLEND_DESC blendDesc{};
 	switch (blendModeNum) {
 	case 0:// kBlendModeNone
@@ -189,7 +189,7 @@ D3D12_BLEND_DESC Line3DGraphicsPipeline::BlendStateSetting(uint32_t blendModeNum
 	return blendDesc;
 }
 
-D3D12_DEPTH_STENCIL_DESC Line3DGraphicsPipeline::DepthStecilDescSetting() {
+D3D12_DEPTH_STENCIL_DESC Plane3DGraphicsPipeline::DepthStecilDescSetting() {
 	// DepthStencilStateの設定
 	D3D12_DEPTH_STENCIL_DESC depthStencilDesc{};
 	// Depthの機能を有効化する
@@ -202,22 +202,45 @@ D3D12_DEPTH_STENCIL_DESC Line3DGraphicsPipeline::DepthStecilDescSetting() {
 	return depthStencilDesc;
 }
 
-D3D12_INPUT_LAYOUT_DESC Line3DGraphicsPipeline::InputLayoutSetting() {
+D3D12_INPUT_LAYOUT_DESC Plane3DGraphicsPipeline::InputLayoutSetting() {
+	// InputLayout
+	static D3D12_INPUT_ELEMENT_DESC inputElementDescs[4] = {};
+	inputElementDescs[0].SemanticName = "POSITION";
+	inputElementDescs[0].SemanticIndex = 0;
+	inputElementDescs[0].Format = DXGI_FORMAT_R32G32B32A32_FLOAT;
+	inputElementDescs[0].InputSlot = 0;
+	inputElementDescs[0].AlignedByteOffset = D3D12_APPEND_ALIGNED_ELEMENT;
+	inputElementDescs[0].InputSlotClass = D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA;
+	inputElementDescs[0].InstanceDataStepRate = 0;
+
+	inputElementDescs[1].SemanticName = "TEXCOORD";
+	inputElementDescs[1].Format = DXGI_FORMAT_R32G32_FLOAT;
+	inputElementDescs[1].AlignedByteOffset = D3D12_APPEND_ALIGNED_ELEMENT;
+
+	inputElementDescs[2].SemanticName = "NORMAL";
+	inputElementDescs[2].SemanticIndex = 0;
+	inputElementDescs[2].Format = DXGI_FORMAT_R32G32B32_FLOAT;
+	inputElementDescs[2].AlignedByteOffset = D3D12_APPEND_ALIGNED_ELEMENT;
+
+	inputElementDescs[3].SemanticName = "TANGENT";
+	inputElementDescs[3].SemanticIndex = 0;
+	inputElementDescs[3].Format = DXGI_FORMAT_R32G32B32_FLOAT;
+	inputElementDescs[3].AlignedByteOffset = D3D12_APPEND_ALIGNED_ELEMENT;
+
 	D3D12_INPUT_LAYOUT_DESC inputLayoutDesc{};
-	inputLayoutDesc.pInputElementDescs = nullptr; // 頂点バッファなし
-	inputLayoutDesc.NumElements = 0;
+	inputLayoutDesc.pInputElementDescs = inputElementDescs;
+	inputLayoutDesc.NumElements = _countof(inputElementDescs);
+
 	return inputLayoutDesc;
 }
 
-D3D12_RASTERIZER_DESC Line3DGraphicsPipeline::RasterizerStateSetting() {
+D3D12_RASTERIZER_DESC Plane3DGraphicsPipeline::RasterizerStateSetting() {
 	// RasterizerStateの設定
 	D3D12_RASTERIZER_DESC rasterizerDesc_{};
-	// カリングを無効化（両面を描画する）
-	rasterizerDesc_.CullMode = D3D12_CULL_MODE_NONE;
-	// 線を描画する
-	rasterizerDesc_.FillMode = D3D12_FILL_MODE_WIREFRAME;
-	// デフォルトの深度クリッピングを有効化
-	rasterizerDesc_.DepthClipEnable = true;
+	// 裏側(時計回り)を表示しない
+	rasterizerDesc_.CullMode = D3D12_CULL_MODE_BACK;
+	// 三角形の中を塗りつぶす
+	rasterizerDesc_.FillMode = D3D12_FILL_MODE_SOLID;
 
 	return rasterizerDesc_;
 }

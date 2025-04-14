@@ -58,7 +58,7 @@ private:
 	// 名前
 	std::string name_ = "";
 	// instance最大数
-	const uint32_t kMaxInstance_ = 500;
+	const uint32_t kMaxInstance_ = 32768;
 	// 受け取るレンダラー3D
 	std::unique_ptr<BaseRenderable3D> thisGameObjectRenderer_ = nullptr;
 	// 実際に更新するゲームオブジェクトたち

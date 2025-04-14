@@ -11,6 +11,7 @@
 #include "Structs/ObjectStruct.h"
 #include "Structs/ColorStruct.h"
 #include "Enums/BlendModeEnum.h"
+#include "3D/Base3D/WorldTransform/WorldTransform.h"
 
 class DXGI;
 class DirectXCommand;
@@ -19,31 +20,31 @@ class GraphicsPipelineManager;
 class Camera3DManager;
 
 /// <summary>
-/// 3Dライン描画クラス
+/// 板ポリ描画クラス
 /// </summary>
-class LineDrawer3D {
+class PlaneDrawer3D {
 public:
-	LineDrawer3D(
+	PlaneDrawer3D(
 		DXGI* dxgi,
 		DirectXCommand* directXCommand,
 		SRVUAVManager* srvUavManager,
 		GraphicsPipelineManager* graphicsPipelineManager,
-		Camera3DManager* camera3DManager);
-	~LineDrawer3D();
+		Camera3DManager* camera3DManager
+	);
+	~PlaneDrawer3D();
 
 	void Update();
 	void Draw();
 
-	void AddLine(const Vector3& start, const Vector3& end, const RGBA& color);
+	void AddPlane(const WorldTransform& worldTransform,
+		const Vector3& leftTop,
+		const Vector3& rightTop,
+		const Vector3& leftBottom,
+		const Vector3& rightBottom,
+		const RGBA& color
+	);
 
-private:
-	void Initialize(
-		DXGI* dxgi,
-		DirectXCommand* directXCommand,
-		SRVUAVManager* srvUavManager,
-		GraphicsPipelineManager* graphicsPipelineManager,
-		Camera3DManager* camera3DManager);
-	void ClearLines();
+	void ClearPlanes();
 	void SetDXGI(DXGI* dxgi);
 	void SetDirectXCommand(DirectXCommand* directXCommand);
 	void SetSRVUAVManager(SRVUAVManager* srvUavManager);
@@ -55,29 +56,30 @@ private:
 	// instancingデータ書き込み
 	void MapInstancingData();
 private:
-	// ラインの最大数
+	// 板ポリの最大数
 	const uint32_t kNumMaxInstance = 32768;
 
-	// ライン
-	std::vector<LineData3D> lines_;
+	// 板ポリ
+	std::vector<PlaneData3D> planes_;
 	// ブレンドモード
 	BlendMode blendMode_ = BlendMode::Normal;
 
 	// instancing描画用のリソース
 	ComPtr<ID3D12Resource> instancingResource_ = nullptr;
 	// instancing描画用のデータ
-	LineData3D* instancingData_ = nullptr;
+	PlaneData3D* instancingData_ = nullptr;	
 
 	// SrvIndex
 	uint32_t srvIndex_ = 0;
 	// instance描画する際に使う変数
-	uint32_t instanceCount_ = kNumMaxInstance;
+	uint32_t instanceCount_ = 0;
 
+	// 現在のインデックス
+	uint32_t currentIndex_ = 0;
 private:
 	DXGI* dxgi_ = nullptr;
 	DirectXCommand* directXCommand_ = nullptr;
 	SRVUAVManager* srvUavManager_ = nullptr;
 	GraphicsPipelineManager* graphicsPipelineManager_ = nullptr;
 	Camera3DManager* camera3DManager_ = nullptr;
-
 };

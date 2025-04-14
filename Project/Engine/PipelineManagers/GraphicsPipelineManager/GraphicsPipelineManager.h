@@ -11,8 +11,11 @@
 // MyHedder
 #include "Enums/GraphicsPipelineEnum.h"
 
-#include "GraphicsPipelines/Line3DGraphicsPipeline/Line3DGraphicsPipeline.h"
 #include "GraphicsPipelines/Object2DGraphicsPipeline/Object2DGraphicsPipeline.h"
+
+#include "GraphicsPipelines/Line3DGraphicsPipeline/Line3DGraphicsPipeline.h"
+#include "GraphicsPipelines/Plane3DGraphicsPipeline/Plane3DGraphicsPipeline.h"
+
 #include "GraphicsPipelines/Object3DGraphicsPipeline/Object3DGraphicsPipeline.h"
 #include "GraphicsPipelines/Particle3DGraphicsPipeline/Particle3DGraphicsPipeline.h"
 #include "GraphicsPipelines/Object3DGroupGraphicsPipeline/Object3DGroupGraphicsPipeline.h"
@@ -51,8 +54,10 @@ private: // メンバ変数
 private:
 	// Object2DGraphicsPipeline
 	std::unique_ptr<Object2DGraphicsPipeline> object2DGraphicsPipeline_ = nullptr;
-	// Line3DGrahicsPipelineS
+	// Line3DGrahicsPipeline
 	std::unique_ptr<Line3DGraphicsPipeline> line3DGraphicsPipeline_ = nullptr;
+	// Plane3DGraphicsPipeline
+	std::unique_ptr<Plane3DGraphicsPipeline> plane3DGraphicsPipeline_ = nullptr;
 	// Object3DGraphicsPipeline
 	std::unique_ptr<Object3DGraphicsPipeline> object3DGraphicsPipeline_ = nullptr;
 	// Particle3DGraphicsPipeline
