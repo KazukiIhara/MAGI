@@ -25,7 +25,7 @@ void main(
     [unroll]
     for (uint i = 0; i < 4; ++i)
     {
-        float4 localPos = float4(plane.vertices[i], 1.0f);
+        float4 localPos = plane.vertices[i];
         float4 worldPos = mul(localPos, plane.worldMatrix);
 
         GeometryShaderOutput output;

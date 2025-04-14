@@ -11,6 +11,8 @@
 
 #include <cassert>
 
+#include "Framework/MAGI.h"
+
 using namespace MAGIUtility;
 using namespace MAGIMath;
 
@@ -25,10 +27,10 @@ PlaneDrawer3D::PlaneDrawer3D(DXGI* dxgi, DirectXCommand* directXCommand, SRVUAVM
 	// Instancingデータを書き込む
 	MapInstancingData();
 
-	// srvのインデックスを割り当て
-	srvIndex_ = srvUavManager_->Allocate();
-	// Srvを作成
-	srvUavManager_->CreateSrvStructuredBuffer(srvIndex_, instancingResource_.Get(), kNumMaxInstance, sizeof(PlaneData3D));
+	// Materialリソースを作る
+	CreateMaterialResource();
+	// Materialデータを書き込む
+	MapMaterialData();
 
 	planes_.reserve(kNumMaxInstance);
 	Logger::Log("PlaneDrawer3D Initialize\n");
@@ -62,8 +64,13 @@ void PlaneDrawer3D::Draw() {
 	commandList->SetPipelineState(graphicsPipelineManager_->GetPipelineState(GraphicsPipelineStateType::Plane3D, blendMode_));
 	// Cameraを転送
 	camera3DManager_->TransferCurrentCamera(0);
-	// StructuredBufferのSRVを設定する
-	commandList->SetGraphicsRootDescriptorTable(1, srvUavManager_->GetDescriptorHandleGPU(srvIndex_));
+
+	// PlaneData3DStructuredBufferのSRVを設定
+	commandList->SetGraphicsRootDescriptorTable(1, srvUavManager_->GetDescriptorHandleGPU(planeSrvIndex));
+	// MaterialDataStructuredBufferのSRVを設定
+	commandList->SetGraphicsRootDescriptorTable(2, srvUavManager_->GetDescriptorHandleGPU(materialSrvIndex_));
+	// BindlessTexture用のSRVを設定
+	commandList->SetGraphicsRootDescriptorTable(3, srvUavManager_->GetDescriptorHandleGPU(0));
 
 	// BindlessTexture用のDescriptorHeapを設定
 	ID3D12DescriptorHeap* descriptorHeaps[] = {
@@ -79,10 +86,10 @@ void PlaneDrawer3D::AddPlane(const WorldTransform& worldTransform, const Vector3
 	PlaneData3D newPlaneData{};
 	newPlaneData.worldMatrix = worldTransform.worldMatrix_;
 	newPlaneData.worldInverseTranspose = MakeInverseTransposeMatrix(worldTransform.worldMatrix_);
-	newPlaneData.offsets[0] = leftTop;
-	newPlaneData.offsets[1] = rightTop;
-	newPlaneData.offsets[2] = leftBottom;
-	newPlaneData.offsets[3] = rightBottom;
+	newPlaneData.offsets[0] = Vector4(leftTop.x, leftTop.y, leftTop.z, 1.0f);
+	newPlaneData.offsets[1] = Vector4(rightTop.x, rightTop.y, rightTop.z, 1.0f);
+	newPlaneData.offsets[2] = Vector4(leftBottom.x, leftBottom.y, leftBottom.z, 1.0f);
+	newPlaneData.offsets[3] = Vector4(rightBottom.x, rightBottom.y, rightBottom.z, 1.0f);
 	newPlaneData.color = RGBAToVector4(color);
 
 	planes_.push_back(newPlaneData);
@@ -120,14 +127,33 @@ void PlaneDrawer3D::SetCamera3DManager(Camera3DManager* camera3DManager) {
 void PlaneDrawer3D::CreateInstancingResource() {
 	// instancing用のリソースを作る
 	instancingResource_ = dxgi_->CreateBufferResource(sizeof(PlaneData3D) * kNumMaxInstance);
+	// srvのインデックスを割り当て
+	planeSrvIndex = srvUavManager_->Allocate();
+	// Srvを作成
+	srvUavManager_->CreateSrvStructuredBuffer(planeSrvIndex, instancingResource_.Get(), kNumMaxInstance, sizeof(PlaneData3D));
 }
 
 void PlaneDrawer3D::MapInstancingData() {
 	instancingData_ = nullptr;
 	instancingResource_->Map(0, nullptr, reinterpret_cast<void**>(&instancingData_));
+}
 
-	for (uint32_t index = 0; index < kNumMaxInstance; ++index) {
+void PlaneDrawer3D::CreateMaterialResource() {
+	// Material用のリソースを作る
+	materialResource_ = dxgi_->CreateBufferResource(sizeof(PlaneMaterialData3D) * kNumMaxInstance);
+	// srvのインデックスを割り当て
+	materialSrvIndex_ = srvUavManager_->Allocate();
+	// srvを作成
+	srvUavManager_->CreateSrvStructuredBuffer(materialSrvIndex_, materialResource_.Get(), kNumMaxInstance, sizeof(PlaneMaterialData3D));
+}
 
-		instancingData_[index].color = Vector4(1.0f, 1.0f, 1.0f, 1.0f);
+void PlaneDrawer3D::MapMaterialData() {
+	materialData_ = nullptr;
+	materialResource_->Map(0, nullptr, reinterpret_cast<void**>(&materialData_));
+
+	// 全Planeにデフォルトテクスチャを指定
+	uint32_t textureIndex = MAGISYSTEM::GetTexture()["EngineAssets/Images/uvChecker.png"].srvIndex;
+	for (uint32_t i = 0; i < kNumMaxInstance; ++i) {
+		materialData_[i].textureIndex = textureIndex;
 	}
 }

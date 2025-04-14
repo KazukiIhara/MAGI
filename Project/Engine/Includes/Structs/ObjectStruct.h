@@ -75,7 +75,7 @@ struct LineData3D {
 struct PlaneData3D {
 	Matrix4x4 worldMatrix;
 	Matrix4x4 worldInverseTranspose;
-	Vector3 offsets[4];
+	Vector4 offsets[4];
 	Vector4 color;
 };
 

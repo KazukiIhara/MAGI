@@ -55,6 +55,12 @@ private:
 	void CreateInstancingResource();
 	// instancingデータ書き込み
 	void MapInstancingData();
+
+	// materialリソース作成
+	void CreateMaterialResource();
+	// materialデータ書き込み
+	void MapMaterialData();
+
 private:
 	// 板ポリの最大数
 	const uint32_t kNumMaxInstance = 32768;
@@ -77,8 +83,11 @@ private:
 	// マテリアルデータ
 	PlaneMaterialData3D* materialData_ = nullptr;
 
-	// SrvIndex
-	uint32_t srvIndex_ = 0;
+	// Plane3DSrvIndex
+	uint32_t planeSrvIndex = 0;
+	// MaterialSrvIndex
+	uint32_t materialSrvIndex_ = 0;
+
 	// instance描画する際に使う変数
 	uint32_t instanceCount_ = 0;
 

@@ -31,9 +31,16 @@ void Plane3DGraphicsPipeline::CreateRootSignature() {
 	descriptorRangeMaterial[0].RangeType = D3D12_DESCRIPTOR_RANGE_TYPE_SRV;
 	descriptorRangeMaterial[0].OffsetInDescriptorsFromTableStart = D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND;
 
+	// Bindless Textures (t2)
+	D3D12_DESCRIPTOR_RANGE descriptorRangeTextures[1] = {};
+	descriptorRangeTextures[0].BaseShaderRegister = 2; // t2
+	descriptorRangeTextures[0].NumDescriptors = 1000;  // 最大バインド数（必要に応じて調整）
+	descriptorRangeTextures[0].RangeType = D3D12_DESCRIPTOR_RANGE_TYPE_SRV;
+	descriptorRangeTextures[0].OffsetInDescriptorsFromTableStart = D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND;
+
 	// ──────────────── RootParameter定義 ────────────────
 
-	D3D12_ROOT_PARAMETER rootParameters[3] = {};
+	D3D12_ROOT_PARAMETER rootParameters[4] = {};
 
 	// Camera CBV (b0)
 	rootParameters[0].ParameterType = D3D12_ROOT_PARAMETER_TYPE_CBV;
@@ -51,6 +58,12 @@ void Plane3DGraphicsPipeline::CreateRootSignature() {
 	rootParameters[2].ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL;
 	rootParameters[2].DescriptorTable.pDescriptorRanges = descriptorRangeMaterial;
 	rootParameters[2].DescriptorTable.NumDescriptorRanges = 1;
+
+	// Bindless Texture Array SRV (t2)
+	rootParameters[3].ParameterType = D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE;
+	rootParameters[3].ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL;
+	rootParameters[3].DescriptorTable.pDescriptorRanges = descriptorRangeTextures;
+	rootParameters[3].DescriptorTable.NumDescriptorRanges = 1;
 
 	// ──────────────── サンプラー定義（s0）───────────────
 

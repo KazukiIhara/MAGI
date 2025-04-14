@@ -22,7 +22,7 @@ private:
 	// カメラ
 	std::unique_ptr<Camera3D> sceneCamera_ = nullptr;
 
-	static const uint32_t planeSize_ = 10000;
+	static const uint32_t planeSize_ = 5000;
 
 	// 板ポリ用のワールドトランスフォーム
 	std::array<std::unique_ptr<WorldTransform>, planeSize_> planeWorldTransform_;
@@ -135,7 +135,7 @@ inline void SampleScene<Data>::Draw() {
 			Vector3(1.0, 1.0f, 0.0f),
 			Vector3(-1.0f, -1.0f, 0.0f),
 			Vector3(1.0f, -1.0f, 0.0f),
-			RGBA(i * 0.1f, i * 0.01f, i * 0.001f, 1.0f));
+			Color::White);
 	}
 
 	// 

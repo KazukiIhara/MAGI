@@ -40,7 +40,7 @@ struct PlaneData3D
 {
     float4x4 worldMatrix;
     float4x4 worldInverseTranspose;
-    float3 vertices[4]; // ローカル空間の4頂点
+    float4 vertices[4]; // ローカル空間の4頂点
     float4 color;
 };
 

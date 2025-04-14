@@ -1,7 +1,7 @@
 #include "Plane3D.hlsli"
 
 // PS用のBindlessアクセス設定
-StructuredBuffer<PlaneMaterialData3D> gMaterialData : register(t2);
+StructuredBuffer<PlaneMaterialData3D> gMaterialData : register(t1);
 Texture2D gTextures[]; // Bindlessなテクスチャ配列（Shader Model 6.6）
 SamplerState gSampler : register(s0);
 
