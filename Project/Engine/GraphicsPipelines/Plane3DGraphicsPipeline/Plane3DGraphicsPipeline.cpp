@@ -74,7 +74,7 @@ void Plane3DGraphicsPipeline::CompileShaders() {
 	assert(pixelShaderBlob_ != nullptr);
 
 	geometryShaderBlob_ = nullptr;
-	geometryShaderBlob_ = shaderCompiler_->CompileShader(L"EngineAssets/Shaders/Graphics/Plane3D/Plane3D.GS.hlsl", L"ps_6_0");
+	geometryShaderBlob_ = shaderCompiler_->CompileShader(L"EngineAssets/Shaders/Graphics/Plane3D/Plane3D.GS.hlsl", L"gs_6_0");
 	assert(geometryShaderBlob_ != nullptr);
 }
 
@@ -101,7 +101,7 @@ void Plane3DGraphicsPipeline::CreateGraphicsPipelineObject() {
 	graphicsPipelineStateDesc.RTVFormats[0] = DXGI_FORMAT_R8G8B8A8_UNORM_SRGB;
 	//利用するトポロジ(形状)のタイプ、三角形
 	graphicsPipelineStateDesc.PrimitiveTopologyType =
-		D3D12_PRIMITIVE_TOPOLOGY_TYPE_POINT;
+		D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE;
 	//どのように画面に色を打ち込むかの設定(気にしなくて良い)
 	graphicsPipelineStateDesc.SampleDesc.Count = 1;
 	graphicsPipelineStateDesc.SampleMask = D3D12_DEFAULT_SAMPLE_MASK;
