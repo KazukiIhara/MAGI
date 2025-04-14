@@ -26,6 +26,7 @@ struct GeometryShaderOutput
     float3 normal : NORMAL;
     float3 tangent : TANGENT;
     float4 color : COLOR0;
+    uint instanceID : TEXCOORD1;
 };
 
 // ピクセルシェーダの出力
@@ -39,8 +40,14 @@ struct PlaneData3D
 {
     float4x4 worldMatrix;
     float4x4 worldInverseTranspose;
-    float3 vertices[4]; // ローカル空間の4頂点
+    float4 vertices[4]; // ローカル空間の4頂点
     float4 color;
+};
+
+// マテリアルデータ
+struct PlaneMaterialData3D
+{
+    uint textureIndex; // gTextures[] 内のインデックス
 };
 
 // カメラ

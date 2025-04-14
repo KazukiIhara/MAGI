@@ -55,22 +55,39 @@ private:
 	void CreateInstancingResource();
 	// instancingデータ書き込み
 	void MapInstancingData();
+
+	// materialリソース作成
+	void CreateMaterialResource();
+	// materialデータ書き込み
+	void MapMaterialData();
+
 private:
 	// 板ポリの最大数
 	const uint32_t kNumMaxInstance = 32768;
 
-	// 板ポリ
-	std::vector<PlaneData3D> planes_;
 	// ブレンドモード
 	BlendMode blendMode_ = BlendMode::Normal;
+
+	// CPU側の板ポリデータ
+	std::vector<PlaneData3D> planes_;
+	// CPU側のマテリアルデータ
+	std::vector<PlaneMaterialData3D> materials_;
 
 	// instancing描画用のリソース
 	ComPtr<ID3D12Resource> instancingResource_ = nullptr;
 	// instancing描画用のデータ
-	PlaneData3D* instancingData_ = nullptr;	
+	PlaneData3D* instancingData_ = nullptr;
 
-	// SrvIndex
-	uint32_t srvIndex_ = 0;
+	// マテリアルのリソース
+	ComPtr<ID3D12Resource> materialResource_ = nullptr;
+	// マテリアルデータ
+	PlaneMaterialData3D* materialData_ = nullptr;
+
+	// Plane3DSrvIndex
+	uint32_t planeSrvIndex = 0;
+	// MaterialSrvIndex
+	uint32_t materialSrvIndex_ = 0;
+
 	// instance描画する際に使う変数
 	uint32_t instanceCount_ = 0;
 

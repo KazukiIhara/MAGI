@@ -25,7 +25,7 @@ void main(
     [unroll]
     for (uint i = 0; i < 4; ++i)
     {
-        float4 localPos = float4(plane.vertices[i], 1.0f);
+        float4 localPos = plane.vertices[i];
         float4 worldPos = mul(localPos, plane.worldMatrix);
 
         GeometryShaderOutput output;
@@ -34,6 +34,7 @@ void main(
         output.normal = normalize(mul(float4(0.0f, 1.0f, 0.0f, 0.0f), plane.worldInverseTranspose).xyz);
         output.tangent = normalize(mul(float4(1.0f, 0.0f, 0.0f, 0.0f), plane.worldInverseTranspose).xyz);
         output.color = plane.color;
+        output.instanceID = instanceID;
 
         stream.Append(output);
     }

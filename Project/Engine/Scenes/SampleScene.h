@@ -1,6 +1,7 @@
 #pragma once
 
 #include <memory>
+#include <array>
 
 #include "Framework/MAGI.h"
 
@@ -22,9 +23,11 @@ private:
 	// カメラ
 	std::unique_ptr<Camera3D> sceneCamera_ = nullptr;
 
-	static const uint32_t planeSize_ = 10000;
+	static const uint32_t planeSize_ = 1;
 
-	// 板ポリ用の
+	std::array<Vector3, 4> vertices_;
+
+	// 板ポリ用のワールドトランスフォーム
 	std::array<std::unique_ptr<WorldTransform>, planeSize_> planeWorldTransform_;
 };
 
@@ -113,6 +116,11 @@ inline void SampleScene<Data>::Initialize() {
 		planeWorldTransform_[i]->translate_.x = static_cast<float>(i) * 2.0f;
 	}
 
+	// 板ポリの
+	vertices_[0] = Vector3(-1.0f, 1.0f, 0.0f);
+	vertices_[1] = Vector3(1.0f, 1.0f, 0.0f);
+	vertices_[2] = Vector3(-1.0f, -1.0f, 0.0f);
+	vertices_[3] = Vector3(1.0f, -1.0f, 0.0f);
 }
 
 template<typename Data>
@@ -121,6 +129,15 @@ inline void SampleScene<Data>::Update() {
 	for (uint32_t i = 0; i < planeSize_; i++) {
 		planeWorldTransform_[i]->Update();
 	}
+
+	ImGui::Begin("PlaneVertices");
+
+	ImGui::DragFloat3("LeftTop", &vertices_[0].x, 0.01f);
+	ImGui::DragFloat3("RightTop", &vertices_[1].x, 0.01f);
+	ImGui::DragFloat3("LeftBottom", &vertices_[2].x, 0.01f);
+	ImGui::DragFloat3("RightBottom", &vertices_[3].x, 0.01f);
+
+	ImGui::End();
 
 }
 
@@ -131,11 +148,11 @@ inline void SampleScene<Data>::Draw() {
 		// 板ポリ描画
 		MAGISYSTEM::DrawPlane3D(
 			*planeWorldTransform_[i],
-			Vector3(-1.0f, 1.0f, 0.0f),
-			Vector3(1.0, 1.0f, 0.0f),
-			Vector3(-1.0f, -1.0f, 0.0f),
-			Vector3(1.0f, -1.0f, 0.0f),
-			RGBA(i * 0.1f, i * 0.01f, i * 0.001f, 1.0f));
+			vertices_[0],
+			vertices_[1],
+			vertices_[2],
+			vertices_[3],
+			Color::White);
 	}
 
 	// 
