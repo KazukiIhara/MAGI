@@ -416,6 +416,13 @@ public: // エンジンの機能
 	static void DrawLine3D(const Vector3& start, const Vector3& end, const RGBA& color);
 #pragma endregion
 
+#pragma region PlaneDrawer3D
+	// 板ポリ描画
+	static void DrawPlane3D(const WorldTransform& worldTransform, float leftTop, float rightTop, float leftBottom, float rightBottom, const RGBA& color);
+
+#pragma endregion
+
+
 #pragma region CollisionManager
 
 
@@ -543,6 +550,7 @@ protected:
 	// Drawer
 	// 
 	static std::unique_ptr<LineDrawer3D> lineDrawer3D_;
+	static std::unique_ptr<PlaneDrawer3D> planeDrawer3D_;
 
 	// 
 	// GameManager
