@@ -64,6 +64,13 @@ void PlaneDrawer3D::Draw() {
 	camera3DManager_->TransferCurrentCamera(0);
 	// StructuredBufferのSRVを設定する
 	commandList->SetGraphicsRootDescriptorTable(1, srvUavManager_->GetDescriptorHandleGPU(srvIndex_));
+
+	// BindlessTexture用のDescriptorHeapを設定
+	ID3D12DescriptorHeap* descriptorHeaps[] = {
+		srvUavManager_->GetDescriptorHeap()
+	};
+	commandList->SetDescriptorHeaps(_countof(descriptorHeaps), descriptorHeaps);
+
 	// 描画
 	commandList->DrawInstanced(4, instanceCount_, 0, 0);
 }

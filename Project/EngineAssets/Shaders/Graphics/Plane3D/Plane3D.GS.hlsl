@@ -34,6 +34,7 @@ void main(
         output.normal = normalize(mul(float4(0.0f, 1.0f, 0.0f, 0.0f), plane.worldInverseTranspose).xyz);
         output.tangent = normalize(mul(float4(1.0f, 0.0f, 0.0f, 0.0f), plane.worldInverseTranspose).xyz);
         output.color = plane.color;
+        output.instanceID = instanceID;
 
         stream.Append(output);
     }

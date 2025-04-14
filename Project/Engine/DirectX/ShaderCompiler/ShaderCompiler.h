@@ -2,26 +2,31 @@
 
 // C++
 #include <string>
+#include <vector>
 
 // DirectX
 #include <d3d12.h>
 #include <dxcapi.h>
 
-// MyHedder
+// MAGI
 #include "DirectX/ComPtr/ComPtr.h"
 
+// シェーダーコンパイラ
 class ShaderCompiler {
 public:
 	ShaderCompiler();
 	~ShaderCompiler();
-	// シェーダをコンパイル
+
+	// シェーダーコンパイル関数
 	ComPtr<ID3DBlob> CompileShader(const std::wstring& filePath, const wchar_t* profile);
+
 private:
-	// 初期化
+	// DXC初期化
 	void Initialize();
+
 private:
-	// シェーダーコンパイルに使用するオブジェクト
-	IDxcUtils* dxcUtils_ = nullptr;
-	IDxcCompiler3* dxcCompiler_ = nullptr;
-	IDxcIncludeHandler* includeHandler_ = nullptr;
+	// DXC関連
+	ComPtr<IDxcUtils> dxcUtils_ = nullptr;
+	ComPtr<IDxcCompiler3> dxcCompiler_ = nullptr;
+	ComPtr<IDxcIncludeHandler> includeHandler_ = nullptr;
 };

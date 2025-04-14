@@ -78,3 +78,10 @@ struct PlaneData3D {
 	Vector3 offsets[4];
 	Vector4 color;
 };
+
+/// <summary>
+/// 3Dの板ポリマテリアルデータ
+/// </summary>
+struct PlaneMaterialData3D {
+    uint32_t textureIndex;
+};

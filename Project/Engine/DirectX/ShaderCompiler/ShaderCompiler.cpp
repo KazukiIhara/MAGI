@@ -1,7 +1,6 @@
 #include "ShaderCompiler.h"
 
 #include <cassert>
-
 #include "Logger/Logger.h"
 
 ShaderCompiler::ShaderCompiler() {
@@ -14,65 +13,66 @@ ShaderCompiler::~ShaderCompiler() {
 }
 
 ComPtr<ID3DBlob> ShaderCompiler::CompileShader(const std::wstring& filePath, const wchar_t* profile) {
-	// これからシェーダーをコンパイルする旨をログに出す
+	// ログ出力
 	Logger::Log(Logger::ConvertString(std::format(L"Begin CompileShader, path:{}, profile:{}\n", filePath, profile)));
-	// hlslファイルを読む
-	Microsoft::WRL::ComPtr<IDxcBlobEncoding> shaderSource = nullptr;
+
+	// HLSLファイルの読み込み
+	ComPtr<IDxcBlobEncoding> shaderSource = nullptr;
 	HRESULT hr = dxcUtils_->LoadFile(filePath.c_str(), nullptr, &shaderSource);
-	// 読めなかったら止める
 	assert(SUCCEEDED(hr));
-	// 読み込んだファイルの内容を設定する
+
 	DxcBuffer shaderSourceBuffer{};
 	shaderSourceBuffer.Ptr = shaderSource->GetBufferPointer();
 	shaderSourceBuffer.Size = shaderSource->GetBufferSize();
-	shaderSourceBuffer.Encoding = DXC_CP_UTF8;//UTF8の文字コードであることを通知
+	shaderSourceBuffer.Encoding = DXC_CP_UTF8;
 
-	LPCWSTR arguments[] = {
-		filePath.c_str(),// コンパイル対象のhlslファイル名
-		L"-E",L"main",// エントリーポイントの指定。基本的にmain以外にはしない
-		L"-T",profile,// ShaderProfileの設定
-		L"-Zi",L"-Qembed_debug",// デバッグ用の情報を埋め込む
-		L"-Od",// 最適化を外しておく
-		L"-Zpr",// メモリレイアウトは行優先
+	// コンパイル引数の指定（Shader Model 6.6 + HLSL2021 + Bindless 対応）
+	std::vector<LPCWSTR> arguments = {
+		filePath.c_str(),               // 入力ファイル
+		L"-E", L"main",                 // エントリポイント
+		L"-T", profile,                 // ターゲットプロファイル（例: vs_6_6）
+		L"-HV", L"2021",                // HLSL言語バージョン（2021=SM6.6）
+		L"-Zi", L"-Qembed_debug",       // デバッグ情報
+		L"-Zpr",                        // 行優先メモリレイアウト
+		L"-D", L"USE_BINDLESS_TEXTURE", // 必要に応じて define 追加
 	};
-	// 実際にシェーダーをコンパイルする
-	Microsoft::WRL::ComPtr<IDxcResult> shaderResult = nullptr;
+
+	// 実際のコンパイル処理
+	ComPtr<IDxcResult> shaderResult = nullptr;
 	hr = dxcCompiler_->Compile(
-		&shaderSourceBuffer,	// 読み込んだファイル
-		arguments,				// コンパイルオプション
-		_countof(arguments),	// コンパイルオプションの数
-		includeHandler_,			// includeが含まれた諸々
-		IID_PPV_ARGS(&shaderResult)// コンパイル結果
-	);
-	// コンパイルエラーではなく、dxcが起動できないなど致命的な状況
+		&shaderSourceBuffer,
+		arguments.data(),
+		static_cast<UINT>(arguments.size()),
+		includeHandler_.Get(),
+		IID_PPV_ARGS(&shaderResult));
 	assert(SUCCEEDED(hr));
 
-	// 警告、エラーが出てたらログに出して止める
-	Microsoft::WRL::ComPtr<IDxcBlobUtf8> shaderError = nullptr;
+	// コンパイルエラーをログ出力
+	ComPtr<IDxcBlobUtf8> shaderError = nullptr;
 	shaderResult->GetOutput(DXC_OUT_ERRORS, IID_PPV_ARGS(&shaderError), nullptr);
-	if (shaderError != nullptr && shaderError->GetStringLength() != 0) {
+	if (shaderError && shaderError->GetStringLength() > 0) {
 		Logger::Log(shaderError->GetStringPointer());
-		assert(false);
+		assert(false); // エラーがあれば止める
 	}
 
-	// コンパイル結果から実行用のバイナリ部分を取得
-	Microsoft::WRL::ComPtr<ID3DBlob> shaderBlob = nullptr;
+	// バイナリを取得
+	ComPtr<ID3DBlob> shaderBlob = nullptr;
 	hr = shaderResult->GetOutput(DXC_OUT_OBJECT, IID_PPV_ARGS(&shaderBlob), nullptr);
 	assert(SUCCEEDED(hr));
-	// 成功したログを出す
-	Logger::Log(Logger::ConvertString(std::format(L"Compile Succeeded,path:{},profile:{}\n", filePath, profile)));
 
-	// 実行用のバイナリを返す
+	Logger::Log(Logger::ConvertString(std::format(L"Compile Succeeded, path:{}, profile:{}\n", filePath, profile)));
+
 	return shaderBlob;
 }
 
 void ShaderCompiler::Initialize() {
 	HRESULT hr = S_FALSE;
-	// dxCompilerを初期化
 	hr = DxcCreateInstance(CLSID_DxcUtils, IID_PPV_ARGS(&dxcUtils_));
 	assert(SUCCEEDED(hr));
+
 	hr = DxcCreateInstance(CLSID_DxcCompiler, IID_PPV_ARGS(&dxcCompiler_));
 	assert(SUCCEEDED(hr));
+
 	hr = dxcUtils_->CreateDefaultIncludeHandler(&includeHandler_);
 	assert(SUCCEEDED(hr));
 }

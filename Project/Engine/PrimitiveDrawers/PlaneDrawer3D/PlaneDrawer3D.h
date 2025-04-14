@@ -59,15 +59,23 @@ private:
 	// 板ポリの最大数
 	const uint32_t kNumMaxInstance = 32768;
 
-	// 板ポリ
-	std::vector<PlaneData3D> planes_;
 	// ブレンドモード
 	BlendMode blendMode_ = BlendMode::Normal;
+
+	// CPU側の板ポリデータ
+	std::vector<PlaneData3D> planes_;
+	// CPU側のマテリアルデータ
+	std::vector<PlaneMaterialData3D> materials_;
 
 	// instancing描画用のリソース
 	ComPtr<ID3D12Resource> instancingResource_ = nullptr;
 	// instancing描画用のデータ
-	PlaneData3D* instancingData_ = nullptr;	
+	PlaneData3D* instancingData_ = nullptr;
+
+	// マテリアルのリソース
+	ComPtr<ID3D12Resource> materialResource_ = nullptr;
+	// マテリアルデータ
+	PlaneMaterialData3D* materialData_ = nullptr;
 
 	// SrvIndex
 	uint32_t srvIndex_ = 0;

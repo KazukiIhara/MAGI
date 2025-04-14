@@ -24,7 +24,7 @@ private:
 
 	static const uint32_t planeSize_ = 10000;
 
-	// 板ポリ用の
+	// 板ポリ用のワールドトランスフォーム
 	std::array<std::unique_ptr<WorldTransform>, planeSize_> planeWorldTransform_;
 };
 
