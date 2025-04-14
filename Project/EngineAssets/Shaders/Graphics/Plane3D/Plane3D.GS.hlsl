@@ -6,10 +6,10 @@ ConstantBuffer<Camera> gCamera : register(b0);
 [maxvertexcount(4)]
 void main(
     point VertexShaderOutput input[1],
-    uint instanceID : SV_PrimitiveID,
     inout TriangleStream<GeometryShaderOutput> stream
 )
 {
+    uint instanceID = input[0].instanceID;
     PlaneData3D plane = gInstanceData[instanceID];
 
     // UV順（左上, 右上, 左下, 右下）

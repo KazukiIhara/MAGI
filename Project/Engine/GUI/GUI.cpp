@@ -165,6 +165,11 @@ void GUI::ShowMainUI() {
 	ShowProjectWindow();
 }
 
+void GUI::ShowDebugUI() {
+	ShowFPS();
+	ShowDeltaTime();
+}
+
 bool& GUI::GetIsShowMainUI() {
 	return isShowMainUI_;
 }

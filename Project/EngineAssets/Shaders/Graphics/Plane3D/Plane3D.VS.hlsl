@@ -10,5 +10,6 @@ VertexShaderOutput main(VertexShaderInput input, uint instanceID : SV_InstanceID
     output.normal = float3(0.0f, 1.0f, 0.0f);
     output.tangent = float3(1.0f, 0.0f, 0.0f);
     output.worldPosition = float3(0.0f, 0.0f, 0.0f);
+    output.instanceID = instanceID;
     return output;
 }

@@ -481,6 +481,9 @@ void MAGISYSTEM::Update() {
 	// Dataクラスフレーム開始処理
 	dataIO_->BeginFrame();
 
+	// デバッグ表示(FPS、DELTATIME)
+	gui_->ShowDebugUI();
+
 	// シーンの更新処理
 	sceneManager_->Update();
 

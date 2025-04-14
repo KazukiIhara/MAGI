@@ -15,6 +15,7 @@ struct VertexShaderOutput
     float3 normal : NORMAL0;
     float3 tangent : TANGENT0;
     float3 worldPosition : POSITION0;
+    uint instanceID : SV_InstanceID;
 };
 
 // ジオメトリシェーダからの出力 → ピクセルシェーダへ

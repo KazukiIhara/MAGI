@@ -26,6 +26,9 @@ public:
 	// メインUI描画
 	void ShowMainUI();
 
+	// デバッグ表示
+	void ShowDebugUI();
+
 	//
 	// アクセッサ
 	//
