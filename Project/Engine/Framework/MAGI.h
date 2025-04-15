@@ -303,6 +303,8 @@ public: // エンジンの機能
 	static const DirectX::TexMetadata& GetTextureMetaData(const std::string& filePath);
 	// テクスチャコンテナを渡す
 	static const std::map<std::string, Texture>& GetTextureContainer();
+	// テクスチャのインデックスを渡す
+	static uint32_t GetTextureIndex(const std::string& textureName);
 #pragma endregion
 
 #pragma region PrimitiveShapeDataContainer

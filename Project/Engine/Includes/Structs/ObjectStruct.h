@@ -74,7 +74,6 @@ struct LineData3D {
 /// 3D板ポリの形状データ
 /// </summary>
 struct PlaneData3D {
-	Matrix4x4 worldMatrix;
 	Vector3 verticesOffsets[4];
 };
 
@@ -92,10 +91,10 @@ struct PlaneData3DForGPU {
 /// </summary>
 struct PrimitiveMaterialData3D {
 	uint32_t textureIndex;
-	RGBA baseColor;
-	Vector2 uvTransform;
-	Vector2 uvScale;
-	float uvRotate;
+	RGBA baseColor = Color::White;
+	Vector2 uvTransform = { 0.0f,0.0f };
+	Vector2 uvScale = { 1.0f,1.0f };
+	float uvRotate = 0.0f;
 };
 
 /// <summary>

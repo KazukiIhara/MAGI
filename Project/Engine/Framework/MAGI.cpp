@@ -947,6 +947,10 @@ const std::map<std::string, Texture>& MAGISYSTEM::GetTextureContainer() {
 	return textureDataCantainer_->GetTextureContainer();
 }
 
+uint32_t MAGISYSTEM::GetTextureIndex(const std::string& textureName) {
+	return textureDataCantainer_->GetTexture()[textureName].srvIndex;
+}
+
 PrimitiveData MAGISYSTEM::GetPrimitiveShape(const Primitive3DType& primitive3dType) {
 	return primitiveDataContainer_->GetPrimitiveShapeData(primitive3dType);
 }
