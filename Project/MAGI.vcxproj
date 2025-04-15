@@ -123,6 +123,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Engine\Includes\Structs\XInputStruct.h" />
     <ClInclude Include="Engine\ObjectManagers\GameObject3DGroupManager\GameObject3DGroupManager.h" />
     <ClInclude Include="Engine\PrimitiveDrawers\PlaneDrawer3D\PlaneDrawer3D.h" />
+    <ClInclude Include="Engine\PrimitiveDrawers\SphereDrawer3D\SphereDrawer3D.h" />
     <ClInclude Include="Engine\Scenes\SampleScene.h" />
     <ClInclude Include="Engine\2D\Object2D\Object2D.h" />
     <ClInclude Include="Engine\2D\WorldTransform2D\WorldTransform2D.h" />
@@ -330,6 +331,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Engine\PostEffectPipelines\NonePostEffectPipeline\NonePostEffectPipeline.cpp" />
     <ClCompile Include="Engine\OffScreenRenderer\OffScreenRenderer.cpp" />
     <ClCompile Include="Engine\PrimitiveDrawers\PlaneDrawer3D\PlaneDrawer3D.cpp" />
+    <ClCompile Include="Engine\PrimitiveDrawers\SphereDrawer3D\SphereDrawer3D.cpp" />
     <ClCompile Include="Engine\RenderTextureManager\RenderTextureManager.cpp" />
     <ClCompile Include="Engine\RenderTextures\BaseRenderTexture\BaseRenderTexture.cpp" />
     <ClCompile Include="Engine\ViewManagers\BaseViewManager\BaseViewManager.cpp" />

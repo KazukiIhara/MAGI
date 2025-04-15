@@ -91,19 +91,19 @@ struct PlaneData3DForGPU {
 /// </summary>
 struct Sphere3DData {
 	float radius;
-	uint32_t sliceSubDivision;
-	uint32_t stackSubDivision;
+	uint32_t verticalSegments;
+	uint32_t horizontalSegments;
 };
 
 /// <summary>
 /// GPUに送る3Dの球体データ
 /// </summary>
-struct Sphere3DDataForGPU {
+struct SphereData3DForGPU {
 	Matrix4x4 worldMatrix;
 	Matrix4x4 worldInverseTranspose;
 	float radius;
-	uint32_t sliceCount;
-	uint32_t stackCount;
+	uint32_t longitudeSegments;
+	uint32_t latitudeSegments;
 };
 
 /// <summary>
