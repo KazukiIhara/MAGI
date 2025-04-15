@@ -73,10 +73,10 @@ private:
 	// ブレンドモード
 	BlendMode blendMode_ = BlendMode::Normal;
 
-	// CPU側の板ポリデータ
-	std::vector<PlaneData3D> planes_;
-	// CPU側のマテリアルデータ
-	std::vector<PlaneMaterialData3D> materials_;
+	// 板ポリデータ
+	std::vector<PlaneData3DForGPU> planes_;
+	// マテリアルデータ
+	std::vector<PrimitiveMaterialData3DForGPU> materials_;
 
 	// instancing描画用のリソース
 	ComPtr<ID3D12Resource> instancingResource_ = nullptr;
@@ -86,7 +86,7 @@ private:
 	// マテリアルのリソース
 	ComPtr<ID3D12Resource> materialResource_ = nullptr;
 	// マテリアルデータ
-	PlaneMaterialData3DForGPU* materialData_ = nullptr;
+	PrimitiveMaterialData3DForGPU* materialData_ = nullptr;
 
 	// Plane3DSrvIndex
 	uint32_t planeSrvIndex = 0;

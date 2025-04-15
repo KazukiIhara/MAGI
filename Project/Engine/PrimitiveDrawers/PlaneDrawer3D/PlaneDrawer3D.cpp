@@ -49,9 +49,10 @@ void PlaneDrawer3D::Update() {
 	// 描画すべきインスタンス数
 	instanceCount_ = static_cast<uint32_t>(planes_.size());
 
-	if (instancingData_ != nullptr && !planes_.empty()) {
+	if (instancingData_ != nullptr && materialData_ != nullptr && !planes_.empty()) {
 		// コピー
 		std::memcpy(instancingData_, planes_.data(), instanceCount_ * sizeof(PlaneData3DForGPU));
+		std::memcpy(materialData_, materials_.data(), instanceCount_ * sizeof(PrimitiveMaterialData3DForGPU));
 	}
 	// 板ポリのコンテナをクリア
 	ClearPlanes();
@@ -93,18 +94,19 @@ void PlaneDrawer3D::AddPlane(
 	const Vector2& uvScale,
 	const float& uvRotate,
 	const Vector2& uvTransform
-	) {
+) {
 	// 板ポリの座標と形状データ
-	PlaneData3D newPlaneData{};
+	PlaneData3DForGPU newPlaneData{};
 	newPlaneData.worldMatrix = worldMatrix;
-	newPlaneData.verticesOffsets[0] = Vector4(leftTop.x, leftTop.y, leftTop.z, 1.0f);
-	newPlaneData.verticesOffsets[1] = Vector4(rightTop.x, rightTop.y, rightTop.z, 1.0f);
-	newPlaneData.verticesOffsets[2] = Vector4(leftBottom.x, leftBottom.y, leftBottom.z, 1.0f);
-	newPlaneData.verticesOffsets[3] = Vector4(rightBottom.x, rightBottom.y, rightBottom.z, 1.0f);
+	newPlaneData.worldInverseTranspose = MakeInverseTransposeMatrix(worldMatrix);
+	newPlaneData.offsets[0] = Vector4(leftTop.x, leftTop.y, leftTop.z, 1.0f);
+	newPlaneData.offsets[1] = Vector4(rightTop.x, rightTop.y, rightTop.z, 1.0f);
+	newPlaneData.offsets[2] = Vector4(leftBottom.x, leftBottom.y, leftBottom.z, 1.0f);
+	newPlaneData.offsets[3] = Vector4(rightBottom.x, rightBottom.y, rightBottom.z, 1.0f);
 	planes_.push_back(newPlaneData);
 
 	// 板ポリのマテリアルデータ
-	PlaneMaterialData3D newMaterialData{};
+	PrimitiveMaterialData3DForGPU newMaterialData{};
 	newMaterialData.textureIndex = textureIndex;
 	newMaterialData.baseColor = RGBAToVector4(color);
 	newMaterialData.uvScale = uvScale;
@@ -158,11 +160,11 @@ void PlaneDrawer3D::MapInstancingData() {
 
 void PlaneDrawer3D::CreateMaterialResource() {
 	// Material用のリソースを作る
-	materialResource_ = dxgi_->CreateBufferResource(sizeof(PlaneMaterialData3DForGPU) * kNumMaxInstance);
+	materialResource_ = dxgi_->CreateBufferResource(sizeof(PrimitiveMaterialData3DForGPU) * kNumMaxInstance);
 	// srvのインデックスを割り当て
 	materialSrvIndex_ = srvUavManager_->Allocate();
 	// srvを作成
-	srvUavManager_->CreateSrvStructuredBuffer(materialSrvIndex_, materialResource_.Get(), kNumMaxInstance, sizeof(PlaneMaterialData3DForGPU));
+	srvUavManager_->CreateSrvStructuredBuffer(materialSrvIndex_, materialResource_.Get(), kNumMaxInstance, sizeof(PrimitiveMaterialData3DForGPU));
 }
 
 void PlaneDrawer3D::MapMaterialData() {
@@ -172,7 +174,6 @@ void PlaneDrawer3D::MapMaterialData() {
 	// 全Planeにデフォルトテクスチャを指定
 	uint32_t textureIndex = MAGISYSTEM::GetTexture()["EngineAssets/Images/uvChecker.png"].srvIndex;
 	for (uint32_t i = 0; i < kNumMaxInstance; ++i) {
-		materialData_[i].useTexture = 1;
 		materialData_[i].textureIndex = textureIndex;
 		materialData_[i].baseColor = { 1.0f,1.0f,1.0f,1.0f };
 		materialData_[i].uvScale = { 1.0f,1.0f };

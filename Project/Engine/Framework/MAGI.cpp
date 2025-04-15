@@ -927,8 +927,8 @@ ID3D12PipelineState* MAGISYSTEM::GetPostEffectPipelineState(PostEffectPipelineSt
 	return postEffectPipelineManager_->GetPipelineState(pipelineState, blendMode);
 }
 
-void MAGISYSTEM::LoadTexture(const std::string& filePath, bool isFullPath) {
-	textureDataCantainer_->Load(filePath, isFullPath);
+uint32_t MAGISYSTEM::LoadTexture(const std::string& fileName, bool isFullPath) {
+	return textureDataCantainer_->Load(fileName, isFullPath);
 }
 
 void MAGISYSTEM::LoadNormalMapTexture(const std::string& filePath) {
@@ -1108,7 +1108,11 @@ void MAGISYSTEM::DrawPlane3D(
 	const float& uvRotate,
 	const Vector2& uvTransform
 ) {
-	planeDrawer3D_->AddPlane(worldMatrix, leftTop, rightTop, leftBottom, rightBottom, color,textureIndex ,uvScale, uvRotate, uvTransform);
+	planeDrawer3D_->AddPlane(worldMatrix, leftTop, rightTop, leftBottom, rightBottom, color, textureIndex, uvScale, uvRotate, uvTransform);
+}
+
+void MAGISYSTEM::DrawPlane3D(const Matrix4x4& worldMatrix, const PlaneData3D& planeData, const PrimitiveMaterialData3D& materialData) {
+	planeDrawer3D_->AddPlane(worldMatrix, planeData.verticesOffsets[0], planeData.verticesOffsets[1], planeData.verticesOffsets[2], planeData.verticesOffsets[3], materialData.baseColor, materialData.textureIndex, materialData.uvScale, materialData.uvRotate, materialData.uvTransform);
 }
 
 void MAGISYSTEM::AddGrobalDataGroup(const std::string& groupname) {

@@ -288,8 +288,13 @@ public: // エンジンの機能
 #pragma endregion
 
 #pragma region TextureDataContainer
-	// 画像読み込み
-	static void LoadTexture(const std::string& filePath, bool isFullPath = false);
+	/// <summary>
+	/// 画像読み込み関数
+	/// </summary>
+	/// <param name="fileName">ファイル名</param>
+	/// <param name="isFullPath">フルパス指定かどうか</param>
+	/// <returns>テクスチャのSRVインデックス</returns>
+	static uint32_t LoadTexture(const std::string& fileName, bool isFullPath = false);
 	// 法線マップ画像の読み込み
 	static void LoadNormalMapTexture(const std::string& filePath);
 	// テクスチャの取得
@@ -429,6 +434,13 @@ public: // エンジンの機能
 		const Vector2& uvScale,
 		const float& uvRotate,
 		const Vector2& uvTransform
+	);
+
+	// 板ポリ描画使いやすい版
+	static void DrawPlane3D(
+		const Matrix4x4& worldMatrix,
+		const PlaneData3D& planeData,
+		const PrimitiveMaterialData3D& materialData
 	);
 
 #pragma endregion

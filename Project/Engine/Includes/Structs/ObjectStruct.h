@@ -5,6 +5,7 @@
 
 // MyHedder
 #include "Math/Utility/MathUtility.h"
+#include "Structs/ColorStruct.h"
 
 /// <summary>
 /// UVトランスフォーム
@@ -74,18 +75,7 @@ struct LineData3D {
 /// </summary>
 struct PlaneData3D {
 	Matrix4x4 worldMatrix;
-	Vector4 verticesOffsets[4];
-};
-
-/// <summary>
-/// 3D板ポリのマテリアルデータ
-/// </summary>
-struct PlaneMaterialData3D {
-	uint32_t textureIndex;
-	Vector4 baseColor;
-	Vector2 uvTransform;
-	Vector2 uvScale;
-	float uvRotation;
+	Vector3 verticesOffsets[4];
 };
 
 /// <summary>
@@ -98,10 +88,20 @@ struct PlaneData3DForGPU {
 };
 
 /// <summary>
-/// GPUに送る3Dの板ポリマテリアルデータ
+/// Primitiveマテリアルデータ
 /// </summary>
-struct PlaneMaterialData3DForGPU {
-	uint32_t useTexture;
+struct PrimitiveMaterialData3D {
+	uint32_t textureIndex;
+	RGBA baseColor;
+	Vector2 uvTransform;
+	Vector2 uvScale;
+	float uvRotate;
+};
+
+/// <summary>
+/// GPUに送る3DのPrimitiveマテリアルデータ
+/// </summary>
+struct PrimitiveMaterialData3DForGPU {
 	uint32_t textureIndex;
 	Vector4 baseColor;
 	Vector2 uvTransform;

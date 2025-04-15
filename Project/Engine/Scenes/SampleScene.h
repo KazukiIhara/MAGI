@@ -147,12 +147,16 @@ inline void SampleScene<Data>::Draw() {
 	for (uint32_t i = 0; i < planeSize_; i++) {
 		// 板ポリ描画
 		MAGISYSTEM::DrawPlane3D(
-			*planeWorldTransform_[i],
+			planeWorldTransform_[i]->worldMatrix_,
 			vertices_[0],
 			vertices_[1],
 			vertices_[2],
 			vertices_[3],
-			Color::White);
+			Color::White,
+			1,
+			Vector2(1.0f,1.0f),
+			0.0f,
+			Vector2(0.0f,0.0f));
 	}
 
 	// 
