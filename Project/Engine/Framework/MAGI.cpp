@@ -1096,8 +1096,17 @@ void MAGISYSTEM::DrawLine3D(const Vector3& start, const Vector3& end, const RGBA
 	lineDrawer3D_->AddLine(start, end, color);
 }
 
-void MAGISYSTEM::DrawPlane3D(const WorldTransform& worldTransform, const Vector3& leftTop, const Vector3& rightTop, const Vector3& leftBottom, const Vector3& rightBottom, const RGBA& color) {
-	planeDrawer3D_->AddPlane(worldTransform, leftTop, rightTop, leftBottom, rightBottom, color);
+void MAGISYSTEM::DrawPlane3D(const WorldTransform& worldTransform,
+	const Vector3& leftTop,
+	const Vector3& rightTop,
+	const Vector3& leftBottom,
+	const Vector3& rightBottom,
+	const RGBA& color,
+	const Vector2& uvScale,
+	const float& uvRotate,
+	const Vector2& uvTransform
+) {
+	planeDrawer3D_->AddPlane(worldTransform, leftTop, rightTop, leftBottom, rightBottom, color, uvScale, uvRotate, uvTransform);
 }
 
 void MAGISYSTEM::AddGrobalDataGroup(const std::string& groupname) {

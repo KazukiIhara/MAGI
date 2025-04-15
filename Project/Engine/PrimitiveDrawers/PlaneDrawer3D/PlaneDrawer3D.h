@@ -36,12 +36,17 @@ public:
 	void Update();
 	void Draw();
 
-	void AddPlane(const WorldTransform& worldTransform,
+	void AddPlane(
+		const Matrix4x4& worldMatrix,
 		const Vector3& leftTop,
 		const Vector3& rightTop,
 		const Vector3& leftBottom,
 		const Vector3& rightBottom,
-		const RGBA& color
+		const RGBA& color,
+		const uint32_t& textureIndex,
+		const Vector2& uvScale,
+		const float& uvRotate,
+		const Vector2& uvTransform
 	);
 
 	void ClearPlanes();
@@ -69,9 +74,9 @@ private:
 	BlendMode blendMode_ = BlendMode::Normal;
 
 	// CPU側の板ポリデータ
-	std::vector<PlaneData3DForGPU> planes_;
+	std::vector<PlaneData3D> planes_;
 	// CPU側のマテリアルデータ
-	std::vector<PlaneMaterialData3DForGPU> materials_;
+	std::vector<PlaneMaterialData3D> materials_;
 
 	// instancing描画用のリソース
 	ComPtr<ID3D12Resource> instancingResource_ = nullptr;

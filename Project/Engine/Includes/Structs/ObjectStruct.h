@@ -70,7 +70,26 @@ struct LineData3D {
 };
 
 /// <summary>
-/// 3Dの板ポリデータ
+/// 3D板ポリの形状データ
+/// </summary>
+struct PlaneData3D {
+	Matrix4x4 worldMatrix;
+	Vector4 verticesOffsets[4];
+};
+
+/// <summary>
+/// 3D板ポリのマテリアルデータ
+/// </summary>
+struct PlaneMaterialData3D {
+	uint32_t textureIndex;
+	Vector4 baseColor;
+	Vector2 uvTransform;
+	Vector2 uvScale;
+	float uvRotation;
+};
+
+/// <summary>
+/// GPUに送る3Dの板ポリデータ
 /// </summary>
 struct PlaneData3DForGPU {
 	Matrix4x4 worldMatrix;
@@ -79,11 +98,11 @@ struct PlaneData3DForGPU {
 };
 
 /// <summary>
-/// 3Dの板ポリマテリアルデータ
+/// GPUに送る3Dの板ポリマテリアルデータ
 /// </summary>
 struct PlaneMaterialData3DForGPU {
 	uint32_t useTexture;
-    uint32_t textureIndex;
+	uint32_t textureIndex;
 	Vector4 baseColor;
 	Vector2 uvTransform;
 	Vector2 uvScale;

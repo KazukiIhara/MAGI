@@ -45,7 +45,6 @@ struct PlaneData3D
 // マテリアルデータ
 struct PlaneMaterialData3D
 {
-    uint useTexture;
     uint textureIndex; // gTextures[] 内のインデックス
     float4 baseColor;
     float2 uvTranslate;

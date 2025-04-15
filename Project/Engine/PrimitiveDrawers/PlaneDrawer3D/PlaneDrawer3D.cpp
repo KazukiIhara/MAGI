@@ -82,22 +82,34 @@ void PlaneDrawer3D::Draw() {
 	commandList->DrawInstanced(4, instanceCount_, 0, 0);
 }
 
-void PlaneDrawer3D::AddPlane(const WorldTransform& worldTransform, const Vector3& leftTop, const Vector3& rightTop, const Vector3& leftBottom, const Vector3& rightBottom, const RGBA& color
-
-) {
+void PlaneDrawer3D::AddPlane(
+	const Matrix4x4& worldMatrix,
+	const Vector3& leftTop,
+	const Vector3& rightTop,
+	const Vector3& leftBottom,
+	const Vector3& rightBottom,
+	const RGBA& color,
+	const uint32_t& textureIndex,
+	const Vector2& uvScale,
+	const float& uvRotate,
+	const Vector2& uvTransform
+	) {
 	// 板ポリの座標と形状データ
-	PlaneData3DForGPU newPlaneData{};
-	newPlaneData.worldMatrix = worldTransform.worldMatrix_;
-	newPlaneData.worldInverseTranspose = MakeInverseTransposeMatrix(worldTransform.worldMatrix_);
-	newPlaneData.offsets[0] = Vector4(leftTop.x, leftTop.y, leftTop.z, 1.0f);
-	newPlaneData.offsets[1] = Vector4(rightTop.x, rightTop.y, rightTop.z, 1.0f);
-	newPlaneData.offsets[2] = Vector4(leftBottom.x, leftBottom.y, leftBottom.z, 1.0f);
-	newPlaneData.offsets[3] = Vector4(rightBottom.x, rightBottom.y, rightBottom.z, 1.0f);
+	PlaneData3D newPlaneData{};
+	newPlaneData.worldMatrix = worldMatrix;
+	newPlaneData.verticesOffsets[0] = Vector4(leftTop.x, leftTop.y, leftTop.z, 1.0f);
+	newPlaneData.verticesOffsets[1] = Vector4(rightTop.x, rightTop.y, rightTop.z, 1.0f);
+	newPlaneData.verticesOffsets[2] = Vector4(leftBottom.x, leftBottom.y, leftBottom.z, 1.0f);
+	newPlaneData.verticesOffsets[3] = Vector4(rightBottom.x, rightBottom.y, rightBottom.z, 1.0f);
 	planes_.push_back(newPlaneData);
 
 	// 板ポリのマテリアルデータ
-	PlaneMaterialData3DForGPU newMaterialData{};
+	PlaneMaterialData3D newMaterialData{};
+	newMaterialData.textureIndex = textureIndex;
 	newMaterialData.baseColor = RGBAToVector4(color);
+	newMaterialData.uvScale = uvScale;
+	newMaterialData.uvRotation = uvRotate;
+	newMaterialData.uvTransform = uvTransform;
 	materials_.push_back(newMaterialData);
 }
 
