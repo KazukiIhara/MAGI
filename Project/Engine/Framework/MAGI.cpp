@@ -948,7 +948,10 @@ const std::map<std::string, Texture>& MAGISYSTEM::GetTextureContainer() {
 }
 
 uint32_t MAGISYSTEM::GetTextureIndex(const std::string& textureName) {
-	return textureDataCantainer_->GetTexture()[textureName].srvIndex;
+	const auto& textureMap = textureDataCantainer_->GetTexture();
+	auto it = textureMap.find(textureName);
+	assert(it != textureMap.end() && "Texture name not found in textureMap");
+	return it->second.srvIndex;
 }
 
 PrimitiveData MAGISYSTEM::GetPrimitiveShape(const Primitive3DType& primitive3dType) {
