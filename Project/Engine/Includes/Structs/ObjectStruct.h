@@ -72,16 +72,20 @@ struct LineData3D {
 /// <summary>
 /// 3Dの板ポリデータ
 /// </summary>
-struct PlaneData3D {
+struct PlaneData3DForGPU {
 	Matrix4x4 worldMatrix;
 	Matrix4x4 worldInverseTranspose;
 	Vector4 offsets[4];
-	Vector4 color;
 };
 
 /// <summary>
 /// 3Dの板ポリマテリアルデータ
 /// </summary>
-struct PlaneMaterialData3D {
+struct PlaneMaterialData3DForGPU {
+	uint32_t useTexture;
     uint32_t textureIndex;
+	Vector4 baseColor;
+	Vector2 uvTransform;
+	Vector2 uvScale;
+	float uvRotation;
 };

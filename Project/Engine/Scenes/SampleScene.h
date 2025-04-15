@@ -23,7 +23,7 @@ private:
 	// カメラ
 	std::unique_ptr<Camera3D> sceneCamera_ = nullptr;
 
-	static const uint32_t planeSize_ = 1;
+	static const uint32_t planeSize_ = 5000;
 
 	std::array<Vector3, 4> vertices_;
 
