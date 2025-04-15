@@ -87,6 +87,26 @@ struct PlaneData3DForGPU {
 };
 
 /// <summary>
+/// 3D球体の形状データ
+/// </summary>
+struct Sphere3DData {
+	float radius;
+	uint32_t sliceSubDivision;
+	uint32_t stackSubDivision;
+};
+
+/// <summary>
+/// GPUに送る3Dの球体データ
+/// </summary>
+struct Sphere3DDataForGPU {
+	Matrix4x4 worldMatrix;
+	Matrix4x4 worldInverseTranspose;
+	float radius;
+	uint32_t sliceCount;
+	uint32_t stackCount;
+};
+
+/// <summary>
 /// Primitiveマテリアルデータ
 /// </summary>
 struct PrimitiveMaterialData3D {
@@ -102,8 +122,10 @@ struct PrimitiveMaterialData3D {
 /// </summary>
 struct PrimitiveMaterialData3DForGPU {
 	uint32_t textureIndex;
+	float padding0[3];
 	Vector4 baseColor;
 	Vector2 uvTransform;
 	Vector2 uvScale;
 	float uvRotation;
+	float padding1[3];
 };

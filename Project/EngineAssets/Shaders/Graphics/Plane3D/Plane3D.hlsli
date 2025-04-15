@@ -45,11 +45,13 @@ struct PlaneData3D
 // マテリアルデータ
 struct PlaneMaterialData3D
 {
-    uint textureIndex; // gTextures[] 内のインデックス
+    uint textureIndex;
+    float3 _padding0;
     float4 baseColor;
     float2 uvTranslate;
     float2 uvScale;
     float uvRotate;
+    float3 _padding1;
 };
 
 // カメラ
@@ -57,4 +59,5 @@ struct Camera
 {
     float4x4 viewProjection;
     float3 worldPosition;
+    float _padding;
 };
