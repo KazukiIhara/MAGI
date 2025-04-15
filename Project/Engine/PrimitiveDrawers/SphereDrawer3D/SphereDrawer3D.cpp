@@ -42,9 +42,7 @@ SphereDrawer3D::~SphereDrawer3D() {
 
 void SphereDrawer3D::Update() {
 	// 最大数を超えていたら止める
-	if (spheres_.size() > kNumMaxInstance) {
-		assert(false && "Plane size is over !");
-	}
+	assert(spheres_.size() <= kNumMaxInstance && "Sphere size is over!");
 
 	// 描画すべきインスタンス数
 	instanceCount_ = static_cast<uint32_t>(spheres_.size());
