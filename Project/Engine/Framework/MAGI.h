@@ -418,15 +418,18 @@ public: // エンジンの機能
 
 #pragma region PlaneDrawer3D
 	// 板ポリ描画
-	static void DrawPlane3D(const WorldTransform& worldTransform,
-	const Vector3& leftTop,
-	const Vector3& rightTop,
-	const Vector3& leftBottom,
-	const Vector3& rightBottom,
-	const RGBA& color,
-	const Vector2& uvScale,
-	const float& uvRotate,
-	const Vector2& uvTransform);
+	static void DrawPlane3D(
+		const Matrix4x4& worldMatrix,
+		const Vector3& leftTop,
+		const Vector3& rightTop,
+		const Vector3& leftBottom,
+		const Vector3& rightBottom,
+		const RGBA& color,
+		const uint32_t& textureIndex,
+		const Vector2& uvScale,
+		const float& uvRotate,
+		const Vector2& uvTransform
+	);
 
 #pragma endregion
 
