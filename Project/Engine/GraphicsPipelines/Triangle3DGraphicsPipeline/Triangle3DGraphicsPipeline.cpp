@@ -16,8 +16,8 @@ void TriangleMeshShaderGraphicsPipeline::CreateRootSignature() {
 	rootSigDesc.NumStaticSamplers = 0;
 	rootSigDesc.Flags = D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT;
 
-	Microsoft::WRL::ComPtr<ID3DBlob> sigBlob;
-	Microsoft::WRL::ComPtr<ID3DBlob> errorBlob;
+	ComPtr<ID3DBlob> sigBlob;
+	ComPtr<ID3DBlob> errorBlob;
 	HRESULT hr = D3D12SerializeRootSignature(
 		&rootSigDesc, D3D_ROOT_SIGNATURE_VERSION_1,
 		&sigBlob, &errorBlob);
@@ -43,65 +43,65 @@ void TriangleMeshShaderGraphicsPipeline::CompileShaders() {
 }
 
 void TriangleMeshShaderGraphicsPipeline::CreateGraphicsPipelineObject() {
-    assert(rootSignature_);
-    assert(meshShaderBlob_);
-    assert(pixelShaderBlob_);
+	assert(rootSignature_);
+	assert(meshShaderBlob_);
+	assert(pixelShaderBlob_);
 
-    HRESULT hr;
+	HRESULT hr;
 
-    // 共通のシェーダーバイナリ
-    D3D12_SHADER_BYTECODE meshShader = {
-        meshShaderBlob_->GetBufferPointer(),
-        meshShaderBlob_->GetBufferSize()
-    };
-    D3D12_SHADER_BYTECODE pixelShader = {
-        pixelShaderBlob_->GetBufferPointer(),
-        pixelShaderBlob_->GetBufferSize()
-    };
+	// 共通のシェーダーバイナリ
+	D3D12_SHADER_BYTECODE meshShader = {
+		meshShaderBlob_->GetBufferPointer(),
+		meshShaderBlob_->GetBufferSize()
+	};
+	D3D12_SHADER_BYTECODE pixelShader = {
+		pixelShaderBlob_->GetBufferPointer(),
+		pixelShaderBlob_->GetBufferSize()
+	};
 
-    // 共通のフォーマット・トポロジなど
-    D3D12_RASTERIZER_DESC rasterizerDesc = RasterizerStateSetting();
-    D3D12_DEPTH_STENCIL_DESC depthStencilDesc = DepthStecilDescSetting();
+	// 共通のフォーマット・トポロジなど
+	D3D12_RASTERIZER_DESC rasterizerDesc = RasterizerStateSetting();
+	D3D12_DEPTH_STENCIL_DESC depthStencilDesc = DepthStecilDescSetting();
 
-    static const DXGI_FORMAT rtvFormats[1] = {
-        DXGI_FORMAT_R8G8B8A8_UNORM_SRGB
-    };
-    D3D12_RT_FORMAT_ARRAY rtvFormatArray = {};
-    rtvFormatArray.NumRenderTargets = 1;
-    rtvFormatArray.RTFormats[0] = rtvFormats[0];
+	static const DXGI_FORMAT rtvFormats[1] = {
+		DXGI_FORMAT_R8G8B8A8_UNORM_SRGB
+	};
+	D3D12_RT_FORMAT_ARRAY rtvFormatArray = {};
+	rtvFormatArray.NumRenderTargets = 1;
+	rtvFormatArray.RTFormats[0] = rtvFormats[0];
 
-    DXGI_FORMAT dsvFormat = DXGI_FORMAT_D24_UNORM_S8_UINT;
+	DXGI_FORMAT dsvFormat = DXGI_FORMAT_D24_UNORM_S8_UINT;
 
-    for (uint32_t i = 0; i < kBlendModeNum; ++i) {
-        D3D12_BLEND_DESC blendDesc = BlendStateSetting(i);
+	for (uint32_t i = 0; i < kBlendModeNum; ++i) {
+		D3D12_BLEND_DESC blendDesc = BlendStateSetting(i);
 
-        // サブオブジェクトの構築
-        struct {
-            D3D12_PIPELINE_STATE_SUBOBJECT_TYPE type;
-            void* data;
-        } subobjects[8];
+		// サブオブジェクトの構築
+		struct {
+			D3D12_PIPELINE_STATE_SUBOBJECT_TYPE type;
+			void* data;
+		} subobjects[8];
 
-        size_t index = 0;
-        subobjects[index++] = { D3D12_PIPELINE_STATE_SUBOBJECT_TYPE_ROOT_SIGNATURE, rootSignature_.Get() };
-        subobjects[index++] = { D3D12_PIPELINE_STATE_SUBOBJECT_TYPE_MESH_SHADER, &meshShader };
-        subobjects[index++] = { D3D12_PIPELINE_STATE_SUBOBJECT_TYPE_PIXEL_SHADER, &pixelShader };
-        subobjects[index++] = { D3D12_PIPELINE_STATE_SUBOBJECT_TYPE_RASTERIZER, &rasterizerDesc };
-        subobjects[index++] = { D3D12_PIPELINE_STATE_SUBOBJECT_TYPE_BLEND, &blendDesc };
-        subobjects[index++] = { D3D12_PIPELINE_STATE_SUBOBJECT_TYPE_DEPTH_STENCIL, &depthStencilDesc };
-        subobjects[index++] = { D3D12_PIPELINE_STATE_SUBOBJECT_TYPE_RENDER_TARGET_FORMATS, &rtvFormatArray };
-        subobjects[index++] = { D3D12_PIPELINE_STATE_SUBOBJECT_TYPE_DEPTH_STENCIL_FORMAT, &dsvFormat };
+		size_t index = 0;
+		subobjects[index++] = { D3D12_PIPELINE_STATE_SUBOBJECT_TYPE_ROOT_SIGNATURE, rootSignature_.Get() };
+		subobjects[index++] = { D3D12_PIPELINE_STATE_SUBOBJECT_TYPE_MS, &meshShader };
+		subobjects[index++] = { D3D12_PIPELINE_STATE_SUBOBJECT_TYPE_PS, &pixelShader };
+		subobjects[index++] = { D3D12_PIPELINE_STATE_SUBOBJECT_TYPE_RASTERIZER, &rasterizerDesc };
+		subobjects[index++] = { D3D12_PIPELINE_STATE_SUBOBJECT_TYPE_BLEND, &blendDesc };
+		subobjects[index++] = { D3D12_PIPELINE_STATE_SUBOBJECT_TYPE_DEPTH_STENCIL, &depthStencilDesc };
+		subobjects[index++] = { D3D12_PIPELINE_STATE_SUBOBJECT_TYPE_RENDER_TARGET_FORMATS, &rtvFormatArray };
+		subobjects[index++] = { D3D12_PIPELINE_STATE_SUBOBJECT_TYPE_DEPTH_STENCIL_FORMAT, &dsvFormat };
 
-        // ストリーム構築
-        D3D12_PIPELINE_STATE_STREAM_DESC streamDesc{};
-        streamDesc.SizeInBytes = sizeof(subobjects);
-        streamDesc.pPipelineStateSubobjectStream = subobjects;
+		// ストリーム構築
+		D3D12_PIPELINE_STATE_STREAM_DESC streamDesc{};
+		streamDesc.SizeInBytes = sizeof(subobjects[0]) * index;
+		streamDesc.pPipelineStateSubobjectStream = subobjects;
 
-        // PSO作成
-        pipelineState_[i] = nullptr;
-        hr = dxgi_->GetDevice10()->CreatePipelineState(
-            &streamDesc, IID_PPV_ARGS(&pipelineState_[i]));
-        assert(SUCCEEDED(hr));
-    }
+		// PSO作成
+		pipelineState_[i] = nullptr;
+		hr = dxgi_->GetDevice10()->CreatePipelineState(
+			&streamDesc, IID_PPV_ARGS(&pipelineState_[i]));
+		assert(SUCCEEDED(hr));
+	}
 }
 
 
