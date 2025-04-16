@@ -19,28 +19,27 @@ class GraphicsPipelineManager;
 class Camera3DManager;
 
 /// <summary>
-/// 3D板ポリ描画クラス
+/// 3D球体描画クラス
 /// </summary>
-class PlaneDrawer3D {
+class SphereDrawer3D {
 public:
-	PlaneDrawer3D(
+	SphereDrawer3D(
 		DXGI* dxgi,
 		DirectXCommand* directXCommand,
 		SRVUAVManager* srvUavManager,
 		GraphicsPipelineManager* graphicsPipelineManager,
 		Camera3DManager* camera3DManager
 	);
-	~PlaneDrawer3D();
+	~SphereDrawer3D();
 
 	void Update();
 	void Draw();
 
-	void AddPlane(
+	void AddSphere(
 		const Matrix4x4& worldMatrix,
-		const Vector3& leftTop,
-		const Vector3& rightTop,
-		const Vector3& leftBottom,
-		const Vector3& rightBottom,
+		const float& radius,
+		const uint32_t& longitudeSegments,
+		const uint32_t& latitudeSegments,
 		const RGBA& color,
 		const uint32_t& textureIndex,
 		const Vector2& uvScale,
@@ -49,7 +48,7 @@ public:
 	);
 
 private:
-	void ClearPlanes();
+	void ClearSpheres();
 	void SetDXGI(DXGI* dxgi);
 	void SetDirectXCommand(DirectXCommand* directXCommand);
 	void SetSRVUAVManager(SRVUAVManager* srvUavManager);
@@ -72,9 +71,9 @@ private:
 	// ブレンドモード
 	BlendMode blendMode_ = BlendMode::Normal;
 
-	// 板ポリデータ
-	std::vector<PlaneData3DForGPU> planes_;
-	// マテリアルデータ
+	// 球体データコンテナ
+	std::vector<SphereData3DForGPU> spheres_;
+	// マテリアルデータコンテナ
 	std::vector<PrimitiveMaterialData3DForGPU> materials_;
 
 	// instancing描画用のリソース
@@ -87,8 +86,8 @@ private:
 	// マテリアルデータ
 	PrimitiveMaterialData3DForGPU* materialData_ = nullptr;
 
-	// Plane3DSrvIndex
-	uint32_t planeSrvIndex = 0;
+	// Sphere3DSrvIndex
+	uint32_t instancingSrvIndex = 0;
 	// MaterialSrvIndex
 	uint32_t materialSrvIndex_ = 0;
 
@@ -103,4 +102,5 @@ private:
 	SRVUAVManager* srvUavManager_ = nullptr;
 	GraphicsPipelineManager* graphicsPipelineManager_ = nullptr;
 	Camera3DManager* camera3DManager_ = nullptr;
+
 };

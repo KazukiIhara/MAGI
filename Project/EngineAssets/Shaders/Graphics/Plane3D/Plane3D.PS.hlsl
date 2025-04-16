@@ -9,9 +9,22 @@ PixelShaderOutput main(GeometryShaderOutput input)
 {
     PixelShaderOutput output;
 
-    uint texIndex = gMaterialData[input.instanceID].textureIndex;
-    float4 texColor = gTextures[texIndex].Sample(gSampler, input.texcoord);
+    PlaneMaterialData3D mat = gMaterialData[input.instanceID];
 
-    output.color = texColor * input.color; // 頂点カラーと乗算
+    float4 color = mat.baseColor;
+    
+    // UVトランスフォーム
+    float2 uv = input.texcoord - 0.5f;
+    float c = cos(mat.uvRotate);
+    float s = sin(mat.uvRotate);
+    uv = float2(c * uv.x - s * uv.y, s * uv.x + c * uv.y); // 回転
+    uv *= mat.uvScale;
+    uv += mat.uvTranslate + 0.5f;
+    float4 texColor = gTextures[mat.textureIndex].Sample(gSampler, uv);
+    color *= texColor;
+
+
+    output.color = color;
+    
     return output;
 }

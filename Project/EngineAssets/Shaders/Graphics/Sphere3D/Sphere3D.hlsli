@@ -1,3 +1,4 @@
+
 // 頂点シェーダ入力
 struct VertexShaderInput
 {
@@ -24,37 +25,41 @@ struct GeometryShaderOutput
     float4 position : SV_POSITION;
     float2 texcoord : TEXCOORD;
     float3 normal : NORMAL;
-    float3 tangent : TANGENT;
     uint instanceID : TEXCOORD1;
 };
 
-// ピクセルシェーダの出力
+// ピクセルシェーダ出力
 struct PixelShaderOutput
 {
     float4 color : SV_TARGET0;
 };
 
 // インスタンシングデータ
-struct PlaneData3D
+struct SphereData3D
 {
     float4x4 worldMatrix;
     float4x4 worldInverseTranspose;
-    float4 vertices[4]; // ローカル空間の4頂点
+    float radius;
+    uint longitudeSegments;
+    uint latitudeSegments;
+    float _padding0;
 };
 
-// マテリアルデータ
-struct PlaneMaterialData3D
+// マテリアルデータ（StructuredBuffer用）
+struct PrimitiveMaterialData3D
 {
     uint textureIndex;
     float3 _padding0;
+
     float4 baseColor;
-    float2 uvTranslate;
+
+    float2 uvTransform;
     float2 uvScale;
-    float uvRotate;
+    float uvRotation;
     float3 _padding1;
 };
 
-// カメラ
+// カメラデータ
 struct Camera
 {
     float4x4 viewProjection;

@@ -23,14 +23,13 @@ public:
 	// 初期化
 	void Initialize(DXGI* dxgi, DirectXCommand* command, Fence* fence, SRVUAVManager* srvUavManager);
 	// テクスチャのロード
-	void Load(const std::string& fileName, bool isFullPath = true);
+	uint32_t Load(const std::string& fileName, bool isFullPath = true);
 	// ノーマルマップテクスチャのロード
 	void LoadNormalMap(const std::string& filePath);
 	// Textureを渡す
 	std::map<std::string, Texture>& GetTexture();
 	// メタデータを渡す
 	const DirectX::TexMetadata& GetMetaData(const std::string& filePath);
-
 	// コンテナごと渡す
 	const std::map<std::string, Texture>& GetTextureContainer()const;
 private:

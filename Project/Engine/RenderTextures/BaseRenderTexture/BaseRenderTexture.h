@@ -23,7 +23,11 @@ public:
 	virtual ~BaseRenderTexture();
 
 	// 初期化
-	void Initialize();
+	void Initialize(
+		DXGI_FORMAT format = DXGI_FORMAT_R8G8B8A8_UNORM_SRGB,
+		D3D12_RESOURCE_FLAGS resourceFlags = D3D12_RESOURCE_FLAG_ALLOW_RENDER_TARGET,
+		Vector4 clearColor = Vector4(0, 0, 0, 1)
+	);
 
 	// 描画
 	void Draw();
@@ -49,12 +53,16 @@ private:
 protected:
 	// レンダーテクスチャ用のリソース
 	ComPtr<ID3D12Resource> resource_ = nullptr;
+
+	DXGI_FORMAT format_;
+	D3D12_RESOURCE_FLAGS resourceFlags_;
+	Vector4 clearColor_;
+
 	// RTVリソースのインデックス
 	uint32_t rtvIndex_ = 0;
 	// SRVリソースのインデックス
 	uint32_t srvIndex_ = 0;
-	// クリアカラー
-	RGBA kClearColor_ = Color::DarkGray;
+
 	// ブレンドモード
 	BlendMode blendMode_ = BlendMode::None;
 	// エラー判別君

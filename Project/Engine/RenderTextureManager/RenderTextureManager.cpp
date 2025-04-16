@@ -1,5 +1,7 @@
 #include "RenderTextureManager.h"
 
+#include "RenderTextures/SceneColorRenderTexture/SceneColorRenderTexture.h"
+
 #include "Logger/Logger.h"
 
 RenderTextureManager::RenderTextureManager() {
@@ -28,9 +30,9 @@ void RenderTextureManager::Initialize() {
 	// 
 
 	// Simple
-	std::unique_ptr<BaseRenderTexture> nonePostEffectRenderTexture = std::make_unique<BaseRenderTexture>();
+	std::unique_ptr<BaseRenderTexture> nonePostEffectRenderTexture = std::make_unique<SceneColorRenderTexture>();
 	nonePostEffectRenderTexture->Initialize();
-	AddRenderTexture(RenderTextureType::Simple, std::move(nonePostEffectRenderTexture));
+	AddRenderTexture(RenderTextureType::SceneColor, std::move(nonePostEffectRenderTexture));
 
 }
 

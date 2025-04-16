@@ -73,6 +73,7 @@ std::unique_ptr<ParticleGroup3DManager> MAGISYSTEM::particleGroup3DManager_ = nu
 // 
 std::unique_ptr<LineDrawer3D> MAGISYSTEM::lineDrawer3D_ = nullptr;
 std::unique_ptr<PlaneDrawer3D> MAGISYSTEM::planeDrawer3D_ = nullptr;
+std::unique_ptr<SphereDrawer3D> MAGISYSTEM::sphereDrawer3D_ = nullptr;
 
 // 
 // GameManager
@@ -194,6 +195,8 @@ void MAGISYSTEM::Initialize() {
 	lineDrawer3D_ = std::make_unique<LineDrawer3D>(dxgi_.get(), directXCommand_.get(), srvuavManager_.get(), graphicsPipelineManager_.get(), camera3DManager_.get());
 	// PlaneDrawer3D
 	planeDrawer3D_ = std::make_unique<PlaneDrawer3D>(dxgi_.get(), directXCommand_.get(), srvuavManager_.get(), graphicsPipelineManager_.get(), camera3DManager_.get());
+	// SphereDrawer3D
+	sphereDrawer3D_ = std::make_unique<SphereDrawer3D>(dxgi_.get(), directXCommand_.get(), srvuavManager_.get(), graphicsPipelineManager_.get(), camera3DManager_.get());
 
 	// CollisionManager
 	collisionManager_ = std::make_unique<CollisionManager>(colliderManager_.get());
@@ -256,6 +259,11 @@ void MAGISYSTEM::Finalize() {
 	// CollisionManager
 	if (collisionManager_) {
 		collisionManager_.reset();
+	}
+
+	// SphereDrawer3D
+	if (sphereDrawer3D_) {
+		sphereDrawer3D_.reset();
 	}
 
 	// PlaneDrawer3D
@@ -520,6 +528,9 @@ void MAGISYSTEM::Update() {
 	lineDrawer3D_->Update();
 	// 3D板ポリ描画クラスの更新
 	planeDrawer3D_->Update();
+	// 3D球体描画クラスの更新
+	sphereDrawer3D_->Update();
+
 
 	// Dataクラスフレーム終了処理
 	dataIO_->EndFrame();
@@ -602,6 +613,18 @@ void MAGISYSTEM::Draw() {
 	// PlaneDrawer3Dの描画処理
 	// 
 	planeDrawer3D_->Draw();
+
+	// 
+	// SphereDrawer3Dの描画前処理
+	// 
+	commandList->SetGraphicsRootSignature(graphicsPipelineManager_->GetRootSignature(GraphicsPipelineStateType::Sphere3D));
+	commandList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_POINTLIST);
+
+	// 
+	// SphereDrawer3Dの描画処理
+	// 
+	sphereDrawer3D_->Draw();
+
 
 	//
 	// ParticleGroup3Dの描画前処理
@@ -927,8 +950,8 @@ ID3D12PipelineState* MAGISYSTEM::GetPostEffectPipelineState(PostEffectPipelineSt
 	return postEffectPipelineManager_->GetPipelineState(pipelineState, blendMode);
 }
 
-void MAGISYSTEM::LoadTexture(const std::string& filePath, bool isFullPath) {
-	textureDataCantainer_->Load(filePath, isFullPath);
+uint32_t MAGISYSTEM::LoadTexture(const std::string& fileName, bool isFullPath) {
+	return textureDataCantainer_->Load(fileName, isFullPath);
 }
 
 void MAGISYSTEM::LoadNormalMapTexture(const std::string& filePath) {
@@ -945,6 +968,13 @@ const DirectX::TexMetadata& MAGISYSTEM::GetTextureMetaData(const std::string& fi
 
 const std::map<std::string, Texture>& MAGISYSTEM::GetTextureContainer() {
 	return textureDataCantainer_->GetTextureContainer();
+}
+
+uint32_t MAGISYSTEM::GetTextureIndex(const std::string& textureName) {
+	const auto& textureMap = textureDataCantainer_->GetTexture();
+	auto it = textureMap.find(textureName);
+	assert(it != textureMap.end() && "Texture name not found in textureMap");
+	return it->second.srvIndex;
 }
 
 PrimitiveData MAGISYSTEM::GetPrimitiveShape(const Primitive3DType& primitive3dType) {
@@ -1096,8 +1126,27 @@ void MAGISYSTEM::DrawLine3D(const Vector3& start, const Vector3& end, const RGBA
 	lineDrawer3D_->AddLine(start, end, color);
 }
 
-void MAGISYSTEM::DrawPlane3D(const WorldTransform& worldTransform, const Vector3& leftTop, const Vector3& rightTop, const Vector3& leftBottom, const Vector3& rightBottom, const RGBA& color) {
-	planeDrawer3D_->AddPlane(worldTransform, leftTop, rightTop, leftBottom, rightBottom, color);
+void MAGISYSTEM::DrawPlane3D(
+	const Matrix4x4& worldMatrix,
+	const Vector3& leftTop,
+	const Vector3& rightTop,
+	const Vector3& leftBottom,
+	const Vector3& rightBottom,
+	const RGBA& color,
+	const uint32_t& textureIndex,
+	const Vector2& uvScale,
+	const float& uvRotate,
+	const Vector2& uvTransform
+) {
+	planeDrawer3D_->AddPlane(worldMatrix, leftTop, rightTop, leftBottom, rightBottom, color, textureIndex, uvScale, uvRotate, uvTransform);
+}
+
+void MAGISYSTEM::DrawPlane3D(const Matrix4x4& worldMatrix, const PlaneData3D& planeData, const PrimitiveMaterialData3D& materialData) {
+	planeDrawer3D_->AddPlane(worldMatrix, planeData.verticesOffsets[0], planeData.verticesOffsets[1], planeData.verticesOffsets[2], planeData.verticesOffsets[3], materialData.baseColor, materialData.textureIndex, materialData.uvScale, materialData.uvRotate, materialData.uvTransform);
+}
+
+void MAGISYSTEM::DrawSphere3D(const Matrix4x4& worldMatrix, const float& radius, const uint32_t& longitudeSegments, const uint32_t& latitudeSegments, const RGBA& color, const uint32_t& textureIndex, const Vector2& uvScale, const float& uvRotate, const Vector2& uvTransform) {
+	sphereDrawer3D_->AddSphere(worldMatrix, radius, longitudeSegments, latitudeSegments, color, textureIndex, uvScale, uvRotate, uvTransform);
 }
 
 void MAGISYSTEM::AddGrobalDataGroup(const std::string& groupname) {

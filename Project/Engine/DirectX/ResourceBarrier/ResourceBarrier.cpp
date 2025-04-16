@@ -28,7 +28,7 @@ void ResourceBarrier::Initialize(DirectXCommand* directXCommand, SwapChain* swap
 	swapChainBarrier_.Flags = D3D12_RESOURCE_BARRIER_FLAG_NONE;
 
 	// レンダーテクスチャのポインタを取得
-	simpleRenderTexture_ = renderTextureManager_->GetRenderTexture(RenderTextureType::Simple);
+	simpleRenderTexture_ = renderTextureManager_->GetRenderTexture(RenderTextureType::SceneColor);
 	// タイプはトランジション
 	simpleRenderTextureBarrier_.Type = D3D12_RESOURCE_BARRIER_TYPE_TRANSITION;
 	// None

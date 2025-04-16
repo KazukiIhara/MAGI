@@ -69,10 +69,11 @@ void LineDrawer3D::Draw() {
 
 void LineDrawer3D::AddLine(const Vector3& start, const Vector3& end, const RGBA& color) {
 	// 追加するLine
-	LineData3D newLineData{};
-	newLineData.start = start;
-	newLineData.end = end;
-	newLineData.color = RGBAToVector4(color);
+	LineData3D newLineData{
+		.start = start,
+		.end = end,
+		.color = RGBAToVector4(color)
+	};
 	// コンテナに挿入
 	lines_.push_back(newLineData);
 }

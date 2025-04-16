@@ -4,5 +4,5 @@
 /// レンダーテクスチャの種類
 /// </summary>
 enum class RenderTextureType {
-	Simple,
+	SceneColor,
 };

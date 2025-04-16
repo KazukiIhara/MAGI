@@ -78,6 +78,7 @@
 // 
 #include "PrimitiveDrawers/LineDrawer3D/LineDrawer3D.h"
 #include "PrimitiveDrawers/PlaneDrawer3D/PlaneDrawer3D.h"
+#include "PrimitiveDrawers/SphereDrawer3D/SphereDrawer3D.h"
 
 // 
 // GameManager
@@ -288,8 +289,13 @@ public: // エンジンの機能
 #pragma endregion
 
 #pragma region TextureDataContainer
-	// 画像読み込み
-	static void LoadTexture(const std::string& filePath, bool isFullPath = false);
+	/// <summary>
+	/// 画像読み込み関数
+	/// </summary>
+	/// <param name="fileName">ファイル名</param>
+	/// <param name="isFullPath">フルパス指定かどうか</param>
+	/// <returns>テクスチャのSRVインデックス</returns>
+	static uint32_t LoadTexture(const std::string& fileName, bool isFullPath = false);
 	// 法線マップ画像の読み込み
 	static void LoadNormalMapTexture(const std::string& filePath);
 	// テクスチャの取得
@@ -298,6 +304,8 @@ public: // エンジンの機能
 	static const DirectX::TexMetadata& GetTextureMetaData(const std::string& filePath);
 	// テクスチャコンテナを渡す
 	static const std::map<std::string, Texture>& GetTextureContainer();
+	// テクスチャのインデックスを渡す
+	static uint32_t GetTextureIndex(const std::string& textureName);
 #pragma endregion
 
 #pragma region PrimitiveShapeDataContainer
@@ -418,9 +426,44 @@ public: // エンジンの機能
 
 #pragma region PlaneDrawer3D
 	// 板ポリ描画
-	static void DrawPlane3D(const WorldTransform& worldTransform, const Vector3& leftTop, const Vector3& rightTop, const Vector3& leftBottom, const Vector3& rightBottom, const RGBA& color);
+	static void DrawPlane3D(
+		const Matrix4x4& worldMatrix,
+		const Vector3& leftTop,
+		const Vector3& rightTop,
+		const Vector3& leftBottom,
+		const Vector3& rightBottom,
+		const RGBA& color,
+		const uint32_t& textureIndex,
+		const Vector2& uvScale,
+		const float& uvRotate,
+		const Vector2& uvTransform
+	);
+
+	// 板ポリ描画使いやすい版
+	static void DrawPlane3D(
+		const Matrix4x4& worldMatrix,
+		const PlaneData3D& planeData,
+		const PrimitiveMaterialData3D& materialData
+	);
 
 #pragma endregion
+
+#pragma region SphereDrawer3D
+	// 球体描画
+	static void DrawSphere3D(
+		const Matrix4x4& worldMatrix,
+		const float& radius,
+		const uint32_t& longitudeSegments,
+		const uint32_t& latitudeSegments,
+		const RGBA& color,
+		const uint32_t& textureIndex,
+		const Vector2& uvScale,
+		const float& uvRotate,
+		const Vector2& uvTransform
+	);
+
+#pragma endregion
+
 
 
 #pragma region CollisionManager
@@ -551,6 +594,7 @@ protected:
 	// 
 	static std::unique_ptr<LineDrawer3D> lineDrawer3D_;
 	static std::unique_ptr<PlaneDrawer3D> planeDrawer3D_;
+	static std::unique_ptr<SphereDrawer3D> sphereDrawer3D_;
 
 	// 
 	// GameManager

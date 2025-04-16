@@ -5,6 +5,7 @@
 
 // MyHedder
 #include "Math/Utility/MathUtility.h"
+#include "Structs/ColorStruct.h"
 
 /// <summary>
 /// UVトランスフォーム
@@ -70,18 +71,62 @@ struct LineData3D {
 };
 
 /// <summary>
-/// 3Dの板ポリデータ
+/// 3D板ポリの形状データ
 /// </summary>
 struct PlaneData3D {
-	Matrix4x4 worldMatrix;
-	Matrix4x4 worldInverseTranspose;
-	Vector4 offsets[4];
-	Vector4 color;
+	Vector3 verticesOffsets[4];
 };
 
 /// <summary>
-/// 3Dの板ポリマテリアルデータ
+/// GPUに送る3Dの板ポリデータ
 /// </summary>
-struct PlaneMaterialData3D {
-    uint32_t textureIndex;
+struct PlaneData3DForGPU {
+	Matrix4x4 worldMatrix;
+	Matrix4x4 worldInverseTranspose;
+	Vector4 offsets[4];
+};
+
+/// <summary>
+/// 3D球体の形状データ
+/// </summary>
+struct Sphere3DData {
+	float radius;
+	uint32_t verticalSegments;
+	uint32_t horizontalSegments;
+};
+
+/// <summary>
+/// GPUに送る3Dの球体データ
+/// </summary>
+struct SphereData3DForGPU {
+	Matrix4x4 worldMatrix;
+	Matrix4x4 worldInverseTranspose;
+	float radius;
+	uint32_t longitudeSegments;
+	uint32_t latitudeSegments;
+	float padding;
+};
+
+/// <summary>
+/// Primitiveマテリアルデータ
+/// </summary>
+struct PrimitiveMaterialData3D {
+	uint32_t textureIndex;
+	RGBA baseColor = Color::White;
+	Vector2 uvTransform = { 0.0f,0.0f };
+	Vector2 uvScale = { 1.0f,1.0f };
+	float uvRotate = 0.0f;
+};
+
+/// <summary>
+/// GPUに送る3DのPrimitiveマテリアルデータ
+/// </summary>
+struct PrimitiveMaterialData3DForGPU {
+	uint32_t textureIndex;
+	float padding0[3];
+	Vector4 baseColor;
+	Vector2 uvTransform;
+	Vector2 uvScale;
+	float uvRotation;
+	float padding1[3];
 };

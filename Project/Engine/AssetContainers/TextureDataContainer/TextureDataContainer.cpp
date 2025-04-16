@@ -30,12 +30,12 @@ void TextureDataContainer::Initialize(DXGI* dxgi, DirectXCommand* directXCommand
 
 }
 
-void TextureDataContainer::Load(const std::string& fileName, bool isFullPath) {
+uint32_t TextureDataContainer::Load(const std::string& fileName, bool isFullPath) {
 	// テクスチャがすでに読み込まれているかチェック
 	auto it = textureDatas_.find(fileName);
 	if (it != textureDatas_.end()) {
 		// すでに読み込まれている場合、早期リターン
-		return;
+		return it->second.srvIndex;
 	}
 
 	// 今回ぶち込むテクスチャーの箱
@@ -66,6 +66,8 @@ void TextureDataContainer::Load(const std::string& fileName, bool isFullPath) {
 
 	// テクスチャ枚数上限チェック
 	assert(srvUavManager_->IsLowerViewMax());
+
+	return texture.srvIndex;
 }
 
 void TextureDataContainer::LoadNormalMap(const std::string& filePath) {
