@@ -64,31 +64,6 @@ inline void SampleScene<Data>::Initialize() {
 	// ライト
 	MAGISYSTEM::AddPunctualLight("SampleLight");
 
-
-	// レンダラー作成
-	std::unique_ptr<StaticRenderer3D> terrain = MAGISYSTEM::CreateStaticRenderer3D("terrain", "terrain");
-
-
-	// ゲームオブジェクトグループ作成
-	std::unique_ptr<GameObject3DGroup> terrainGroup = std::make_unique<GameObject3DGroup>("TerrainGroup");
-	// グループにレンダラーを追加
-	terrainGroup->AddRenderer(std::move(terrain));
-
-	// ゲームオブジェクト作成
-	std::array<std::unique_ptr<GameObject3D>, 1500> terrainObject;
-
-	//for (uint32_t i = 0; i < 1500; i++) {
-	//	std::string number = std::to_string(i);
-
-	//	terrainObject[i] = std::make_unique<GameObject3D>("terrain" + number);
-	//	terrainObject[i]->GetTranslate().x = static_cast<float>(i);
-	//	// グループにゲームオブジェクトを追加
-	//	terrainGroup->AddObject(std::move(terrainObject[i]));
-	//}
-
-	// ゲームオブジェクトグループを追加
-	MAGISYSTEM::AddGameObejct3DGroup(std::move(terrainGroup));
-
 	// パーティクルを作成
 	MAGISYSTEM::CreateStaticParticleGroup3D("Plane", "terrain");
 
