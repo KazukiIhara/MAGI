@@ -606,7 +606,7 @@ void MAGISYSTEM::Draw() {
 
 
 	//
-	// Triangle3DDrawerの描画前処理
+	// TriangleDrawer3Dの描画前処理
 	//
 
 	commandList6->SetGraphicsRootSignature(graphicsPipelineManager_->GetRootSignature(GraphicsPipelineStateType::Triangle3D));
@@ -616,7 +616,7 @@ void MAGISYSTEM::Draw() {
 	commandList6->DispatchMesh(1, 1, 1);
 
 	// 
-	// Triangle3DDrawerの描画処理
+	// TriangleDrawer3Dの描画処理
 	// 
 
 

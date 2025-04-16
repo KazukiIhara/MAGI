@@ -237,6 +237,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Engine\PrimitiveDrawers\LineDrawer3D\LineDrawer3D.h" />
     <ClInclude Include="Engine\PrimitiveDrawers\PlaneDrawer3D\PlaneDrawer3D.h" />
     <ClInclude Include="Engine\PrimitiveDrawers\SphereDrawer3D\SphereDrawer3D.h" />
+    <ClInclude Include="Engine\PrimitiveDrawers\TriangleDrawer3D\TriangleDrawer3D.h" />
     <ClInclude Include="Engine\RenderTextureManager\RenderTextureManager.h" />
     <ClInclude Include="Engine\RenderTextures\BaseRenderTexture\BaseRenderTexture.h" />
     <ClInclude Include="Engine\RenderTextures\SceneColorRenderTexture\SceneColorRenderTexture.h" />
@@ -337,6 +338,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Engine\PrimitiveDrawers\LineDrawer3D\LineDrawer3D.cpp" />
     <ClCompile Include="Engine\PrimitiveDrawers\PlaneDrawer3D\PlaneDrawer3D.cpp" />
     <ClCompile Include="Engine\PrimitiveDrawers\SphereDrawer3D\SphereDrawer3D.cpp" />
+    <ClCompile Include="Engine\PrimitiveDrawers\TriangleDrawer3D\TriangleDrawer3D.cpp" />
     <ClCompile Include="Engine\RenderTextureManager\RenderTextureManager.cpp" />
     <ClCompile Include="Engine\RenderTextures\BaseRenderTexture\BaseRenderTexture.cpp" />
     <ClCompile Include="Engine\RenderTextures\SceneColorRenderTexture\SceneColorRenderTexture.cpp" />
