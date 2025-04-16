@@ -557,6 +557,7 @@ void MAGISYSTEM::Draw() {
 
 	// コマンドリスト取得
 	ID3D12GraphicsCommandList* commandList = directXCommand_->GetList();
+	ID3D12GraphicsCommandList6* commandList6 = directXCommand_->GetList6();
 
 	// SRVUAVのディスクリプタヒープを設定
 	ComPtr<ID3D12DescriptorHeap> descriptorHeaps[] = { srvuavManager_->GetDescriptorHeap() };
@@ -602,6 +603,22 @@ void MAGISYSTEM::Draw() {
 	// LineDrawer3Dの描画処理
 	// 
 	lineDrawer3D_->Draw();
+
+
+	//
+	// Triangle3DDrawerの描画前処理
+	//
+
+	commandList6->SetGraphicsRootSignature(graphicsPipelineManager_->GetRootSignature(GraphicsPipelineStateType::Triangle3D));
+	commandList6->SetPipelineState(graphicsPipelineManager_->GetPipelineState(GraphicsPipelineStateType::Triangle3D, BlendMode::Normal));
+
+	// MeshShaderで三角形1枚生成するだけ
+	commandList6->DispatchMesh(1, 1, 1);
+
+	// 
+	// Triangle3DDrawerの描画処理
+	// 
+
 
 	// 
 	// PlaneDrawer3Dの描画前処理

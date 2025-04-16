@@ -31,6 +31,10 @@ void DirectXCommand::Initialize(DXGI* dxgi) {
 	// コマンドリストを生成する
 	hr_ = dxgi_->GetDevice()->CreateCommandList(0, D3D12_COMMAND_LIST_TYPE_DIRECT, commandAllocator_.Get(), nullptr, IID_PPV_ARGS(&commandList_));
 	assert(SUCCEEDED(hr_));
+
+	// MeshShader用：ID3D12GraphicsCommandList6 にキャスト
+	hr_ = commandList_->QueryInterface(IID_PPV_ARGS(&commandList6_));
+	assert(SUCCEEDED(hr_));
 }
 
 void DirectXCommand::KickCommand() {
@@ -60,6 +64,10 @@ ID3D12CommandAllocator* DirectXCommand::GetAllocator() {
 
 ID3D12GraphicsCommandList* DirectXCommand::GetList() {
 	return commandList_.Get();
+}
+
+ID3D12GraphicsCommandList6* DirectXCommand::GetList6() {
+	return commandList6_.Get();
 }
 
 void DirectXCommand::SetDXGI(DXGI* dxgi) {
