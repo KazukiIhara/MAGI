@@ -614,16 +614,16 @@ void MAGISYSTEM::Draw() {
 	// 
 	planeDrawer3D_->Draw();
 
-	//// 
-	//// SphereDrawer3Dの描画前処理
-	//// 
-	//commandList->SetGraphicsRootSignature(graphicsPipelineManager_->GetRootSignature(GraphicsPipelineStateType::Sphere3D));
-	//commandList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_POINTLIST);
+	// 
+	// SphereDrawer3Dの描画前処理
+	// 
+	commandList->SetGraphicsRootSignature(graphicsPipelineManager_->GetRootSignature(GraphicsPipelineStateType::Sphere3D));
+	commandList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_POINTLIST);
 
-	//// 
-	//// SphereDrawer3Dの描画処理
-	//// 
-	//sphereDrawer3D_->Draw();
+	// 
+	// SphereDrawer3Dの描画処理
+	// 
+	sphereDrawer3D_->Draw();
 
 
 	//
