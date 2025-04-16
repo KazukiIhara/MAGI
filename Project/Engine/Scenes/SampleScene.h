@@ -110,34 +110,11 @@ inline void SampleScene<Data>::Initialize() {
 	emitter->GetEmitterSetting().maxVelocity = { 1.0f,1.0f,1.0f };
 	emitter->GetEmitterSetting().minVelocity = { -1.0f,-1.0f,-1.0f };
 
-	for (uint32_t i = 0; i < planeSize_; i++) {
-		planeWorldTransform_[i] = std::make_unique<WorldTransform>();
-		planeWorldTransform_[i]->Initialize();
-		planeWorldTransform_[i]->translate_.x = static_cast<float>(i) * 2.0f;
-	}
-
-	// 板ポリの
-	vertices_[0] = Vector3(-1.0f, 1.0f, 0.0f);
-	vertices_[1] = Vector3(1.0f, 1.0f, 0.0f);
-	vertices_[2] = Vector3(-1.0f, -1.0f, 0.0f);
-	vertices_[3] = Vector3(1.0f, -1.0f, 0.0f);
 }
 
 template<typename Data>
 inline void SampleScene<Data>::Update() {
 
-	for (uint32_t i = 0; i < planeSize_; i++) {
-		planeWorldTransform_[i]->Update();
-	}
-
-	ImGui::Begin("PlaneVertices");
-
-	ImGui::DragFloat3("LeftTop", &vertices_[0].x, 0.01f);
-	ImGui::DragFloat3("RightTop", &vertices_[1].x, 0.01f);
-	ImGui::DragFloat3("LeftBottom", &vertices_[2].x, 0.01f);
-	ImGui::DragFloat3("RightBottom", &vertices_[3].x, 0.01f);
-
-	ImGui::End();
 
 }
 
