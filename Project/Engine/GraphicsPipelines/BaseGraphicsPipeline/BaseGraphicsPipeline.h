@@ -56,6 +56,9 @@ protected:
 	ComPtr<ID3DBlob> vertexShaderBlob_;
 	// ピクセルシェーダーのバイナリデータ
 	ComPtr<ID3DBlob> pixelShaderBlob_;
+	// メッシュシェーダーのバイナリデータ
+	ComPtr<ID3DBlob> meshShaderBlob_ = nullptr;
+
 protected:
 	DXGI* dxgi_ = nullptr;
 	ShaderCompiler* shaderCompiler_ = nullptr;

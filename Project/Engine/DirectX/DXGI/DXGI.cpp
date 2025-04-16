@@ -70,6 +70,10 @@ void DXGI::Initialize() {
 	// 初期化完了ログ
 	Logger::Log("Complete Create D3D12DDevice\n");
 
+	// MeshShader対応のデバイスを取得
+	hr_ = device_->QueryInterface(IID_PPV_ARGS(&device10_));
+	assert(SUCCEEDED(hr_));
+	Logger::Log("Device10 (MeshShader対応) を取得しました。\n");
 
 #ifdef _DEBUG
 	ComPtr<ID3D12InfoQueue> infoQueue = nullptr;
@@ -221,6 +225,10 @@ ComPtr<ID3D12Resource> DXGI::CreateDepthStencilTextureResource(int32_t width, in
 
 ID3D12Device* DXGI::GetDevice() {
 	return device_.Get();
+}
+
+ID3D12Device10* DXGI::GetDevice10() {
+	return device10_.Get();
 }
 
 IDXGIFactory7* DXGI::GetFactory() {

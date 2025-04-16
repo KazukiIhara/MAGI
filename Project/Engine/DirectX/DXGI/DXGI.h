@@ -27,6 +27,8 @@ public:
 
 	// DXGIデバイスの取得
 	ID3D12Device* GetDevice();
+	// DXGIデバイス10の取得
+	ID3D12Device10* GetDevice10();
 	// DXGIファクトリーの取得
 	IDXGIFactory7* GetFactory();
 private:
@@ -38,4 +40,6 @@ private:
 	ComPtr<IDXGIAdapter4> useAdapter_ = nullptr;
 	// Device
 	ComPtr<ID3D12Device> device_ = nullptr;
+	// MeshShader対応Device
+	ComPtr<ID3D12Device10> device10_;
 };

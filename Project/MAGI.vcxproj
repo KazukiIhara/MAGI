@@ -15,6 +15,7 @@
     <IgnoreWarnCompileDuplicatedFilename>true</IgnoreWarnCompileDuplicatedFilename>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>MAGI</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
@@ -120,6 +121,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Engine\GraphicsPipelines\Object3DGroupGraphicsPipeline\Object3DGroupGraphicsPipeline.h" />
     <ClInclude Include="Engine\GraphicsPipelines\Plane3DGraphicsPipeline\Plane3DGraphicsPipeline.h" />
     <ClInclude Include="Engine\GraphicsPipelines\Sphere3DGraphicsPipeline\Sphere3DGraphicsPipeline.h" />
+    <ClInclude Include="Engine\GraphicsPipelines\Triangle3DGraphicsPipeline\Triangle3DGraphicsPipeline.h" />
     <ClInclude Include="Engine\Includes\Structs\GameObject3DStruct.h" />
     <ClInclude Include="Engine\Includes\Structs\XInputStruct.h" />
     <ClInclude Include="Engine\ObjectManagers\GameObject3DGroupManager\GameObject3DGroupManager.h" />
@@ -301,6 +303,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Engine\GraphicsPipelines\Object3DGroupGraphicsPipeline\Object3DGroupGraphicsPipeline.cpp" />
     <ClCompile Include="Engine\GraphicsPipelines\Plane3DGraphicsPipeline\Plane3DGraphicsPipeline.cpp" />
     <ClCompile Include="Engine\GraphicsPipelines\Sphere3DGraphicsPipeline\Sphere3DGraphicsPipeline.cpp" />
+    <ClCompile Include="Engine\GraphicsPipelines\Triangle3DGraphicsPipeline\Triangle3DGraphicsPipeline.cpp" />
     <ClCompile Include="Engine\GrobalDataManager\GrobalDataManager.cpp" />
     <ClCompile Include="Engine\GUI\GUI.cpp" />
     <ClCompile Include="Engine\GraphicsPipelines\BaseGraphicsPipeline\BaseGraphicsPipeline.cpp" />

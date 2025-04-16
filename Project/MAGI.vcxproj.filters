@@ -741,6 +741,7 @@
     <ClInclude Include="Engine\PrimitiveDrawers\SphereDrawer3D\SphereDrawer3D.h" />
     <ClInclude Include="Engine\RenderTextures\SceneColorRenderTexture\SceneColorRenderTexture.h" />
     <ClInclude Include="Engine\GraphicsPipelines\Sphere3DGraphicsPipeline\Sphere3DGraphicsPipeline.h" />
+    <ClInclude Include="Engine\GraphicsPipelines\Triangle3DGraphicsPipeline\Triangle3DGraphicsPipeline.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="App\Game\Game.cpp">
@@ -1006,6 +1007,7 @@
     <ClCompile Include="Engine\PrimitiveDrawers\SphereDrawer3D\SphereDrawer3D.cpp" />
     <ClCompile Include="Engine\RenderTextures\SceneColorRenderTexture\SceneColorRenderTexture.cpp" />
     <ClCompile Include="Engine\GraphicsPipelines\Sphere3DGraphicsPipeline\Sphere3DGraphicsPipeline.cpp" />
+    <ClCompile Include="Engine\GraphicsPipelines\Triangle3DGraphicsPipeline\Triangle3DGraphicsPipeline.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Engine\SceneManager\SceneManager.ipp">
