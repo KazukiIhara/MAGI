@@ -29,7 +29,7 @@ void RenderTextureManager::Initialize() {
 	// エンジン標準搭載のレンダーテクスチャを挿入していく
 	// 
 
-	// Simple
+	// SceneColor
 	std::unique_ptr<BaseRenderTexture> nonePostEffectRenderTexture = std::make_unique<SceneColorRenderTexture>();
 	nonePostEffectRenderTexture->Initialize();
 	AddRenderTexture(RenderTextureType::SceneColor, std::move(nonePostEffectRenderTexture));
