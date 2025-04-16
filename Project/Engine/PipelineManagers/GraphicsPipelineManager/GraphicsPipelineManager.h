@@ -15,6 +15,7 @@
 
 #include "GraphicsPipelines/Line3DGraphicsPipeline/Line3DGraphicsPipeline.h"
 #include "GraphicsPipelines/Plane3DGraphicsPipeline/Plane3DGraphicsPipeline.h"
+#include "GraphicsPipelines/Sphere3DGraphicsPipeline/Sphere3DGraphicsPipeline.h"
 
 #include "GraphicsPipelines/Object3DGraphicsPipeline/Object3DGraphicsPipeline.h"
 #include "GraphicsPipelines/Particle3DGraphicsPipeline/Particle3DGraphicsPipeline.h"
@@ -54,10 +55,14 @@ private: // メンバ変数
 private:
 	// Object2DGraphicsPipeline
 	std::unique_ptr<Object2DGraphicsPipeline> object2DGraphicsPipeline_ = nullptr;
+
 	// Line3DGrahicsPipeline
 	std::unique_ptr<Line3DGraphicsPipeline> line3DGraphicsPipeline_ = nullptr;
 	// Plane3DGraphicsPipeline
 	std::unique_ptr<Plane3DGraphicsPipeline> plane3DGraphicsPipeline_ = nullptr;
+	// Sphere3DGraphicsPipeline
+	std::unique_ptr<Sphere3DGraphicsPipeline> sphere3DGraphicsPipeline_ = nullptr;
+
 	// Object3DGraphicsPipeline
 	std::unique_ptr<Object3DGraphicsPipeline> object3DGraphicsPipeline_ = nullptr;
 	// Particle3DGraphicsPipeline

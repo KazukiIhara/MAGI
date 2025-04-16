@@ -144,20 +144,8 @@ inline void SampleScene<Data>::Update() {
 template<typename Data>
 inline void SampleScene<Data>::Draw() {
 
-	for (uint32_t i = 0; i < planeSize_; i++) {
-		// 板ポリ描画
-		MAGISYSTEM::DrawPlane3D(
-			planeWorldTransform_[i]->worldMatrix_,
-			vertices_[0],
-			vertices_[1],
-			vertices_[2],
-			vertices_[3],
-			Color::White,
-			1,
-			Vector2(1.0f,1.0f),
-			0.0f,
-			Vector2(0.0f,0.0f));
-	}
+	// 球体描画処理
+	MAGISYSTEM::DrawSphere3D(planeWorldTransform_[0]->worldMatrix_, 1.0f, 4, 4, Color::White, 1, { 1.0f,1.0f }, 0.0f, { 0.0f,0.0f });
 
 	// 
 	// オブジェクト2Dの描画前処理

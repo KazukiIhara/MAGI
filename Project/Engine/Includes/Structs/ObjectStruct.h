@@ -104,6 +104,7 @@ struct SphereData3DForGPU {
 	float radius;
 	uint32_t longitudeSegments;
 	uint32_t latitudeSegments;
+	float padding;
 };
 
 /// <summary>

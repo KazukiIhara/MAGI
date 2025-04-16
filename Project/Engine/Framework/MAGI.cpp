@@ -620,7 +620,6 @@ void MAGISYSTEM::Draw() {
 	commandList->SetGraphicsRootSignature(graphicsPipelineManager_->GetRootSignature(GraphicsPipelineStateType::Sphere3D));
 	commandList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_POINTLIST);
 
-
 	// 
 	// SphereDrawer3Dの描画処理
 	// 
@@ -1144,6 +1143,10 @@ void MAGISYSTEM::DrawPlane3D(
 
 void MAGISYSTEM::DrawPlane3D(const Matrix4x4& worldMatrix, const PlaneData3D& planeData, const PrimitiveMaterialData3D& materialData) {
 	planeDrawer3D_->AddPlane(worldMatrix, planeData.verticesOffsets[0], planeData.verticesOffsets[1], planeData.verticesOffsets[2], planeData.verticesOffsets[3], materialData.baseColor, materialData.textureIndex, materialData.uvScale, materialData.uvRotate, materialData.uvTransform);
+}
+
+void MAGISYSTEM::DrawSphere3D(const Matrix4x4& worldMatrix, const float& radius, const uint32_t& longitudeSegments, const uint32_t& latitudeSegments, const RGBA& color, const uint32_t& textureIndex, const Vector2& uvScale, const float& uvRotate, const Vector2& uvTransform) {
+	sphereDrawer3D_->AddSphere(worldMatrix, radius, longitudeSegments, latitudeSegments, color, textureIndex, uvScale, uvRotate, uvTransform);
 }
 
 void MAGISYSTEM::AddGrobalDataGroup(const std::string& groupname) {

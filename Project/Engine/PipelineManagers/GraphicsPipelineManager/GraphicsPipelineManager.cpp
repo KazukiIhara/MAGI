@@ -36,6 +36,12 @@ void GraphicsPipelineManager::Initialize(DXGI* dxgi, ShaderCompiler* shaderCompi
 	SetRootSignature(GraphicsPipelineStateType::Plane3D);
 	SetPipelineState(GraphicsPipelineStateType::Plane3D);
 
+	// 3D球体のグラフィックスパイプラインを生成、初期化
+	sphere3DGraphicsPipeline_ = std::make_unique<Sphere3DGraphicsPipeline>(dxgi, shaderCompiler);
+	sphere3DGraphicsPipeline_->Initialize();
+	SetRootSignature(GraphicsPipelineStateType::Sphere3D);
+	SetPipelineState(GraphicsPipelineStateType::Sphere3D);
+
 	// 3Dオブジェクトのグラフィックスパイプラインを生成、初期化
 	object3DGraphicsPipeline_ = std::make_unique<Object3DGraphicsPipeline>(dxgi, shaderCompiler);
 	object3DGraphicsPipeline_->Initialize();
@@ -68,66 +74,75 @@ ID3D12PipelineState* GraphicsPipelineManager::GetPipelineState(GraphicsPipelineS
 void GraphicsPipelineManager::SetRootSignature(GraphicsPipelineStateType pipelineState) {
 	// パイプラインステートごとに対応するルートシグネチャを設定
 	switch (pipelineState) {
-		case GraphicsPipelineStateType::Object2D:
-			// 2Dオブジェクト描画用のルートシグネチャを設定
-			rootSignatures_[static_cast<uint32_t>(pipelineState)] = object2DGraphicsPipeline_->GetRootSignature();
-			break;
-		case GraphicsPipelineStateType::Line3D:
-			// 3Dライン描画用のルートシグネチャを設定
-			rootSignatures_[static_cast<uint32_t>(pipelineState)] = line3DGraphicsPipeline_->GetRootSignature();
-			break;
-		case GraphicsPipelineStateType::Plane3D:
-			// 3D板ポリ用のルートシグネイチャを設定
-			rootSignatures_[static_cast<uint32_t>(pipelineState)] = plane3DGraphicsPipeline_->GetRootSignature();
-			break;
-		case GraphicsPipelineStateType::Object3D:
-			// 3Dオブジェクト描画用のルートシグネチャを設定
-			rootSignatures_[static_cast<uint32_t>(pipelineState)] = object3DGraphicsPipeline_->GetRootSignature();
-			break;
-		case GraphicsPipelineStateType::Particle3D:
-			rootSignatures_[static_cast<uint32_t>(pipelineState)] = particle3DGraphicsPipeline_->GetRootSignature();
-			break;
-		case GraphicsPipelineStateType::Object3DGroup:
-			rootSignatures_[static_cast<uint32_t>(pipelineState)] = object3DGroupGraphicsPipeline_->GetRootSignature();
-			break;
-			// 他のパイプラインステートが追加された場合はここに追加
+	case GraphicsPipelineStateType::Object2D:
+		// 2Dオブジェクト描画用のルートシグネチャを設定
+		rootSignatures_[static_cast<uint32_t>(pipelineState)] = object2DGraphicsPipeline_->GetRootSignature();
+		break;
+	case GraphicsPipelineStateType::Line3D:
+		// 3Dライン描画用のルートシグネチャを設定
+		rootSignatures_[static_cast<uint32_t>(pipelineState)] = line3DGraphicsPipeline_->GetRootSignature();
+		break;
+	case GraphicsPipelineStateType::Plane3D:
+		// 3D板ポリ用のルートシグネイチャを設定
+		rootSignatures_[static_cast<uint32_t>(pipelineState)] = plane3DGraphicsPipeline_->GetRootSignature();
+		break;
+	case GraphicsPipelineStateType::Sphere3D:
+		// 3D球体用のルートシグネイチャを設定
+		rootSignatures_[static_cast<uint32_t>(pipelineState)] = sphere3DGraphicsPipeline_->GetRootSignature();
+		break;
+	case GraphicsPipelineStateType::Object3D:
+		// 3Dオブジェクト描画用のルートシグネチャを設定
+		rootSignatures_[static_cast<uint32_t>(pipelineState)] = object3DGraphicsPipeline_->GetRootSignature();
+		break;
+	case GraphicsPipelineStateType::Particle3D:
+		rootSignatures_[static_cast<uint32_t>(pipelineState)] = particle3DGraphicsPipeline_->GetRootSignature();
+		break;
+	case GraphicsPipelineStateType::Object3DGroup:
+		rootSignatures_[static_cast<uint32_t>(pipelineState)] = object3DGroupGraphicsPipeline_->GetRootSignature();
+		break;
+		// 他のパイプラインステートが追加された場合はここに追加
 	}
 }
 
 void GraphicsPipelineManager::SetPipelineState(GraphicsPipelineStateType pipelineState) {
 	switch (pipelineState) {
-		case GraphicsPipelineStateType::Object2D:
-			for (int mode = static_cast<uint32_t>(BlendMode::None); mode < static_cast<uint32_t>(BlendMode::Num); ++mode) {
-				graphicsPipelineStates_[static_cast<uint32_t>(pipelineState)][mode] = object2DGraphicsPipeline_->GetPipelineState(static_cast<BlendMode>(mode));
-			}
-			break;
-		case GraphicsPipelineStateType::Line3D:
-			for (int mode = static_cast<uint32_t>(BlendMode::None); mode < static_cast<uint32_t>(BlendMode::Num); ++mode) {
-				graphicsPipelineStates_[static_cast<uint32_t>(pipelineState)][mode] = line3DGraphicsPipeline_->GetPipelineState(static_cast<BlendMode>(mode));
-			}
-			break;
-		case GraphicsPipelineStateType::Plane3D:
-			for (int mode = static_cast<uint32_t>(BlendMode::None); mode < static_cast<uint32_t>(BlendMode::Num); ++mode) {
-				graphicsPipelineStates_[static_cast<uint32_t>(pipelineState)][mode] = plane3DGraphicsPipeline_->GetPipelineState(static_cast<BlendMode>(mode));
-			}
-			break;
-		case GraphicsPipelineStateType::Object3D:
-			for (int mode = static_cast<uint32_t>(BlendMode::None); mode < static_cast<uint32_t>(BlendMode::Num); ++mode) {
-				graphicsPipelineStates_[static_cast<uint32_t>(pipelineState)][mode] = object3DGraphicsPipeline_->GetPipelineState(static_cast<BlendMode>(mode));
-			}
-			break;
-		case GraphicsPipelineStateType::Particle3D:
-			for (int mode = static_cast<uint32_t>(BlendMode::None); mode < static_cast<uint32_t>(BlendMode::Num); ++mode) {
-				graphicsPipelineStates_[static_cast<uint32_t>(pipelineState)][mode] = particle3DGraphicsPipeline_->GetPipelineState(static_cast<BlendMode>(mode));
-			}
-			break;
+	case GraphicsPipelineStateType::Object2D:
+		for (int mode = static_cast<uint32_t>(BlendMode::None); mode < static_cast<uint32_t>(BlendMode::Num); ++mode) {
+			graphicsPipelineStates_[static_cast<uint32_t>(pipelineState)][mode] = object2DGraphicsPipeline_->GetPipelineState(static_cast<BlendMode>(mode));
+		}
+		break;
+	case GraphicsPipelineStateType::Line3D:
+		for (int mode = static_cast<uint32_t>(BlendMode::None); mode < static_cast<uint32_t>(BlendMode::Num); ++mode) {
+			graphicsPipelineStates_[static_cast<uint32_t>(pipelineState)][mode] = line3DGraphicsPipeline_->GetPipelineState(static_cast<BlendMode>(mode));
+		}
+		break;
+	case GraphicsPipelineStateType::Plane3D:
+		for (int mode = static_cast<uint32_t>(BlendMode::None); mode < static_cast<uint32_t>(BlendMode::Num); ++mode) {
+			graphicsPipelineStates_[static_cast<uint32_t>(pipelineState)][mode] = plane3DGraphicsPipeline_->GetPipelineState(static_cast<BlendMode>(mode));
+		}
+		break;
+	case GraphicsPipelineStateType::Sphere3D:
+		for (int mode = static_cast<uint32_t>(BlendMode::None); mode < static_cast<uint32_t>(BlendMode::Num); ++mode) {
+			graphicsPipelineStates_[static_cast<uint32_t>(pipelineState)][mode] = sphere3DGraphicsPipeline_->GetPipelineState(static_cast<BlendMode>(mode));
+		}
+		break;
+	case GraphicsPipelineStateType::Object3D:
+		for (int mode = static_cast<uint32_t>(BlendMode::None); mode < static_cast<uint32_t>(BlendMode::Num); ++mode) {
+			graphicsPipelineStates_[static_cast<uint32_t>(pipelineState)][mode] = object3DGraphicsPipeline_->GetPipelineState(static_cast<BlendMode>(mode));
+		}
+		break;
+	case GraphicsPipelineStateType::Particle3D:
+		for (int mode = static_cast<uint32_t>(BlendMode::None); mode < static_cast<uint32_t>(BlendMode::Num); ++mode) {
+			graphicsPipelineStates_[static_cast<uint32_t>(pipelineState)][mode] = particle3DGraphicsPipeline_->GetPipelineState(static_cast<BlendMode>(mode));
+		}
+		break;
 
-		case GraphicsPipelineStateType::Object3DGroup:
-			for (int mode = static_cast<uint32_t>(BlendMode::None); mode < static_cast<uint32_t>(BlendMode::Num); ++mode) {
-				graphicsPipelineStates_[static_cast<uint32_t>(pipelineState)][mode] = object3DGroupGraphicsPipeline_->GetPipelineState(static_cast<BlendMode>(mode));
-			}
-			break;
+	case GraphicsPipelineStateType::Object3DGroup:
+		for (int mode = static_cast<uint32_t>(BlendMode::None); mode < static_cast<uint32_t>(BlendMode::Num); ++mode) {
+			graphicsPipelineStates_[static_cast<uint32_t>(pipelineState)][mode] = object3DGroupGraphicsPipeline_->GetPipelineState(static_cast<BlendMode>(mode));
+		}
+		break;
 
-			// 他のパイプラインステートが追加された場合はここに追加
+		// 他のパイプラインステートが追加された場合はここに追加
 	}
 }
