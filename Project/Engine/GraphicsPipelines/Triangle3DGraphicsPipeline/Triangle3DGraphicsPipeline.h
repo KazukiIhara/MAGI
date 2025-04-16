@@ -5,10 +5,10 @@
 /// <summary>
 /// Mesh Shaderを使った単純な三角形描画用グラフィックスパイプライン
 /// </summary>
-class TriangleMeshShaderGraphicsPipeline: public BaseGraphicsPipeline {
+class Triangle3DGraphicsPipeline: public BaseGraphicsPipeline {
 public:
-	TriangleMeshShaderGraphicsPipeline(DXGI* dxgi, ShaderCompiler* shaderCompiler);
-	~TriangleMeshShaderGraphicsPipeline() override = default;
+	Triangle3DGraphicsPipeline(DXGI* dxgi, ShaderCompiler* shaderCompiler);
+	~Triangle3DGraphicsPipeline() override = default;
 
 private:
 	// ルートシグネチャを作成する
