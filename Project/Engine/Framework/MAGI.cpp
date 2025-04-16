@@ -73,6 +73,7 @@ std::unique_ptr<ParticleGroup3DManager> MAGISYSTEM::particleGroup3DManager_ = nu
 // 
 std::unique_ptr<LineDrawer3D> MAGISYSTEM::lineDrawer3D_ = nullptr;
 std::unique_ptr<PlaneDrawer3D> MAGISYSTEM::planeDrawer3D_ = nullptr;
+std::unique_ptr<SphereDrawer3D> MAGISYSTEM::sphereDrawer3D_ = nullptr;
 
 // 
 // GameManager
@@ -194,6 +195,8 @@ void MAGISYSTEM::Initialize() {
 	lineDrawer3D_ = std::make_unique<LineDrawer3D>(dxgi_.get(), directXCommand_.get(), srvuavManager_.get(), graphicsPipelineManager_.get(), camera3DManager_.get());
 	// PlaneDrawer3D
 	planeDrawer3D_ = std::make_unique<PlaneDrawer3D>(dxgi_.get(), directXCommand_.get(), srvuavManager_.get(), graphicsPipelineManager_.get(), camera3DManager_.get());
+	// SphereDrawer3D
+	sphereDrawer3D_ = std::make_unique<SphereDrawer3D>(dxgi_.get(), directXCommand_.get(), srvuavManager_.get(), graphicsPipelineManager_.get(), camera3DManager_.get());
 
 	// CollisionManager
 	collisionManager_ = std::make_unique<CollisionManager>(colliderManager_.get());
@@ -256,6 +259,11 @@ void MAGISYSTEM::Finalize() {
 	// CollisionManager
 	if (collisionManager_) {
 		collisionManager_.reset();
+	}
+
+	// SphereDrawer3D
+	if (sphereDrawer3D_) {
+		sphereDrawer3D_.reset();
 	}
 
 	// PlaneDrawer3D
@@ -520,6 +528,9 @@ void MAGISYSTEM::Update() {
 	lineDrawer3D_->Update();
 	// 3D板ポリ描画クラスの更新
 	planeDrawer3D_->Update();
+	// 3D球体描画クラスの更新
+	sphereDrawer3D_->Update();
+
 
 	// Dataクラスフレーム終了処理
 	dataIO_->EndFrame();
@@ -602,6 +613,19 @@ void MAGISYSTEM::Draw() {
 	// PlaneDrawer3Dの描画処理
 	// 
 	planeDrawer3D_->Draw();
+
+	// 
+	// SphereDrawer3Dの描画前処理
+	// 
+	commandList->SetGraphicsRootSignature(graphicsPipelineManager_->GetRootSignature(GraphicsPipelineStateType::Sphere3D));
+	commandList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_POINTLIST);
+
+
+	// 
+	// SphereDrawer3Dの描画処理
+	// 
+	sphereDrawer3D_->Draw();
+
 
 	//
 	// ParticleGroup3Dの描画前処理

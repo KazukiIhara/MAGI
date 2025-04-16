@@ -78,6 +78,7 @@
 // 
 #include "PrimitiveDrawers/LineDrawer3D/LineDrawer3D.h"
 #include "PrimitiveDrawers/PlaneDrawer3D/PlaneDrawer3D.h"
+#include "PrimitiveDrawers/SphereDrawer3D/SphereDrawer3D.h"
 
 // 
 // GameManager
@@ -447,6 +448,13 @@ public: // エンジンの機能
 
 #pragma endregion
 
+#pragma region SphereDrawer3D
+	// 球体描画
+
+
+#pragma endregion
+
+
 
 #pragma region CollisionManager
 
@@ -576,6 +584,7 @@ protected:
 	// 
 	static std::unique_ptr<LineDrawer3D> lineDrawer3D_;
 	static std::unique_ptr<PlaneDrawer3D> planeDrawer3D_;
+	static std::unique_ptr<SphereDrawer3D> sphereDrawer3D_;
 
 	// 
 	// GameManager

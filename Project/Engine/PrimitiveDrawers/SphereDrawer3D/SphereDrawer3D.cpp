@@ -149,8 +149,7 @@ void SphereDrawer3D::CreateInstancingResource() {
 	// srvのインデックスを割り当て
 	instancingSrvIndex = srvUavManager_->Allocate();
 	// Srvを作成
-	srvUavManager_->CreateSrvStructuredBuffer(instancingSrvIndex, instancingResource_.Get(), kNumMaxInstance, sizeof(PlaneData3DForGPU));
-
+	srvUavManager_->CreateSrvStructuredBuffer(instancingSrvIndex, instancingResource_.Get(), kNumMaxInstance, sizeof(SphereData3DForGPU));
 }
 
 void SphereDrawer3D::MapInstancingData() {
