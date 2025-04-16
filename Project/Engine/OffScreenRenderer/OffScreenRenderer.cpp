@@ -59,10 +59,10 @@ void OffScreenRenderer::DrawCurrentRenderTexture() {
 	// ポストエフェクトに応じて最適なレンダーテクスチャを選択
 	switch (currentPostEffect_) {
 		case PostEffectPipelineStateType::None:
-			currentRenderTextureType_ = RenderTextureType::Simple;
+			currentRenderTextureType_ = RenderTextureType::SceneColor;
 			break;
 		case PostEffectPipelineStateType::Grayscale:
-			currentRenderTextureType_ = RenderTextureType::Simple;
+			currentRenderTextureType_ = RenderTextureType::SceneColor;
 			break;
 	}
 	// レンダーテクスチャ描画

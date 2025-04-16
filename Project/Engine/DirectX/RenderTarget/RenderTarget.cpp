@@ -37,7 +37,7 @@ void RenderTarget::SetRenderTarget(const RenderTargetType& type) {
 		break;
 	case RenderTargetType::SimpleRenderTexture:
 		// RenderTextureのRTVハンドルを取得
-		BaseRenderTexture* renderTexture = renderTextureManager_->GetRenderTexture(RenderTextureType::Simple);
+		BaseRenderTexture* renderTexture = renderTextureManager_->GetRenderTexture(RenderTextureType::SceneColor);
 		rtvHandle = renderTexture->GetRTVHandle();
 		break;
 	}
@@ -64,7 +64,7 @@ void RenderTarget::ClearRenderTarget(const RenderTargetType& type) {
 		break;
 	case RenderTargetType::SimpleRenderTexture:
 		// RenderTextureのRTVハンドルを取得
-		BaseRenderTexture* renderTexture = renderTextureManager_->GetRenderTexture(RenderTextureType::Simple);
+		BaseRenderTexture* renderTexture = renderTextureManager_->GetRenderTexture(RenderTextureType::SceneColor);
 		rtvHandle = renderTexture->GetRTVHandle();
 		// RenderTextureのクリアカラーを取得
 		Vector4 renderTextureClearColor = renderTexture->GetClearColor();

@@ -13,7 +13,10 @@ BaseRenderTexture::~BaseRenderTexture() {
 
 }
 
-void BaseRenderTexture::Initialize() {
+void BaseRenderTexture::Initialize(DXGI_FORMAT format, D3D12_RESOURCE_FLAGS resourceFlags, Vector4 clearColor) {
+	format_ = format;
+	resourceFlags_ = resourceFlags;
+	clearColor_ = clearColor;
 	// リソースを作成
 	CreateResource();
 	// RTVを作成
@@ -32,7 +35,7 @@ void BaseRenderTexture::Draw() {
 }
 
 Vector4 BaseRenderTexture::GetClearColor() {
-	return RGBAToVector4(kClearColor_);
+	return clearColor_;
 }
 
 D3D12_CPU_DESCRIPTOR_HANDLE BaseRenderTexture::GetRTVHandle() {
@@ -52,9 +55,9 @@ void BaseRenderTexture::CreateResource() {
 	D3D12_RESOURCE_DESC resourceDesc{};
 	resourceDesc.Width = UINT(WindowApp::kClientWidth);					// Textureの幅
 	resourceDesc.Height = UINT(WindowApp::kClientHeight);				// Textureの高さ
-	resourceDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM_SRGB;				// TextureのFormat
+	resourceDesc.Format = format_;										// TextureのFormat
 	resourceDesc.SampleDesc.Count = 1;									// サンプリングカウント。1固定
-	resourceDesc.Flags = D3D12_RESOURCE_FLAG_ALLOW_RENDER_TARGET;		// renderTargetとして利用可能にする
+	resourceDesc.Flags = resourceFlags_;		// renderTargetとして利用可能にする
 	resourceDesc.DepthOrArraySize = 1;
 	resourceDesc.Dimension = D3D12_RESOURCE_DIMENSION_TEXTURE2D;
 
@@ -65,10 +68,10 @@ void BaseRenderTexture::CreateResource() {
 	// クリアカラーの設定
 	D3D12_CLEAR_VALUE clearValue{};
 	clearValue.Format = DXGI_FORMAT_R8G8B8A8_UNORM_SRGB;
-	clearValue.Color[0] = kClearColor_.r;
-	clearValue.Color[1] = kClearColor_.g;
-	clearValue.Color[2] = kClearColor_.b;
-	clearValue.Color[3] = kClearColor_.a;
+	clearValue.Color[0] = clearColor_.x;
+	clearValue.Color[1] = clearColor_.y;
+	clearValue.Color[2] = clearColor_.z;
+	clearValue.Color[3] = clearColor_.w;
 
 	// リソースの作成
 	resource_ = nullptr;
