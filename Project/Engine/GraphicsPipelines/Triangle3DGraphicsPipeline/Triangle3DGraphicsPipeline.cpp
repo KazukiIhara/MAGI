@@ -69,14 +69,24 @@ void Triangle3DGraphicsPipeline::CreateGraphicsPipelineObject() {
 		const D3D12_BLEND_DESC blendDesc = BlendStateSetting(i);
 		const D3D12_DEPTH_STENCIL_DESC depthStencilDesc = DepthStecilDescSetting();
 
+		// ラッパー化
+		const CD3DX12_RASTERIZER_DESC    rast(rasterizerDesc);
+		const CD3DX12_BLEND_DESC         blend(blendDesc);
+		const CD3DX12_DEPTH_STENCIL_DESC ds(depthStencilDesc);
+
+		// RT フォーマットも構造体を組み立てる
+		D3D12_RT_FORMAT_ARRAY rtArray{};
+		rtArray.NumRenderTargets = 1;
+		rtArray.RTFormats[0] = rtvFormat;
+
 		Triangle3DPipelineStateStream stream = {
 			CD3DX12_PIPELINE_STATE_STREAM_ROOT_SIGNATURE(rootSignature_.Get()),
 			CD3DX12_PIPELINE_STATE_STREAM_MS(meshShader),
 			CD3DX12_PIPELINE_STATE_STREAM_PS(pixelShader),
-			CD3DX12_PIPELINE_STATE_STREAM_RASTERIZER(rasterizerDesc),
-			CD3DX12_PIPELINE_STATE_STREAM_BLEND_DESC(blendDesc),
-			CD3DX12_PIPELINE_STATE_STREAM_DEPTH_STENCIL(depthStencilDesc),
-			CD3DX12_PIPELINE_STATE_STREAM_RENDER_TARGET_FORMATS({ 1, &rtvFormat }),
+			CD3DX12_PIPELINE_STATE_STREAM_RASTERIZER(rast),
+			CD3DX12_PIPELINE_STATE_STREAM_BLEND_DESC(blend),
+			CD3DX12_PIPELINE_STATE_STREAM_DEPTH_STENCIL(ds),
+			CD3DX12_PIPELINE_STATE_STREAM_RENDER_TARGET_FORMATS(rtArray),
 			CD3DX12_PIPELINE_STATE_STREAM_DEPTH_STENCIL_FORMAT(dsvFormat)
 		};
 

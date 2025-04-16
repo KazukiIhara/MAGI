@@ -10,18 +10,6 @@
     <Filter Include="App\GameData">
       <UniqueIdentifier>{E90015FD-D563-A4A1-7EE9-DC576A2B7024}</UniqueIdentifier>
     </Filter>
-    <Filter Include="App\GameObjects">
-      <UniqueIdentifier>{397AD9B1-A505-4776-AE16-CA6A1A21A376}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="App\GameObjects\Player">
-      <UniqueIdentifier>{35113CE2-210B-6534-0A78-FB44F610CBA0}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="App\Scenes">
-      <UniqueIdentifier>{B65C617A-A214-A3C7-0B1C-7C23F7F23DB8}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="App\Scenes\Sample">
-      <UniqueIdentifier>{8780356D-F396-3303-3C0E-BF24A863048B}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Engine">
       <UniqueIdentifier>{DBC7D3B0-C769-FE86-B024-12DB9C6585D7}</UniqueIdentifier>
     </Filter>
@@ -73,6 +61,9 @@
     <Filter Include="Engine\3D\GameObject3D">
       <UniqueIdentifier>{B89F5732-A499-8084-8D06-1795799FE6F0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Engine\3D\GameObject3DGroup">
+      <UniqueIdentifier>{65696DD7-D176-9BBD-5A5D-97A8C6696774}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Engine\3D\ParticleGroups3D">
       <UniqueIdentifier>{7BE16EB1-67F1-1A82-D0AA-7FA0BCD9091B}</UniqueIdentifier>
     </Filter>
@@ -81,6 +72,9 @@
     </Filter>
     <Filter Include="Engine\3D\ParticleGroups3D\PrimitiveParticleGroup3D">
       <UniqueIdentifier>{5B508EF3-C761-369A-50B3-C8D9BCC3BFD3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\3D\ParticleGroups3D\StaticParticleGroup3D">
+      <UniqueIdentifier>{2AD0C7B2-1679-2FE2-3F0F-4B612B174A23}</UniqueIdentifier>
     </Filter>
     <Filter Include="Engine\3D\RenderObjects3D">
       <UniqueIdentifier>{D1CC20B2-3D8F-543C-863F-E3C8F2402D1A}</UniqueIdentifier>
@@ -223,8 +217,23 @@
     <Filter Include="Engine\GraphicsPipelines\Object3DGraphicsPipeline">
       <UniqueIdentifier>{680091E8-D4C6-ED04-1D22-7C6789275C69}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Engine\GraphicsPipelines\Object3DGroupGraphicsPipeline">
+      <UniqueIdentifier>{B5750459-A11F-3A68-8AF0-41837639DA56}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Engine\GraphicsPipelines\Particle3DGraphicsPipeline">
       <UniqueIdentifier>{25B5FA7B-91C6-A222-1A18-356286282C5C}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\GraphicsPipelines\Plane3DGraphicsPipeline">
+      <UniqueIdentifier>{A1C84057-8D71-A886-B607-C405A20FC3C7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\GraphicsPipelines\Sphere3DGraphicsPipeline">
+      <UniqueIdentifier>{18AF4CCB-8475-A9E7-CDD0-374A39D6174C}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\GraphicsPipelines\Triangle3DGraphicsPipeline">
+      <UniqueIdentifier>{A76D8405-137F-2CAC-9CD0-BEEB08E1B5E5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\GrobalDataManager">
+      <UniqueIdentifier>{969DC66F-82C2-15F0-AB0D-FB7F9791140E}</UniqueIdentifier>
     </Filter>
     <Filter Include="Engine\ImGuiController">
       <UniqueIdentifier>{2954621B-154E-8B6D-FEBA-217EEA53F1D9}</UniqueIdentifier>
@@ -268,9 +277,6 @@
     <Filter Include="Engine\LeakChecker">
       <UniqueIdentifier>{DC9A7F7A-C87E-40D0-31DF-3A231DE22A52}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Engine\LineDrawer3D">
-      <UniqueIdentifier>{2EE59E3F-9A46-7C4D-23B4-C2FF8F14B30C}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Engine\ObjectManagers">
       <UniqueIdentifier>{AF64C9CC-1BD1-84C7-E4C4-1C2550F0A62F}</UniqueIdentifier>
     </Filter>
@@ -283,6 +289,9 @@
     <Filter Include="Engine\ObjectManagers\Emitter3DManager">
       <UniqueIdentifier>{2A42E028-1694-B718-FFB2-F428EBA3D001}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Engine\ObjectManagers\GameObject3DGroupManager">
+      <UniqueIdentifier>{4EECF48F-3A6A-4529-2362-03C10F7F8751}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Engine\ObjectManagers\GameObject3DManager">
       <UniqueIdentifier>{816256B9-ED7C-B95A-369F-C9EEA2F8E061}</UniqueIdentifier>
     </Filter>
@@ -294,6 +303,9 @@
     </Filter>
     <Filter Include="Engine\ObjectManagers\Renderer3DManager">
       <UniqueIdentifier>{A73ED4B7-13CE-95A2-1CCA-76BA88D8D0AE}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\OffScreenRenderer">
+      <UniqueIdentifier>{5C9EB105-48C3-0086-710E-E6155D92FFA3}</UniqueIdentifier>
     </Filter>
     <Filter Include="Engine\PipelineManagers">
       <UniqueIdentifier>{0ED9C9FB-7A10-1293-831A-76B6EFD0388C}</UniqueIdentifier>
@@ -322,8 +334,17 @@
     <Filter Include="Engine\PostEffectPipelines\NonePostEffectPipeline">
       <UniqueIdentifier>{CEACD075-3A73-2D92-83CE-BBF4EFD39BF6}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Engine\PostEffectSwitcher">
-      <UniqueIdentifier>{06B87376-727A-A700-BB2A-368D272C80DE}</UniqueIdentifier>
+    <Filter Include="Engine\PrimitiveDrawers">
+      <UniqueIdentifier>{5B46E4DC-C77D-2C74-D087-90973C3E536D}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\PrimitiveDrawers\LineDrawer3D">
+      <UniqueIdentifier>{AEF328C2-9ADA-EAB9-432B-51D72FF16320}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\PrimitiveDrawers\PlaneDrawer3D">
+      <UniqueIdentifier>{560B0AB1-C2CF-08A1-8B35-396BF7B8A4D6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\PrimitiveDrawers\SphereDrawer3D">
+      <UniqueIdentifier>{ED533917-D9A5-1007-C2C4-4D17AEB529F0}</UniqueIdentifier>
     </Filter>
     <Filter Include="Engine\RenderTextureManager">
       <UniqueIdentifier>{364DFE98-A25A-2C7F-2B41-286A974DF835}</UniqueIdentifier>
@@ -333,6 +354,9 @@
     </Filter>
     <Filter Include="Engine\RenderTextures\BaseRenderTexture">
       <UniqueIdentifier>{E949D92A-55D9-9A15-5ED5-7B2DCAE3D521}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\RenderTextures\SceneColorRenderTexture">
+      <UniqueIdentifier>{5B9ABDD5-C70A-C04E-9029-3AD7FC58F84F}</UniqueIdentifier>
     </Filter>
     <Filter Include="Engine\SceneManager">
       <UniqueIdentifier>{1385C7BD-7FE6-A4CB-0854-EB7D74B4DB8A}</UniqueIdentifier>
@@ -369,9 +393,6 @@
     <ClInclude Include="App\GameData\GameData.h">
       <Filter>App\GameData</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\Scenes\SampleScene.h">
-      <Filter>App\Scenes\Sample</Filter>
-    </ClInclude>
     <ClInclude Include="Engine\2D\Object2D\Object2D.h">
       <Filter>Engine\2D\Object2D</Filter>
     </ClInclude>
@@ -405,11 +426,17 @@
     <ClInclude Include="Engine\3D\GameObject3D\GameObject3D.h">
       <Filter>Engine\3D\GameObject3D</Filter>
     </ClInclude>
+    <ClInclude Include="Engine\3D\GameObject3DGroup\GameObject3DGroup.h">
+      <Filter>Engine\3D\GameObject3DGroup</Filter>
+    </ClInclude>
     <ClInclude Include="Engine\3D\ParticleGroups3D\BaseParticleGroup3D\BaseParticleGroup3D.h">
       <Filter>Engine\3D\ParticleGroups3D\BaseParticleGroup3D</Filter>
     </ClInclude>
     <ClInclude Include="Engine\3D\ParticleGroups3D\PrimitiveParticleGroup3D\PrimitiveParticleGroup3D.h">
       <Filter>Engine\3D\ParticleGroups3D\PrimitiveParticleGroup3D</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\3D\ParticleGroups3D\StaticParticleGroup3D\StaticParticleGroup3D.h">
+      <Filter>Engine\3D\ParticleGroups3D\StaticParticleGroup3D</Filter>
     </ClInclude>
     <ClInclude Include="Engine\3D\RenderObjects3D\BaseRenderable3D\BaseRenderable3D.h">
       <Filter>Engine\3D\RenderObjects3D\BaseRenderable3D</Filter>
@@ -531,8 +558,23 @@
     <ClInclude Include="Engine\GraphicsPipelines\Object3DGraphicsPipeline\Object3DGraphicsPipeline.h">
       <Filter>Engine\GraphicsPipelines\Object3DGraphicsPipeline</Filter>
     </ClInclude>
+    <ClInclude Include="Engine\GraphicsPipelines\Object3DGroupGraphicsPipeline\Object3DGroupGraphicsPipeline.h">
+      <Filter>Engine\GraphicsPipelines\Object3DGroupGraphicsPipeline</Filter>
+    </ClInclude>
     <ClInclude Include="Engine\GraphicsPipelines\Particle3DGraphicsPipeline\Particle3DGraphicsPipeline.h">
       <Filter>Engine\GraphicsPipelines\Particle3DGraphicsPipeline</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\GraphicsPipelines\Plane3DGraphicsPipeline\Plane3DGraphicsPipeline.h">
+      <Filter>Engine\GraphicsPipelines\Plane3DGraphicsPipeline</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\GraphicsPipelines\Sphere3DGraphicsPipeline\Sphere3DGraphicsPipeline.h">
+      <Filter>Engine\GraphicsPipelines\Sphere3DGraphicsPipeline</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\GraphicsPipelines\Triangle3DGraphicsPipeline\Triangle3DGraphicsPipeline.h">
+      <Filter>Engine\GraphicsPipelines\Triangle3DGraphicsPipeline</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\GrobalDataManager\GrobalDataManager.h">
+      <Filter>Engine\GrobalDataManager</Filter>
     </ClInclude>
     <ClInclude Include="Engine\ImGuiController\ImGuiController.h">
       <Filter>Engine\ImGuiController</Filter>
@@ -621,6 +663,9 @@
     <ClInclude Include="Engine\Includes\Structs\EmitterStruct.h">
       <Filter>Engine\Includes\Structs</Filter>
     </ClInclude>
+    <ClInclude Include="Engine\Includes\Structs\GameObject3DStruct.h">
+      <Filter>Engine\Includes\Structs</Filter>
+    </ClInclude>
     <ClInclude Include="Engine\Includes\Structs\ModelStruct.h">
       <Filter>Engine\Includes\Structs</Filter>
     </ClInclude>
@@ -645,6 +690,9 @@
     <ClInclude Include="Engine\Includes\Structs\TextureStruct.h">
       <Filter>Engine\Includes\Structs</Filter>
     </ClInclude>
+    <ClInclude Include="Engine\Includes\Structs\XInputStruct.h">
+      <Filter>Engine\Includes\Structs</Filter>
+    </ClInclude>
     <ClInclude Include="Engine\Input\MAGIDirectInput\MAGIDirectInput.h">
       <Filter>Engine\Input\MAGIDirectInput</Filter>
     </ClInclude>
@@ -654,9 +702,6 @@
     <ClInclude Include="Engine\LeakChecker\D3DResourceLeakChecker.h">
       <Filter>Engine\LeakChecker</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\PrimitiveDrawers\LineDrawer3D\LineDrawer3D.h">
-      <Filter>Engine\LineDrawer3D</Filter>
-    </ClInclude>
     <ClInclude Include="Engine\ObjectManagers\Camera3DManager\Camera3DManager.h">
       <Filter>Engine\ObjectManagers\Camera3DManager</Filter>
     </ClInclude>
@@ -665,6 +710,9 @@
     </ClInclude>
     <ClInclude Include="Engine\ObjectManagers\Emitter3DManager\Emitter3DManager.h">
       <Filter>Engine\ObjectManagers\Emitter3DManager</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\ObjectManagers\GameObject3DGroupManager\GameObject3DGroupManager.h">
+      <Filter>Engine\ObjectManagers\GameObject3DGroupManager</Filter>
     </ClInclude>
     <ClInclude Include="Engine\ObjectManagers\GameObject3DManager\GameObject3DManager.h">
       <Filter>Engine\ObjectManagers\GameObject3DManager</Filter>
@@ -677,6 +725,9 @@
     </ClInclude>
     <ClInclude Include="Engine\ObjectManagers\Renderer3DManager\Renderer3DManager.h">
       <Filter>Engine\ObjectManagers\Renderer3DManager</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\OffScreenRenderer\OffScreenRenderer.h">
+      <Filter>Engine\OffScreenRenderer</Filter>
     </ClInclude>
     <ClInclude Include="Engine\PipelineManagers\ComputePipelineManager\ComputePipelineManager.h">
       <Filter>Engine\PipelineManagers\ComputePipelineManager</Filter>
@@ -699,8 +750,14 @@
     <ClInclude Include="Engine\PostEffectPipelines\NonePostEffectPipeline\NonePostEffectPipeline.h">
       <Filter>Engine\PostEffectPipelines\NonePostEffectPipeline</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\OffScreenRenderer\OffScreenRenderer.h">
-      <Filter>Engine\PostEffectSwitcher</Filter>
+    <ClInclude Include="Engine\PrimitiveDrawers\LineDrawer3D\LineDrawer3D.h">
+      <Filter>Engine\PrimitiveDrawers\LineDrawer3D</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\PrimitiveDrawers\PlaneDrawer3D\PlaneDrawer3D.h">
+      <Filter>Engine\PrimitiveDrawers\PlaneDrawer3D</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\PrimitiveDrawers\SphereDrawer3D\SphereDrawer3D.h">
+      <Filter>Engine\PrimitiveDrawers\SphereDrawer3D</Filter>
     </ClInclude>
     <ClInclude Include="Engine\RenderTextureManager\RenderTextureManager.h">
       <Filter>Engine\RenderTextureManager</Filter>
@@ -708,10 +765,16 @@
     <ClInclude Include="Engine\RenderTextures\BaseRenderTexture\BaseRenderTexture.h">
       <Filter>Engine\RenderTextures\BaseRenderTexture</Filter>
     </ClInclude>
+    <ClInclude Include="Engine\RenderTextures\SceneColorRenderTexture\SceneColorRenderTexture.h">
+      <Filter>Engine\RenderTextures\SceneColorRenderTexture</Filter>
+    </ClInclude>
     <ClInclude Include="Engine\SceneManager\SceneManager.h">
       <Filter>Engine\SceneManager</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Scenes\ParticleEditScene.h">
+      <Filter>Engine\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Scenes\SampleScene.h">
       <Filter>Engine\Scenes</Filter>
     </ClInclude>
     <ClInclude Include="Engine\ViewManagers\BaseViewManager\BaseViewManager.h">
@@ -729,23 +792,6 @@
     <ClInclude Include="Engine\WindowApp\WindowApp.h">
       <Filter>Engine\WindowApp</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\GrobalDataManager\GrobalDataManager.h" />
-    <ClInclude Include="Engine\Includes\Structs\XInputStruct.h" />
-    <ClInclude Include="Engine\3D\ParticleGroups3D\StaticParticleGroup3D\StaticParticleGroup3D.h" />
-    <ClInclude Include="Engine\3D\GameObject3DGroup\GameObject3DGroup.h" />
-    <ClInclude Include="Engine\Includes\Structs\GameObject3DStruct.h" />
-    <ClInclude Include="Engine\ObjectManagers\GameObject3DGroupManager\GameObject3DGroupManager.h" />
-    <ClInclude Include="Engine\GraphicsPipelines\Object3DGroupGraphicsPipeline\Object3DGroupGraphicsPipeline.h" />
-    <ClInclude Include="Engine\PrimitiveDrawers\PlaneDrawer3D\PlaneDrawer3D.h" />
-    <ClInclude Include="Engine\GraphicsPipelines\Plane3DGraphicsPipeline\Plane3DGraphicsPipeline.h" />
-    <ClInclude Include="Engine\PrimitiveDrawers\SphereDrawer3D\SphereDrawer3D.h" />
-    <ClInclude Include="Engine\RenderTextures\SceneColorRenderTexture\SceneColorRenderTexture.h" />
-    <ClInclude Include="Engine\GraphicsPipelines\Sphere3DGraphicsPipeline\Sphere3DGraphicsPipeline.h" />
-    <ClInclude Include="Engine\GraphicsPipelines\Triangle3DGraphicsPipeline\Triangle3DGraphicsPipeline.h" />
-    <ClInclude Include="C:\Users\ihara\Downloads\d3dx12_pipeline_state_stream.h" />
-    <ClInclude Include="Externals\d3dx12\d3dx12_pipeline_state_stream.h" />
-    <ClInclude Include="Externals\d3dx12\d3dx12_default.h" />
-    <ClInclude Include="Externals\d3dx12\d3dx12_core.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="App\Game\Game.cpp">
@@ -784,11 +830,17 @@
     <ClCompile Include="Engine\3D\GameObject3D\GameObject3D.cpp">
       <Filter>Engine\3D\GameObject3D</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\3D\GameObject3DGroup\GameObject3DGroup.cpp">
+      <Filter>Engine\3D\GameObject3DGroup</Filter>
+    </ClCompile>
     <ClCompile Include="Engine\3D\ParticleGroups3D\BaseParticleGroup3D\BaseParticleGroup3D.cpp">
       <Filter>Engine\3D\ParticleGroups3D\BaseParticleGroup3D</Filter>
     </ClCompile>
     <ClCompile Include="Engine\3D\ParticleGroups3D\PrimitiveParticleGroup3D\PrimitiveParticleGroup3D.cpp">
       <Filter>Engine\3D\ParticleGroups3D\PrimitiveParticleGroup3D</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\3D\ParticleGroups3D\StaticParticleGroup3D\StaticParticleGroup3D.cpp">
+      <Filter>Engine\3D\ParticleGroups3D\StaticParticleGroup3D</Filter>
     </ClCompile>
     <ClCompile Include="Engine\3D\RenderObjects3D\BaseRenderable3D\BaseRenderable3D.cpp">
       <Filter>Engine\3D\RenderObjects3D\BaseRenderable3D</Filter>
@@ -904,8 +956,23 @@
     <ClCompile Include="Engine\GraphicsPipelines\Object3DGraphicsPipeline\Object3DGraphicsPipeline.cpp">
       <Filter>Engine\GraphicsPipelines\Object3DGraphicsPipeline</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\GraphicsPipelines\Object3DGroupGraphicsPipeline\Object3DGroupGraphicsPipeline.cpp">
+      <Filter>Engine\GraphicsPipelines\Object3DGroupGraphicsPipeline</Filter>
+    </ClCompile>
     <ClCompile Include="Engine\GraphicsPipelines\Particle3DGraphicsPipeline\Particle3DGraphicsPipeline.cpp">
       <Filter>Engine\GraphicsPipelines\Particle3DGraphicsPipeline</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\GraphicsPipelines\Plane3DGraphicsPipeline\Plane3DGraphicsPipeline.cpp">
+      <Filter>Engine\GraphicsPipelines\Plane3DGraphicsPipeline</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\GraphicsPipelines\Sphere3DGraphicsPipeline\Sphere3DGraphicsPipeline.cpp">
+      <Filter>Engine\GraphicsPipelines\Sphere3DGraphicsPipeline</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\GraphicsPipelines\Triangle3DGraphicsPipeline\Triangle3DGraphicsPipeline.cpp">
+      <Filter>Engine\GraphicsPipelines\Triangle3DGraphicsPipeline</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\GrobalDataManager\GrobalDataManager.cpp">
+      <Filter>Engine\GrobalDataManager</Filter>
     </ClCompile>
     <ClCompile Include="Engine\ImGuiController\ImGuiController.cpp">
       <Filter>Engine\ImGuiController</Filter>
@@ -931,9 +998,6 @@
     <ClCompile Include="Engine\LeakChecker\D3DResourceLeakChecker.cpp">
       <Filter>Engine\LeakChecker</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\PrimitiveDrawers\LineDrawer3D\LineDrawer3D.cpp">
-      <Filter>Engine\LineDrawer3D</Filter>
-    </ClCompile>
     <ClCompile Include="Engine\ObjectManagers\Camera3DManager\Camera3DManager.cpp">
       <Filter>Engine\ObjectManagers\Camera3DManager</Filter>
     </ClCompile>
@@ -942,6 +1006,9 @@
     </ClCompile>
     <ClCompile Include="Engine\ObjectManagers\Emitter3DManager\Emitter3DManager.cpp">
       <Filter>Engine\ObjectManagers\Emitter3DManager</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\ObjectManagers\GameObject3DGroupManager\GameObject3DGroupManager.cpp">
+      <Filter>Engine\ObjectManagers\GameObject3DGroupManager</Filter>
     </ClCompile>
     <ClCompile Include="Engine\ObjectManagers\GameObject3DManager\GameObject3DManager.cpp">
       <Filter>Engine\ObjectManagers\GameObject3DManager</Filter>
@@ -954,6 +1021,9 @@
     </ClCompile>
     <ClCompile Include="Engine\ObjectManagers\Renderer3DManager\Renderer3DManager.cpp">
       <Filter>Engine\ObjectManagers\Renderer3DManager</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\OffScreenRenderer\OffScreenRenderer.cpp">
+      <Filter>Engine\OffScreenRenderer</Filter>
     </ClCompile>
     <ClCompile Include="Engine\PipelineManagers\ComputePipelineManager\ComputePipelineManager.cpp">
       <Filter>Engine\PipelineManagers\ComputePipelineManager</Filter>
@@ -976,14 +1046,23 @@
     <ClCompile Include="Engine\PostEffectPipelines\NonePostEffectPipeline\NonePostEffectPipeline.cpp">
       <Filter>Engine\PostEffectPipelines\NonePostEffectPipeline</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\OffScreenRenderer\OffScreenRenderer.cpp">
-      <Filter>Engine\PostEffectSwitcher</Filter>
+    <ClCompile Include="Engine\PrimitiveDrawers\LineDrawer3D\LineDrawer3D.cpp">
+      <Filter>Engine\PrimitiveDrawers\LineDrawer3D</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\PrimitiveDrawers\PlaneDrawer3D\PlaneDrawer3D.cpp">
+      <Filter>Engine\PrimitiveDrawers\PlaneDrawer3D</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\PrimitiveDrawers\SphereDrawer3D\SphereDrawer3D.cpp">
+      <Filter>Engine\PrimitiveDrawers\SphereDrawer3D</Filter>
     </ClCompile>
     <ClCompile Include="Engine\RenderTextureManager\RenderTextureManager.cpp">
       <Filter>Engine\RenderTextureManager</Filter>
     </ClCompile>
     <ClCompile Include="Engine\RenderTextures\BaseRenderTexture\BaseRenderTexture.cpp">
       <Filter>Engine\RenderTextures\BaseRenderTexture</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\RenderTextures\SceneColorRenderTexture\SceneColorRenderTexture.cpp">
+      <Filter>Engine\RenderTextures\SceneColorRenderTexture</Filter>
     </ClCompile>
     <ClCompile Include="Engine\ViewManagers\BaseViewManager\BaseViewManager.cpp">
       <Filter>Engine\ViewManagers\BaseViewManager</Filter>
@@ -1001,37 +1080,10 @@
       <Filter>Engine\WindowApp</Filter>
     </ClCompile>
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="Engine\GrobalDataManager\GrobalDataManager.cpp" />
-    <ClCompile Include="Engine\3D\ParticleGroups3D\StaticParticleGroup3D\StaticParticleGroup3D.cpp" />
-    <ClCompile Include="Engine\3D\GameObject3DGroup\GameObject3DGroup.cpp" />
-    <ClCompile Include="Engine\ObjectManagers\GameObject3DGroupManager\GameObject3DGroupManager.cpp" />
-    <ClCompile Include="Engine\GraphicsPipelines\Object3DGroupGraphicsPipeline\Object3DGroupGraphicsPipeline.cpp" />
-    <ClCompile Include="Engine\PrimitiveDrawers\PlaneDrawer3D\PlaneDrawer3D.cpp" />
-    <ClCompile Include="Engine\GraphicsPipelines\Plane3DGraphicsPipeline\Plane3DGraphicsPipeline.cpp" />
-    <ClCompile Include="Engine\PrimitiveDrawers\SphereDrawer3D\SphereDrawer3D.cpp" />
-    <ClCompile Include="Engine\RenderTextures\SceneColorRenderTexture\SceneColorRenderTexture.cpp" />
-    <ClCompile Include="Engine\GraphicsPipelines\Sphere3DGraphicsPipeline\Sphere3DGraphicsPipeline.cpp" />
-    <ClCompile Include="Engine\GraphicsPipelines\Triangle3DGraphicsPipeline\Triangle3DGraphicsPipeline.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Engine\SceneManager\SceneManager.ipp">
       <Filter>Engine\SceneManager</Filter>
     </None>
-    <None Include="EngineAssets\Shaders\Graphics\Object3DGroup\Object3DGroup.hlsli" />
-    <None Include="EngineAssets\Shaders\Graphics\Plane3D\Plane3D.hlsli" />
-    <None Include="EngineAssets\Shaders\Graphics\Sphere3D\Sphere3D.hlsli" />
-    <None Include="EngineAssets\Shaders\Graphics\Triangle3D\Triangle3D.hlsli" />
-  </ItemGroup>
-  <ItemGroup>
-    <FxCompile Include="EngineAssets\Shaders\Graphics\Object3DGroup\Object3DGroup.PS.hlsl" />
-    <FxCompile Include="EngineAssets\Shaders\Graphics\Object3DGroup\Object3DGroup.VS.hlsl" />
-    <FxCompile Include="EngineAssets\Shaders\Graphics\Plane3D\Plane3D.GS.hlsl" />
-    <FxCompile Include="EngineAssets\Shaders\Graphics\Plane3D\Plane3D.PS.hlsl" />
-    <FxCompile Include="EngineAssets\Shaders\Graphics\Plane3D\Plane3D.VS.hlsl" />
-    <FxCompile Include="EngineAssets\Shaders\Graphics\Sphere3D\Sphere3D.GS.hlsl" />
-    <FxCompile Include="EngineAssets\Shaders\Graphics\Sphere3D\Sphere3D.PS.hlsl" />
-    <FxCompile Include="EngineAssets\Shaders\Graphics\Sphere3D\Sphere3D.VS.hlsl" />
-    <FxCompile Include="EngineAssets\Shaders\Graphics\Triangle3D\Triangle3D.MS.hlsl" />
-    <FxCompile Include="EngineAssets\Shaders\Graphics\Triangle3D\Triangle3D.PS.hlsl" />
   </ItemGroup>
 </Project>
