@@ -14,7 +14,7 @@ void Triangle3DGraphicsPipeline::CreateRootSignature() {
 	D3D12_ROOT_SIGNATURE_DESC rootSigDesc{};
 	rootSigDesc.NumParameters = 0;
 	rootSigDesc.NumStaticSamplers = 0;
-	rootSigDesc.Flags = D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT;
+	rootSigDesc.Flags = D3D12_ROOT_SIGNATURE_FLAG_NONE; // MeshShaderのためIAレイアウト無効
 
 	ComPtr<ID3DBlob> sigBlob;
 	ComPtr<ID3DBlob> errorBlob;
@@ -22,7 +22,9 @@ void Triangle3DGraphicsPipeline::CreateRootSignature() {
 		&rootSigDesc, D3D_ROOT_SIGNATURE_VERSION_1,
 		&sigBlob, &errorBlob);
 	if (FAILED(hr)) {
-		Logger::Log(reinterpret_cast<char*>(errorBlob->GetBufferPointer()));
+		if (errorBlob) {
+			Logger::Log(reinterpret_cast<char*>(errorBlob->GetBufferPointer()));
+		}
 		assert(false);
 	}
 
@@ -34,11 +36,11 @@ void Triangle3DGraphicsPipeline::CreateRootSignature() {
 
 void Triangle3DGraphicsPipeline::CompileShaders() {
 	meshShaderBlob_ = nullptr;
-	meshShaderBlob_ = shaderCompiler_->CompileShader(L"EngineAssets/Shaders/TriangleMS/TriangleMS.MS.hlsl", L"ms_6_6");
+	meshShaderBlob_ = shaderCompiler_->CompileShader(L"EngineAssets/Shaders/Graphics/Triangle3D/Triangle3D.MS.hlsl", L"ms_6_6");
 	assert(meshShaderBlob_ != nullptr);
 
 	pixelShaderBlob_ = nullptr;
-	pixelShaderBlob_ = shaderCompiler_->CompileShader(L"EngineAssets/Shaders/TriangleMS/TriangleMS.PS.hlsl", L"ps_6_6");
+	pixelShaderBlob_ = shaderCompiler_->CompileShader(L"EngineAssets/Shaders/Graphics/Triangle3D/Triangle3D.PS.hlsl", L"ps_6_6");
 	assert(pixelShaderBlob_ != nullptr);
 }
 
@@ -47,63 +49,48 @@ void Triangle3DGraphicsPipeline::CreateGraphicsPipelineObject() {
 	assert(meshShaderBlob_);
 	assert(pixelShaderBlob_);
 
-	HRESULT hr;
-
-	// 共通のシェーダーバイナリ
-	D3D12_SHADER_BYTECODE meshShader = {
+	// 共通シェーダーバイナリ
+	const D3D12_SHADER_BYTECODE meshShader = {
 		meshShaderBlob_->GetBufferPointer(),
 		meshShaderBlob_->GetBufferSize()
 	};
-	D3D12_SHADER_BYTECODE pixelShader = {
+	const D3D12_SHADER_BYTECODE pixelShader = {
 		pixelShaderBlob_->GetBufferPointer(),
 		pixelShaderBlob_->GetBufferSize()
 	};
 
-	// 共通のフォーマット・トポロジなど
-	D3D12_RASTERIZER_DESC rasterizerDesc = RasterizerStateSetting();
-	D3D12_DEPTH_STENCIL_DESC depthStencilDesc = DepthStecilDescSetting();
-
-	static const DXGI_FORMAT rtvFormats[1] = {
-		DXGI_FORMAT_R8G8B8A8_UNORM_SRGB
-	};
-	D3D12_RT_FORMAT_ARRAY rtvFormatArray = {};
-	rtvFormatArray.NumRenderTargets = 1;
-	rtvFormatArray.RTFormats[0] = rtvFormats[0];
-
-	DXGI_FORMAT dsvFormat = DXGI_FORMAT_D24_UNORM_S8_UINT;
+	// 共通定数
+	const DXGI_FORMAT rtvFormat = DXGI_FORMAT_R8G8B8A8_UNORM_SRGB;
+	const DXGI_FORMAT dsvFormat = DXGI_FORMAT_D24_UNORM_S8_UINT;
 
 	for (uint32_t i = 0; i < kBlendModeNum; ++i) {
-		D3D12_BLEND_DESC blendDesc = BlendStateSetting(i);
+		// ローカル変数で生成して型一致を保証
+		const D3D12_RASTERIZER_DESC rasterizerDesc = RasterizerStateSetting();
+		const D3D12_BLEND_DESC blendDesc = BlendStateSetting(i);
+		const D3D12_DEPTH_STENCIL_DESC depthStencilDesc = DepthStecilDescSetting();
 
-		// サブオブジェクトの構築
-		struct {
-			D3D12_PIPELINE_STATE_SUBOBJECT_TYPE type;
-			void* data;
-		} subobjects[8];
+		Triangle3DPipelineStateStream stream = {
+			CD3DX12_PIPELINE_STATE_STREAM_ROOT_SIGNATURE(rootSignature_.Get()),
+			CD3DX12_PIPELINE_STATE_STREAM_MS(meshShader),
+			CD3DX12_PIPELINE_STATE_STREAM_PS(pixelShader),
+			CD3DX12_PIPELINE_STATE_STREAM_RASTERIZER(rasterizerDesc),
+			CD3DX12_PIPELINE_STATE_STREAM_BLEND_DESC(blendDesc),
+			CD3DX12_PIPELINE_STATE_STREAM_DEPTH_STENCIL(depthStencilDesc),
+			CD3DX12_PIPELINE_STATE_STREAM_RENDER_TARGET_FORMATS({ 1, &rtvFormat }),
+			CD3DX12_PIPELINE_STATE_STREAM_DEPTH_STENCIL_FORMAT(dsvFormat)
+		};
 
-		size_t index = 0;
-		subobjects[index++] = { D3D12_PIPELINE_STATE_SUBOBJECT_TYPE_ROOT_SIGNATURE, rootSignature_.Get() };
-		subobjects[index++] = { D3D12_PIPELINE_STATE_SUBOBJECT_TYPE_MS, &meshShader };
-		subobjects[index++] = { D3D12_PIPELINE_STATE_SUBOBJECT_TYPE_PS, &pixelShader };
-		subobjects[index++] = { D3D12_PIPELINE_STATE_SUBOBJECT_TYPE_RASTERIZER, &rasterizerDesc };
-		subobjects[index++] = { D3D12_PIPELINE_STATE_SUBOBJECT_TYPE_BLEND, &blendDesc };
-		subobjects[index++] = { D3D12_PIPELINE_STATE_SUBOBJECT_TYPE_DEPTH_STENCIL, &depthStencilDesc };
-		subobjects[index++] = { D3D12_PIPELINE_STATE_SUBOBJECT_TYPE_RENDER_TARGET_FORMATS, &rtvFormatArray };
-		subobjects[index++] = { D3D12_PIPELINE_STATE_SUBOBJECT_TYPE_DEPTH_STENCIL_FORMAT, &dsvFormat };
-
-		// ストリーム構築
 		D3D12_PIPELINE_STATE_STREAM_DESC streamDesc{};
-		streamDesc.SizeInBytes = sizeof(subobjects[0]) * index;
-		streamDesc.pPipelineStateSubobjectStream = subobjects;
+		streamDesc.SizeInBytes = sizeof(stream);
+		streamDesc.pPipelineStateSubobjectStream = &stream;
 
-		// PSO作成
-		pipelineState_[i] = nullptr;
-		hr = dxgi_->GetDevice10()->CreatePipelineState(
-			&streamDesc, IID_PPV_ARGS(&pipelineState_[i]));
-		assert(SUCCEEDED(hr));
+		HRESULT hr = dxgi_->GetDevice10()->CreatePipelineState(&streamDesc, IID_PPV_ARGS(&pipelineState_[i]));
+		if (FAILED(hr)) {
+			Logger::Log("Triangle3DGraphicsPipeline: Failed to create PSO for blendMode " + std::to_string(i));
+			assert(false);
+		}
 	}
 }
-
 
 D3D12_BLEND_DESC Triangle3DGraphicsPipeline::BlendStateSetting(uint32_t blendModeNum) {
 	D3D12_BLEND_DESC blendDesc{};

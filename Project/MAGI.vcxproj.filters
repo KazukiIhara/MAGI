@@ -742,6 +742,10 @@
     <ClInclude Include="Engine\RenderTextures\SceneColorRenderTexture\SceneColorRenderTexture.h" />
     <ClInclude Include="Engine\GraphicsPipelines\Sphere3DGraphicsPipeline\Sphere3DGraphicsPipeline.h" />
     <ClInclude Include="Engine\GraphicsPipelines\Triangle3DGraphicsPipeline\Triangle3DGraphicsPipeline.h" />
+    <ClInclude Include="C:\Users\ihara\Downloads\d3dx12_pipeline_state_stream.h" />
+    <ClInclude Include="Externals\d3dx12\d3dx12_pipeline_state_stream.h" />
+    <ClInclude Include="Externals\d3dx12\d3dx12_default.h" />
+    <ClInclude Include="Externals\d3dx12\d3dx12_core.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="App\Game\Game.cpp">
@@ -1016,6 +1020,7 @@
     <None Include="EngineAssets\Shaders\Graphics\Object3DGroup\Object3DGroup.hlsli" />
     <None Include="EngineAssets\Shaders\Graphics\Plane3D\Plane3D.hlsli" />
     <None Include="EngineAssets\Shaders\Graphics\Sphere3D\Sphere3D.hlsli" />
+    <None Include="EngineAssets\Shaders\Graphics\Triangle3D\Triangle3D.hlsli" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="EngineAssets\Shaders\Graphics\Object3DGroup\Object3DGroup.PS.hlsl" />
@@ -1026,5 +1031,7 @@
     <FxCompile Include="EngineAssets\Shaders\Graphics\Sphere3D\Sphere3D.GS.hlsl" />
     <FxCompile Include="EngineAssets\Shaders\Graphics\Sphere3D\Sphere3D.PS.hlsl" />
     <FxCompile Include="EngineAssets\Shaders\Graphics\Sphere3D\Sphere3D.VS.hlsl" />
+    <FxCompile Include="EngineAssets\Shaders\Graphics\Triangle3D\Triangle3D.MS.hlsl" />
+    <FxCompile Include="EngineAssets\Shaders\Graphics\Triangle3D\Triangle3D.PS.hlsl" />
   </ItemGroup>
 </Project>
