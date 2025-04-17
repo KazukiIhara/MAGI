@@ -23,12 +23,12 @@ private:
 	// カメラ
 	std::unique_ptr<Camera3D> sceneCamera_ = nullptr;
 
-	static const uint32_t planeSize_ = 10000;
+	static const uint32_t primitiveSize_ = 65535;
 
 	std::array<Vector3, 4> vertices_;
 
 	// 板ポリ用のワールドトランスフォーム
-	std::array<std::unique_ptr<WorldTransform>, planeSize_> planeWorldTransform_;
+	std::array<std::unique_ptr<WorldTransform>, primitiveSize_> primitiveWorldTransform_;
 };
 
 template<typename Data>
@@ -85,17 +85,29 @@ inline void SampleScene<Data>::Initialize() {
 	emitter->GetEmitterSetting().maxVelocity = { 1.0f,1.0f,1.0f };
 	emitter->GetEmitterSetting().minVelocity = { -1.0f,-1.0f,-1.0f };
 
+	for (size_t i = 0; i < primitiveSize_; i++) {
+		primitiveWorldTransform_[i] = std::make_unique<WorldTransform>();
+		primitiveWorldTransform_[i]->Initialize();
+		primitiveWorldTransform_[i]->translate_.x = float(i);
+	}
+
+
 }
 
 template<typename Data>
 inline void SampleScene<Data>::Update() {
 
+	for (size_t i = 0; i < primitiveSize_; i++) {
+		primitiveWorldTransform_[i]->Update();
+	}
 
 }
 
 template<typename Data>
 inline void SampleScene<Data>::Draw() {
-
+	for (size_t i = 0; i < primitiveSize_; i++) {
+		MAGISYSTEM::DrawTriangle3D(primitiveWorldTransform_[i]->worldMatrix_, Color::White);
+	}
 
 	// 
 	// オブジェクト2Dの描画前処理

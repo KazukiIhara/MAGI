@@ -77,6 +77,7 @@
 // Drawer
 // 
 #include "PrimitiveDrawers/LineDrawer3D/LineDrawer3D.h"
+#include "PrimitiveDrawers/TriangleDrawer3D/TriangleDrawer3D.h"
 #include "PrimitiveDrawers/PlaneDrawer3D/PlaneDrawer3D.h"
 #include "PrimitiveDrawers/SphereDrawer3D/SphereDrawer3D.h"
 
@@ -424,6 +425,11 @@ public: // エンジンの機能
 	static void DrawLine3D(const Vector3& start, const Vector3& end, const RGBA& color);
 #pragma endregion
 
+#pragma region TriangleDrawer3D
+	// 三角形描画
+	static void DrawTriangle3D(const Matrix4x4& worldMatrix, const RGBA& color);
+#pragma endregion
+
 #pragma region PlaneDrawer3D
 	// 板ポリ描画
 	static void DrawPlane3D(
@@ -463,8 +469,6 @@ public: // エンジンの機能
 	);
 
 #pragma endregion
-
-
 
 #pragma region CollisionManager
 
@@ -593,6 +597,7 @@ protected:
 	// Drawer
 	// 
 	static std::unique_ptr<LineDrawer3D> lineDrawer3D_;
+	static std::unique_ptr<TriangleDrawer3D> triangleDrawer3D_;
 	static std::unique_ptr<PlaneDrawer3D> planeDrawer3D_;
 	static std::unique_ptr<SphereDrawer3D> sphereDrawer3D_;
 

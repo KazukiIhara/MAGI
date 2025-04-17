@@ -71,6 +71,21 @@ struct LineData3D {
 };
 
 /// <summary>
+/// 3Dの三角形データ
+/// </summary>
+struct TriangleData3D {
+
+};
+
+/// <summary>
+/// GPUに送る3Dの三角形データ
+/// </summary>
+struct TriangleData3DForGPU {
+	Matrix4x4 worldMatrix;
+	Vector4 color;
+};
+
+/// <summary>
 /// 3D板ポリの形状データ
 /// </summary>
 struct PlaneData3D {
@@ -106,6 +121,8 @@ struct SphereData3DForGPU {
 	uint32_t latitudeSegments;
 	float padding;
 };
+
+
 
 /// <summary>
 /// Primitiveマテリアルデータ

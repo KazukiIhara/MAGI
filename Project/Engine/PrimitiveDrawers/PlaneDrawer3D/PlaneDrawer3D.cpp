@@ -57,6 +57,9 @@ void PlaneDrawer3D::Update() {
 }
 
 void PlaneDrawer3D::Draw() {
+	// インスタンスがなければスキップ
+	if (instanceCount_ == 0) return;
+
 	// コマンドリストを取得
 	ID3D12GraphicsCommandList* commandList = directXCommand_->GetList();
 	// PSOを設定
@@ -65,7 +68,7 @@ void PlaneDrawer3D::Draw() {
 	camera3DManager_->TransferCurrentCamera(0);
 
 	// PlaneData3DStructuredBufferのSRVを設定
-	commandList->SetGraphicsRootDescriptorTable(1, srvUavManager_->GetDescriptorHandleGPU(planeSrvIndex));
+	commandList->SetGraphicsRootDescriptorTable(1, srvUavManager_->GetDescriptorHandleGPU(instancingSrvIndex));
 	// MaterialDataStructuredBufferのSRVを設定
 	commandList->SetGraphicsRootDescriptorTable(2, srvUavManager_->GetDescriptorHandleGPU(materialSrvIndex_));
 	// BindlessTexture用のSRVを設定
@@ -150,9 +153,9 @@ void PlaneDrawer3D::CreateInstancingResource() {
 	// instancing用のリソースを作る
 	instancingResource_ = dxgi_->CreateBufferResource(sizeof(PlaneData3DForGPU) * kNumMaxInstance);
 	// srvのインデックスを割り当て
-	planeSrvIndex = srvUavManager_->Allocate();
+	instancingSrvIndex = srvUavManager_->Allocate();
 	// Srvを作成
-	srvUavManager_->CreateSrvStructuredBuffer(planeSrvIndex, instancingResource_.Get(), kNumMaxInstance, sizeof(PlaneData3DForGPU));
+	srvUavManager_->CreateSrvStructuredBuffer(instancingSrvIndex, instancingResource_.Get(), kNumMaxInstance, sizeof(PlaneData3DForGPU));
 }
 
 void PlaneDrawer3D::MapInstancingData() {

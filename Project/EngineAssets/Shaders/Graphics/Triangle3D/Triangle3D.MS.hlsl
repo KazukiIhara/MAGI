@@ -1,25 +1,39 @@
 #include "Triangle3D.hlsli"
 
-[numthreads(1, 1, 1)]
+ConstantBuffer<Camera> gCamera : register(b0);
+StructuredBuffer<TriangleData3D> gInstanceData : register(t0);
+
 [outputtopology("triangle")]
+[numthreads(1, 1, 1)]
 void main(
+    uint3 dispatchThreadID : SV_DispatchThreadID,
     out indices uint3 tris[1],
     out vertices MeshOutput verts[3]
 )
 {
-    // 出力する頂点数と三角形数を明示
+    uint instanceID = dispatchThreadID.y;
+    TriangleData3D data = gInstanceData[instanceID];
+
+    // 出力頂点・三角形の数を設定
     SetMeshOutputCounts(3, 1);
 
-    // 頂点データ
-    verts[0].position = float4(-0.5f, -0.5f, 0.0f, 1.0f);
-    verts[0].color = float4(1, 0, 0, 1); // 赤
+    // ローカルの三角形（原点中心）
+    float3 positions[3] =
+    {
+        float3(-0.5f, -0.5f, 0.0f),
+        float3(0.0f, 0.5f, 0.0f),
+        float3(0.5f, -0.5f, 0.0f)
+    };
 
-    verts[1].position = float4(0.0f, 0.5f, 0.0f, 1.0f);
-    verts[1].color = float4(0, 1, 0, 1); // 緑
+    for (uint i = 0; i < 3; ++i)
+    {
+        float4 localPos = float4(positions[i], 1.0f);
+        float4 worldPos = mul(localPos, data.worldMatrix);
+        float4 clipPos = mul(worldPos, gCamera.viewProjection);
 
-    verts[2].position = float4(0.5f, -0.5f, 0.0f, 1.0f);
-    verts[2].color = float4(0, 0, 1, 1); // 青
+        verts[i].position = clipPos;
+        verts[i].color = data.color; // 全頂点に同じ色
+    }
 
-    // 三角形のインデックス
     tris[0] = uint3(0, 1, 2);
 }
