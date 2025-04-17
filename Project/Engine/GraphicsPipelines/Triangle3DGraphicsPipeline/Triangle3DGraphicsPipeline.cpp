@@ -76,11 +76,11 @@ void Triangle3DGraphicsPipeline::CreateRootSignature() {
 
 void Triangle3DGraphicsPipeline::CompileShaders() {
 	meshShaderBlob_ = nullptr;
-	meshShaderBlob_ = shaderCompiler_->CompileShader(L"EngineAssets/Shaders/Graphics/Triangle3D/Triangle3D.MS.hlsl", L"ms_6_6");
+	meshShaderBlob_ = shaderCompiler_->CompileShader(L"EngineAssets/Shaders/Graphics/Triangle3D/Triangle3D.MS.hlsl", L"ms_6_5");
 	assert(meshShaderBlob_ != nullptr);
 
 	pixelShaderBlob_ = nullptr;
-	pixelShaderBlob_ = shaderCompiler_->CompileShader(L"EngineAssets/Shaders/Graphics/Triangle3D/Triangle3D.PS.hlsl", L"ps_6_6");
+	pixelShaderBlob_ = shaderCompiler_->CompileShader(L"EngineAssets/Shaders/Graphics/Triangle3D/Triangle3D.PS.hlsl", L"ps_6_5");
 	assert(pixelShaderBlob_ != nullptr);
 }
 

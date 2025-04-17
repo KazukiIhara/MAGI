@@ -111,15 +111,15 @@ void Plane3DGraphicsPipeline::CreateRootSignature() {
 
 void Plane3DGraphicsPipeline::CompileShaders() {
 	vertexShaderBlob_ = nullptr;
-	vertexShaderBlob_ = shaderCompiler_->CompileShader(L"EngineAssets/Shaders/Graphics/Plane3D/Plane3D.VS.hlsl", L"vs_6_6");
+	vertexShaderBlob_ = shaderCompiler_->CompileShader(L"EngineAssets/Shaders/Graphics/Plane3D/Plane3D.VS.hlsl", L"vs_6_5");
 	assert(vertexShaderBlob_ != nullptr);
 
 	pixelShaderBlob_ = nullptr;
-	pixelShaderBlob_ = shaderCompiler_->CompileShader(L"EngineAssets/Shaders/Graphics/Plane3D/Plane3D.PS.hlsl", L"ps_6_6");
+	pixelShaderBlob_ = shaderCompiler_->CompileShader(L"EngineAssets/Shaders/Graphics/Plane3D/Plane3D.PS.hlsl", L"ps_6_5");
 	assert(pixelShaderBlob_ != nullptr);
 
 	geometryShaderBlob_ = nullptr;
-	geometryShaderBlob_ = shaderCompiler_->CompileShader(L"EngineAssets/Shaders/Graphics/Plane3D/Plane3D.GS.hlsl", L"gs_6_6");
+	geometryShaderBlob_ = shaderCompiler_->CompileShader(L"EngineAssets/Shaders/Graphics/Plane3D/Plane3D.GS.hlsl", L"gs_6_5");
 	assert(geometryShaderBlob_ != nullptr);
 }
 

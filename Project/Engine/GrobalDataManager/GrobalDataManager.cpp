@@ -18,66 +18,66 @@ void GrobalDataManager::Finalize() {
 }
 
 void GrobalDataManager::Update() {
-	if (!ImGui::Begin("GlobalDatas", nullptr, ImGuiWindowFlags_MenuBar)) {
-		ImGui::End();
-		return;
-	}
-	if (!ImGui::BeginMenuBar())
-		return;
+	//if (!ImGui::Begin("GlobalDatas", nullptr, ImGuiWindowFlags_MenuBar)) {
+	//	ImGui::End();
+	//	return;
+	//}
+	//if (!ImGui::BeginMenuBar())
+	//	return;
 
-	// 各グループについて
-	for (std::map<std::string, Group>::iterator itGroup = datas_.begin(); itGroup != datas_.end(); ++itGroup) {
-		// グループ名を取得
-		const std::string& groupName = itGroup->first;
-		// グループの参照を取得
-		Group& group = itGroup->second;
+	//// 各グループについて
+	//for (std::map<std::string, Group>::iterator itGroup = datas_.begin(); itGroup != datas_.end(); ++itGroup) {
+	//	// グループ名を取得
+	//	const std::string& groupName = itGroup->first;
+	//	// グループの参照を取得
+	//	Group& group = itGroup->second;
 
-		if (!ImGui::BeginMenu(groupName.c_str()))
-			continue;
+	//	if (!ImGui::BeginMenu(groupName.c_str()))
+	//		continue;
 
-		// 各項目について
-		for (std::map<std::string, Item>::iterator itItem = group.items.begin(); itItem != group.items.end(); ++itItem) {
-			// 項目名を取得
-			const std::string& itemName = itItem->first;
-			// 項目の参照を取得
-			Item& item = itItem->second;
+	//	// 各項目について
+	//	for (std::map<std::string, Item>::iterator itItem = group.items.begin(); itItem != group.items.end(); ++itItem) {
+	//		// 項目名を取得
+	//		const std::string& itemName = itItem->first;
+	//		// 項目の参照を取得
+	//		Item& item = itItem->second;
 
-			// int32_t型の値を保持していれば
-			if (std::holds_alternative<int32_t>(item.value)) {
-				int32_t* ptr = std::get_if<int32_t>(&item.value);
-				ImGui::DragInt(itemName.c_str(), ptr, 0, 100);
-			}
-			// float型の値を保持していれば
-			else if (std::holds_alternative<float>(item.value)) {
-				float* ptr = std::get_if<float>(&item.value);
-				ImGui::DragFloat(itemName.c_str(), ptr, 0, 100);
-			}
-			// Vector3型の値を保持していれば
-			else if (std::holds_alternative<Vector3>(item.value)) {
-				Vector3* ptr = std::get_if<Vector3>(&item.value);
-				ImGui::DragFloat3(itemName.c_str(), reinterpret_cast<float*>(ptr), 0.001f);
-			}
-			// Bool型の値を保持していれば
-			else if (std::holds_alternative<bool>(item.value)) {
-				bool* ptr = std::get_if<bool>(&item.value);
-				ImGui::Checkbox(itemName.c_str(), ptr);
-			}
-		}
+	//		// int32_t型の値を保持していれば
+	//		if (std::holds_alternative<int32_t>(item.value)) {
+	//			int32_t* ptr = std::get_if<int32_t>(&item.value);
+	//			ImGui::DragInt(itemName.c_str(), ptr, 0, 100);
+	//		}
+	//		// float型の値を保持していれば
+	//		else if (std::holds_alternative<float>(item.value)) {
+	//			float* ptr = std::get_if<float>(&item.value);
+	//			ImGui::DragFloat(itemName.c_str(), ptr, 0, 100);
+	//		}
+	//		// Vector3型の値を保持していれば
+	//		else if (std::holds_alternative<Vector3>(item.value)) {
+	//			Vector3* ptr = std::get_if<Vector3>(&item.value);
+	//			ImGui::DragFloat3(itemName.c_str(), reinterpret_cast<float*>(ptr), 0.001f);
+	//		}
+	//		// Bool型の値を保持していれば
+	//		else if (std::holds_alternative<bool>(item.value)) {
+	//			bool* ptr = std::get_if<bool>(&item.value);
+	//			ImGui::Checkbox(itemName.c_str(), ptr);
+	//		}
+	//	}
 
-		// 改行
-		ImGui::Text("\n");
+	//	// 改行
+	//	ImGui::Text("\n");
 
-		if (ImGui::Button("Save")) {
-			SaveFile(groupName);
-			std::string message = std::format("{}.json saved.", groupName);
-			MessageBoxA(nullptr, message.c_str(), "GlobalVariables", 0);
-		}
+	//	if (ImGui::Button("Save")) {
+	//		SaveFile(groupName);
+	//		std::string message = std::format("{}.json saved.", groupName);
+	//		MessageBoxA(nullptr, message.c_str(), "GlobalVariables", 0);
+	//	}
 
-		ImGui::EndMenu();
-	}
+	//	ImGui::EndMenu();
+	//}
 
-	ImGui::EndMenuBar();
-	ImGui::End();
+	//ImGui::EndMenuBar();
+	//ImGui::End();
 }
 
 void GrobalDataManager::CreateGroup(const std::string& groupName) {

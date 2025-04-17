@@ -32,7 +32,7 @@ TriangleDrawer3D::TriangleDrawer3D(DXGI* dxgi, DirectXCommand* directXCommand, S
 	// Materialデータを書き込む
 	MapMaterialData();
 
-	triangles_.reserve(kNumMaxInstance);
+	triangles_.resize(kNumMaxInstance);
 	Logger::Log("TriangleDrawer3D Initialize\n");
 }
 
@@ -41,19 +41,16 @@ TriangleDrawer3D::~TriangleDrawer3D() {
 }
 
 void TriangleDrawer3D::Update() {
-	// 最大数を超えていたら止める
-	assert(triangles_.size() <= kNumMaxInstance && "Triangle size is over!");
-
-	// 描画すべきインスタンス数
-	instanceCount_ = static_cast<uint32_t>(triangles_.size());
-
-	// データが存在し、描画対象がある場合のみコピー
+	// 上限を超えていたらassert
+	assert(currentIndex_ <= kNumMaxInstance);
+	instanceCount_ = currentIndex_;
+	// インスタンスの数だけコピー
 	if (instancingData_ && materialData_ && instanceCount_ > 0) {
 		std::memcpy(instancingData_, triangles_.data(), instanceCount_ * sizeof(TriangleData3DForGPU));
-		//std::memcpy(materialData_, materials_.data(), instanceCount_ * sizeof(PrimitiveMaterialData3DForGPU));
 	}
-	// 三角形のコンテナをクリア
-	ClearTriangles();
+
+	// インデックスリセット
+	currentIndex_ = 0; 
 }
 
 void TriangleDrawer3D::Draw() {
@@ -82,7 +79,8 @@ void TriangleDrawer3D::AddTriangle(const Matrix4x4& worldMatrix, const RGBA& col
 		.worldMatrix = worldMatrix,
 		.color = RGBAToVector4(color),
 	};
-	triangles_.push_back(newTriangleData);
+	// インデックスに追加
+	triangles_[currentIndex_++] = newTriangleData;
 }
 
 void TriangleDrawer3D::ClearTriangles() {
