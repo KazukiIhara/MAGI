@@ -36,9 +36,6 @@
     <CLInclude Include="scoped.h">
       <Filter>Source Files</Filter>
     </CLInclude>
-    <ClInclude Include="d3dx12.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BC.cpp">

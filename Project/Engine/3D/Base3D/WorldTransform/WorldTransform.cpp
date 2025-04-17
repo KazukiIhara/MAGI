@@ -13,13 +13,24 @@ void WorldTransform::Initialize() {
 }
 
 void WorldTransform::Update() {
+	// 変更チェック
+	bool isChanged = (scale_ != preScale_ || rotate_ != preRotate_ || translate_ != preTranslate_);
+	if (!isChanged && !parent_) {
+		return; // 変更がなければスキップ
+	}
+
 	// クオータニオンorオイラー
-	isUseQuaternion_ ? UpdateQuaternion() : UpdateEuler();
+	UpdateEuler();
 
 	// 親がいる場合の計算
 	if (parent_) {
 		worldMatrix_ = worldMatrix_ * parent_->worldMatrix_;
 	}
+
+	// 前フレームの値を保存
+	preScale_ = scale_;
+	preRotate_ = rotate_;
+	preTranslate_ = translate_;
 }
 
 void WorldTransform::UpdateEuler() {

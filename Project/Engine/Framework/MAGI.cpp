@@ -72,6 +72,7 @@ std::unique_ptr<ParticleGroup3DManager> MAGISYSTEM::particleGroup3DManager_ = nu
 // Drawer
 // 
 std::unique_ptr<LineDrawer3D> MAGISYSTEM::lineDrawer3D_ = nullptr;
+std::unique_ptr<TriangleDrawer3D> MAGISYSTEM::triangleDrawer3D_ = nullptr;
 std::unique_ptr<PlaneDrawer3D> MAGISYSTEM::planeDrawer3D_ = nullptr;
 std::unique_ptr<SphereDrawer3D> MAGISYSTEM::sphereDrawer3D_ = nullptr;
 
@@ -193,6 +194,8 @@ void MAGISYSTEM::Initialize() {
 
 	// LineDrawer3D
 	lineDrawer3D_ = std::make_unique<LineDrawer3D>(dxgi_.get(), directXCommand_.get(), srvuavManager_.get(), graphicsPipelineManager_.get(), camera3DManager_.get());
+	// TriangleDrawer3D
+	triangleDrawer3D_ = std::make_unique<TriangleDrawer3D>(dxgi_.get(), directXCommand_.get(), srvuavManager_.get(), graphicsPipelineManager_.get(), camera3DManager_.get());
 	// PlaneDrawer3D
 	planeDrawer3D_ = std::make_unique<PlaneDrawer3D>(dxgi_.get(), directXCommand_.get(), srvuavManager_.get(), graphicsPipelineManager_.get(), camera3DManager_.get());
 	// SphereDrawer3D
@@ -269,6 +272,11 @@ void MAGISYSTEM::Finalize() {
 	// PlaneDrawer3D
 	if (planeDrawer3D_) {
 		planeDrawer3D_.reset();
+	}
+
+	// TriangleDrawer3D
+	if (triangleDrawer3D_) {
+		triangleDrawer3D_.reset();
 	}
 
 	// LineDrawer3D
@@ -526,6 +534,8 @@ void MAGISYSTEM::Update() {
 
 	// 3Dライン描画クラスの更新
 	lineDrawer3D_->Update();
+	// 3D三角形描画クラスの更新
+	triangleDrawer3D_->Update();
 	// 3D板ポリ描画クラスの更新
 	planeDrawer3D_->Update();
 	// 3D球体描画クラスの更新
@@ -557,6 +567,7 @@ void MAGISYSTEM::Draw() {
 
 	// コマンドリスト取得
 	ID3D12GraphicsCommandList* commandList = directXCommand_->GetList();
+	ID3D12GraphicsCommandList6* commandList6 = directXCommand_->GetList6();
 
 	// SRVUAVのディスクリプタヒープを設定
 	ComPtr<ID3D12DescriptorHeap> descriptorHeaps[] = { srvuavManager_->GetDescriptorHeap() };
@@ -602,6 +613,19 @@ void MAGISYSTEM::Draw() {
 	// LineDrawer3Dの描画処理
 	// 
 	lineDrawer3D_->Draw();
+
+
+	//
+	// TriangleDrawer3Dの描画前処理
+	//
+
+	commandList6->SetGraphicsRootSignature(graphicsPipelineManager_->GetRootSignature(GraphicsPipelineStateType::Triangle3D));
+
+	// 
+	// TriangleDrawer3Dの描画処理
+	// 
+
+	triangleDrawer3D_->Draw();
 
 	// 
 	// PlaneDrawer3Dの描画前処理
@@ -1124,6 +1148,10 @@ void MAGISYSTEM::SetCurrentCamera(const std::string& cameraName) {
 
 void MAGISYSTEM::DrawLine3D(const Vector3& start, const Vector3& end, const RGBA& color) {
 	lineDrawer3D_->AddLine(start, end, color);
+}
+
+void MAGISYSTEM::DrawTriangle3D(const Matrix4x4& worldMatrix, const RGBA& color) {
+	triangleDrawer3D_->AddTriangle(worldMatrix, color);
 }
 
 void MAGISYSTEM::DrawPlane3D(

@@ -88,15 +88,13 @@ private:
 	PrimitiveMaterialData3DForGPU* materialData_ = nullptr;
 
 	// Plane3DSrvIndex
-	uint32_t planeSrvIndex = 0;
+	uint32_t instancingSrvIndex = 0;
 	// MaterialSrvIndex
 	uint32_t materialSrvIndex_ = 0;
 
 	// instance描画する際に使う変数
 	uint32_t instanceCount_ = 0;
 
-	// 現在のインデックス
-	uint32_t currentIndex_ = 0;
 private:
 	DXGI* dxgi_ = nullptr;
 	DirectXCommand* directXCommand_ = nullptr;

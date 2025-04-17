@@ -13,18 +13,6 @@ BaseRenderTexture::~BaseRenderTexture() {
 
 }
 
-void BaseRenderTexture::Initialize(DXGI_FORMAT format, D3D12_RESOURCE_FLAGS resourceFlags, Vector4 clearColor) {
-	format_ = format;
-	resourceFlags_ = resourceFlags;
-	clearColor_ = clearColor;
-	// リソースを作成
-	CreateResource();
-	// RTVを作成
-	CreateRTV();
-	// SRVを作成
-	CreateSRV();
-}
-
 void BaseRenderTexture::Draw() {
 	// コマンドリストを取得
 	ID3D12GraphicsCommandList* commandList = MAGISYSTEM::GetDirectXCommandList();
@@ -44,6 +32,18 @@ D3D12_CPU_DESCRIPTOR_HANDLE BaseRenderTexture::GetRTVHandle() {
 
 ID3D12Resource* BaseRenderTexture::GetResource() {
 	return resource_.Get();
+}
+
+void BaseRenderTexture::Create(DXGI_FORMAT format, D3D12_RESOURCE_FLAGS resourceFlags, Vector4 clearColor) {
+	format_ = format;
+	resourceFlags_ = resourceFlags;
+	clearColor_ = clearColor;
+	// リソースを作成
+	CreateResource();
+	// RTVを作成
+	CreateRTV();
+	// SRVを作成
+	CreateSRV();
 }
 
 uint32_t BaseRenderTexture::GetSrvIndex() const {

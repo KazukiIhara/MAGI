@@ -41,6 +41,8 @@ project "MAGI" -- プロジェクト名
 
       "App/**.cpp",
       "App/**.h",
+
+      "Externals/d3dx12/**.h",
    }
    
    -- 追加のインクルードパス

@@ -8,8 +8,7 @@
 
 // DirectxTex
 #include "DirectXTex/DirectXTex.h"
-#include "DirectXTex/d3dx12.h"
-
+#include "DirectX-Headers/include/directx/d3dx12.h"
 #include "DirectX/ComPtr/ComPtr.h"
 
 // テクスチャ構造体

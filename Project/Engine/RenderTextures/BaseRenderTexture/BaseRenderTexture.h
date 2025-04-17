@@ -23,11 +23,7 @@ public:
 	virtual ~BaseRenderTexture();
 
 	// 初期化
-	void Initialize(
-		DXGI_FORMAT format = DXGI_FORMAT_R8G8B8A8_UNORM_SRGB,
-		D3D12_RESOURCE_FLAGS resourceFlags = D3D12_RESOURCE_FLAG_ALLOW_RENDER_TARGET,
-		Vector4 clearColor = Vector4(0, 0, 0, 1)
-	);
+	virtual void Initialize() = 0;
 
 	// 描画
 	void Draw();
@@ -42,6 +38,11 @@ public:
 
 	// リソースを取得
 	ID3D12Resource* GetResource();
+
+protected:
+	void Create(DXGI_FORMAT format = DXGI_FORMAT_R8G8B8A8_UNORM_SRGB,
+		D3D12_RESOURCE_FLAGS resourceFlags = D3D12_RESOURCE_FLAG_ALLOW_RENDER_TARGET,
+		Vector4 clearColor = Vector4(0.0f, 0.0f, 0.0f, 1.0f));
 
 private:
 	// レンダーテクスチャのリソースを作成
