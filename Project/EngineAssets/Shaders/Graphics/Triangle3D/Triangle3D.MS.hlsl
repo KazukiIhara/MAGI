@@ -32,7 +32,7 @@ void main(
         float4 clipPos = mul(worldPos, gCamera.viewProjection);
 
         verts[i].position = clipPos;
-        verts[i].color = data.color; // ëSí∏ì_Ç…ìØÇ∂êF
+        verts[i].color = data.color;
     }
 
     tris[0] = uint3(0, 1, 2);
