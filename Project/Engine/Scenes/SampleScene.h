@@ -9,7 +9,7 @@
 
 // サンプルシーン
 template <typename Data>
-class SampleScene : public BaseScene<Data> {
+class SampleScene: public BaseScene<Data> {
 public:
 	using BaseScene<Data>::BaseScene; // 親クラスのコンストラクタをそのまま継承
 	~SampleScene()override = default;
@@ -29,6 +29,7 @@ private:
 
 	// 板ポリ用のワールドトランスフォーム
 	std::array<std::unique_ptr<WorldTransform>, primitiveSize_> primitiveWorldTransform_;
+	PrimitiveMaterialData3D material_{};
 };
 
 template<typename Data>
@@ -90,8 +91,7 @@ inline void SampleScene<Data>::Initialize() {
 		primitiveWorldTransform_[i]->Initialize();
 		primitiveWorldTransform_[i]->translate_.x = float(i);
 	}
-
-
+	material_.textureIndex = 1;
 }
 
 template<typename Data>
@@ -105,8 +105,9 @@ inline void SampleScene<Data>::Update() {
 
 template<typename Data>
 inline void SampleScene<Data>::Draw() {
+
 	for (size_t i = 0; i < primitiveSize_; i++) {
-		MAGISYSTEM::DrawTriangle3D(primitiveWorldTransform_[i]->worldMatrix_, Color::White);
+		MAGISYSTEM::DrawTriangle3D(primitiveWorldTransform_[i]->worldMatrix_, material_);
 	}
 
 	// 

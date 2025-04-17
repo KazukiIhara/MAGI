@@ -30,7 +30,7 @@ public:
 
 	void AddTriangle(
 		const Matrix4x4& worldMatrix,
-		const RGBA& color
+		const PrimitiveMaterialData3D& material
 		);
 
 private:
@@ -72,7 +72,7 @@ private:
 	PrimitiveMaterialData3DForGPU* materialData_ = nullptr;
 
 	// Triangle3DSrvIndex
-	uint32_t instancingSrvIndex = 0;
+	uint32_t instancingSrvIndex_ = 0;
 	// MaterialSrvIndex
 	uint32_t materialSrvIndex_ = 0;
 

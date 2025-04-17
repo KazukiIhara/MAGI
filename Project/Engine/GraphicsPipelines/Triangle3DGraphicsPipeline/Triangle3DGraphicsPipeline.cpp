@@ -8,8 +8,7 @@
 #include "DirectX/ShaderCompiler/ShaderCompiler.h"
 
 Triangle3DGraphicsPipeline::Triangle3DGraphicsPipeline(DXGI* dxgi, ShaderCompiler* shaderCompiler)
-	: BaseGraphicsPipeline(dxgi, shaderCompiler) {
-}
+	: BaseGraphicsPipeline(dxgi, shaderCompiler) {}
 
 void Triangle3DGraphicsPipeline::CreateRootSignature() {
 
@@ -17,17 +16,30 @@ void Triangle3DGraphicsPipeline::CreateRootSignature() {
 
 	// ---- DescriptorRange ---- //
 
-	// InstancingDataのDescriptorRange
+	// InstancingDataのDescriptorRange (t0)
 	D3D12_DESCRIPTOR_RANGE descriptorRangeInstance{};
 	descriptorRangeInstance.BaseShaderRegister = 0;
 	descriptorRangeInstance.NumDescriptors = 1;
 	descriptorRangeInstance.RangeType = D3D12_DESCRIPTOR_RANGE_TYPE_SRV;
 	descriptorRangeInstance.OffsetInDescriptorsFromTableStart = D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND;
 
+	// MaterialDataのDescriptorRange (t1)
+	D3D12_DESCRIPTOR_RANGE descriptorRangeMaterial{};
+	descriptorRangeMaterial.BaseShaderRegister = 1;
+	descriptorRangeMaterial.NumDescriptors = 1;
+	descriptorRangeMaterial.RangeType = D3D12_DESCRIPTOR_RANGE_TYPE_SRV;
+	descriptorRangeMaterial.OffsetInDescriptorsFromTableStart = D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND;
+
+	// DescriptorRange for Bindless Textures (t1000~)
+	D3D12_DESCRIPTOR_RANGE descriptorRangeTextures{};
+	descriptorRangeTextures.BaseShaderRegister = 1000;
+	descriptorRangeTextures.NumDescriptors = 1024;
+	descriptorRangeTextures.RangeType = D3D12_DESCRIPTOR_RANGE_TYPE_SRV;
+	descriptorRangeTextures.OffsetInDescriptorsFromTableStart = D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND;
 
 	// ---- RootParameter ---- //
 
-	D3D12_ROOT_PARAMETER rootParams[2] = {};
+	D3D12_ROOT_PARAMETER rootParams[4] = {};
 
 	// Camera (b0)
 	rootParams[0].ParameterType = D3D12_ROOT_PARAMETER_TYPE_CBV;
@@ -40,13 +52,37 @@ void Triangle3DGraphicsPipeline::CreateRootSignature() {
 	rootParams[1].DescriptorTable.pDescriptorRanges = &descriptorRangeInstance;
 	rootParams[1].DescriptorTable.NumDescriptorRanges = 1;
 
+	// MaterialData (t1)
+	rootParams[2].ParameterType = D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE;
+	rootParams[2].ShaderVisibility = D3D12_SHADER_VISIBILITY_ALL;
+	rootParams[2].DescriptorTable.pDescriptorRanges = &descriptorRangeMaterial;
+	rootParams[2].DescriptorTable.NumDescriptorRanges = 1;
+
+	// Bindless Texture (t1000)
+	rootParams[3].ParameterType = D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE;
+	rootParams[3].ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL;
+	rootParams[3].DescriptorTable.pDescriptorRanges = &descriptorRangeTextures;
+	rootParams[3].DescriptorTable.NumDescriptorRanges = 1;
+
+	// Sampler (s0)
+	D3D12_STATIC_SAMPLER_DESC staticSampler{};
+	staticSampler.Filter = D3D12_FILTER_MIN_MAG_MIP_LINEAR;
+	staticSampler.AddressU = D3D12_TEXTURE_ADDRESS_MODE_WRAP;
+	staticSampler.AddressV = D3D12_TEXTURE_ADDRESS_MODE_WRAP;
+	staticSampler.AddressW = D3D12_TEXTURE_ADDRESS_MODE_WRAP;
+	staticSampler.ComparisonFunc = D3D12_COMPARISON_FUNC_NEVER;
+	staticSampler.MaxLOD = D3D12_FLOAT32_MAX;
+	staticSampler.ShaderRegister = 0;
+	staticSampler.RegisterSpace = 0;
+	staticSampler.ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL;
+
 
 	// Root signature desc
 	D3D12_ROOT_SIGNATURE_DESC rootSigDesc{};
 	rootSigDesc.NumParameters = _countof(rootParams);
 	rootSigDesc.pParameters = rootParams;
-	rootSigDesc.NumStaticSamplers = 0;
-	rootSigDesc.pStaticSamplers = nullptr;
+	rootSigDesc.NumStaticSamplers = 1;
+	rootSigDesc.pStaticSamplers = &staticSampler;
 	rootSigDesc.Flags = D3D12_ROOT_SIGNATURE_FLAG_NONE;
 
 	ComPtr<ID3DBlob> sigBlob;
@@ -145,66 +181,66 @@ void Triangle3DGraphicsPipeline::CreateGraphicsPipelineObject() {
 D3D12_BLEND_DESC Triangle3DGraphicsPipeline::BlendStateSetting(uint32_t blendModeNum) {
 	D3D12_BLEND_DESC blendDesc{};
 	switch (blendModeNum) {
-	case 0:// kBlendModeNone
-		blendDesc.RenderTarget[0].RenderTargetWriteMask = D3D12_COLOR_WRITE_ENABLE_ALL;
-		break;
-	case 1:// kBlendModeNormal
-		blendDesc.RenderTarget[0].RenderTargetWriteMask = D3D12_COLOR_WRITE_ENABLE_ALL;
-		blendDesc.RenderTarget[0].BlendEnable = TRUE;
-		blendDesc.RenderTarget[0].SrcBlend = D3D12_BLEND_SRC_ALPHA;
-		blendDesc.RenderTarget[0].BlendOp = D3D12_BLEND_OP_ADD;
-		blendDesc.RenderTarget[0].DestBlend = D3D12_BLEND_INV_SRC_ALPHA;
-		blendDesc.RenderTarget[0].SrcBlendAlpha = D3D12_BLEND_ZERO;
-		blendDesc.RenderTarget[0].BlendOpAlpha = D3D12_BLEND_OP_ADD;
-		blendDesc.RenderTarget[0].DestBlendAlpha = D3D12_BLEND_ONE;
-		break;
+		case 0:// kBlendModeNone
+			blendDesc.RenderTarget[0].RenderTargetWriteMask = D3D12_COLOR_WRITE_ENABLE_ALL;
+			break;
+		case 1:// kBlendModeNormal
+			blendDesc.RenderTarget[0].RenderTargetWriteMask = D3D12_COLOR_WRITE_ENABLE_ALL;
+			blendDesc.RenderTarget[0].BlendEnable = TRUE;
+			blendDesc.RenderTarget[0].SrcBlend = D3D12_BLEND_SRC_ALPHA;
+			blendDesc.RenderTarget[0].BlendOp = D3D12_BLEND_OP_ADD;
+			blendDesc.RenderTarget[0].DestBlend = D3D12_BLEND_INV_SRC_ALPHA;
+			blendDesc.RenderTarget[0].SrcBlendAlpha = D3D12_BLEND_ZERO;
+			blendDesc.RenderTarget[0].BlendOpAlpha = D3D12_BLEND_OP_ADD;
+			blendDesc.RenderTarget[0].DestBlendAlpha = D3D12_BLEND_ONE;
+			break;
 
-	case 2:// kBlendModeAdd
-		blendDesc.RenderTarget[0].RenderTargetWriteMask = D3D12_COLOR_WRITE_ENABLE_ALL;
-		blendDesc.RenderTarget[0].RenderTargetWriteMask = D3D12_COLOR_WRITE_ENABLE_ALL;
-		blendDesc.RenderTarget[0].BlendEnable = TRUE;
-		blendDesc.RenderTarget[0].SrcBlend = D3D12_BLEND_SRC_ALPHA;
-		blendDesc.RenderTarget[0].BlendOp = D3D12_BLEND_OP_ADD;
-		blendDesc.RenderTarget[0].DestBlend = D3D12_BLEND_ONE;
-		blendDesc.RenderTarget[0].SrcBlendAlpha = D3D12_BLEND_ZERO;
-		blendDesc.RenderTarget[0].BlendOpAlpha = D3D12_BLEND_OP_ADD;
-		blendDesc.RenderTarget[0].DestBlendAlpha = D3D12_BLEND_ONE;
-		break;
-	case 3:// kBlendModeSubtract
-		blendDesc.RenderTarget[0].RenderTargetWriteMask = D3D12_COLOR_WRITE_ENABLE_ALL;
-		blendDesc.RenderTarget[0].RenderTargetWriteMask = D3D12_COLOR_WRITE_ENABLE_ALL;
-		blendDesc.RenderTarget[0].BlendEnable = TRUE;
-		blendDesc.RenderTarget[0].SrcBlend = D3D12_BLEND_SRC_ALPHA;
-		blendDesc.RenderTarget[0].BlendOp = D3D12_BLEND_OP_REV_SUBTRACT;
-		blendDesc.RenderTarget[0].DestBlend = D3D12_BLEND_ONE;
-		blendDesc.RenderTarget[0].SrcBlendAlpha = D3D12_BLEND_ZERO;
-		blendDesc.RenderTarget[0].BlendOpAlpha = D3D12_BLEND_OP_ADD;
-		blendDesc.RenderTarget[0].DestBlendAlpha = D3D12_BLEND_ONE;
-		break;
+		case 2:// kBlendModeAdd
+			blendDesc.RenderTarget[0].RenderTargetWriteMask = D3D12_COLOR_WRITE_ENABLE_ALL;
+			blendDesc.RenderTarget[0].RenderTargetWriteMask = D3D12_COLOR_WRITE_ENABLE_ALL;
+			blendDesc.RenderTarget[0].BlendEnable = TRUE;
+			blendDesc.RenderTarget[0].SrcBlend = D3D12_BLEND_SRC_ALPHA;
+			blendDesc.RenderTarget[0].BlendOp = D3D12_BLEND_OP_ADD;
+			blendDesc.RenderTarget[0].DestBlend = D3D12_BLEND_ONE;
+			blendDesc.RenderTarget[0].SrcBlendAlpha = D3D12_BLEND_ZERO;
+			blendDesc.RenderTarget[0].BlendOpAlpha = D3D12_BLEND_OP_ADD;
+			blendDesc.RenderTarget[0].DestBlendAlpha = D3D12_BLEND_ONE;
+			break;
+		case 3:// kBlendModeSubtract
+			blendDesc.RenderTarget[0].RenderTargetWriteMask = D3D12_COLOR_WRITE_ENABLE_ALL;
+			blendDesc.RenderTarget[0].RenderTargetWriteMask = D3D12_COLOR_WRITE_ENABLE_ALL;
+			blendDesc.RenderTarget[0].BlendEnable = TRUE;
+			blendDesc.RenderTarget[0].SrcBlend = D3D12_BLEND_SRC_ALPHA;
+			blendDesc.RenderTarget[0].BlendOp = D3D12_BLEND_OP_REV_SUBTRACT;
+			blendDesc.RenderTarget[0].DestBlend = D3D12_BLEND_ONE;
+			blendDesc.RenderTarget[0].SrcBlendAlpha = D3D12_BLEND_ZERO;
+			blendDesc.RenderTarget[0].BlendOpAlpha = D3D12_BLEND_OP_ADD;
+			blendDesc.RenderTarget[0].DestBlendAlpha = D3D12_BLEND_ONE;
+			break;
 
-	case 4:// kBlendModeMultiply
-		blendDesc.RenderTarget[0].RenderTargetWriteMask = D3D12_COLOR_WRITE_ENABLE_ALL;
-		blendDesc.RenderTarget[0].RenderTargetWriteMask = D3D12_COLOR_WRITE_ENABLE_ALL;
-		blendDesc.RenderTarget[0].BlendEnable = TRUE;
-		blendDesc.RenderTarget[0].SrcBlend = D3D12_BLEND_ZERO;
-		blendDesc.RenderTarget[0].BlendOp = D3D12_BLEND_OP_ADD;
-		blendDesc.RenderTarget[0].DestBlend = D3D12_BLEND_SRC_COLOR;
-		blendDesc.RenderTarget[0].SrcBlendAlpha = D3D12_BLEND_ZERO;
-		blendDesc.RenderTarget[0].BlendOpAlpha = D3D12_BLEND_OP_ADD;
-		blendDesc.RenderTarget[0].DestBlendAlpha = D3D12_BLEND_ONE;
-		break;
+		case 4:// kBlendModeMultiply
+			blendDesc.RenderTarget[0].RenderTargetWriteMask = D3D12_COLOR_WRITE_ENABLE_ALL;
+			blendDesc.RenderTarget[0].RenderTargetWriteMask = D3D12_COLOR_WRITE_ENABLE_ALL;
+			blendDesc.RenderTarget[0].BlendEnable = TRUE;
+			blendDesc.RenderTarget[0].SrcBlend = D3D12_BLEND_ZERO;
+			blendDesc.RenderTarget[0].BlendOp = D3D12_BLEND_OP_ADD;
+			blendDesc.RenderTarget[0].DestBlend = D3D12_BLEND_SRC_COLOR;
+			blendDesc.RenderTarget[0].SrcBlendAlpha = D3D12_BLEND_ZERO;
+			blendDesc.RenderTarget[0].BlendOpAlpha = D3D12_BLEND_OP_ADD;
+			blendDesc.RenderTarget[0].DestBlendAlpha = D3D12_BLEND_ONE;
+			break;
 
-	case 5:// kBlendModeScreen
-		blendDesc.RenderTarget[0].RenderTargetWriteMask = D3D12_COLOR_WRITE_ENABLE_ALL;
-		blendDesc.RenderTarget[0].RenderTargetWriteMask = D3D12_COLOR_WRITE_ENABLE_ALL;
-		blendDesc.RenderTarget[0].BlendEnable = TRUE;
-		blendDesc.RenderTarget[0].SrcBlend = D3D12_BLEND_INV_DEST_COLOR;
-		blendDesc.RenderTarget[0].BlendOp = D3D12_BLEND_OP_ADD;
-		blendDesc.RenderTarget[0].DestBlend = D3D12_BLEND_ONE;
-		blendDesc.RenderTarget[0].SrcBlendAlpha = D3D12_BLEND_ZERO;
-		blendDesc.RenderTarget[0].BlendOpAlpha = D3D12_BLEND_OP_ADD;
-		blendDesc.RenderTarget[0].DestBlendAlpha = D3D12_BLEND_ONE;
-		break;
+		case 5:// kBlendModeScreen
+			blendDesc.RenderTarget[0].RenderTargetWriteMask = D3D12_COLOR_WRITE_ENABLE_ALL;
+			blendDesc.RenderTarget[0].RenderTargetWriteMask = D3D12_COLOR_WRITE_ENABLE_ALL;
+			blendDesc.RenderTarget[0].BlendEnable = TRUE;
+			blendDesc.RenderTarget[0].SrcBlend = D3D12_BLEND_INV_DEST_COLOR;
+			blendDesc.RenderTarget[0].BlendOp = D3D12_BLEND_OP_ADD;
+			blendDesc.RenderTarget[0].DestBlend = D3D12_BLEND_ONE;
+			blendDesc.RenderTarget[0].SrcBlendAlpha = D3D12_BLEND_ZERO;
+			blendDesc.RenderTarget[0].BlendOpAlpha = D3D12_BLEND_OP_ADD;
+			blendDesc.RenderTarget[0].DestBlendAlpha = D3D12_BLEND_ONE;
+			break;
 	}
 	// 全ての色要素を書き込む
 	// ブレンドモードNone D3D12_COLOR_WRITE_ENABLE_ALLだけ

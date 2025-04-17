@@ -82,7 +82,6 @@ struct TriangleData3D {
 /// </summary>
 struct TriangleData3DForGPU {
 	Matrix4x4 worldMatrix;
-	Vector4 color;
 };
 
 /// <summary>

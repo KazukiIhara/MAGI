@@ -2,6 +2,7 @@
 
 ConstantBuffer<Camera> gCamera : register(b0);
 StructuredBuffer<TriangleData3D> gInstanceData : register(t0);
+StructuredBuffer<PrimitiveMaterialData3D> gMaterialData : register(t1);
 
 [outputtopology("triangle")]
 [numthreads(1, 1, 1)]
@@ -13,11 +14,10 @@ void main(
 {
     uint instanceID = dispatchThreadID.y;
     TriangleData3D data = gInstanceData[instanceID];
+    PrimitiveMaterialData3D mat = gMaterialData[instanceID];
 
-    // 出力頂点・三角形の数を設定
     SetMeshOutputCounts(3, 1);
 
-    // ローカルの三角形（原点中心）
     float3 positions[3] =
     {
         float3(-0.5f, -0.5f, 0.0f),
@@ -32,7 +32,9 @@ void main(
         float4 clipPos = mul(worldPos, gCamera.viewProjection);
 
         verts[i].position = clipPos;
-        verts[i].color = data.color;
+        verts[i].uv = float2(positions[i].x + 0.5f, 1.0f - (positions[i].y + 0.5f)); // 0~1へ
+        verts[i].color = mat.baseColor;
+        verts[i].instanceIndex = instanceID;
     }
 
     tris[0] = uint3(0, 1, 2);
