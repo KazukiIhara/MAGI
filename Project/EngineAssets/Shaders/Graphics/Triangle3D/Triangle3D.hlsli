@@ -12,6 +12,7 @@ struct MeshOutput
 struct TriangleData3D
 {
     float4x4 worldMatrix;
+    float4 vertices[3];
 };
 
 // マテリアルデータ
@@ -20,10 +21,7 @@ struct PrimitiveMaterialData3D
     uint textureIndex;
     float3 _padding0;
     float4 baseColor;
-    float2 uvTranslate;
-    float2 uvScale;
-    float uvRotate;
-    float3 _padding1;
+    float4x4 uvMatrix;
 };
 
 // カメラ

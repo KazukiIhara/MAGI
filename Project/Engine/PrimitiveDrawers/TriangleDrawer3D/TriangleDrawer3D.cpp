@@ -83,10 +83,18 @@ void TriangleDrawer3D::Draw() {
 	commandList->DispatchMesh(1, instanceCount_, 1);
 }
 
-void TriangleDrawer3D::AddTriangle(const Matrix4x4& worldMatrix, const PrimitiveMaterialData3D& material) {
+void TriangleDrawer3D::AddTriangle(
+	const Matrix4x4& worldMatrix,
+	const TriangleData3D& data,
+	const PrimitiveMaterialData3D& material) {
 	// 座標と形状データ
 	TriangleData3DForGPU newTriangleData{
 		.worldMatrix = worldMatrix,
+		.Offsets{
+			Vector4(data.verticesOffsets[0].x,data.verticesOffsets[0].y,data.verticesOffsets[0].z,1.0f),
+			Vector4(data.verticesOffsets[1].x,data.verticesOffsets[1].y,data.verticesOffsets[1].z,1.0f),
+			Vector4(data.verticesOffsets[2].x,data.verticesOffsets[2].y,data.verticesOffsets[2].z,1.0f),
+		},
 	};
 	// リストに追加
 	triangles_[currentIndex_] = newTriangleData;
@@ -95,9 +103,7 @@ void TriangleDrawer3D::AddTriangle(const Matrix4x4& worldMatrix, const Primitive
 	PrimitiveMaterialData3DForGPU newMaterialData{
 		.textureIndex = material.textureIndex,
 		.baseColor = RGBAToVector4(material.baseColor),
-		.uvTransform = material.uvTransform,
-		.uvScale = material.uvScale,
-		.uvRotation = material.uvRotate,
+		.uvMatrix = MakeUVMatrix(material.uvScale,material.uvRotate,material.uvTransform),
 	};
 	// リストに追加
 	materials_[currentIndex_] = newMaterialData;
@@ -167,8 +173,6 @@ void TriangleDrawer3D::MapMaterialData() {
 	for (uint32_t i = 0; i < kNumMaxInstance; ++i) {
 		materialData_[i].textureIndex = textureIndex;
 		materialData_[i].baseColor = { 1.0f,1.0f,1.0f,1.0f };
-		materialData_[i].uvScale = { 1.0f,1.0f };
-		materialData_[i].uvRotation = 0.0f;
-		materialData_[i].uvTransform = { 0.0f,0.0f };
+		materialData_[i].uvMatrix = MakeIdentityMatrix4x4();
 	}
 }

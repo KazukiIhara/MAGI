@@ -18,21 +18,18 @@ void main(
 
     SetMeshOutputCounts(3, 1);
 
-    float3 positions[3] =
-    {
-        float3(-0.5f, -0.5f, 0.0f),
-        float3(0.0f, 0.5f, 0.0f),
-        float3(0.5f, -0.5f, 0.0f)
-    };
-
     for (uint i = 0; i < 3; ++i)
     {
-        float4 localPos = float4(positions[i], 1.0f);
+        float4 localPos = float4(data.vertices[i].xyz, 1.0f);
         float4 worldPos = mul(localPos, data.worldMatrix);
         float4 clipPos = mul(worldPos, gCamera.viewProjection);
+   
+        float2 baseUV = float2(data.vertices[i].x + 0.5f, 1.0f - (data.vertices[i].y + 0.5f));
+  
+        float4 uvTransformed = mul(float4(baseUV, 0.0f, 1.0f), mat.uvMatrix);
 
         verts[i].position = clipPos;
-        verts[i].uv = float2(positions[i].x + 0.5f, 1.0f - (positions[i].y + 0.5f)); // 0~1‚Ö
+        verts[i].uv = uvTransformed.xy;
         verts[i].color = mat.baseColor;
         verts[i].instanceIndex = instanceID;
     }
