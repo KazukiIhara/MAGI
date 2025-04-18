@@ -1,7 +1,7 @@
-#include "Sphere3D.hlsli"
+﻿#include "Sphere3D.hlsli"
 
-#define MAX_VERTS 256
-#define MAX_TRIS 256
+#define MAX_VERTICES 256
+#define MAX_TRIANGLES 256
 
 ConstantBuffer<Camera> gCamera : register(b0);
 StructuredBuffer<SphereData3D> gInstanceData : register(t0);
@@ -10,66 +10,78 @@ StructuredBuffer<PrimitiveMaterialData3D> gMaterialData : register(t1);
 [outputtopology("triangle")]
 [numthreads(1, 1, 1)]
 void main(
-    uint3 dispatchThreadID : SV_DispatchThreadID,
-    out indices uint3 tris[MAX_TRIS],
-    out vertices MeshOutput verts[MAX_VERTS]
+    uint3 threadID : SV_DispatchThreadID,
+    out indices uint3 tris[MAX_TRIANGLES],
+    out vertices MeshOutput verts[MAX_VERTICES]
 )
 {
-    uint instanceID = dispatchThreadID.y;
+    uint instanceID = threadID.y;
     SphereData3D sphere = gInstanceData[instanceID];
     PrimitiveMaterialData3D mat = gMaterialData[instanceID];
 
-    uint lat = sphere.latitudeSegments;
-    uint lon = sphere.longitudeSegments;
+    const uint lonCount = min(sphere.longitudeSegments, 15);
+    const uint latCount = min(sphere.latitudeSegments, 15);
+    const float radius = sphere.radius;
 
-    uint vertexCount = (lat + 1) * (lon + 1);
-    uint indexCount = lat * lon * 6;
+    const uint vertexCount = (latCount + 1) * (lonCount + 1);
+    const uint triangleCount = latCount * lonCount * 2;
 
-    SetMeshOutputCounts(vertexCount, indexCount / 3);
+    // 🔴 ここで必ず最初に呼び出す
+    SetMeshOutputCounts(vertexCount, triangleCount);
 
-    uint index = 0;
-    for (uint y = 0; y <= lat; ++y)
+    const float PI = 3.14159265f;
+    const float lonStep = 2.0f * PI / lonCount;
+    const float latStep = PI / latCount;
+
+    uint vertexIndex = 0;
+    uint triangleIndex = 0;
+
+    // 頂点生成
+    for (uint latIndex = 0; latIndex <= latCount; ++latIndex)
     {
-        float v = (float) y / lat;
-        float theta = v * 3.14159265;
+        float theta = -PI / 2.0f + latIndex * latStep;
+        float sinTheta = sin(theta);
+        float cosTheta = cos(theta);
 
-        for (uint x = 0; x <= lon; ++x)
+        for (uint lonIndex = 0; lonIndex <= lonCount; ++lonIndex)
         {
-            float u = (float) x / lon;
-            float phi = u * 2.0f * 3.14159265;
+            float phi = lonIndex * lonStep;
+            float sinPhi = sin(phi);
+            float cosPhi = cos(phi);
 
             float3 localPos = float3(
-                sin(theta) * cos(phi),
-                cos(theta),
-                sin(theta) * sin(phi)
-            ) * sphere.radius;
+                cosTheta * cosPhi,
+                sinTheta,
+                cosTheta * sinPhi
+            );
 
-            float4 worldPos = mul(float4(localPos, 1.0f), sphere.worldMatrix);
+            float4 worldPos = mul(float4(localPos * radius, 1.0f), sphere.worldMatrix);
             float4 clipPos = mul(worldPos, gCamera.viewProjection);
 
-            float2 baseUV = float2(u, 1.0f - v);
-            float4 transformedUV = mul(float4(baseUV, 0.0f, 1.0f), mat.uvMatrix);
+            float2 uv = float2((float) lonIndex / lonCount, 1.0f - (float) latIndex / latCount);
+            float4 uvTransformed = mul(float4(uv, 0.0f, 1.0f), mat.uvMatrix);
 
-            verts[index].position = clipPos;
-            verts[index].uv = transformedUV.xy;
-            verts[index].color = mat.baseColor;
-            verts[index].instanceIndex = instanceID;
-            ++index;
+            verts[vertexIndex].position = clipPos;
+            verts[vertexIndex].uv = uvTransformed.xy;
+            verts[vertexIndex].color = mat.baseColor;
+            verts[vertexIndex].instanceIndex = instanceID;
+
+            vertexIndex++;
         }
     }
 
-    index = 0;
-    for (uint y = 0; y < lat; ++y)
+    // 三角形生成
+    for (uint latIndex = 0; latIndex < latCount; ++latIndex)
     {
-        for (uint x = 0; x < lon; ++x)
+        for (uint lonIndex = 0; lonIndex < lonCount; ++lonIndex)
         {
-            uint i0 = y * (lon + 1) + x;
-            uint i1 = i0 + 1;
-            uint i2 = i0 + lon + 1;
-            uint i3 = i2 + 1;
+            uint v0 = latIndex * (lonCount + 1) + lonIndex;
+            uint v1 = (latIndex + 1) * (lonCount + 1) + lonIndex;
+            uint v2 = v0 + 1;
+            uint v3 = v1 + 1;
 
-            tris[index++] = uint3(i0, i2, i1);
-            tris[index++] = uint3(i1, i2, i3);
+            tris[triangleIndex++] = uint3(v0, v1, v2);
+            tris[triangleIndex++] = uint3(v1, v3, v2);
         }
     }
 }
