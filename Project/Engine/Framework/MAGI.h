@@ -307,6 +307,9 @@ public: // エンジンの機能
 	static const std::map<std::string, Texture>& GetTextureContainer();
 	// テクスチャのインデックスを渡す
 	static uint32_t GetTextureIndex(const std::string& textureName);
+	// エンジンのデフォルトテクスチャインデクス(UVChecker)を渡す
+	static uint32_t GetDefaultTextureIndex();
+
 #pragma endregion
 
 #pragma region PrimitiveShapeDataContainer

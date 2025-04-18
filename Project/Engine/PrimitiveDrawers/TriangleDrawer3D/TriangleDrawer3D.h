@@ -5,6 +5,7 @@
 #include "DirectX/ComPtr/ComPtr.h"
 #include "Structs/ObjectStruct.h"
 #include "Enums/BlendModeEnum.h"
+#include "Const/Primitive3DConst.h"
 
 class DXGI;
 class DirectXCommand;

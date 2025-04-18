@@ -75,7 +75,11 @@ struct LineData3D {
 /// 3Dの三角形データ
 /// </summary>
 struct TriangleData3D {
-	Vector3 verticesOffsets[3];
+	Vector3 verticesOffsets[3]{
+		{ -0.5f,-0.5f,0.0f },
+		{ 0.0f,0.5f,0.0f },
+		{ 0.5f,-0.5f,0.0f },
+	};
 };
 
 /// <summary>
@@ -90,7 +94,12 @@ struct TriangleData3DForGPU {
 /// 3D板ポリの形状データ
 /// </summary>
 struct PlaneData3D {
-	Vector3 verticesOffsets[4];
+	Vector3 verticesOffsets[4]{
+		{ -0.5f,0.5f},
+		{ 0.5f,0.5f},
+		{ -0.5f,-0.5f},
+		{ 0.5f,-0.5f},
+	};
 };
 
 /// <summary>
@@ -126,7 +135,7 @@ struct SphereData3DForGPU {
 /// Primitiveマテリアルデータ
 /// </summary>
 struct PrimitiveMaterialData3D {
-	uint32_t textureIndex;
+	uint32_t textureIndex = 0xFFFFFFFF; // 無効値
 	RGBA baseColor = Color::White;
 	Vector2 uvTransform = { 0.0f,0.0f };
 	Vector2 uvScale = { 1.0f,1.0f };

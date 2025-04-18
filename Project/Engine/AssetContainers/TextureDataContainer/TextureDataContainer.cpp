@@ -26,7 +26,7 @@ void TextureDataContainer::Initialize(DXGI* dxgi, DirectXCommand* directXCommand
 	SetSrvUavManager(srvUavManager);
 
 	// デフォルトのテクスチャをロード
-	Load("EngineAssets/Images/uvChecker.png");
+	defaultTextureIndex_ = Load("EngineAssets/Images/uvChecker.png");
 
 }
 
@@ -115,6 +115,10 @@ const DirectX::TexMetadata& TextureDataContainer::GetMetaData(const std::string&
 
 const std::map<std::string, Texture>& TextureDataContainer::GetTextureContainer()const {
 	return textureDatas_;
+}
+
+uint32_t TextureDataContainer::GetDefaultTextureIndex() const {
+	return defaultTextureIndex_;
 }
 
 DirectX::ScratchImage TextureDataContainer::LoadTexture(const std::string& filePath) {

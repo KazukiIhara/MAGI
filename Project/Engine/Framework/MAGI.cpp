@@ -1001,6 +1001,10 @@ uint32_t MAGISYSTEM::GetTextureIndex(const std::string& textureName) {
 	return it->second.srvIndex;
 }
 
+uint32_t MAGISYSTEM::GetDefaultTextureIndex() {
+	return textureDataCantainer_->GetDefaultTextureIndex();
+}
+
 PrimitiveData MAGISYSTEM::GetPrimitiveShape(const Primitive3DType& primitive3dType) {
 	return primitiveDataContainer_->GetPrimitiveShapeData(primitive3dType);
 }

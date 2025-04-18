@@ -1,60 +1,29 @@
-// 頂点シェーダ入力
-struct VertexShaderInput
+// Meshシェーダーからピクセルシェーダーに渡す構造体
+struct MeshOutput
 {
-    float4 position : POSITION0;
-    float2 texcoord : TEXCOORD0;
-    float3 normal : NORMAL0;
-    float3 tangent : TANGENT0;
+    float4 position : SV_Position;
+    float2 uv : TEXCOORD0;
+    float4 color : COLOR0;
+    uint instanceIndex : TEXCOORD1;
 };
 
-// 頂点シェーダからの出力 → ジオメトリシェーダへ
-struct VertexShaderOutput
-{
-    float4 position : SV_POSITION;
-    float2 texcoord : TEXCOORD0;
-    float3 normal : NORMAL0;
-    float3 tangent : TANGENT0;
-    float3 worldPosition : POSITION0;
-    uint instanceID : SV_InstanceID;
-};
-
-// ジオメトリシェーダからの出力 → ピクセルシェーダへ
-struct GeometryShaderOutput
-{
-    float4 position : SV_POSITION;
-    float2 texcoord : TEXCOORD;
-    float3 normal : NORMAL;
-    float3 tangent : TANGENT;
-    uint instanceID : TEXCOORD1;
-};
-
-// ピクセルシェーダの出力
-struct PixelShaderOutput
-{
-    float4 color : SV_TARGET0;
-};
-
-// インスタンシングデータ
+// インスタンシングデータ（板ポリ）
 struct PlaneData3D
 {
     float4x4 worldMatrix;
-    float4x4 worldInverseTranspose;
-    float4 vertices[4]; // ローカル空間の4頂点
+    float4 offsets[4];
 };
 
 // マテリアルデータ
-struct PlaneMaterialData3D
-{ 
+struct PrimitiveMaterialData3D
+{
     uint textureIndex;
     float3 _padding0;
     float4 baseColor;
-    float2 uvTranslate;
-    float2 uvScale;
-    float uvRotate;
-    float3 _padding1;
+    float4x4 uvMatrix;
 };
 
-// カメラ
+// カメラデータ
 struct Camera
 {
     float4x4 viewProjection;

@@ -32,6 +32,8 @@ public:
 	const DirectX::TexMetadata& GetMetaData(const std::string& filePath);
 	// コンテナごと渡す
 	const std::map<std::string, Texture>& GetTextureContainer()const;
+	// デフォルトテクスチャのインデックスを渡す
+	uint32_t GetDefaultTextureIndex()const;
 private:
 	// Texture読み込み
 	DirectX::ScratchImage LoadTexture(const std::string& filePath);
@@ -62,4 +64,7 @@ private:
 	Fence* fence_ = nullptr;
 	// SrvManager
 	SRVUAVManager* srvUavManager_ = nullptr;
+
+	// エンジンのデフォルトテクスチャのインデックス
+	uint32_t defaultTextureIndex_ = 0;
 };
