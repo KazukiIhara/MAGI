@@ -7,33 +7,35 @@
 /// 3Dプリミティブ形状で汎用的に使える定数
 /// </summary>
 namespace PrimitiveCommonConst {
-	const uint32_t kNumMaxInstance = 65535;
+	inline constexpr uint32_t NumMaxInstance = 65535; // 全プリミティブ共通の最大インスタンス数
 }
 
 /// <summary>
 /// 3D球体で使う定数
 /// </summary>
 namespace Sphere3DConst {
-	const uint32_t maxLon = 32;
-	const uint32_t maxLat = 32;
-	const uint32_t maxTilesPerSphere = maxLon * maxLat;
-};
+	inline constexpr uint32_t MaxLongitude = 32;											// 経度分割数上限
+	inline constexpr uint32_t MaxLatitude = 32;												// 緯度分割数上限
+	inline constexpr uint32_t MaxTilesPerSphere = MaxLatitude * MaxLatitude;				// MeshShaderのX方向thread数
+	inline constexpr uint32_t MaxThreadGroupCount = 4194303;								// DispatchMesh制限（全体上限）
+	inline constexpr uint32_t MaxDispatchCountY = MaxThreadGroupCount / MaxTilesPerSphere;	
+}
 
 /// <summary>
 /// 三角形の頂点順
 /// </summary>
 namespace Triangle3DVertices {
-	const uint32_t LeftBottom = 0;
-	const uint32_t Top = 1;
-	const uint32_t RightBottom = 2;
-};
+	inline constexpr uint32_t LeftBottom = 0;
+	inline constexpr uint32_t Top = 1;
+	inline constexpr uint32_t RightBottom = 2;
+}
 
 /// <summary>
 /// 板ポリの頂点順
 /// </summary>
 namespace Plane3DVertices {
-	const uint32_t LeftTop = 0;
-	const uint32_t RightTop = 1;
-	const uint32_t LeftBottom = 2;
-	const uint32_t RightBottom = 3;
-};
+	inline constexpr uint32_t LeftTop = 0;
+	inline constexpr uint32_t RightTop = 1;
+	inline constexpr uint32_t LeftBottom = 2;
+	inline constexpr uint32_t RightBottom = 3;
+}

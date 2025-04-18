@@ -32,7 +32,7 @@ PlaneDrawer3D::PlaneDrawer3D(DXGI* dxgi, DirectXCommand* directXCommand, SRVUAVM
 	// Materialデータを書き込む
 	MapMaterialData();
 
-	planes_.reserve(PrimitiveCommonConst::kNumMaxInstance);
+	planes_.reserve(PrimitiveCommonConst::NumMaxInstance);
 	Logger::Log("PlaneDrawer3D Initialize\n");
 }
 
@@ -42,7 +42,7 @@ PlaneDrawer3D::~PlaneDrawer3D() {
 
 void PlaneDrawer3D::Update() {
 	// 最大数を超えていたら止める
-	assert(planes_.size() <= PrimitiveCommonConst::kNumMaxInstance && "Plane size is over!");
+	assert(planes_.size() <= PrimitiveCommonConst::NumMaxInstance && "Plane size is over!");
 
 	// 描画すべきインスタンス数
 	instanceCount_ = static_cast<uint32_t>(planes_.size());
@@ -137,11 +137,11 @@ void PlaneDrawer3D::SetCamera3DManager(Camera3DManager* camera3DManager) {
 
 void PlaneDrawer3D::CreateInstancingResource() {
 	// instancing用のリソースを作る
-	instancingResource_ = dxgi_->CreateBufferResource(sizeof(PlaneData3DForGPU) * PrimitiveCommonConst::kNumMaxInstance);
+	instancingResource_ = dxgi_->CreateBufferResource(sizeof(PlaneData3DForGPU) * PrimitiveCommonConst::NumMaxInstance);
 	// srvのインデックスを割り当て
 	instancingSrvIndex = srvUavManager_->Allocate();
 	// Srvを作成
-	srvUavManager_->CreateSrvStructuredBuffer(instancingSrvIndex, instancingResource_.Get(), PrimitiveCommonConst::kNumMaxInstance, sizeof(PlaneData3DForGPU));
+	srvUavManager_->CreateSrvStructuredBuffer(instancingSrvIndex, instancingResource_.Get(), PrimitiveCommonConst::NumMaxInstance, sizeof(PlaneData3DForGPU));
 }
 
 void PlaneDrawer3D::MapInstancingData() {
@@ -151,11 +151,11 @@ void PlaneDrawer3D::MapInstancingData() {
 
 void PlaneDrawer3D::CreateMaterialResource() {
 	// Material用のリソースを作る
-	materialResource_ = dxgi_->CreateBufferResource(sizeof(PrimitiveMaterialData3DForGPU) * PrimitiveCommonConst::kNumMaxInstance);
+	materialResource_ = dxgi_->CreateBufferResource(sizeof(PrimitiveMaterialData3DForGPU) * PrimitiveCommonConst::NumMaxInstance);
 	// srvのインデックスを割り当て
 	materialSrvIndex_ = srvUavManager_->Allocate();
 	// srvを作成
-	srvUavManager_->CreateSrvStructuredBuffer(materialSrvIndex_, materialResource_.Get(), PrimitiveCommonConst::kNumMaxInstance, sizeof(PrimitiveMaterialData3DForGPU));
+	srvUavManager_->CreateSrvStructuredBuffer(materialSrvIndex_, materialResource_.Get(), PrimitiveCommonConst::NumMaxInstance, sizeof(PrimitiveMaterialData3DForGPU));
 }
 
 void PlaneDrawer3D::MapMaterialData() {
@@ -164,7 +164,7 @@ void PlaneDrawer3D::MapMaterialData() {
 
 	// マテリアルのデフォルト値を設定
 	uint32_t textureIndex = MAGISYSTEM::GetTexture()["EngineAssets/Images/uvChecker.png"].srvIndex;
-	for (uint32_t i = 0; i < PrimitiveCommonConst::kNumMaxInstance; ++i) {
+	for (uint32_t i = 0; i < PrimitiveCommonConst::NumMaxInstance; ++i) {
 		materialData_[i].textureIndex = textureIndex;
 		materialData_[i].baseColor = { 1.0f,1.0f,1.0f,1.0f };
 		materialData_[i].uvMatrix = MakeIdentityMatrix4x4();

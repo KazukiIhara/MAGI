@@ -38,7 +38,7 @@ private:
 	// プリミティブ描画用のマテリアルデータ
 	PrimitiveMaterialData3D material_{};
 
-	static const uint32_t primitiveNum_ = 1;
+	static const uint32_t primitiveNum_ = 10000;
 
 	WorldTransform worldTransform[primitiveNum_];
 };

@@ -1,3 +1,5 @@
+#define NOMINMAX
+
 #include "SphereDrawer3D.h"
 
 #include "DirectX/DXGI/DXGI.h"
@@ -32,7 +34,7 @@ SphereDrawer3D::SphereDrawer3D(DXGI* dxgi, DirectXCommand* directXCommand, SRVUA
 	// Materialデータを書き込む
 	MapMaterialData();
 
-	spheres_.reserve(PrimitiveCommonConst::kNumMaxInstance);
+	spheres_.reserve(PrimitiveCommonConst::NumMaxInstance);
 	Logger::Log("SphereDrawer3D Initialize\n");
 }
 
@@ -42,7 +44,7 @@ SphereDrawer3D::~SphereDrawer3D() {
 
 void SphereDrawer3D::Update() {
 	// 最大数を超えていたら止める
-	assert(spheres_.size() <= PrimitiveCommonConst::kNumMaxInstance && "Sphere size is over!");
+	assert(spheres_.size() <= PrimitiveCommonConst::NumMaxInstance && "Sphere size is over!");
 
 	// 描画すべきインスタンス数
 	instanceCount_ = static_cast<uint32_t>(spheres_.size());
@@ -61,9 +63,11 @@ void SphereDrawer3D::Draw() {
 
 	ID3D12GraphicsCommandList6* commandList = directXCommand_->GetList6();
 
+	// PSO & カメラ設定
 	commandList->SetPipelineState(graphicsPipelineManager_->GetPipelineState(GraphicsPipelineStateType::Sphere3D, blendMode_));
-	camera3DManager_->TransferCurrentCamera(0); 
+	camera3DManager_->TransferCurrentCamera(0);
 
+	// Descriptor Table 設定
 	commandList->SetGraphicsRootDescriptorTable(1, srvUavManager_->GetDescriptorHandleGPU(instancingSrvIndex));
 	commandList->SetGraphicsRootDescriptorTable(2, srvUavManager_->GetDescriptorHandleGPU(materialSrvIndex_));
 	commandList->SetGraphicsRootDescriptorTable(3, srvUavManager_->GetDescriptorHandleGPU(0)); // Bindless
@@ -73,20 +77,18 @@ void SphereDrawer3D::Draw() {
 	};
 	commandList->SetDescriptorHeaps(_countof(descriptorHeaps), descriptorHeaps);
 
-	constexpr uint32_t threadGroupCountX = Sphere3DConst::maxTilesPerSphere;
-	constexpr uint32_t maxTotalThreadGroups = 4194303;
-	constexpr uint32_t maxThreadGroupCountY = maxTotalThreadGroups / threadGroupCountX;
+	constexpr uint32_t threadGroupCountX = Sphere3DConst::MaxTilesPerSphere;
 
-	const uint32_t totalInstances = instanceCount_;
-	const uint32_t dispatchCount = (totalInstances + maxThreadGroupCountY - 1) / maxThreadGroupCountY;
+	// Dispatch 分割制御（Y方向に instanceCount_ を分割）
+	const uint32_t maxThreadGroupCountY = Sphere3DConst::MaxThreadGroupCount / threadGroupCountX;
+	const uint32_t dispatchCount = (instanceCount_ + maxThreadGroupCountY - 1) / maxThreadGroupCountY;
 
 	for (uint32_t i = 0; i < dispatchCount; ++i) {
-		uint32_t baseIndex = i * maxThreadGroupCountY;
-		uint32_t remaining = totalInstances - baseIndex;
-		uint32_t dispatchCountY = std::min(remaining, maxThreadGroupCountY);
+		const uint32_t baseIndex = i * maxThreadGroupCountY;
+		const uint32_t remaining = instanceCount_ - baseIndex;
+		const uint32_t dispatchCountY = std::min(remaining, maxThreadGroupCountY);
 
 		commandList->SetGraphicsRoot32BitConstant(4, baseIndex, 0);
-
 		commandList->DispatchMesh(threadGroupCountX, dispatchCountY, 1);
 	}
 }
@@ -146,11 +148,11 @@ void SphereDrawer3D::SetCamera3DManager(Camera3DManager* camera3DManager) {
 
 void SphereDrawer3D::CreateInstancingResource() {
 	// instancing用のリソースを作る
-	instancingResource_ = dxgi_->CreateBufferResource(sizeof(SphereData3DForGPU) * PrimitiveCommonConst::kNumMaxInstance);
+	instancingResource_ = dxgi_->CreateBufferResource(sizeof(SphereData3DForGPU) * PrimitiveCommonConst::NumMaxInstance);
 	// srvのインデックスを割り当て
 	instancingSrvIndex = srvUavManager_->Allocate();
 	// Srvを作成
-	srvUavManager_->CreateSrvStructuredBuffer(instancingSrvIndex, instancingResource_.Get(), PrimitiveCommonConst::kNumMaxInstance, sizeof(SphereData3DForGPU));
+	srvUavManager_->CreateSrvStructuredBuffer(instancingSrvIndex, instancingResource_.Get(), PrimitiveCommonConst::NumMaxInstance, sizeof(SphereData3DForGPU));
 }
 
 void SphereDrawer3D::MapInstancingData() {
@@ -160,11 +162,11 @@ void SphereDrawer3D::MapInstancingData() {
 
 void SphereDrawer3D::CreateMaterialResource() {
 	// Material用のリソースを作る
-	materialResource_ = dxgi_->CreateBufferResource(sizeof(PrimitiveMaterialData3DForGPU) * PrimitiveCommonConst::kNumMaxInstance);
+	materialResource_ = dxgi_->CreateBufferResource(sizeof(PrimitiveMaterialData3DForGPU) * PrimitiveCommonConst::NumMaxInstance);
 	// srvのインデックスを割り当て
 	materialSrvIndex_ = srvUavManager_->Allocate();
 	// srvを作成
-	srvUavManager_->CreateSrvStructuredBuffer(materialSrvIndex_, materialResource_.Get(), PrimitiveCommonConst::kNumMaxInstance, sizeof(PrimitiveMaterialData3DForGPU));
+	srvUavManager_->CreateSrvStructuredBuffer(materialSrvIndex_, materialResource_.Get(), PrimitiveCommonConst::NumMaxInstance, sizeof(PrimitiveMaterialData3DForGPU));
 }
 
 void SphereDrawer3D::MapMaterialData() {
@@ -173,7 +175,7 @@ void SphereDrawer3D::MapMaterialData() {
 
 	// マテリアルのデフォルト値を設定
 	uint32_t textureIndex = MAGISYSTEM::GetTexture()["EngineAssets/Images/uvChecker.png"].srvIndex;
-	for (uint32_t i = 0; i < PrimitiveCommonConst::kNumMaxInstance; ++i) {
+	for (uint32_t i = 0; i < PrimitiveCommonConst::NumMaxInstance; ++i) {
 		materialData_[i].textureIndex = textureIndex;
 		materialData_[i].baseColor = { 1.0f,1.0f,1.0f,1.0f };
 		materialData_[i].uvMatrix = MakeIdentityMatrix4x4();
