@@ -6,6 +6,7 @@
 // MyHedder
 #include "Math/Utility/MathUtility.h"
 #include "Structs/ColorStruct.h"
+#include "Enums/Primitive3DEnum.h"
 
 /// <summary>
 /// UVトランスフォーム
@@ -97,7 +98,6 @@ struct PlaneData3D {
 /// </summary>
 struct PlaneData3DForGPU {
 	Matrix4x4 worldMatrix;
-	Matrix4x4 worldInverseTranspose;
 	Vector4 offsets[4];
 };
 

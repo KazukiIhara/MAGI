@@ -26,3 +26,4 @@ inline std::string PrimitiveTypeToString(Primitive3DType type) {
 		return "Unkown";
 	}
 }
+

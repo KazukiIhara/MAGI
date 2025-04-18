@@ -57,51 +57,39 @@ void PlaneDrawer3D::Update() {
 }
 
 void PlaneDrawer3D::Draw() {
-	// インスタンスがなければスキップ
 	if (instanceCount_ == 0) return;
 
-	// コマンドリストを取得
-	ID3D12GraphicsCommandList* commandList = directXCommand_->GetList();
-	// PSOを設定
-	commandList->SetPipelineState(graphicsPipelineManager_->GetPipelineState(GraphicsPipelineStateType::Plane3D, blendMode_));
-	// Cameraを転送
+	// Mesh Shader用コマンドリスト
+	ID3D12GraphicsCommandList6* commandList = directXCommand_->GetList6();
+
+	commandList->SetPipelineState(graphicsPipelineManager_->GetPipelineState(GraphicsPipelineStateType::Plane3DMeshShader, blendMode_));
+
 	camera3DManager_->TransferCurrentCamera(0);
 
-	// PlaneData3DStructuredBufferのSRVを設定
+	// SRV設定
 	commandList->SetGraphicsRootDescriptorTable(1, srvUavManager_->GetDescriptorHandleGPU(instancingSrvIndex));
-	// MaterialDataStructuredBufferのSRVを設定
 	commandList->SetGraphicsRootDescriptorTable(2, srvUavManager_->GetDescriptorHandleGPU(materialSrvIndex_));
-	// BindlessTexture用のSRVを設定
-	commandList->SetGraphicsRootDescriptorTable(3, srvUavManager_->GetDescriptorHandleGPU(0));
+	commandList->SetGraphicsRootDescriptorTable(3, srvUavManager_->GetDescriptorHandleGPU(0)); // Bindless Texture
 
-	// BindlessTexture用のDescriptorHeapを設定
 	ID3D12DescriptorHeap* descriptorHeaps[] = {
 		srvUavManager_->GetDescriptorHeap()
 	};
 	commandList->SetDescriptorHeaps(_countof(descriptorHeaps), descriptorHeaps);
 
-	// 描画
-	commandList->DrawInstanced(1, instanceCount_, 0, 0);
+	// Mesh Shaderによる描画
+	commandList->DispatchMesh(1, instanceCount_, 1);
 }
 
 void PlaneDrawer3D::AddPlane(
 	const Matrix4x4& worldMatrix,
-	const Vector3& leftTop,
-	const Vector3& rightTop,
-	const Vector3& leftBottom,
-	const Vector3& rightBottom,
-	const RGBA& color,
-	const uint32_t& textureIndex,
-	const Vector2& uvScale,
-	const float& uvRotate,
-	const Vector2& uvTransform
+	const PlaneData3D& data,
+	const PrimitiveMaterialData3D& material
 ) {
 	// 座標と形状データ
 	PlaneData3DForGPU newPlaneData{
 		.worldMatrix = worldMatrix,
-		.worldInverseTranspose = MakeInverseTransposeMatrix(worldMatrix),
 		.offsets = {
-			Vector4(leftTop.x, leftTop.y, leftTop.z, 1.0f),
+			Vector4(data.verticesOffsets[0].x, leftTop.y, leftTop.z, 1.0f),
 			Vector4(rightTop.x, rightTop.y, rightTop.z, 1.0f),
 			Vector4(leftBottom.x, leftBottom.y, leftBottom.z, 1.0f),
 			Vector4(rightBottom.x, rightBottom.y, rightBottom.z, 1.0f)

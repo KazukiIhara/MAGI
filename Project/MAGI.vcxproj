@@ -177,6 +177,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Engine\GraphicsPipelines\Triangle3DGraphicsPipeline\Triangle3DGraphicsPipeline.h" />
     <ClInclude Include="Engine\GrobalDataManager\GrobalDataManager.h" />
     <ClInclude Include="Engine\ImGuiController\ImGuiController.h" />
+    <ClInclude Include="Engine\Includes\Const\Primitive3DConst.h" />
     <ClInclude Include="Engine\Includes\Enums\BlendModeEnum.h" />
     <ClInclude Include="Engine\Includes\Enums\Collider3DType.h" />
     <ClInclude Include="Engine\Includes\Enums\ComputePipelineEnum.h" />

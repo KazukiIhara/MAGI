@@ -37,15 +37,8 @@ public:
 
 	void AddPlane(
 		const Matrix4x4& worldMatrix,
-		const Vector3& leftTop,
-		const Vector3& rightTop,
-		const Vector3& leftBottom,
-		const Vector3& rightBottom,
-		const RGBA& color,
-		const uint32_t& textureIndex,
-		const Vector2& uvScale,
-		const float& uvRotate,
-		const Vector2& uvTransform
+		const PlaneData3D& data,
+		const PrimitiveMaterialData3D& material
 	);
 
 private:
