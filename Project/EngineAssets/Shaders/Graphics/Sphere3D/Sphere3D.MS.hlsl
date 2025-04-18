@@ -1,5 +1,8 @@
 #include "Sphere3D.hlsli"
 
+#define MAX_VERTS 256
+#define MAX_TRIS 256
+
 ConstantBuffer<Camera> gCamera : register(b0);
 StructuredBuffer<SphereData3D> gInstanceData : register(t0);
 StructuredBuffer<PrimitiveMaterialData3D> gMaterialData : register(t1);
@@ -8,8 +11,8 @@ StructuredBuffer<PrimitiveMaterialData3D> gMaterialData : register(t1);
 [numthreads(1, 1, 1)]
 void main(
     uint3 dispatchThreadID : SV_DispatchThreadID,
-    out indices uint3 tris[ /* set dynamically */],
-    out vertices MeshOutput verts[ /* set dynamically */]
+    out indices uint3 tris[MAX_TRIS],
+    out vertices MeshOutput verts[MAX_VERTS]
 )
 {
     uint instanceID = dispatchThreadID.y;
