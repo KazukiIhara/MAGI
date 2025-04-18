@@ -447,14 +447,8 @@ public: // エンジンの機能
 	// 球体描画
 	static void DrawSphere3D(
 		const Matrix4x4& worldMatrix,
-		const float& radius,
-		const uint32_t& longitudeSegments,
-		const uint32_t& latitudeSegments,
-		const RGBA& color,
-		const uint32_t& textureIndex,
-		const Vector2& uvScale,
-		const float& uvRotate,
-		const Vector2& uvTransform
+		const SphereData3D& data,
+		const PrimitiveMaterialData3D& material
 	);
 
 #pragma endregion

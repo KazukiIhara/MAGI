@@ -9,7 +9,6 @@ struct MeshOutput
 struct SphereData3D
 {
     float4x4 worldMatrix;
-    float4x4 worldInverseTranspose;
     float radius;
     uint longitudeSegments;
     uint latitudeSegments;

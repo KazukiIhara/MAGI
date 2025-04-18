@@ -86,31 +86,24 @@ void SphereDrawer3D::Draw() {
 
 void SphereDrawer3D::AddSphere(
 	const Matrix4x4& worldMatrix,
-	const float& radius,
-	const uint32_t& longitudeSegments,
-	const uint32_t& latitudeSegments,
-	const RGBA& color,
-	const uint32_t& textureIndex,
-	const Vector2& uvScale,
-	const float& uvRotate,
-	const Vector2& uvTransform
+	const SphereData3D& data,
+	const PrimitiveMaterialData3D& material
 ) {
 
 	// 座標と形状データ
 	SphereData3DForGPU newSphereData{
 		.worldMatrix = worldMatrix,
-		.worldInverseTranspose = MakeInverseTransposeMatrix(worldMatrix),
-		.radius = radius,
-		.longitudeSegments = longitudeSegments,
-		.latitudeSegments = latitudeSegments
+		.radius = data.radius,
+		.longitudeSegments = data.verticalSegments,
+		.latitudeSegments = data.horizontalSegments
 	};
 	spheres_.push_back(newSphereData);
 
 	// マテリアルデータ
 	PrimitiveMaterialData3DForGPU newMaterialData{
-		.textureIndex = textureIndex,
-		.baseColor = RGBAToVector4(color),
-		.uvMatrix = MakeUVMatrix(uvScale,uvRotate,uvTransform),
+		.textureIndex = material.textureIndex,
+		.baseColor = RGBAToVector4(material.baseColor),
+		.uvMatrix = MakeUVMatrix(material.uvScale,material.uvRotate,material.uvTransform),
 	};
 	materials_.push_back(newMaterialData);
 }
