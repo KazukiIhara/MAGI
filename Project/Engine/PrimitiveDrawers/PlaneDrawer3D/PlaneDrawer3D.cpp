@@ -62,7 +62,7 @@ void PlaneDrawer3D::Draw() {
 	// Mesh Shader用コマンドリスト
 	ID3D12GraphicsCommandList6* commandList = directXCommand_->GetList6();
 
-	commandList->SetPipelineState(graphicsPipelineManager_->GetPipelineState(GraphicsPipelineStateType::Plane3DMeshShader, blendMode_));
+	commandList->SetPipelineState(graphicsPipelineManager_->GetPipelineState(GraphicsPipelineStateType::Plane3D, blendMode_));
 
 	camera3DManager_->TransferCurrentCamera(0);
 
@@ -89,19 +89,19 @@ void PlaneDrawer3D::AddPlane(
 	PlaneData3DForGPU newPlaneData{
 		.worldMatrix = worldMatrix,
 		.offsets = {
-			Vector4(data.verticesOffsets[0].x, leftTop.y, leftTop.z, 1.0f),
-			Vector4(rightTop.x, rightTop.y, rightTop.z, 1.0f),
-			Vector4(leftBottom.x, leftBottom.y, leftBottom.z, 1.0f),
-			Vector4(rightBottom.x, rightBottom.y, rightBottom.z, 1.0f)
+			Vector4(data.verticesOffsets[0].x, data.verticesOffsets[0].y, data.verticesOffsets[0].z, 1.0f),
+			Vector4(data.verticesOffsets[1].x, data.verticesOffsets[1].y, data.verticesOffsets[1].z, 1.0f),
+			Vector4(data.verticesOffsets[2].x, data.verticesOffsets[2].y, data.verticesOffsets[2].z, 1.0f),
+			Vector4(data.verticesOffsets[3].x, data.verticesOffsets[3].y, data.verticesOffsets[3].z, 1.0f)
 			},
 	};
 	planes_.push_back(newPlaneData);
 
 	// マテリアルデータ
 	PrimitiveMaterialData3DForGPU newMaterialData{
-		.textureIndex = textureIndex,
-		.baseColor = RGBAToVector4(color),
-		.uvMatrix = MakeUVMatrix(uvScale,uvRotate,uvTransform),
+		.textureIndex = material.textureIndex,
+		.baseColor = RGBAToVector4(material.baseColor),
+		.uvMatrix = MakeUVMatrix(material.uvScale,material.uvRotate,material.uvTransform),
 	};
 	materials_.push_back(newMaterialData);
 }
