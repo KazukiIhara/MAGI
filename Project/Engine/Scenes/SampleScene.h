@@ -32,6 +32,9 @@ private:
 	// 三角形描画用の頂点データ
 	TriangleData3D triangleData_{};
 
+	// 球体描画用の頂点データ
+	SphereData3D sphereData_{};
+
 	// プリミティブ描画用のマテリアルデータ
 	PrimitiveMaterialData3D material_{};
 };
