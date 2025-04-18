@@ -1099,5 +1099,6 @@
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="EngineAssets\Shaders\Graphics\Plane3D\Plane3D.MS.hlsl" />
+    <FxCompile Include="EngineAssets\Shaders\Graphics\Sphere3D\Sphere3D.MS.hlsl" />
   </ItemGroup>
 </Project>

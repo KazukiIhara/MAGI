@@ -5,7 +5,7 @@
 #include "Structs/Primitive3DStruct.h"
 
 /// <summary>
-/// Mesh Shaderを使った単純な三角形描画用グラフィックスパイプライン
+/// 3D三角形描画用のパイプライン
 /// </summary>
 class Triangle3DGraphicsPipeline: public BaseGraphicsPipeline {
 public:

@@ -113,10 +113,10 @@ struct PlaneData3DForGPU {
 /// <summary>
 /// 3D球体の形状データ
 /// </summary>
-struct Sphere3DData {
-	float radius;
-	uint32_t verticalSegments;
-	uint32_t horizontalSegments;
+struct SphereData3D {
+	float radius = 1.0f;
+	uint32_t verticalSegments = 11;
+	uint32_t horizontalSegments = 11;
 };
 
 /// <summary>
@@ -124,7 +124,6 @@ struct Sphere3DData {
 /// </summary>
 struct SphereData3DForGPU {
 	Matrix4x4 worldMatrix;
-	Matrix4x4 worldInverseTranspose;
 	float radius;
 	uint32_t longitudeSegments;
 	uint32_t latitudeSegments;

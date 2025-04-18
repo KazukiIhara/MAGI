@@ -2,6 +2,11 @@
 
 #include "GraphicsPipelines/BaseGraphicsPipeline/BaseGraphicsPipeline.h"
 
+#include "Structs/Primitive3DStruct.h"
+
+/// <summary>
+/// 3D球体描画用のパイプライン
+/// </summary>
 class Sphere3DGraphicsPipeline : public BaseGraphicsPipeline {
 public:
 	Sphere3DGraphicsPipeline(DXGI* dxgi, ShaderCompiler* shaderCompiler);
@@ -22,7 +27,4 @@ private:
 	D3D12_INPUT_LAYOUT_DESC InputLayoutSetting()override;
 	// RasterizerStateの設定を行う
 	D3D12_RASTERIZER_DESC RasterizerStateSetting()override;
-private:
-	// ジオメトリシェーダーの塊
-	ComPtr<ID3DBlob> geometryShaderBlob_;
 };

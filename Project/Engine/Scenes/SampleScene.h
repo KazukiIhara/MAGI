@@ -32,6 +32,9 @@ private:
 	// 三角形描画用の頂点データ
 	TriangleData3D triangleData_{};
 
+	// 球体描画用の頂点データ
+	SphereData3D sphereData_{};
+
 	// プリミティブ描画用のマテリアルデータ
 	PrimitiveMaterialData3D material_{};
 };
@@ -119,10 +122,12 @@ inline void SampleScene<Data>::Update() {
 template<typename Data>
 inline void SampleScene<Data>::Draw() {
 
+
 	// 板ポリ描画
-	for (uint32_t i = 0; i < 2; i++) {
-		MAGISYSTEM::DrawPlane3D(worldTransform_[i].worldMatrix_, planeData_[i], material_);
-	}
+	MAGISYSTEM::DrawPlane3D(worldTransform_[0].worldMatrix_, planeData_[0], material_);
+
+	// 球体描画
+	MAGISYSTEM::DrawSphere3D(worldTransform_[1].worldMatrix_, sphereData_, material_);
 
 	// 
 	// オブジェクト2Dの描画前処理

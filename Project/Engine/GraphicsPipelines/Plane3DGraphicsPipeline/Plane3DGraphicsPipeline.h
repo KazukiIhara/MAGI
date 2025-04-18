@@ -4,6 +4,9 @@
 
 #include "Structs/Primitive3DStruct.h"
 
+/// <summary>
+/// 3D板ポリ描画用のパイプライン
+/// </summary>
 class Plane3DGraphicsPipeline : public BaseGraphicsPipeline {
 public:
 	Plane3DGraphicsPipeline(DXGI* dxgi, ShaderCompiler* shaderCompiler);

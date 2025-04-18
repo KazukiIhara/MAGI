@@ -1162,8 +1162,12 @@ void MAGISYSTEM::DrawPlane3D(const Matrix4x4& worldMatrix, const PlaneData3D& pl
 	planeDrawer3D_->AddPlane(worldMatrix, planeData, materialData);
 }
 
-void MAGISYSTEM::DrawSphere3D(const Matrix4x4& worldMatrix, const float& radius, const uint32_t& longitudeSegments, const uint32_t& latitudeSegments, const RGBA& color, const uint32_t& textureIndex, const Vector2& uvScale, const float& uvRotate, const Vector2& uvTransform) {
-	sphereDrawer3D_->AddSphere(worldMatrix, radius, longitudeSegments, latitudeSegments, color, textureIndex, uvScale, uvRotate, uvTransform);
+void MAGISYSTEM::DrawSphere3D(
+	const Matrix4x4& worldMatrix,
+	const SphereData3D& data,
+	const PrimitiveMaterialData3D& material
+) {
+	sphereDrawer3D_->AddSphere(worldMatrix, data, material);
 }
 
 void MAGISYSTEM::AddGrobalDataGroup(const std::string& groupname) {
