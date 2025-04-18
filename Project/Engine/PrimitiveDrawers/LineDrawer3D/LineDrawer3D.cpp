@@ -27,9 +27,9 @@ LineDrawer3D::LineDrawer3D(DXGI* dxgi, DirectXCommand* directXCommand, SRVUAVMan
 	// srvのインデックスを割り当て
 	srvIndex_ = srvUavManager_->Allocate();
 	// Srvを作成
-	srvUavManager_->CreateSrvStructuredBuffer(srvIndex_, instancingResource_.Get(), kNumMaxInstance, sizeof(LineData3D));
+	srvUavManager_->CreateSrvStructuredBuffer(srvIndex_, instancingResource_.Get(), PrimitiveCommonConst::NumMaxInstance, sizeof(LineData3D));
 
-	lines_.reserve(kNumMaxInstance);
+	lines_.reserve(PrimitiveCommonConst::NumMaxInstance);
 	Logger::Log("LineDrawer3D Initialize\n");
 }
 
@@ -39,7 +39,7 @@ LineDrawer3D::~LineDrawer3D() {
 
 void LineDrawer3D::Update() {
 	// 最大数を超えていたら止める
-	if (lines_.size() > kNumMaxInstance) {
+	if (lines_.size() > PrimitiveCommonConst::NumMaxInstance) {
 		assert(false && "Line size is over !");
 	}
 
@@ -109,14 +109,14 @@ void LineDrawer3D::SetCamera3DManager(Camera3DManager* camera3DManager) {
 
 void LineDrawer3D::CreateInstancingResource() {
 	// instancing用のリソースを作る
-	instancingResource_ = dxgi_->CreateBufferResource(sizeof(LineData3D) * kNumMaxInstance);
+	instancingResource_ = dxgi_->CreateBufferResource(sizeof(LineData3D) *PrimitiveCommonConst::NumMaxInstance);
 }
 
 void LineDrawer3D::MapInstancingData() {
 	instancingData_ = nullptr;
 	instancingResource_->Map(0, nullptr, reinterpret_cast<void**>(&instancingData_));
 
-	for (uint32_t index = 0; index < kNumMaxInstance; ++index) {
+	for (uint32_t index = 0; index < PrimitiveCommonConst::NumMaxInstance; ++index) {
 		instancingData_[index].color = Vector4(1.0f, 1.0f, 1.0f, 1.0f);
 	}
 }

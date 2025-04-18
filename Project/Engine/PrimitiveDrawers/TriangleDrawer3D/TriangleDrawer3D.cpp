@@ -24,8 +24,8 @@ TriangleDrawer3D::TriangleDrawer3D(DXGI* dxgi, DirectXCommand* directXCommand, S
 	SetCamera3DManager(camera3DManager);
 
 	// 最大数分確保
-	triangles_.resize(kNumMaxInstance);
-	materials_.resize(kNumMaxInstance);
+	triangles_.resize(PrimitiveCommonConst::NumMaxInstance);
+	materials_.resize(PrimitiveCommonConst::NumMaxInstance);
 
 	// Instancingリソースを作る
 	CreateInstancingResource();
@@ -46,7 +46,7 @@ TriangleDrawer3D::~TriangleDrawer3D() {
 
 void TriangleDrawer3D::Update() {
 	// 上限を超えていたらassert
-	assert(currentIndex_ <= kNumMaxInstance);
+	assert(currentIndex_ <= PrimitiveCommonConst::NumMaxInstance);
 	instanceCount_ = currentIndex_;
 	// インスタンスの数だけコピー
 	if (instancingData_ && materialData_ && instanceCount_ > 0) {
@@ -89,7 +89,7 @@ void TriangleDrawer3D::AddTriangle(
 	const PrimitiveMaterialData3D& material
 ) {
 
-	if (currentIndex_ >= kNumMaxInstance) {
+	if (currentIndex_ >= PrimitiveCommonConst::NumMaxInstance) {
 		Logger::Log("TriangleDrawer3D: Max instance count exceeded!\n");
 		return;
 	}
@@ -155,11 +155,11 @@ void TriangleDrawer3D::SetCamera3DManager(Camera3DManager* camera3DManager) {
 
 void TriangleDrawer3D::CreateInstancingResource() {
 	// instancing用のリソースを作る
-	instancingResource_ = dxgi_->CreateBufferResource(sizeof(TriangleData3DForGPU) * kNumMaxInstance);
+	instancingResource_ = dxgi_->CreateBufferResource(sizeof(TriangleData3DForGPU) * PrimitiveCommonConst::NumMaxInstance);
 	// srvのインデックスを割り当て
 	instancingSrvIndex_ = srvUavManager_->Allocate();
 	// Srvを作成
-	srvUavManager_->CreateSrvStructuredBuffer(instancingSrvIndex_, instancingResource_.Get(), kNumMaxInstance, sizeof(TriangleData3DForGPU));
+	srvUavManager_->CreateSrvStructuredBuffer(instancingSrvIndex_, instancingResource_.Get(), PrimitiveCommonConst::NumMaxInstance, sizeof(TriangleData3DForGPU));
 }
 
 void TriangleDrawer3D::MapInstancingData() {
@@ -169,11 +169,11 @@ void TriangleDrawer3D::MapInstancingData() {
 
 void TriangleDrawer3D::CreateMaterialResource() {
 	// Material用のリソースを作る
-	materialResource_ = dxgi_->CreateBufferResource(sizeof(PrimitiveMaterialData3DForGPU) * kNumMaxInstance);
+	materialResource_ = dxgi_->CreateBufferResource(sizeof(PrimitiveMaterialData3DForGPU) * PrimitiveCommonConst::NumMaxInstance);
 	// srvのインデックスを割り当て
 	materialSrvIndex_ = srvUavManager_->Allocate();
 	// srvを作成
-	srvUavManager_->CreateSrvStructuredBuffer(materialSrvIndex_, materialResource_.Get(), kNumMaxInstance, sizeof(PrimitiveMaterialData3DForGPU));
+	srvUavManager_->CreateSrvStructuredBuffer(materialSrvIndex_, materialResource_.Get(), PrimitiveCommonConst::NumMaxInstance, sizeof(PrimitiveMaterialData3DForGPU));
 }
 
 void TriangleDrawer3D::MapMaterialData() {
@@ -182,7 +182,7 @@ void TriangleDrawer3D::MapMaterialData() {
 
 	// マテリアルのデフォルト値を設定
 	uint32_t textureIndex = MAGISYSTEM::GetTexture()["EngineAssets/Images/uvChecker.png"].srvIndex;
-	for (uint32_t i = 0; i < kNumMaxInstance; ++i) {
+	for (uint32_t i = 0; i < PrimitiveCommonConst::NumMaxInstance; ++i) {
 		materialData_[i].textureIndex = textureIndex;
 		materialData_[i].baseColor = { 1.0f,1.0f,1.0f,1.0f };
 		materialData_[i].uvMatrix = MakeIdentityMatrix4x4();
