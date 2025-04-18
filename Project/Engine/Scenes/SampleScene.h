@@ -97,7 +97,6 @@ inline void SampleScene<Data>::Initialize() {
 	triangleData_.verticesOffsets[2] = { 1.0f,-1.0f,0.0f };
 
 	material_.textureIndex = 1;
-	material_.uvRotate = 0.3f;
 }
 
 template<typename Data>
