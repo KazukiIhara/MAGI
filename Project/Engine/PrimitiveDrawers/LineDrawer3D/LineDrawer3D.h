@@ -11,6 +11,7 @@
 #include "Structs/ObjectStruct.h"
 #include "Structs/ColorStruct.h"
 #include "Enums/BlendModeEnum.h"
+#include "Const/Primitive3DConst.h"
 
 class DXGI;
 class DirectXCommand;
@@ -49,8 +50,6 @@ private:
 	// instancingデータ書き込み
 	void MapInstancingData();
 private:
-	// ラインの最大数
-	const uint32_t kNumMaxInstance = 32768;
 
 	// ライン
 	std::vector<LineData3D> lines_;

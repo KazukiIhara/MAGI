@@ -4,6 +4,22 @@
 #include <cstdint>
 
 /// <summary>
+/// 3Dプリミティブ形状で汎用的に使える定数
+/// </summary>
+namespace PrimitiveCommonConst {
+	const uint32_t kNumMaxInstance = 65535;
+}
+
+/// <summary>
+/// 3D球体で使う定数
+/// </summary>
+namespace Sphere3DConst {
+	const uint32_t maxLon = 32;
+	const uint32_t maxLat = 32;
+	const uint32_t maxTilesPerSphere = maxLon * maxLat;
+};
+
+/// <summary>
 /// 三角形の頂点順
 /// </summary>
 namespace Triangle3DVertices {

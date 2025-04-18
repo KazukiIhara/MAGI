@@ -14,6 +14,7 @@ Sphere3DGraphicsPipeline::~Sphere3DGraphicsPipeline() {}
 void Sphere3DGraphicsPipeline::CreateRootSignature() {
 	HRESULT hr;
 
+	// ──────────────── Descriptor Ranges ────────────────
 	D3D12_DESCRIPTOR_RANGE descriptorRangeInstance{};
 	descriptorRangeInstance.BaseShaderRegister = 0;
 	descriptorRangeInstance.NumDescriptors = 1;
@@ -32,27 +33,39 @@ void Sphere3DGraphicsPipeline::CreateRootSignature() {
 	descriptorRangeTextures.RangeType = D3D12_DESCRIPTOR_RANGE_TYPE_SRV;
 	descriptorRangeTextures.OffsetInDescriptorsFromTableStart = D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND;
 
-	D3D12_ROOT_PARAMETER rootParams[4] = {};
+	// ──────────────── Root Parameters ────────────────
+	D3D12_ROOT_PARAMETER rootParams[5] = {};
 
+	// b0: Camera CBV
 	rootParams[0].ParameterType = D3D12_ROOT_PARAMETER_TYPE_CBV;
 	rootParams[0].ShaderVisibility = D3D12_SHADER_VISIBILITY_MESH;
 	rootParams[0].Descriptor.ShaderRegister = 0;
 
+	// t0: InstanceData SRV
 	rootParams[1].ParameterType = D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE;
 	rootParams[1].ShaderVisibility = D3D12_SHADER_VISIBILITY_MESH;
 	rootParams[1].DescriptorTable.pDescriptorRanges = &descriptorRangeInstance;
 	rootParams[1].DescriptorTable.NumDescriptorRanges = 1;
 
+	// t1: MaterialData SRV
 	rootParams[2].ParameterType = D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE;
 	rootParams[2].ShaderVisibility = D3D12_SHADER_VISIBILITY_ALL;
 	rootParams[2].DescriptorTable.pDescriptorRanges = &descriptorRangeMaterial;
 	rootParams[2].DescriptorTable.NumDescriptorRanges = 1;
 
+	// t1000: Bindless Texture
 	rootParams[3].ParameterType = D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE;
 	rootParams[3].ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL;
 	rootParams[3].DescriptorTable.pDescriptorRanges = &descriptorRangeTextures;
 	rootParams[3].DescriptorTable.NumDescriptorRanges = 1;
 
+	// b1: baseInstanceIndex
+	rootParams[4].ParameterType = D3D12_ROOT_PARAMETER_TYPE_32BIT_CONSTANTS;
+	rootParams[4].ShaderVisibility = D3D12_SHADER_VISIBILITY_MESH;
+	rootParams[4].Constants.Num32BitValues = 1;
+	rootParams[4].Constants.ShaderRegister = 1;
+
+	// ──────────────── Static Sampler ────────────────
 	D3D12_STATIC_SAMPLER_DESC staticSampler{};
 	staticSampler.Filter = D3D12_FILTER_MIN_MAG_MIP_LINEAR;
 	staticSampler.AddressU = D3D12_TEXTURE_ADDRESS_MODE_WRAP;
@@ -64,6 +77,7 @@ void Sphere3DGraphicsPipeline::CreateRootSignature() {
 	staticSampler.RegisterSpace = 0;
 	staticSampler.ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL;
 
+	// ──────────────── Root Signature ────────────────
 	D3D12_ROOT_SIGNATURE_DESC rootSigDesc{};
 	rootSigDesc.NumParameters = _countof(rootParams);
 	rootSigDesc.pParameters = rootParams;

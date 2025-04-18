@@ -50,8 +50,7 @@ private:
 	// materialデータ書き込み
 	void MapMaterialData();
 
-	// 三角形の最大数
-	const uint32_t kNumMaxInstance = 65535;
+private:
 
 	// ブレンドモード
 	BlendMode blendMode_ = BlendMode::Normal;

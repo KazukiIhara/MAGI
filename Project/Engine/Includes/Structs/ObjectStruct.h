@@ -115,8 +115,8 @@ struct PlaneData3DForGPU {
 /// </summary>
 struct SphereData3D {
 	float radius = 1.0f;
-	uint32_t verticalSegments = 11;
-	uint32_t horizontalSegments = 11;
+	uint32_t verticalSegments = 16; // 最小値2、最大値32にしてください
+	uint32_t horizontalSegments = 16; // 最小値2、最大値32にしてください
 };
 
 /// <summary>

@@ -59,8 +59,6 @@ private:
 	void MapMaterialData();
 
 private:
-	// 板ポリの最大数
-	const uint32_t kNumMaxInstance = 32768;
 
 	// ブレンドモード
 	BlendMode blendMode_ = BlendMode::Normal;
@@ -90,6 +88,7 @@ private:
 
 	// 現在のインデックス
 	uint32_t currentIndex_ = 0;
+
 private:
 	DXGI* dxgi_ = nullptr;
 	DirectXCommand* directXCommand_ = nullptr;

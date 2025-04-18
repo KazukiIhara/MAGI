@@ -29,3 +29,16 @@ struct Camera
     float3 worldPosition;
     float _padding;
 };
+
+struct TempVertex
+{
+    float4 position;
+    float2 uv;
+    float4 color;
+    uint instanceIndex;
+};
+
+struct RootConstants
+{
+    uint baseInstanceIndex;
+};
