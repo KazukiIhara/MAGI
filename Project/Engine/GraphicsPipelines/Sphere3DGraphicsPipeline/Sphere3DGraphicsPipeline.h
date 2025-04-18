@@ -4,6 +4,9 @@
 
 #include "Structs/Primitive3DStruct.h"
 
+/// <summary>
+/// 3D球体描画用のパイプライン
+/// </summary>
 class Sphere3DGraphicsPipeline : public BaseGraphicsPipeline {
 public:
 	Sphere3DGraphicsPipeline(DXGI* dxgi, ShaderCompiler* shaderCompiler);
