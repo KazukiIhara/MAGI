@@ -24,10 +24,10 @@ private:
 	std::unique_ptr<Camera3D> sceneCamera_ = nullptr;
 
 	// ワールドトランスフォーム
-	WorldTransform worldTransform_{};
+	WorldTransform worldTransform_[2]{};
 
 	// 板ポリ描画用の頂点データ
-	PlaneData3D planeData_{};
+	PlaneData3D planeData_[2]{};
 
 	// 三角形描画用の頂点データ
 	TriangleData3D triangleData_{};
@@ -71,7 +71,11 @@ inline void SampleScene<Data>::Initialize() {
 	MAGISYSTEM::AddPunctualLight("SampleLight");
 
 	// トランスフォーム初期化
-	worldTransform_.Initialize();
+	worldTransform_[0].Initialize();
+	worldTransform_[1].Initialize();
+
+	worldTransform_[0].translate_.x = -1.0f;
+	worldTransform_[1].translate_.x = 1.0f;
 
 	// デフォルトのテクスチャを取得　TODO:マテリアルもクラス化して初期化できるようにする
 	material_.textureIndex = MAGISYSTEM::GetDefaultTextureIndex();
@@ -80,23 +84,45 @@ inline void SampleScene<Data>::Initialize() {
 template<typename Data>
 inline void SampleScene<Data>::Update() {
 
-	ImGui::Begin("Plane");
-	ImGui::DragFloat3("LeftTop", &planeData_.verticesOffsets[0].x, 0.01f);
-	ImGui::DragFloat3("RightTop", &planeData_.verticesOffsets[1].x, 0.01f);
-	ImGui::DragFloat3("LeftBottom", &planeData_.verticesOffsets[2].x, 0.01f);
-	ImGui::DragFloat3("RightBottom", &planeData_.verticesOffsets[3].x, 0.01f);
+	ImGui::Begin("Plane0");
 
+	ImGui::DragFloat3("Scale", &worldTransform_[0].scale_.x, 0.01f);
+	ImGui::DragFloat3("Rotate", &worldTransform_[0].rotate_.x, 0.01f);
+	ImGui::DragFloat3("Translate", &worldTransform_[0].translate_.x, 0.01f);
+
+	ImGui::DragFloat3("LeftTop", &planeData_[0].verticesOffsets[0].x, 0.01f);
+	ImGui::DragFloat3("RightTop", &planeData_[0].verticesOffsets[1].x, 0.01f);
+	ImGui::DragFloat3("LeftBottom", &planeData_[0].verticesOffsets[2].x, 0.01f);
+	ImGui::DragFloat3("RightBottom", &planeData_[0].verticesOffsets[3].x, 0.01f);
+	ImGui::End();
+
+
+	ImGui::Begin("Plane1");
+
+	ImGui::DragFloat3("Scale", &worldTransform_[1].scale_.x, 0.01f);
+	ImGui::DragFloat3("Rotate", &worldTransform_[1].rotate_.x, 0.01f);
+	ImGui::DragFloat3("Translate", &worldTransform_[1].translate_.x, 0.01f);
+
+	ImGui::DragFloat3("LeftTop", &planeData_[1].verticesOffsets[0].x, 0.01f);
+	ImGui::DragFloat3("RightTop", &planeData_[1].verticesOffsets[1].x, 0.01f);
+	ImGui::DragFloat3("LeftBottom", &planeData_[1].verticesOffsets[2].x, 0.01f);
+	ImGui::DragFloat3("RightBottom", &planeData_[1].verticesOffsets[3].x, 0.01f);
 	ImGui::End();
 
 	// トランスフォーム更新
-	worldTransform_.Update();
+	for (uint32_t i = 0; i < 2; i++) {
+		worldTransform_[i].Update();
+	}
+
 }
 
 template<typename Data>
 inline void SampleScene<Data>::Draw() {
 
 	// 板ポリ描画
-	MAGISYSTEM::DrawPlane3D(worldTransform_.worldMatrix_, planeData_, material_);
+	for (uint32_t i = 0; i < 2; i++) {
+		MAGISYSTEM::DrawPlane3D(worldTransform_[i].worldMatrix_, planeData_[i], material_);
+	}
 
 	// 
 	// オブジェクト2Dの描画前処理
