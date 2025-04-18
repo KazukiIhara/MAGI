@@ -9,8 +9,7 @@ float4 main(MeshOutput input) : SV_Target
     uint instanceID = input.instanceIndex;
     PrimitiveMaterialData3D mat = gMaterialData[instanceID];
 
-    float4 uvTransformed = mul(float4(input.uv, 0.0f, 1.0f), mat.uvMatrix);
-    float2 uv = uvTransformed.xy;
+    float2 uv = input.uv;
 
     float4 texColor = gTextures[mat.textureIndex].Sample(gSampler, uv);
     return texColor * mat.baseColor;

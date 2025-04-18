@@ -53,8 +53,8 @@ void TriangleDrawer3D::Update() {
 		std::memcpy(instancingData_, triangles_.data(), instanceCount_ * sizeof(TriangleData3DForGPU));
 		std::memcpy(materialData_, materials_.data(), instanceCount_ * sizeof(PrimitiveMaterialData3DForGPU));
 	}
-	// インデックスリセット
-	currentIndex_ = 0;
+	// 三角形データクリア
+	ClearTriangles();
 }
 
 void TriangleDrawer3D::Draw() {
@@ -87,6 +87,12 @@ void TriangleDrawer3D::AddTriangle(
 	const Matrix4x4& worldMatrix,
 	const TriangleData3D& data,
 	const PrimitiveMaterialData3D& material) {
+
+	if (currentIndex_ >= kNumMaxInstance) {
+		Logger::Log("TriangleDrawer3D: Max instance count exceeded!\n");
+		return;
+	}
+
 	// 座標と形状データ
 	TriangleData3DForGPU newTriangleData{
 		.worldMatrix = worldMatrix,
@@ -110,10 +116,15 @@ void TriangleDrawer3D::AddTriangle(
 
 	// インデックスをインクリメント
 	currentIndex_++;
+
 }
 
 void TriangleDrawer3D::ClearTriangles() {
-	triangles_.clear();
+	// インデックスリセット
+	currentIndex_ = 0;
+	// 中身をクリア
+	std::ranges::fill(triangles_, TriangleData3DForGPU{});
+	std::ranges::fill(materials_, PrimitiveMaterialData3DForGPU{});
 }
 
 void TriangleDrawer3D::SetDXGI(DXGI* dxgi) {
