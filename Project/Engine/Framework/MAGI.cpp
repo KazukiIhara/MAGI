@@ -1150,8 +1150,8 @@ void MAGISYSTEM::DrawLine3D(const Vector3& start, const Vector3& end, const RGBA
 	lineDrawer3D_->AddLine(start, end, color);
 }
 
-void MAGISYSTEM::DrawTriangle3D(const Matrix4x4& worldMatrix, const RGBA& color) {
-	triangleDrawer3D_->AddTriangle(worldMatrix, color);
+void MAGISYSTEM::DrawTriangle3D(const Matrix4x4& worldMatrix, const TriangleData3D& data, const PrimitiveMaterialData3D& material) {
+	triangleDrawer3D_->AddTriangle(worldMatrix, data, material);
 }
 
 void MAGISYSTEM::DrawPlane3D(

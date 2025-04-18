@@ -9,7 +9,7 @@
 
 // サンプルシーン
 template <typename Data>
-class SampleScene : public BaseScene<Data> {
+class SampleScene: public BaseScene<Data> {
 public:
 	using BaseScene<Data>::BaseScene; // 親クラスのコンストラクタをそのまま継承
 	~SampleScene()override = default;
@@ -27,8 +27,10 @@ private:
 
 	std::array<Vector3, 4> vertices_;
 
-	// 板ポリ用のワールドトランスフォーム
+	// ワールドトランスフォーム
 	std::array<std::unique_ptr<WorldTransform>, primitiveSize_> primitiveWorldTransform_;
+	TriangleData3D triangleData_{};
+	PrimitiveMaterialData3D material_{};
 };
 
 template<typename Data>
@@ -90,8 +92,12 @@ inline void SampleScene<Data>::Initialize() {
 		primitiveWorldTransform_[i]->Initialize();
 		primitiveWorldTransform_[i]->translate_.x = float(i);
 	}
+	triangleData_.verticesOffsets[0] = { -1.0f,-1.0f,0.0f };
+	triangleData_.verticesOffsets[1] = { 0.0f,1.0f,0.0f };
+	triangleData_.verticesOffsets[2] = { 1.0f,-1.0f,0.0f };
 
-
+	material_.textureIndex = 1;
+	material_.uvRotate = 0.3f;
 }
 
 template<typename Data>
@@ -105,8 +111,10 @@ inline void SampleScene<Data>::Update() {
 
 template<typename Data>
 inline void SampleScene<Data>::Draw() {
+
+
 	for (size_t i = 0; i < primitiveSize_; i++) {
-		MAGISYSTEM::DrawTriangle3D(primitiveWorldTransform_[i]->worldMatrix_, Color::White);
+		MAGISYSTEM::DrawTriangle3D(primitiveWorldTransform_[i]->worldMatrix_, triangleData_, material_);
 	}
 
 	// 

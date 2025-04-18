@@ -22,6 +22,11 @@ TriangleDrawer3D::TriangleDrawer3D(DXGI* dxgi, DirectXCommand* directXCommand, S
 	SetSRVUAVManager(srvUavManager);
 	SetGraphicsPipelineManager(graphicsPipelineManager);
 	SetCamera3DManager(camera3DManager);
+
+	// 最大数分確保
+	triangles_.resize(kNumMaxInstance);
+	materials_.resize(kNumMaxInstance);
+
 	// Instancingリソースを作る
 	CreateInstancingResource();
 	// Instancingデータを書き込む
@@ -32,7 +37,6 @@ TriangleDrawer3D::TriangleDrawer3D(DXGI* dxgi, DirectXCommand* directXCommand, S
 	// Materialデータを書き込む
 	MapMaterialData();
 
-	triangles_.reserve(kNumMaxInstance);
 	Logger::Log("TriangleDrawer3D Initialize\n");
 }
 
@@ -41,48 +45,71 @@ TriangleDrawer3D::~TriangleDrawer3D() {
 }
 
 void TriangleDrawer3D::Update() {
-	// 最大数を超えていたら止める
-	assert(triangles_.size() <= kNumMaxInstance && "Triangle size is over!");
-
-	// 描画すべきインスタンス数
-	instanceCount_ = static_cast<uint32_t>(triangles_.size());
-
-	// データが存在し、描画対象がある場合のみコピー
+	// 上限を超えていたらassert
+	assert(currentIndex_ <= kNumMaxInstance);
+	instanceCount_ = currentIndex_;
+	// インスタンスの数だけコピー
 	if (instancingData_ && materialData_ && instanceCount_ > 0) {
 		std::memcpy(instancingData_, triangles_.data(), instanceCount_ * sizeof(TriangleData3DForGPU));
-		//std::memcpy(materialData_, materials_.data(), instanceCount_ * sizeof(PrimitiveMaterialData3DForGPU));
+		std::memcpy(materialData_, materials_.data(), instanceCount_ * sizeof(PrimitiveMaterialData3DForGPU));
 	}
-	// 三角形のコンテナをクリア
-	ClearTriangles();
+	// インデックスリセット
+	currentIndex_ = 0;
 }
 
 void TriangleDrawer3D::Draw() {
 	// インスタンスがなければスキップ
 	if (instanceCount_ == 0) return;
-
 	// コマンドリストを取得
 	ID3D12GraphicsCommandList6* commandList = directXCommand_->GetList6();
-
 	// PSOを設定
 	commandList->SetPipelineState(graphicsPipelineManager_->GetPipelineState(GraphicsPipelineStateType::Triangle3D, blendMode_));
-
 	// Cameraを転送（b0）
 	camera3DManager_->TransferCurrentCamera(0);
-
 	// TriangleData3DForGPU StructuredBuffer (t0)
-	commandList->SetGraphicsRootDescriptorTable(1, srvUavManager_->GetDescriptorHandleGPU(instancingSrvIndex));
+	commandList->SetGraphicsRootDescriptorTable(1, srvUavManager_->GetDescriptorHandleGPU(instancingSrvIndex_));
+	// PrimitiveManateriData3DForGPU StructuredBuffer (t1)
+	commandList->SetGraphicsRootDescriptorTable(2, srvUavManager_->GetDescriptorHandleGPU(materialSrvIndex_));
+	// BindlessTexture用のSRVを設定
+	commandList->SetGraphicsRootDescriptorTable(3, srvUavManager_->GetDescriptorHandleGPU(0));
+
+	// BindlessTexture用のDescriptorHeapを設定
+	ID3D12DescriptorHeap* descriptorHeaps[] = {
+		srvUavManager_->GetDescriptorHeap()
+	};
+	commandList->SetDescriptorHeaps(_countof(descriptorHeaps), descriptorHeaps);
 
 	// 描画
 	commandList->DispatchMesh(1, instanceCount_, 1);
 }
 
-void TriangleDrawer3D::AddTriangle(const Matrix4x4& worldMatrix, const RGBA& color) {
+void TriangleDrawer3D::AddTriangle(
+	const Matrix4x4& worldMatrix,
+	const TriangleData3D& data,
+	const PrimitiveMaterialData3D& material) {
 	// 座標と形状データ
 	TriangleData3DForGPU newTriangleData{
 		.worldMatrix = worldMatrix,
-		.color = RGBAToVector4(color),
+		.Offsets{
+			Vector4(data.verticesOffsets[0].x,data.verticesOffsets[0].y,data.verticesOffsets[0].z,1.0f),
+			Vector4(data.verticesOffsets[1].x,data.verticesOffsets[1].y,data.verticesOffsets[1].z,1.0f),
+			Vector4(data.verticesOffsets[2].x,data.verticesOffsets[2].y,data.verticesOffsets[2].z,1.0f),
+		},
 	};
-	triangles_.push_back(newTriangleData);
+	// リストに追加
+	triangles_[currentIndex_] = newTriangleData;
+
+	// マテリアルデータ
+	PrimitiveMaterialData3DForGPU newMaterialData{
+		.textureIndex = material.textureIndex,
+		.baseColor = RGBAToVector4(material.baseColor),
+		.uvMatrix = MakeUVMatrix(material.uvScale,material.uvRotate,material.uvTransform),
+	};
+	// リストに追加
+	materials_[currentIndex_] = newMaterialData;
+
+	// インデックスをインクリメント
+	currentIndex_++;
 }
 
 void TriangleDrawer3D::ClearTriangles() {
@@ -118,9 +145,9 @@ void TriangleDrawer3D::CreateInstancingResource() {
 	// instancing用のリソースを作る
 	instancingResource_ = dxgi_->CreateBufferResource(sizeof(TriangleData3DForGPU) * kNumMaxInstance);
 	// srvのインデックスを割り当て
-	instancingSrvIndex = srvUavManager_->Allocate();
+	instancingSrvIndex_ = srvUavManager_->Allocate();
 	// Srvを作成
-	srvUavManager_->CreateSrvStructuredBuffer(instancingSrvIndex, instancingResource_.Get(), kNumMaxInstance, sizeof(TriangleData3DForGPU));
+	srvUavManager_->CreateSrvStructuredBuffer(instancingSrvIndex_, instancingResource_.Get(), kNumMaxInstance, sizeof(TriangleData3DForGPU));
 }
 
 void TriangleDrawer3D::MapInstancingData() {
@@ -146,8 +173,6 @@ void TriangleDrawer3D::MapMaterialData() {
 	for (uint32_t i = 0; i < kNumMaxInstance; ++i) {
 		materialData_[i].textureIndex = textureIndex;
 		materialData_[i].baseColor = { 1.0f,1.0f,1.0f,1.0f };
-		materialData_[i].uvScale = { 1.0f,1.0f };
-		materialData_[i].uvRotation = 0.0f;
-		materialData_[i].uvTransform = { 0.0f,0.0f };
+		materialData_[i].uvMatrix = MakeIdentityMatrix4x4();
 	}
 }

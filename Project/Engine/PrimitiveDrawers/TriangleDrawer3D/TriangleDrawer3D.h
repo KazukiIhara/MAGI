@@ -30,8 +30,9 @@ public:
 
 	void AddTriangle(
 		const Matrix4x4& worldMatrix,
-		const RGBA& color
-		);
+		const TriangleData3D& data,
+		const PrimitiveMaterialData3D& material
+	);
 
 private:
 	void ClearTriangles();
@@ -72,12 +73,15 @@ private:
 	PrimitiveMaterialData3DForGPU* materialData_ = nullptr;
 
 	// Triangle3DSrvIndex
-	uint32_t instancingSrvIndex = 0;
+	uint32_t instancingSrvIndex_ = 0;
 	// MaterialSrvIndex
 	uint32_t materialSrvIndex_ = 0;
 
 	// instance描画する際に使う変数
 	uint32_t instanceCount_ = 0;
+
+	// 三角形追加時のインデックス
+	uint32_t currentIndex_ = 0;
 
 private:
 	DXGI* dxgi_ = nullptr;

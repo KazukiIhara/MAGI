@@ -107,9 +107,7 @@ void SphereDrawer3D::AddSphere(
 	PrimitiveMaterialData3DForGPU newMaterialData{
 		.textureIndex = textureIndex,
 		.baseColor = RGBAToVector4(color),
-		.uvTransform = uvTransform,
-		.uvScale = uvScale,
-		.uvRotation = uvRotate
+		.uvMatrix = MakeUVMatrix(uvScale,uvRotate,uvTransform),
 	};
 	materials_.push_back(newMaterialData);
 }
@@ -175,8 +173,6 @@ void SphereDrawer3D::MapMaterialData() {
 	for (uint32_t i = 0; i < kNumMaxInstance; ++i) {
 		materialData_[i].textureIndex = textureIndex;
 		materialData_[i].baseColor = { 1.0f,1.0f,1.0f,1.0f };
-		materialData_[i].uvScale = { 1.0f,1.0f };
-		materialData_[i].uvRotation = 0.0f;
-		materialData_[i].uvTransform = { 0.0f,0.0f };
+		materialData_[i].uvMatrix = MakeIdentityMatrix4x4();
 	}
 }

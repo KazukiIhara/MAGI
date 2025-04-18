@@ -74,7 +74,7 @@ struct LineData3D {
 /// 3Dの三角形データ
 /// </summary>
 struct TriangleData3D {
-
+	Vector3 verticesOffsets[3];
 };
 
 /// <summary>
@@ -82,7 +82,7 @@ struct TriangleData3D {
 /// </summary>
 struct TriangleData3DForGPU {
 	Matrix4x4 worldMatrix;
-	Vector4 color;
+	Vector4 Offsets[3];
 };
 
 /// <summary>
@@ -122,8 +122,6 @@ struct SphereData3DForGPU {
 	float padding;
 };
 
-
-
 /// <summary>
 /// Primitiveマテリアルデータ
 /// </summary>
@@ -142,8 +140,5 @@ struct PrimitiveMaterialData3DForGPU {
 	uint32_t textureIndex;
 	float padding0[3];
 	Vector4 baseColor;
-	Vector2 uvTransform;
-	Vector2 uvScale;
-	float uvRotation;
-	float padding1[3];
+	Matrix4x4 uvMatrix;
 };

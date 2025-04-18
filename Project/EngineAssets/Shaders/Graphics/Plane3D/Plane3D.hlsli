@@ -44,7 +44,7 @@ struct PlaneData3D
 
 // マテリアルデータ
 struct PlaneMaterialData3D
-{
+{ 
     uint textureIndex;
     float3 _padding0;
     float4 baseColor;
