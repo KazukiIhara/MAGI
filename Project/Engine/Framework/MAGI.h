@@ -307,6 +307,9 @@ public: // エンジンの機能
 	static const std::map<std::string, Texture>& GetTextureContainer();
 	// テクスチャのインデックスを渡す
 	static uint32_t GetTextureIndex(const std::string& textureName);
+	// エンジンのデフォルトテクスチャインデクス(UVChecker)を渡す
+	static uint32_t GetDefaultTextureIndex();
+
 #pragma endregion
 
 #pragma region PrimitiveShapeDataContainer
@@ -432,20 +435,6 @@ public: // エンジンの機能
 
 #pragma region PlaneDrawer3D
 	// 板ポリ描画
-	static void DrawPlane3D(
-		const Matrix4x4& worldMatrix,
-		const Vector3& leftTop,
-		const Vector3& rightTop,
-		const Vector3& leftBottom,
-		const Vector3& rightBottom,
-		const RGBA& color,
-		const uint32_t& textureIndex,
-		const Vector2& uvScale,
-		const float& uvRotate,
-		const Vector2& uvTransform
-	);
-
-	// 板ポリ描画使いやすい版
 	static void DrawPlane3D(
 		const Matrix4x4& worldMatrix,
 		const PlaneData3D& planeData,

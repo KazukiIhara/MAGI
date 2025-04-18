@@ -86,7 +86,8 @@ void TriangleDrawer3D::Draw() {
 void TriangleDrawer3D::AddTriangle(
 	const Matrix4x4& worldMatrix,
 	const TriangleData3D& data,
-	const PrimitiveMaterialData3D& material) {
+	const PrimitiveMaterialData3D& material
+) {
 
 	if (currentIndex_ >= kNumMaxInstance) {
 		Logger::Log("TriangleDrawer3D: Max instance count exceeded!\n");

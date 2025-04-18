@@ -2,10 +2,12 @@
 
 #include "GraphicsPipelines/BaseGraphicsPipeline/BaseGraphicsPipeline.h"
 
-class Plane3DGraphicsPipeline: public BaseGraphicsPipeline {
+#include "Structs/Primitive3DStruct.h"
+
+class Plane3DGraphicsPipeline : public BaseGraphicsPipeline {
 public:
 	Plane3DGraphicsPipeline(DXGI* dxgi, ShaderCompiler* shaderCompiler);
-	~Plane3DGraphicsPipeline();
+	~Plane3DGraphicsPipeline()override = default;
 
 private:
 	// ルートシグネチャを作成する
@@ -22,8 +24,5 @@ private:
 	D3D12_INPUT_LAYOUT_DESC InputLayoutSetting()override;
 	// RasterizerStateの設定を行う
 	D3D12_RASTERIZER_DESC RasterizerStateSetting()override;
-private:
-	// ジオメトリシェーダーの塊
-	ComPtr<ID3DBlob> geometryShaderBlob_;
 };
 

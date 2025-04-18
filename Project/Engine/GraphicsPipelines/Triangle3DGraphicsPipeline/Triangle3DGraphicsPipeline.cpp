@@ -155,7 +155,7 @@ void Triangle3DGraphicsPipeline::CreateGraphicsPipelineObject() {
 		rtArray.NumRenderTargets = 1;
 		rtArray.RTFormats[0] = rtvFormat;
 
-		Triangle3DPipelineStateStream stream = {
+		Primitive3DPipelineStateStream stream = {
 			CD3DX12_PIPELINE_STATE_STREAM_ROOT_SIGNATURE(rootSignature_.Get()),
 			CD3DX12_PIPELINE_STATE_STREAM_MS(meshShader),
 			CD3DX12_PIPELINE_STATE_STREAM_PS(pixelShader),

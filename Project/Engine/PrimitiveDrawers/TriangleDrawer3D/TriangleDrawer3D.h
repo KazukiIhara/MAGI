@@ -3,10 +3,9 @@
 #include <d3d12.h>
 
 #include "DirectX/ComPtr/ComPtr.h"
-#include "Math/Utility/MathUtility.h"
 #include "Structs/ObjectStruct.h"
-#include "Structs/ColorStruct.h"
 #include "Enums/BlendModeEnum.h"
+#include "Const/Primitive3DConst.h"
 
 class DXGI;
 class DirectXCommand;

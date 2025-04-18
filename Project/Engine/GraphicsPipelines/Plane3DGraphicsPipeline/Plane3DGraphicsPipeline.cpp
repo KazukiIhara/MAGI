@@ -7,65 +7,51 @@
 #include "DirectX/ShaderCompiler/ShaderCompiler.h"
 
 Plane3DGraphicsPipeline::Plane3DGraphicsPipeline(DXGI* dxgi, ShaderCompiler* shaderCompiler)
-	:BaseGraphicsPipeline(dxgi, shaderCompiler) {}
-
-Plane3DGraphicsPipeline::~Plane3DGraphicsPipeline() {}
+	: BaseGraphicsPipeline(dxgi, shaderCompiler) {
+}
 
 void Plane3DGraphicsPipeline::CreateRootSignature() {
-	HRESULT hr = S_FALSE;
+	HRESULT hr;
 
-	// ──────────────── DescriptorRange定義 ────────────────
+	// Descriptor Ranges
+	D3D12_DESCRIPTOR_RANGE descriptorRangeInstance{};
+	descriptorRangeInstance.BaseShaderRegister = 0;
+	descriptorRangeInstance.NumDescriptors = 1;
+	descriptorRangeInstance.RangeType = D3D12_DESCRIPTOR_RANGE_TYPE_SRV;
+	descriptorRangeInstance.OffsetInDescriptorsFromTableStart = D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND;
 
-	// PlaneData3D instancingResource (t0)
-	D3D12_DESCRIPTOR_RANGE descriptorRangeInstance[1] = {};
-	descriptorRangeInstance[0].BaseShaderRegister = 0; // t0
-	descriptorRangeInstance[0].NumDescriptors = 1;
-	descriptorRangeInstance[0].RangeType = D3D12_DESCRIPTOR_RANGE_TYPE_SRV;
-	descriptorRangeInstance[0].OffsetInDescriptorsFromTableStart = D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND;
+	D3D12_DESCRIPTOR_RANGE descriptorRangeMaterial{};
+	descriptorRangeMaterial.BaseShaderRegister = 1;
+	descriptorRangeMaterial.NumDescriptors = 1;
+	descriptorRangeMaterial.RangeType = D3D12_DESCRIPTOR_RANGE_TYPE_SRV;
+	descriptorRangeMaterial.OffsetInDescriptorsFromTableStart = D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND;
 
-	// PlaneMaterialData3D materialBuffer (t1)
-	D3D12_DESCRIPTOR_RANGE descriptorRangeMaterial[1] = {};
-	descriptorRangeMaterial[0].BaseShaderRegister = 1; // t1
-	descriptorRangeMaterial[0].NumDescriptors = 1;
-	descriptorRangeMaterial[0].RangeType = D3D12_DESCRIPTOR_RANGE_TYPE_SRV;
-	descriptorRangeMaterial[0].OffsetInDescriptorsFromTableStart = D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND;
+	D3D12_DESCRIPTOR_RANGE descriptorRangeTextures{};
+	descriptorRangeTextures.BaseShaderRegister = 1000;
+	descriptorRangeTextures.NumDescriptors = 1024;
+	descriptorRangeTextures.RangeType = D3D12_DESCRIPTOR_RANGE_TYPE_SRV;
+	descriptorRangeTextures.OffsetInDescriptorsFromTableStart = D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND;
 
-	// Bindless Textures (t2)
-	D3D12_DESCRIPTOR_RANGE descriptorRangeTextures[1] = {};
-	descriptorRangeTextures[0].BaseShaderRegister = 2; // t2
-	descriptorRangeTextures[0].NumDescriptors = 1000;  // 最大バインド数（必要に応じて調整）
-	descriptorRangeTextures[0].RangeType = D3D12_DESCRIPTOR_RANGE_TYPE_SRV;
-	descriptorRangeTextures[0].OffsetInDescriptorsFromTableStart = D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND;
+	D3D12_ROOT_PARAMETER rootParams[4] = {};
 
+	rootParams[0].ParameterType = D3D12_ROOT_PARAMETER_TYPE_CBV;
+	rootParams[0].ShaderVisibility = D3D12_SHADER_VISIBILITY_MESH;
+	rootParams[0].Descriptor.ShaderRegister = 0;
 
-	// ──────────────── RootParameter定義 ────────────────
+	rootParams[1].ParameterType = D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE;
+	rootParams[1].ShaderVisibility = D3D12_SHADER_VISIBILITY_MESH;
+	rootParams[1].DescriptorTable.pDescriptorRanges = &descriptorRangeInstance;
+	rootParams[1].DescriptorTable.NumDescriptorRanges = 1;
 
-	D3D12_ROOT_PARAMETER rootParameters[4] = {};
+	rootParams[2].ParameterType = D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE;
+	rootParams[2].ShaderVisibility = D3D12_SHADER_VISIBILITY_ALL;
+	rootParams[2].DescriptorTable.pDescriptorRanges = &descriptorRangeMaterial;
+	rootParams[2].DescriptorTable.NumDescriptorRanges = 1;
 
-	// Camera CBV (b0)
-	rootParameters[0].ParameterType = D3D12_ROOT_PARAMETER_TYPE_CBV;
-	rootParameters[0].ShaderVisibility = D3D12_SHADER_VISIBILITY_GEOMETRY;
-	rootParameters[0].Descriptor.ShaderRegister = 0;
-
-	// Instancing Buffer SRV (t0)
-	rootParameters[1].ParameterType = D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE;
-	rootParameters[1].ShaderVisibility = D3D12_SHADER_VISIBILITY_GEOMETRY;
-	rootParameters[1].DescriptorTable.pDescriptorRanges = descriptorRangeInstance;
-	rootParameters[1].DescriptorTable.NumDescriptorRanges = 1;
-
-	// Material Buffer SRV (t1)
-	rootParameters[2].ParameterType = D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE;
-	rootParameters[2].ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL;
-	rootParameters[2].DescriptorTable.pDescriptorRanges = descriptorRangeMaterial;
-	rootParameters[2].DescriptorTable.NumDescriptorRanges = 1;
-
-	// Bindless Texture Array SRV (t2)
-	rootParameters[3].ParameterType = D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE;
-	rootParameters[3].ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL;
-	rootParameters[3].DescriptorTable.pDescriptorRanges = descriptorRangeTextures;
-	rootParameters[3].DescriptorTable.NumDescriptorRanges = 1;
-
-	// ──────────────── サンプラー定義（s0）───────────────
+	rootParams[3].ParameterType = D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE;
+	rootParams[3].ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL;
+	rootParams[3].DescriptorTable.pDescriptorRanges = &descriptorRangeTextures;
+	rootParams[3].DescriptorTable.NumDescriptorRanges = 1;
 
 	D3D12_STATIC_SAMPLER_DESC staticSampler{};
 	staticSampler.Filter = D3D12_FILTER_MIN_MAG_MIP_LINEAR;
@@ -78,88 +64,79 @@ void Plane3DGraphicsPipeline::CreateRootSignature() {
 	staticSampler.RegisterSpace = 0;
 	staticSampler.ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL;
 
-	// ──────────────── RootSignature作成 ────────────────
+	D3D12_ROOT_SIGNATURE_DESC rootSigDesc{};
+	rootSigDesc.NumParameters = _countof(rootParams);
+	rootSigDesc.pParameters = rootParams;
+	rootSigDesc.NumStaticSamplers = 1;
+	rootSigDesc.pStaticSamplers = &staticSampler;
+	rootSigDesc.Flags = D3D12_ROOT_SIGNATURE_FLAG_NONE;
 
-	D3D12_ROOT_SIGNATURE_DESC descriptionRootSignature{};
-	descriptionRootSignature.Flags = D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT;
-	descriptionRootSignature.pParameters = rootParameters;
-	descriptionRootSignature.NumParameters = _countof(rootParameters);
-	descriptionRootSignature.pStaticSamplers = &staticSampler;
-	descriptionRootSignature.NumStaticSamplers = 1;
-
-	// シリアライズ
-	ID3DBlob* signatureBlob = nullptr;
-	ID3DBlob* errorBlob = nullptr;
-	hr = D3D12SerializeRootSignature(
-		&descriptionRootSignature,
-		D3D_ROOT_SIGNATURE_VERSION_1,
-		&signatureBlob,
-		&errorBlob);
+	ComPtr<ID3DBlob> sigBlob;
+	ComPtr<ID3DBlob> errorBlob;
+	hr = D3D12SerializeRootSignature(&rootSigDesc, D3D_ROOT_SIGNATURE_VERSION_1, &sigBlob, &errorBlob);
 	if (FAILED(hr)) {
-		Logger::Log(reinterpret_cast<char*>(errorBlob->GetBufferPointer()));
+		if (errorBlob) {
+			Logger::Log(reinterpret_cast<char*>(errorBlob->GetBufferPointer()));
+		}
 		assert(false);
 	}
 
-	// 生成
-	hr = dxgi_->GetDevice()->CreateRootSignature(
-		0,
-		signatureBlob->GetBufferPointer(),
-		signatureBlob->GetBufferSize(),
-		IID_PPV_ARGS(&rootSignature_));
+	hr = dxgi_->GetDevice()->CreateRootSignature(0, sigBlob->GetBufferPointer(), sigBlob->GetBufferSize(), IID_PPV_ARGS(&rootSignature_));
 	assert(SUCCEEDED(hr));
 }
 
 void Plane3DGraphicsPipeline::CompileShaders() {
-	vertexShaderBlob_ = nullptr;
-	vertexShaderBlob_ = shaderCompiler_->CompileShader(L"EngineAssets/Shaders/Graphics/Plane3D/Plane3D.VS.hlsl", L"vs_6_5");
-	assert(vertexShaderBlob_ != nullptr);
+	meshShaderBlob_ = shaderCompiler_->CompileShader(L"EngineAssets/Shaders/Graphics/Plane3D/Plane3D.MS.hlsl", L"ms_6_5");
+	assert(meshShaderBlob_ != nullptr);
 
-	pixelShaderBlob_ = nullptr;
 	pixelShaderBlob_ = shaderCompiler_->CompileShader(L"EngineAssets/Shaders/Graphics/Plane3D/Plane3D.PS.hlsl", L"ps_6_5");
 	assert(pixelShaderBlob_ != nullptr);
-
-	geometryShaderBlob_ = nullptr;
-	geometryShaderBlob_ = shaderCompiler_->CompileShader(L"EngineAssets/Shaders/Graphics/Plane3D/Plane3D.GS.hlsl", L"gs_6_5");
-	assert(geometryShaderBlob_ != nullptr);
 }
 
 void Plane3DGraphicsPipeline::CreateGraphicsPipelineObject() {
-	HRESULT hr;
-
 	assert(rootSignature_);
-	assert(vertexShaderBlob_);
+	assert(meshShaderBlob_);
 	assert(pixelShaderBlob_);
-	assert(geometryShaderBlob_);
 
-	D3D12_GRAPHICS_PIPELINE_STATE_DESC graphicsPipelineStateDesc{};
-	graphicsPipelineStateDesc.pRootSignature = rootSignature_.Get();
-	graphicsPipelineStateDesc.InputLayout = InputLayoutSetting();
-	graphicsPipelineStateDesc.VS = { vertexShaderBlob_->GetBufferPointer(),
-	vertexShaderBlob_->GetBufferSize() };
-	graphicsPipelineStateDesc.PS = { pixelShaderBlob_->GetBufferPointer(),
-	pixelShaderBlob_->GetBufferSize() };
-	graphicsPipelineStateDesc.GS = { geometryShaderBlob_->GetBufferPointer(),
-	geometryShaderBlob_->GetBufferSize() };
-	graphicsPipelineStateDesc.RasterizerState = RasterizerStateSetting();
-	//書き込むRTVの情報
-	graphicsPipelineStateDesc.NumRenderTargets = 1;
-	graphicsPipelineStateDesc.RTVFormats[0] = DXGI_FORMAT_R8G8B8A8_UNORM_SRGB;
-	//利用するトポロジ(形状)のタイプ、三角形
-	graphicsPipelineStateDesc.PrimitiveTopologyType = D3D12_PRIMITIVE_TOPOLOGY_TYPE_POINT;
-	//どのように画面に色を打ち込むかの設定(気にしなくて良い)
-	graphicsPipelineStateDesc.SampleDesc.Count = 1;
-	graphicsPipelineStateDesc.SampleMask = D3D12_DEFAULT_SAMPLE_MASK;
-	/*DepthStencilの設定*/
-	graphicsPipelineStateDesc.DepthStencilState = DepthStecilDescSetting();
-	graphicsPipelineStateDesc.DSVFormat = DXGI_FORMAT_D24_UNORM_S8_UINT;
+	const D3D12_SHADER_BYTECODE meshShader = { meshShaderBlob_->GetBufferPointer(), meshShaderBlob_->GetBufferSize() };
+	const D3D12_SHADER_BYTECODE pixelShader = { pixelShaderBlob_->GetBufferPointer(), pixelShaderBlob_->GetBufferSize() };
 
-	//実際に生成
-	for (uint32_t i = 0; i < kBlendModeNum; i++) {
-		graphicsPipelineStateDesc.BlendState = BlendStateSetting(i);
-		pipelineState_[i] = nullptr;
-		hr = dxgi_->GetDevice()->CreateGraphicsPipelineState(&graphicsPipelineStateDesc,
-			IID_PPV_ARGS(&pipelineState_[i]));
-		assert(SUCCEEDED(hr));
+	const DXGI_FORMAT rtvFormat = DXGI_FORMAT_R8G8B8A8_UNORM_SRGB;
+	const DXGI_FORMAT dsvFormat = DXGI_FORMAT_D24_UNORM_S8_UINT;
+
+	for (uint32_t i = 0; i < kBlendModeNum; ++i) {
+		const D3D12_RASTERIZER_DESC rasterizerDesc = RasterizerStateSetting();
+		const D3D12_BLEND_DESC blendDesc = BlendStateSetting(i);
+		const D3D12_DEPTH_STENCIL_DESC depthStencilDesc = DepthStecilDescSetting();
+
+		const CD3DX12_RASTERIZER_DESC rast(rasterizerDesc);
+		const CD3DX12_BLEND_DESC blend(blendDesc);
+		const CD3DX12_DEPTH_STENCIL_DESC ds(depthStencilDesc);
+
+		D3D12_RT_FORMAT_ARRAY rtArray{};
+		rtArray.NumRenderTargets = 1;
+		rtArray.RTFormats[0] = rtvFormat;
+
+		Primitive3DPipelineStateStream stream = {
+			CD3DX12_PIPELINE_STATE_STREAM_ROOT_SIGNATURE(rootSignature_.Get()),
+			CD3DX12_PIPELINE_STATE_STREAM_MS(meshShader),
+			CD3DX12_PIPELINE_STATE_STREAM_PS(pixelShader),
+			CD3DX12_PIPELINE_STATE_STREAM_RASTERIZER(rast),
+			CD3DX12_PIPELINE_STATE_STREAM_BLEND_DESC(blend),
+			CD3DX12_PIPELINE_STATE_STREAM_DEPTH_STENCIL(ds),
+			CD3DX12_PIPELINE_STATE_STREAM_RENDER_TARGET_FORMATS(rtArray),
+			CD3DX12_PIPELINE_STATE_STREAM_DEPTH_STENCIL_FORMAT(dsvFormat)
+		};
+
+		D3D12_PIPELINE_STATE_STREAM_DESC streamDesc{};
+		streamDesc.SizeInBytes = sizeof(stream);
+		streamDesc.pPipelineStateSubobjectStream = &stream;
+
+		HRESULT hr = dxgi_->GetDevice10()->CreatePipelineState(&streamDesc, IID_PPV_ARGS(&pipelineState_[i]));
+		if (FAILED(hr)) {
+			Logger::Log("Plane3DGraphicsPipeline: Failed to create PSO for blendMode " + std::to_string(i));
+			assert(false);
+		}
 	}
 }
 
@@ -234,57 +211,21 @@ D3D12_BLEND_DESC Plane3DGraphicsPipeline::BlendStateSetting(uint32_t blendModeNu
 }
 
 D3D12_DEPTH_STENCIL_DESC Plane3DGraphicsPipeline::DepthStecilDescSetting() {
-	// DepthStencilStateの設定
-	D3D12_DEPTH_STENCIL_DESC depthStencilDesc{};
-	// Depthの機能を有効化する
-	depthStencilDesc.DepthEnable = true;
-	// Depthの書き込みを行う
-	depthStencilDesc.DepthWriteMask = D3D12_DEPTH_WRITE_MASK_ALL;
-	// 比較関数はLess
-	depthStencilDesc.DepthFunc = D3D12_COMPARISON_FUNC_LESS;
-
-	return depthStencilDesc;
+	D3D12_DEPTH_STENCIL_DESC depthDesc{};
+	depthDesc.DepthEnable = TRUE;
+	depthDesc.DepthWriteMask = D3D12_DEPTH_WRITE_MASK_ALL;
+	depthDesc.DepthFunc = D3D12_COMPARISON_FUNC_LESS;
+	return depthDesc;
 }
 
 D3D12_INPUT_LAYOUT_DESC Plane3DGraphicsPipeline::InputLayoutSetting() {
-	// InputLayout
-	static D3D12_INPUT_ELEMENT_DESC inputElementDescs[4] = {};
-	inputElementDescs[0].SemanticName = "POSITION";
-	inputElementDescs[0].SemanticIndex = 0;
-	inputElementDescs[0].Format = DXGI_FORMAT_R32G32B32A32_FLOAT;
-	inputElementDescs[0].InputSlot = 0;
-	inputElementDescs[0].AlignedByteOffset = D3D12_APPEND_ALIGNED_ELEMENT;
-	inputElementDescs[0].InputSlotClass = D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA;
-	inputElementDescs[0].InstanceDataStepRate = 0;
-
-	inputElementDescs[1].SemanticName = "TEXCOORD";
-	inputElementDescs[1].Format = DXGI_FORMAT_R32G32_FLOAT;
-	inputElementDescs[1].AlignedByteOffset = D3D12_APPEND_ALIGNED_ELEMENT;
-
-	inputElementDescs[2].SemanticName = "NORMAL";
-	inputElementDescs[2].SemanticIndex = 0;
-	inputElementDescs[2].Format = DXGI_FORMAT_R32G32B32_FLOAT;
-	inputElementDescs[2].AlignedByteOffset = D3D12_APPEND_ALIGNED_ELEMENT;
-
-	inputElementDescs[3].SemanticName = "TANGENT";
-	inputElementDescs[3].SemanticIndex = 0;
-	inputElementDescs[3].Format = DXGI_FORMAT_R32G32B32_FLOAT;
-	inputElementDescs[3].AlignedByteOffset = D3D12_APPEND_ALIGNED_ELEMENT;
-
-	D3D12_INPUT_LAYOUT_DESC inputLayoutDesc{};
-	inputLayoutDesc.pInputElementDescs = inputElementDescs;
-	inputLayoutDesc.NumElements = _countof(inputElementDescs);
-
-	return inputLayoutDesc;
+	return { nullptr, 0 };
 }
 
 D3D12_RASTERIZER_DESC Plane3DGraphicsPipeline::RasterizerStateSetting() {
-	// RasterizerStateの設定
-	D3D12_RASTERIZER_DESC rasterizerDesc_{};
-	// 裏側(時計回り)を表示しない
-	rasterizerDesc_.CullMode = D3D12_CULL_MODE_BACK;
-	// 三角形の中を塗りつぶす
-	rasterizerDesc_.FillMode = D3D12_FILL_MODE_SOLID;
-
-	return rasterizerDesc_;
+	D3D12_RASTERIZER_DESC desc{};
+	desc.FillMode = D3D12_FILL_MODE_SOLID;
+	desc.CullMode = D3D12_CULL_MODE_BACK;
+	desc.FrontCounterClockwise = FALSE;
+	return desc;
 }

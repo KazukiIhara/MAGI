@@ -9,7 +9,7 @@
 
 // サンプルシーン
 template <typename Data>
-class SampleScene: public BaseScene<Data> {
+class SampleScene : public BaseScene<Data> {
 public:
 	using BaseScene<Data>::BaseScene; // 親クラスのコンストラクタをそのまま継承
 	~SampleScene()override = default;
@@ -23,13 +23,16 @@ private:
 	// カメラ
 	std::unique_ptr<Camera3D> sceneCamera_ = nullptr;
 
-	static const uint32_t primitiveSize_ = 65535;
-
-	std::array<Vector3, 4> vertices_;
-
 	// ワールドトランスフォーム
-	std::array<std::unique_ptr<WorldTransform>, primitiveSize_> primitiveWorldTransform_;
+	WorldTransform worldTransform_[2]{};
+
+	// 板ポリ描画用の頂点データ
+	PlaneData3D planeData_[2]{};
+
+	// 三角形描画用の頂点データ
 	TriangleData3D triangleData_{};
+
+	// プリミティブ描画用のマテリアルデータ
 	PrimitiveMaterialData3D material_{};
 };
 
@@ -57,8 +60,9 @@ inline void SampleScene<Data>::Initialize() {
 
 	// シーンカメラ作成
 	sceneCamera_ = std::make_unique<Camera3D>("SceneCamera");
-	MAGISYSTEM::AddCamera3D(std::move(sceneCamera_));
 
+	// マネージャに追加
+	MAGISYSTEM::AddCamera3D(std::move(sceneCamera_));
 
 	// カメラの設定
 	MAGISYSTEM::SetCurrentCamera("SceneCamera");
@@ -66,45 +70,48 @@ inline void SampleScene<Data>::Initialize() {
 	// ライト
 	MAGISYSTEM::AddPunctualLight("SampleLight");
 
-	// パーティクルを作成
-	MAGISYSTEM::CreateStaticParticleGroup3D("Plane", "terrain");
+	// トランスフォーム初期化
+	worldTransform_[0].Initialize();
+	worldTransform_[1].Initialize();
 
-	// エミッターを作成
-	MAGISYSTEM::CreateEmitter3D("Emitter", Vector3(0.0f, 0.0f, 0.0f));
+	worldTransform_[0].translate_.x = -1.0f;
+	worldTransform_[1].translate_.x = 1.0f;
 
-	// エミッターをマネージャから取得
-	Emitter3D* emitter = MAGISYSTEM::FindEmitter3D("Emitter");
-
-	// エミッターにパーティクルを挿入
-	emitter->AddParticleGroup(MAGISYSTEM::FindParticleGroup3D("Plane"));
-
-	// エミッターの設定
-	// ランダム拡散
-	emitter->GetEmitterSetting().emitType = EmitType::Random;
-	// 発生個数を5に
-	emitter->GetEmitterSetting().count = 5;
-	// 移動量を-1～1に
-	emitter->GetEmitterSetting().maxVelocity = { 1.0f,1.0f,1.0f };
-	emitter->GetEmitterSetting().minVelocity = { -1.0f,-1.0f,-1.0f };
-
-	for (size_t i = 0; i < primitiveSize_; i++) {
-		primitiveWorldTransform_[i] = std::make_unique<WorldTransform>();
-		primitiveWorldTransform_[i]->Initialize();
-		primitiveWorldTransform_[i]->translate_.x = float(i);
-	}
-	triangleData_.verticesOffsets[0] = { -1.0f,-1.0f,0.0f };
-	triangleData_.verticesOffsets[1] = { 0.0f,1.0f,0.0f };
-	triangleData_.verticesOffsets[2] = { 1.0f,-1.0f,0.0f };
-
-	material_.textureIndex = 1;
-	material_.uvRotate = 0.3f;
+	// デフォルトのテクスチャを取得　TODO:マテリアルもクラス化して初期化できるようにする
+	material_.textureIndex = MAGISYSTEM::GetDefaultTextureIndex();
 }
 
 template<typename Data>
 inline void SampleScene<Data>::Update() {
 
-	for (size_t i = 0; i < primitiveSize_; i++) {
-		primitiveWorldTransform_[i]->Update();
+	ImGui::Begin("Plane0");
+
+	ImGui::DragFloat3("Scale", &worldTransform_[0].scale_.x, 0.01f);
+	ImGui::DragFloat3("Rotate", &worldTransform_[0].rotate_.x, 0.01f);
+	ImGui::DragFloat3("Translate", &worldTransform_[0].translate_.x, 0.01f);
+
+	ImGui::DragFloat3("LeftTop", &planeData_[0].verticesOffsets[0].x, 0.01f);
+	ImGui::DragFloat3("RightTop", &planeData_[0].verticesOffsets[1].x, 0.01f);
+	ImGui::DragFloat3("LeftBottom", &planeData_[0].verticesOffsets[2].x, 0.01f);
+	ImGui::DragFloat3("RightBottom", &planeData_[0].verticesOffsets[3].x, 0.01f);
+	ImGui::End();
+
+
+	ImGui::Begin("Plane1");
+
+	ImGui::DragFloat3("Scale", &worldTransform_[1].scale_.x, 0.01f);
+	ImGui::DragFloat3("Rotate", &worldTransform_[1].rotate_.x, 0.01f);
+	ImGui::DragFloat3("Translate", &worldTransform_[1].translate_.x, 0.01f);
+
+	ImGui::DragFloat3("LeftTop", &planeData_[1].verticesOffsets[0].x, 0.01f);
+	ImGui::DragFloat3("RightTop", &planeData_[1].verticesOffsets[1].x, 0.01f);
+	ImGui::DragFloat3("LeftBottom", &planeData_[1].verticesOffsets[2].x, 0.01f);
+	ImGui::DragFloat3("RightBottom", &planeData_[1].verticesOffsets[3].x, 0.01f);
+	ImGui::End();
+
+	// トランスフォーム更新
+	for (uint32_t i = 0; i < 2; i++) {
+		worldTransform_[i].Update();
 	}
 
 }
@@ -112,9 +119,9 @@ inline void SampleScene<Data>::Update() {
 template<typename Data>
 inline void SampleScene<Data>::Draw() {
 
-
-	for (size_t i = 0; i < primitiveSize_; i++) {
-		MAGISYSTEM::DrawTriangle3D(primitiveWorldTransform_[i]->worldMatrix_, triangleData_, material_);
+	// 板ポリ描画
+	for (uint32_t i = 0; i < 2; i++) {
+		MAGISYSTEM::DrawPlane3D(worldTransform_[i].worldMatrix_, planeData_[i], material_);
 	}
 
 	// 

@@ -1,30 +1,14 @@
 #include "Plane3D.hlsli"
 
-// PS用のBindlessアクセス設定
-StructuredBuffer<PlaneMaterialData3D> gMaterialData : register(t1);
-Texture2D gTextures[]; // Bindlessなテクスチャ配列（Shader Model 6.6）
+Texture2D gTextures[] : register(t1000);
 SamplerState gSampler : register(s0);
+StructuredBuffer<PrimitiveMaterialData3D> gMaterialData : register(t1);
 
-PixelShaderOutput main(GeometryShaderOutput input)
+float4 main(MeshOutput input) : SV_Target
 {
-    PixelShaderOutput output;
+    uint instanceID = input.instanceIndex;
+    PrimitiveMaterialData3D mat = gMaterialData[instanceID];
 
-    PlaneMaterialData3D mat = gMaterialData[input.instanceID];
-
-    float4 color = mat.baseColor;
-    
-    // UVトランスフォーム
-    float2 uv = input.texcoord - 0.5f;
-    float c = cos(mat.uvRotate);
-    float s = sin(mat.uvRotate);
-    uv = float2(c * uv.x - s * uv.y, s * uv.x + c * uv.y); // 回転
-    uv *= mat.uvScale;
-    uv += mat.uvTranslate + 0.5f;
-    float4 texColor = gTextures[mat.textureIndex].Sample(gSampler, uv);
-    color *= texColor;
-
-
-    output.color = color;
-    
-    return output;
+    float4 texColor = gTextures[mat.textureIndex].Sample(gSampler, input.uv);
+    return texColor * mat.baseColor;
 }
