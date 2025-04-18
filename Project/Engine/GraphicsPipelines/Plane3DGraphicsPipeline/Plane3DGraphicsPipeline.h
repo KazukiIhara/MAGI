@@ -20,9 +20,9 @@ private:
 	D3D12_BLEND_DESC BlendStateSetting(uint32_t blendModeNum)override;
 	// DepthStencilStateの設定を行う
 	D3D12_DEPTH_STENCIL_DESC DepthStecilDescSetting()override;
-	// InputLayoutの設定を行う
-	D3D12_INPUT_LAYOUT_DESC InputLayoutSetting()override;
 	// RasterizerStateの設定を行う
 	D3D12_RASTERIZER_DESC RasterizerStateSetting()override;
+	// InputLayoutの設定を行う
+	D3D12_INPUT_LAYOUT_DESC InputLayoutSetting()override;
 };
 

@@ -57,29 +57,32 @@ void SphereDrawer3D::Update() {
 }
 
 void SphereDrawer3D::Draw() {
-	// コマンドリストを取得
-	ID3D12GraphicsCommandList* commandList = directXCommand_->GetList();
-	// PSOを設定
+	if (instanceCount_ == 0) return;
+
+	// Mesh Shader用コマンドリスト
+	ID3D12GraphicsCommandList6* commandList = directXCommand_->GetList6();
+
+	// PSOを設定（MeshShader用のPipelineStateTypeにしてください）
 	commandList->SetPipelineState(graphicsPipelineManager_->GetPipelineState(GraphicsPipelineStateType::Sphere3D, blendMode_));
-	// Cameraを転送
+
+	// カメラ転送
 	camera3DManager_->TransferCurrentCamera(0);
 
-	// SphereData3DStructuredBufferのSRVを設定
+	// SRV設定
 	commandList->SetGraphicsRootDescriptorTable(1, srvUavManager_->GetDescriptorHandleGPU(instancingSrvIndex));
-	// MaterialDataStructuredBufferのSRVを設定
 	commandList->SetGraphicsRootDescriptorTable(2, srvUavManager_->GetDescriptorHandleGPU(materialSrvIndex_));
-	// BindlessTexture用のSRVを設定
-	commandList->SetGraphicsRootDescriptorTable(3, srvUavManager_->GetDescriptorHandleGPU(0));
+	commandList->SetGraphicsRootDescriptorTable(3, srvUavManager_->GetDescriptorHandleGPU(0)); // BindlessTexture用
 
-	// BindlessTexture用のDescriptorHeapを設定
+	// DescriptorHeap設定
 	ID3D12DescriptorHeap* descriptorHeaps[] = {
 		srvUavManager_->GetDescriptorHeap()
 	};
 	commandList->SetDescriptorHeaps(_countof(descriptorHeaps), descriptorHeaps);
 
-	// 描画
-	commandList->DrawInstanced(1, instanceCount_, 0, 0);
+	// MeshShader Dispatch
+	commandList->DispatchMesh(1, instanceCount_, 1);
 }
+
 
 void SphereDrawer3D::AddSphere(
 	const Matrix4x4& worldMatrix,

@@ -2,6 +2,8 @@
 
 #include "GraphicsPipelines/BaseGraphicsPipeline/BaseGraphicsPipeline.h"
 
+#include "Structs/Primitive3DStruct.h"
+
 class Sphere3DGraphicsPipeline : public BaseGraphicsPipeline {
 public:
 	Sphere3DGraphicsPipeline(DXGI* dxgi, ShaderCompiler* shaderCompiler);
