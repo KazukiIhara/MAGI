@@ -1154,23 +1154,8 @@ void MAGISYSTEM::DrawTriangle3D(const Matrix4x4& worldMatrix, const TriangleData
 	triangleDrawer3D_->AddTriangle(worldMatrix, data, material);
 }
 
-void MAGISYSTEM::DrawPlane3D(
-	const Matrix4x4& worldMatrix,
-	const Vector3& leftTop,
-	const Vector3& rightTop,
-	const Vector3& leftBottom,
-	const Vector3& rightBottom,
-	const RGBA& color,
-	const uint32_t& textureIndex,
-	const Vector2& uvScale,
-	const float& uvRotate,
-	const Vector2& uvTransform
-) {
-	planeDrawer3D_->AddPlane(worldMatrix, leftTop, rightTop, leftBottom, rightBottom, color, textureIndex, uvScale, uvRotate, uvTransform);
-}
-
 void MAGISYSTEM::DrawPlane3D(const Matrix4x4& worldMatrix, const PlaneData3D& planeData, const PrimitiveMaterialData3D& materialData) {
-	planeDrawer3D_->AddPlane(worldMatrix, planeData.verticesOffsets[0], planeData.verticesOffsets[1], planeData.verticesOffsets[2], planeData.verticesOffsets[3], materialData.baseColor, materialData.textureIndex, materialData.uvScale, materialData.uvRotate, materialData.uvTransform);
+	planeDrawer3D_->AddPlane(worldMatrix, planeData, materialData);
 }
 
 void MAGISYSTEM::DrawSphere3D(const Matrix4x4& worldMatrix, const float& radius, const uint32_t& longitudeSegments, const uint32_t& latitudeSegments, const RGBA& color, const uint32_t& textureIndex, const Vector2& uvScale, const float& uvRotate, const Vector2& uvTransform) {

@@ -434,20 +434,6 @@ public: // エンジンの機能
 	// 板ポリ描画
 	static void DrawPlane3D(
 		const Matrix4x4& worldMatrix,
-		const Vector3& leftTop,
-		const Vector3& rightTop,
-		const Vector3& leftBottom,
-		const Vector3& rightBottom,
-		const RGBA& color,
-		const uint32_t& textureIndex,
-		const Vector2& uvScale,
-		const float& uvRotate,
-		const Vector2& uvTransform
-	);
-
-	// 板ポリ描画使いやすい版
-	static void DrawPlane3D(
-		const Matrix4x4& worldMatrix,
 		const PlaneData3D& planeData,
 		const PrimitiveMaterialData3D& materialData
 	);
