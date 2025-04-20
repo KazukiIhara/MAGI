@@ -32,8 +32,8 @@ public:
 	);
 	~ModelDrawerManager();
 
-	void CreateModelDrawer(const std::string& modelName, const ModelData& modelData);
-	void DrawModel(const std::string& modelName, const Matrix4x4& worldMatrix);
+	void CreateModelDrawer(const std::string& modelDrawerName, const ModelData& modelData);
+	void DrawModel(const std::string& modelDrawerName, const Matrix4x4& worldMatrix);
 	void UpdateAll();
 	void DrawAll();
 

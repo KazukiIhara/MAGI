@@ -32,7 +32,8 @@ ModelDrawerManager::~ModelDrawerManager() {
 	Logger::Log("ModelDrawerManager Initialize\n");
 }
 
-void ModelDrawerManager::CreateModelDrawer(const std::string& modelName, const ModelData& modelData) {
+void ModelDrawerManager::CreateModelDrawer(const std::string& modelDrawerName, const ModelData& modelData) {
+	// 追加する描画クラスを作成
 	std::unique_ptr<ModelDrawer> newModelDrawer = std::make_unique<ModelDrawer>(
 		dxgi_,
 		directXCommand_,
@@ -42,11 +43,11 @@ void ModelDrawerManager::CreateModelDrawer(const std::string& modelName, const M
 		modelData
 	);
 	// ペアを作って挿入
-	modelDrawers_.insert(std::make_pair(modelName, std::move(newModelDrawer)));
+	modelDrawers_.insert(std::make_pair(modelDrawerName, std::move(newModelDrawer)));
 }
 
-void ModelDrawerManager::DrawModel(const std::string& modelName, const Matrix4x4& worldMatrix) {
-	auto it = modelDrawers_.find(modelName);
+void ModelDrawerManager::DrawModel(const std::string& modelDrawerName, const Matrix4x4& worldMatrix) {
+	auto it = modelDrawers_.find(modelDrawerName);
 	if (it != modelDrawers_.end()) {
 		it->second->AddDrawCommand(worldMatrix);
 	}
