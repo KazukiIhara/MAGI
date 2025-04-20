@@ -807,6 +807,9 @@
     <ClInclude Include="Engine\WindowApp\WindowApp.h">
       <Filter>Engine\WindowApp</Filter>
     </ClInclude>
+    <ClInclude Include="Engine\ObjectManagers\ModelDrawer3DManager\ModelDrawer3DManager.h" />
+    <ClInclude Include="Engine\3D\Drawer3D\MeshDrawer3D\MeshDrawer3D.h" />
+    <ClInclude Include="Engine\3D\Drawer3D\ModelDrawer3D\ModelDrawer3D.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="App\Game\Game.cpp">
@@ -1098,6 +1101,9 @@
       <Filter>Engine\WindowApp</Filter>
     </ClCompile>
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Engine\ObjectManagers\ModelDrawer3DManager\ModelDrawer3DManager.cpp" />
+    <ClCompile Include="Engine\3D\Drawer3D\MeshDrawer3D\MeshDrawer3D.cpp" />
+    <ClCompile Include="Engine\3D\Drawer3D\ModelDrawer3D\ModelDrawer3D.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Engine\SceneManager\SceneManager.ipp">
