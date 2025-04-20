@@ -8,7 +8,7 @@
 // MyHedder
 #include "Structs/ModelStruct.h"
 #include "Math/Utility/MathUtility.h"
-#include "3D/Drawer3D/ModelDrawer3D/ModelDrawer3D.h"
+#include "3D/Drawer3D/ModelDrawer/ModelDrawer.h"
 
 // 前方宣言
 class DXGI;
@@ -20,16 +20,16 @@ class Camera3DManager;
 /// <summary>
 /// モデル描画クラスのマネージャー
 /// </summary>
-class ModelDrawer3DManager {
+class ModelDrawerManager {
 public:
-	ModelDrawer3DManager(
+	ModelDrawerManager(
 		DXGI* dxgi,
 		DirectXCommand* directXCommand,
 		SRVUAVManager* srvUavManager,
 		GraphicsPipelineManager* graphicsPipelineManager,
 		Camera3DManager* camera3DManager
 	);
-	~ModelDrawer3DManager();
+	~ModelDrawerManager();
 
 	void CreateModelDrawer(const std::string& modelName, const ModelData& modelData);
 	void DrawModel(const std::string& modelName, const Matrix4x4& worldMatrix);
@@ -37,6 +37,20 @@ public:
 	void DrawAll();
 
 private:
+	void SetDXGI(DXGI* dxgi);
+	void SetDirectXCommand(DirectXCommand* directXCommand);
+	void SetSRVUAVManager(SRVUAVManager* srvUavManager);
+	void SetGraphicsPipelineManager(GraphicsPipelineManager* graphicsPipelineManager);
+	void SetCamera3DManager(Camera3DManager* camera3DManager);
+
+private:
 	// 描画クラスのコンテナ
-	std::unordered_map<std::string, std::unique_ptr<ModelDrawer3D>> modelDrawers_;
+	std::unordered_map<std::string, std::unique_ptr<ModelDrawer>> modelDrawers_;
+
+private:
+	DXGI* dxgi_ = nullptr;
+	DirectXCommand* directXCommand_ = nullptr;
+	SRVUAVManager* srvUavManager_ = nullptr;
+	GraphicsPipelineManager* graphicsPipelineManager_ = nullptr;
+	Camera3DManager* camera3DManager_ = nullptr;
 };

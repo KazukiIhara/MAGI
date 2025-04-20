@@ -3,10 +3,10 @@
 /// <summary>
 /// 3Dモデル描画用クラス
 /// </summary>
-class ModelDrawer3D {
+class ModelDrawer {
 public:
-	ModelDrawer3D();
-	~ModelDrawer3D();
+	ModelDrawer();
+	~ModelDrawer();
 
 private:
 
