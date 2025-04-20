@@ -62,6 +62,8 @@ void PlaneDrawer3D::Draw() {
 	// Mesh Shader用コマンドリスト
 	ID3D12GraphicsCommandList6* commandList = directXCommand_->GetList6();
 
+	commandList->SetGraphicsRootSignature(graphicsPipelineManager_->GetRootSignature(GraphicsPipelineStateType::Plane3D));
+
 	commandList->SetPipelineState(graphicsPipelineManager_->GetPipelineState(GraphicsPipelineStateType::Plane3D, blendMode_));
 
 	camera3DManager_->TransferCurrentCamera(0);

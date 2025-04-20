@@ -586,6 +586,8 @@ protected:
 	static std::unique_ptr<PlaneDrawer3D> planeDrawer3D_;
 	static std::unique_ptr<SphereDrawer3D> sphereDrawer3D_;
 
+	static std::unique_ptr<ModelDrawerManager> modelDrawerManager_;
+
 	// 
 	// GameManager
 	// 

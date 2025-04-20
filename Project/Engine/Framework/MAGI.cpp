@@ -76,6 +76,8 @@ std::unique_ptr<TriangleDrawer3D> MAGISYSTEM::triangleDrawer3D_ = nullptr;
 std::unique_ptr<PlaneDrawer3D> MAGISYSTEM::planeDrawer3D_ = nullptr;
 std::unique_ptr<SphereDrawer3D> MAGISYSTEM::sphereDrawer3D_ = nullptr;
 
+std::unique_ptr<ModelDrawerManager> MAGISYSTEM::modelDrawerManager_ = nullptr;
+
 // 
 // GameManager
 // 
@@ -201,6 +203,10 @@ void MAGISYSTEM::Initialize() {
 	// SphereDrawer3D
 	sphereDrawer3D_ = std::make_unique<SphereDrawer3D>(dxgi_.get(), directXCommand_.get(), srvuavManager_.get(), graphicsPipelineManager_.get(), camera3DManager_.get());
 
+	// ModelDrawerManager
+	modelDrawerManager_ = std::make_unique<ModelDrawerManager>(dxgi_.get(), directXCommand_.get(), srvuavManager_.get(), graphicsPipelineManager_.get(), camera3DManager_.get());
+
+
 	// CollisionManager
 	collisionManager_ = std::make_unique<CollisionManager>(colliderManager_.get());
 	// SceneManager
@@ -262,6 +268,11 @@ void MAGISYSTEM::Finalize() {
 	// CollisionManager
 	if (collisionManager_) {
 		collisionManager_.reset();
+	}
+
+	// ModelDrawerManager
+	if (modelDrawerManager_) {
+		modelDrawerManager_.reset();
 	}
 
 	// SphereDrawer3D
@@ -541,6 +552,9 @@ void MAGISYSTEM::Update() {
 	// 3D球体描画クラスの更新
 	sphereDrawer3D_->Update();
 
+	// モデル描画クラスマネージャの更新
+	modelDrawerManager_->UpdateAll();
+
 
 	// Dataクラスフレーム終了処理
 	dataIO_->EndFrame();
@@ -567,7 +581,6 @@ void MAGISYSTEM::Draw() {
 
 	// コマンドリスト取得
 	ID3D12GraphicsCommandList* commandList = directXCommand_->GetList();
-	ID3D12GraphicsCommandList6* commandList6 = directXCommand_->GetList6();
 
 	// SRVUAVのディスクリプタヒープを設定
 	ComPtr<ID3D12DescriptorHeap> descriptorHeaps[] = { srvuavManager_->GetDescriptorHeap() };
@@ -602,24 +615,10 @@ void MAGISYSTEM::Draw() {
 	// 3Dオブジェクトグループの描画処理
 	gameObject3DGroupManager_->Draw();
 
-
-	// 
-	// LineDrawer3Dの描画前処理
-	// 
-	commandList->SetGraphicsRootSignature(graphicsPipelineManager_->GetRootSignature(GraphicsPipelineStateType::Line3D));
-	commandList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_LINELIST);
-
 	// 
 	// LineDrawer3Dの描画処理
 	// 
 	lineDrawer3D_->Draw();
-
-
-	//
-	// TriangleDrawer3Dの描画前処理
-	//
-
-	commandList6->SetGraphicsRootSignature(graphicsPipelineManager_->GetRootSignature(GraphicsPipelineStateType::Triangle3D));
 
 	// 
 	// TriangleDrawer3Dの描画処理
@@ -628,27 +627,19 @@ void MAGISYSTEM::Draw() {
 	triangleDrawer3D_->Draw();
 
 	// 
-	// PlaneDrawer3Dの描画前処理
-	// 
-	commandList->SetGraphicsRootSignature(graphicsPipelineManager_->GetRootSignature(GraphicsPipelineStateType::Plane3D));
-	commandList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_POINTLIST);
-
-	// 
 	// PlaneDrawer3Dの描画処理
 	// 
 	planeDrawer3D_->Draw();
-
-	// 
-	// SphereDrawer3Dの描画前処理
-	// 
-	commandList->SetGraphicsRootSignature(graphicsPipelineManager_->GetRootSignature(GraphicsPipelineStateType::Sphere3D));
-	commandList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_POINTLIST);
 
 	// 
 	// SphereDrawer3Dの描画処理
 	// 
 	sphereDrawer3D_->Draw();
 
+	//
+	// ModelDrawerの描画処理
+	// 
+	modelDrawerManager_->DrawAll();
 
 	//
 	// ParticleGroup3Dの描画前処理
