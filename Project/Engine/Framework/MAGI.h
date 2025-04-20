@@ -81,6 +81,8 @@
 #include "PrimitiveDrawers/PlaneDrawer3D/PlaneDrawer3D.h"
 #include "PrimitiveDrawers/SphereDrawer3D/SphereDrawer3D.h"
 
+#include "ModelDrawerManager/ModelDrawerManager.h"
+
 // 
 // GameManager
 // 
