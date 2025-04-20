@@ -8,7 +8,7 @@
 
 #include "DirectX/ComPtr/ComPtr.h"
 #include "Math/Utility/MathUtility.h"
-#include "Structs/ObjectStruct.h"
+#include "Structs/Primitive3DStruct.h"
 #include "Structs/ColorStruct.h"
 #include "Enums/BlendModeEnum.h"
 
