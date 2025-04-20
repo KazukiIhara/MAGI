@@ -12,7 +12,13 @@
 #include "PipelineManagers/GraphicsPipelineManager/GraphicsPipelineManager.h"
 #include "ObjectManagers/Camera3DManager/Camera3DManager.h"
 
-ModelDrawerManager::ModelDrawerManager(DXGI* dxgi, DirectXCommand* directXCommand, SRVUAVManager* srvUavManager, GraphicsPipelineManager* graphicsPipelineManager, Camera3DManager* camera3DManager) {
+ModelDrawerManager::ModelDrawerManager(
+	DXGI* dxgi,
+	DirectXCommand* directXCommand,
+	SRVUAVManager* srvUavManager,
+	GraphicsPipelineManager* graphicsPipelineManager,
+	Camera3DManager* camera3DManager
+) {
 	SetDXGI(dxgi);
 	SetDirectXCommand(directXCommand);
 	SetSRVUAVManager(srvUavManager);
@@ -27,19 +33,37 @@ ModelDrawerManager::~ModelDrawerManager() {
 }
 
 void ModelDrawerManager::CreateModelDrawer(const std::string& modelName, const ModelData& modelData) {
-
+	std::unique_ptr<ModelDrawer> newModelDrawer = std::make_unique<ModelDrawer>(
+		dxgi_,
+		directXCommand_,
+		srvUavManager_,
+		graphicsPipelineManager_,
+		camera3DManager_,
+		modelData
+	);
+	// ペアを作って挿入
+	modelDrawers_.insert(std::make_pair(modelName, std::move(newModelDrawer)));
 }
 
 void ModelDrawerManager::DrawModel(const std::string& modelName, const Matrix4x4& worldMatrix) {
-
+	auto it = modelDrawers_.find(modelName);
+	if (it != modelDrawers_.end()) {
+		it->second->AddDrawCommand(worldMatrix);
+	}
 }
 
 void ModelDrawerManager::UpdateAll() {
-
+	// 全モデル描画クラスを更新
+	for (auto& modelDrawer : modelDrawers_) {
+		modelDrawer.second->Update();
+	}
 }
 
 void ModelDrawerManager::DrawAll() {
-
+	// 全モデル描画クラスを描画
+	for (auto& modelDrawer : modelDrawers_) {
+		modelDrawer.second->Draw();
+	}
 }
 
 void ModelDrawerManager::SetDXGI(DXGI* dxgi) {

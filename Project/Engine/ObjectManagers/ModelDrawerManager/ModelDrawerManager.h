@@ -8,6 +8,7 @@
 // MyHedder
 #include "Structs/ModelStruct.h"
 #include "Math/Utility/MathUtility.h"
+#include "MAGIUitility/MAGIUtility.h"
 #include "3D/Drawer3D/ModelDrawer/ModelDrawer.h"
 
 // 前方宣言
