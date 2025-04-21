@@ -75,4 +75,35 @@ void ShaderCompiler::Initialize() {
 
 	hr = dxcUtils_->CreateDefaultIncludeHandler(&includeHandler_);
 	assert(SUCCEEDED(hr));
+
+	LogDxcVersion();
+}
+
+void ShaderCompiler::LogDxcVersion() {
+    ComPtr<IDxcVersionInfo> verInfo;
+    if (SUCCEEDED(dxcCompiler_->QueryInterface(IID_PPV_ARGS(&verInfo)))) {
+        UINT32 major = 0, minor = 0;
+        verInfo->GetVersion(&major, &minor);
+
+        std::string msg;
+
+        // commit 情報が取れる場合
+        ComPtr<IDxcVersionInfo2> verInfo2;
+        if (SUCCEEDED(dxcCompiler_->QueryInterface(IID_PPV_ARGS(&verInfo2)))) {
+            UINT32 commitCount = 0;
+            char*  commitHash  = nullptr;                 // ← char* (UTF‑8)
+            verInfo2->GetCommitInfo(&commitCount, &commitHash);
+
+            msg = std::format(
+                     "DXC Version {}.{} ({} commits, hash: {})\n",
+                     major, minor, commitCount,
+                     commitHash ? commitHash : "");
+        }
+        else {
+            msg = std::format(
+                     "DXC Version {}.{}\n", major, minor);
+        }
+
+        Logger::Log(msg);                                 // Logger が char* 系 OK ならこれで完了
+    }
 }

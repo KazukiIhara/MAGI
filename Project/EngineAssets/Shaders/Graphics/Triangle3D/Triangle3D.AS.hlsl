@@ -1,13 +1,21 @@
 #include "Triangle3D.hlsli"
 
+// Mesh へ渡す情報
+struct ASPayload
+{
+    uint instanceID;
+};
+
 ConstantBuffer<RootConstants> gRootConstant : register(b1);
-StructuredBuffer<TriangleData3D> gInstanceData : register(t0);
 
 [numthreads(1, 1, 1)]
-void main(uint3 dispatchThreadID : SV_DispatchThreadID)
+void main(uint3 tid : SV_DispatchThreadID,
+          out ASPayload payload)       // ← out で宣言
 {
-    uint instanceID = gRootConstant.baseInstanceIndex + dispatchThreadID.x;
+    // ベース + ローカルスレッド ID でインスタンスを一意に
+    payload.instanceID =
+        gRootConstant.baseInstanceIndex + tid.x;
 
-    // Dispatch with payload = instanceID
-    DispatchMesh(uint3(1, 1, 1), instanceID); // payload
+    // 1×1×1 の MeshShader グループを発行
+    DispatchMesh(uint3(1, 1, 1), payload);
 }
