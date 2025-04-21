@@ -34,14 +34,8 @@ ModelDrawerManager::~ModelDrawerManager() {
 
 void ModelDrawerManager::CreateModelDrawer(const std::string& modelDrawerName, const ModelData& modelData) {
 	// 追加する描画クラスを作成
-	std::unique_ptr<ModelDrawer> newModelDrawer = std::make_unique<ModelDrawer>(
-		dxgi_,
-		directXCommand_,
-		srvUavManager_,
-		graphicsPipelineManager_,
-		camera3DManager_,
-		modelData
-	);
+	std::unique_ptr<ModelDrawer> newModelDrawer = std::make_unique<ModelDrawer>(modelData);
+		
 	// ペアを作って挿入
 	modelDrawers_.insert(std::make_pair(modelDrawerName, std::move(newModelDrawer)));
 }
