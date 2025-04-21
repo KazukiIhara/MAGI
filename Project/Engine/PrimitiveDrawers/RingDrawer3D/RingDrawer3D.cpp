@@ -92,7 +92,6 @@ void RingDrawer3D::Draw() {
 		commandList->SetGraphicsRoot32BitConstant(4, baseIndex, 0);
 		commandList->DispatchMesh(threadGroupCountX, dispatchCountY, 1);
 	}
-
 }
 
 void RingDrawer3D::AddRing(
