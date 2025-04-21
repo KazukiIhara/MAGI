@@ -7,7 +7,7 @@ void main(uint3 tid : SV_DispatchThreadID)
 {
     ASPayload payload;
     // ベース + ローカルスレッド ID でインスタンスを一意に
-    payload.instanceID = gRootConstant.baseInstanceIndex + tid.x;
+    payload.instanceID = gRootConstant.baseInstanceIndex + tid.y;
 
     // 1×1×1 の MeshShader グループを発行
     DispatchMesh(1, 1, 1, payload);
