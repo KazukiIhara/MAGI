@@ -1,4 +1,4 @@
-#include "SphereDrawer3D.h"
+#include "RingDrawer3D.h"
 
 #include "DirectX/DXGI/DXGI.h"
 #include "DirectX/DirectXCommand/DirectXCommand.h"
@@ -16,7 +16,7 @@
 using namespace MAGIUtility;
 using namespace MAGIMath;
 
-SphereDrawer3D::SphereDrawer3D(DXGI* dxgi, DirectXCommand* directXCommand, SRVUAVManager* srvUavManager, GraphicsPipelineManager* graphicsPipelineManager, Camera3DManager* camera3DManager) {
+RingDrawer3D::RingDrawer3D(DXGI* dxgi, DirectXCommand* directXCommand, SRVUAVManager* srvUavManager, GraphicsPipelineManager* graphicsPipelineManager, Camera3DManager* camera3DManager) {
 	SetDXGI(dxgi);
 	SetDirectXCommand(directXCommand);
 	SetSRVUAVManager(srvUavManager);
@@ -32,39 +32,40 @@ SphereDrawer3D::SphereDrawer3D(DXGI* dxgi, DirectXCommand* directXCommand, SRVUA
 	// Materialデータを書き込む
 	MapMaterialData();
 
-	spheres_.reserve(PrimitiveCommonConst::NumMaxInstance);
-	Logger::Log("SphereDrawer3D Initialize\n");
+	rings_.reserve(PrimitiveCommonConst::NumMaxInstance);
+	Logger::Log("RingDrawer3D Initialize\n");
 }
 
-SphereDrawer3D::~SphereDrawer3D() {
-	Logger::Log("SphereDrawer3D Finalize\n");
+RingDrawer3D::~RingDrawer3D() {
+	Logger::Log("RingDrawer3D Finalize\n");
 }
 
-void SphereDrawer3D::Update() {
+void RingDrawer3D::Update() {
 	// 最大数を超えていたら止める
-	assert(spheres_.size() <= PrimitiveCommonConst::NumMaxInstance && "Sphere size is over!");
+	assert(rings_.size() <= PrimitiveCommonConst::NumMaxInstance && "Sphere size is over!");
 
 	// 描画すべきインスタンス数
-	instanceCount_ = static_cast<uint32_t>(spheres_.size());
+	instanceCount_ = static_cast<uint32_t>(rings_.size());
 
 	// データが存在し、描画対象がある場合のみコピー
 	if (instancingData_ != nullptr && materialData_ != nullptr && instanceCount_ > 0) {
-		std::memcpy(instancingData_, spheres_.data(), instanceCount_ * sizeof(SphereData3DForGPU));
+		std::memcpy(instancingData_, rings_.data(), instanceCount_ * sizeof(SphereData3DForGPU));
 		std::memcpy(materialData_, materials_.data(), instanceCount_ * sizeof(PrimitiveMaterialData3DForGPU));
 	}
 	// 球体のコンテナをクリア
-	ClearSpheres();
+	ClearRings();
+
 }
 
-void SphereDrawer3D::Draw() {
+void RingDrawer3D::Draw() {
 	if (instanceCount_ == 0) return;
 
 	ID3D12GraphicsCommandList6* commandList = directXCommand_->GetList6();
 
-	commandList->SetGraphicsRootSignature(graphicsPipelineManager_->GetRootSignature(GraphicsPipelineStateType::Sphere3D));
+	commandList->SetGraphicsRootSignature(graphicsPipelineManager_->GetRootSignature(GraphicsPipelineStateType::Ring3D));
 
 	// PSO & カメラ設定
-	commandList->SetPipelineState(graphicsPipelineManager_->GetPipelineState(GraphicsPipelineStateType::Sphere3D, blendMode_));
+	commandList->SetPipelineState(graphicsPipelineManager_->GetPipelineState(GraphicsPipelineStateType::Ring3D, blendMode_));
 	camera3DManager_->TransferCurrentCamera(0);
 
 	// Descriptor Table 設定
@@ -93,20 +94,21 @@ void SphereDrawer3D::Draw() {
 	}
 }
 
-void SphereDrawer3D::AddSphere(
+void RingDrawer3D::AddRing(
 	const Matrix4x4& worldMatrix,
-	const SphereData3D& data,
+	const RingData3D& data,
 	const PrimitiveMaterialData3D& material
 ) {
 
 	// 座標と形状データ
-	SphereData3DForGPU newSphereData{
+	RingData3DForGPU newRingData{
 		.worldMatrix = worldMatrix,
-		.radius = data.radius,
-		.longitudeSegments = data.verticalSegments,
-		.latitudeSegments = data.horizontalSegments
+		.ringDivide = data.ringDivide,
+		.outerRadius = data.outerRadius,
+		.innerRadius = data.innerRadius,
+		.radianPerDivide = 2.0f * std::numbers::pi_v<float> / static_cast<float>(data.ringDivide),
 	};
-	spheres_.push_back(newSphereData);
+	rings_.push_back(newRingData);
 
 	// マテリアルデータ
 	PrimitiveMaterialData3DForGPU newMaterialData{
@@ -117,50 +119,50 @@ void SphereDrawer3D::AddSphere(
 	materials_.push_back(newMaterialData);
 }
 
-void SphereDrawer3D::ClearSpheres() {
-	spheres_.clear();
+void RingDrawer3D::ClearRings() {
+	rings_.clear();
 }
 
-void SphereDrawer3D::SetDXGI(DXGI* dxgi) {
+void RingDrawer3D::SetDXGI(DXGI* dxgi) {
 	assert(dxgi);
 	dxgi_ = dxgi;
 }
 
-void SphereDrawer3D::SetDirectXCommand(DirectXCommand* directXCommand) {
+void RingDrawer3D::SetDirectXCommand(DirectXCommand* directXCommand) {
 	assert(directXCommand);
 	directXCommand_ = directXCommand;
 }
 
-void SphereDrawer3D::SetSRVUAVManager(SRVUAVManager* srvUavManager) {
+void RingDrawer3D::SetSRVUAVManager(SRVUAVManager* srvUavManager) {
 	assert(srvUavManager);
 	srvUavManager_ = srvUavManager;
 }
 
-void SphereDrawer3D::SetGraphicsPipelineManager(GraphicsPipelineManager* graphicsPipelineManager) {
+void RingDrawer3D::SetGraphicsPipelineManager(GraphicsPipelineManager* graphicsPipelineManager) {
 	assert(graphicsPipelineManager);
 	graphicsPipelineManager_ = graphicsPipelineManager;
 }
 
-void SphereDrawer3D::SetCamera3DManager(Camera3DManager* camera3DManager) {
+void RingDrawer3D::SetCamera3DManager(Camera3DManager* camera3DManager) {
 	assert(camera3DManager);
 	camera3DManager_ = camera3DManager;
 }
 
-void SphereDrawer3D::CreateInstancingResource() {
+void RingDrawer3D::CreateInstancingResource() {
 	// instancing用のリソースを作る
-	instancingResource_ = dxgi_->CreateBufferResource(sizeof(SphereData3DForGPU) * PrimitiveCommonConst::NumMaxInstance);
+	instancingResource_ = dxgi_->CreateBufferResource(sizeof(RingData3DForGPU) * PrimitiveCommonConst::NumMaxInstance);
 	// srvのインデックスを割り当て
 	instancingSrvIndex = srvUavManager_->Allocate();
 	// Srvを作成
-	srvUavManager_->CreateSrvStructuredBuffer(instancingSrvIndex, instancingResource_.Get(), PrimitiveCommonConst::NumMaxInstance, sizeof(SphereData3DForGPU));
+	srvUavManager_->CreateSrvStructuredBuffer(instancingSrvIndex, instancingResource_.Get(), PrimitiveCommonConst::NumMaxInstance, sizeof(RingData3DForGPU));
 }
 
-void SphereDrawer3D::MapInstancingData() {
+void RingDrawer3D::MapInstancingData() {
 	instancingData_ = nullptr;
 	instancingResource_->Map(0, nullptr, reinterpret_cast<void**>(&instancingData_));
 }
 
-void SphereDrawer3D::CreateMaterialResource() {
+void RingDrawer3D::CreateMaterialResource() {
 	// Material用のリソースを作る
 	materialResource_ = dxgi_->CreateBufferResource(sizeof(PrimitiveMaterialData3DForGPU) * PrimitiveCommonConst::NumMaxInstance);
 	// srvのインデックスを割り当て
@@ -169,7 +171,7 @@ void SphereDrawer3D::CreateMaterialResource() {
 	srvUavManager_->CreateSrvStructuredBuffer(materialSrvIndex_, materialResource_.Get(), PrimitiveCommonConst::NumMaxInstance, sizeof(PrimitiveMaterialData3DForGPU));
 }
 
-void SphereDrawer3D::MapMaterialData() {
+void RingDrawer3D::MapMaterialData() {
 	materialData_ = nullptr;
 	materialResource_->Map(0, nullptr, reinterpret_cast<void**>(&materialData_));
 

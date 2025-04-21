@@ -79,6 +79,26 @@ struct SphereData3DForGPU {
 };
 
 /// <summary>
+/// 3Dリングの形状データ
+/// </summary>
+struct RingData3D {
+	uint32_t ringDivide = 32;
+	float outerRadius = 1.0f;
+	float innerRadius = 0.2f;
+};
+
+/// <summary>
+/// GPUに送る3Dの球体データ
+/// </summary>
+struct RingData3DForGPU {
+	Matrix4x4 worldMatrix;
+	uint32_t ringDivide;
+	float outerRadius;
+	float innerRadius;
+	float radianPerDivide;
+};
+
+/// <summary>
 /// Primitiveマテリアルデータ
 /// </summary>
 struct PrimitiveMaterialData3D {

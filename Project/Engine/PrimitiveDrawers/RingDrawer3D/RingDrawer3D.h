@@ -19,30 +19,31 @@ class GraphicsPipelineManager;
 class Camera3DManager;
 
 /// <summary>
-/// 3D球体描画クラス
+/// 3Dリング描画クラス
 /// </summary>
-class SphereDrawer3D {
+class RingDrawer3D {
 public:
-	SphereDrawer3D(
+	RingDrawer3D(
 		DXGI* dxgi,
 		DirectXCommand* directXCommand,
 		SRVUAVManager* srvUavManager,
 		GraphicsPipelineManager* graphicsPipelineManager,
 		Camera3DManager* camera3DManager
 	);
-	~SphereDrawer3D();
+	~RingDrawer3D();
+
 
 	void Update();
 	void Draw();
 
-	void AddSphere(
+	void AddRing(
 		const Matrix4x4& worldMatrix,
-		const SphereData3D& data,
+		const RingData3D& data,
 		const PrimitiveMaterialData3D& material
 	);
 
 private:
-	void ClearSpheres();
+	void ClearRings();
 	void SetDXGI(DXGI* dxgi);
 	void SetDirectXCommand(DirectXCommand* directXCommand);
 	void SetSRVUAVManager(SRVUAVManager* srvUavManager);
@@ -59,26 +60,25 @@ private:
 	void MapMaterialData();
 
 private:
-
 	// ブレンドモード
 	BlendMode blendMode_ = BlendMode::Normal;
 
 	// 球体データコンテナ
-	std::vector<SphereData3DForGPU> spheres_;
+	std::vector<RingData3DForGPU> rings_;
 	// マテリアルデータコンテナ
 	std::vector<PrimitiveMaterialData3DForGPU> materials_;
 
 	// instancing描画用のリソース
 	ComPtr<ID3D12Resource> instancingResource_ = nullptr;
 	// instancing描画用のデータ
-	SphereData3DForGPU* instancingData_ = nullptr;
+	RingData3DForGPU* instancingData_ = nullptr;
 
 	// マテリアルのリソース
 	ComPtr<ID3D12Resource> materialResource_ = nullptr;
 	// マテリアルデータ
 	PrimitiveMaterialData3DForGPU* materialData_ = nullptr;
 
-	// Sphere3DSrvIndex
+	// Ring3DSrvIndex
 	uint32_t instancingSrvIndex = 0;
 	// MaterialSrvIndex
 	uint32_t materialSrvIndex_ = 0;
@@ -95,5 +95,4 @@ private:
 	SRVUAVManager* srvUavManager_ = nullptr;
 	GraphicsPipelineManager* graphicsPipelineManager_ = nullptr;
 	Camera3DManager* camera3DManager_ = nullptr;
-
 };

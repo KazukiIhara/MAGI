@@ -80,6 +80,7 @@
 #include "PrimitiveDrawers/TriangleDrawer3D/TriangleDrawer3D.h"
 #include "PrimitiveDrawers/PlaneDrawer3D/PlaneDrawer3D.h"
 #include "PrimitiveDrawers/SphereDrawer3D/SphereDrawer3D.h"
+#include "PrimitiveDrawers/RingDrawer3D/RingDrawer3D.h"
 
 #include "ModelDrawerManager/ModelDrawerManager.h"
 
@@ -455,6 +456,11 @@ public: // エンジンの機能
 
 #pragma endregion
 
+#pragma region RingDrawer3D
+	// リング描画
+
+#pragma endregion
+
 #pragma region CollisionManager
 
 
@@ -585,6 +591,7 @@ protected:
 	static std::unique_ptr<TriangleDrawer3D> triangleDrawer3D_;
 	static std::unique_ptr<PlaneDrawer3D> planeDrawer3D_;
 	static std::unique_ptr<SphereDrawer3D> sphereDrawer3D_;
+	static std::unique_ptr<RingDrawer3D> ringDrawer3D_;
 
 	static std::unique_ptr<ModelDrawerManager> modelDrawerManager_;
 

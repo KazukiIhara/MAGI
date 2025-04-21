@@ -222,12 +222,12 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Engine\Input\MAGIDirectInput\MAGIDirectInput.h" />
     <ClInclude Include="Engine\Input\MAGIXInput\MAGIXInput.h" />
     <ClInclude Include="Engine\LeakChecker\D3DResourceLeakChecker.h" />
+    <ClInclude Include="Engine\ModelDrawerManager\ModelDrawerManager.h" />
     <ClInclude Include="Engine\ObjectManagers\Camera3DManager\Camera3DManager.h" />
     <ClInclude Include="Engine\ObjectManagers\ColliderManager\ColliderManager.h" />
     <ClInclude Include="Engine\ObjectManagers\Emitter3DManager\Emitter3DManager.h" />
     <ClInclude Include="Engine\ObjectManagers\GameObject3DGroupManager\GameObject3DGroupManager.h" />
     <ClInclude Include="Engine\ObjectManagers\GameObject3DManager\GameObject3DManager.h" />
-    <ClInclude Include="Engine\ModelDrawerManager\ModelDrawerManager.h" />
     <ClInclude Include="Engine\ObjectManagers\ParticleGroup3DManager\ParticleGroup3DManager.h" />
     <ClInclude Include="Engine\ObjectManagers\PunctualLightManager\PunctualLightManager.h" />
     <ClInclude Include="Engine\ObjectManagers\Renderer3DManager\Renderer3DManager.h" />
@@ -241,6 +241,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Engine\PostEffectPipelines\NonePostEffectPipeline\NonePostEffectPipeline.h" />
     <ClInclude Include="Engine\PrimitiveDrawers\LineDrawer3D\LineDrawer3D.h" />
     <ClInclude Include="Engine\PrimitiveDrawers\PlaneDrawer3D\PlaneDrawer3D.h" />
+    <ClInclude Include="Engine\PrimitiveDrawers\RingDrawer3D\RingDrawer3D.h" />
     <ClInclude Include="Engine\PrimitiveDrawers\SphereDrawer3D\SphereDrawer3D.h" />
     <ClInclude Include="Engine\PrimitiveDrawers\TriangleDrawer3D\TriangleDrawer3D.h" />
     <ClInclude Include="Engine\RenderTextureManager\RenderTextureManager.h" />
@@ -326,12 +327,12 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Engine\Input\MAGIDirectInput\MAGIDirectInput.cpp" />
     <ClCompile Include="Engine\Input\MAGIXInput\MAGIXInput.cpp" />
     <ClCompile Include="Engine\LeakChecker\D3DResourceLeakChecker.cpp" />
+    <ClCompile Include="Engine\ModelDrawerManager\ModelDrawerManager.cpp" />
     <ClCompile Include="Engine\ObjectManagers\Camera3DManager\Camera3DManager.cpp" />
     <ClCompile Include="Engine\ObjectManagers\ColliderManager\ColliderManager.cpp" />
     <ClCompile Include="Engine\ObjectManagers\Emitter3DManager\Emitter3DManager.cpp" />
     <ClCompile Include="Engine\ObjectManagers\GameObject3DGroupManager\GameObject3DGroupManager.cpp" />
     <ClCompile Include="Engine\ObjectManagers\GameObject3DManager\GameObject3DManager.cpp" />
-    <ClCompile Include="Engine\ModelDrawerManager\ModelDrawerManager.cpp" />
     <ClCompile Include="Engine\ObjectManagers\ParticleGroup3DManager\ParticleGroup3DManager.cpp" />
     <ClCompile Include="Engine\ObjectManagers\PunctualLightManager\PunctualLightManager.cpp" />
     <ClCompile Include="Engine\ObjectManagers\Renderer3DManager\Renderer3DManager.cpp" />
@@ -345,6 +346,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Engine\PostEffectPipelines\NonePostEffectPipeline\NonePostEffectPipeline.cpp" />
     <ClCompile Include="Engine\PrimitiveDrawers\LineDrawer3D\LineDrawer3D.cpp" />
     <ClCompile Include="Engine\PrimitiveDrawers\PlaneDrawer3D\PlaneDrawer3D.cpp" />
+    <ClCompile Include="Engine\PrimitiveDrawers\RingDrawer3D\RingDrawer3D.cpp" />
     <ClCompile Include="Engine\PrimitiveDrawers\SphereDrawer3D\SphereDrawer3D.cpp" />
     <ClCompile Include="Engine\PrimitiveDrawers\TriangleDrawer3D\TriangleDrawer3D.cpp" />
     <ClCompile Include="Engine\RenderTextureManager\RenderTextureManager.cpp" />
