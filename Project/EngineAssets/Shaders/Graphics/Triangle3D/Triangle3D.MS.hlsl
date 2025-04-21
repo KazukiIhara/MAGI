@@ -13,6 +13,9 @@ void main(in payload ASPayload payload, // ← 受け取り
           out vertices MeshOutput verts[3])
 {
     const uint instanceID = payload.instanceID;
+    
+    // デバッグ用
+    const float marker = payload.markerValue;
 
     TriangleData3D data = gInstanceData[instanceID];
     PrimitiveMaterialData3D mat = gMaterialData[instanceID];
@@ -33,7 +36,6 @@ void main(in payload ASPayload payload, // ← 受け取り
 
         verts[i].position = clipPos;
         verts[i].uv = uv;
-        verts[i].color = mat.baseColor;
         verts[i].instanceIndex = instanceID;
     }
 
