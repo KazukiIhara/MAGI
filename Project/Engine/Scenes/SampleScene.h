@@ -9,7 +9,7 @@
 
 // サンプルシーン
 template <typename Data>
-class SampleScene : public BaseScene<Data> {
+class SampleScene: public BaseScene<Data> {
 public:
 	using BaseScene<Data>::BaseScene; // 親クラスのコンストラクタをそのまま継承
 	~SampleScene()override = default;
@@ -24,7 +24,7 @@ private:
 	std::unique_ptr<Camera3D> sceneCamera_ = nullptr;
 
 	// ワールドトランスフォーム
-	WorldTransform worldTransform_[2]{};
+	WorldTransform worldTransform_[3]{};
 
 	// 板ポリ描画用の頂点データ
 	PlaneData3D planeData_[2]{};
@@ -78,8 +78,9 @@ inline void SampleScene<Data>::Initialize() {
 	MAGISYSTEM::AddPunctualLight("SampleLight");
 
 	// トランスフォーム初期化
-	worldTransform_[0].Initialize();
-	worldTransform_[1].Initialize();
+	for (uint32_t i = 0; i < 3; i++) {
+		worldTransform_[i].Initialize();
+	}
 
 	worldTransform_[0].translate_.x = -1.0f;
 	worldTransform_[1].translate_.x = 1.0f;
@@ -97,7 +98,7 @@ inline void SampleScene<Data>::Initialize() {
 template<typename Data>
 inline void SampleScene<Data>::Update() {
 
-	ImGui::Begin("Plane0");
+	ImGui::Begin("Plane");
 
 	ImGui::DragFloat3("Scale", &worldTransform_[0].scale_.x, 0.01f);
 	ImGui::DragFloat3("Rotate", &worldTransform_[0].rotate_.x, 0.01f);
@@ -128,33 +129,19 @@ inline void SampleScene<Data>::Update() {
 
 	ImGui::End();
 
-	ImGui::Begin("Sphere1");
+	ImGui::Begin("Triangle");
 
-	ImGui::DragFloat3("Scale", &worldTransform_[1].scale_.x, 0.01f);
-	ImGui::DragFloat3("Rotate", &worldTransform_[1].rotate_.x, 0.01f);
-	ImGui::DragFloat3("Translate", &worldTransform_[1].translate_.x, 0.01f);
-
-	ImGui::DragFloat("radius", &sphereData_[1].radius, 0.01f);
-
-	int tempHS1 = sphereData_[1].horizontalSegments;
-	ImGui::DragInt("horizontalSeg", &tempHS1);
-	sphereData_[1].horizontalSegments = tempHS1;
-
-	int tempVS1 = sphereData_[1].verticalSegments;
-	ImGui::DragInt("verticalSeg", &tempVS1);
-	sphereData_[1].verticalSegments = tempVS1;
+	ImGui::DragFloat3("Scale", &worldTransform_[2].scale_.x, 0.01f);
+	ImGui::DragFloat3("Rotate", &worldTransform_[2].rotate_.x, 0.01f);
+	ImGui::DragFloat3("Translate", &worldTransform_[2].translate_.x, 0.01f);
 
 	ImGui::End();
 
 	// トランスフォーム更新
-	for (uint32_t i = 0; i < 2; i++) {
+	for (uint32_t i = 0; i < 3; i++) {
 		worldTransform_[i].Update();
 	}
 
-
-	for (size_t i = 0; i < primitiveNum_; i++) {
-		worldTransform[i].Update();
-	}
 
 }
 
@@ -168,6 +155,8 @@ inline void SampleScene<Data>::Draw() {
 	// 球体描画
 	MAGISYSTEM::DrawSphere3D(worldTransform_[1].worldMatrix_, sphereData_[0], material_);
 
+	// 三角形描画
+	MAGISYSTEM::DrawTriangle3D(worldTransform_[2].worldMatrix_, triangleData_, material_);
 
 	// 
 	// オブジェクト2Dの描画前処理

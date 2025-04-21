@@ -31,3 +31,16 @@ struct Camera
     float3 worldPosition;
     float _padding;
 };
+
+// ルート定数
+struct RootConstants
+{
+    uint baseInstanceIndex;
+    uint _pad0, _pad1, _pad2;
+};
+
+// ASで使う構造体
+struct ASPayload
+{
+    uint instanceID;
+};

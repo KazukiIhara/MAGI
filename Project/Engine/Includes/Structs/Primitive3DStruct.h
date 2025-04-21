@@ -19,6 +19,18 @@ struct Primitive3DPipelineStateStream {
 	CD3DX12_PIPELINE_STATE_STREAM_DEPTH_STENCIL_FORMAT	dsvFormat;
 };
 
+struct Triangle3DPipelineStateStream {
+	CD3DX12_PIPELINE_STATE_STREAM_ROOT_SIGNATURE		rootSignature;
+	CD3DX12_PIPELINE_STATE_STREAM_AS					amplificationShader;
+	CD3DX12_PIPELINE_STATE_STREAM_MS					meshShader;
+	CD3DX12_PIPELINE_STATE_STREAM_PS					pixelShader;
+	CD3DX12_PIPELINE_STATE_STREAM_RASTERIZER			rasterizer;
+	CD3DX12_PIPELINE_STATE_STREAM_BLEND_DESC			blend;
+	CD3DX12_PIPELINE_STATE_STREAM_DEPTH_STENCIL			depthStencil;
+	CD3DX12_PIPELINE_STATE_STREAM_RENDER_TARGET_FORMATS rtvFormats;
+	CD3DX12_PIPELINE_STATE_STREAM_DEPTH_STENCIL_FORMAT	dsvFormat;
+};
+
 /// <summary>
 /// 3Dの三角形データ
 /// </summary>
@@ -117,4 +129,12 @@ struct PrimitiveMaterialData3DForGPU {
 	float padding0[3];
 	Vector4 baseColor;
 	Matrix4x4 uvMatrix;
+};
+
+// 増幅シェーダー用
+struct RootConstants {
+    uint32_t baseInstanceIndex = 0;
+    uint32_t _pad0 = 0;
+    uint32_t _pad1 = 0;
+    uint32_t _pad2 = 0;
 };

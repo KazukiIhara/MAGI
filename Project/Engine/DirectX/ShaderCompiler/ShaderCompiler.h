@@ -24,6 +24,8 @@ private:
 	// DXC初期化
 	void Initialize();
 
+	void LogDxcVersion();
+
 private:
 	// DXC関連
 	ComPtr<IDxcUtils> dxcUtils_ = nullptr;

@@ -39,7 +39,7 @@ void Triangle3DGraphicsPipeline::CreateRootSignature() {
 
 	// ---- RootParameter ---- //
 
-	D3D12_ROOT_PARAMETER rootParams[4] = {};
+	D3D12_ROOT_PARAMETER rootParams[5] = {};
 
 	// Camera (b0)
 	rootParams[0].ParameterType = D3D12_ROOT_PARAMETER_TYPE_CBV;
@@ -63,6 +63,12 @@ void Triangle3DGraphicsPipeline::CreateRootSignature() {
 	rootParams[3].ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL;
 	rootParams[3].DescriptorTable.pDescriptorRanges = &descriptorRangeTextures;
 	rootParams[3].DescriptorTable.NumDescriptorRanges = 1;
+
+	// RootConstants (b1)
+	rootParams[4].ParameterType = D3D12_ROOT_PARAMETER_TYPE_32BIT_CONSTANTS;
+	rootParams[4].ShaderVisibility = D3D12_SHADER_VISIBILITY_AMPLIFICATION;
+	rootParams[4].Constants.Num32BitValues = 4;
+	rootParams[4].Constants.ShaderRegister = 1;
 
 	// Sampler (s0)
 	D3D12_STATIC_SAMPLER_DESC staticSampler{};
@@ -111,14 +117,19 @@ void Triangle3DGraphicsPipeline::CreateRootSignature() {
 }
 
 void Triangle3DGraphicsPipeline::CompileShaders() {
-	meshShaderBlob_ = nullptr;
-	meshShaderBlob_ = shaderCompiler_->CompileShader(L"EngineAssets/Shaders/Graphics/Triangle3D/Triangle3D.MS.hlsl", L"ms_6_5");
+	amplificationShaderBlob_ = shaderCompiler_->CompileShader(
+		L"EngineAssets/Shaders/Graphics/Triangle3D/Triangle3D.AS.hlsl", L"as_6_5");
+	assert(amplificationShaderBlob_ != nullptr);
+
+	meshShaderBlob_ = shaderCompiler_->CompileShader(
+		L"EngineAssets/Shaders/Graphics/Triangle3D/Triangle3D.MS.hlsl", L"ms_6_5");
 	assert(meshShaderBlob_ != nullptr);
 
-	pixelShaderBlob_ = nullptr;
-	pixelShaderBlob_ = shaderCompiler_->CompileShader(L"EngineAssets/Shaders/Graphics/Triangle3D/Triangle3D.PS.hlsl", L"ps_6_5");
+	pixelShaderBlob_ = shaderCompiler_->CompileShader(
+		L"EngineAssets/Shaders/Graphics/Triangle3D/Triangle3D.PS.hlsl", L"ps_6_5");
 	assert(pixelShaderBlob_ != nullptr);
 }
+
 
 void Triangle3DGraphicsPipeline::CreateGraphicsPipelineObject() {
 	assert(rootSignature_);
@@ -133,6 +144,10 @@ void Triangle3DGraphicsPipeline::CreateGraphicsPipelineObject() {
 	const D3D12_SHADER_BYTECODE pixelShader = {
 		pixelShaderBlob_->GetBufferPointer(),
 		pixelShaderBlob_->GetBufferSize()
+	};
+	const D3D12_SHADER_BYTECODE amplificationShader = {
+		amplificationShaderBlob_->GetBufferPointer(),
+		amplificationShaderBlob_->GetBufferSize()
 	};
 
 	// 共通定数
@@ -155,8 +170,9 @@ void Triangle3DGraphicsPipeline::CreateGraphicsPipelineObject() {
 		rtArray.NumRenderTargets = 1;
 		rtArray.RTFormats[0] = rtvFormat;
 
-		Primitive3DPipelineStateStream stream = {
+		Triangle3DPipelineStateStream stream = {
 			CD3DX12_PIPELINE_STATE_STREAM_ROOT_SIGNATURE(rootSignature_.Get()),
+			CD3DX12_PIPELINE_STATE_STREAM_AS(amplificationShader),
 			CD3DX12_PIPELINE_STATE_STREAM_MS(meshShader),
 			CD3DX12_PIPELINE_STATE_STREAM_PS(pixelShader),
 			CD3DX12_PIPELINE_STATE_STREAM_RASTERIZER(rast),
