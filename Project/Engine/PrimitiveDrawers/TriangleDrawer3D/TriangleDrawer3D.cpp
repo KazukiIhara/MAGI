@@ -77,7 +77,7 @@ void TriangleDrawer3D::Draw() {
 	// ルート定数のセット（b1）
 	RootConstants rootConstants{};
 	rootConstants.baseInstanceIndex = 0; // 必要に応じて設定
-	commandList->SetGraphicsRoot32BitConstants(4, 4, &rootConstants, 0); // b1 → RootParam[4]
+	commandList->SetGraphicsRoot32BitConstants(4, 4, &rootConstants, 0);
 
 	// BindlessTexture用のSRVを設定
 	commandList->SetGraphicsRootDescriptorTable(3, srvUavManager_->GetDescriptorHandleGPU(0));

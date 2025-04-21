@@ -65,9 +65,10 @@ void Triangle3DGraphicsPipeline::CreateRootSignature() {
 	rootParams[3].DescriptorTable.NumDescriptorRanges = 1;
 
 	// RootConstants (b1)
-	rootParams[4].ParameterType = D3D12_ROOT_PARAMETER_TYPE_CBV;
+	rootParams[4].ParameterType = D3D12_ROOT_PARAMETER_TYPE_32BIT_CONSTANTS;
 	rootParams[4].ShaderVisibility = D3D12_SHADER_VISIBILITY_AMPLIFICATION;
-	rootParams[4].Descriptor.ShaderRegister = 1;
+	rootParams[4].Constants.Num32BitValues = 4;
+	rootParams[4].Constants.ShaderRegister = 1;
 
 	// Sampler (s0)
 	D3D12_STATIC_SAMPLER_DESC staticSampler{};

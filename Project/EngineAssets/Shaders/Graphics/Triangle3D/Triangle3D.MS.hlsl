@@ -1,12 +1,6 @@
 // „Ÿ„Ÿ Mesh Shader „Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ
 #include "Triangle3D.hlsli"
 
-// ASPayload ‚ğÄéŒ¾
-struct ASPayload
-{
-    uint instanceID;
-};
-
 ConstantBuffer<Camera> gCamera : register(b0);
 StructuredBuffer<TriangleData3D> gInstanceData : register(t0);
 StructuredBuffer<PrimitiveMaterialData3D> gMaterialData : register(t1);

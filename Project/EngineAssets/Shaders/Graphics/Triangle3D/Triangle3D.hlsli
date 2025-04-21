@@ -38,3 +38,9 @@ struct RootConstants
     uint baseInstanceIndex;
     uint _pad0, _pad1, _pad2;
 };
+
+// AS‚Åg‚¤\‘¢‘Ì
+struct ASPayload
+{
+    uint instanceID;
+};

@@ -1,11 +1,5 @@
 #include "Triangle3D.hlsli"
 
-// Mesh ‚Ö“n‚·î•ñ
-struct ASPayload
-{
-    uint instanceID;
-};
-
 ConstantBuffer<RootConstants> gRootConstant : register(b1);
 
 [numthreads(1, 1, 1)]
