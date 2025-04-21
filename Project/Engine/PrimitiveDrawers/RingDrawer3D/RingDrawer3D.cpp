@@ -42,17 +42,17 @@ RingDrawer3D::~RingDrawer3D() {
 
 void RingDrawer3D::Update() {
 	// 最大数を超えていたら止める
-	assert(rings_.size() <= PrimitiveCommonConst::NumMaxInstance && "Sphere size is over!");
+	assert(rings_.size() <= PrimitiveCommonConst::NumMaxInstance && "Ring size is over!");
 
 	// 描画すべきインスタンス数
 	instanceCount_ = static_cast<uint32_t>(rings_.size());
 
 	// データが存在し、描画対象がある場合のみコピー
 	if (instancingData_ != nullptr && materialData_ != nullptr && instanceCount_ > 0) {
-		std::memcpy(instancingData_, rings_.data(), instanceCount_ * sizeof(SphereData3DForGPU));
+		std::memcpy(instancingData_, rings_.data(), instanceCount_ * sizeof(RingData3DForGPU));
 		std::memcpy(materialData_, materials_.data(), instanceCount_ * sizeof(PrimitiveMaterialData3DForGPU));
 	}
-	// 球体のコンテナをクリア
+	// リングのコンテナをクリア
 	ClearRings();
 
 }
@@ -78,7 +78,7 @@ void RingDrawer3D::Draw() {
 	};
 	commandList->SetDescriptorHeaps(_countof(descriptorHeaps), descriptorHeaps);
 
-	constexpr uint32_t threadGroupCountX = Sphere3DConst::MaxTilesPerSphere;
+	constexpr uint32_t threadGroupCountX = Ring3DConst::MaxTilesPerRing;
 
 	// Dispatch 分割制御（Y方向に instanceCount_ を分割）
 	const uint32_t maxThreadGroupCountY = PrimitiveCommonConst::MaxThreadGroupCount / threadGroupCountX;
