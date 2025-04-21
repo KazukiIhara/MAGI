@@ -1,5 +1,3 @@
-#define NOMINMAX
-
 #include "SphereDrawer3D.h"
 
 #include "DirectX/DXGI/DXGI.h"
