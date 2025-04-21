@@ -75,6 +75,7 @@ std::unique_ptr<LineDrawer3D> MAGISYSTEM::lineDrawer3D_ = nullptr;
 std::unique_ptr<TriangleDrawer3D> MAGISYSTEM::triangleDrawer3D_ = nullptr;
 std::unique_ptr<PlaneDrawer3D> MAGISYSTEM::planeDrawer3D_ = nullptr;
 std::unique_ptr<SphereDrawer3D> MAGISYSTEM::sphereDrawer3D_ = nullptr;
+std::unique_ptr<RingDrawer3D> MAGISYSTEM::ringDrawer3D_ = nullptr;
 
 std::unique_ptr<ModelDrawerManager> MAGISYSTEM::modelDrawerManager_ = nullptr;
 
@@ -202,6 +203,8 @@ void MAGISYSTEM::Initialize() {
 	planeDrawer3D_ = std::make_unique<PlaneDrawer3D>(dxgi_.get(), directXCommand_.get(), srvuavManager_.get(), graphicsPipelineManager_.get(), camera3DManager_.get());
 	// SphereDrawer3D
 	sphereDrawer3D_ = std::make_unique<SphereDrawer3D>(dxgi_.get(), directXCommand_.get(), srvuavManager_.get(), graphicsPipelineManager_.get(), camera3DManager_.get());
+	// RingDrawer3D
+	ringDrawer3D_ = std::make_unique<RingDrawer3D>(dxgi_.get(), directXCommand_.get(), srvuavManager_.get(), graphicsPipelineManager_.get(), camera3DManager_.get());
 
 	// ModelDrawerManager
 	modelDrawerManager_ = std::make_unique<ModelDrawerManager>(dxgi_.get(), directXCommand_.get(), srvuavManager_.get(), graphicsPipelineManager_.get(), camera3DManager_.get());
@@ -273,6 +276,11 @@ void MAGISYSTEM::Finalize() {
 	// ModelDrawerManager
 	if (modelDrawerManager_) {
 		modelDrawerManager_.reset();
+	}
+
+	// RingDrawer3D
+	if (ringDrawer3D_) {
+		ringDrawer3D_.reset();
 	}
 
 	// SphereDrawer3D
@@ -551,6 +559,8 @@ void MAGISYSTEM::Update() {
 	planeDrawer3D_->Update();
 	// 3D球体描画クラスの更新
 	sphereDrawer3D_->Update();
+	// 3Dリング描画クラスの更新
+	ringDrawer3D_->Update();
 
 	// モデル描画クラスマネージャの更新
 	modelDrawerManager_->UpdateAll();
@@ -622,8 +632,7 @@ void MAGISYSTEM::Draw() {
 
 	// 
 	// TriangleDrawer3Dの描画処理
-	// 
-
+	//
 	triangleDrawer3D_->Draw();
 
 	// 
@@ -635,6 +644,11 @@ void MAGISYSTEM::Draw() {
 	// SphereDrawer3Dの描画処理
 	// 
 	sphereDrawer3D_->Draw();
+
+	// 
+	// RingDrawer3Dの描画処理
+	// 
+	ringDrawer3D_->Draw();
 
 	//
 	// ModelDrawerの描画処理
