@@ -55,6 +55,15 @@
     <Filter Include="Engine\3D\Colliders3D\SphereCollider">
       <UniqueIdentifier>{ACC843C2-98AF-05BA-4100-6CD72DC67E20}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Engine\3D\Drawer3D">
+      <UniqueIdentifier>{CCA5A343-B889-6499-21EA-5EEC0DED4E1B}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\3D\Drawer3D\MeshDrawer">
+      <UniqueIdentifier>{ADAD4C6B-19C6-3395-E272-C32E4E4AC82E}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\3D\Drawer3D\ModelDrawer">
+      <UniqueIdentifier>{B1FD2F02-9D23-FA68-8669-7F34722E1F35}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Engine\3D\Emitter3D">
       <UniqueIdentifier>{C16C27F1-2DCE-04FF-B63B-4BB1229C3BBE}</UniqueIdentifier>
     </Filter>
@@ -298,6 +307,9 @@
     <Filter Include="Engine\ObjectManagers\GameObject3DManager">
       <UniqueIdentifier>{816256B9-ED7C-B95A-369F-C9EEA2F8E061}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Engine\ObjectManagers\ModelDrawerManager">
+      <UniqueIdentifier>{6FD1EA09-5B4E-DE4C-84CB-DE6070A77AE0}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Engine\ObjectManagers\ParticleGroup3DManager">
       <UniqueIdentifier>{31741864-1D87-18BD-C670-F5A9B262B50A}</UniqueIdentifier>
     </Filter>
@@ -425,6 +437,12 @@
     </ClInclude>
     <ClInclude Include="Engine\3D\Colliders3D\SphereCollider\SphereCollider.h">
       <Filter>Engine\3D\Colliders3D\SphereCollider</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\3D\Drawer3D\MeshDrawer\MeshDrawer.h">
+      <Filter>Engine\3D\Drawer3D\MeshDrawer</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\3D\Drawer3D\ModelDrawer\ModelDrawer.h">
+      <Filter>Engine\3D\Drawer3D\ModelDrawer</Filter>
     </ClInclude>
     <ClInclude Include="Engine\3D\Emitter3D\Emitter3D.h">
       <Filter>Engine\3D\Emitter3D</Filter>
@@ -729,6 +747,9 @@
     <ClInclude Include="Engine\ObjectManagers\GameObject3DManager\GameObject3DManager.h">
       <Filter>Engine\ObjectManagers\GameObject3DManager</Filter>
     </ClInclude>
+    <ClInclude Include="Engine\ModelDrawerManager\ModelDrawerManager.h">
+      <Filter>Engine\ObjectManagers\ModelDrawerManager</Filter>
+    </ClInclude>
     <ClInclude Include="Engine\ObjectManagers\ParticleGroup3DManager\ParticleGroup3DManager.h">
       <Filter>Engine\ObjectManagers\ParticleGroup3DManager</Filter>
     </ClInclude>
@@ -838,6 +859,12 @@
     </ClCompile>
     <ClCompile Include="Engine\3D\Colliders3D\SphereCollider\SphereCollider.cpp">
       <Filter>Engine\3D\Colliders3D\SphereCollider</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\3D\Drawer3D\MeshDrawer\MeshDrawer.cpp">
+      <Filter>Engine\3D\Drawer3D\MeshDrawer</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\3D\Drawer3D\ModelDrawer\ModelDrawer.cpp">
+      <Filter>Engine\3D\Drawer3D\ModelDrawer</Filter>
     </ClCompile>
     <ClCompile Include="Engine\3D\Emitter3D\Emitter3D.cpp">
       <Filter>Engine\3D\Emitter3D</Filter>
@@ -1027,6 +1054,9 @@
     </ClCompile>
     <ClCompile Include="Engine\ObjectManagers\GameObject3DManager\GameObject3DManager.cpp">
       <Filter>Engine\ObjectManagers\GameObject3DManager</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\ModelDrawerManager\ModelDrawerManager.cpp">
+      <Filter>Engine\ObjectManagers\ModelDrawerManager</Filter>
     </ClCompile>
     <ClCompile Include="Engine\ObjectManagers\ParticleGroup3DManager\ParticleGroup3DManager.cpp">
       <Filter>Engine\ObjectManagers\ParticleGroup3DManager</Filter>

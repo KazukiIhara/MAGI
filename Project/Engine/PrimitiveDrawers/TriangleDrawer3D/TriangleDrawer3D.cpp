@@ -62,6 +62,9 @@ void TriangleDrawer3D::Draw() {
 	if (instanceCount_ == 0) return;
 	// コマンドリストを取得
 	ID3D12GraphicsCommandList6* commandList = directXCommand_->GetList6();
+
+	// ルートシグネイチャを設定
+	commandList->SetGraphicsRootSignature(graphicsPipelineManager_->GetRootSignature(GraphicsPipelineStateType::Triangle3D));
 	// PSOを設定
 	commandList->SetPipelineState(graphicsPipelineManager_->GetPipelineState(GraphicsPipelineStateType::Triangle3D, blendMode_));
 	// Cameraを転送（b0）

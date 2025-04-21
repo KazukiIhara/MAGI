@@ -81,6 +81,8 @@
 #include "PrimitiveDrawers/PlaneDrawer3D/PlaneDrawer3D.h"
 #include "PrimitiveDrawers/SphereDrawer3D/SphereDrawer3D.h"
 
+#include "ModelDrawerManager/ModelDrawerManager.h"
+
 // 
 // GameManager
 // 
@@ -583,6 +585,8 @@ protected:
 	static std::unique_ptr<TriangleDrawer3D> triangleDrawer3D_;
 	static std::unique_ptr<PlaneDrawer3D> planeDrawer3D_;
 	static std::unique_ptr<SphereDrawer3D> sphereDrawer3D_;
+
+	static std::unique_ptr<ModelDrawerManager> modelDrawerManager_;
 
 	// 
 	// GameManager

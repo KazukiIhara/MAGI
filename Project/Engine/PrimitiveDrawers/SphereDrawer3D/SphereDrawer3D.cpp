@@ -63,6 +63,8 @@ void SphereDrawer3D::Draw() {
 
 	ID3D12GraphicsCommandList6* commandList = directXCommand_->GetList6();
 
+	commandList->SetGraphicsRootSignature(graphicsPipelineManager_->GetRootSignature(GraphicsPipelineStateType::Sphere3D));
+
 	// PSO & カメラ設定
 	commandList->SetPipelineState(graphicsPipelineManager_->GetPipelineState(GraphicsPipelineStateType::Sphere3D, blendMode_));
 	camera3DManager_->TransferCurrentCamera(0);

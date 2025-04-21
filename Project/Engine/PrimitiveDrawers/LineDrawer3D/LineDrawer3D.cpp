@@ -57,6 +57,13 @@ void LineDrawer3D::Update() {
 void LineDrawer3D::Draw() {
 	// コマンドリストを取得
 	ID3D12GraphicsCommandList* commandList = directXCommand_->GetList();
+
+	// ルートシグネイチャを設定
+	commandList->SetGraphicsRootSignature(graphicsPipelineManager_->GetRootSignature(GraphicsPipelineStateType::Line3D));
+	
+	// 形状設定
+	commandList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_LINELIST);
+
 	// PSOを設定
 	commandList->SetPipelineState(graphicsPipelineManager_->GetPipelineState(GraphicsPipelineStateType::Line3D, blendMode_));
 	// Cameraを転送
@@ -109,7 +116,7 @@ void LineDrawer3D::SetCamera3DManager(Camera3DManager* camera3DManager) {
 
 void LineDrawer3D::CreateInstancingResource() {
 	// instancing用のリソースを作る
-	instancingResource_ = dxgi_->CreateBufferResource(sizeof(LineData3D) *PrimitiveCommonConst::NumMaxInstance);
+	instancingResource_ = dxgi_->CreateBufferResource(sizeof(LineData3D) * PrimitiveCommonConst::NumMaxInstance);
 }
 
 void LineDrawer3D::MapInstancingData() {
