@@ -80,7 +80,7 @@ void SphereDrawer3D::Draw() {
 	constexpr uint32_t threadGroupCountX = Sphere3DConst::MaxTilesPerSphere;
 
 	// Dispatch 分割制御（Y方向に instanceCount_ を分割）
-	const uint32_t maxThreadGroupCountY = Sphere3DConst::MaxThreadGroupCount / threadGroupCountX;
+	const uint32_t maxThreadGroupCountY = PrimitiveCommonConst::MaxThreadGroupCount / threadGroupCountX;
 	const uint32_t dispatchCount = (instanceCount_ + maxThreadGroupCountY - 1) / maxThreadGroupCountY;
 
 	for (uint32_t i = 0; i < dispatchCount; ++i) {

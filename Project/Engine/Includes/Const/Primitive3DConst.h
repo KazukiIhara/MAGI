@@ -8,6 +8,7 @@
 /// </summary>
 namespace PrimitiveCommonConst {
 	inline constexpr uint32_t NumMaxInstance = 65535; // 全プリミティブ共通の最大インスタンス数
+	inline constexpr uint32_t MaxThreadGroupCount = 4194303;								// DispatchMesh制限（全体上限）
 }
 
 /// <summary>
@@ -17,8 +18,7 @@ namespace Sphere3DConst {
 	inline constexpr uint32_t MaxLongitude = 32;											// 経度分割数上限
 	inline constexpr uint32_t MaxLatitude = 32;												// 緯度分割数上限
 	inline constexpr uint32_t MaxTilesPerSphere = MaxLatitude * MaxLatitude;				// MeshShaderのX方向thread数
-	inline constexpr uint32_t MaxThreadGroupCount = 4194303;								// DispatchMesh制限（全体上限）
-	inline constexpr uint32_t MaxDispatchCountY = MaxThreadGroupCount / MaxTilesPerSphere;	
+	inline constexpr uint32_t MaxDispatchCountY = PrimitiveCommonConst::MaxThreadGroupCount / MaxTilesPerSphere;
 }
 
 /// <summary>
