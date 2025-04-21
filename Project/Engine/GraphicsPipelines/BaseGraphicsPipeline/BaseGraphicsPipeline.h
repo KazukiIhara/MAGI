@@ -58,6 +58,8 @@ protected:
 	ComPtr<ID3DBlob> pixelShaderBlob_;
 	// メッシュシェーダーのバイナリデータ
 	ComPtr<ID3DBlob> meshShaderBlob_ = nullptr;
+	// 増幅シェーダーのバイナリデータ
+	ComPtr<ID3DBlob> amplificationShaderBlob_ = nullptr;
 
 protected:
 	DXGI* dxgi_ = nullptr;

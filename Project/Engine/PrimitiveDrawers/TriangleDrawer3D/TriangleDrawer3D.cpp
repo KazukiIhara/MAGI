@@ -73,6 +73,12 @@ void TriangleDrawer3D::Draw() {
 	commandList->SetGraphicsRootDescriptorTable(1, srvUavManager_->GetDescriptorHandleGPU(instancingSrvIndex_));
 	// PrimitiveManateriData3DForGPU StructuredBuffer (t1)
 	commandList->SetGraphicsRootDescriptorTable(2, srvUavManager_->GetDescriptorHandleGPU(materialSrvIndex_));
+
+	// ルート定数のセット（b1）
+	RootConstants rootConstants{};
+	rootConstants.baseInstanceIndex = 0; // 必要に応じて設定
+	commandList->SetGraphicsRoot32BitConstants(4, 4, &rootConstants, 0); // b1 → RootParam[4]
+
 	// BindlessTexture用のSRVを設定
 	commandList->SetGraphicsRootDescriptorTable(3, srvUavManager_->GetDescriptorHandleGPU(0));
 

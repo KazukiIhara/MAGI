@@ -31,3 +31,10 @@ struct Camera
     float3 worldPosition;
     float _padding;
 };
+
+// ƒ‹[ƒg’è”
+struct RootConstants
+{
+    uint baseInstanceIndex;
+    uint _pad0, _pad1, _pad2;
+};
