@@ -58,6 +58,7 @@
     <ClCompile>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level4</WarningLevel>
+      <TreatWarningAsError>true</TreatWarningAsError>
       <PreprocessorDefinitions>DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>Engine;Engine\Includes;App;Externals;Externals\assimp\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
@@ -65,7 +66,7 @@
       <MinimalRebuild>false</MinimalRebuild>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
-      <AdditionalOptions>/utf-8 /MP %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <ExternalWarningLevel>Level3</ExternalWarningLevel>
     </ClCompile>
@@ -77,12 +78,9 @@
       <AdditionalOptions>/IGNORE:4049 /IGNORE:4099 %(AdditionalOptions)</AdditionalOptions>
     </Link>
     <PostBuildEvent>
-      <Command>copy /Y "Externals/dxc_1_8/bin/x64\dxil.dll"       "%(TargetDir)"
-copy /Y "Externals/dxc_1_8/bin/x64\dxcompiler.dll" "%(TargetDir)"</Command>
+      <Command>copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxcompiler.dll" "$(TargetDir)dxcompiler.dll"
+copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dxil.dll"</Command>
     </PostBuildEvent>
-    <FxCompile>
-      <ShaderModel>6.5</ShaderModel>
-    </FxCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -97,7 +95,7 @@ copy /Y "Externals/dxc_1_8/bin/x64\dxcompiler.dll" "%(TargetDir)"</Command>
       <StringPooling>true</StringPooling>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
-      <AdditionalOptions>/utf-8 /MP %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <ExternalWarningLevel>Level3</ExternalWarningLevel>
     </ClCompile>
@@ -110,12 +108,9 @@ copy /Y "Externals/dxc_1_8/bin/x64\dxcompiler.dll" "%(TargetDir)"</Command>
       <AdditionalOptions>/IGNORE:4049 /IGNORE:4099 %(AdditionalOptions)</AdditionalOptions>
     </Link>
     <PostBuildEvent>
-      <Command>copy /Y "Externals/dxc_1_8/bin/x64\dxil.dll"       "%(TargetDir)"
-copy /Y "Externals/dxc_1_8/bin/x64\dxcompiler.dll" "%(TargetDir)"</Command>
+      <Command>copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxcompiler.dll" "$(TargetDir)dxcompiler.dll"
+copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dxil.dll"</Command>
     </PostBuildEvent>
-    <FxCompile>
-      <ShaderModel>6.5</ShaderModel>
-    </FxCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="App\Game\Game.h" />
@@ -369,22 +364,12 @@ copy /Y "Externals/dxc_1_8/bin/x64\dxcompiler.dll" "%(TargetDir)"</Command>
     <None Include="Engine\SceneManager\SceneManager.ipp" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="Externals\DirectXTex\DirectXTex.vcxproj">
+    <ProjectReference Include="Externals\DirectXTex\DirectXTex_Desktop_2022_Win10.vcxproj">
       <Project>{12345678-ABCD-4321-DCBA-1234567890AB}</Project>
     </ProjectReference>
     <ProjectReference Include="Externals\imgui\imgui.vcxproj">
       <Project>{22345678-ABCD-4321-DCBA-1234567890AB}</Project>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <FxCompile Include="EngineAssets\Shaders\Graphics\Triangle3D\Triangle3D.AS.hlsl">
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Amplification</ShaderType>
-      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">6.5</ShaderModel>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Amplification</ShaderType>
-      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">6.5</ShaderModel>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-    </FxCompile>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -1143,7 +1143,4 @@
       <Filter>Engine\SceneManager</Filter>
     </None>
   </ItemGroup>
-  <ItemGroup>
-    <FxCompile Include="EngineAssets\Shaders\Graphics\Triangle3D\Triangle3D.AS.hlsl" />
-  </ItemGroup>
 </Project>

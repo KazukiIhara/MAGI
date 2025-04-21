@@ -1,132 +1,88 @@
-
-----------------------------------------------------------------
--- ① ユーザー設定
-----------------------------------------------------------------
-local StaticRuntime = "On"                                
-local DXC_DIR       = "Externals/dxc_1_8/bin/x64"         -- ← プロジェクト内 DXC 配置先
-local DXC_EXE       = path.join(DXC_DIR, "dxc.exe")       -- dxc.exe へのフルパス
-
-----------------------------------------------------------------
--- ② 共通パス
-----------------------------------------------------------------
-local OUT_DIR = "../generated/outputs/%{cfg.buildcfg}/%{cfg.platform}"
-local OBJ_DIR = "../generated/obj/%{prj.name}/%{cfg.buildcfg}"
-local THIRD   = "Externals"
-
-----------------------------------------------------------------
--- ③ ワークスペース
-----------------------------------------------------------------
 workspace "MAGI"
-    configurations { "Debug", "Release" }
-    platforms      { "x64" }
-    startproject   "MAGI"
-    location       "./"
+   configurations { "Debug", "Release" }
+   platforms { "x64" }
+   startproject "MAGI" -- デフォルトのスタートプロジェクトを指定
 
-    -- 共通ビルドオプション
-    warnings      "High"
-    buildoptions  { "/utf-8", "/MP" }
-    linkoptions   { "/IGNORE:4049", "/IGNORE:4099" }
-    flags         { "MultiProcessorCompile" }
+   -- 出力ディレクトリの設定
+   targetdir "../generated/outputs/%{cfg.buildcfg}/%{cfg.platform}"  -- 実行ファイルの出力先
+   objdir "../generated/obj/%{prj.name}/%{cfg.buildcfg}"     -- 中間ファイルの出力先
 
-----------------------------------------------------------------
--- ④ 外部ライブラリ (DirectXTex / imgui)
-----------------------------------------------------------------
-local externals = {
-    { name="DirectXTex", path=THIRD.."/DirectXTex", uuid="12345678-ABCD-4321-DCBA-1234567890AB" },
-    { name="imgui",      path=THIRD.."/imgui",      uuid="22345678-ABCD-4321-DCBA-1234567890AB" },
-}
+   -- DirectXTexを外部プロジェクトとして登録
+   externalproject "DirectXTex"
+      location "Externals/DirectXTex"           -- フォルダパス（.vcxprojがある場所）
+      filename "DirectXTex_Desktop_2022_Win10"  -- 実際のプロジェクトファイル名 (拡張子は不要)
+      uuid "12345678-ABCD-4321-DCBA-1234567890AB" -- 適宜修正
+      kind "StaticLib"
+      language "C++"
+   
+   -- imguiを外部プロジェクトとして登録
+   externalproject "imgui"
+      location "Externals/imgui"
+      filename "imgui"
+      uuid "22345678-ABCD-4321-DCBA-1234567890AB"
+      kind "StaticLib"
+      language "C++"
 
-for _, lib in ipairs(externals) do
-    externalproject (lib.name)
-        location (lib.path)
-        filename (lib.name)
-        uuid     (lib.uuid)
-        kind     "StaticLib"
-        language "C++"
-end
+-- MAGIの設定
 
-----------------------------------------------------------------
--- ⑤ MAGI 本体
-----------------------------------------------------------------
-project "MAGI"
-    kind       "WindowedApp"
-    language   "C++"
-    cppdialect "C++20"
+project "MAGI" -- プロジェクト名
+   kind "WindowedApp" -- デスクトップアプリケーションに設定
+   language "C++"
+   cppdialect "C++20" -- 言語の設定
 
-    targetdir (OUT_DIR)
-    objdir    (OBJ_DIR)
+   -- プロジェクトに含むファイル
+   files { 
+      "*.cpp",
+      "*.h",
 
-    files {
-        "*.cpp", "*.h",
-        "Engine/**.cpp", "Engine/**.h", "Engine/**.ipp",
-        "App/**.cpp",    "App/**.h",
-        "Externals/d3dx12/**.h",
-    }
+      "Engine/**.cpp",
+      "Engine/**.h",
+      "Engine/**.ipp",
 
-    includedirs {
-        "Engine", "Engine/Includes", "App",
-        THIRD,
-        THIRD.."/assimp/include"
-    }
+      "App/**.cpp",
+      "App/**.h",
 
-    dependson { "DirectXTex", "imgui" }
-    links     { "DirectXTex", "imgui" }
+      "Externals/d3dx12/**.h",
+   }
+   
+   -- 追加のインクルードパス
+   includedirs { 
+      "Engine",
+      "Engine/Includes",
+      "App",
+      "Externals",
+      "Externals/assimp/include"
+    } 
 
-    ------------------------------------------------------------
-    -- ⑤‑A HLSL : カスタムビルドで DXC 1.8 を直接呼び出す
-    ------------------------------------------------------------
-    -- プロファイル別にフィルターを張る (拡張子末尾規約: *.VS.hlsl 等)
-    local shaderProfiles = {
-        { pattern="**.*VS.hlsl", profile="vs_6_5" },
-        { pattern="**.*PS.hlsl", profile="ps_6_5" },
-        { pattern="**.*CS.hlsl", profile="cs_6_5" },
-        { pattern="**.*MS.hlsl", profile="ms_6_5" },
-        { pattern="**.*AS.hlsl", profile="as_6_5" },
-    }
+   dependson { "DirectXTex","imgui" } -- 依存していることを指定
 
-    for _, sp in ipairs(shaderProfiles) do
-        filter { "files:" .. sp.pattern }
-            shadermodel   "6.5"           -- RTX 20 系に最適な Shader Model
-            shaderentry   "main"
-            buildaction   "None"          -- VS の FxCompile を無効化
-            buildmessage  '[DXC] %{file.relpath}'
+   links { "DirectXTex","imgui" }  -- リンク対象のプロジェクト
 
-            buildcommands {
-                string.format(
-                    '"%s" -E main -T %s -Zi -Fo "%%{cfg.objdir}/%%{file.basename}.cso" "%%{file.relpath}"',
-                    DXC_EXE, sp.profile
-                )
-            }
+   warnings "High" -- 警告レベル4を設定
 
-            buildoutputs { "%{cfg.objdir}/%{file.basename}.cso" }
-        filter {}
-    end
+   buildoptions { "/utf-8" } -- UTF-8でビルドする設定
 
-    -- 生成した .cso を自動リンク対象へ
-    compilebuildoutputs()
+   flags { "MultiProcessorCompile" } -- 複数プロセッサでのコンパイルを有効化
 
-    ------------------------------------------------------------
-    -- ⑤‑B Debug / Release 切替
-    ------------------------------------------------------------
-    filter "configurations:Debug"
-        defines       { "DEBUG" }
-        symbols       "On"
-        staticruntime (StaticRuntime)
-        libdirs       { THIRD.."/assimp/lib/Debug" }
-        links         { "assimp-vc143-mtd" }
+   -- ビルド後イベントのコマンド
+   postbuildcommands {
+      'copy "$(WindowsSdkDir)bin\\$(TargetPlatformVersion)\\x64\\dxcompiler.dll" "$(TargetDir)dxcompiler.dll"',
+      'copy "$(WindowsSdkDir)bin\\$(TargetPlatformVersion)\\x64\\dxil.dll" "$(TargetDir)dxil.dll"'
+   }
 
-    filter "configurations:Release"
-        defines       { "NDEBUG" }
-        optimize      "On"
-        staticruntime (StaticRuntime)
-        libdirs       { THIRD.."/assimp/lib/Release" }
-        links         { "assimp-vc143-mt" }
-    filter {}
+   filter "configurations:Debug"
+      defines { "DEBUG" }
+      symbols "On"
+      fatalwarnings { "All" }  -- 警告をエラーとして扱う
+      staticruntime "On"  -- 静的ランタイム（/MTd）
+      linkoptions { "/IGNORE:4049", "/IGNORE:4099" } -- 指定したリンカーの警告を無視
+      libdirs { "Externals/assimp/lib/Debug" } -- デバッグ用追加のライブラリディレクトリ
+      links { "assimp-vc143-mtd" } -- デバッグ用ライブラリ
 
-    ------------------------------------------------------------
-    -- ⑤‑C ビルド後 : DXIL ランタイム DLL をコピー
-    ------------------------------------------------------------
-    postbuildcommands {
-        ('copy /Y "%s\\dxil.dll"       "%%(TargetDir)"'):format(DXC_DIR),
-        ('copy /Y "%s\\dxcompiler.dll" "%%(TargetDir)"'):format(DXC_DIR),
-    }
+   filter "configurations:Release"
+      defines { "NDEBUG" }
+      optimize "On"
+      staticruntime "On"  -- 静的ランタイム（/MT）
+      linkoptions { "/IGNORE:4049", "/IGNORE:4099" } -- 指定したリンカーの警告を無視
+      libdirs { "Externals/assimp/lib/Release" } -- リリース用追加のライブラリディレクトリ
+      links { "assimp-vc143-mt" } -- リリース用ライブラリ
