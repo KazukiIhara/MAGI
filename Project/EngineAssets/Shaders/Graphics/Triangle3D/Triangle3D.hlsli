@@ -42,5 +42,4 @@ struct RootConstants
 struct ASPayload
 {
     uint instanceID;
-    float markerValue;
 };

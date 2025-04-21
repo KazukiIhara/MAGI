@@ -7,12 +7,14 @@ StructuredBuffer<PrimitiveMaterialData3D> gMaterialData : register(t1);
 [outputtopology("triangle")]
 [numthreads(1, 1, 1)]
 void main(
+    in payload ASPayload payload,
     uint3 dispatchThreadID : SV_DispatchThreadID,
     out indices uint3 tris[2],
     out vertices MeshOutput verts[6]
 )
 {
-    uint instanceID = dispatchThreadID.y;
+    uint instanceID = payload.instanceID;
+
     PlaneData3D plane = gInstanceData[instanceID];
     PrimitiveMaterialData3D mat = gMaterialData[instanceID];
 
@@ -34,21 +36,19 @@ void main(
         float2(1.0f, 1.0f)
     };
 
-    // 座標とUVを設定
     for (uint i = 0; i < 4; ++i)
     {
         float4 worldPos = mul(positions[i], plane.worldMatrix);
         float4 clipPos = mul(worldPos, gCamera.viewProjection);
-
-        float4 transformedUV = mul(float4(uvs[i], 0.0f, 1.0f), mat.uvMatrix);
+        float2 uv = mul(float4(uvs[i], 0.0f, 1.0f), mat.uvMatrix).xy;
 
         verts[i].position = clipPos;
-        verts[i].uv = transformedUV.xy;
+        verts[i].uv = uv;
         verts[i].color = mat.baseColor;
         verts[i].instanceIndex = instanceID;
     }
 
-    // Triangle indices
-    tris[0] = uint3(0, 1, 2); // Triangle 1
-    tris[1] = uint3(2, 1, 3); // Triangle 2
+    // 2つの三角形を構成（インデックスは6個使用）
+    tris[0] = uint3(0, 1, 2);
+    tris[1] = uint3(2, 1, 3);
 }
