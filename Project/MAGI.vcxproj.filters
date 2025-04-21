@@ -1143,4 +1143,7 @@
       <Filter>Engine\SceneManager</Filter>
     </None>
   </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="EngineAssets\Shaders\Graphics\Plane3D\Plane3D.AS.hlsl" />
+  </ItemGroup>
 </Project>

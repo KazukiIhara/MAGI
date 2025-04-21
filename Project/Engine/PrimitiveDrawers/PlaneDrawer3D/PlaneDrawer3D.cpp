@@ -59,18 +59,21 @@ void PlaneDrawer3D::Update() {
 void PlaneDrawer3D::Draw() {
 	if (instanceCount_ == 0) return;
 
-	// Mesh Shader用コマンドリスト
 	ID3D12GraphicsCommandList6* commandList = directXCommand_->GetList6();
 
 	commandList->SetGraphicsRootSignature(graphicsPipelineManager_->GetRootSignature(GraphicsPipelineStateType::Plane3D));
-
 	commandList->SetPipelineState(graphicsPipelineManager_->GetPipelineState(GraphicsPipelineStateType::Plane3D, blendMode_));
 
-	camera3DManager_->TransferCurrentCamera(0);
+	camera3DManager_->TransferCurrentCamera(0); // b0
 
-	// SRV設定
 	commandList->SetGraphicsRootDescriptorTable(1, srvUavManager_->GetDescriptorHandleGPU(instancingSrvIndex));
 	commandList->SetGraphicsRootDescriptorTable(2, srvUavManager_->GetDescriptorHandleGPU(materialSrvIndex_));
+
+	// ルート定数（b1
+	RootConstants rootConstants{};
+	rootConstants.baseInstanceIndex = 0;
+	commandList->SetGraphicsRoot32BitConstants(4, 4, &rootConstants, 0);
+
 	commandList->SetGraphicsRootDescriptorTable(3, srvUavManager_->GetDescriptorHandleGPU(0)); // Bindless Texture
 
 	ID3D12DescriptorHeap* descriptorHeaps[] = {
@@ -78,7 +81,6 @@ void PlaneDrawer3D::Draw() {
 	};
 	commandList->SetDescriptorHeaps(_countof(descriptorHeaps), descriptorHeaps);
 
-	// Mesh Shaderによる描画
 	commandList->DispatchMesh(1, instanceCount_, 1);
 }
 
