@@ -95,8 +95,29 @@ void RingDrawer3D::Draw() {
 
 }
 
-void RingDrawer3D::AddRing() {
+void RingDrawer3D::AddRing(
+	const Matrix4x4& worldMatrix,
+	const RingData3D& data,
+	const PrimitiveMaterialData3D& material
+) {
 
+	// 座標と形状データ
+	RingData3DForGPU newRingData{
+		.worldMatrix = worldMatrix,
+		.ringDivide = data.ringDivide,
+		.outerRadius = data.outerRadius,
+		.innerRadius = data.innerRadius,
+		.radianPerDivide = 2.0f * std::numbers::pi_v<float> / static_cast<float>(data.ringDivide),
+	};
+	rings_.push_back(newRingData);
+
+	// マテリアルデータ
+	PrimitiveMaterialData3DForGPU newMaterialData{
+		.textureIndex = material.textureIndex,
+		.baseColor = RGBAToVector4(material.baseColor),
+		.uvMatrix = MakeUVMatrix(material.uvScale,material.uvRotate,material.uvTransform),
+	};
+	materials_.push_back(newMaterialData);
 }
 
 void RingDrawer3D::ClearRings() {

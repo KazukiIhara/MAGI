@@ -95,7 +95,7 @@ struct RingData3DForGPU {
 	uint32_t ringDivide;
 	float outerRadius;
 	float innerRadius;
-	float radianPerDivide = 2.0f * std::numbers::pi_v<float> / static_cast<float>(ringDivide);
+	float radianPerDivide;
 };
 
 /// <summary>

@@ -36,7 +36,11 @@ public:
 	void Update();
 	void Draw();
 
-	void AddRing();
+	void AddRing(
+		const Matrix4x4& worldMatrix,
+		const RingData3D& data,
+		const PrimitiveMaterialData3D& material
+	);
 
 private:
 	void ClearRings();
