@@ -5,12 +5,12 @@
 #include "Structs/Primitive3DStruct.h"
 
 /// <summary>
-/// 3D球体描画用のパイプライン
+/// 3Dリング描画用のパイプライン
 /// </summary>
-class Sphere3DGraphicsPipeline : public BaseGraphicsPipeline {
+class Ring3DGraphicsPipeline : public BaseGraphicsPipeline {
 public:
-	Sphere3DGraphicsPipeline(DXGI* dxgi, ShaderCompiler* shaderCompiler);
-	~Sphere3DGraphicsPipeline();
+	Ring3DGraphicsPipeline(DXGI* dxgi, ShaderCompiler* shaderCompiler);
+	~Ring3DGraphicsPipeline();
 
 private:
 	// ルートシグネチャを作成する
