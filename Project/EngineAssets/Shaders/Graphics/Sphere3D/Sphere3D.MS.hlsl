@@ -67,7 +67,6 @@ void main(in payload ASPayload payload,
 
         verts[i].position = clipPos;
         verts[i].uv = uvTransformed.xy;
-        verts[i].color = mat.baseColor;
         verts[i].instanceIndex = instanceID;
     }
 

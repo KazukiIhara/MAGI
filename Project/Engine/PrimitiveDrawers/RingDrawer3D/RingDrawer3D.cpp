@@ -63,9 +63,9 @@ void RingDrawer3D::Draw() {
 	ID3D12GraphicsCommandList6* commandList = directXCommand_->GetList6();
 
 	commandList->SetGraphicsRootSignature(graphicsPipelineManager_->GetRootSignature(GraphicsPipelineStateType::Ring3D));
-
-	// PSO & カメラ設定
 	commandList->SetPipelineState(graphicsPipelineManager_->GetPipelineState(GraphicsPipelineStateType::Ring3D, blendMode_));
+
+	// カメラ（b0: index 0）
 	camera3DManager_->TransferCurrentCamera(0);
 
 	// Descriptor Table 設定
@@ -73,25 +73,19 @@ void RingDrawer3D::Draw() {
 	commandList->SetGraphicsRootDescriptorTable(2, srvUavManager_->GetDescriptorHandleGPU(materialSrvIndex_));
 	commandList->SetGraphicsRootDescriptorTable(3, srvUavManager_->GetDescriptorHandleGPU(0)); // Bindless
 
+	// ディスクリプタヒープ設定
 	ID3D12DescriptorHeap* descriptorHeaps[] = {
 		srvUavManager_->GetDescriptorHeap()
 	};
 	commandList->SetDescriptorHeaps(_countof(descriptorHeaps), descriptorHeaps);
 
-	constexpr uint32_t threadGroupCountX = Ring3DConst::MaxTilesPerRing;
+	// AS用 baseInstanceIndex（b1: index 4）
+	RootConstants rootConstants{};
+	rootConstants.baseInstanceIndex = 0;
+	commandList->SetGraphicsRoot32BitConstants(4, 1, &rootConstants, 0);
 
-	// Dispatch 分割制御（Y方向に instanceCount_ を分割）
-	const uint32_t maxThreadGroupCountY = PrimitiveCommonConst::MaxThreadGroupCount / threadGroupCountX;
-	const uint32_t dispatchCount = (instanceCount_ + maxThreadGroupCountY - 1) / maxThreadGroupCountY;
-
-	for (uint32_t i = 0; i < dispatchCount; ++i) {
-		const uint32_t baseIndex = i * maxThreadGroupCountY;
-		const uint32_t remaining = instanceCount_ - baseIndex;
-		const uint32_t dispatchCountY = std::min(remaining, maxThreadGroupCountY);
-
-		commandList->SetGraphicsRoot32BitConstant(4, baseIndex, 0);
-		commandList->DispatchMesh(threadGroupCountX, dispatchCountY, 1);
-	}
+	// Amplification Shader を使ってインスタンス数ぶん Dispatch
+	commandList->DispatchMesh(1, instanceCount_, 1);
 }
 
 void RingDrawer3D::AddRing(

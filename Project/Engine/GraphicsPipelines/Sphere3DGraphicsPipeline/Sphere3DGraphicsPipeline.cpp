@@ -34,7 +34,7 @@ void Sphere3DGraphicsPipeline::CreateRootSignature() {
 	descriptorRangeTextures.OffsetInDescriptorsFromTableStart = D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND;
 
 	// ──────────────── Root Parameters ────────────────
-	D3D12_ROOT_PARAMETER rootParams[6] = {};
+	D3D12_ROOT_PARAMETER rootParams[5] = {};
 
 	// b0: Camera CBV
 	rootParams[0].ParameterType = D3D12_ROOT_PARAMETER_TYPE_CBV;
@@ -65,11 +65,6 @@ void Sphere3DGraphicsPipeline::CreateRootSignature() {
 	rootParams[4].Constants.Num32BitValues = 1;
 	rootParams[4].Constants.ShaderRegister = 1;
 
-	// b2: baseInstanceIndex
-	rootParams[5].ParameterType = D3D12_ROOT_PARAMETER_TYPE_32BIT_CONSTANTS;
-	rootParams[5].ShaderVisibility = D3D12_SHADER_VISIBILITY_MESH;
-	rootParams[5].Constants.Num32BitValues = 1;
-	rootParams[5].Constants.ShaderRegister = 2;
 
 	// ──────────────── Static Sampler ────────────────
 	D3D12_STATIC_SAMPLER_DESC staticSampler{};

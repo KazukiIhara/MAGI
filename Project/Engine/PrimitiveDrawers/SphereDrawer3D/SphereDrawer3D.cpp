@@ -80,11 +80,7 @@ void SphereDrawer3D::Draw() {
 	rootConstants.baseInstanceIndex = 0;
 	commandList->SetGraphicsRoot32BitConstants(4, 1, &rootConstants, 0);
 
-	// MS用 baseInstanceIndex（b2: index 5）
-	commandList->SetGraphicsRoot32BitConstant(5, 0, 0);
-
-	// ← ここがポイント！
-	commandList->DispatchMesh(1, instanceCount_, 1); // ← Y方向に instanceCount_ 分だけ dispatch
+	commandList->DispatchMesh(1, instanceCount_, 1);
 }
 
 void SphereDrawer3D::AddSphere(

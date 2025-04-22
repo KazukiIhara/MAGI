@@ -2,7 +2,6 @@ struct MeshOutput
 {
     float4 position : SV_Position;
     float2 uv : TEXCOORD0;
-    float4 color : COLOR0;
     uint instanceIndex : TEXCOORD1;
 };
 
@@ -51,4 +50,5 @@ struct ASPayload
     uint instanceID;
 };
 
+// タイルの最大数 (緯度分割数256)x(経度分割数256)
 static const uint kMaxTileCount = 256 * 256;

@@ -108,6 +108,7 @@ struct RingData3DForGPU {
 	float outerRadius;
 	float innerRadius;
 	float radianPerDivide;
+	float padding[3];
 };
 
 /// <summary>
