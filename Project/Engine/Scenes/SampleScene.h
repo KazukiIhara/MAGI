@@ -155,7 +155,7 @@ inline void SampleScene<Data>::Draw() {
 	//MAGISYSTEM::DrawPlane3D(worldTransform_[1].worldMatrix_, planeData_[1], material_);
 
 	// 球体描画
-	MAGISYSTEM::DrawSphere3D(worldTransform_[1].worldMatrix_, sphereData_[0], material_);
+	MAGISYSTEM::DrawSphere3D(worldTransform_[0].worldMatrix_, sphereData_[0], material_);
 
 	//// 三角形描画
 	//MAGISYSTEM::DrawTriangle3D(worldTransform_[2].worldMatrix_, triangleData_, material_);
