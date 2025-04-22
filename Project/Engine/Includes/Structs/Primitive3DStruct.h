@@ -75,8 +75,8 @@ struct PlaneData3DForGPU {
 /// </summary>
 struct SphereData3D {
 	float radius = 1.0f;
-	uint32_t verticalSegments = 16; // 最小値2、最大値32にしてください
-	uint32_t horizontalSegments = 16; // 最小値2、最大値32にしてください
+	uint32_t verticalSegments = 16; 
+	uint32_t horizontalSegments = 16;
 };
 
 /// <summary>
@@ -108,6 +108,7 @@ struct RingData3DForGPU {
 	float outerRadius;
 	float innerRadius;
 	float radianPerDivide;
+	float padding[3];
 };
 
 /// <summary>
@@ -116,7 +117,7 @@ struct RingData3DForGPU {
 struct PrimitiveMaterialData3D {
 	uint32_t textureIndex = 0xFFFFFFFF; // 無効値
 	RGBA baseColor = Color::White;
-	Vector2 uvTransform = { 0.0f,0.0f };
+	Vector2 uvTranslate = { 0.0f,0.0f };
 	Vector2 uvScale = { 1.0f,1.0f };
 	float uvRotate = 0.0f;
 };

@@ -4,12 +4,15 @@
 #include <array>
 
 #include "Framework/MAGI.h"
+#include "MAGIUitility/MAGIUtility.h"
 
 #include "2D/Object2D/Object2D.h"
 
+using namespace MAGIUtility;
+
 // サンプルシーン
 template <typename Data>
-class SampleScene : public BaseScene<Data> {
+class SampleScene: public BaseScene<Data> {
 public:
 	using BaseScene<Data>::BaseScene; // 親クラスのコンストラクタをそのまま継承
 	~SampleScene()override = default;
@@ -24,7 +27,7 @@ private:
 	std::unique_ptr<Camera3D> sceneCamera_ = nullptr;
 
 	// ワールドトランスフォーム
-	WorldTransform worldTransform_[3]{};
+	WorldTransform worldTransform_[4]{};
 
 	// 板ポリ描画用の頂点データ
 	PlaneData3D planeData_[2]{};
@@ -35,12 +38,11 @@ private:
 	// 球体描画用の頂点データ
 	SphereData3D sphereData_[2]{};
 
+	// リング描画用の頂点データ
+	RingData3D ringData_{};
+
 	// プリミティブ描画用のマテリアルデータ
 	PrimitiveMaterialData3D material_{};
-
-	static const uint32_t primitiveNum_ = 10000;
-
-	WorldTransform worldTransform[primitiveNum_];
 };
 
 template<typename Data>
@@ -52,6 +54,8 @@ inline void SampleScene<Data>::Initialize() {
 
 	// テクスチャ
 	MAGISYSTEM::LoadTexture("pronama_chan.png");
+	// テクスチャ
+	MAGISYSTEM::LoadTexture("gradationLine.png");
 
 	// モデル
 	MAGISYSTEM::LoadModel("terrain");
@@ -78,21 +82,17 @@ inline void SampleScene<Data>::Initialize() {
 	MAGISYSTEM::AddPunctualLight("SampleLight");
 
 	// トランスフォーム初期化
-	for (uint32_t i = 0; i < 3; i++) {
+	for (uint32_t i = 0; i < 4; i++) {
 		worldTransform_[i].Initialize();
 	}
 
-	worldTransform_[0].translate_.x = -2.0f;
-	worldTransform_[1].translate_.x = 2.0f;
+	worldTransform_[0].translate_.x = -4.0f;
+	worldTransform_[1].translate_.x = -2.0f;
+	worldTransform_[2].translate_.x = 2.0f;
+	worldTransform_[3].translate_.x = 4.0f;
 
 	// デフォルトのテクスチャを取得　TODO:マテリアルもクラス化して初期化できるようにする
-	material_.textureIndex = MAGISYSTEM::GetDefaultTextureIndex();
-
-	for (size_t i = 0; i < primitiveNum_; i++) {
-		worldTransform[i].Initialize();
-		worldTransform[i].translate_.x = float(i);
-	}
-
+	material_.textureIndex = MAGISYSTEM::GetTextureIndex("gradationLine.png");
 }
 
 template<typename Data>
@@ -109,16 +109,42 @@ inline void SampleScene<Data>::Update() {
 	ImGui::DragFloat3("Rotate", &worldTransform_[1].rotate_.x, 0.01f);
 	ImGui::DragFloat3("Translate", &worldTransform_[1].translate_.x, 0.01f);
 	ImGui::End();
-	
+
 	ImGui::Begin("Translate2");
 	ImGui::DragFloat3("Scale", &worldTransform_[2].scale_.x, 0.01f);
 	ImGui::DragFloat3("Rotate", &worldTransform_[2].rotate_.x, 0.01f);
 	ImGui::DragFloat3("Translate", &worldTransform_[2].translate_.x, 0.01f);
 	ImGui::End();
 
+	ImGui::Begin("Translate3");
+	ImGui::DragFloat3("Scale", &worldTransform_[3].scale_.x, 0.01f);
+	ImGui::DragFloat3("Rotate", &worldTransform_[3].rotate_.x, 0.01f);
+	ImGui::DragFloat3("Translate", &worldTransform_[3].translate_.x, 0.01f);
+	ImGui::End();
+
+	ImGui::Begin("Material");
+
+	ImGui::DragFloat2("uvScale", &material_.uvScale.x, 0.01f);
+	ImGui::DragFloat("uvRotate", &material_.uvRotate, 0.01f);
+	ImGui::DragFloat2("uvTranslate", &material_.uvTranslate.x, 0.01f);
+
+	Vector4 color = RGBAToVector4(material_.baseColor);
+	ImGui::ColorEdit4("Color", &color.x);
+	material_.baseColor = Vector4ToRGBA(color);
+
+	ImGui::End();
+
+	ImGui::Begin("RingData");
+
+	int temp = ringData_.ringDivide;
+	ImGui::DragInt("Divide", &temp);
+	ringData_.ringDivide = temp;
+	ImGui::DragFloat("InnerRadius", &ringData_.innerRadius, 0.01f);
+	ImGui::DragFloat("OuterRadius", &ringData_.outerRadius, 0.01f);
+	ImGui::End();
 
 	// トランスフォーム更新
-	for (uint32_t i = 0; i < 3; i++) {
+	for (uint32_t i = 0; i < 4; i++) {
 		worldTransform_[i].Update();
 	}
 
@@ -136,6 +162,8 @@ inline void SampleScene<Data>::Draw() {
 	// 三角形描画
 	MAGISYSTEM::DrawTriangle3D(worldTransform_[2].worldMatrix_, triangleData_, material_);
 
+	// リング描画
+	MAGISYSTEM::DrawRing3D(worldTransform_[3].worldMatrix_, ringData_, material_);
 
 	// 
 	// オブジェクト2Dの描画前処理

@@ -32,7 +32,10 @@ RingDrawer3D::RingDrawer3D(DXGI* dxgi, DirectXCommand* directXCommand, SRVUAVMan
 	// Materialデータを書き込む
 	MapMaterialData();
 
-	rings_.reserve(PrimitiveCommonConst::NumMaxInstance);
+	// 最大数分確保
+	rings_.resize(PrimitiveCommonConst::NumMaxInstance);
+	materials_.resize(PrimitiveCommonConst::NumMaxInstance);
+
 	Logger::Log("RingDrawer3D Initialize\n");
 }
 
@@ -41,20 +44,16 @@ RingDrawer3D::~RingDrawer3D() {
 }
 
 void RingDrawer3D::Update() {
-	// 最大数を超えていたら止める
-	assert(rings_.size() <= PrimitiveCommonConst::NumMaxInstance && "Ring size is over!");
-
-	// 描画すべきインスタンス数
-	instanceCount_ = static_cast<uint32_t>(rings_.size());
-
+	// 上限を超えていたらassert
+	assert(currentIndex_ <= PrimitiveCommonConst::NumMaxInstance);
+	instanceCount_ = currentIndex_;
 	// データが存在し、描画対象がある場合のみコピー
-	if (instancingData_ != nullptr && materialData_ != nullptr && instanceCount_ > 0) {
+	if (instancingData_ && materialData_ && instanceCount_ > 0) {
 		std::memcpy(instancingData_, rings_.data(), instanceCount_ * sizeof(RingData3DForGPU));
 		std::memcpy(materialData_, materials_.data(), instanceCount_ * sizeof(PrimitiveMaterialData3DForGPU));
 	}
 	// リングのコンテナをクリア
 	ClearRings();
-
 }
 
 void RingDrawer3D::Draw() {
@@ -63,9 +62,9 @@ void RingDrawer3D::Draw() {
 	ID3D12GraphicsCommandList6* commandList = directXCommand_->GetList6();
 
 	commandList->SetGraphicsRootSignature(graphicsPipelineManager_->GetRootSignature(GraphicsPipelineStateType::Ring3D));
-
-	// PSO & カメラ設定
 	commandList->SetPipelineState(graphicsPipelineManager_->GetPipelineState(GraphicsPipelineStateType::Ring3D, blendMode_));
+
+	// カメラ（b0: index 0）
 	camera3DManager_->TransferCurrentCamera(0);
 
 	// Descriptor Table 設定
@@ -73,25 +72,19 @@ void RingDrawer3D::Draw() {
 	commandList->SetGraphicsRootDescriptorTable(2, srvUavManager_->GetDescriptorHandleGPU(materialSrvIndex_));
 	commandList->SetGraphicsRootDescriptorTable(3, srvUavManager_->GetDescriptorHandleGPU(0)); // Bindless
 
+	// ディスクリプタヒープ設定
 	ID3D12DescriptorHeap* descriptorHeaps[] = {
 		srvUavManager_->GetDescriptorHeap()
 	};
 	commandList->SetDescriptorHeaps(_countof(descriptorHeaps), descriptorHeaps);
 
-	constexpr uint32_t threadGroupCountX = Ring3DConst::MaxTilesPerRing;
+	// AS用 baseInstanceIndex（b1: index 4）
+	RootConstants rootConstants{};
+	rootConstants.baseInstanceIndex = 0;
+	commandList->SetGraphicsRoot32BitConstants(4, 1, &rootConstants, 0);
 
-	// Dispatch 分割制御（Y方向に instanceCount_ を分割）
-	const uint32_t maxThreadGroupCountY = PrimitiveCommonConst::MaxThreadGroupCount / threadGroupCountX;
-	const uint32_t dispatchCount = (instanceCount_ + maxThreadGroupCountY - 1) / maxThreadGroupCountY;
-
-	for (uint32_t i = 0; i < dispatchCount; ++i) {
-		const uint32_t baseIndex = i * maxThreadGroupCountY;
-		const uint32_t remaining = instanceCount_ - baseIndex;
-		const uint32_t dispatchCountY = std::min(remaining, maxThreadGroupCountY);
-
-		commandList->SetGraphicsRoot32BitConstant(4, baseIndex, 0);
-		commandList->DispatchMesh(threadGroupCountX, dispatchCountY, 1);
-	}
+	// Amplification Shader を使ってインスタンス数ぶん Dispatch
+	commandList->DispatchMesh(1, instanceCount_, 1);
 }
 
 void RingDrawer3D::AddRing(
@@ -99,6 +92,10 @@ void RingDrawer3D::AddRing(
 	const RingData3D& data,
 	const PrimitiveMaterialData3D& material
 ) {
+	if (currentIndex_ >= PrimitiveCommonConst::NumMaxInstance) {
+		Logger::Log("RingDrawer3D: Max instance count exceeded!\n");
+		return;
+	}
 
 	// 座標と形状データ
 	RingData3DForGPU newRingData{
@@ -108,19 +105,26 @@ void RingDrawer3D::AddRing(
 		.innerRadius = data.innerRadius,
 		.radianPerDivide = 2.0f * std::numbers::pi_v<float> / static_cast<float>(data.ringDivide),
 	};
-	rings_.push_back(newRingData);
+	rings_[currentIndex_] = newRingData;
 
 	// マテリアルデータ
 	PrimitiveMaterialData3DForGPU newMaterialData{
 		.textureIndex = material.textureIndex,
 		.baseColor = RGBAToVector4(material.baseColor),
-		.uvMatrix = MakeUVMatrix(material.uvScale,material.uvRotate,material.uvTransform),
+		.uvMatrix = MakeUVMatrix(material.uvScale,material.uvRotate,material.uvTranslate),
 	};
-	materials_.push_back(newMaterialData);
+	materials_[currentIndex_] = newMaterialData;
+
+	// インデックスをインクリメント
+	currentIndex_++;
 }
 
 void RingDrawer3D::ClearRings() {
-	rings_.clear();
+	// インデックスリセット
+	currentIndex_ = 0;
+	// 中身をクリア
+	std::ranges::fill(rings_, RingData3DForGPU{});
+	std::ranges::fill(materials_, PrimitiveMaterialData3DForGPU{});
 }
 
 void RingDrawer3D::SetDXGI(DXGI* dxgi) {

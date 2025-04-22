@@ -32,7 +32,10 @@ SphereDrawer3D::SphereDrawer3D(DXGI* dxgi, DirectXCommand* directXCommand, SRVUA
 	// Materialデータを書き込む
 	MapMaterialData();
 
-	spheres_.reserve(PrimitiveCommonConst::NumMaxInstance);
+	// 最大数分確保
+	spheres_.resize(PrimitiveCommonConst::NumMaxInstance);
+	materials_.resize(PrimitiveCommonConst::NumMaxInstance);
+	
 	Logger::Log("SphereDrawer3D Initialize\n");
 }
 
@@ -41,14 +44,11 @@ SphereDrawer3D::~SphereDrawer3D() {
 }
 
 void SphereDrawer3D::Update() {
-	// 最大数を超えていたら止める
-	assert(spheres_.size() <= PrimitiveCommonConst::NumMaxInstance && "Sphere size is over!");
-
-	// 描画すべきインスタンス数
-	instanceCount_ = static_cast<uint32_t>(spheres_.size());
-
-	// データが存在し、描画対象がある場合のみコピー
-	if (instancingData_ != nullptr && materialData_ != nullptr && instanceCount_ > 0) {
+	// 上限を超えていたらassert
+	assert(currentIndex_ <= PrimitiveCommonConst::NumMaxInstance);
+	instanceCount_ = currentIndex_;
+	// インスタンスの数だけコピー
+	if (instancingData_ && materialData_ && instanceCount_ > 0) {
 		std::memcpy(instancingData_, spheres_.data(), instanceCount_ * sizeof(SphereData3DForGPU));
 		std::memcpy(materialData_, materials_.data(), instanceCount_ * sizeof(PrimitiveMaterialData3DForGPU));
 	}
@@ -80,11 +80,7 @@ void SphereDrawer3D::Draw() {
 	rootConstants.baseInstanceIndex = 0;
 	commandList->SetGraphicsRoot32BitConstants(4, 1, &rootConstants, 0);
 
-	// MS用 baseInstanceIndex（b2: index 5）
-	commandList->SetGraphicsRoot32BitConstant(5, 0, 0);
-
-	// ← ここがポイント！
-	commandList->DispatchMesh(1, instanceCount_, 1); // ← Y方向に instanceCount_ 分だけ dispatch
+	commandList->DispatchMesh(1, instanceCount_, 1);
 }
 
 void SphereDrawer3D::AddSphere(
@@ -93,6 +89,11 @@ void SphereDrawer3D::AddSphere(
 	const PrimitiveMaterialData3D& material
 ) {
 
+	if (currentIndex_ >= PrimitiveCommonConst::NumMaxInstance) {
+		Logger::Log("SphereDrawer3D: Max instance count exceeded!\n");
+		return;
+	}
+
 	// 座標と形状データ
 	SphereData3DForGPU newSphereData{
 		.worldMatrix = worldMatrix,
@@ -100,19 +101,26 @@ void SphereDrawer3D::AddSphere(
 		.longitudeSegments = data.verticalSegments,
 		.latitudeSegments = data.horizontalSegments
 	};
-	spheres_.push_back(newSphereData);
+	spheres_[currentIndex_] = newSphereData;
 
 	// マテリアルデータ
 	PrimitiveMaterialData3DForGPU newMaterialData{
 		.textureIndex = material.textureIndex,
 		.baseColor = RGBAToVector4(material.baseColor),
-		.uvMatrix = MakeUVMatrix(material.uvScale,material.uvRotate,material.uvTransform),
+		.uvMatrix = MakeUVMatrix(material.uvScale,material.uvRotate,material.uvTranslate),
 	};
-	materials_.push_back(newMaterialData);
+	materials_[currentIndex_] = newMaterialData;
+
+	// インデックスをインクリメント
+	currentIndex_++;
 }
 
 void SphereDrawer3D::ClearSpheres() {
-	spheres_.clear();
+	// インデックスリセット
+	currentIndex_ = 0;
+	// 中身をクリア
+	std::ranges::fill(spheres_, SphereData3DForGPU{});
+	std::ranges::fill(materials_, PrimitiveMaterialData3DForGPU{});
 }
 
 void SphereDrawer3D::SetDXGI(DXGI* dxgi) {

@@ -1,17 +1,17 @@
-#include "Sphere3DGraphicsPipeline.h"
+#include "Ring3DGraphicsPipeline.h"
 
 #include <cassert>
 #include "Logger/Logger.h"
 #include "DirectX/DXGI/DXGI.h"
 #include "DirectX/ShaderCompiler/ShaderCompiler.h"
 
-Sphere3DGraphicsPipeline::Sphere3DGraphicsPipeline(DXGI* dxgi, ShaderCompiler* shaderCompiler)
+Ring3DGraphicsPipeline::Ring3DGraphicsPipeline(DXGI* dxgi, ShaderCompiler* shaderCompiler)
 	: BaseGraphicsPipeline(dxgi, shaderCompiler) {
 }
 
-Sphere3DGraphicsPipeline::~Sphere3DGraphicsPipeline() {}
+Ring3DGraphicsPipeline::~Ring3DGraphicsPipeline() {}
 
-void Sphere3DGraphicsPipeline::CreateRootSignature() {
+void Ring3DGraphicsPipeline::CreateRootSignature() {
 	HRESULT hr;
 
 	// ──────────────── Descriptor Ranges ────────────────
@@ -100,18 +100,18 @@ void Sphere3DGraphicsPipeline::CreateRootSignature() {
 	assert(SUCCEEDED(hr));
 }
 
-void Sphere3DGraphicsPipeline::CompileShaders() {
-	amplificationShaderBlob_ = shaderCompiler_->CompileShader(L"EngineAssets/Shaders/Graphics/Sphere3D/Sphere3D.AS.hlsl", L"as_6_5");
+void Ring3DGraphicsPipeline::CompileShaders() {
+	amplificationShaderBlob_ = shaderCompiler_->CompileShader(L"EngineAssets/Shaders/Graphics/Ring3D/Ring3D.AS.hlsl", L"as_6_5");
 	assert(amplificationShaderBlob_ != nullptr);
 
-	meshShaderBlob_ = shaderCompiler_->CompileShader(L"EngineAssets/Shaders/Graphics/Sphere3D/Sphere3D.MS.hlsl", L"ms_6_5");
+	meshShaderBlob_ = shaderCompiler_->CompileShader(L"EngineAssets/Shaders/Graphics/Ring3D/Ring3D.MS.hlsl", L"ms_6_5");
 	assert(meshShaderBlob_ != nullptr);
 
-	pixelShaderBlob_ = shaderCompiler_->CompileShader(L"EngineAssets/Shaders/Graphics/Sphere3D/Sphere3D.PS.hlsl", L"ps_6_5");
+	pixelShaderBlob_ = shaderCompiler_->CompileShader(L"EngineAssets/Shaders/Graphics/Ring3D/Ring3D.PS.hlsl", L"ps_6_5");
 	assert(pixelShaderBlob_ != nullptr);
 }
 
-void Sphere3DGraphicsPipeline::CreateGraphicsPipelineObject() {
+void Ring3DGraphicsPipeline::CreateGraphicsPipelineObject() {
 	assert(rootSignature_);
 	assert(amplificationShaderBlob_);
 	assert(meshShaderBlob_);
@@ -156,13 +156,13 @@ void Sphere3DGraphicsPipeline::CreateGraphicsPipelineObject() {
 
 		HRESULT hr = dxgi_->GetDevice10()->CreatePipelineState(&streamDesc, IID_PPV_ARGS(&pipelineState_[i]));
 		if (FAILED(hr)) {
-			Logger::Log("Sphere3DGraphicsPipeline: Failed to create PSO for blendMode " + std::to_string(i));
+			Logger::Log("Ring3DGraphicsPipeline: Failed to create PSO for blendMode " + std::to_string(i));
 			assert(false);
 		}
 	}
 }
 
-D3D12_BLEND_DESC Sphere3DGraphicsPipeline::BlendStateSetting(uint32_t blendModeNum) {
+D3D12_BLEND_DESC Ring3DGraphicsPipeline::BlendStateSetting(uint32_t blendModeNum) {
 	D3D12_BLEND_DESC blendDesc{};
 	switch (blendModeNum) {
 	case 0:// kBlendModeNone
@@ -232,7 +232,7 @@ D3D12_BLEND_DESC Sphere3DGraphicsPipeline::BlendStateSetting(uint32_t blendModeN
 	return blendDesc;
 }
 
-D3D12_DEPTH_STENCIL_DESC Sphere3DGraphicsPipeline::DepthStecilDescSetting() {
+D3D12_DEPTH_STENCIL_DESC Ring3DGraphicsPipeline::DepthStecilDescSetting() {
 	D3D12_DEPTH_STENCIL_DESC depthDesc{};
 	depthDesc.DepthEnable = TRUE;
 	depthDesc.DepthWriteMask = D3D12_DEPTH_WRITE_MASK_ALL;
@@ -240,7 +240,7 @@ D3D12_DEPTH_STENCIL_DESC Sphere3DGraphicsPipeline::DepthStecilDescSetting() {
 	return depthDesc;
 }
 
-D3D12_RASTERIZER_DESC Sphere3DGraphicsPipeline::RasterizerStateSetting() {
+D3D12_RASTERIZER_DESC Ring3DGraphicsPipeline::RasterizerStateSetting() {
 	D3D12_RASTERIZER_DESC desc{};
 	desc.FillMode = D3D12_FILL_MODE_SOLID;
 	desc.CullMode = D3D12_CULL_MODE_BACK;
@@ -248,6 +248,6 @@ D3D12_RASTERIZER_DESC Sphere3DGraphicsPipeline::RasterizerStateSetting() {
 	return desc;
 }
 
-D3D12_INPUT_LAYOUT_DESC Sphere3DGraphicsPipeline::InputLayoutSetting() {
+D3D12_INPUT_LAYOUT_DESC Ring3DGraphicsPipeline::InputLayoutSetting() {
 	return { nullptr, 0 };
 }

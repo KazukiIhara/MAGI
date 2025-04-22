@@ -5,13 +5,14 @@ struct MeshOutput
     uint instanceIndex : TEXCOORD1;
 };
 
-struct SphereData3D
+struct RingData3D
 {
     float4x4 worldMatrix;
-    float radius;
-    uint longitudeSegments;
-    uint latitudeSegments;
-    float _padding;
+    uint ringDivide;
+    float outerRadius;
+    float innerRadius;
+    float radianParDivide;
+    float3 _padding;
 };
 
 struct PrimitiveMaterialData3D
@@ -50,5 +51,5 @@ struct ASPayload
     uint instanceID;
 };
 
-// タイルの最大数 (緯度分割数256)x(経度分割数256)
+// タイルの最大数
 static const uint kMaxTileCount = 256 * 256;
