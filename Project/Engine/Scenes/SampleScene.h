@@ -9,7 +9,7 @@
 
 // サンプルシーン
 template <typename Data>
-class SampleScene: public BaseScene<Data> {
+class SampleScene : public BaseScene<Data> {
 public:
 	using BaseScene<Data>::BaseScene; // 親クラスのコンストラクタをそのまま継承
 	~SampleScene()override = default;
@@ -82,8 +82,8 @@ inline void SampleScene<Data>::Initialize() {
 		worldTransform_[i].Initialize();
 	}
 
-	worldTransform_[0].translate_.x = -1.0f;
-	worldTransform_[1].translate_.x = 1.0f;
+	worldTransform_[0].translate_.x = -2.0f;
+	worldTransform_[1].translate_.x = 2.0f;
 
 	// デフォルトのテクスチャを取得　TODO:マテリアルもクラス化して初期化できるようにする
 	material_.textureIndex = MAGISYSTEM::GetDefaultTextureIndex();
@@ -98,44 +98,24 @@ inline void SampleScene<Data>::Initialize() {
 template<typename Data>
 inline void SampleScene<Data>::Update() {
 
-	ImGui::Begin("Plane");
-
+	ImGui::Begin("Translate0");
 	ImGui::DragFloat3("Scale", &worldTransform_[0].scale_.x, 0.01f);
 	ImGui::DragFloat3("Rotate", &worldTransform_[0].rotate_.x, 0.01f);
 	ImGui::DragFloat3("Translate", &worldTransform_[0].translate_.x, 0.01f);
-
-	ImGui::DragFloat3("LeftTop", &planeData_[0].verticesOffsets[0].x, 0.01f);
-	ImGui::DragFloat3("RightTop", &planeData_[0].verticesOffsets[1].x, 0.01f);
-	ImGui::DragFloat3("LeftBottom", &planeData_[0].verticesOffsets[2].x, 0.01f);
-	ImGui::DragFloat3("RightBottom", &planeData_[0].verticesOffsets[3].x, 0.01f);
 	ImGui::End();
 
-
-	ImGui::Begin("Sphere");
-
-	ImGui::DragFloat3("Scale", &worldTransform_[0].scale_.x, 0.01f);
-	ImGui::DragFloat3("Rotate", &worldTransform_[0].rotate_.x, 0.01f);
-	ImGui::DragFloat3("Translate", &worldTransform_[0].translate_.x, 0.01f);
-
-	ImGui::DragFloat("radius", &sphereData_[0].radius, 0.01f);
-
-	int tempHS = sphereData_[0].horizontalSegments;
-	ImGui::DragInt("horizontalSeg", &tempHS);
-	sphereData_[0].horizontalSegments = tempHS;
-
-	int tempVS = sphereData_[0].verticalSegments;
-	ImGui::DragInt("verticalSeg", &tempVS);
-	sphereData_[0].verticalSegments = tempVS;
-
+	ImGui::Begin("Translate1");
+	ImGui::DragFloat3("Scale", &worldTransform_[1].scale_.x, 0.01f);
+	ImGui::DragFloat3("Rotate", &worldTransform_[1].rotate_.x, 0.01f);
+	ImGui::DragFloat3("Translate", &worldTransform_[1].translate_.x, 0.01f);
 	ImGui::End();
-
-	ImGui::Begin("Triangle");
-
+	
+	ImGui::Begin("Translate2");
 	ImGui::DragFloat3("Scale", &worldTransform_[2].scale_.x, 0.01f);
 	ImGui::DragFloat3("Rotate", &worldTransform_[2].rotate_.x, 0.01f);
 	ImGui::DragFloat3("Translate", &worldTransform_[2].translate_.x, 0.01f);
-
 	ImGui::End();
+
 
 	// トランスフォーム更新
 	for (uint32_t i = 0; i < 3; i++) {
@@ -147,22 +127,14 @@ inline void SampleScene<Data>::Update() {
 
 template<typename Data>
 inline void SampleScene<Data>::Draw() {
-
-
 	// 板ポリ描画
 	MAGISYSTEM::DrawPlane3D(worldTransform_[0].worldMatrix_, planeData_[0], material_);
 
-	MAGISYSTEM::DrawPlane3D(worldTransform_[1].worldMatrix_, planeData_[1], material_);
-
 	// 球体描画
-	//MAGISYSTEM::DrawSphere3D(worldTransform_[1].worldMatrix_, sphereData_[0], material_);
+	MAGISYSTEM::DrawSphere3D(worldTransform_[1].worldMatrix_, sphereData_[0], material_);
 
 	// 三角形描画
 	MAGISYSTEM::DrawTriangle3D(worldTransform_[2].worldMatrix_, triangleData_, material_);
-
-	MAGISYSTEM::DrawTriangle3D(worldTransform_[0].worldMatrix_, triangleData_, material_);
-
-
 
 
 	// 

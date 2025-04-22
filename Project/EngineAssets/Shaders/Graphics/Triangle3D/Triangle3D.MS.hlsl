@@ -1,4 +1,3 @@
-// „Ÿ„Ÿ Mesh Shader „Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ
 #include "Triangle3D.hlsli"
 
 ConstantBuffer<Camera> gCamera : register(b0);
@@ -7,7 +6,7 @@ StructuredBuffer<PrimitiveMaterialData3D> gMaterialData : register(t1);
 
 [outputtopology("triangle")]
 [numthreads(1, 1, 1)]
-void main(in payload ASPayload payload, // © ó‚¯æ‚è
+void main(in payload ASPayload payload,
           uint3 tid : SV_DispatchThreadID,
           out indices uint3 tris[1],
           out vertices MeshOutput verts[3])
@@ -19,17 +18,20 @@ void main(in payload ASPayload payload, // © ó‚¯æ‚è
 
     SetMeshOutputCounts(3, 1);
 
-    // 3 ’¸“_‚Ô‚ñˆ—
+    float2 uvs[3] =
+    {
+        float2(0.0f, 1.0f), // ¶‰º
+        float2(0.5f, 0.0f), // ã
+        float2(1.0f, 1.0f), // ‰E‰º
+    };
+
     [unroll]
     for (uint i = 0; i < 3; ++i)
     {
         float4 localPos = float4(data.vertices[i].xyz, 1.0f);
         float4 worldPos = mul(localPos, data.worldMatrix);
         float4 clipPos = mul(worldPos, gCamera.viewProjection);
-
-        float2 baseUV = float2(data.vertices[i].x + 0.5f,
-                               1.0f - (data.vertices[i].y + 0.5f));
-        float2 uv = mul(float4(baseUV, 0.0f, 1.0f), mat.uvMatrix).xy;
+        float2 uv = mul(float4(uvs[i], 0.0f, 1.0f), mat.uvMatrix).xy;
 
         verts[i].position = clipPos;
         verts[i].uv = uv;

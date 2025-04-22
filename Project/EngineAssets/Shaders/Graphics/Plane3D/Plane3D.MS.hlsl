@@ -10,7 +10,7 @@ void main(
     in payload ASPayload payload,
     uint3 dispatchThreadID : SV_DispatchThreadID,
     out indices uint3 tris[2],
-    out vertices MeshOutput verts[6]
+    out vertices MeshOutput verts[4]
 )
 {
     uint instanceID = payload.instanceID;
@@ -18,7 +18,7 @@ void main(
     PlaneData3D plane = gInstanceData[instanceID];
     PrimitiveMaterialData3D mat = gMaterialData[instanceID];
 
-    SetMeshOutputCounts(6, 2); // 2 triangles from 4 vertices
+    SetMeshOutputCounts(4, 2); // 2 triangles from 4 vertices
 
     float4 positions[4] =
     {
@@ -44,7 +44,6 @@ void main(
 
         verts[i].position = clipPos;
         verts[i].uv = uv;
-        verts[i].color = mat.baseColor;
         verts[i].instanceIndex = instanceID;
     }
 

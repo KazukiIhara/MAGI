@@ -6,17 +6,16 @@
 ConstantBuffer<Camera> gCamera : register(b0);
 StructuredBuffer<SphereData3D> gInstanceData : register(t0);
 StructuredBuffer<PrimitiveMaterialData3D> gMaterialData : register(t1);
-ConstantBuffer<RootConstants> gRootConstant : register(b1);
 
 [outputtopology("triangle")]
 [numthreads(1, 1, 1)]
-void main(
+void main(in payload ASPayload payload,
     uint3 threadID : SV_DispatchThreadID,
     out indices uint3 tris[MAX_TRIANGLES],
     out vertices MeshOutput verts[MAX_VERTICES]
 )
 {
-    uint instanceID = gRootConstant.baseInstanceIndex + threadID.y;
+    uint instanceID = payload.instanceID;
     uint tileID = threadID.x;
 
     SphereData3D sphere = gInstanceData[instanceID];

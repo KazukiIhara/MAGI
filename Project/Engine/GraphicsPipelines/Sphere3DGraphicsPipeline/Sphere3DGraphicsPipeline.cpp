@@ -34,7 +34,7 @@ void Sphere3DGraphicsPipeline::CreateRootSignature() {
 	descriptorRangeTextures.OffsetInDescriptorsFromTableStart = D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND;
 
 	// ──────────────── Root Parameters ────────────────
-	D3D12_ROOT_PARAMETER rootParams[5] = {};
+	D3D12_ROOT_PARAMETER rootParams[6] = {};
 
 	// b0: Camera CBV
 	rootParams[0].ParameterType = D3D12_ROOT_PARAMETER_TYPE_CBV;
@@ -43,7 +43,7 @@ void Sphere3DGraphicsPipeline::CreateRootSignature() {
 
 	// t0: InstanceData SRV
 	rootParams[1].ParameterType = D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE;
-	rootParams[1].ShaderVisibility = D3D12_SHADER_VISIBILITY_MESH;
+	rootParams[1].ShaderVisibility = D3D12_SHADER_VISIBILITY_ALL;
 	rootParams[1].DescriptorTable.pDescriptorRanges = &descriptorRangeInstance;
 	rootParams[1].DescriptorTable.NumDescriptorRanges = 1;
 
@@ -59,11 +59,17 @@ void Sphere3DGraphicsPipeline::CreateRootSignature() {
 	rootParams[3].DescriptorTable.pDescriptorRanges = &descriptorRangeTextures;
 	rootParams[3].DescriptorTable.NumDescriptorRanges = 1;
 
-	// b1: baseInstanceIndex
+	// RootConstants (b1)
 	rootParams[4].ParameterType = D3D12_ROOT_PARAMETER_TYPE_32BIT_CONSTANTS;
-	rootParams[4].ShaderVisibility = D3D12_SHADER_VISIBILITY_MESH;
+	rootParams[4].ShaderVisibility = D3D12_SHADER_VISIBILITY_AMPLIFICATION;
 	rootParams[4].Constants.Num32BitValues = 1;
 	rootParams[4].Constants.ShaderRegister = 1;
+
+	// b2: baseInstanceIndex
+	rootParams[5].ParameterType = D3D12_ROOT_PARAMETER_TYPE_32BIT_CONSTANTS;
+	rootParams[5].ShaderVisibility = D3D12_SHADER_VISIBILITY_MESH;
+	rootParams[5].Constants.Num32BitValues = 1;
+	rootParams[5].Constants.ShaderRegister = 2;
 
 	// ──────────────── Static Sampler ────────────────
 	D3D12_STATIC_SAMPLER_DESC staticSampler{};
@@ -100,6 +106,9 @@ void Sphere3DGraphicsPipeline::CreateRootSignature() {
 }
 
 void Sphere3DGraphicsPipeline::CompileShaders() {
+	amplificationShaderBlob_ = shaderCompiler_->CompileShader(L"EngineAssets/Shaders/Graphics/Sphere3D/Sphere3D.AS.hlsl", L"as_6_5");
+	assert(amplificationShaderBlob_ != nullptr);
+
 	meshShaderBlob_ = shaderCompiler_->CompileShader(L"EngineAssets/Shaders/Graphics/Sphere3D/Sphere3D.MS.hlsl", L"ms_6_5");
 	assert(meshShaderBlob_ != nullptr);
 
@@ -109,11 +118,14 @@ void Sphere3DGraphicsPipeline::CompileShaders() {
 
 void Sphere3DGraphicsPipeline::CreateGraphicsPipelineObject() {
 	assert(rootSignature_);
+	assert(amplificationShaderBlob_);
 	assert(meshShaderBlob_);
 	assert(pixelShaderBlob_);
 
+	const D3D12_SHADER_BYTECODE amplificationShader = { amplificationShaderBlob_->GetBufferPointer(), amplificationShaderBlob_->GetBufferSize() };
 	const D3D12_SHADER_BYTECODE meshShader = { meshShaderBlob_->GetBufferPointer(), meshShaderBlob_->GetBufferSize() };
 	const D3D12_SHADER_BYTECODE pixelShader = { pixelShaderBlob_->GetBufferPointer(), pixelShaderBlob_->GetBufferSize() };
+
 
 	const DXGI_FORMAT rtvFormat = DXGI_FORMAT_R8G8B8A8_UNORM_SRGB;
 	const DXGI_FORMAT dsvFormat = DXGI_FORMAT_D24_UNORM_S8_UINT;
@@ -131,8 +143,9 @@ void Sphere3DGraphicsPipeline::CreateGraphicsPipelineObject() {
 		rtArray.NumRenderTargets = 1;
 		rtArray.RTFormats[0] = rtvFormat;
 
-		Primitive3DPipelineStateStream stream = {
+		Triangle3DPipelineStateStream stream = {
 			CD3DX12_PIPELINE_STATE_STREAM_ROOT_SIGNATURE(rootSignature_.Get()),
+			CD3DX12_PIPELINE_STATE_STREAM_AS(amplificationShader),
 			CD3DX12_PIPELINE_STATE_STREAM_MS(meshShader),
 			CD3DX12_PIPELINE_STATE_STREAM_PS(pixelShader),
 			CD3DX12_PIPELINE_STATE_STREAM_RASTERIZER(rast),

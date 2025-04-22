@@ -36,9 +36,9 @@ struct Triangle3DPipelineStateStream {
 /// </summary>
 struct TriangleData3D {
 	Vector3 verticesOffsets[3]{
-		{ -0.5f,-0.5f,0.0f },
-		{ 0.0f,0.5f,0.0f },
-		{ 0.5f,-0.5f,0.0f },
+		{ -1.0f,-1.0f,0.0f },
+		{ 0.0f,1.0f,0.0f },
+		{ 1.0f,-1.0f,0.0f },
 	};
 };
 
@@ -55,10 +55,10 @@ struct TriangleData3DForGPU {
 /// </summary>
 struct PlaneData3D {
 	Vector3 verticesOffsets[4]{
-		{ -0.5f,0.5f},
-		{ 0.5f,0.5f},
-		{ -0.5f,-0.5f},
-		{ 0.5f,-0.5f},
+		{ -1.0f,1.0f},
+		{ 1.0f,1.0f},
+		{ -1.0f,-1.0f},
+		{ 1.0f,-1.0f},
 	};
 };
 
