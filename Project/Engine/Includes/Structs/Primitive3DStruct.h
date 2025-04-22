@@ -94,7 +94,7 @@ struct SphereData3DForGPU {
 /// 3Dリングの形状データ
 /// </summary>
 struct RingData3D {
-	uint32_t ringDivide = 32;
+	uint32_t ringDivide = 16;
 	float outerRadius = 1.0f;
 	float innerRadius = 0.2f;
 };

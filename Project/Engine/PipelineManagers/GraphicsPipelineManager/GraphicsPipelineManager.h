@@ -17,6 +17,7 @@
 #include "GraphicsPipelines/Triangle3DGraphicsPipeline/Triangle3DGraphicsPipeline.h"
 #include "GraphicsPipelines/Plane3DGraphicsPipeline/Plane3DGraphicsPipeline.h"
 #include "GraphicsPipelines/Sphere3DGraphicsPipeline/Sphere3DGraphicsPipeline.h"
+#include "GraphicsPipelines/Ring3DGraphicsPipeline/Ring3DGraphicsPipeline.h"
 
 #include "GraphicsPipelines/Object3DGraphicsPipeline/Object3DGraphicsPipeline.h"
 #include "GraphicsPipelines/Particle3DGraphicsPipeline/Particle3DGraphicsPipeline.h"
@@ -65,6 +66,8 @@ private:
 	std::unique_ptr<Plane3DGraphicsPipeline> plane3DGraphicsPipeline_ = nullptr;
 	// Sphere3DGraphicsPipeline
 	std::unique_ptr<Sphere3DGraphicsPipeline> sphere3DGraphicsPipeline_ = nullptr;
+	// Ring3DGraphicsPipeline
+	std::unique_ptr<Ring3DGraphicsPipeline> ring3DGraphicsPipeline_ = nullptr;
 
 	// Object3DGraphicsPipeline
 	std::unique_ptr<Object3DGraphicsPipeline> object3DGraphicsPipeline_ = nullptr;

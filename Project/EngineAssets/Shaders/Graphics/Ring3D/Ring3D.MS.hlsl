@@ -51,12 +51,15 @@ void main(
         mul(float4(p3, 1.0f), ring.worldMatrix)
     };
 
+    float u0 = (float) tileID;
+    float u1 = (float) (tileID + 1);
+
     float2 baseUVs[4] =
     {
-        float2(0.0f, 0.0f),
-        float2(0.0f, 1.0f),
-        float2(1.0f, 0.0f),
-        float2(1.0f, 1.0f)
+        float2(u0, 0.0f),
+        float2(u0, 1.0f),
+        float2(u1, 0.0f),
+        float2(u1, 1.0f)
     };
 
     [unroll]
@@ -69,6 +72,7 @@ void main(
         verts[i].uv = transformedUV.xy;
         verts[i].instanceIndex = instanceID;
     }
+
 
     tris[0] = uint3(0, 1, 2);
     tris[1] = uint3(2, 1, 3);

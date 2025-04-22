@@ -1167,12 +1167,12 @@ void MAGISYSTEM::DrawPlane3D(const Matrix4x4& worldMatrix, const PlaneData3D& pl
 	planeDrawer3D_->AddPlane(worldMatrix, planeData, materialData);
 }
 
-void MAGISYSTEM::DrawSphere3D(
-	const Matrix4x4& worldMatrix,
-	const SphereData3D& data,
-	const PrimitiveMaterialData3D& material
-) {
+void MAGISYSTEM::DrawSphere3D(const Matrix4x4& worldMatrix, const SphereData3D& data, const PrimitiveMaterialData3D& material) {
 	sphereDrawer3D_->AddSphere(worldMatrix, data, material);
+}
+
+void MAGISYSTEM::DrawRing3D(const Matrix4x4& worldMatrix, const RingData3D& data, const PrimitiveMaterialData3D& material) {
+	ringDrawer3D_->AddRing(worldMatrix, data, material);
 }
 
 void MAGISYSTEM::AddGrobalDataGroup(const std::string& groupname) {
