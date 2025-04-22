@@ -141,6 +141,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Engine\3D\Shapes3D\Model\Model.h" />
     <ClInclude Include="Engine\3D\Shapes3D\PrimitiveShapes3D\BasePrimitiveShape3D\BasePrimitiveShape3D.h" />
     <ClInclude Include="Engine\3D\Shapes3D\PrimitiveShapes3D\Plane\Plane.h" />
+    <ClInclude Include="Engine\3D\Shapes3D\PrimitiveShapes3D\Ring\Ring.h" />
     <ClInclude Include="Engine\3D\Shapes3D\PrimitiveShapes3D\Sphere\Sphere.h" />
     <ClInclude Include="Engine\3D\Shapes3D\SkinningMesh\SkinningMesh.h" />
     <ClInclude Include="Engine\3D\Shapes3D\SkinningModel\SkinningModel.h" />
@@ -285,6 +286,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Engine\3D\Shapes3D\Model\Model.cpp" />
     <ClCompile Include="Engine\3D\Shapes3D\PrimitiveShapes3D\BasePrimitiveShape3D\BasePrimitiveShape3D.cpp" />
     <ClCompile Include="Engine\3D\Shapes3D\PrimitiveShapes3D\Plane\Plane.cpp" />
+    <ClCompile Include="Engine\3D\Shapes3D\PrimitiveShapes3D\Ring\Ring.cpp" />
     <ClCompile Include="Engine\3D\Shapes3D\PrimitiveShapes3D\Sphere\Sphere.cpp" />
     <ClCompile Include="Engine\3D\Shapes3D\SkinningMesh\SkinningMesh.cpp" />
     <ClCompile Include="Engine\3D\Shapes3D\SkinningModel\SkinningModel.cpp" />

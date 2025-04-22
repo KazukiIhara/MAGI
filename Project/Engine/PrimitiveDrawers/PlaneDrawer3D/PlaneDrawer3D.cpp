@@ -32,7 +32,10 @@ PlaneDrawer3D::PlaneDrawer3D(DXGI* dxgi, DirectXCommand* directXCommand, SRVUAVM
 	// Materialデータを書き込む
 	MapMaterialData();
 
-	planes_.reserve(PrimitiveCommonConst::NumMaxInstance);
+	// 最大数分確保
+	planes_.resize(PrimitiveCommonConst::NumMaxInstance);
+	materials_.resize(PrimitiveCommonConst::NumMaxInstance);
+
 	Logger::Log("PlaneDrawer3D Initialize\n");
 }
 
@@ -41,12 +44,9 @@ PlaneDrawer3D::~PlaneDrawer3D() {
 }
 
 void PlaneDrawer3D::Update() {
-	// 最大数を超えていたら止める
-	assert(planes_.size() <= PrimitiveCommonConst::NumMaxInstance && "Plane size is over!");
-
-	// 描画すべきインスタンス数
-	instanceCount_ = static_cast<uint32_t>(planes_.size());
-
+	// 上限を超えていたらassert
+	assert(currentIndex_ <= PrimitiveCommonConst::NumMaxInstance);
+	instanceCount_ = currentIndex_;
 	// データが存在し、描画対象がある場合のみコピー
 	if (instancingData_ && materialData_ && instanceCount_ > 0) {
 		std::memcpy(instancingData_, planes_.data(), instanceCount_ * sizeof(PlaneData3DForGPU));
@@ -99,19 +99,26 @@ void PlaneDrawer3D::AddPlane(
 			Vector4(data.verticesOffsets[3].x, data.verticesOffsets[3].y, data.verticesOffsets[3].z, 1.0f)
 			},
 	};
-	planes_.push_back(newPlaneData);
+	planes_[currentIndex_] = newPlaneData;
 
 	// マテリアルデータ
 	PrimitiveMaterialData3DForGPU newMaterialData{
 		.textureIndex = material.textureIndex,
 		.baseColor = RGBAToVector4(material.baseColor),
-		.uvMatrix = MakeUVMatrix(material.uvScale,material.uvRotate,material.uvTransform),
+		.uvMatrix = MakeUVMatrix(material.uvScale,material.uvRotate,material.uvTranslate),
 	};
-	materials_.push_back(newMaterialData);
+	materials_[currentIndex_] = newMaterialData;
+
+	// インデックスをインクリメント
+	currentIndex_++;
 }
 
 void PlaneDrawer3D::ClearPlanes() {
-	planes_.clear();
+	// インデックスリセット
+	currentIndex_ = 0;
+	// 中身をクリア
+	std::ranges::fill(planes_, PlaneData3DForGPU{});
+	std::ranges::fill(materials_, PrimitiveMaterialData3DForGPU{});
 }
 
 void PlaneDrawer3D::SetDXGI(DXGI* dxgi) {

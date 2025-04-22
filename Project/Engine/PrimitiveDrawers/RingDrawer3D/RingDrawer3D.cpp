@@ -32,7 +32,10 @@ RingDrawer3D::RingDrawer3D(DXGI* dxgi, DirectXCommand* directXCommand, SRVUAVMan
 	// Materialデータを書き込む
 	MapMaterialData();
 
-	rings_.reserve(PrimitiveCommonConst::NumMaxInstance);
+	// 最大数分確保
+	rings_.resize(PrimitiveCommonConst::NumMaxInstance);
+	materials_.resize(PrimitiveCommonConst::NumMaxInstance);
+
 	Logger::Log("RingDrawer3D Initialize\n");
 }
 
@@ -41,20 +44,16 @@ RingDrawer3D::~RingDrawer3D() {
 }
 
 void RingDrawer3D::Update() {
-	// 最大数を超えていたら止める
-	assert(rings_.size() <= PrimitiveCommonConst::NumMaxInstance && "Ring size is over!");
-
-	// 描画すべきインスタンス数
-	instanceCount_ = static_cast<uint32_t>(rings_.size());
-
+	// 上限を超えていたらassert
+	assert(currentIndex_ <= PrimitiveCommonConst::NumMaxInstance);
+	instanceCount_ = currentIndex_;
 	// データが存在し、描画対象がある場合のみコピー
-	if (instancingData_ != nullptr && materialData_ != nullptr && instanceCount_ > 0) {
+	if (instancingData_ && materialData_ && instanceCount_ > 0) {
 		std::memcpy(instancingData_, rings_.data(), instanceCount_ * sizeof(RingData3DForGPU));
 		std::memcpy(materialData_, materials_.data(), instanceCount_ * sizeof(PrimitiveMaterialData3DForGPU));
 	}
 	// リングのコンテナをクリア
 	ClearRings();
-
 }
 
 void RingDrawer3D::Draw() {
@@ -93,6 +92,10 @@ void RingDrawer3D::AddRing(
 	const RingData3D& data,
 	const PrimitiveMaterialData3D& material
 ) {
+	if (currentIndex_ >= PrimitiveCommonConst::NumMaxInstance) {
+		Logger::Log("RingDrawer3D: Max instance count exceeded!\n");
+		return;
+	}
 
 	// 座標と形状データ
 	RingData3DForGPU newRingData{
@@ -102,19 +105,26 @@ void RingDrawer3D::AddRing(
 		.innerRadius = data.innerRadius,
 		.radianPerDivide = 2.0f * std::numbers::pi_v<float> / static_cast<float>(data.ringDivide),
 	};
-	rings_.push_back(newRingData);
+	rings_[currentIndex_] = newRingData;
 
 	// マテリアルデータ
 	PrimitiveMaterialData3DForGPU newMaterialData{
 		.textureIndex = material.textureIndex,
 		.baseColor = RGBAToVector4(material.baseColor),
-		.uvMatrix = MakeUVMatrix(material.uvScale,material.uvRotate,material.uvTransform),
+		.uvMatrix = MakeUVMatrix(material.uvScale,material.uvRotate,material.uvTranslate),
 	};
-	materials_.push_back(newMaterialData);
+	materials_[currentIndex_] = newMaterialData;
+
+	// インデックスをインクリメント
+	currentIndex_++;
 }
 
 void RingDrawer3D::ClearRings() {
-	rings_.clear();
+	// インデックスリセット
+	currentIndex_ = 0;
+	// 中身をクリア
+	std::ranges::fill(rings_, RingData3DForGPU{});
+	std::ranges::fill(materials_, PrimitiveMaterialData3DForGPU{});
 }
 
 void RingDrawer3D::SetDXGI(DXGI* dxgi) {

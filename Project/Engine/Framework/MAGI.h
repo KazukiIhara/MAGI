@@ -433,7 +433,11 @@ public: // エンジンの機能
 
 #pragma region TriangleDrawer3D
 	// 三角形描画
-	static void DrawTriangle3D(const Matrix4x4& worldMatrix, const TriangleData3D& data, const PrimitiveMaterialData3D& material);
+	static void DrawTriangle3D(
+		const Matrix4x4& worldMatrix,
+		const TriangleData3D& data, 
+		const PrimitiveMaterialData3D& material
+	);
 #pragma endregion
 
 #pragma region PlaneDrawer3D

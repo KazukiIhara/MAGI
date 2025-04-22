@@ -4,12 +4,15 @@
 #include <array>
 
 #include "Framework/MAGI.h"
+#include "MAGIUitility/MAGIUtility.h"
 
 #include "2D/Object2D/Object2D.h"
 
+using namespace MAGIUtility;
+
 // サンプルシーン
 template <typename Data>
-class SampleScene : public BaseScene<Data> {
+class SampleScene: public BaseScene<Data> {
 public:
 	using BaseScene<Data>::BaseScene; // 親クラスのコンストラクタをそのまま継承
 	~SampleScene()override = default;
@@ -106,7 +109,7 @@ inline void SampleScene<Data>::Update() {
 	ImGui::DragFloat3("Rotate", &worldTransform_[1].rotate_.x, 0.01f);
 	ImGui::DragFloat3("Translate", &worldTransform_[1].translate_.x, 0.01f);
 	ImGui::End();
-	
+
 	ImGui::Begin("Translate2");
 	ImGui::DragFloat3("Scale", &worldTransform_[2].scale_.x, 0.01f);
 	ImGui::DragFloat3("Rotate", &worldTransform_[2].rotate_.x, 0.01f);
@@ -119,11 +122,25 @@ inline void SampleScene<Data>::Update() {
 	ImGui::DragFloat3("Translate", &worldTransform_[3].translate_.x, 0.01f);
 	ImGui::End();
 
+	ImGui::Begin("Material");
+
+	ImGui::DragFloat2("uvScale", &material_.uvScale.x, 0.01f);
+	ImGui::DragFloat("uvRotate", &material_.uvRotate, 0.01f);
+	ImGui::DragFloat2("uvTranslate", &material_.uvTranslate.x, 0.01f);
+
+	Vector4 color = RGBAToVector4(material_.baseColor);
+	ImGui::ColorEdit4("Color", &color.x);
+	material_.baseColor = Vector4ToRGBA(color);
+
+	ImGui::End();
+
 	ImGui::Begin("RingData");
 
 	int temp = ringData_.ringDivide;
 	ImGui::DragInt("Divide", &temp);
 	ringData_.ringDivide = temp;
+	ImGui::DragFloat("InnerRadius", &ringData_.innerRadius, 0.01f);
+	ImGui::DragFloat("OuterRadius", &ringData_.outerRadius, 0.01f);
 	ImGui::End();
 
 	// トランスフォーム更新

@@ -835,6 +835,7 @@
       <Filter>Engine\WindowApp</Filter>
     </ClInclude>
     <ClInclude Include="Engine\GraphicsPipelines\Ring3DGraphicsPipeline\Ring3DGraphicsPipeline.h" />
+    <ClInclude Include="Engine\3D\Shapes3D\PrimitiveShapes3D\Ring\Ring.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="App\Game\Game.cpp">
@@ -1139,6 +1140,7 @@
     </ClCompile>
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Engine\GraphicsPipelines\Ring3DGraphicsPipeline\Ring3DGraphicsPipeline.cpp" />
+    <ClCompile Include="Engine\3D\Shapes3D\PrimitiveShapes3D\Ring\Ring.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Engine\SceneManager\SceneManager.ipp">

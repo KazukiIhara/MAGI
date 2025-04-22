@@ -51,8 +51,8 @@ void main(
         mul(float4(p3, 1.0f), ring.worldMatrix)
     };
 
-    float u0 = (float) tileID;
-    float u1 = (float) (tileID + 1);
+    float u0 = (float) tileID / (float) divide;
+    float u1 = (float) (tileID + 1) / (float) divide;
 
     float2 baseUVs[4] =
     {
