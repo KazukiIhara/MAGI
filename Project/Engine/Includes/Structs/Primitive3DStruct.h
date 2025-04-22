@@ -75,8 +75,8 @@ struct PlaneData3DForGPU {
 /// </summary>
 struct SphereData3D {
 	float radius = 1.0f;
-	uint32_t verticalSegments = 16; // 最小値2、最大値32にしてください
-	uint32_t horizontalSegments = 16; // 最小値2、最大値32にしてください
+	uint32_t verticalSegments = 16; 
+	uint32_t horizontalSegments = 16;
 };
 
 /// <summary>
@@ -94,7 +94,7 @@ struct SphereData3DForGPU {
 /// 3Dリングの形状データ
 /// </summary>
 struct RingData3D {
-	uint32_t ringDivide = 16;
+	uint32_t ringDivide = 32;
 	float outerRadius = 1.0f;
 	float innerRadius = 0.2f;
 };

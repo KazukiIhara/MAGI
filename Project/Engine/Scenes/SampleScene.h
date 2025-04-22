@@ -51,6 +51,8 @@ inline void SampleScene<Data>::Initialize() {
 
 	// テクスチャ
 	MAGISYSTEM::LoadTexture("pronama_chan.png");
+	// テクスチャ
+	MAGISYSTEM::LoadTexture("gradationLine.png");
 
 	// モデル
 	MAGISYSTEM::LoadModel("terrain");
@@ -87,7 +89,7 @@ inline void SampleScene<Data>::Initialize() {
 	worldTransform_[3].translate_.x = 4.0f;
 
 	// デフォルトのテクスチャを取得　TODO:マテリアルもクラス化して初期化できるようにする
-	material_.textureIndex = MAGISYSTEM::GetDefaultTextureIndex();
+	material_.textureIndex = MAGISYSTEM::GetTextureIndex("gradationLine.png");
 }
 
 template<typename Data>
