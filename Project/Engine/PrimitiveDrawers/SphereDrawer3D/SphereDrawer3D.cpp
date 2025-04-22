@@ -87,7 +87,6 @@ void SphereDrawer3D::Draw() {
 	commandList->DispatchMesh(1, instanceCount_, 1); // ← Y方向に instanceCount_ 分だけ dispatch
 }
 
-
 void SphereDrawer3D::AddSphere(
 	const Matrix4x4& worldMatrix,
 	const SphereData3D& data,

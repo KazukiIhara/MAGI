@@ -50,3 +50,5 @@ struct ASPayload
 {
     uint instanceID;
 };
+
+static const uint kMaxTileCount = 256 * 256;
