@@ -1,4 +1,4 @@
-#include "Ring3D.hlsli"
+ï»¿#include "Ring3D.hlsli"
 
 #define MAX_VERTICES 4
 #define MAX_TRIANGLES 2
@@ -37,11 +37,11 @@ void main(
     float cos1 = cos(angle1);
     float sin1 = sin(angle1);
 
-    // XY•½–Ê‚Å‚ÌƒŠƒ“ƒO’¸“_
-    float3 p0 = float3(cos0 * ring.outerRadius, sin0 * ring.outerRadius, 0.0f); // ŠO‘¤ŠJn
-    float3 p1 = float3(cos0 * ring.innerRadius, sin0 * ring.innerRadius, 0.0f); // “à‘¤ŠJn
-    float3 p2 = float3(cos1 * ring.outerRadius, sin1 * ring.outerRadius, 0.0f); // ŠO‘¤I—¹
-    float3 p3 = float3(cos1 * ring.innerRadius, sin1 * ring.innerRadius, 0.0f); // “à‘¤I—¹
+    // XYå¹³é¢ã§ã®ãƒªãƒ³ã‚°é ‚ç‚¹
+    float3 p0 = float3(cos0 * ring.outerRadius, sin0 * ring.outerRadius, 0.0f); // å¤–å´é–‹å§‹
+    float3 p1 = float3(cos0 * ring.innerRadius, sin0 * ring.innerRadius, 0.0f); // å†…å´é–‹å§‹
+    float3 p2 = float3(cos1 * ring.outerRadius, sin1 * ring.outerRadius, 0.0f); // å¤–å´çµ‚äº†
+    float3 p3 = float3(cos1 * ring.innerRadius, sin1 * ring.innerRadius, 0.0f); // å†…å´çµ‚äº†
 
     float4 positions[4] =
     {

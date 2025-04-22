@@ -119,6 +119,12 @@ inline void SampleScene<Data>::Update() {
 	ImGui::DragFloat3("Translate", &worldTransform_[3].translate_.x, 0.01f);
 	ImGui::End();
 
+	ImGui::Begin("RingData");
+
+	int temp = ringData_.ringDivide;
+	ImGui::DragInt("Divide", &temp);
+	ringData_.ringDivide = temp;
+	ImGui::End();
 
 	// トランスフォーム更新
 	for (uint32_t i = 0; i < 4; i++) {
