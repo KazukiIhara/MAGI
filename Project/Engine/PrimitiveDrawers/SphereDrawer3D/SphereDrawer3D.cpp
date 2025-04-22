@@ -88,7 +88,14 @@ void SphereDrawer3D::Draw() {
 		const uint32_t remaining = instanceCount_ - baseIndex;
 		const uint32_t dispatchCountY = std::min(remaining, maxThreadGroupCountY);
 
-		commandList->SetGraphicsRoot32BitConstant(4, baseIndex, 0);
+		// index4 ルート定数（b1
+		RootConstants rootConstants{};
+		rootConstants.baseInstanceIndex = 0;
+		commandList->SetGraphicsRoot32BitConstants(4, 1, &rootConstants, 0);
+		// index5 b2
+		commandList->SetGraphicsRoot32BitConstant(5, baseIndex, 0);
+
+		// Dispatch
 		commandList->DispatchMesh(threadGroupCountX, dispatchCountY, 1);
 	}
 }
