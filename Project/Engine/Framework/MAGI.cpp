@@ -483,6 +483,9 @@ void MAGISYSTEM::Finalize() {
 
 	// 終了ログ
 	Logger::Log("MAGISYSTEM Finalize\n");
+
+	// ログ終了
+	Logger::Finalize();
 }
 
 void MAGISYSTEM::Update() {

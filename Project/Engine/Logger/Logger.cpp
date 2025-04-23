@@ -2,8 +2,81 @@
 
 #include <Windows.h>
 
+#include <filesystem>
+#include <chrono>
+#include <iomanip>
+#include <sstream>
+
+std::ofstream Logger::logFile_;
+
+void Logger::Initialize() {
+	// logsフォルダ作成
+	// VSから実行
+	if (IsDebuggerPresent()) {
+		std::filesystem::create_directories("../generated/logs");
+	} else {
+		std::filesystem::create_directories("logs");
+	}
+
+	// 現在時刻取得
+	auto now = std::chrono::system_clock::now();
+	auto timeT = std::chrono::system_clock::to_time_t(now);
+	std::tm localTime{};
+#ifdef _WIN32
+	localtime_s(&localTime, &timeT);
+#else
+	localtime_r(&timeT, &localTime);
+#endif
+	// ファイル名の構築
+	std::ostringstream fileNameStream;
+
+	// VSから実行
+	if (IsDebuggerPresent()) {
+		fileNameStream << "../generated/logs/"
+			<< std::put_time(&localTime, "%Y%m%d_%H%M%S")
+			<< ".txt";
+	} else {
+		fileNameStream << "logs/"
+			<< std::put_time(&localTime, "%Y%m%d_%H%M%S")
+			<< ".txt";
+	}
+
+	// ファイルオープン
+	logFile_.open(fileNameStream.str(), std::ios::out | std::ios::trunc);
+	Log("[Logger Initialized]");
+}
+
+void Logger::Finalize() {
+	Log("[Logger Finalized]");
+	if (logFile_.is_open()) {
+		logFile_.close();
+	}
+}
+
 void Logger::Log(const std::string& message) {
-	OutputDebugStringA(message.c_str());
+	// 時刻を取得
+	auto now = std::chrono::system_clock::now();
+	auto timeT = std::chrono::system_clock::to_time_t(now);
+	std::tm localTime{};
+#ifdef _WIN32
+	localtime_s(&localTime, &timeT);
+#else
+	localtime_r(&timeT, &localTime);
+#endif
+
+	// 時刻プレフィックス生成
+	std::ostringstream timePrefix;
+	timePrefix << "[" << std::put_time(&localTime, "%H:%M:%S") << "] ";
+
+	// コンソール出力（デバッグ用）
+	std::string fullMessage = timePrefix.str() + message;
+	OutputDebugStringA(fullMessage.c_str());
+	OutputDebugStringA("\n");
+
+	// ファイル出力
+	if (logFile_.is_open()) {
+		logFile_ << fullMessage << std::endl;
+	}
 }
 
 std::wstring Logger::ConvertString(const std::string& str) {

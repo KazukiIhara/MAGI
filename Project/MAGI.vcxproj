@@ -236,6 +236,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Engine\ObjectManagers\PunctualLightManager\PunctualLightManager.h" />
     <ClInclude Include="Engine\ObjectManagers\Renderer3DManager\Renderer3DManager.h" />
     <ClInclude Include="Engine\OffScreenRenderer\OffScreenRenderer.h" />
+    <ClInclude Include="Engine\Onterminate\OnTerminate.h" />
     <ClInclude Include="Engine\PipelineManagers\ComputePipelineManager\ComputePipelineManager.h" />
     <ClInclude Include="Engine\PipelineManagers\GraphicsPipelineManager\GraphicsPipelineManager.h" />
     <ClInclude Include="Engine\PipelineManagers\PostEffectPipelineManager\PostEffectPipelineManager.h" />

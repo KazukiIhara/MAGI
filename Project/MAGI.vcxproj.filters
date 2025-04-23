@@ -838,6 +838,7 @@
     <ClInclude Include="Engine\3D\Shapes3D\PrimitiveShapes3D\Ring\Ring.h" />
     <ClInclude Include="Engine\GraphicsPipelines\Cylinder3DGraphicsPipeline\Cylinder3DGraphicsPipeline.h" />
     <ClInclude Include="Engine\PrimitiveDrawers\CylinderDrawer3D\CylinderDrawer3D.h" />
+    <ClInclude Include="Engine\Onterminate\OnTerminate.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="App\Game\Game.cpp">
