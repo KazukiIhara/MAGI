@@ -76,6 +76,7 @@ std::unique_ptr<TriangleDrawer3D> MAGISYSTEM::triangleDrawer3D_ = nullptr;
 std::unique_ptr<PlaneDrawer3D> MAGISYSTEM::planeDrawer3D_ = nullptr;
 std::unique_ptr<SphereDrawer3D> MAGISYSTEM::sphereDrawer3D_ = nullptr;
 std::unique_ptr<RingDrawer3D> MAGISYSTEM::ringDrawer3D_ = nullptr;
+std::unique_ptr<CylinderDrawer3D> MAGISYSTEM::cylinderDrawer3D_ = nullptr;
 
 std::unique_ptr<ModelDrawerManager> MAGISYSTEM::modelDrawerManager_ = nullptr;
 
@@ -205,6 +206,8 @@ void MAGISYSTEM::Initialize() {
 	sphereDrawer3D_ = std::make_unique<SphereDrawer3D>(dxgi_.get(), directXCommand_.get(), srvuavManager_.get(), graphicsPipelineManager_.get(), camera3DManager_.get());
 	// RingDrawer3D
 	ringDrawer3D_ = std::make_unique<RingDrawer3D>(dxgi_.get(), directXCommand_.get(), srvuavManager_.get(), graphicsPipelineManager_.get(), camera3DManager_.get());
+	// CylinderDrawer3D
+	cylinderDrawer3D_ = std::make_unique<CylinderDrawer3D>(dxgi_.get(), directXCommand_.get(), srvuavManager_.get(), graphicsPipelineManager_.get(), camera3DManager_.get());
 
 	// ModelDrawerManager
 	modelDrawerManager_ = std::make_unique<ModelDrawerManager>(dxgi_.get(), directXCommand_.get(), srvuavManager_.get(), graphicsPipelineManager_.get(), camera3DManager_.get());
@@ -276,6 +279,11 @@ void MAGISYSTEM::Finalize() {
 	// ModelDrawerManager
 	if (modelDrawerManager_) {
 		modelDrawerManager_.reset();
+	}
+
+	// CylinderDrawer3D
+	if (cylinderDrawer3D_) {
+		cylinderDrawer3D_.reset();
 	}
 
 	// RingDrawer3D
@@ -561,6 +569,8 @@ void MAGISYSTEM::Update() {
 	sphereDrawer3D_->Update();
 	// 3Dリング描画クラスの更新
 	ringDrawer3D_->Update();
+	// 3Dシリンダー描画クラスの更新
+	cylinderDrawer3D_->Update();
 
 	// モデル描画クラスマネージャの更新
 	modelDrawerManager_->UpdateAll();
@@ -649,6 +659,11 @@ void MAGISYSTEM::Draw() {
 	// RingDrawer3Dの描画処理
 	// 
 	ringDrawer3D_->Draw();
+
+	// 
+	// CylinderDrawer3Dの描画処理
+	// 
+	cylinderDrawer3D_->Draw();
 
 	//
 	// ModelDrawerの描画処理
@@ -1173,6 +1188,10 @@ void MAGISYSTEM::DrawSphere3D(const Matrix4x4& worldMatrix, const SphereData3D& 
 
 void MAGISYSTEM::DrawRing3D(const Matrix4x4& worldMatrix, const RingData3D& data, const PrimitiveMaterialData3D& material) {
 	ringDrawer3D_->AddRing(worldMatrix, data, material);
+}
+
+void MAGISYSTEM::DrawCylinder3D(const Matrix4x4& worldMatrix, const CylinderData3D& data, const PrimitiveMaterialData3D& material) {
+	cylinderDrawer3D_->AddCylinder(worldMatrix, data, material);
 }
 
 void MAGISYSTEM::AddGrobalDataGroup(const std::string& groupname) {

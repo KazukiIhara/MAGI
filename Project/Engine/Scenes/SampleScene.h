@@ -93,7 +93,7 @@ inline void SampleScene<Data>::Initialize() {
 	worldTransform_[4].translate_.x = 4.0f;
 
 	// デフォルトのテクスチャを取得　TODO:マテリアルもクラス化して初期化できるようにする
-	material_.textureIndex = MAGISYSTEM::GetTextureIndex("gradationLine.png");
+	material_.textureIndex = MAGISYSTEM::GetDefaultTextureIndex();
 }
 
 template<typename Data>

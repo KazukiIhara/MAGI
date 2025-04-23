@@ -86,6 +86,38 @@ void CylinderDrawer3D::Draw() {
 	commandList->DispatchMesh(1, instanceCount_, 1);
 }
 
+void CylinderDrawer3D::AddCylinder(
+	const Matrix4x4& worldMatrix,
+	const CylinderData3D& data,
+	const PrimitiveMaterialData3D& material
+) {
+	if (currentIndex_ >= PrimitiveCommonConst::NumMaxInstance) {
+		Logger::Log("CylinderDrawer3D: Max instance count exceeded!\n");
+		return;
+	}
+
+	// 座標と形状データ
+	CylinderData3DForGPU newCylinderData{
+		.worldMatrix = worldMatrix,
+		.divide = data.divide,
+		.topRadius = data.topRadius,
+		.bottomRadiu = data.bottomRadius,
+		.height = data.height,
+	};
+	cylinders_[currentIndex_] = newCylinderData;
+
+	// マテリアルデータ
+	PrimitiveMaterialData3DForGPU newMaterialData{
+		.textureIndex = material.textureIndex,
+		.baseColor = material.baseColor,
+		.uvMatrix = MakeUVMatrix(material.uvScale,material.uvRotate,material.uvTranslate),
+	};
+	materials_[currentIndex_] = newMaterialData;
+
+	// インデックスをインクリメント
+	currentIndex_++;
+}
+
 void CylinderDrawer3D::ClearCylinders() {
 	// インデックスリセット
 	currentIndex_ = 0;

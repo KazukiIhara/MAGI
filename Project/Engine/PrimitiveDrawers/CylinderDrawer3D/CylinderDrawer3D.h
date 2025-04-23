@@ -35,6 +35,12 @@ public:
 	void Update();
 	void Draw();
 
+	void AddCylinder(
+		const Matrix4x4& worldMatrix,
+		const CylinderData3D& data,
+		const PrimitiveMaterialData3D& material
+	);
+
 private:
 	void ClearCylinders();
 	void SetDXGI(DXGI* dxgi);
