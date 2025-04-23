@@ -11,7 +11,7 @@ std::ofstream Logger::logFile_;
 
 void Logger::Initialize() {
 	// logsフォルダ作成
-	std::filesystem::create_directories("logs");
+	std::filesystem::create_directories("../generated/logs");
 
 	// 現在時刻取得
 	auto now = std::chrono::system_clock::now();
@@ -25,7 +25,7 @@ void Logger::Initialize() {
 
 	// ファイル名の構築
 	std::ostringstream fileNameStream;
-	fileNameStream << "logs/"
+	fileNameStream << "../generated/logs/"
 		<< std::put_time(&localTime, "%Y%m%d_%H%M%S")
 		<< ".txt";
 
