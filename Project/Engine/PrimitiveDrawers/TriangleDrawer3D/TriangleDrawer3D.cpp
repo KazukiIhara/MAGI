@@ -118,7 +118,7 @@ void TriangleDrawer3D::AddTriangle(
 	// マテリアルデータ
 	PrimitiveMaterialData3DForGPU newMaterialData{
 		.textureIndex = material.textureIndex,
-		.baseColor = RGBAToVector4(material.baseColor),
+		.baseColor = material.baseColor,
 		.uvMatrix = MakeUVMatrix(material.uvScale,material.uvRotate,material.uvTranslate),
 	};
 	// リストに追加

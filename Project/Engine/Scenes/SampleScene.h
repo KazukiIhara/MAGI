@@ -128,9 +128,7 @@ inline void SampleScene<Data>::Update() {
 	ImGui::DragFloat("uvRotate", &material_.uvRotate, 0.01f);
 	ImGui::DragFloat2("uvTranslate", &material_.uvTranslate.x, 0.01f);
 
-	Vector4 color = RGBAToVector4(material_.baseColor);
-	ImGui::ColorEdit4("Color", &color.x);
-	material_.baseColor = Vector4ToRGBA(color);
+	ImGui::ColorEdit4("Color", &material_.baseColor.x);
 
 	ImGui::End();
 

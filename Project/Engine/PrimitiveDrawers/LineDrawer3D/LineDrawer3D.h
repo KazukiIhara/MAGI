@@ -35,7 +35,7 @@ public:
 	void Update();
 	void Draw();
 
-	void AddLine(const Vector3& start, const Vector3& end, const RGBA& color);
+	void AddLine(const Vector3& start, const Vector3& end, const Vector4& color);
 
 private:
 	void ClearLines();

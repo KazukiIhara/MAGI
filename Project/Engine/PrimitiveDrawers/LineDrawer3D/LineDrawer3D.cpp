@@ -74,12 +74,12 @@ void LineDrawer3D::Draw() {
 	commandList->DrawInstanced(2, instanceCount_, 0, 0);
 }
 
-void LineDrawer3D::AddLine(const Vector3& start, const Vector3& end, const RGBA& color) {
+void LineDrawer3D::AddLine(const Vector3& start, const Vector3& end, const Vector4& color) {
 	// 追加するLine
 	LineData3D newLineData{
 		.start = start,
 		.end = end,
-		.color = RGBAToVector4(color)
+		.color = color,
 	};
 	// コンテナに挿入
 	lines_.push_back(newLineData);

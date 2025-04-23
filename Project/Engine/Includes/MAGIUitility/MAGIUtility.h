@@ -15,11 +15,6 @@
 /// 便利関数
 /// </summary>
 namespace MAGIUtility {
-	// RGBAからVector4に変換
-	Vector4 RGBAToVector4(const RGBA& color);
-
-	// Vector4からRGBAに変換
-	RGBA Vector4ToRGBA(const Vector4& color);
 
 	// Vector3のキーフレーム補間
 	Vector3 CalculateVelue(const std::vector<KeyframeVector3>& keyframes, float time);

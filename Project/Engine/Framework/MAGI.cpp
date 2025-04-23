@@ -1155,7 +1155,7 @@ void MAGISYSTEM::SetCurrentCamera(const std::string& cameraName) {
 	camera3DManager_->SetCurrentCameraName(cameraName);
 }
 
-void MAGISYSTEM::DrawLine3D(const Vector3& start, const Vector3& end, const RGBA& color) {
+void MAGISYSTEM::DrawLine3D(const Vector3& start, const Vector3& end, const Vector4& color) {
 	lineDrawer3D_->AddLine(start, end, color);
 }
 

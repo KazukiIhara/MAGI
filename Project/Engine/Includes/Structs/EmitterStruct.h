@@ -23,8 +23,8 @@ struct EmitterSetting {
 	float minScale = 1.0f;
 	float maxScale = 1.0f;
 	// 色
-	RGBA minColor = Color::White;
-	RGBA maxColor = Color::White;
+	Vector4 minColor = Color::White;
+	Vector4 maxColor = Color::White;
 	// 生存時間
 	float minLifeTime = 1.0f;
 	float maxLifeTime = 1.0f;
