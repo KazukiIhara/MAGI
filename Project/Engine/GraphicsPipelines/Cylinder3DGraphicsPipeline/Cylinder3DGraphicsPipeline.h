@@ -5,12 +5,12 @@
 #include "Structs/Primitive3DStruct.h"
 
 /// <summary>
-/// 3D板ポリ描画用のパイプライン
+/// 3Dシリンダー描画用のパイプライン
 /// </summary>
-class Plane3DGraphicsPipeline : public BaseGraphicsPipeline {
+class Cylinder3DGraphicsPipeline : public BaseGraphicsPipeline {
 public:
-	Plane3DGraphicsPipeline(DXGI* dxgi, ShaderCompiler* shaderCompiler);
-	~Plane3DGraphicsPipeline()override = default;
+	Cylinder3DGraphicsPipeline(DXGI* dxgi, ShaderCompiler* shaderCompiler);
+	~Cylinder3DGraphicsPipeline()override = default;
 
 private:
 	// ルートシグネチャを作成する

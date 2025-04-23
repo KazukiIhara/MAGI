@@ -169,6 +169,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Engine\DirectX\Viewport\Viewport.h" />
     <ClInclude Include="Engine\FPSController\FPSController.h" />
     <ClInclude Include="Engine\Framework\MAGI.h" />
+    <ClInclude Include="Engine\GraphicsPipelines\Cylinder3DGraphicsPipeline\Cylinder3DGraphicsPipeline.h" />
     <ClInclude Include="Engine\GraphicsPipelines\Ring3DGraphicsPipeline\Ring3DGraphicsPipeline.h" />
     <ClInclude Include="Engine\GUI\GUI.h" />
     <ClInclude Include="Engine\GraphicsPipelines\BaseGraphicsPipeline\BaseGraphicsPipeline.h" />
@@ -242,6 +243,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Engine\PostEffectPipelines\BaseSimplePostEffectPipeline\BaseSimplePostEffectPipeline.h" />
     <ClInclude Include="Engine\PostEffectPipelines\GrayscalePostEffectPipeline\GrayscalePostEffectPipeline.h" />
     <ClInclude Include="Engine\PostEffectPipelines\NonePostEffectPipeline\NonePostEffectPipeline.h" />
+    <ClInclude Include="Engine\PrimitiveDrawers\CylinderDrawer3D\CylinderDrawer3D.h" />
     <ClInclude Include="Engine\PrimitiveDrawers\LineDrawer3D\LineDrawer3D.h" />
     <ClInclude Include="Engine\PrimitiveDrawers\PlaneDrawer3D\PlaneDrawer3D.h" />
     <ClInclude Include="Engine\PrimitiveDrawers\RingDrawer3D\RingDrawer3D.h" />
@@ -312,6 +314,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Engine\DirectX\Viewport\Viewport.cpp" />
     <ClCompile Include="Engine\FPSController\FPSController.cpp" />
     <ClCompile Include="Engine\Framework\MAGI.cpp" />
+    <ClCompile Include="Engine\GraphicsPipelines\Cylinder3DGraphicsPipeline\Cylinder3DGraphicsPipeline.cpp" />
     <ClCompile Include="Engine\GraphicsPipelines\Ring3DGraphicsPipeline\Ring3DGraphicsPipeline.cpp" />
     <ClCompile Include="Engine\GUI\GUI.cpp" />
     <ClCompile Include="Engine\GraphicsPipelines\BaseGraphicsPipeline\BaseGraphicsPipeline.cpp" />
@@ -349,6 +352,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Engine\PostEffectPipelines\BaseSimplePostEffectPipeline\BaseSimplePostEffectPipeline.cpp" />
     <ClCompile Include="Engine\PostEffectPipelines\GrayscalePostEffectPipeline\GrayscalePostEffectPipeline.cpp" />
     <ClCompile Include="Engine\PostEffectPipelines\NonePostEffectPipeline\NonePostEffectPipeline.cpp" />
+    <ClCompile Include="Engine\PrimitiveDrawers\CylinderDrawer3D\CylinderDrawer3D.cpp" />
     <ClCompile Include="Engine\PrimitiveDrawers\LineDrawer3D\LineDrawer3D.cpp" />
     <ClCompile Include="Engine\PrimitiveDrawers\PlaneDrawer3D\PlaneDrawer3D.cpp" />
     <ClCompile Include="Engine\PrimitiveDrawers\RingDrawer3D\RingDrawer3D.cpp" />
@@ -365,6 +369,10 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="EngineAssets\Shaders\Graphics\Cylinder3D\Cylinder3D.hlsli">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </None>
     <None Include="EngineAssets\Shaders\Graphics\Ring3D\Ring3D.hlsli">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
@@ -380,6 +388,30 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <FxCompile Include="EngineAssets\Shaders\Graphics\Cylinder3D\Cylinder3D.AS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Amplification</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">6.5</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Amplification</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">6.5</ShaderModel>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </FxCompile>
+    <FxCompile Include="EngineAssets\Shaders\Graphics\Cylinder3D\Cylinder3D.MS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Mesh</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">6.5</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Mesh</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">6.5</ShaderModel>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </FxCompile>
+    <FxCompile Include="EngineAssets\Shaders\Graphics\Cylinder3D\Cylinder3D.PS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">6.5</ShaderModel>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">6.5</ShaderModel>
+    </FxCompile>
     <FxCompile Include="EngineAssets\Shaders\Graphics\Plane3D\Plane3D.AS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Amplification</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">6.5</ShaderModel>

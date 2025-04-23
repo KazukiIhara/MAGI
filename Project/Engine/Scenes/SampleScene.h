@@ -41,6 +41,9 @@ private:
 	// リング描画用の頂点データ
 	RingData3D ringData_{};
 
+	// シリンダー描画用の頂点データ
+	CylinderData3D cylinderData_{};
+
 	// プリミティブ描画用のマテリアルデータ
 	PrimitiveMaterialData3D material_{};
 };
@@ -93,7 +96,7 @@ inline void SampleScene<Data>::Initialize() {
 	worldTransform_[4].translate_.x = 4.0f;
 
 	// デフォルトのテクスチャを取得　TODO:マテリアルもクラス化して初期化できるようにする
-	material_.textureIndex = MAGISYSTEM::GetTextureIndex("gradationLine.png");
+	material_.textureIndex = MAGISYSTEM::GetDefaultTextureIndex();
 }
 
 template<typename Data>
@@ -138,15 +141,24 @@ inline void SampleScene<Data>::Update() {
 	ImGui::End();
 
 	ImGui::Begin("RingData");
-	int temp = ringData_.ringDivide;
-	ImGui::DragInt("Divide", &temp);
-	ringData_.ringDivide = temp;
+	int ringDivideTemp = ringData_.ringDivide;
+	ImGui::DragInt("Divide", &ringDivideTemp);
+	ringData_.ringDivide = ringDivideTemp;
 	ImGui::DragFloat("InnerRadius", &ringData_.innerRadius, 0.01f);
 	ImGui::DragFloat("OuterRadius", &ringData_.outerRadius, 0.01f);
 	ImGui::End();
 
+	ImGui::Begin("CylinderData");
+	int cylinderDivideTemp = cylinderData_.divide;
+	ImGui::DragInt("Divide", &cylinderDivideTemp);
+	cylinderData_.divide = cylinderDivideTemp;
+	ImGui::DragFloat("TopRadius", &cylinderData_.topRadius, 0.01f);
+	ImGui::DragFloat("BottomRadius", &cylinderData_.bottomRadius, 0.01f);
+	ImGui::DragFloat("Height", &cylinderData_.height, 0.01f);
+	ImGui::End();
+
 	// トランスフォーム更新
-	for (uint32_t i = 0; i < 4; i++) {
+	for (uint32_t i = 0; i < 5; i++) {
 		worldTransform_[i].Update();
 	}
 
@@ -166,6 +178,9 @@ inline void SampleScene<Data>::Draw() {
 
 	// リング描画
 	MAGISYSTEM::DrawRing3D(worldTransform_[3].worldMatrix_, ringData_, material_);
+
+	// シリンダー描画
+	MAGISYSTEM::DrawCylinder3D(worldTransform_[4].worldMatrix_, cylinderData_, material_);
 
 	// 
 	// オブジェクト2Dの描画前処理

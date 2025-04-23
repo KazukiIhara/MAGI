@@ -1,10 +1,11 @@
-ï»¿#include "Ring3D.hlsli"
+#include "Cylinder3D.hlsli"
 
 #define MAX_VERTICES 4
 #define MAX_TRIANGLES 2
+#define PI 3.14159265f
 
 ConstantBuffer<Camera> gCamera : register(b0);
-StructuredBuffer<RingData3D> gInstanceData : register(t0);
+StructuredBuffer<CylinderData3D> gInstanceData : register(t0);
 StructuredBuffer<PrimitiveMaterialData3D> gMaterialData : register(t1);
 
 [outputtopology("triangle")]
@@ -19,36 +20,38 @@ void main(
     uint instanceID = payload.instanceID;
     uint tileID = threadID.x;
 
-    RingData3D ring = gInstanceData[instanceID];
+    CylinderData3D cylinder = gInstanceData[instanceID];
     PrimitiveMaterialData3D mat = gMaterialData[instanceID];
-
-    uint divide = ring.ringDivide;
+    
+    uint divide = cylinder.cylinderDivide;
     
     bool isActive = (tileID < divide);
     SetMeshOutputCounts(isActive ? 4 : 0, isActive ? 2 : 0);
     if (!isActive)
         return;
-
-    float angle0 = tileID * ring.radianParDivide;
-    float angle1 = (tileID + 1) * ring.radianParDivide;
+    
+    float radianParDivide = (2.0f * PI) / divide;
+    
+    float angle0 = tileID * radianParDivide;
+    float angle1 = (tileID + 1) * radianParDivide;
 
     float cos0 = cos(angle0);
     float sin0 = sin(angle0);
     float cos1 = cos(angle1);
     float sin1 = sin(angle1);
-
-    // XYå¹³é¢ã§ã®ãƒªãƒ³ã‚°é ‚ç‚¹
-    float3 p0 = float3(cos0 * ring.outerRadius, sin0 * ring.outerRadius, 0.0f); // å¤–å´é–‹å§‹
-    float3 p1 = float3(cos1 * ring.outerRadius, sin1 * ring.outerRadius, 0.0f); // å¤–å´çµ‚äº†
-    float3 p2 = float3(cos0 * ring.innerRadius, sin0 * ring.innerRadius, 0.0f); // å†…å´é–‹å§‹
-    float3 p3 = float3(cos1 * ring.innerRadius, sin1 * ring.innerRadius, 0.0f); // å†…å´çµ‚äº†
+    
+    // XY•½–Ê‚Å‚ÌƒVƒŠƒ“ƒ_[’¸“_
+    float3 p0 = float3(cos0 * cylinder.topRadius, cylinder.height, sin0 * cylinder.topRadius); // ŠO‘¤ŠJŽn
+    float3 p1 = float3(cos1 * cylinder.topRadius, cylinder.height, sin1 * cylinder.topRadius); // ŠO‘¤I—¹
+    float3 p2 = float3(cos0 * cylinder.bottomRadius, 0.0f, sin0 * cylinder.bottomRadius); // “à‘¤ŠJŽn
+    float3 p3 = float3(cos1 * cylinder.bottomRadius, 0.0f, sin1 * cylinder.bottomRadius); // “à‘¤I—¹
 
     float4 positions[4] =
     {
-        mul(float4(p0, 1.0f), ring.worldMatrix),
-        mul(float4(p1, 1.0f), ring.worldMatrix),
-        mul(float4(p2, 1.0f), ring.worldMatrix),
-        mul(float4(p3, 1.0f), ring.worldMatrix)
+        mul(float4(p0, 1.0f), cylinder.worldMatrix),
+        mul(float4(p1, 1.0f), cylinder.worldMatrix),
+        mul(float4(p2, 1.0f), cylinder.worldMatrix),
+        mul(float4(p3, 1.0f), cylinder.worldMatrix)
     };
 
     float u0 = (float) tileID / (float) divide;

@@ -81,6 +81,7 @@
 #include "PrimitiveDrawers/PlaneDrawer3D/PlaneDrawer3D.h"
 #include "PrimitiveDrawers/SphereDrawer3D/SphereDrawer3D.h"
 #include "PrimitiveDrawers/RingDrawer3D/RingDrawer3D.h"
+#include "PrimitiveDrawers/CylinderDrawer3D/CylinderDrawer3D.h"
 
 #include "ModelDrawerManager/ModelDrawerManager.h"
 
@@ -435,7 +436,7 @@ public: // エンジンの機能
 	// 三角形描画
 	static void DrawTriangle3D(
 		const Matrix4x4& worldMatrix,
-		const TriangleData3D& data, 
+		const TriangleData3D& data,
 		const PrimitiveMaterialData3D& material
 	);
 #pragma endregion
@@ -469,6 +470,16 @@ public: // エンジンの機能
 	);
 
 #pragma endregion
+
+#pragma region CylinderDrawer3D
+	// シリンダー描画
+	static void DrawCylinder3D(
+		const Matrix4x4& worldMatrix,
+		const CylinderData3D& data,
+		const PrimitiveMaterialData3D& material
+	);
+#pragma endregion
+
 
 #pragma region CollisionManager
 
@@ -601,6 +612,7 @@ protected:
 	static std::unique_ptr<PlaneDrawer3D> planeDrawer3D_;
 	static std::unique_ptr<SphereDrawer3D> sphereDrawer3D_;
 	static std::unique_ptr<RingDrawer3D> ringDrawer3D_;
+	static std::unique_ptr<CylinderDrawer3D> cylinderDrawer3D_;
 
 	static std::unique_ptr<ModelDrawerManager> modelDrawerManager_;
 
