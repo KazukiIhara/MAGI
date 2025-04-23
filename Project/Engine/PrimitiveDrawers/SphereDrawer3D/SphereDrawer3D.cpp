@@ -22,20 +22,34 @@ SphereDrawer3D::SphereDrawer3D(DXGI* dxgi, DirectXCommand* directXCommand, SRVUA
 	SetSRVUAVManager(srvUavManager);
 	SetGraphicsPipelineManager(graphicsPipelineManager);
 	SetCamera3DManager(camera3DManager);
-	// Instancingリソースを作る
-	CreateInstancingResource();
-	// Instancingデータを書き込む
-	MapInstancingData();
 
-	// Materialリソースを作る
-	CreateMaterialResource();
-	// Materialデータを書き込む
-	MapMaterialData();
+	for (uint32_t i = 0; i < kBlendModeNum; ++i) {
+		spheres_[i].resize(PrimitiveCommonConst::NumMaxInstance);
+		materials_[i].resize(PrimitiveCommonConst::NumMaxInstance);
 
-	// 最大数分確保
-	spheres_.resize(PrimitiveCommonConst::NumMaxInstance);
-	materials_.resize(PrimitiveCommonConst::NumMaxInstance);
-	
+		instancingResource_[i] = dxgi_->CreateBufferResource(sizeof(SphereData3DForGPU) * PrimitiveCommonConst::NumMaxInstance);
+		instancingSrvIndex_[i] = srvUavManager_->Allocate();
+		srvUavManager_->CreateSrvStructuredBuffer(instancingSrvIndex_[i], instancingResource_[i].Get(), PrimitiveCommonConst::NumMaxInstance, sizeof(SphereData3DForGPU));
+		instancingResource_[i]->Map(0, nullptr, reinterpret_cast<void**>(&instancingData_[i]));
+
+		materialResource_[i] = dxgi_->CreateBufferResource(sizeof(PrimitiveMaterialData3DForGPU) * PrimitiveCommonConst::NumMaxInstance);
+		materialSrvIndex_[i] = srvUavManager_->Allocate();
+		srvUavManager_->CreateSrvStructuredBuffer(materialSrvIndex_[i], materialResource_[i].Get(), PrimitiveCommonConst::NumMaxInstance, sizeof(PrimitiveMaterialData3DForGPU));
+		materialResource_[i]->Map(0, nullptr, reinterpret_cast<void**>(&materialData_[i]));
+
+		currentIndex_[i] = 0;
+		instanceCount_[i] = 0;
+
+		// デフォルトマテリアル
+		uint32_t texIndex = MAGISYSTEM::GetTexture()["EngineAssets/Images/uvChecker.png"].srvIndex;
+		for (uint32_t j = 0; j < PrimitiveCommonConst::NumMaxInstance; ++j) {
+			materialData_[i][j].textureIndex = texIndex;
+			materialData_[i][j].baseColor = { 1.0f,1.0f,1.0f,1.0f };
+			materialData_[i][j].uvMatrix = MakeIdentityMatrix4x4();
+		}
+	}
+
+
 	Logger::Log("SphereDrawer3D Initialize\n");
 }
 
@@ -44,80 +58,65 @@ SphereDrawer3D::~SphereDrawer3D() {
 }
 
 void SphereDrawer3D::Update() {
-	// 上限を超えていたらassert
-	assert(currentIndex_ <= PrimitiveCommonConst::NumMaxInstance);
-	instanceCount_ = currentIndex_;
-	// インスタンスの数だけコピー
-	if (instancingData_ && materialData_ && instanceCount_ > 0) {
-		std::memcpy(instancingData_, spheres_.data(), instanceCount_ * sizeof(SphereData3DForGPU));
-		std::memcpy(materialData_, materials_.data(), instanceCount_ * sizeof(PrimitiveMaterialData3DForGPU));
+	for (uint32_t i = 0; i < kBlendModeNum; ++i) {
+		assert(currentIndex_[i] <= PrimitiveCommonConst::NumMaxInstance);
+		instanceCount_[i] = currentIndex_[i];
+
+		if (instanceCount_[i] > 0 && instancingData_[i] && materialData_[i]) {
+			std::memcpy(instancingData_[i], spheres_[i].data(), sizeof(RingData3DForGPU) * instanceCount_[i]);
+			std::memcpy(materialData_[i], materials_[i].data(), sizeof(PrimitiveMaterialData3DForGPU) * instanceCount_[i]);
+		}
+
+		currentIndex_[i] = 0;
 	}
-	// 球体のコンテナをクリア
-	ClearSpheres();
 }
 
-void SphereDrawer3D::Draw() {
-	if (instanceCount_ == 0) return;
+void SphereDrawer3D::Draw(BlendMode mode) {
+	const uint32_t i = static_cast<uint32_t>(mode);
+	if (instanceCount_[i] == 0) return;
 
 	ID3D12GraphicsCommandList6* commandList = directXCommand_->GetList6();
-
 	commandList->SetGraphicsRootSignature(graphicsPipelineManager_->GetRootSignature(GraphicsPipelineStateType::Sphere3D));
-	commandList->SetPipelineState(graphicsPipelineManager_->GetPipelineState(GraphicsPipelineStateType::Sphere3D, blendMode_));
+	commandList->SetPipelineState(graphicsPipelineManager_->GetPipelineState(GraphicsPipelineStateType::Sphere3D, mode));
 	camera3DManager_->TransferCurrentCamera(0);
 
-	// Descriptor Table 設定
-	commandList->SetGraphicsRootDescriptorTable(1, srvUavManager_->GetDescriptorHandleGPU(instancingSrvIndex));
-	commandList->SetGraphicsRootDescriptorTable(2, srvUavManager_->GetDescriptorHandleGPU(materialSrvIndex_));
+	commandList->SetGraphicsRootDescriptorTable(1, srvUavManager_->GetDescriptorHandleGPU(instancingSrvIndex_[i]));
+	commandList->SetGraphicsRootDescriptorTable(2, srvUavManager_->GetDescriptorHandleGPU(materialSrvIndex_[i]));
 	commandList->SetGraphicsRootDescriptorTable(3, srvUavManager_->GetDescriptorHandleGPU(0));
 
-	ID3D12DescriptorHeap* descriptorHeaps[] = {
-		srvUavManager_->GetDescriptorHeap()
-	};
-	commandList->SetDescriptorHeaps(_countof(descriptorHeaps), descriptorHeaps);
-
-	// AS用 baseInstanceIndex（b1: index 4）
 	RootConstants rootConstants{};
 	rootConstants.baseInstanceIndex = 0;
 	commandList->SetGraphicsRoot32BitConstants(4, 1, &rootConstants, 0);
 
-	commandList->DispatchMesh(1, instanceCount_, 1);
+	ID3D12DescriptorHeap* descriptorHeaps[] = { srvUavManager_->GetDescriptorHeap() };
+	commandList->SetDescriptorHeaps(_countof(descriptorHeaps), descriptorHeaps);
+
+	commandList->DispatchMesh(1, instanceCount_[i], 1);
 }
 
-void SphereDrawer3D::AddSphere(
-	const Matrix4x4& worldMatrix,
-	const SphereData3D& data,
-	const PrimitiveMaterialData3D& material
-) {
-
-	if (currentIndex_ >= PrimitiveCommonConst::NumMaxInstance) {
+void SphereDrawer3D::AddSphere(const Matrix4x4& worldMatrix, const SphereData3D& data, const PrimitiveMaterialData3D& material) {
+	const uint32_t blendIndex = static_cast<uint32_t>(material.blendMode);
+	if (currentIndex_[blendIndex] >= PrimitiveCommonConst::NumMaxInstance) {
 		Logger::Log("SphereDrawer3D: Max instance count exceeded!\n");
 		return;
 	}
 
-	// 座標と形状データ
 	SphereData3DForGPU newSphereData{
 		.worldMatrix = worldMatrix,
 		.radius = data.radius,
 		.longitudeSegments = data.verticalSegments,
 		.latitudeSegments = data.horizontalSegments
 	};
-	spheres_[currentIndex_] = newSphereData;
 
-	// マテリアルデータ
 	PrimitiveMaterialData3DForGPU newMaterialData{
 		.textureIndex = material.textureIndex,
 		.baseColor = material.baseColor,
-		.uvMatrix = MakeUVMatrix(material.uvScale,material.uvRotate,material.uvTranslate),
+		.uvMatrix = MakeUVMatrix(material.uvScale, material.uvRotate, material.uvTranslate)
 	};
-	materials_[currentIndex_] = newMaterialData;
 
-	// インデックスをインクリメント
-	currentIndex_++;
-}
-
-void SphereDrawer3D::ClearSpheres() {
-	// インデックスリセット
-	currentIndex_ = 0;
+	spheres_[blendIndex][currentIndex_[blendIndex]] = newSphereData;
+	materials_[blendIndex][currentIndex_[blendIndex]] = newMaterialData;
+	currentIndex_[blendIndex]++;
 }
 
 void SphereDrawer3D::SetDXGI(DXGI* dxgi) {
@@ -143,40 +142,4 @@ void SphereDrawer3D::SetGraphicsPipelineManager(GraphicsPipelineManager* graphic
 void SphereDrawer3D::SetCamera3DManager(Camera3DManager* camera3DManager) {
 	assert(camera3DManager);
 	camera3DManager_ = camera3DManager;
-}
-
-void SphereDrawer3D::CreateInstancingResource() {
-	// instancing用のリソースを作る
-	instancingResource_ = dxgi_->CreateBufferResource(sizeof(SphereData3DForGPU) * PrimitiveCommonConst::NumMaxInstance);
-	// srvのインデックスを割り当て
-	instancingSrvIndex = srvUavManager_->Allocate();
-	// Srvを作成
-	srvUavManager_->CreateSrvStructuredBuffer(instancingSrvIndex, instancingResource_.Get(), PrimitiveCommonConst::NumMaxInstance, sizeof(SphereData3DForGPU));
-}
-
-void SphereDrawer3D::MapInstancingData() {
-	instancingData_ = nullptr;
-	instancingResource_->Map(0, nullptr, reinterpret_cast<void**>(&instancingData_));
-}
-
-void SphereDrawer3D::CreateMaterialResource() {
-	// Material用のリソースを作る
-	materialResource_ = dxgi_->CreateBufferResource(sizeof(PrimitiveMaterialData3DForGPU) * PrimitiveCommonConst::NumMaxInstance);
-	// srvのインデックスを割り当て
-	materialSrvIndex_ = srvUavManager_->Allocate();
-	// srvを作成
-	srvUavManager_->CreateSrvStructuredBuffer(materialSrvIndex_, materialResource_.Get(), PrimitiveCommonConst::NumMaxInstance, sizeof(PrimitiveMaterialData3DForGPU));
-}
-
-void SphereDrawer3D::MapMaterialData() {
-	materialData_ = nullptr;
-	materialResource_->Map(0, nullptr, reinterpret_cast<void**>(&materialData_));
-
-	// マテリアルのデフォルト値を設定
-	uint32_t textureIndex = MAGISYSTEM::GetTexture()["EngineAssets/Images/uvChecker.png"].srvIndex;
-	for (uint32_t i = 0; i < PrimitiveCommonConst::NumMaxInstance; ++i) {
-		materialData_[i].textureIndex = textureIndex;
-		materialData_[i].baseColor = { 1.0f,1.0f,1.0f,1.0f };
-		materialData_[i].uvMatrix = MakeIdentityMatrix4x4();
-	}
 }

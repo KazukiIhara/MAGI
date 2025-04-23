@@ -33,7 +33,7 @@ public:
 	~PlaneDrawer3D();
 
 	void Update();
-	void Draw();
+	void Draw(BlendMode blendMode);
 
 	void AddPlane(
 		const Matrix4x4& worldMatrix,
@@ -42,52 +42,39 @@ public:
 	);
 
 private:
-	void ClearPlanes();
 	void SetDXGI(DXGI* dxgi);
 	void SetDirectXCommand(DirectXCommand* directXCommand);
 	void SetSRVUAVManager(SRVUAVManager* srvUavManager);
 	void SetGraphicsPipelineManager(GraphicsPipelineManager* graphicsPipelineManager);
 	void SetCamera3DManager(Camera3DManager* camera3DManager);
-	// instancingリソース作成
-	void CreateInstancingResource();
-	// instancingデータ書き込み
-	void MapInstancingData();
-
-	// materialリソース作成
-	void CreateMaterialResource();
-	// materialデータ書き込み
-	void MapMaterialData();
 
 private:
 
-	// ブレンドモード
-	BlendMode blendMode_ = BlendMode::Normal;
-
 	// 板ポリデータ
-	std::vector<PlaneData3DForGPU> planes_;
+	std::vector<PlaneData3DForGPU> planes_[static_cast<uint32_t>(BlendMode::Num)];
 	// マテリアルデータ
-	std::vector<PrimitiveMaterialData3DForGPU> materials_;
+	std::vector<PrimitiveMaterialData3DForGPU> materials_[static_cast<uint32_t>(BlendMode::Num)];
 
 	// instancing描画用のリソース
-	ComPtr<ID3D12Resource> instancingResource_ = nullptr;
+	ComPtr<ID3D12Resource> instancingResource_[static_cast<uint32_t>(BlendMode::Num)];
 	// instancing描画用のデータ
-	PlaneData3DForGPU* instancingData_ = nullptr;
+	PlaneData3DForGPU* instancingData_[static_cast<uint32_t>(BlendMode::Num)];
 
 	// マテリアルのリソース
-	ComPtr<ID3D12Resource> materialResource_ = nullptr;
+	ComPtr<ID3D12Resource> materialResource_[static_cast<uint32_t>(BlendMode::Num)];
 	// マテリアルデータ
-	PrimitiveMaterialData3DForGPU* materialData_ = nullptr;
+	PrimitiveMaterialData3DForGPU* materialData_[static_cast<uint32_t>(BlendMode::Num)];
 
 	// Plane3DSrvIndex
-	uint32_t instancingSrvIndex = 0;
+	uint32_t instancingSrvIndex_[static_cast<uint32_t>(BlendMode::Num)];
 	// MaterialSrvIndex
-	uint32_t materialSrvIndex_ = 0;
+	uint32_t materialSrvIndex_[static_cast<uint32_t>(BlendMode::Num)];
 
 	// instance描画する際に使う変数
-	uint32_t instanceCount_ = 0;
+	uint32_t instanceCount_[static_cast<uint32_t>(BlendMode::Num)];
 
 	// 現在のインデックス
-	uint32_t currentIndex_ = 0;
+	uint32_t currentIndex_[static_cast<uint32_t>(BlendMode::Num)];
 
 private:
 	DXGI* dxgi_ = nullptr;

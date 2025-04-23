@@ -21,19 +21,31 @@ CylinderDrawer3D::CylinderDrawer3D(DXGI* dxgi, DirectXCommand* directXCommand, S
 	SetSRVUAVManager(srvUavManager);
 	SetGraphicsPipelineManager(graphicsPipelineManager);
 	SetCamera3DManager(camera3DManager);
-	// Instancingリソースを作る
-	CreateInstancingResource();
-	// Instancingデータを書き込む
-	MapInstancingData();
 
-	// Materialリソースを作る
-	CreateMaterialResource();
-	// Materialデータを書き込む
-	MapMaterialData();
+	for (uint32_t i = 0; i < kBlendModeNum; ++i) {
+		cylinders_[i].resize(PrimitiveCommonConst::NumMaxInstance);
+		materials_[i].resize(PrimitiveCommonConst::NumMaxInstance);
 
-	// 最大数分確保
-	cylinders_.resize(PrimitiveCommonConst::NumMaxInstance);
-	materials_.resize(PrimitiveCommonConst::NumMaxInstance);
+		instancingResource_[i] = dxgi_->CreateBufferResource(sizeof(CylinderData3DForGPU) * PrimitiveCommonConst::NumMaxInstance);
+		instancingSrvIndex_[i] = srvUavManager_->Allocate();
+		srvUavManager_->CreateSrvStructuredBuffer(instancingSrvIndex_[i], instancingResource_[i].Get(), PrimitiveCommonConst::NumMaxInstance, sizeof(CylinderData3DForGPU));
+		instancingResource_[i]->Map(0, nullptr, reinterpret_cast<void**>(&instancingData_[i]));
+
+		materialResource_[i] = dxgi_->CreateBufferResource(sizeof(PrimitiveMaterialData3DForGPU) * PrimitiveCommonConst::NumMaxInstance);
+		materialSrvIndex_[i] = srvUavManager_->Allocate();
+		srvUavManager_->CreateSrvStructuredBuffer(materialSrvIndex_[i], materialResource_[i].Get(), PrimitiveCommonConst::NumMaxInstance, sizeof(PrimitiveMaterialData3DForGPU));
+		materialResource_[i]->Map(0, nullptr, reinterpret_cast<void**>(&materialData_[i]));
+
+		currentIndex_[i] = 0;
+		instanceCount_[i] = 0;
+
+		uint32_t texIndex = MAGISYSTEM::GetTexture()["EngineAssets/Images/uvChecker.png"].srvIndex;
+		for (uint32_t j = 0; j < PrimitiveCommonConst::NumMaxInstance; ++j) {
+			materialData_[i][j].textureIndex = texIndex;
+			materialData_[i][j].baseColor = { 1.0f, 1.0f, 1.0f, 1.0f };
+			materialData_[i][j].uvMatrix = MakeIdentityMatrix4x4();
+		}
+	}
 
 	Logger::Log("CylinderDrawer3D Initialize\n");
 }
@@ -43,84 +55,67 @@ CylinderDrawer3D::~CylinderDrawer3D() {
 }
 
 void CylinderDrawer3D::Update() {
-	// 上限を超えていたらassert
-	assert(currentIndex_ <= PrimitiveCommonConst::NumMaxInstance);
-	instanceCount_ = currentIndex_;
-	// データが存在し、描画対象がある場合のみコピー
-	if (instancingData_ && materialData_ && instanceCount_ > 0) {
-		std::memcpy(instancingData_, cylinders_.data(), instanceCount_ * sizeof(CylinderData3DForGPU));
-		std::memcpy(materialData_, materials_.data(), instanceCount_ * sizeof(PrimitiveMaterialData3DForGPU));
+	for (uint32_t i = 0; i < kBlendModeNum; ++i) {
+		assert(currentIndex_[i] <= PrimitiveCommonConst::NumMaxInstance);
+		instanceCount_[i] = currentIndex_[i];
+
+		if (instanceCount_[i] > 0 && instancingData_[i] && materialData_[i]) {
+			std::memcpy(instancingData_[i], cylinders_[i].data(), sizeof(CylinderData3DForGPU) * instanceCount_[i]);
+			std::memcpy(materialData_[i], materials_[i].data(), sizeof(PrimitiveMaterialData3DForGPU) * instanceCount_[i]);
+		}
+
+		currentIndex_[i] = 0;
 	}
-	// シリンダーのコンテナをクリア
-	ClearCylinders();
 }
 
-void CylinderDrawer3D::Draw() {
-	if (instanceCount_ == 0) return;
+void CylinderDrawer3D::Draw(BlendMode mode) {
+	const uint32_t i = static_cast<uint32_t>(mode);
+	if (instanceCount_[i] == 0) return;
 
 	ID3D12GraphicsCommandList6* commandList = directXCommand_->GetList6();
 
 	commandList->SetGraphicsRootSignature(graphicsPipelineManager_->GetRootSignature(GraphicsPipelineStateType::Cylinder3D));
-	commandList->SetPipelineState(graphicsPipelineManager_->GetPipelineState(GraphicsPipelineStateType::Cylinder3D, blendMode_));
-
-	// カメラ（b0: index 0）
+	commandList->SetPipelineState(graphicsPipelineManager_->GetPipelineState(GraphicsPipelineStateType::Cylinder3D, mode));
 	camera3DManager_->TransferCurrentCamera(0);
 
-	// Descriptor Table 設定
-	commandList->SetGraphicsRootDescriptorTable(1, srvUavManager_->GetDescriptorHandleGPU(instancingSrvIndex));
-	commandList->SetGraphicsRootDescriptorTable(2, srvUavManager_->GetDescriptorHandleGPU(materialSrvIndex_));
-	commandList->SetGraphicsRootDescriptorTable(3, srvUavManager_->GetDescriptorHandleGPU(0)); // Bindless
+	commandList->SetGraphicsRootDescriptorTable(1, srvUavManager_->GetDescriptorHandleGPU(instancingSrvIndex_[i]));
+	commandList->SetGraphicsRootDescriptorTable(2, srvUavManager_->GetDescriptorHandleGPU(materialSrvIndex_[i]));
+	commandList->SetGraphicsRootDescriptorTable(3, srvUavManager_->GetDescriptorHandleGPU(0));
 
-	// ディスクリプタヒープ設定
-	ID3D12DescriptorHeap* descriptorHeaps[] = {
-		srvUavManager_->GetDescriptorHeap()
-	};
-	commandList->SetDescriptorHeaps(_countof(descriptorHeaps), descriptorHeaps);
-
-	// AS用 baseInstanceIndex（b1: index 4）
 	RootConstants rootConstants{};
 	rootConstants.baseInstanceIndex = 0;
 	commandList->SetGraphicsRoot32BitConstants(4, 1, &rootConstants, 0);
 
-	// Amplification Shader を使ってインスタンス数ぶん Dispatch
-	commandList->DispatchMesh(1, instanceCount_, 1);
+	ID3D12DescriptorHeap* descriptorHeaps[] = { srvUavManager_->GetDescriptorHeap() };
+	commandList->SetDescriptorHeaps(_countof(descriptorHeaps), descriptorHeaps);
+
+	commandList->DispatchMesh(1, instanceCount_[i], 1);
 }
 
-void CylinderDrawer3D::AddCylinder(
-	const Matrix4x4& worldMatrix,
-	const CylinderData3D& data,
-	const PrimitiveMaterialData3D& material
-) {
-	if (currentIndex_ >= PrimitiveCommonConst::NumMaxInstance) {
+void CylinderDrawer3D::AddCylinder(const Matrix4x4& worldMatrix, const CylinderData3D& data, const PrimitiveMaterialData3D& material) {
+	const uint32_t blendIndex = static_cast<uint32_t>(material.blendMode);
+	if (currentIndex_[blendIndex] >= PrimitiveCommonConst::NumMaxInstance) {
 		Logger::Log("CylinderDrawer3D: Max instance count exceeded!\n");
 		return;
 	}
 
-	// 座標と形状データ
 	CylinderData3DForGPU newCylinderData{
 		.worldMatrix = worldMatrix,
 		.divide = data.divide,
 		.topRadius = data.topRadius,
 		.bottomRadiu = data.bottomRadius,
-		.height = data.height,
+		.height = data.height
 	};
-	cylinders_[currentIndex_] = newCylinderData;
 
-	// マテリアルデータ
 	PrimitiveMaterialData3DForGPU newMaterialData{
 		.textureIndex = material.textureIndex,
 		.baseColor = material.baseColor,
-		.uvMatrix = MakeUVMatrix(material.uvScale,material.uvRotate,material.uvTranslate),
+		.uvMatrix = MakeUVMatrix(material.uvScale, material.uvRotate, material.uvTranslate)
 	};
-	materials_[currentIndex_] = newMaterialData;
 
-	// インデックスをインクリメント
-	currentIndex_++;
-}
-
-void CylinderDrawer3D::ClearCylinders() {
-	// インデックスリセット
-	currentIndex_ = 0;
+	cylinders_[blendIndex][currentIndex_[blendIndex]] = newCylinderData;
+	materials_[blendIndex][currentIndex_[blendIndex]] = newMaterialData;
+	currentIndex_[blendIndex]++;
 }
 
 void CylinderDrawer3D::SetDXGI(DXGI* dxgi) {
@@ -146,40 +141,4 @@ void CylinderDrawer3D::SetGraphicsPipelineManager(GraphicsPipelineManager* graph
 void CylinderDrawer3D::SetCamera3DManager(Camera3DManager* camera3DManager) {
 	assert(camera3DManager);
 	camera3DManager_ = camera3DManager;
-}
-
-void CylinderDrawer3D::CreateInstancingResource() {
-	// instancing用のリソースを作る
-	instancingResource_ = dxgi_->CreateBufferResource(sizeof(CylinderData3DForGPU) * PrimitiveCommonConst::NumMaxInstance);
-	// srvのインデックスを割り当て
-	instancingSrvIndex = srvUavManager_->Allocate();
-	// Srvを作成
-	srvUavManager_->CreateSrvStructuredBuffer(instancingSrvIndex, instancingResource_.Get(), PrimitiveCommonConst::NumMaxInstance, sizeof(CylinderData3DForGPU));
-}
-
-void CylinderDrawer3D::MapInstancingData() {
-	instancingData_ = nullptr;
-	instancingResource_->Map(0, nullptr, reinterpret_cast<void**>(&instancingData_));
-}
-
-void CylinderDrawer3D::CreateMaterialResource() {
-	// Material用のリソースを作る
-	materialResource_ = dxgi_->CreateBufferResource(sizeof(PrimitiveMaterialData3DForGPU) * PrimitiveCommonConst::NumMaxInstance);
-	// srvのインデックスを割り当て
-	materialSrvIndex_ = srvUavManager_->Allocate();
-	// srvを作成
-	srvUavManager_->CreateSrvStructuredBuffer(materialSrvIndex_, materialResource_.Get(), PrimitiveCommonConst::NumMaxInstance, sizeof(PrimitiveMaterialData3DForGPU));
-}
-
-void CylinderDrawer3D::MapMaterialData() {
-	materialData_ = nullptr;
-	materialResource_->Map(0, nullptr, reinterpret_cast<void**>(&materialData_));
-
-	// マテリアルのデフォルト値を設定
-	uint32_t textureIndex = MAGISYSTEM::GetTexture()["EngineAssets/Images/uvChecker.png"].srvIndex;
-	for (uint32_t i = 0; i < PrimitiveCommonConst::NumMaxInstance; ++i) {
-		materialData_[i].textureIndex = textureIndex;
-		materialData_[i].baseColor = { 1.0f,1.0f,1.0f,1.0f };
-		materialData_[i].uvMatrix = MakeIdentityMatrix4x4();
-	}
 }
