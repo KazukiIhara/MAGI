@@ -243,6 +243,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Engine\PostEffectPipelines\BaseSimplePostEffectPipeline\BaseSimplePostEffectPipeline.h" />
     <ClInclude Include="Engine\PostEffectPipelines\GrayscalePostEffectPipeline\GrayscalePostEffectPipeline.h" />
     <ClInclude Include="Engine\PostEffectPipelines\NonePostEffectPipeline\NonePostEffectPipeline.h" />
+    <ClInclude Include="Engine\PrimitiveDrawers\CylinderDrawer3D\CylinderDrawer3D.h" />
     <ClInclude Include="Engine\PrimitiveDrawers\LineDrawer3D\LineDrawer3D.h" />
     <ClInclude Include="Engine\PrimitiveDrawers\PlaneDrawer3D\PlaneDrawer3D.h" />
     <ClInclude Include="Engine\PrimitiveDrawers\RingDrawer3D\RingDrawer3D.h" />
@@ -351,6 +352,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Engine\PostEffectPipelines\BaseSimplePostEffectPipeline\BaseSimplePostEffectPipeline.cpp" />
     <ClCompile Include="Engine\PostEffectPipelines\GrayscalePostEffectPipeline\GrayscalePostEffectPipeline.cpp" />
     <ClCompile Include="Engine\PostEffectPipelines\NonePostEffectPipeline\NonePostEffectPipeline.cpp" />
+    <ClCompile Include="Engine\PrimitiveDrawers\CylinderDrawer3D\CylinderDrawer3D.cpp" />
     <ClCompile Include="Engine\PrimitiveDrawers\LineDrawer3D\LineDrawer3D.cpp" />
     <ClCompile Include="Engine\PrimitiveDrawers\PlaneDrawer3D\PlaneDrawer3D.cpp" />
     <ClCompile Include="Engine\PrimitiveDrawers\RingDrawer3D\RingDrawer3D.cpp" />

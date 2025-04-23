@@ -75,7 +75,7 @@ struct PlaneData3DForGPU {
 /// </summary>
 struct SphereData3D {
 	float radius = 1.0f;
-	uint32_t verticalSegments = 16; 
+	uint32_t verticalSegments = 16;
 	uint32_t horizontalSegments = 16;
 };
 
@@ -112,6 +112,27 @@ struct RingData3DForGPU {
 };
 
 /// <summary>
+/// 3Dシリンダーの形状データ
+/// </summary>
+struct CylinderData3D {
+	uint32_t divide = 32;
+	float topRadius = 1.0f;
+	float bottomRadius = 1.0f;
+	float height = 3.0f;
+};
+
+/// <summary>
+/// GPUに送るシリンダーの形状データ
+/// </summary>
+struct CylinderData3DForGPU {
+	Matrix4x4 worldMatrix;
+	uint32_t divide;
+	float topRadius;
+	float bottomRadiu;
+	float height;
+};
+
+/// <summary>
 /// Primitiveマテリアルデータ
 /// </summary>
 struct PrimitiveMaterialData3D {
@@ -134,8 +155,8 @@ struct PrimitiveMaterialData3DForGPU {
 
 // 増幅シェーダー用
 struct RootConstants {
-    uint32_t baseInstanceIndex = 0;
-    uint32_t _pad0 = 0;
-    uint32_t _pad1 = 0;
-    uint32_t _pad2 = 0;
+	uint32_t baseInstanceIndex = 0;
+	uint32_t _pad0 = 0;
+	uint32_t _pad1 = 0;
+	uint32_t _pad2 = 0;
 };

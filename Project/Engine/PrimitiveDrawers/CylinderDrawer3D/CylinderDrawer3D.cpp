@@ -1,6 +1,4 @@
-#include "RingDrawer3D.h"
-
-#include <cassert>
+#include "CylinderDrawer3D.h"
 
 #include "DirectX/DXGI/DXGI.h"
 #include "DirectX/DirectXCommand/DirectXCommand.h"
@@ -9,14 +7,15 @@
 #include "ObjectManagers/Camera3DManager/Camera3DManager.h"
 
 #include "Logger/Logger.h"
-#include "Const/Primitive3DConst.h"
+#include "MAGIUitility/MAGIUtility.h"
 
-// TODO::フレームワーク内にあるクラスはMAGIをインクルードしてはいけない
+#include <cassert>
+
 #include "Framework/MAGI.h"
 
 using namespace MAGIMath;
 
-RingDrawer3D::RingDrawer3D(DXGI* dxgi, DirectXCommand* directXCommand, SRVUAVManager* srvUavManager, GraphicsPipelineManager* graphicsPipelineManager, Camera3DManager* camera3DManager) {
+CylinderDrawer3D::CylinderDrawer3D(DXGI* dxgi, DirectXCommand* directXCommand, SRVUAVManager* srvUavManager, GraphicsPipelineManager* graphicsPipelineManager, Camera3DManager* camera3DManager) {
 	SetDXGI(dxgi);
 	SetDirectXCommand(directXCommand);
 	SetSRVUAVManager(srvUavManager);
@@ -33,30 +32,30 @@ RingDrawer3D::RingDrawer3D(DXGI* dxgi, DirectXCommand* directXCommand, SRVUAVMan
 	MapMaterialData();
 
 	// 最大数分確保
-	rings_.resize(PrimitiveCommonConst::NumMaxInstance);
+	cylinders_.resize(PrimitiveCommonConst::NumMaxInstance);
 	materials_.resize(PrimitiveCommonConst::NumMaxInstance);
 
-	Logger::Log("RingDrawer3D Initialize\n");
+	Logger::Log("CylinderDrawer3D Initialize\n");
 }
 
-RingDrawer3D::~RingDrawer3D() {
-	Logger::Log("RingDrawer3D Finalize\n");
+CylinderDrawer3D::~CylinderDrawer3D() {
+	Logger::Log("CylinderDrawer3D Finalize\n");
 }
 
-void RingDrawer3D::Update() {
+void CylinderDrawer3D::Update() {
 	// 上限を超えていたらassert
 	assert(currentIndex_ <= PrimitiveCommonConst::NumMaxInstance);
 	instanceCount_ = currentIndex_;
 	// データが存在し、描画対象がある場合のみコピー
 	if (instancingData_ && materialData_ && instanceCount_ > 0) {
-		std::memcpy(instancingData_, rings_.data(), instanceCount_ * sizeof(RingData3DForGPU));
+		std::memcpy(instancingData_, cylinders_.data(), instanceCount_ * sizeof(CylinderData3DForGPU));
 		std::memcpy(materialData_, materials_.data(), instanceCount_ * sizeof(PrimitiveMaterialData3DForGPU));
 	}
-	// リングのコンテナをクリア
-	ClearRings();
+	// シリンダーのコンテナをクリア
+	ClearCylinders();
 }
 
-void RingDrawer3D::Draw() {
+void CylinderDrawer3D::Draw() {
 	if (instanceCount_ == 0) return;
 
 	ID3D12GraphicsCommandList6* commandList = directXCommand_->GetList6();
@@ -87,86 +86,54 @@ void RingDrawer3D::Draw() {
 	commandList->DispatchMesh(1, instanceCount_, 1);
 }
 
-void RingDrawer3D::AddRing(
-	const Matrix4x4& worldMatrix,
-	const RingData3D& data,
-	const PrimitiveMaterialData3D& material
-) {
-	if (currentIndex_ >= PrimitiveCommonConst::NumMaxInstance) {
-		Logger::Log("RingDrawer3D: Max instance count exceeded!\n");
-		return;
-	}
-
-	// 座標と形状データ
-	RingData3DForGPU newRingData{
-		.worldMatrix = worldMatrix,
-		.ringDivide = data.ringDivide,
-		.outerRadius = data.outerRadius,
-		.innerRadius = data.innerRadius,
-		.radianPerDivide = 2.0f * std::numbers::pi_v<float> / static_cast<float>(data.ringDivide),
-	};
-	rings_[currentIndex_] = newRingData;
-
-	// マテリアルデータ
-	PrimitiveMaterialData3DForGPU newMaterialData{
-		.textureIndex = material.textureIndex,
-		.baseColor = material.baseColor,
-		.uvMatrix = MakeUVMatrix(material.uvScale,material.uvRotate,material.uvTranslate),
-	};
-	materials_[currentIndex_] = newMaterialData;
-
-	// インデックスをインクリメント
-	currentIndex_++;
-}
-
-void RingDrawer3D::ClearRings() {
+void CylinderDrawer3D::ClearCylinders() {
 	// インデックスリセット
 	currentIndex_ = 0;
 	// 中身をクリア
-	std::ranges::fill(rings_, RingData3DForGPU{});
+	std::ranges::fill(cylinders_, CylinderData3DForGPU{});
 	std::ranges::fill(materials_, PrimitiveMaterialData3DForGPU{});
 }
 
-void RingDrawer3D::SetDXGI(DXGI* dxgi) {
+void CylinderDrawer3D::SetDXGI(DXGI* dxgi) {
 	assert(dxgi);
 	dxgi_ = dxgi;
 }
 
-void RingDrawer3D::SetDirectXCommand(DirectXCommand* directXCommand) {
+void CylinderDrawer3D::SetDirectXCommand(DirectXCommand* directXCommand) {
 	assert(directXCommand);
 	directXCommand_ = directXCommand;
 }
 
-void RingDrawer3D::SetSRVUAVManager(SRVUAVManager* srvUavManager) {
+void CylinderDrawer3D::SetSRVUAVManager(SRVUAVManager* srvUavManager) {
 	assert(srvUavManager);
 	srvUavManager_ = srvUavManager;
 }
 
-void RingDrawer3D::SetGraphicsPipelineManager(GraphicsPipelineManager* graphicsPipelineManager) {
+void CylinderDrawer3D::SetGraphicsPipelineManager(GraphicsPipelineManager* graphicsPipelineManager) {
 	assert(graphicsPipelineManager);
 	graphicsPipelineManager_ = graphicsPipelineManager;
 }
 
-void RingDrawer3D::SetCamera3DManager(Camera3DManager* camera3DManager) {
+void CylinderDrawer3D::SetCamera3DManager(Camera3DManager* camera3DManager) {
 	assert(camera3DManager);
 	camera3DManager_ = camera3DManager;
 }
 
-void RingDrawer3D::CreateInstancingResource() {
+void CylinderDrawer3D::CreateInstancingResource() {
 	// instancing用のリソースを作る
-	instancingResource_ = dxgi_->CreateBufferResource(sizeof(RingData3DForGPU) * PrimitiveCommonConst::NumMaxInstance);
+	instancingResource_ = dxgi_->CreateBufferResource(sizeof(CylinderData3DForGPU) * PrimitiveCommonConst::NumMaxInstance);
 	// srvのインデックスを割り当て
 	instancingSrvIndex = srvUavManager_->Allocate();
 	// Srvを作成
-	srvUavManager_->CreateSrvStructuredBuffer(instancingSrvIndex, instancingResource_.Get(), PrimitiveCommonConst::NumMaxInstance, sizeof(RingData3DForGPU));
+	srvUavManager_->CreateSrvStructuredBuffer(instancingSrvIndex, instancingResource_.Get(), PrimitiveCommonConst::NumMaxInstance, sizeof(CylinderData3DForGPU));
 }
 
-void RingDrawer3D::MapInstancingData() {
+void CylinderDrawer3D::MapInstancingData() {
 	instancingData_ = nullptr;
 	instancingResource_->Map(0, nullptr, reinterpret_cast<void**>(&instancingData_));
 }
 
-void RingDrawer3D::CreateMaterialResource() {
+void CylinderDrawer3D::CreateMaterialResource() {
 	// Material用のリソースを作る
 	materialResource_ = dxgi_->CreateBufferResource(sizeof(PrimitiveMaterialData3DForGPU) * PrimitiveCommonConst::NumMaxInstance);
 	// srvのインデックスを割り当て
@@ -175,7 +142,7 @@ void RingDrawer3D::CreateMaterialResource() {
 	srvUavManager_->CreateSrvStructuredBuffer(materialSrvIndex_, materialResource_.Get(), PrimitiveCommonConst::NumMaxInstance, sizeof(PrimitiveMaterialData3DForGPU));
 }
 
-void RingDrawer3D::MapMaterialData() {
+void CylinderDrawer3D::MapMaterialData() {
 	materialData_ = nullptr;
 	materialResource_->Map(0, nullptr, reinterpret_cast<void**>(&materialData_));
 

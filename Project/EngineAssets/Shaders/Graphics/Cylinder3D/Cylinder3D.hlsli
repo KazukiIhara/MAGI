@@ -13,8 +13,6 @@ struct CylinderData3D
     float topRadius;
     float bottomRadius;
     float height;
-    
-    float3 _padding;
 };
 
 struct PrimitiveMaterialData3D
