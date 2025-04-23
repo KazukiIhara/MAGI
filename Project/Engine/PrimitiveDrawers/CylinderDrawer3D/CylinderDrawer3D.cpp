@@ -121,9 +121,6 @@ void CylinderDrawer3D::AddCylinder(
 void CylinderDrawer3D::ClearCylinders() {
 	// インデックスリセット
 	currentIndex_ = 0;
-	//// 中身をクリア
-	//std::ranges::fill(cylinders_, CylinderData3DForGPU{});
-	//std::ranges::fill(materials_, PrimitiveMaterialData3DForGPU{});
 }
 
 void CylinderDrawer3D::SetDXGI(DXGI* dxgi) {
