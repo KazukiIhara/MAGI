@@ -644,29 +644,17 @@ void MAGISYSTEM::Draw() {
 	lineDrawer3D_->Draw();
 
 	// 
-	// TriangleDrawer3Dの描画処理
-	//
-	triangleDrawer3D_->Draw();
+	// BlendModeごとに描画(透過なしが先に描画されるようにする)
+	// 
+	for (uint32_t i = 0; i < kBlendModeNum; ++i) {
+		BlendMode mode = static_cast<BlendMode>(i);
 
-	// 
-	// PlaneDrawer3Dの描画処理
-	// 
-	planeDrawer3D_->Draw();
-
-	// 
-	// SphereDrawer3Dの描画処理
-	// 
-	sphereDrawer3D_->Draw();
-
-	// 
-	// RingDrawer3Dの描画処理
-	// 
-	ringDrawer3D_->Draw();
-
-	// 
-	// CylinderDrawer3Dの描画処理
-	// 
-	cylinderDrawer3D_->Draw();
+		triangleDrawer3D_->Draw(mode);
+		planeDrawer3D_->Draw(mode);
+		sphereDrawer3D_->Draw(mode);
+		ringDrawer3D_->Draw(mode);
+		cylinderDrawer3D_->Draw(mode);
+	}
 
 	//
 	// ModelDrawerの描画処理

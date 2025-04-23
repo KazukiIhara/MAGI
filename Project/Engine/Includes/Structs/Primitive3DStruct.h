@@ -4,22 +4,12 @@
 
 #include "Math/Utility/MathUtility.h"
 #include "Structs/ColorStruct.h"
+#include "Enums/BlendModeEnum.h"
 
 /// <summary>
 /// プリミティブメッシュシェーダー用のパイプラインストリーム
 /// </summary>
 struct Primitive3DPipelineStateStream {
-	CD3DX12_PIPELINE_STATE_STREAM_ROOT_SIGNATURE		rootSignature;
-	CD3DX12_PIPELINE_STATE_STREAM_MS					meshShader;
-	CD3DX12_PIPELINE_STATE_STREAM_PS					pixelShader;
-	CD3DX12_PIPELINE_STATE_STREAM_RASTERIZER			rasterizer;
-	CD3DX12_PIPELINE_STATE_STREAM_BLEND_DESC			blend;
-	CD3DX12_PIPELINE_STATE_STREAM_DEPTH_STENCIL			depthStencil;
-	CD3DX12_PIPELINE_STATE_STREAM_RENDER_TARGET_FORMATS rtvFormats;
-	CD3DX12_PIPELINE_STATE_STREAM_DEPTH_STENCIL_FORMAT	dsvFormat;
-};
-
-struct Triangle3DPipelineStateStream {
 	CD3DX12_PIPELINE_STATE_STREAM_ROOT_SIGNATURE		rootSignature;
 	CD3DX12_PIPELINE_STATE_STREAM_AS					amplificationShader;
 	CD3DX12_PIPELINE_STATE_STREAM_MS					meshShader;
@@ -141,6 +131,7 @@ struct PrimitiveMaterialData3D {
 	Vector2 uvTranslate = { 0.0f,0.0f };
 	Vector2 uvScale = { 1.0f,1.0f };
 	float uvRotate = 0.0f;
+	BlendMode blendMode = BlendMode::Normal;
 };
 
 /// <summary>

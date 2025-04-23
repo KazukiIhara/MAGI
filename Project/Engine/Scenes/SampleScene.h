@@ -97,6 +97,7 @@ inline void SampleScene<Data>::Initialize() {
 
 	// デフォルトのテクスチャを取得　TODO:マテリアルもクラス化して初期化できるようにする
 	material_.textureIndex = MAGISYSTEM::GetDefaultTextureIndex();
+	material_.blendMode = BlendMode::None;
 }
 
 template<typename Data>

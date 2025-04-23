@@ -128,7 +128,7 @@ void Ring3DGraphicsPipeline::CreateGraphicsPipelineObject() {
 	for (uint32_t i = 0; i < kBlendModeNum; ++i) {
 		const D3D12_RASTERIZER_DESC rasterizerDesc = RasterizerStateSetting();
 		const D3D12_BLEND_DESC blendDesc = BlendStateSetting(i);
-		const D3D12_DEPTH_STENCIL_DESC depthStencilDesc = DepthStecilDescSetting();
+		const D3D12_DEPTH_STENCIL_DESC depthStencilDesc = DepthStecilDescSettingBlend(i);
 
 		const CD3DX12_RASTERIZER_DESC rast(rasterizerDesc);
 		const CD3DX12_BLEND_DESC blend(blendDesc);
@@ -138,7 +138,7 @@ void Ring3DGraphicsPipeline::CreateGraphicsPipelineObject() {
 		rtArray.NumRenderTargets = 1;
 		rtArray.RTFormats[0] = rtvFormat;
 
-		Triangle3DPipelineStateStream stream = {
+		Primitive3DPipelineStateStream stream = {
 			CD3DX12_PIPELINE_STATE_STREAM_ROOT_SIGNATURE(rootSignature_.Get()),
 			CD3DX12_PIPELINE_STATE_STREAM_AS(amplificationShader),
 			CD3DX12_PIPELINE_STATE_STREAM_MS(meshShader),
@@ -238,6 +238,28 @@ D3D12_DEPTH_STENCIL_DESC Ring3DGraphicsPipeline::DepthStecilDescSetting() {
 	depthDesc.DepthWriteMask = D3D12_DEPTH_WRITE_MASK_ALL;
 	depthDesc.DepthFunc = D3D12_COMPARISON_FUNC_LESS;
 	return depthDesc;
+}
+
+D3D12_DEPTH_STENCIL_DESC Ring3DGraphicsPipeline::DepthStecilDescSettingBlend(uint32_t blendModeNum) {
+    D3D12_DEPTH_STENCIL_DESC desc{};
+    desc.DepthEnable = TRUE;
+
+    const auto mode = static_cast<BlendMode>(blendModeNum);
+    switch (mode) {
+    case BlendMode::Normal:
+    case BlendMode::Add:
+    case BlendMode::Subtract:
+    case BlendMode::Multiply:
+    case BlendMode::Screen:
+        desc.DepthWriteMask = D3D12_DEPTH_WRITE_MASK_ZERO; // ブレンド系は書き込まない
+        break;
+    default:
+        desc.DepthWriteMask = D3D12_DEPTH_WRITE_MASK_ALL;
+        break;
+    }
+
+    desc.DepthFunc = D3D12_COMPARISON_FUNC_LESS;
+    return desc;
 }
 
 D3D12_RASTERIZER_DESC Ring3DGraphicsPipeline::RasterizerStateSetting() {

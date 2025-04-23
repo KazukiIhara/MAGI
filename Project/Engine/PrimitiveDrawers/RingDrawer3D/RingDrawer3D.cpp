@@ -22,19 +22,31 @@ RingDrawer3D::RingDrawer3D(DXGI* dxgi, DirectXCommand* directXCommand, SRVUAVMan
 	SetSRVUAVManager(srvUavManager);
 	SetGraphicsPipelineManager(graphicsPipelineManager);
 	SetCamera3DManager(camera3DManager);
-	// Instancingリソースを作る
-	CreateInstancingResource();
-	// Instancingデータを書き込む
-	MapInstancingData();
 
-	// Materialリソースを作る
-	CreateMaterialResource();
-	// Materialデータを書き込む
-	MapMaterialData();
+	for (uint32_t i = 0; i < kBlendModeNum; ++i) {
+		rings_[i].resize(PrimitiveCommonConst::NumMaxInstance);
+		materials_[i].resize(PrimitiveCommonConst::NumMaxInstance);
 
-	// 最大数分確保
-	rings_.resize(PrimitiveCommonConst::NumMaxInstance);
-	materials_.resize(PrimitiveCommonConst::NumMaxInstance);
+		instancingResource_[i] = dxgi_->CreateBufferResource(sizeof(RingData3DForGPU) * PrimitiveCommonConst::NumMaxInstance);
+		instancingSrvIndex_[i] = srvUavManager_->Allocate();
+		srvUavManager_->CreateSrvStructuredBuffer(instancingSrvIndex_[i], instancingResource_[i].Get(), PrimitiveCommonConst::NumMaxInstance, sizeof(RingData3DForGPU));
+		instancingResource_[i]->Map(0, nullptr, reinterpret_cast<void**>(&instancingData_[i]));
+
+		materialResource_[i] = dxgi_->CreateBufferResource(sizeof(PrimitiveMaterialData3DForGPU) * PrimitiveCommonConst::NumMaxInstance);
+		materialSrvIndex_[i] = srvUavManager_->Allocate();
+		srvUavManager_->CreateSrvStructuredBuffer(materialSrvIndex_[i], materialResource_[i].Get(), PrimitiveCommonConst::NumMaxInstance, sizeof(PrimitiveMaterialData3DForGPU));
+		materialResource_[i]->Map(0, nullptr, reinterpret_cast<void**>(&materialData_[i]));
+
+		currentIndex_[i] = 0;
+		instanceCount_[i] = 0;
+
+		uint32_t texIndex = MAGISYSTEM::GetTexture()["EngineAssets/Images/uvChecker.png"].srvIndex;
+		for (uint32_t j = 0; j < PrimitiveCommonConst::NumMaxInstance; ++j) {
+			materialData_[i][j].textureIndex = texIndex;
+			materialData_[i][j].baseColor = { 1.0f, 1.0f, 1.0f, 1.0f };
+			materialData_[i][j].uvMatrix = MakeIdentityMatrix4x4();
+		}
+	}
 
 	Logger::Log("RingDrawer3D Initialize\n");
 }
@@ -44,87 +56,66 @@ RingDrawer3D::~RingDrawer3D() {
 }
 
 void RingDrawer3D::Update() {
-	// 上限を超えていたらassert
-	assert(currentIndex_ <= PrimitiveCommonConst::NumMaxInstance);
-	instanceCount_ = currentIndex_;
-	// データが存在し、描画対象がある場合のみコピー
-	if (instancingData_ && materialData_ && instanceCount_ > 0) {
-		std::memcpy(instancingData_, rings_.data(), instanceCount_ * sizeof(RingData3DForGPU));
-		std::memcpy(materialData_, materials_.data(), instanceCount_ * sizeof(PrimitiveMaterialData3DForGPU));
+	for (uint32_t i = 0; i < kBlendModeNum; ++i) {
+		assert(currentIndex_[i] <= PrimitiveCommonConst::NumMaxInstance);
+		instanceCount_[i] = currentIndex_[i];
+
+		if (instanceCount_[i] > 0 && instancingData_[i] && materialData_[i]) {
+			std::memcpy(instancingData_[i], rings_[i].data(), sizeof(RingData3DForGPU) * instanceCount_[i]);
+			std::memcpy(materialData_[i], materials_[i].data(), sizeof(PrimitiveMaterialData3DForGPU) * instanceCount_[i]);
+		}
+
+		currentIndex_[i] = 0;
 	}
-	// リングのコンテナをクリア
-	ClearRings();
 }
 
-void RingDrawer3D::Draw() {
-	if (instanceCount_ == 0) return;
+void RingDrawer3D::Draw(BlendMode mode) {
+	const uint32_t i = static_cast<uint32_t>(mode);
+	if (instanceCount_[i] == 0) return;
 
 	ID3D12GraphicsCommandList6* commandList = directXCommand_->GetList6();
-
 	commandList->SetGraphicsRootSignature(graphicsPipelineManager_->GetRootSignature(GraphicsPipelineStateType::Ring3D));
-	commandList->SetPipelineState(graphicsPipelineManager_->GetPipelineState(GraphicsPipelineStateType::Ring3D, blendMode_));
-
-	// カメラ（b0: index 0）
+	commandList->SetPipelineState(graphicsPipelineManager_->GetPipelineState(GraphicsPipelineStateType::Ring3D, mode));
 	camera3DManager_->TransferCurrentCamera(0);
 
-	// Descriptor Table 設定
-	commandList->SetGraphicsRootDescriptorTable(1, srvUavManager_->GetDescriptorHandleGPU(instancingSrvIndex));
-	commandList->SetGraphicsRootDescriptorTable(2, srvUavManager_->GetDescriptorHandleGPU(materialSrvIndex_));
-	commandList->SetGraphicsRootDescriptorTable(3, srvUavManager_->GetDescriptorHandleGPU(0)); // Bindless
+	commandList->SetGraphicsRootDescriptorTable(1, srvUavManager_->GetDescriptorHandleGPU(instancingSrvIndex_[i]));
+	commandList->SetGraphicsRootDescriptorTable(2, srvUavManager_->GetDescriptorHandleGPU(materialSrvIndex_[i]));
+	commandList->SetGraphicsRootDescriptorTable(3, srvUavManager_->GetDescriptorHandleGPU(0));
 
-	// ディスクリプタヒープ設定
-	ID3D12DescriptorHeap* descriptorHeaps[] = {
-		srvUavManager_->GetDescriptorHeap()
-	};
-	commandList->SetDescriptorHeaps(_countof(descriptorHeaps), descriptorHeaps);
-
-	// AS用 baseInstanceIndex（b1: index 4）
 	RootConstants rootConstants{};
 	rootConstants.baseInstanceIndex = 0;
 	commandList->SetGraphicsRoot32BitConstants(4, 1, &rootConstants, 0);
 
-	// Amplification Shader を使ってインスタンス数ぶん Dispatch
-	commandList->DispatchMesh(1, instanceCount_, 1);
+	ID3D12DescriptorHeap* descriptorHeaps[] = { srvUavManager_->GetDescriptorHeap() };
+	commandList->SetDescriptorHeaps(_countof(descriptorHeaps), descriptorHeaps);
+
+	commandList->DispatchMesh(1, instanceCount_[i], 1);
 }
 
-void RingDrawer3D::AddRing(
-	const Matrix4x4& worldMatrix,
-	const RingData3D& data,
-	const PrimitiveMaterialData3D& material
-) {
-	if (currentIndex_ >= PrimitiveCommonConst::NumMaxInstance) {
+void RingDrawer3D::AddRing(const Matrix4x4& worldMatrix, const RingData3D& data, const PrimitiveMaterialData3D& material) {
+	const uint32_t blendIndex = static_cast<uint32_t>(material.blendMode);
+	if (currentIndex_[blendIndex] >= PrimitiveCommonConst::NumMaxInstance) {
 		Logger::Log("RingDrawer3D: Max instance count exceeded!\n");
 		return;
 	}
 
-	// 座標と形状データ
 	RingData3DForGPU newRingData{
 		.worldMatrix = worldMatrix,
 		.ringDivide = data.ringDivide,
 		.outerRadius = data.outerRadius,
 		.innerRadius = data.innerRadius,
-		.radianPerDivide = 2.0f * std::numbers::pi_v<float> / static_cast<float>(data.ringDivide),
+		.radianPerDivide = 2.0f * std::numbers::pi_v<float> / static_cast<float>(data.ringDivide)
 	};
-	rings_[currentIndex_] = newRingData;
 
-	// マテリアルデータ
 	PrimitiveMaterialData3DForGPU newMaterialData{
 		.textureIndex = material.textureIndex,
 		.baseColor = material.baseColor,
-		.uvMatrix = MakeUVMatrix(material.uvScale,material.uvRotate,material.uvTranslate),
+		.uvMatrix = MakeUVMatrix(material.uvScale, material.uvRotate, material.uvTranslate)
 	};
-	materials_[currentIndex_] = newMaterialData;
 
-	// インデックスをインクリメント
-	currentIndex_++;
-}
-
-void RingDrawer3D::ClearRings() {
-	// インデックスリセット
-	currentIndex_ = 0;
-	// 中身をクリア
-	std::ranges::fill(rings_, RingData3DForGPU{});
-	std::ranges::fill(materials_, PrimitiveMaterialData3DForGPU{});
+	rings_[blendIndex][currentIndex_[blendIndex]] = newRingData;
+	materials_[blendIndex][currentIndex_[blendIndex]] = newMaterialData;
+	currentIndex_[blendIndex]++;
 }
 
 void RingDrawer3D::SetDXGI(DXGI* dxgi) {
@@ -150,40 +141,4 @@ void RingDrawer3D::SetGraphicsPipelineManager(GraphicsPipelineManager* graphicsP
 void RingDrawer3D::SetCamera3DManager(Camera3DManager* camera3DManager) {
 	assert(camera3DManager);
 	camera3DManager_ = camera3DManager;
-}
-
-void RingDrawer3D::CreateInstancingResource() {
-	// instancing用のリソースを作る
-	instancingResource_ = dxgi_->CreateBufferResource(sizeof(RingData3DForGPU) * PrimitiveCommonConst::NumMaxInstance);
-	// srvのインデックスを割り当て
-	instancingSrvIndex = srvUavManager_->Allocate();
-	// Srvを作成
-	srvUavManager_->CreateSrvStructuredBuffer(instancingSrvIndex, instancingResource_.Get(), PrimitiveCommonConst::NumMaxInstance, sizeof(RingData3DForGPU));
-}
-
-void RingDrawer3D::MapInstancingData() {
-	instancingData_ = nullptr;
-	instancingResource_->Map(0, nullptr, reinterpret_cast<void**>(&instancingData_));
-}
-
-void RingDrawer3D::CreateMaterialResource() {
-	// Material用のリソースを作る
-	materialResource_ = dxgi_->CreateBufferResource(sizeof(PrimitiveMaterialData3DForGPU) * PrimitiveCommonConst::NumMaxInstance);
-	// srvのインデックスを割り当て
-	materialSrvIndex_ = srvUavManager_->Allocate();
-	// srvを作成
-	srvUavManager_->CreateSrvStructuredBuffer(materialSrvIndex_, materialResource_.Get(), PrimitiveCommonConst::NumMaxInstance, sizeof(PrimitiveMaterialData3DForGPU));
-}
-
-void RingDrawer3D::MapMaterialData() {
-	materialData_ = nullptr;
-	materialResource_->Map(0, nullptr, reinterpret_cast<void**>(&materialData_));
-
-	// マテリアルのデフォルト値を設定
-	uint32_t textureIndex = MAGISYSTEM::GetTexture()["EngineAssets/Images/uvChecker.png"].srvIndex;
-	for (uint32_t i = 0; i < PrimitiveCommonConst::NumMaxInstance; ++i) {
-		materialData_[i].textureIndex = textureIndex;
-		materialData_[i].baseColor = { 1.0f,1.0f,1.0f,1.0f };
-		materialData_[i].uvMatrix = MakeIdentityMatrix4x4();
-	}
 }
