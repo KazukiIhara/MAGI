@@ -60,8 +60,8 @@ void CylinderDrawer3D::Draw() {
 
 	ID3D12GraphicsCommandList6* commandList = directXCommand_->GetList6();
 
-	commandList->SetGraphicsRootSignature(graphicsPipelineManager_->GetRootSignature(GraphicsPipelineStateType::Ring3D));
-	commandList->SetPipelineState(graphicsPipelineManager_->GetPipelineState(GraphicsPipelineStateType::Ring3D, blendMode_));
+	commandList->SetGraphicsRootSignature(graphicsPipelineManager_->GetRootSignature(GraphicsPipelineStateType::Cylinder3D));
+	commandList->SetPipelineState(graphicsPipelineManager_->GetPipelineState(GraphicsPipelineStateType::Cylinder3D, blendMode_));
 
 	// カメラ（b0: index 0）
 	camera3DManager_->TransferCurrentCamera(0);

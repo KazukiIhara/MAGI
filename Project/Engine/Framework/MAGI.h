@@ -81,6 +81,7 @@
 #include "PrimitiveDrawers/PlaneDrawer3D/PlaneDrawer3D.h"
 #include "PrimitiveDrawers/SphereDrawer3D/SphereDrawer3D.h"
 #include "PrimitiveDrawers/RingDrawer3D/RingDrawer3D.h"
+#include "PrimitiveDrawers/CylinderDrawer3D/CylinderDrawer3D.h"
 
 #include "ModelDrawerManager/ModelDrawerManager.h"
 
