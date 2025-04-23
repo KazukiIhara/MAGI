@@ -104,7 +104,7 @@ void PlaneDrawer3D::AddPlane(
 	// マテリアルデータ
 	PrimitiveMaterialData3DForGPU newMaterialData{
 		.textureIndex = material.textureIndex,
-		.baseColor = RGBAToVector4(material.baseColor),
+		.baseColor = material.baseColor,
 		.uvMatrix = MakeUVMatrix(material.uvScale,material.uvRotate,material.uvTranslate),
 	};
 	materials_[currentIndex_] = newMaterialData;

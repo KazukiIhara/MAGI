@@ -428,7 +428,7 @@ public: // エンジンの機能
 
 #pragma region LineDrawer3D
 	// ライン描画
-	static void DrawLine3D(const Vector3& start, const Vector3& end, const RGBA& color);
+	static void DrawLine3D(const Vector3& start, const Vector3& end, const Vector4& color);
 #pragma endregion
 
 #pragma region TriangleDrawer3D

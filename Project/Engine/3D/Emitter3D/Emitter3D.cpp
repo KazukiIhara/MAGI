@@ -72,10 +72,10 @@ void Emitter3D::EmitAll() {
 				emitParamater.position.z = worldPosition.z + Random::GenerateFloat(emitterSetting_.minTranslate.z, emitterSetting_.maxTranslate.z);
 
 				// 色
-				emitParamater.color.x = Random::GenerateFloat(emitterSetting_.minColor.r, emitterSetting_.maxColor.r);
-				emitParamater.color.y = Random::GenerateFloat(emitterSetting_.minColor.g, emitterSetting_.maxColor.g);
-				emitParamater.color.z = Random::GenerateFloat(emitterSetting_.minColor.b, emitterSetting_.maxColor.b);
-				emitParamater.color.w = Random::GenerateFloat(emitterSetting_.minColor.a, emitterSetting_.maxColor.a);
+				emitParamater.color.x = Random::GenerateFloat(emitterSetting_.minColor.x, emitterSetting_.maxColor.x);
+				emitParamater.color.y = Random::GenerateFloat(emitterSetting_.minColor.y, emitterSetting_.maxColor.y);
+				emitParamater.color.z = Random::GenerateFloat(emitterSetting_.minColor.z, emitterSetting_.maxColor.z);
+				emitParamater.color.w = Random::GenerateFloat(emitterSetting_.minColor.w, emitterSetting_.maxColor.w);
 
 				// 生存時間
 				emitParamater.lifeTime = Random::GenerateFloat(emitterSetting_.minLifeTime, emitterSetting_.maxLifeTime);
@@ -103,9 +103,9 @@ void Emitter3D::EmitAll() {
 				emitParamater.velocity.y = Random::GenerateFloat(emitterSetting_.minVelocity.y, emitterSetting_.maxVelocity.y);
 				emitParamater.velocity.z = Random::GenerateFloat(emitterSetting_.minVelocity.z, emitterSetting_.maxVelocity.z);
 				// 色
-				emitParamater.color.x = Random::GenerateFloat(emitterSetting_.minColor.r, emitterSetting_.maxColor.r);
-				emitParamater.color.y = Random::GenerateFloat(emitterSetting_.minColor.g, emitterSetting_.maxColor.g);
-				emitParamater.color.z = Random::GenerateFloat(emitterSetting_.minColor.b, emitterSetting_.maxColor.b);
+				emitParamater.color.x = Random::GenerateFloat(emitterSetting_.minColor.x, emitterSetting_.maxColor.x);
+				emitParamater.color.y = Random::GenerateFloat(emitterSetting_.minColor.y, emitterSetting_.maxColor.y);
+				emitParamater.color.z = Random::GenerateFloat(emitterSetting_.minColor.z, emitterSetting_.maxColor.z);
 
 				// 生存時間
 				emitParamater.lifeTime = Random::GenerateFloat(emitterSetting_.minLifeTime, emitterSetting_.maxLifeTime);

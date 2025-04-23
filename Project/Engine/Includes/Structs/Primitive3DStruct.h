@@ -116,7 +116,7 @@ struct RingData3DForGPU {
 /// </summary>
 struct PrimitiveMaterialData3D {
 	uint32_t textureIndex = 0xFFFFFFFF; // 無効値
-	RGBA baseColor = Color::White;
+	Vector4 baseColor = Color::White;
 	Vector2 uvTranslate = { 0.0f,0.0f };
 	Vector2 uvScale = { 1.0f,1.0f };
 	float uvRotate = 0.0f;

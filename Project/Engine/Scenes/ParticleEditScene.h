@@ -156,9 +156,9 @@ inline void ParticleEditScene<Data>::ShowEmitterEditUI() {
 		// 最長生存時間
 		ImGui::DragFloat("MaxLifeTime", &emitter3D_->GetEmitterSetting().maxLifeTime, 0.01f);
 		// 最小の色
-		ImGui::ColorEdit4("MinColor", &emitter3D_->GetEmitterSetting().minColor.r);
+		ImGui::ColorEdit4("MinColor", &emitter3D_->GetEmitterSetting().minColor.x);
 		// 最大の色
-		ImGui::ColorEdit4("MaxColor", &emitter3D_->GetEmitterSetting().maxColor.r);
+		ImGui::ColorEdit4("MaxColor", &emitter3D_->GetEmitterSetting().maxColor.x);
 
 
 		// タブ終了

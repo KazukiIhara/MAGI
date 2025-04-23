@@ -57,10 +57,10 @@ void RenderTarget::ClearRenderTarget(const RenderTargetType& type) {
 		// SwapChainの現在のバックバッファのRTVハンドルを取得
 		rtvHandle = swapChain_->GetCurrentBackBufferRTVHandle();
 		// クリアカラー変換
-		clearColor[0] = clearColor_.r;
-		clearColor[1] = clearColor_.g;
-		clearColor[2] = clearColor_.b;
-		clearColor[3] = clearColor_.a;
+		clearColor[0] = clearColor_.x;
+		clearColor[1] = clearColor_.y;
+		clearColor[2] = clearColor_.z;
+		clearColor[3] = clearColor_.w;
 		break;
 	case RenderTargetType::SimpleRenderTexture:
 		// RenderTextureのRTVハンドルを取得

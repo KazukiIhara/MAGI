@@ -52,7 +52,7 @@ protected:
 	// 親トランスフォームとのオフセット
 	Vector3 offset_{};
 	// コライダーの色
-	RGBA color_ = Color::White;
+	Vector4 color_ = Color::White;
 	// アクティブフラグ
 	bool isActive_ = false;
 	// 何かしらに触れている
