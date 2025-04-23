@@ -648,7 +648,7 @@
     <ClInclude Include="Engine\Includes\Enums\XInputEnum.h">
       <Filter>Engine\Includes\Enums</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\Includes\Logger\Logger.h">
+    <ClInclude Include="Engine\Logger\Logger.h">
       <Filter>Engine\Includes\Logger</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Includes\MAGIUitility\MAGIUtility.h">
@@ -1029,7 +1029,7 @@
     <ClCompile Include="Engine\ImGuiController\ImGuiController.cpp">
       <Filter>Engine\ImGuiController</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\Includes\Logger\Logger.cpp">
+    <ClCompile Include="Engine\Logger\Logger.cpp">
       <Filter>Engine\Includes\Logger</Filter>
     </ClCompile>
     <ClCompile Include="Engine\Includes\MAGIUitility\MAGIUtility.cpp">
