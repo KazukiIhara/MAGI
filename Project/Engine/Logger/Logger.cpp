@@ -11,7 +11,12 @@ std::ofstream Logger::logFile_;
 
 void Logger::Initialize() {
 	// logsフォルダ作成
-	std::filesystem::create_directories("../generated/logs");
+	// VSから実行
+	if (IsDebuggerPresent()) {
+		std::filesystem::create_directories("../generated/logs");
+	} else {
+		std::filesystem::create_directories("logs");
+	}
 
 	// 現在時刻取得
 	auto now = std::chrono::system_clock::now();
@@ -22,12 +27,19 @@ void Logger::Initialize() {
 #else
 	localtime_r(&timeT, &localTime);
 #endif
-
 	// ファイル名の構築
 	std::ostringstream fileNameStream;
-	fileNameStream << "../generated/logs/"
-		<< std::put_time(&localTime, "%Y%m%d_%H%M%S")
-		<< ".txt";
+
+	// VSから実行
+	if (IsDebuggerPresent()) {
+		fileNameStream << "../generated/logs/"
+			<< std::put_time(&localTime, "%Y%m%d_%H%M%S")
+			<< ".txt";
+	} else {
+		fileNameStream << "logs/"
+			<< std::put_time(&localTime, "%Y%m%d_%H%M%S")
+			<< ".txt";
+	}
 
 	// ファイルオープン
 	logFile_.open(fileNameStream.str(), std::ios::out | std::ios::trunc);
