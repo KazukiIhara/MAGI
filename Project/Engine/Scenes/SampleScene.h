@@ -12,7 +12,7 @@ using namespace MAGIUtility;
 
 // サンプルシーン
 template <typename Data>
-class SampleScene: public BaseScene<Data> {
+class SampleScene : public BaseScene<Data> {
 public:
 	using BaseScene<Data>::BaseScene; // 親クラスのコンストラクタをそのまま継承
 	~SampleScene()override = default;
@@ -30,13 +30,13 @@ private:
 	WorldTransform worldTransform_[4]{};
 
 	// 板ポリ描画用の頂点データ
-	PlaneData3D planeData_[2]{};
+	PlaneData3D planeData_{};
 
 	// 三角形描画用の頂点データ
 	TriangleData3D triangleData_{};
 
 	// 球体描画用の頂点データ
-	SphereData3D sphereData_[2]{};
+	SphereData3D sphereData_{};
 
 	// リング描画用の頂点データ
 	RingData3D ringData_{};
@@ -122,18 +122,21 @@ inline void SampleScene<Data>::Update() {
 	ImGui::DragFloat3("Translate", &worldTransform_[3].translate_.x, 0.01f);
 	ImGui::End();
 
-	ImGui::Begin("Material");
+	ImGui::Begin("PlaneData");
+	ImGui::DragFloat3("LeftTop", &planeData_.verticesOffsets[0].x, 0.01f);
+	ImGui::DragFloat3("RightTop", &planeData_.verticesOffsets[1].x, 0.01f);
+	ImGui::DragFloat3("LeftBottom", &planeData_.verticesOffsets[2].x, 0.01f);
+	ImGui::DragFloat3("RightBottom", &planeData_.verticesOffsets[3].x, 0.01f);
+	ImGui::End();
 
+	ImGui::Begin("Material");
 	ImGui::DragFloat2("uvScale", &material_.uvScale.x, 0.01f);
 	ImGui::DragFloat("uvRotate", &material_.uvRotate, 0.01f);
 	ImGui::DragFloat2("uvTranslate", &material_.uvTranslate.x, 0.01f);
-
 	ImGui::ColorEdit4("Color", &material_.baseColor.x);
-
 	ImGui::End();
 
 	ImGui::Begin("RingData");
-
 	int temp = ringData_.ringDivide;
 	ImGui::DragInt("Divide", &temp);
 	ringData_.ringDivide = temp;
@@ -152,10 +155,10 @@ inline void SampleScene<Data>::Update() {
 template<typename Data>
 inline void SampleScene<Data>::Draw() {
 	// 板ポリ描画
-	MAGISYSTEM::DrawPlane3D(worldTransform_[0].worldMatrix_, planeData_[0], material_);
+	MAGISYSTEM::DrawPlane3D(worldTransform_[0].worldMatrix_, planeData_, material_);
 
 	// 球体描画
-	MAGISYSTEM::DrawSphere3D(worldTransform_[1].worldMatrix_, sphereData_[0], material_);
+	MAGISYSTEM::DrawSphere3D(worldTransform_[1].worldMatrix_, sphereData_, material_);
 
 	// 三角形描画
 	MAGISYSTEM::DrawTriangle3D(worldTransform_[2].worldMatrix_, triangleData_, material_);

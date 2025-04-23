@@ -70,7 +70,7 @@ void Ring3DGraphicsPipeline::CreateRootSignature() {
 	D3D12_STATIC_SAMPLER_DESC staticSampler{};
 	staticSampler.Filter = D3D12_FILTER_MIN_MAG_MIP_LINEAR;
 	staticSampler.AddressU = D3D12_TEXTURE_ADDRESS_MODE_WRAP;
-	staticSampler.AddressV = D3D12_TEXTURE_ADDRESS_MODE_WRAP;
+	staticSampler.AddressV = D3D12_TEXTURE_ADDRESS_MODE_CLAMP;
 	staticSampler.AddressW = D3D12_TEXTURE_ADDRESS_MODE_WRAP;
 	staticSampler.ComparisonFunc = D3D12_COMPARISON_FUNC_NEVER;
 	staticSampler.MaxLOD = D3D12_FLOAT32_MAX;
