@@ -1149,6 +1149,7 @@
       <Filter>Engine\SceneManager</Filter>
     </None>
     <None Include="EngineAssets\Shaders\Graphics\Ring3D\Ring3D.hlsli" />
+    <None Include="EngineAssets\Shaders\Graphics\Cylinder3D\Cylinder3D.hlsli" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="EngineAssets\Shaders\Graphics\Plane3D\Plane3D.AS.hlsl" />
@@ -1156,5 +1157,8 @@
     <FxCompile Include="EngineAssets\Shaders\Graphics\Ring3D\Ring3D.AS.hlsl" />
     <FxCompile Include="EngineAssets\Shaders\Graphics\Ring3D\Ring3D.MS.hlsl" />
     <FxCompile Include="EngineAssets\Shaders\Graphics\Ring3D\Ring3D.PS.hlsl" />
+    <FxCompile Include="EngineAssets\Shaders\Graphics\Cylinder3D\Cylinder3D.MS.hlsl" />
+    <FxCompile Include="EngineAssets\Shaders\Graphics\Cylinder3D\Cylinder3D.AS.hlsl" />
+    <FxCompile Include="EngineAssets\Shaders\Graphics\Cylinder3D\Cylinder3D.PS.hlsl" />
   </ItemGroup>
 </Project>

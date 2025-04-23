@@ -54,6 +54,13 @@ void GraphicsPipelineManager::Initialize(DXGI* dxgi, ShaderCompiler* shaderCompi
 	SetRootSignature(GraphicsPipelineStateType::Ring3D);
 	SetPipelineState(GraphicsPipelineStateType::Ring3D);
 
+	// 3Dシリンダーのグラフィックスパイプラインを生成、初期化
+	cylinder3DGraphicsPipeline_ = std::make_unique<Cylinder3DGraphicsPipeline>(dxgi, shaderCompiler);
+	cylinder3DGraphicsPipeline_->Initialize();
+	SetRootSignature(GraphicsPipelineStateType::Cylinder3D);
+	SetPipelineState(GraphicsPipelineStateType::Cylinder3D);
+
+
 	// 3Dオブジェクトのグラフィックスパイプラインを生成、初期化
 	object3DGraphicsPipeline_ = std::make_unique<Object3DGraphicsPipeline>(dxgi, shaderCompiler);
 	object3DGraphicsPipeline_->Initialize();
@@ -110,6 +117,10 @@ void GraphicsPipelineManager::SetRootSignature(GraphicsPipelineStateType pipelin
 		// 3Dリング用のルートシグネイチャを設定
 		rootSignatures_[static_cast<uint32_t>(pipelineState)] = ring3DGraphicsPipeline_->GetRootSignature();
 		break;
+	case GraphicsPipelineStateType::Cylinder3D:
+		// 3Dシリンダー用のルートシグネイチャを設定
+		rootSignatures_[static_cast<uint32_t>(pipelineState)] = cylinder3DGraphicsPipeline_->GetRootSignature();
+		break;
 	case GraphicsPipelineStateType::Object3D:
 		// 3Dオブジェクト描画用のルートシグネチャを設定
 		rootSignatures_[static_cast<uint32_t>(pipelineState)] = object3DGraphicsPipeline_->GetRootSignature();
@@ -154,6 +165,11 @@ void GraphicsPipelineManager::SetPipelineState(GraphicsPipelineStateType pipelin
 	case GraphicsPipelineStateType::Ring3D:
 		for (int mode = static_cast<uint32_t>(BlendMode::None); mode < static_cast<uint32_t>(BlendMode::Num); ++mode) {
 			graphicsPipelineStates_[static_cast<uint32_t>(pipelineState)][mode] = ring3DGraphicsPipeline_->GetPipelineState(static_cast<BlendMode>(mode));
+		}
+		break;
+	case GraphicsPipelineStateType::Cylinder3D:
+		for (int mode = static_cast<uint32_t>(BlendMode::None); mode < static_cast<uint32_t>(BlendMode::Num); ++mode) {
+			graphicsPipelineStates_[static_cast<uint32_t>(pipelineState)][mode] = cylinder3DGraphicsPipeline_->GetPipelineState(static_cast<BlendMode>(mode));
 		}
 		break;
 	case GraphicsPipelineStateType::Object3D:
