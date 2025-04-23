@@ -39,8 +39,8 @@ void main(
 
     // XY平面でのリング頂点
     float3 p0 = float3(cos0 * ring.outerRadius, sin0 * ring.outerRadius, 0.0f); // 外側開始
-    float3 p1 = float3(cos0 * ring.innerRadius, sin0 * ring.innerRadius, 0.0f); // 内側開始
-    float3 p2 = float3(cos1 * ring.outerRadius, sin1 * ring.outerRadius, 0.0f); // 外側終了
+    float3 p1 = float3(cos1 * ring.outerRadius, sin1 * ring.outerRadius, 0.0f); // 外側終了
+    float3 p2 = float3(cos0 * ring.innerRadius, sin0 * ring.innerRadius, 0.0f); // 内側開始
     float3 p3 = float3(cos1 * ring.innerRadius, sin1 * ring.innerRadius, 0.0f); // 内側終了
 
     float4 positions[4] =
@@ -57,8 +57,8 @@ void main(
     float2 baseUVs[4] =
     {
         float2(u0, 0.0f),
-        float2(u0, 1.0f),
         float2(u1, 0.0f),
+        float2(u0, 1.0f),
         float2(u1, 1.0f)
     };
 
@@ -74,6 +74,6 @@ void main(
     }
 
 
-    tris[0] = uint3(0, 1, 2);
-    tris[1] = uint3(2, 1, 3);
+    tris[0] = uint3(0, 2, 1);
+    tris[1] = uint3(2, 3, 1);
 }

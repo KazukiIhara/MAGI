@@ -54,11 +54,11 @@ void GraphicsPipelineManager::Initialize(DXGI* dxgi, ShaderCompiler* shaderCompi
 	SetRootSignature(GraphicsPipelineStateType::Ring3D);
 	SetPipelineState(GraphicsPipelineStateType::Ring3D);
 
-	// 3Dシリンダーのグラフィックスパイプラインを生成、初期化
-	cylinder3DGraphicsPipeline_ = std::make_unique<Cylinder3DGraphicsPipeline>(dxgi, shaderCompiler);
-	cylinder3DGraphicsPipeline_->Initialize();
-	SetRootSignature(GraphicsPipelineStateType::Cylinder3D);
-	SetPipelineState(GraphicsPipelineStateType::Cylinder3D);
+	//// 3Dシリンダーのグラフィックスパイプラインを生成、初期化
+	//cylinder3DGraphicsPipeline_ = std::make_unique<Cylinder3DGraphicsPipeline>(dxgi, shaderCompiler);
+	//cylinder3DGraphicsPipeline_->Initialize();
+	//SetRootSignature(GraphicsPipelineStateType::Cylinder3D);
+	//SetPipelineState(GraphicsPipelineStateType::Cylinder3D);
 
 
 	// 3Dオブジェクトのグラフィックスパイプラインを生成、初期化
