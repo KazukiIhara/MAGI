@@ -836,6 +836,7 @@
     </ClInclude>
     <ClInclude Include="Engine\GraphicsPipelines\Ring3DGraphicsPipeline\Ring3DGraphicsPipeline.h" />
     <ClInclude Include="Engine\3D\Shapes3D\PrimitiveShapes3D\Ring\Ring.h" />
+    <ClInclude Include="Engine\GraphicsPipelines\Cylinder3DGraphicsPipeline\Cylinder3DGraphicsPipeline.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="App\Game\Game.cpp">
@@ -1141,6 +1142,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Engine\GraphicsPipelines\Ring3DGraphicsPipeline\Ring3DGraphicsPipeline.cpp" />
     <ClCompile Include="Engine\3D\Shapes3D\PrimitiveShapes3D\Ring\Ring.cpp" />
+    <ClCompile Include="Engine\GraphicsPipelines\Cylinder3DGraphicsPipeline\Cylinder3DGraphicsPipeline.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Engine\SceneManager\SceneManager.ipp">
