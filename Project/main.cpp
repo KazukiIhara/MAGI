@@ -3,6 +3,8 @@
 #include <memory>
 
 #include "Logger/Logger.h"
+#include "Onterminate/OnTerminate.h"
+
 #include "Game/Game.h"
 
 // Lib
@@ -20,6 +22,13 @@
 #pragma comment(lib,"xaudio2.lib")
 
 int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
+
+	// 例外終了時処理
+	std::set_terminate(OnTerminate);
+
+	// ログ出力ファイル作成
+	Logger::Initialize();
+
 	// 開始ログ
 	Logger::Log("Hello,MAGI ENGINE!\n");
 
@@ -29,5 +38,9 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 	// 終了ログ
 	Logger::Log("Bye,MAGI ENGINE!\n");
+
+	// ログ終了
+	Logger::Finalize();
+
 	return 0;
 }
