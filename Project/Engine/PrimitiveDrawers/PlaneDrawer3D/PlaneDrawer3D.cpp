@@ -117,8 +117,8 @@ void PlaneDrawer3D::ClearPlanes() {
 	// インデックスリセット
 	currentIndex_ = 0;
 	// 中身をクリア
-	std::ranges::fill(planes_, PlaneData3DForGPU{});
-	std::ranges::fill(materials_, PrimitiveMaterialData3DForGPU{});
+	//std::ranges::fill(planes_, PlaneData3DForGPU{});
+	//std::ranges::fill(materials_, PrimitiveMaterialData3DForGPU{});
 }
 
 void PlaneDrawer3D::SetDXGI(DXGI* dxgi) {

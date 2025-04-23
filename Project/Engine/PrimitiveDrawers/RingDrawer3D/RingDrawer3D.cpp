@@ -123,8 +123,8 @@ void RingDrawer3D::ClearRings() {
 	// インデックスリセット
 	currentIndex_ = 0;
 	// 中身をクリア
-	std::ranges::fill(rings_, RingData3DForGPU{});
-	std::ranges::fill(materials_, PrimitiveMaterialData3DForGPU{});
+	//std::ranges::fill(rings_, RingData3DForGPU{});
+	//std::ranges::fill(materials_, PrimitiveMaterialData3DForGPU{});
 }
 
 void RingDrawer3D::SetDXGI(DXGI* dxgi) {

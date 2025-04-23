@@ -119,8 +119,8 @@ void SphereDrawer3D::ClearSpheres() {
 	// インデックスリセット
 	currentIndex_ = 0;
 	// 中身をクリア
-	std::ranges::fill(spheres_, SphereData3DForGPU{});
-	std::ranges::fill(materials_, PrimitiveMaterialData3DForGPU{});
+	//std::ranges::fill(spheres_, SphereData3DForGPU{});
+	//std::ranges::fill(materials_, PrimitiveMaterialData3DForGPU{});
 }
 
 void SphereDrawer3D::SetDXGI(DXGI* dxgi) {

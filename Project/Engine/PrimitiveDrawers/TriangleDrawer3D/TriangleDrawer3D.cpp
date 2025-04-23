@@ -133,8 +133,8 @@ void TriangleDrawer3D::ClearTriangles() {
 	// インデックスリセット
 	currentIndex_ = 0;
 	// 中身をクリア
-	std::ranges::fill(triangles_, TriangleData3DForGPU{});
-	std::ranges::fill(materials_, PrimitiveMaterialData3DForGPU{});
+	//std::ranges::fill(triangles_, TriangleData3DForGPU{});
+	//std::ranges::fill(materials_, PrimitiveMaterialData3DForGPU{});
 }
 
 void TriangleDrawer3D::SetDXGI(DXGI* dxgi) {
