@@ -27,7 +27,7 @@ private:
 	std::unique_ptr<Camera3D> sceneCamera_ = nullptr;
 
 	// ワールドトランスフォーム
-	WorldTransform worldTransform_[4]{};
+	WorldTransform worldTransform_[5]{};
 
 	// 板ポリ描画用の頂点データ
 	PlaneData3D planeData_{};
@@ -82,14 +82,15 @@ inline void SampleScene<Data>::Initialize() {
 	MAGISYSTEM::AddPunctualLight("SampleLight");
 
 	// トランスフォーム初期化
-	for (uint32_t i = 0; i < 4; i++) {
+	for (uint32_t i = 0; i < 5; i++) {
 		worldTransform_[i].Initialize();
 	}
 
 	worldTransform_[0].translate_.x = -4.0f;
 	worldTransform_[1].translate_.x = -2.0f;
-	worldTransform_[2].translate_.x = 2.0f;
-	worldTransform_[3].translate_.x = 4.0f;
+	worldTransform_[2].translate_.x = 0.0f;
+	worldTransform_[3].translate_.x = 2.0f;
+	worldTransform_[4].translate_.x = 4.0f;
 
 	// デフォルトのテクスチャを取得　TODO:マテリアルもクラス化して初期化できるようにする
 	material_.textureIndex = MAGISYSTEM::GetTextureIndex("gradationLine.png");
