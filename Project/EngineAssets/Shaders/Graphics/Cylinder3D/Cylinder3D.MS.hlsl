@@ -44,7 +44,7 @@ void main(
     float3 p0 = float3(cos0 * cylinder.topRadius, cylinder.height, sin0 * cylinder.topRadius); // 外側開始
     float3 p1 = float3(cos1 * cylinder.topRadius, cylinder.height, sin1 * cylinder.topRadius); // 外側終了
     float3 p2 = float3(cos0 * cylinder.bottomRadius, 0.0f, sin0 * cylinder.bottomRadius); // 内側開始
-    float3 p3 = float3(cos1 * cylinder.bottomRadius, 0.0f, sin0 * cylinder.bottomRadius); // 内側終了
+    float3 p3 = float3(cos1 * cylinder.bottomRadius, 0.0f, sin1 * cylinder.bottomRadius); // 内側終了
 
     float4 positions[4] =
     {
