@@ -7,5 +7,5 @@ void OnTerminate() {
     Logger::Log("std::terminate による異常終了が発生しました");
     Logger::Finalize();
 
-    std::abort(); // 終了
+    std::abort(); // return終了
 }
