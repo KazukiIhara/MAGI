@@ -118,6 +118,9 @@
     <Filter Include="Engine\3D\Shapes3D\PrimitiveShapes3D\Plane">
       <UniqueIdentifier>{EDDC7ACF-D944-419D-42B0-55B32E375889}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Engine\3D\Shapes3D\PrimitiveShapes3D\Ring">
+      <UniqueIdentifier>{2D79CE15-9993-31B7-E2B5-414B4E0F59BE}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Engine\3D\Shapes3D\PrimitiveShapes3D\Sphere">
       <UniqueIdentifier>{E40822C6-506E-B54C-D946-572545ABAABB}</UniqueIdentifier>
     </Filter>
@@ -217,6 +220,9 @@
     <Filter Include="Engine\GraphicsPipelines\BaseGraphicsPipeline">
       <UniqueIdentifier>{1587417C-81F7-43F5-4A16-BE7DB6457CF6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Engine\GraphicsPipelines\Cylinder3DGraphicsPipeline">
+      <UniqueIdentifier>{4B2528BA-B736-D060-4088-62A0AC98599A}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Engine\GraphicsPipelines\Line3DGraphicsPipeline">
       <UniqueIdentifier>{D96DBE7F-45A9-1E43-4E9E-9BD2BA58A373}</UniqueIdentifier>
     </Filter>
@@ -234,6 +240,9 @@
     </Filter>
     <Filter Include="Engine\GraphicsPipelines\Plane3DGraphicsPipeline">
       <UniqueIdentifier>{A1C84057-8D71-A886-B607-C405A20FC3C7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\GraphicsPipelines\Ring3DGraphicsPipeline">
+      <UniqueIdentifier>{21FA7C91-8D35-DD54-962A-5AE402E56185}</UniqueIdentifier>
     </Filter>
     <Filter Include="Engine\GraphicsPipelines\Sphere3DGraphicsPipeline">
       <UniqueIdentifier>{18AF4CCB-8475-A9E7-CDD0-374A39D6174C}</UniqueIdentifier>
@@ -255,9 +264,6 @@
     </Filter>
     <Filter Include="Engine\Includes\Enums">
       <UniqueIdentifier>{58AF6D6C-C41B-2967-8D0F-C1C4F93A4BCF}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Engine\Includes\Logger">
-      <UniqueIdentifier>{1007820A-FC00-AB5C-E56D-416DD10611C9}</UniqueIdentifier>
     </Filter>
     <Filter Include="Engine\Includes\MAGIUitility">
       <UniqueIdentifier>{8B8808BB-7743-F866-20FB-70B10C9542F7}</UniqueIdentifier>
@@ -288,6 +294,9 @@
     </Filter>
     <Filter Include="Engine\LeakChecker">
       <UniqueIdentifier>{DC9A7F7A-C87E-40D0-31DF-3A231DE22A52}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Logger">
+      <UniqueIdentifier>{4A198B49-B6D9-0680-7F14-50FDEB934B5C}</UniqueIdentifier>
     </Filter>
     <Filter Include="Engine\ModelDrawerManager">
       <UniqueIdentifier>{1B4D607B-870F-9405-D0BF-22923CC16CE3}</UniqueIdentifier>
@@ -322,6 +331,9 @@
     <Filter Include="Engine\OffScreenRenderer">
       <UniqueIdentifier>{5C9EB105-48C3-0086-710E-E6155D92FFA3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Engine\Onterminate">
+      <UniqueIdentifier>{B06E8F78-9C52-50CE-05B3-4A21F1B53A50}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Engine\PipelineManagers">
       <UniqueIdentifier>{0ED9C9FB-7A10-1293-831A-76B6EFD0388C}</UniqueIdentifier>
     </Filter>
@@ -351,6 +363,9 @@
     </Filter>
     <Filter Include="Engine\PrimitiveDrawers">
       <UniqueIdentifier>{5B46E4DC-C77D-2C74-D087-90973C3E536D}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\PrimitiveDrawers\CylinderDrawer3D">
+      <UniqueIdentifier>{20D887DE-0C55-7B21-35D2-7B3521AE17B5}</UniqueIdentifier>
     </Filter>
     <Filter Include="Engine\PrimitiveDrawers\LineDrawer3D">
       <UniqueIdentifier>{AEF328C2-9ADA-EAB9-432B-51D72FF16320}</UniqueIdentifier>
@@ -489,6 +504,9 @@
     <ClInclude Include="Engine\3D\Shapes3D\PrimitiveShapes3D\Plane\Plane.h">
       <Filter>Engine\3D\Shapes3D\PrimitiveShapes3D\Plane</Filter>
     </ClInclude>
+    <ClInclude Include="Engine\3D\Shapes3D\PrimitiveShapes3D\Ring\Ring.h">
+      <Filter>Engine\3D\Shapes3D\PrimitiveShapes3D\Ring</Filter>
+    </ClInclude>
     <ClInclude Include="Engine\3D\Shapes3D\PrimitiveShapes3D\Sphere\Sphere.h">
       <Filter>Engine\3D\Shapes3D\PrimitiveShapes3D\Sphere</Filter>
     </ClInclude>
@@ -576,6 +594,9 @@
     <ClInclude Include="Engine\GraphicsPipelines\BaseGraphicsPipeline\BaseGraphicsPipeline.h">
       <Filter>Engine\GraphicsPipelines\BaseGraphicsPipeline</Filter>
     </ClInclude>
+    <ClInclude Include="Engine\GraphicsPipelines\Cylinder3DGraphicsPipeline\Cylinder3DGraphicsPipeline.h">
+      <Filter>Engine\GraphicsPipelines\Cylinder3DGraphicsPipeline</Filter>
+    </ClInclude>
     <ClInclude Include="Engine\GraphicsPipelines\Line3DGraphicsPipeline\Line3DGraphicsPipeline.h">
       <Filter>Engine\GraphicsPipelines\Line3DGraphicsPipeline</Filter>
     </ClInclude>
@@ -593,6 +614,9 @@
     </ClInclude>
     <ClInclude Include="Engine\GraphicsPipelines\Plane3DGraphicsPipeline\Plane3DGraphicsPipeline.h">
       <Filter>Engine\GraphicsPipelines\Plane3DGraphicsPipeline</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\GraphicsPipelines\Ring3DGraphicsPipeline\Ring3DGraphicsPipeline.h">
+      <Filter>Engine\GraphicsPipelines\Ring3DGraphicsPipeline</Filter>
     </ClInclude>
     <ClInclude Include="Engine\GraphicsPipelines\Sphere3DGraphicsPipeline\Sphere3DGraphicsPipeline.h">
       <Filter>Engine\GraphicsPipelines\Sphere3DGraphicsPipeline</Filter>
@@ -647,9 +671,6 @@
     </ClInclude>
     <ClInclude Include="Engine\Includes\Enums\XInputEnum.h">
       <Filter>Engine\Includes\Enums</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Logger\Logger.h">
-      <Filter>Engine\Includes\Logger</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Includes\MAGIUitility\MAGIUtility.h">
       <Filter>Engine\Includes\MAGIUitility</Filter>
@@ -735,6 +756,9 @@
     <ClInclude Include="Engine\LeakChecker\D3DResourceLeakChecker.h">
       <Filter>Engine\LeakChecker</Filter>
     </ClInclude>
+    <ClInclude Include="Engine\Logger\Logger.h">
+      <Filter>Engine\Logger</Filter>
+    </ClInclude>
     <ClInclude Include="Engine\ModelDrawerManager\ModelDrawerManager.h">
       <Filter>Engine\ModelDrawerManager</Filter>
     </ClInclude>
@@ -765,6 +789,9 @@
     <ClInclude Include="Engine\OffScreenRenderer\OffScreenRenderer.h">
       <Filter>Engine\OffScreenRenderer</Filter>
     </ClInclude>
+    <ClInclude Include="Engine\Onterminate\OnTerminate.h">
+      <Filter>Engine\Onterminate</Filter>
+    </ClInclude>
     <ClInclude Include="Engine\PipelineManagers\ComputePipelineManager\ComputePipelineManager.h">
       <Filter>Engine\PipelineManagers\ComputePipelineManager</Filter>
     </ClInclude>
@@ -785,6 +812,9 @@
     </ClInclude>
     <ClInclude Include="Engine\PostEffectPipelines\NonePostEffectPipeline\NonePostEffectPipeline.h">
       <Filter>Engine\PostEffectPipelines\NonePostEffectPipeline</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\PrimitiveDrawers\CylinderDrawer3D\CylinderDrawer3D.h">
+      <Filter>Engine\PrimitiveDrawers\CylinderDrawer3D</Filter>
     </ClInclude>
     <ClInclude Include="Engine\PrimitiveDrawers\LineDrawer3D\LineDrawer3D.h">
       <Filter>Engine\PrimitiveDrawers\LineDrawer3D</Filter>
@@ -834,11 +864,6 @@
     <ClInclude Include="Engine\WindowApp\WindowApp.h">
       <Filter>Engine\WindowApp</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\GraphicsPipelines\Ring3DGraphicsPipeline\Ring3DGraphicsPipeline.h" />
-    <ClInclude Include="Engine\3D\Shapes3D\PrimitiveShapes3D\Ring\Ring.h" />
-    <ClInclude Include="Engine\GraphicsPipelines\Cylinder3DGraphicsPipeline\Cylinder3DGraphicsPipeline.h" />
-    <ClInclude Include="Engine\PrimitiveDrawers\CylinderDrawer3D\CylinderDrawer3D.h" />
-    <ClInclude Include="Engine\Onterminate\OnTerminate.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="App\Game\Game.cpp">
@@ -918,6 +943,9 @@
     </ClCompile>
     <ClCompile Include="Engine\3D\Shapes3D\PrimitiveShapes3D\Plane\Plane.cpp">
       <Filter>Engine\3D\Shapes3D\PrimitiveShapes3D\Plane</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\3D\Shapes3D\PrimitiveShapes3D\Ring\Ring.cpp">
+      <Filter>Engine\3D\Shapes3D\PrimitiveShapes3D\Ring</Filter>
     </ClCompile>
     <ClCompile Include="Engine\3D\Shapes3D\PrimitiveShapes3D\Sphere\Sphere.cpp">
       <Filter>Engine\3D\Shapes3D\PrimitiveShapes3D\Sphere</Filter>
@@ -1000,6 +1028,9 @@
     <ClCompile Include="Engine\GraphicsPipelines\BaseGraphicsPipeline\BaseGraphicsPipeline.cpp">
       <Filter>Engine\GraphicsPipelines\BaseGraphicsPipeline</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\GraphicsPipelines\Cylinder3DGraphicsPipeline\Cylinder3DGraphicsPipeline.cpp">
+      <Filter>Engine\GraphicsPipelines\Cylinder3DGraphicsPipeline</Filter>
+    </ClCompile>
     <ClCompile Include="Engine\GraphicsPipelines\Line3DGraphicsPipeline\Line3DGraphicsPipeline.cpp">
       <Filter>Engine\GraphicsPipelines\Line3DGraphicsPipeline</Filter>
     </ClCompile>
@@ -1018,6 +1049,9 @@
     <ClCompile Include="Engine\GraphicsPipelines\Plane3DGraphicsPipeline\Plane3DGraphicsPipeline.cpp">
       <Filter>Engine\GraphicsPipelines\Plane3DGraphicsPipeline</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\GraphicsPipelines\Ring3DGraphicsPipeline\Ring3DGraphicsPipeline.cpp">
+      <Filter>Engine\GraphicsPipelines\Ring3DGraphicsPipeline</Filter>
+    </ClCompile>
     <ClCompile Include="Engine\GraphicsPipelines\Sphere3DGraphicsPipeline\Sphere3DGraphicsPipeline.cpp">
       <Filter>Engine\GraphicsPipelines\Sphere3DGraphicsPipeline</Filter>
     </ClCompile>
@@ -1029,9 +1063,6 @@
     </ClCompile>
     <ClCompile Include="Engine\ImGuiController\ImGuiController.cpp">
       <Filter>Engine\ImGuiController</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\Logger\Logger.cpp">
-      <Filter>Engine\Includes\Logger</Filter>
     </ClCompile>
     <ClCompile Include="Engine\Includes\MAGIUitility\MAGIUtility.cpp">
       <Filter>Engine\Includes\MAGIUitility</Filter>
@@ -1050,6 +1081,9 @@
     </ClCompile>
     <ClCompile Include="Engine\LeakChecker\D3DResourceLeakChecker.cpp">
       <Filter>Engine\LeakChecker</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Logger\Logger.cpp">
+      <Filter>Engine\Logger</Filter>
     </ClCompile>
     <ClCompile Include="Engine\ModelDrawerManager\ModelDrawerManager.cpp">
       <Filter>Engine\ModelDrawerManager</Filter>
@@ -1102,6 +1136,9 @@
     <ClCompile Include="Engine\PostEffectPipelines\NonePostEffectPipeline\NonePostEffectPipeline.cpp">
       <Filter>Engine\PostEffectPipelines\NonePostEffectPipeline</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\PrimitiveDrawers\CylinderDrawer3D\CylinderDrawer3D.cpp">
+      <Filter>Engine\PrimitiveDrawers\CylinderDrawer3D</Filter>
+    </ClCompile>
     <ClCompile Include="Engine\PrimitiveDrawers\LineDrawer3D\LineDrawer3D.cpp">
       <Filter>Engine\PrimitiveDrawers\LineDrawer3D</Filter>
     </ClCompile>
@@ -1142,26 +1179,10 @@
       <Filter>Engine\WindowApp</Filter>
     </ClCompile>
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="Engine\GraphicsPipelines\Ring3DGraphicsPipeline\Ring3DGraphicsPipeline.cpp" />
-    <ClCompile Include="Engine\3D\Shapes3D\PrimitiveShapes3D\Ring\Ring.cpp" />
-    <ClCompile Include="Engine\GraphicsPipelines\Cylinder3DGraphicsPipeline\Cylinder3DGraphicsPipeline.cpp" />
-    <ClCompile Include="Engine\PrimitiveDrawers\CylinderDrawer3D\CylinderDrawer3D.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Engine\SceneManager\SceneManager.ipp">
       <Filter>Engine\SceneManager</Filter>
     </None>
-    <None Include="EngineAssets\Shaders\Graphics\Ring3D\Ring3D.hlsli" />
-    <None Include="EngineAssets\Shaders\Graphics\Cylinder3D\Cylinder3D.hlsli" />
-  </ItemGroup>
-  <ItemGroup>
-    <FxCompile Include="EngineAssets\Shaders\Graphics\Plane3D\Plane3D.AS.hlsl" />
-    <FxCompile Include="EngineAssets\Shaders\Graphics\Sphere3D\Sphere3D.AS.hlsl" />
-    <FxCompile Include="EngineAssets\Shaders\Graphics\Ring3D\Ring3D.AS.hlsl" />
-    <FxCompile Include="EngineAssets\Shaders\Graphics\Ring3D\Ring3D.MS.hlsl" />
-    <FxCompile Include="EngineAssets\Shaders\Graphics\Ring3D\Ring3D.PS.hlsl" />
-    <FxCompile Include="EngineAssets\Shaders\Graphics\Cylinder3D\Cylinder3D.MS.hlsl" />
-    <FxCompile Include="EngineAssets\Shaders\Graphics\Cylinder3D\Cylinder3D.AS.hlsl" />
-    <FxCompile Include="EngineAssets\Shaders\Graphics\Cylinder3D\Cylinder3D.PS.hlsl" />
   </ItemGroup>
 </Project>
