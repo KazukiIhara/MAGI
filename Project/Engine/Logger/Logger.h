@@ -7,7 +7,6 @@
 // 
 // デバッグログ表示用クラス
 // 
-
 class Logger {
 public:
 	// 初期化
@@ -23,5 +22,4 @@ public:
 	static std::string ConvertString(const std::wstring& str);
 private:
 	static std::ofstream logFile_;
-
 };
