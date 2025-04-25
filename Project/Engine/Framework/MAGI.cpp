@@ -225,7 +225,7 @@ void MAGISYSTEM::Initialize() {
 	offScreenRenderer_ = std::make_unique<OffScreenRenderer>(directXCommand_.get(), renderTarget_.get(), renderTextureManager_.get(), postEffectPipelineManager_.get());
 
 	// RenderPipelineController
-	renderPipelineController_ = std::make_unique<RenderPipelineController>(postEffectPipelineManager_.get());
+	renderPipelineController_ = std::make_unique<RenderPipelineController>(directXCommand_.get(),depthStencil_.get(),viewport_.get(),scissorRect_.get(), postEffectPipelineManager_.get());
 
 	// DataIO
 	dataIO_ = std::make_unique<DataIO>(renderer3DManager_.get(), colliderManager_.get(), gameObject3DManager_.get());

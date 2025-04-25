@@ -7,6 +7,10 @@
 #include "Structs/PostEffectStruct.h"
 
 // 前方宣言
+class DirectXCommand;
+class DepthStencil;
+class Viewport;
+class ScissorRect;
 class PostEffectPipelineManager;
 
 /// <summary>
@@ -14,7 +18,13 @@ class PostEffectPipelineManager;
 /// </summary>
 class RenderPipelineController {
 public:
-	RenderPipelineController(PostEffectPipelineManager* postEffectPipelineManager);
+	RenderPipelineController(
+		DirectXCommand* directXCommand,
+		DepthStencil* depthStencil,
+		Viewport* viewport,
+		ScissorRect* scissorRect,
+		PostEffectPipelineManager* postEffectPipelineManager
+	);
 	~RenderPipelineController();
 
 	// シーンを描画するための前準備
@@ -34,10 +44,18 @@ public:
 	// 
 
 private:
+	void SetDirectXCommand(DirectXCommand* directXCommand);
+	void SetDepthStencil(DepthStencil* depthStencil);
+	void SetViewport(Viewport* viewport);
+	void SetScissorRect(ScissorRect* scissorRect);
 	void SetPostEffectPipelineManager(PostEffectPipelineManager* postEffectPipelineManager);
 
 private:
-	// ポストエフェクトパイプラインマネージャを受け取るクラス
+	// 各インスタンスを受け取るクラス
+	DirectXCommand* directXCommand_ = nullptr;
+	DepthStencil* depthStencil_ = nullptr;
+	Viewport* viewport_ = nullptr;
+	ScissorRect* scissorRect_ = nullptr;
 	PostEffectPipelineManager* postEffectPipelineManager_ = nullptr;
 private:
 	// シーンを描画するレンダーテクスチャ
