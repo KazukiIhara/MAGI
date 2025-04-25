@@ -53,6 +53,9 @@ void RenderController::ApplyPostEffect() {
 }
 
 void RenderController::RenderToFinalRenderTexture() {
+	// コマンドリスト取得
+	ID3D12GraphicsCommandList* commandList = directXCommand_->GetList();
+
 	// レンダーターゲットを最終描画用のレンダーテクスチャに指定
 	finalRenderTexture_->SetAsRenderTarget();
 	finalRenderTexture_->ClearRenderTarget();
@@ -60,9 +63,15 @@ void RenderController::RenderToFinalRenderTexture() {
 	viewport_->SettingViewport();
 	// シザー矩形の設定
 	scissorRect_->SettingScissorRect();
-	
+
 	// 最終レンダーテクスチャに描画
-	
+	// ルートシグネイチャを設定
+	commandList->SetGraphicsRootSignature(postEffectPipelineManager_->GetRootSignature(PostEffectPipelineStateType::None));
+	// PSOを設定
+	commandList->SetPipelineState(postEffectPipelineManager_->GetPipelineState(PostEffectPipelineStateType::None, BlendMode::None));
+
+	// ディスクリプタハンドルを指定
+	commandList->SetGraphicsRootDescriptorTable(0, );
 
 	// 最終レンダーテクスチャを読み取り可能状態にする
 	finalRenderTexture_->TransitionToRead();
