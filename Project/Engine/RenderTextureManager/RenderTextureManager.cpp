@@ -30,7 +30,7 @@ void RenderTextureManager::Initialize() {
 	// 
 
 	// SceneColor
-	std::unique_ptr<BaseRenderTexture> nonePostEffectRenderTexture = std::make_unique<SceneColorRenderTexture>();
+	std::unique_ptr<BaseRenderTexture> nonePostEffectRenderTexture = std::make_unique<ColorRenderTexture>();
 	nonePostEffectRenderTexture->Initialize();
 	AddRenderTexture(RenderTextureType::SceneColor, std::move(nonePostEffectRenderTexture));
 

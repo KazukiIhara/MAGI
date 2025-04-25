@@ -13,27 +13,6 @@ BaseRenderTexture::~BaseRenderTexture() {
 
 }
 
-void BaseRenderTexture::Draw() {
-	// コマンドリストを取得
-	ID3D12GraphicsCommandList* commandList = MAGISYSTEM::GetDirectXCommandList();
-	// ディスクリプタテーブルを設定
-	commandList->SetGraphicsRootDescriptorTable(0, MAGISYSTEM::GetSrvUavDescriptorHandleGPU(srvIndex_));
-	// ドローコール
-	commandList->DrawInstanced(3, 1, 0, 0);
-}
-
-Vector4 BaseRenderTexture::GetClearColor() {
-	return clearColor_;
-}
-
-D3D12_CPU_DESCRIPTOR_HANDLE BaseRenderTexture::GetRTVHandle() {
-	return MAGISYSTEM::GetRTVDescriptorHandleCPU(rtvIndex_);
-}
-
-ID3D12Resource* BaseRenderTexture::GetResource() {
-	return resource_.Get();
-}
-
 void BaseRenderTexture::Create(DXGI_FORMAT format, D3D12_RESOURCE_FLAGS resourceFlags, Vector4 clearColor) {
 	format_ = format;
 	resourceFlags_ = resourceFlags;
@@ -46,8 +25,51 @@ void BaseRenderTexture::Create(DXGI_FORMAT format, D3D12_RESOURCE_FLAGS resource
 	CreateSRV();
 }
 
+uint32_t BaseRenderTexture::GetRtvIndex() const {
+	return rtvIndex_;
+}
+
 uint32_t BaseRenderTexture::GetSrvIndex() const {
 	return srvIndex_;
+}
+
+
+ID3D12Resource* BaseRenderTexture::GetResource() {
+	return resource_.Get();
+}
+
+void BaseRenderTexture::TransitionToWrite() {
+	D3D12_RESOURCE_BARRIER barrier = {};
+	barrier.Type = D3D12_RESOURCE_BARRIER_TYPE_TRANSITION;
+	barrier.Transition.pResource = resource_.Get();
+	barrier.Transition.StateBefore = D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE;
+	barrier.Transition.StateAfter = D3D12_RESOURCE_STATE_RENDER_TARGET;
+	barrier.Transition.Subresource = D3D12_RESOURCE_BARRIER_ALL_SUBRESOURCES;
+	MAGISYSTEM::GetDirectXCommandList()->ResourceBarrier(1, &barrier);
+}
+
+void BaseRenderTexture::TransitionToRead() {
+	D3D12_RESOURCE_BARRIER barrier = {};
+	barrier.Type = D3D12_RESOURCE_BARRIER_TYPE_TRANSITION;
+	barrier.Transition.pResource = resource_.Get();
+	barrier.Transition.StateBefore = D3D12_RESOURCE_STATE_RENDER_TARGET;
+	barrier.Transition.StateAfter = D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE;
+	barrier.Transition.Subresource = D3D12_RESOURCE_BARRIER_ALL_SUBRESOURCES;
+	MAGISYSTEM::GetDirectXCommandList()->ResourceBarrier(1, &barrier);
+}
+
+void BaseRenderTexture::SetAsRenderTarget(D3D12_CPU_DESCRIPTOR_HANDLE dsv) {
+	D3D12_CPU_DESCRIPTOR_HANDLE rtvDescriptorHandle = MAGISYSTEM::GetRTVDescriptorHandleCPU(GetRtvIndex());
+	if (dsv.ptr == 0) {
+		MAGISYSTEM::GetDirectXCommandList()->OMSetRenderTargets(1, &rtvDescriptorHandle, FALSE, nullptr);
+	} else {
+		MAGISYSTEM::GetDirectXCommandList()->OMSetRenderTargets(1, &rtvDescriptorHandle, FALSE, &dsv);
+	}
+}
+
+void BaseRenderTexture::ClearRenderTarget() {
+	const float clear[] = { clearColor_.x, clearColor_.y, clearColor_.z, clearColor_.w };
+	MAGISYSTEM::GetDirectXCommandList()->ClearRenderTargetView(MAGISYSTEM::GetRTVDescriptorHandleCPU(GetRtvIndex()), clear, 0, nullptr);
 }
 
 void BaseRenderTexture::CreateResource() {
@@ -74,6 +96,7 @@ void BaseRenderTexture::CreateResource() {
 	clearValue.Color[3] = clearColor_.w;
 
 	// リソースの作成
+	HRESULT hr_ = S_FALSE;
 	resource_ = nullptr;
 	hr_ = MAGISYSTEM::GetDirectXDevice()->CreateCommittedResource(
 		&heapProperties,								// Heapの設定
@@ -99,3 +122,4 @@ void BaseRenderTexture::CreateSRV() {
 	// SRVを作成
 	MAGISYSTEM::CreateSrvTexture2D(srvIndex_, resource_.Get(), DXGI_FORMAT_R8G8B8A8_UNORM_SRGB, 1);
 }
+

@@ -1,12 +1,12 @@
-#include "SceneColorRenderTexture.h"
+#include "ColorRenderTexture.h"
 
-SceneColorRenderTexture::SceneColorRenderTexture() {
+ColorRenderTexture::ColorRenderTexture() {
 }
 
-SceneColorRenderTexture::~SceneColorRenderTexture() {
+ColorRenderTexture::~ColorRenderTexture() {
 }
 
-void SceneColorRenderTexture::Initialize() {
+void ColorRenderTexture::Initialize() {
 	// シーンカラー描画用の標準フォーマットで初期化
 	BaseRenderTexture::Create(
 		DXGI_FORMAT_R8G8B8A8_UNORM_SRGB,

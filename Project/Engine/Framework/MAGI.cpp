@@ -618,26 +618,6 @@ void MAGISYSTEM::Draw() {
 	//
 	sceneManager_->Draw();
 
-
-	// 
-	// Object3Dの描画前処理
-	// 
-	commandList->SetGraphicsRootSignature(graphicsPipelineManager_->GetRootSignature(GraphicsPipelineStateType::Object3D));
-	commandList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-
-	// 3Dオブジェクト描画処理
-	renderer3DManager_->Draw();
-
-
-	//
-	// Object3DGroupの描画前処理
-	//
-	commandList->SetGraphicsRootSignature(graphicsPipelineManager_->GetRootSignature(GraphicsPipelineStateType::Object3DGroup));
-	commandList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-
-	// 3Dオブジェクトグループの描画処理
-	gameObject3DGroupManager_->Draw();
-
 	// 
 	// LineDrawer3Dの描画処理
 	// 
@@ -660,17 +640,6 @@ void MAGISYSTEM::Draw() {
 	// ModelDrawerの描画処理
 	// 
 	modelDrawerManager_->DrawAll();
-
-	//
-	// ParticleGroup3Dの描画前処理
-	//
-	commandList->SetGraphicsRootSignature(graphicsPipelineManager_->GetRootSignature(GraphicsPipelineStateType::Particle3D));
-	commandList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-
-	//
-	// ParticleGroup3Dの描画処理
-	//
-	particleGroup3DManager_->Draw();
 
 
 	// 

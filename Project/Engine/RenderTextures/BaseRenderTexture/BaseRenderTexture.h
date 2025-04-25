@@ -25,13 +25,8 @@ public:
 	// 初期化
 	virtual void Initialize() = 0;
 
-	// 描画
-	void Draw();
-
-	// クリアカラーを取得
-	Vector4 GetClearColor();
-	// RTVCPUハンドルを取得
-	D3D12_CPU_DESCRIPTOR_HANDLE GetRTVHandle();
+	// RtvIndexを取得
+	uint32_t GetRtvIndex()const;
 
 	// SrvIndexを取得
 	uint32_t GetSrvIndex()const;
@@ -39,6 +34,14 @@ public:
 	// リソースを取得
 	ID3D12Resource* GetResource();
 
+	// バリアの状態を設定
+	void TransitionToWrite();
+	void TransitionToRead();
+
+	// 自身をレンダーターゲットにする
+	void SetAsRenderTarget(D3D12_CPU_DESCRIPTOR_HANDLE dsv);
+	// クリア
+	void ClearRenderTarget();
 protected:
 	void Create(DXGI_FORMAT format = DXGI_FORMAT_R8G8B8A8_UNORM_SRGB,
 		D3D12_RESOURCE_FLAGS resourceFlags = D3D12_RESOURCE_FLAG_ALLOW_RENDER_TARGET,
@@ -51,21 +54,17 @@ private:
 	void CreateRTV();
 	// SRVを作成
 	void CreateSRV();
+
 protected:
 	// レンダーテクスチャ用のリソース
 	ComPtr<ID3D12Resource> resource_ = nullptr;
 
-	DXGI_FORMAT format_;
-	D3D12_RESOURCE_FLAGS resourceFlags_;
-	Vector4 clearColor_;
+	DXGI_FORMAT format_{};
+	D3D12_RESOURCE_FLAGS resourceFlags_{};
+	Vector4 clearColor_{};
 
 	// RTVリソースのインデックス
 	uint32_t rtvIndex_ = 0;
 	// SRVリソースのインデックス
 	uint32_t srvIndex_ = 0;
-
-	// ブレンドモード
-	BlendMode blendMode_ = BlendMode::None;
-	// エラー判別君
-	HRESULT hr_ = S_FALSE;
 };
