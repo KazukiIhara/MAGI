@@ -6,12 +6,15 @@
 #include "RenderTextures/ColorRenderTexture/ColorRenderTexture.h"
 #include "Structs/PostEffectStruct.h"
 
+// 前方宣言
+class PostEffectPipelineManager;
+
 /// <summary>
 /// パイプライン管理クラス
 /// </summary>
 class RenderPipelineController {
 public:
-	RenderPipelineController();
+	RenderPipelineController(PostEffectPipelineManager* postEffectPipelineManager);
 	~RenderPipelineController();
 
 	// シーンを描画するための前準備
@@ -30,6 +33,12 @@ public:
 	// 今フレームのポストエフェクトのコマンドを詰む関数を下に追加していく
 	// 
 
+private:
+	void SetPostEffectPipelineManager(PostEffectPipelineManager* postEffectPipelineManager);
+
+private:
+	// ポストエフェクトパイプラインマネージャを受け取るクラス
+	PostEffectPipelineManager* postEffectPipelineManager_ = nullptr;
 private:
 	// シーンを描画するレンダーテクスチャ
 	std::unique_ptr<ColorRenderTexture> sceneRenderTexture_ = nullptr;

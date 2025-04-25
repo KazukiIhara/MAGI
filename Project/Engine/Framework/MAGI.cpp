@@ -92,6 +92,8 @@ std::unique_ptr<SceneManager<GameData>> MAGISYSTEM::sceneManager_ = nullptr;
 //
 std::unique_ptr<OffScreenRenderer> MAGISYSTEM::offScreenRenderer_ = nullptr;
 
+std::unique_ptr<RenderPipelineController> MAGISYSTEM::renderPipelineController_ = nullptr;
+
 //
 // Data入出力クラス
 //
@@ -222,6 +224,8 @@ void MAGISYSTEM::Initialize() {
 	// PostEffectSwitcher
 	offScreenRenderer_ = std::make_unique<OffScreenRenderer>(directXCommand_.get(), renderTarget_.get(), renderTextureManager_.get(), postEffectPipelineManager_.get());
 
+	// RenderPipelineController
+	renderPipelineController_ = std::make_unique<RenderPipelineController>(postEffectPipelineManager_.get());
 
 	// DataIO
 	dataIO_ = std::make_unique<DataIO>(renderer3DManager_.get(), colliderManager_.get(), gameObject3DManager_.get());
@@ -259,6 +263,11 @@ void MAGISYSTEM::Finalize() {
 	// DataIO
 	if (dataIO_) {
 		dataIO_.reset();
+	}
+
+	// RenderPipelineController
+	if (renderPipelineController_) {
+		renderPipelineController_.reset();
 	}
 
 	// PostEffectSwitcher

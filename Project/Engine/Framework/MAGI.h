@@ -45,6 +45,7 @@
 #include "DirectX/Viewport/Viewport.h"
 #include "DirectX/ScissorRect/ScissorRect.h"
 
+
 // 
 // AssetContainer
 // 
@@ -95,6 +96,11 @@
 // AppSystems
 //
 #include "OffScreenRenderer/OffScreenRenderer.h"
+
+//
+// RenderPipelineController
+//
+#include "RenderPipelineController/RenderPipelineController.h"
 
 // 
 // Data入出力クラス
@@ -626,6 +632,8 @@ protected:
 	// AppSystems
 	//
 	static std::unique_ptr<OffScreenRenderer> offScreenRenderer_;
+
+	static std::unique_ptr<RenderPipelineController> renderPipelineController_;
 
 	//
 	// Data入出力クラス
