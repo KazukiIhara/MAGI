@@ -225,7 +225,7 @@ void MAGISYSTEM::Initialize() {
 	offScreenRenderer_ = std::make_unique<OffScreenRenderer>(directXCommand_.get(), renderTarget_.get(), renderTextureManager_.get(), postEffectPipelineManager_.get());
 
 	// RenderPipelineController
-	renderPipelineController_ = std::make_unique<RenderController>(directXCommand_.get(),depthStencil_.get(),viewport_.get(),scissorRect_.get(), postEffectPipelineManager_.get());
+	renderPipelineController_ = std::make_unique<RenderController>(directXCommand_.get(), depthStencil_.get(), viewport_.get(), scissorRect_.get(), postEffectPipelineManager_.get());
 
 	// DataIO
 	dataIO_ = std::make_unique<DataIO>(renderer3DManager_.get(), colliderManager_.get(), gameObject3DManager_.get());
@@ -642,32 +642,30 @@ void MAGISYSTEM::Draw() {
 	// 
 	modelDrawerManager_->DrawAll();
 
-
 	// シーンの描画後処理
 	renderPipelineController_->PostSceneRender();
 
-	// スワップチェーンのリソースを描画前の状態に
-	resourceBarrier_->PreDrawSwapChainResourceBarrierTransition();
+	// スワップチェーン前最終描画
+	renderPipelineController_->RenderToFinalRenderTexture();
 
-	// レンダーターゲットを設定
-	renderTarget_->SetRenderTarget(RenderTargetType::SwapChain);
-	// 画面をクリア
-	renderTarget_->ClearRenderTarget(RenderTargetType::SwapChain);
+
+
+	// スワップチェーンを書き込み可能の状態に
+	swapChain_->TransitionToWrite();
+
+	// スワップチェーンをレンダーターゲットに
+	swapChain_->SetAsRenderTarget();
+
+	// スワップチェーンをクリア
+	swapChain_->ClearRenderTarget();
+
 	// ビューポートの設定
 	viewport_->SettingViewport();
 	// シザー矩形の設定
 	scissorRect_->SettingScissorRect();
 
-
-	// UI描画フラグによって処理を変更
-	if (gui_->GetIsShowMainUI()) {
-		// エンジンUIを描画
-		gui_->ShowMainUI();
-	} else {
-		// RenderTextureをSwapChainに描画
-		offScreenRenderer_->DrawCurrentRenderTexture();
-	}
-
+	// レンダーコントローラのフレーム終了処理
+	renderPipelineController_->EndFrame();
 
 	//
 	// ImGui描画処理
@@ -678,9 +676,8 @@ void MAGISYSTEM::Draw() {
 	// 描画
 	imguiController_->Draw();
 
-	// リソースバリアを描画後の状態にする
-	resourceBarrier_->PostDrawRenderTextureResourceBarrierTransition();
-	resourceBarrier_->PostDrawSwapChainResourceBarrierTransition();
+	// スワップチェーンをプレゼント状態に遷移	
+	swapChain_->TransitionToPresent();
 
 	// コマンドを閉じて実行
 	directXCommand_->KickCommand();

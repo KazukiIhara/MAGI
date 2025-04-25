@@ -37,7 +37,7 @@ public:
 	void ApplyPostEffect();
 
 	// 最終描画用のテクスチャに描画
-	void FinalRender();
+	void RenderToFinalRenderTexture();
 
 	// フレーム終了処理
 	void EndFrame();

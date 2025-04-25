@@ -52,7 +52,7 @@ void RenderController::ApplyPostEffect() {
 
 }
 
-void RenderController::FinalRender() {
+void RenderController::RenderToFinalRenderTexture() {
 	// レンダーターゲットを最終描画用のレンダーテクスチャに指定
 	finalRenderTexture_->SetAsRenderTarget();
 	finalRenderTexture_->ClearRenderTarget();
@@ -60,6 +60,13 @@ void RenderController::FinalRender() {
 	viewport_->SettingViewport();
 	// シザー矩形の設定
 	scissorRect_->SettingScissorRect();
+	
+	// 最終レンダーテクスチャに描画
+	
+
+	// 最終レンダーテクスチャを読み取り可能状態にする
+	finalRenderTexture_->TransitionToRead();
+
 }
 
 void RenderController::EndFrame() {

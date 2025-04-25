@@ -34,7 +34,7 @@ public:
 
 	// バリアの状態を設定
 	void TransitionToWrite();
-	void TransitionToRead();
+	void TransitionToPresent();
 
 	// 自身をレンダーターゲットにする
 	void SetAsRenderTarget(D3D12_CPU_DESCRIPTOR_HANDLE dsv = {});
