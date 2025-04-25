@@ -92,7 +92,7 @@ std::unique_ptr<SceneManager<GameData>> MAGISYSTEM::sceneManager_ = nullptr;
 //
 std::unique_ptr<OffScreenRenderer> MAGISYSTEM::offScreenRenderer_ = nullptr;
 
-std::unique_ptr<RenderPipelineController> MAGISYSTEM::renderPipelineController_ = nullptr;
+std::unique_ptr<RenderController> MAGISYSTEM::renderPipelineController_ = nullptr;
 
 //
 // Data入出力クラス
@@ -225,7 +225,7 @@ void MAGISYSTEM::Initialize() {
 	offScreenRenderer_ = std::make_unique<OffScreenRenderer>(directXCommand_.get(), renderTarget_.get(), renderTextureManager_.get(), postEffectPipelineManager_.get());
 
 	// RenderPipelineController
-	renderPipelineController_ = std::make_unique<RenderPipelineController>(directXCommand_.get(),depthStencil_.get(),viewport_.get(),scissorRect_.get(), postEffectPipelineManager_.get());
+	renderPipelineController_ = std::make_unique<RenderController>(directXCommand_.get(),depthStencil_.get(),viewport_.get(),scissorRect_.get(), postEffectPipelineManager_.get());
 
 	// DataIO
 	dataIO_ = std::make_unique<DataIO>(renderer3DManager_.get(), colliderManager_.get(), gameObject3DManager_.get());
@@ -601,15 +601,7 @@ void MAGISYSTEM::Draw() {
 	// DirectX描画前処理
 	// 
 
-	// レンダーターゲットをセット、クリア
-	offScreenRenderer_->SetClearRenderTarget();
-
-	// 深度をクリア
-	depthStencil_->ClearDepthView();
-	// ビューポートの設定
-	viewport_->SettingViewport();
-	// シザー矩形の設定
-	scissorRect_->SettingScissorRect();
+	renderPipelineController_->PreSceneRender();
 
 	// コマンドリスト取得
 	ID3D12GraphicsCommandList* commandList = directXCommand_->GetList();
@@ -651,15 +643,11 @@ void MAGISYSTEM::Draw() {
 	modelDrawerManager_->DrawAll();
 
 
-	// 
-	// UI描画切り替え
-	// 
+	// シーンの描画後処理
+	renderPipelineController_->PostSceneRender();
 
-
-	// リソースバリアを設定
-	resourceBarrier_->PreDrawRenderTextureResourceBarrierTransition();
+	// スワップチェーンのリソースを描画前の状態に
 	resourceBarrier_->PreDrawSwapChainResourceBarrierTransition();
-
 
 	// レンダーターゲットを設定
 	renderTarget_->SetRenderTarget(RenderTargetType::SwapChain);

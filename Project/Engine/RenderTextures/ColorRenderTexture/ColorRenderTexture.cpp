@@ -13,4 +13,6 @@ void ColorRenderTexture::Initialize() {
 		D3D12_RESOURCE_FLAG_ALLOW_RENDER_TARGET,
 		Vector4(0.0f, 0.0f, 0.0f, 1.0f)
 	);
+	// 初期設定は書き込みの状態にする
+	TransitionToWrite();
 }

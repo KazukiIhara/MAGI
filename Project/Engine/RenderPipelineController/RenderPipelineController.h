@@ -16,19 +16,22 @@ class PostEffectPipelineManager;
 /// <summary>
 /// パイプライン管理クラス
 /// </summary>
-class RenderPipelineController {
+class RenderController {
 public:
-	RenderPipelineController(
+	RenderController(
 		DirectXCommand* directXCommand,
 		DepthStencil* depthStencil,
 		Viewport* viewport,
 		ScissorRect* scissorRect,
 		PostEffectPipelineManager* postEffectPipelineManager
 	);
-	~RenderPipelineController();
+	~RenderController();
 
 	// シーンを描画するための前準備
-	void PreRender();
+	void PreSceneRender();
+
+	// シーン描画後の処理
+	void PostSceneRender();
 
 	// ポストエフェクトをpingPong方式でかけていく
 	void ApplyPostEffect();
@@ -58,6 +61,9 @@ private:
 	ScissorRect* scissorRect_ = nullptr;
 	PostEffectPipelineManager* postEffectPipelineManager_ = nullptr;
 private:
+	// 現在描画中のレンダーテクスチャのポインタ
+	BaseRenderTexture* currentRenderTexture_ = nullptr;
+
 	// シーンを描画するレンダーテクスチャ
 	std::unique_ptr<ColorRenderTexture> sceneRenderTexture_ = nullptr;
 	// 最終描画用のレンダーテクスチャ

@@ -9,57 +9,86 @@
 #include "PipelineManagers/PostEffectPipelineManager/PostEffectPipelineManager.h"
 
 
-RenderPipelineController::RenderPipelineController(DirectXCommand* directXCommand, DepthStencil* depthStencil, Viewport* viewport, ScissorRect* scissorRect, PostEffectPipelineManager* postEffectPipelineManager) {
+RenderController::RenderController(DirectXCommand* directXCommand, DepthStencil* depthStencil, Viewport* viewport, ScissorRect* scissorRect, PostEffectPipelineManager* postEffectPipelineManager) {
+	// インスタンスを受け取る
 	SetDirectXCommand(directXCommand);
 	SetDepthStencil(depthStencil);
 	SetViewport(viewport);
 	SetScissorRect(scissorRect);
 	SetPostEffectPipelineManager(postEffectPipelineManager);
 
+	// シーン描画用のレンダーテクスチャ
+	sceneRenderTexture_ = std::make_unique<ColorRenderTexture>();
+	sceneRenderTexture_->Initialize();
+
+	// 最終描画用のレンダーテクスチャ
+	finalRenderTexture_ = std::make_unique<ColorRenderTexture>();
+	finalRenderTexture_->Initialize();
 
 }
 
-RenderPipelineController::~RenderPipelineController() {
+RenderController::~RenderController() {
 
 }
 
-void RenderPipelineController::PreRender() {
+void RenderController::PreSceneRender() {
+	// レンダーターゲットをシーン描画用のレンダーテクスチャに指定
+	sceneRenderTexture_->SetAsRenderTarget(depthStencil_->GetDepthStencilResorceCPUHandle());
+	sceneRenderTexture_->ClearRenderTarget();
+	// 深度をクリア
+	depthStencil_->ClearDepthView();
+	// ビューポートの設定
+	viewport_->SettingViewport();
+	// シザー矩形の設定
+	scissorRect_->SettingScissorRect();
+}
+
+void RenderController::PostSceneRender() {
+	// シーン描画用のレンダーターゲットを読み取り状態に
+	sceneRenderTexture_->TransitionToRead();
+}
+
+void RenderController::ApplyPostEffect() {
 
 }
 
-void RenderPipelineController::ApplyPostEffect() {
-
+void RenderController::FinalRender() {
+	// レンダーターゲットを最終描画用のレンダーテクスチャに指定
+	finalRenderTexture_->SetAsRenderTarget();
+	finalRenderTexture_->ClearRenderTarget();
+	// ビューポートの設定
+	viewport_->SettingViewport();
+	// シザー矩形の設定
+	scissorRect_->SettingScissorRect();
 }
 
-void RenderPipelineController::FinalRender() {
-
+void RenderController::EndFrame() {
+	// 次のフレーム用に書き込み可能状態にする
+	sceneRenderTexture_->TransitionToWrite();
+	finalRenderTexture_->TransitionToWrite();
 }
 
-void RenderPipelineController::EndFrame() {
-
-}
-
-void RenderPipelineController::SetDirectXCommand(DirectXCommand* directXCommand) {
+void RenderController::SetDirectXCommand(DirectXCommand* directXCommand) {
 	assert(directXCommand);
 	directXCommand_ = directXCommand;
 }
 
-void RenderPipelineController::SetDepthStencil(DepthStencil* depthStencil) {
+void RenderController::SetDepthStencil(DepthStencil* depthStencil) {
 	assert(depthStencil);
 	depthStencil_ = depthStencil;
 }
 
-void RenderPipelineController::SetViewport(Viewport* viewport) {
+void RenderController::SetViewport(Viewport* viewport) {
 	assert(viewport);
 	viewport_ = viewport;
 }
 
-void RenderPipelineController::SetScissorRect(ScissorRect* scissorRect) {
+void RenderController::SetScissorRect(ScissorRect* scissorRect) {
 	assert(scissorRect);
 	scissorRect_ = scissorRect;
 }
 
-void RenderPipelineController::SetPostEffectPipelineManager(PostEffectPipelineManager* postEffectPipelineManager) {
+void RenderController::SetPostEffectPipelineManager(PostEffectPipelineManager* postEffectPipelineManager) {
 	assert(postEffectPipelineManager);
 	postEffectPipelineManager_ = postEffectPipelineManager;
 }

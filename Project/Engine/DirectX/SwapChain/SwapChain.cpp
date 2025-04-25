@@ -32,6 +32,9 @@ void SwapChain::Initialize(WindowApp* windowApp, DXGI* dxgi, DirectXCommand* com
 	CreateResources();
 	// RTVを作成
 	CreateRTV();
+
+	// クリアカラーを設定
+	clearColor_ = { 0.0f,0.0f,0.0f,1.0f };
 }
 
 void SwapChain::Present() {
@@ -46,6 +49,41 @@ ID3D12Resource* SwapChain::GetCurrentBackBufferResource() {
 D3D12_CPU_DESCRIPTOR_HANDLE SwapChain::GetCurrentBackBufferRTVHandle() {
 	backBufferIndex_ = swapChain_->GetCurrentBackBufferIndex();
 	return rtvManager_->GetDescriptorHandleCPU(rtvIndex_[backBufferIndex_]);
+}
+
+void SwapChain::TransitionToWrite() {
+	D3D12_RESOURCE_BARRIER barrier = {};
+	barrier.Type = D3D12_RESOURCE_BARRIER_TYPE_TRANSITION;
+	barrier.Transition.pResource = GetCurrentBackBufferResource();
+	barrier.Transition.StateBefore = D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE;
+	barrier.Transition.StateAfter = D3D12_RESOURCE_STATE_RENDER_TARGET;
+	barrier.Transition.Subresource = D3D12_RESOURCE_BARRIER_ALL_SUBRESOURCES;
+	directXCommand_->GetList()->ResourceBarrier(1, &barrier);
+}
+
+void SwapChain::TransitionToRead() {
+	D3D12_RESOURCE_BARRIER barrier = {};
+	barrier.Type = D3D12_RESOURCE_BARRIER_TYPE_TRANSITION;
+	barrier.Transition.pResource = GetCurrentBackBufferResource();
+	barrier.Transition.StateBefore = D3D12_RESOURCE_STATE_RENDER_TARGET;
+	barrier.Transition.StateAfter = D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE;
+	barrier.Transition.Subresource = D3D12_RESOURCE_BARRIER_ALL_SUBRESOURCES;
+	directXCommand_->GetList()->ResourceBarrier(1, &barrier);
+}
+
+void SwapChain::SetAsRenderTarget(D3D12_CPU_DESCRIPTOR_HANDLE dsv) {
+	D3D12_CPU_DESCRIPTOR_HANDLE rtvDescriptorHandle = rtvManager_->GetDescriptorHandleCPU(rtvIndex_[backBufferIndex_]);
+	if (dsv.ptr == 0) {
+		directXCommand_->GetList()->OMSetRenderTargets(1, &rtvDescriptorHandle, FALSE, nullptr);
+	} else {
+		directXCommand_->GetList()->OMSetRenderTargets(1, &rtvDescriptorHandle, FALSE, &dsv);
+	}
+}
+
+void SwapChain::ClearRenderTarget() {
+	D3D12_CPU_DESCRIPTOR_HANDLE rtvDescriptorHandle = rtvManager_->GetDescriptorHandleCPU(rtvIndex_[backBufferIndex_]);
+	const float clear[] = { clearColor_.x, clearColor_.y, clearColor_.z, clearColor_.w };
+	directXCommand_->GetList()->ClearRenderTargetView(rtvDescriptorHandle, clear, 0, nullptr);
 }
 
 void SwapChain::CreateSwapChain() {

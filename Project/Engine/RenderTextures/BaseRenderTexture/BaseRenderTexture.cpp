@@ -59,7 +59,7 @@ void BaseRenderTexture::TransitionToRead() {
 }
 
 void BaseRenderTexture::SetAsRenderTarget(D3D12_CPU_DESCRIPTOR_HANDLE dsv) {
-	D3D12_CPU_DESCRIPTOR_HANDLE rtvDescriptorHandle = MAGISYSTEM::GetRTVDescriptorHandleCPU(GetRtvIndex());
+	D3D12_CPU_DESCRIPTOR_HANDLE rtvDescriptorHandle = MAGISYSTEM::GetRTVDescriptorHandleCPU(rtvIndex_);
 	if (dsv.ptr == 0) {
 		MAGISYSTEM::GetDirectXCommandList()->OMSetRenderTargets(1, &rtvDescriptorHandle, FALSE, nullptr);
 	} else {
@@ -69,7 +69,7 @@ void BaseRenderTexture::SetAsRenderTarget(D3D12_CPU_DESCRIPTOR_HANDLE dsv) {
 
 void BaseRenderTexture::ClearRenderTarget() {
 	const float clear[] = { clearColor_.x, clearColor_.y, clearColor_.z, clearColor_.w };
-	MAGISYSTEM::GetDirectXCommandList()->ClearRenderTargetView(MAGISYSTEM::GetRTVDescriptorHandleCPU(GetRtvIndex()), clear, 0, nullptr);
+	MAGISYSTEM::GetDirectXCommandList()->ClearRenderTargetView(MAGISYSTEM::GetRTVDescriptorHandleCPU(rtvIndex_), clear, 0, nullptr);
 }
 
 void BaseRenderTexture::CreateResource() {
@@ -79,7 +79,7 @@ void BaseRenderTexture::CreateResource() {
 	resourceDesc.Height = UINT(WindowApp::kClientHeight);				// Textureの高さ
 	resourceDesc.Format = format_;										// TextureのFormat
 	resourceDesc.SampleDesc.Count = 1;									// サンプリングカウント。1固定
-	resourceDesc.Flags = resourceFlags_;		// renderTargetとして利用可能にする
+	resourceDesc.Flags = resourceFlags_;								// renderTargetとして利用可能にする
 	resourceDesc.DepthOrArraySize = 1;
 	resourceDesc.Dimension = D3D12_RESOURCE_DIMENSION_TEXTURE2D;
 

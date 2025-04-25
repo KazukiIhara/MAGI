@@ -39,7 +39,7 @@ public:
 	void TransitionToRead();
 
 	// 自身をレンダーターゲットにする
-	void SetAsRenderTarget(D3D12_CPU_DESCRIPTOR_HANDLE dsv);
+	void SetAsRenderTarget(D3D12_CPU_DESCRIPTOR_HANDLE dsv = {});
 	// クリア
 	void ClearRenderTarget();
 protected:
@@ -59,8 +59,11 @@ protected:
 	// レンダーテクスチャ用のリソース
 	ComPtr<ID3D12Resource> resource_ = nullptr;
 
+	// フォーマット
 	DXGI_FORMAT format_{};
+	// リソースフラグ
 	D3D12_RESOURCE_FLAGS resourceFlags_{};
+	// クリアカラー
 	Vector4 clearColor_{};
 
 	// RTVリソースのインデックス

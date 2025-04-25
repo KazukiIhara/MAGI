@@ -633,7 +633,7 @@ protected:
 	//
 	static std::unique_ptr<OffScreenRenderer> offScreenRenderer_;
 
-	static std::unique_ptr<RenderPipelineController> renderPipelineController_;
+	static std::unique_ptr<RenderController> renderPipelineController_;
 
 	//
 	// Data入出力クラス
