@@ -6,15 +6,17 @@
 #include "DirectX/DepthStencil/DepthStencil.h"
 #include "DirectX/Viewport/Viewport.h"
 #include "DirectX/ScissorRect/ScissorRect.h"
+#include "ViewManagers/SRVUAVManager/SRVUAVManager.h"
 #include "PipelineManagers/PostEffectPipelineManager/PostEffectPipelineManager.h"
 
 
-RenderController::RenderController(DirectXCommand* directXCommand, DepthStencil* depthStencil, Viewport* viewport, ScissorRect* scissorRect, PostEffectPipelineManager* postEffectPipelineManager) {
+RenderController::RenderController(DirectXCommand* directXCommand, DepthStencil* depthStencil, Viewport* viewport, ScissorRect* scissorRect, SRVUAVManager* srvUavManager, PostEffectPipelineManager* postEffectPipelineManager) {
 	// インスタンスを受け取る
 	SetDirectXCommand(directXCommand);
 	SetDepthStencil(depthStencil);
 	SetViewport(viewport);
 	SetScissorRect(scissorRect);
+	SetSrvUavManager(srvUavManager);
 	SetPostEffectPipelineManager(postEffectPipelineManager);
 
 	// シーン描画用のレンダーテクスチャ
@@ -24,7 +26,6 @@ RenderController::RenderController(DirectXCommand* directXCommand, DepthStencil*
 	// 最終描画用のレンダーテクスチャ
 	finalRenderTexture_ = std::make_unique<ColorRenderTexture>();
 	finalRenderTexture_->Initialize();
-
 }
 
 RenderController::~RenderController() {
@@ -66,12 +67,12 @@ void RenderController::RenderToFinalRenderTexture() {
 
 	// 最終レンダーテクスチャに描画
 	// ルートシグネイチャを設定
-	commandList->SetGraphicsRootSignature(postEffectPipelineManager_->GetRootSignature(PostEffectPipelineStateType::None));
+	commandList->SetGraphicsRootSignature(postEffectPipelineManager_->GetRootSignature(PostEffectPipelineStateType::Copy));
 	// PSOを設定
-	commandList->SetPipelineState(postEffectPipelineManager_->GetPipelineState(PostEffectPipelineStateType::None, BlendMode::None));
+	commandList->SetPipelineState(postEffectPipelineManager_->GetPipelineState(PostEffectPipelineStateType::Copy, BlendMode::None));
 
 	// ディスクリプタハンドルを指定
-	commandList->SetGraphicsRootDescriptorTable(0, );
+	commandList->SetGraphicsRootDescriptorTable(0, srvUavManager_->GetDescriptorHandleGPU(finalRenderTexture_->GetSrvIndex()));
 
 	// 最終レンダーテクスチャを読み取り可能状態にする
 	finalRenderTexture_->TransitionToRead();
@@ -102,6 +103,11 @@ void RenderController::SetViewport(Viewport* viewport) {
 void RenderController::SetScissorRect(ScissorRect* scissorRect) {
 	assert(scissorRect);
 	scissorRect_ = scissorRect;
+}
+
+void RenderController::SetSrvUavManager(SRVUAVManager* srvUavManager) {
+	assert(srvUavManager);
+	srvUavManager_ = srvUavManager;
 }
 
 void RenderController::SetPostEffectPipelineManager(PostEffectPipelineManager* postEffectPipelineManager) {

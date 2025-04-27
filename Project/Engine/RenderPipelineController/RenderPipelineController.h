@@ -11,10 +11,11 @@ class DirectXCommand;
 class DepthStencil;
 class Viewport;
 class ScissorRect;
+class SRVUAVManager;
 class PostEffectPipelineManager;
 
 /// <summary>
-/// パイプライン管理クラス
+/// 描画管理クラス
 /// </summary>
 class RenderController {
 public:
@@ -23,6 +24,7 @@ public:
 		DepthStencil* depthStencil,
 		Viewport* viewport,
 		ScissorRect* scissorRect,
+		SRVUAVManager* srvUavManager,
 		PostEffectPipelineManager* postEffectPipelineManager
 	);
 	~RenderController();
@@ -51,6 +53,7 @@ private:
 	void SetDepthStencil(DepthStencil* depthStencil);
 	void SetViewport(Viewport* viewport);
 	void SetScissorRect(ScissorRect* scissorRect);
+	void SetSrvUavManager(SRVUAVManager* srvUavManager);
 	void SetPostEffectPipelineManager(PostEffectPipelineManager* postEffectPipelineManager);
 
 private:
@@ -59,6 +62,7 @@ private:
 	DepthStencil* depthStencil_ = nullptr;
 	Viewport* viewport_ = nullptr;
 	ScissorRect* scissorRect_ = nullptr;
+	SRVUAVManager* srvUavManager_ = nullptr;
 	PostEffectPipelineManager* postEffectPipelineManager_ = nullptr;
 private:
 	// 現在描画中のレンダーテクスチャのポインタ

@@ -7,7 +7,7 @@
 /// ポストエフェクトパイプラインの種類
 /// </summary>
 enum class PostEffectPipelineStateType {
-	None, // ポストエフェクトなし
+	Copy, // ポストエフェクトなし
 	Grayscale, // グレースケール
 
 	Num,

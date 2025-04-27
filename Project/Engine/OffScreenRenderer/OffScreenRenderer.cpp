@@ -34,7 +34,7 @@ void OffScreenRenderer::SetClearRenderTarget() {
 	RenderTargetType renderTargetType{};
 	// ポストエフェクトに応じて最適なレンダーテクスチャを選択
 	switch (currentPostEffect_) {
-		case PostEffectPipelineStateType::None:
+		case PostEffectPipelineStateType::Copy:
 			renderTargetType = RenderTargetType::SimpleRenderTexture;
 			break;
 		case PostEffectPipelineStateType::Grayscale:
@@ -58,7 +58,7 @@ void OffScreenRenderer::DrawCurrentRenderTexture() {
 
 	// ポストエフェクトに応じて最適なレンダーテクスチャを選択
 	switch (currentPostEffect_) {
-		case PostEffectPipelineStateType::None:
+		case PostEffectPipelineStateType::Copy:
 			currentRenderTextureType_ = RenderTextureType::SceneColor;
 			break;
 		case PostEffectPipelineStateType::Grayscale:

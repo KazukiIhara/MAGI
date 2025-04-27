@@ -38,7 +38,7 @@ private:
 	void SetPostEffectPipelineManager(PostEffectPipelineManager* postEffectPipelineManger);
 private:
 	// 現在のポストエフェクト
-	PostEffectPipelineStateType currentPostEffect_ = PostEffectPipelineStateType::None;
+	PostEffectPipelineStateType currentPostEffect_ = PostEffectPipelineStateType::Copy;
 	RenderTextureType currentRenderTextureType_{};
 private:
 	DirectXCommand* directXCommand_ = nullptr;

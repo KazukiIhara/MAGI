@@ -92,7 +92,7 @@ std::unique_ptr<SceneManager<GameData>> MAGISYSTEM::sceneManager_ = nullptr;
 //
 std::unique_ptr<OffScreenRenderer> MAGISYSTEM::offScreenRenderer_ = nullptr;
 
-std::unique_ptr<RenderController> MAGISYSTEM::renderPipelineController_ = nullptr;
+std::unique_ptr<RenderController> MAGISYSTEM::renderController_ = nullptr;
 
 //
 // Data入出力クラス
@@ -225,7 +225,7 @@ void MAGISYSTEM::Initialize() {
 	offScreenRenderer_ = std::make_unique<OffScreenRenderer>(directXCommand_.get(), renderTarget_.get(), renderTextureManager_.get(), postEffectPipelineManager_.get());
 
 	// RenderPipelineController
-	renderPipelineController_ = std::make_unique<RenderController>(directXCommand_.get(), depthStencil_.get(), viewport_.get(), scissorRect_.get(), postEffectPipelineManager_.get());
+	renderController_ = std::make_unique<RenderController>(directXCommand_.get(), depthStencil_.get(), viewport_.get(), scissorRect_.get(), srvuavManager_.get(), postEffectPipelineManager_.get());
 
 	// DataIO
 	dataIO_ = std::make_unique<DataIO>(renderer3DManager_.get(), colliderManager_.get(), gameObject3DManager_.get());
@@ -265,9 +265,9 @@ void MAGISYSTEM::Finalize() {
 		dataIO_.reset();
 	}
 
-	// RenderPipelineController
-	if (renderPipelineController_) {
-		renderPipelineController_.reset();
+	// RenderController
+	if (renderController_) {
+		renderController_.reset();
 	}
 
 	// PostEffectSwitcher
@@ -601,7 +601,7 @@ void MAGISYSTEM::Draw() {
 	// DirectX描画前処理
 	// 
 
-	renderPipelineController_->PreSceneRender();
+	renderController_->PreSceneRender();
 
 	// コマンドリスト取得
 	ID3D12GraphicsCommandList* commandList = directXCommand_->GetList();
@@ -643,11 +643,10 @@ void MAGISYSTEM::Draw() {
 	modelDrawerManager_->DrawAll();
 
 	// シーンの描画後処理
-	renderPipelineController_->PostSceneRender();
+	renderController_->PostSceneRender();
 
 	// スワップチェーン前最終描画
-	renderPipelineController_->RenderToFinalRenderTexture();
-
+	renderController_->RenderToFinalRenderTexture();
 
 
 	// スワップチェーンを書き込み可能の状態に
@@ -665,7 +664,7 @@ void MAGISYSTEM::Draw() {
 	scissorRect_->SettingScissorRect();
 
 	// レンダーコントローラのフレーム終了処理
-	renderPipelineController_->EndFrame();
+	renderController_->EndFrame();
 
 	//
 	// ImGui描画処理
