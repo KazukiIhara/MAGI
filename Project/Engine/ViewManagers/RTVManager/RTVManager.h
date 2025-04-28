@@ -15,5 +15,5 @@ private:
 	void CreateDescriptorHeap()override;
 private:
 	// 最大RTV数
-	const uint32_t kMaxRTVCount = 3;
+	const uint32_t kMaxRTVCount = 64;
 };

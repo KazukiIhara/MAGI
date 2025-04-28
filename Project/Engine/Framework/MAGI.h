@@ -30,20 +30,14 @@
 #include "ViewManagers/DSVManager/DSVManager.h"
 #include "ViewManagers/SRVUAVManager/SRVUAVManager.h"
 
-//
-// RenderTextureManager
-//
-#include "RenderTextureManager/RenderTextureManager.h"
-
 // 
 // DirectXRenderSystems
 // 
 #include "DirectX/SwapChain/SwapChain.h"
 #include "DirectX/DepthStencil/DepthStencil.h"
-#include "DirectX/ResourceBarrier/ResourceBarrier.h"
-#include "DirectX/RenderTarget/RenderTarget.h"
 #include "DirectX/Viewport/Viewport.h"
 #include "DirectX/ScissorRect/ScissorRect.h"
+
 
 // 
 // AssetContainer
@@ -91,10 +85,11 @@
 #include "CollisionManager/CollisionManager.h"
 #include "SceneManager/SceneManager.h"
 
+
 //
-// AppSystems
+// RenderPipelineController
 //
-#include "OffScreenRenderer/OffScreenRenderer.h"
+#include "RenderPipelineController/RenderPipelineController.h"
 
 // 
 // Data入出力クラス
@@ -561,18 +556,11 @@ protected:
 	static std::unique_ptr<DSVManager> dsvManager_;
 	static std::unique_ptr<SRVUAVManager> srvuavManager_;
 
-	//
-	// RenderTextureManager
-	//
-	static std::unique_ptr<RenderTextureManager> renderTextureManager_;
-
 	// 
 	// DirectXRenderSystems
 	// 
 	static std::unique_ptr<SwapChain> swapChain_;
 	static std::unique_ptr<DepthStencil> depthStencil_;
-	static std::unique_ptr<ResourceBarrier> resourceBarrier_;
-	static std::unique_ptr<RenderTarget> renderTarget_;
 	static std::unique_ptr<Viewport> viewport_;
 	static std::unique_ptr<ScissorRect> scissorRect_;
 
@@ -625,7 +613,7 @@ protected:
 	//
 	// AppSystems
 	//
-	static std::unique_ptr<OffScreenRenderer> offScreenRenderer_;
+	static std::unique_ptr<RenderController> renderController_;
 
 	//
 	// Data入出力クラス

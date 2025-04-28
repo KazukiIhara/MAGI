@@ -11,6 +11,7 @@
 
 // 自作ファイル
 #include "DirectX/ComPtr/ComPtr.h"
+#include "Math/Types/Vector4.h"
 
 // 前方宣言
 class WindowApp;
@@ -30,6 +31,15 @@ public:
 	ID3D12Resource* GetCurrentBackBufferResource();
 	// 描画先のRTVハンドルを取得
 	D3D12_CPU_DESCRIPTOR_HANDLE GetCurrentBackBufferRTVHandle();
+
+	// バリアの状態を設定
+	void TransitionToWrite();
+	void TransitionToPresent();
+
+	// 自身をレンダーターゲットにする
+	void SetAsRenderTarget(D3D12_CPU_DESCRIPTOR_HANDLE dsv = {});
+	// クリア
+	void ClearRenderTarget();
 private:
 	// スワップチェーン作成
 	void CreateSwapChain();
@@ -56,6 +66,8 @@ private:
 	uint32_t rtvIndex_[2]{};
 	// バックバッファインデックス
 	UINT backBufferIndex_ = 0;
+	// クリアカラー
+	Vector4 clearColor_{};
 	// エラー判別君
 	HRESULT hr_ = S_FALSE;
 private:

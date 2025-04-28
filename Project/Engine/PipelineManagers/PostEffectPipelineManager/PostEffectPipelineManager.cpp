@@ -21,8 +21,8 @@ void PostEffectPipelineManager::Initialize(DXGI* dxgi, ShaderCompiler* shaderCom
 	// Noneのパイプラインを生成、初期化
 	nonePostEffectPipeline_ = std::make_unique<NonePostEffectPipeline>(dxgi, shaderCompiler);
 	nonePostEffectPipeline_->Initialize();
-	SetRootSignature(PostEffectPipelineStateType::None);
-	SetPipelineState(PostEffectPipelineStateType::None);
+	SetRootSignature(PostEffectPipelineStateType::Copy);
+	SetPipelineState(PostEffectPipelineStateType::Copy);
 
 	// Grayscaleのパイプラインを生成、初期化
 	grayscalePostEffectPipeline_ = std::make_unique<GrayscalePostEffectPipeline>(dxgi, shaderCompiler);
@@ -43,7 +43,7 @@ ID3D12PipelineState* PostEffectPipelineManager::GetPipelineState(PostEffectPipel
 void PostEffectPipelineManager::SetRootSignature(PostEffectPipelineStateType pipelineState) {
 	// パイプラインごとに対応するルートシグネイチャを設定
 	switch (pipelineState) {
-		case PostEffectPipelineStateType::None:
+		case PostEffectPipelineStateType::Copy:
 			rootSignatures_[static_cast<uint32_t>(pipelineState)] = nonePostEffectPipeline_->GetRootSignature();
 			break;
 		case PostEffectPipelineStateType::Grayscale:
@@ -55,7 +55,7 @@ void PostEffectPipelineManager::SetRootSignature(PostEffectPipelineStateType pip
 void PostEffectPipelineManager::SetPipelineState(PostEffectPipelineStateType pipelineState) {
 	// パイプラインごとに対応するパイプラインステートを設定
 	switch (pipelineState) {
-		case PostEffectPipelineStateType::None:
+		case PostEffectPipelineStateType::Copy:
 			for (int mode = static_cast<uint32_t>(BlendMode::None); mode < static_cast<uint32_t>(BlendMode::Num); ++mode) {
 				postEffectPipelineStates_[static_cast<uint32_t>(pipelineState)][mode] = nonePostEffectPipeline_->GetPipelineState(static_cast<BlendMode>(mode));
 			}
