@@ -35,9 +35,6 @@ public:
 	// 更新処理の最後に呼び出す処理
 	void EndFrame();
 
-	// 描画
-	void Draw();
-
 	// ImGuiの終了処理
 	void Finalize();
 

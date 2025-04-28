@@ -18,19 +18,23 @@ class WindowApp;
 class DXGI;
 class DirectXCommand;
 class RTVManager;
+class Viewport;
+class ScissorRect;
 
 class SwapChain {
 public:
-	SwapChain(WindowApp* windowApp, DXGI* dxgi, DirectXCommand* command, RTVManager* rtvManager);
+	SwapChain(WindowApp* windowApp, DXGI* dxgi, Viewport* viewport, ScissorRect* scissorRect, DirectXCommand* command, RTVManager* rtvManager);
 	~SwapChain();
-	// 初期化
-	void Initialize(WindowApp* windowApp, DXGI* dxgi, DirectXCommand* command, RTVManager* rtvManager);
+
 	// GPUとOSに画面の交換を行うよう通知する
 	void Present();
 	// 現在のバックバッファのリソースを取得
 	ID3D12Resource* GetCurrentBackBufferResource();
 	// 描画先のRTVハンドルを取得
 	D3D12_CPU_DESCRIPTOR_HANDLE GetCurrentBackBufferRTVHandle();
+
+	// スワップチェーン描画前処理
+	void PreRender();
 
 	// バリアの状態を設定
 	void TransitionToWrite();
@@ -52,6 +56,10 @@ private:
 	void SetWindowApp(WindowApp* windowApp);
 	// DXGIをセット
 	void SetDXGI(DXGI* dxgi);
+	// Viewport
+	void SetViewport(Viewport* viewport);
+	// ScissorRect
+	void SetScissorRect(ScissorRect* scissorRect);
 	// Commandをセット
 	void SetCommand(DirectXCommand* command);
 	// RTVManagerのセット
@@ -75,6 +83,10 @@ private:
 	WindowApp* windowApp_ = nullptr;
 	// dxgiのインスタンスを受け取る箱
 	DXGI* dxgi_ = nullptr;
+	// viewportのインスタンスを受け取る箱
+	Viewport* viewport_ = nullptr;
+	// ScissorRectのインスタンスを受け取る箱
+	ScissorRect* scissorRect_ = nullptr;
 	// Commandのインスタンスを受け取る箱
 	DirectXCommand* directXCommand_ = nullptr;
 	// RTVmanagerのインスタンスを受け取る箱

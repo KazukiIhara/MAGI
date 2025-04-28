@@ -51,9 +51,6 @@ void ImGuiController::BeginFrame() {
 void ImGuiController::EndFrame() {
 	// ImGui内部コマンドの生成
 	ImGui::Render();
-}
-
-void ImGuiController::Draw() {
 	// 実際のCommandListのImGuiの描画コマンドを積む
 	ImGui_ImplDX12_RenderDrawData(ImGui::GetDrawData(), command_->GetList());
 }

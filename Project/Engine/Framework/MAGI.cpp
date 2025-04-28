@@ -136,15 +136,14 @@ void MAGISYSTEM::Initialize() {
 	// SRVUAVmanager
 	srvuavManager_ = std::make_unique<SRVUAVManager>(dxgi_.get());
 
-
-	// SwapChain
-	swapChain_ = std::make_unique<SwapChain>(windowApp_.get(), dxgi_.get(), directXCommand_.get(), rtvManager_.get());
-	// DepthStencil
-	depthStencil_ = std::make_unique<DepthStencil>(dxgi_.get(), directXCommand_.get(), dsvManager_.get());
 	// Viewport
 	viewport_ = std::make_unique<Viewport>(directXCommand_.get());
 	// Scissor
 	scissorRect_ = std::make_unique<ScissorRect>(directXCommand_.get());
+	// DepthStencil
+	depthStencil_ = std::make_unique<DepthStencil>(dxgi_.get(), directXCommand_.get(), dsvManager_.get());
+	// SwapChain
+	swapChain_ = std::make_unique<SwapChain>(windowApp_.get(), dxgi_.get(), viewport_.get(), scissorRect_.get(), directXCommand_.get(), rtvManager_.get());
 
 
 	// TextureDataContainer
@@ -379,6 +378,16 @@ void MAGISYSTEM::Finalize() {
 		textureDataCantainer_.reset();
 	}
 
+	// SwapChain
+	if (swapChain_) {
+		swapChain_.reset();
+	}
+
+	// DepthStencil
+	if (depthStencil_) {
+		depthStencil_.reset();
+	}
+
 	// Scissor
 	if (scissorRect_) {
 		scissorRect_.reset();
@@ -387,16 +396,6 @@ void MAGISYSTEM::Finalize() {
 	// Viewport
 	if (viewport_) {
 		viewport_.reset();
-	}
-
-	// DepthStencil
-	if (depthStencil_) {
-		depthStencil_.reset();
-	}
-
-	// SwapChain
-	if (swapChain_) {
-		swapChain_.reset();
 	}
 
 	// SRVUAVManager
@@ -607,26 +606,20 @@ void MAGISYSTEM::Draw() {
 	// 
 	modelDrawerManager_->DrawAll();
 
+
 	// シーンの描画後処理
 	renderController_->PostSceneRender();
+
+
+	// ポストエフェクトをかける処理
+	renderController_->ApplyPostEffect();
+
 
 	// スワップチェーン前最終描画
 	renderController_->RenderToFinalRenderTexture();
 
-
-	// スワップチェーンを書き込み可能の状態に
-	swapChain_->TransitionToWrite();
-
-	// スワップチェーンをレンダーターゲットに
-	swapChain_->SetAsRenderTarget();
-
-	// スワップチェーンをクリア
-	swapChain_->ClearRenderTarget();
-
-	// ビューポートの設定
-	viewport_->SettingViewport();
-	// シザー矩形の設定
-	scissorRect_->SettingScissorRect();
+	// スワップチェーン描画前処理
+	swapChain_->PreRender();
 
 	// スワップチェーンに最終描画用レンダーテクスチャを描画
 	renderController_->RenderToSwapChain();
@@ -634,11 +627,8 @@ void MAGISYSTEM::Draw() {
 	// レンダーコントローラのフレーム終了処理
 	renderController_->EndFrame();
 
-
 	// ImGui内部コマンド生成
 	imguiController_->EndFrame();
-	// 描画
-	imguiController_->Draw();
 
 	// スワップチェーンをプレゼント状態に遷移	
 	swapChain_->TransitionToPresent();

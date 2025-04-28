@@ -4,23 +4,20 @@
 
 #include "WindowApp/WindowApp.h"
 #include "DirectX/DXGI/DXGI.h"
+#include "DirectX/Viewport/Viewport.h"
+#include "DirectX/ScissorRect/ScissorRect.h"
 #include "DirectX/DirectXCommand/DirectXCommand.h"
 #include "ViewManagers/RTVManager/RTVManager.h"
 
-SwapChain::SwapChain(WindowApp* windowApp, DXGI* dxgi, DirectXCommand* command, RTVManager* rtvManager) {
-	Initialize(windowApp, dxgi, command, rtvManager);
-	Logger::Log("SwapChain Initialize\n");
-}
-
-SwapChain::~SwapChain() {
-	Logger::Log("SwapChain Finalize\n");
-}
-
-void SwapChain::Initialize(WindowApp* windowApp, DXGI* dxgi, DirectXCommand* command, RTVManager* rtvManager) {
+SwapChain::SwapChain(WindowApp* windowApp, DXGI* dxgi, Viewport* viewport, ScissorRect* scissorRect, DirectXCommand* command, RTVManager* rtvManager) {
 	// WindowAppのインスタンスをセット
 	SetWindowApp(windowApp);
 	// DXGIのインスタンスをセット
 	SetDXGI(dxgi);
+	// Viewportのインスタンスをセット
+	SetViewport(viewport);
+	// ScissorRectのインスタンスをセット
+	SetScissorRect(scissorRect);
 	// Commandのセット
 	SetCommand(command);
 	// RTVManagerのインスタンスをセット
@@ -34,7 +31,11 @@ void SwapChain::Initialize(WindowApp* windowApp, DXGI* dxgi, DirectXCommand* com
 	CreateRTV();
 
 	// クリアカラーを設定
-	clearColor_ = { 0.0f,0.0f,0.0f,1.0f };
+	clearColor_ = { 0.0f,0.0f,0.0f,1.0f };	Logger::Log("SwapChain Initialize\n");
+}
+
+SwapChain::~SwapChain() {
+	Logger::Log("SwapChain Finalize\n");
 }
 
 void SwapChain::Present() {
@@ -49,6 +50,19 @@ ID3D12Resource* SwapChain::GetCurrentBackBufferResource() {
 D3D12_CPU_DESCRIPTOR_HANDLE SwapChain::GetCurrentBackBufferRTVHandle() {
 	backBufferIndex_ = swapChain_->GetCurrentBackBufferIndex();
 	return rtvManager_->GetDescriptorHandleCPU(rtvIndex_[backBufferIndex_]);
+}
+
+void SwapChain::PreRender() {
+	// スワップチェーンを書き込み可能の状態に
+	TransitionToWrite();
+	// スワップチェーンをレンダーターゲットに
+	SetAsRenderTarget();
+	// スワップチェーンをクリア
+	ClearRenderTarget();
+	// ビューポートの設定
+	viewport_->SettingViewport();
+	// シザー矩形の設定
+	scissorRect_->SettingScissorRect();
 }
 
 void SwapChain::TransitionToWrite() {
@@ -128,6 +142,16 @@ void SwapChain::SetWindowApp(WindowApp* windowApp) {
 void SwapChain::SetDXGI(DXGI* dxgi) {
 	assert(dxgi);
 	dxgi_ = dxgi;
+}
+
+void SwapChain::SetViewport(Viewport* viewport) {
+	assert(viewport);
+	viewport_ = viewport;
+}
+
+void SwapChain::SetScissorRect(ScissorRect* scissorRect) {
+	assert(scissorRect);
+	scissorRect_ = scissorRect;
 }
 
 void SwapChain::SetCommand(DirectXCommand* command) {
