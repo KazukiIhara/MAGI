@@ -565,6 +565,7 @@ void MAGISYSTEM::Draw() {
 	// DirectX描画前処理
 	// 
 
+	// シーン描画用のレンダーテクスチャを準備
 	renderController_->PreSceneRender();
 
 	// コマンドリスト取得
@@ -633,9 +634,6 @@ void MAGISYSTEM::Draw() {
 	// レンダーコントローラのフレーム終了処理
 	renderController_->EndFrame();
 
-	//
-	// ImGui描画処理
-	//
 
 	// ImGui内部コマンド生成
 	imguiController_->EndFrame();
