@@ -35,8 +35,6 @@ std::unique_ptr<SRVUAVManager> MAGISYSTEM::srvuavManager_ = nullptr;
 // 
 std::unique_ptr<SwapChain> MAGISYSTEM::swapChain_ = nullptr;
 std::unique_ptr<DepthStencil> MAGISYSTEM::depthStencil_ = nullptr;
-std::unique_ptr<ResourceBarrier> MAGISYSTEM::resourceBarrier_ = nullptr;
-std::unique_ptr<RenderTarget> MAGISYSTEM::renderTarget_ = nullptr;
 std::unique_ptr<Viewport> MAGISYSTEM::viewport_ = nullptr;
 std::unique_ptr<ScissorRect> MAGISYSTEM::scissorRect_ = nullptr;
 
@@ -83,15 +81,12 @@ std::unique_ptr<ModelDrawerManager> MAGISYSTEM::modelDrawerManager_ = nullptr;
 // 
 // GameManager
 // 
-std::unique_ptr<RenderTextureManager> MAGISYSTEM::renderTextureManager_ = nullptr;
 std::unique_ptr<CollisionManager> MAGISYSTEM::collisionManager_ = nullptr;
 std::unique_ptr<SceneManager<GameData>> MAGISYSTEM::sceneManager_ = nullptr;
 
 //
 // AppSystem
 //
-std::unique_ptr<OffScreenRenderer> MAGISYSTEM::offScreenRenderer_ = nullptr;
-
 std::unique_ptr<RenderController> MAGISYSTEM::renderController_ = nullptr;
 
 //
@@ -142,18 +137,10 @@ void MAGISYSTEM::Initialize() {
 	srvuavManager_ = std::make_unique<SRVUAVManager>(dxgi_.get());
 
 
-	// RenderTextureManager
-	renderTextureManager_ = std::make_unique<RenderTextureManager>();
-
-
 	// SwapChain
 	swapChain_ = std::make_unique<SwapChain>(windowApp_.get(), dxgi_.get(), directXCommand_.get(), rtvManager_.get());
 	// DepthStencil
 	depthStencil_ = std::make_unique<DepthStencil>(dxgi_.get(), directXCommand_.get(), dsvManager_.get());
-	// ResouceBarrier
-	resourceBarrier_ = std::make_unique<ResourceBarrier>(directXCommand_.get(), swapChain_.get(), renderTextureManager_.get());
-	// RenderTarget
-	renderTarget_ = std::make_unique<RenderTarget>(directXCommand_.get(), swapChain_.get(), depthStencil_.get(), rtvManager_.get(), renderTextureManager_.get());
 	// Viewport
 	viewport_ = std::make_unique<Viewport>(directXCommand_.get());
 	// Scissor
@@ -178,6 +165,9 @@ void MAGISYSTEM::Initialize() {
 	computePipelineManager_ = std::make_unique<ComputePipelineManager>(dxgi_.get(), shaderCompiler_.get());
 	// PostEffectPipelineManager
 	postEffectPipelineManager_ = std::make_unique<PostEffectPipelineManager>(dxgi_.get(), shaderCompiler_.get());
+
+	// RenderPipelineController
+	renderController_ = std::make_unique<RenderController>(directXCommand_.get(), depthStencil_.get(), viewport_.get(), scissorRect_.get(), srvuavManager_.get(), postEffectPipelineManager_.get());
 
 
 	// GameObject3DManager
@@ -220,13 +210,6 @@ void MAGISYSTEM::Initialize() {
 	// SceneManager
 	sceneManager_ = std::make_unique<SceneManager<GameData>>();
 
-
-	// PostEffectSwitcher
-	offScreenRenderer_ = std::make_unique<OffScreenRenderer>(directXCommand_.get(), renderTarget_.get(), renderTextureManager_.get(), postEffectPipelineManager_.get());
-
-	// RenderPipelineController
-	renderController_ = std::make_unique<RenderController>(directXCommand_.get(), depthStencil_.get(), viewport_.get(), scissorRect_.get(), srvuavManager_.get(), postEffectPipelineManager_.get());
-
 	// DataIO
 	dataIO_ = std::make_unique<DataIO>(renderer3DManager_.get(), colliderManager_.get(), gameObject3DManager_.get());
 	// GrobalDataManager
@@ -237,7 +220,7 @@ void MAGISYSTEM::Initialize() {
 	imguiController_ = std::make_unique<ImGuiController>(windowApp_.get(), dxgi_.get(), directXCommand_.get(), srvuavManager_.get());
 
 	// GUI
-	gui_ = std::make_unique<GUI>(deltaTimer_.get(), srvuavManager_.get(), dataIO_.get(), offScreenRenderer_.get());
+	gui_ = std::make_unique<GUI>(deltaTimer_.get(), srvuavManager_.get(), dataIO_.get());
 
 	// 初期化完了ログ
 	Logger::Log("MAGISYSTEM Initialize\n");
@@ -265,15 +248,6 @@ void MAGISYSTEM::Finalize() {
 		dataIO_.reset();
 	}
 
-	// RenderController
-	if (renderController_) {
-		renderController_.reset();
-	}
-
-	// PostEffectSwitcher
-	if (offScreenRenderer_) {
-		offScreenRenderer_.reset();
-	}
 
 	// SceneManager
 	if (sceneManager_) {
@@ -360,6 +334,11 @@ void MAGISYSTEM::Finalize() {
 		gameObject3DManager_.reset();
 	}
 
+	// RenderController
+	if (renderController_) {
+		renderController_.reset();
+	}
+
 	// PostEffectPipelineManager
 	if (postEffectPipelineManager_) {
 		postEffectPipelineManager_.reset();
@@ -410,16 +389,6 @@ void MAGISYSTEM::Finalize() {
 		viewport_.reset();
 	}
 
-	// RenderTarget
-	if (renderTarget_) {
-		renderTarget_.reset();
-	}
-
-	// ResourceBarrier
-	if (resourceBarrier_) {
-		resourceBarrier_.reset();
-	}
-
 	// DepthStencil
 	if (depthStencil_) {
 		depthStencil_.reset();
@@ -428,11 +397,6 @@ void MAGISYSTEM::Finalize() {
 	// SwapChain
 	if (swapChain_) {
 		swapChain_.reset();
-	}
-
-	// RenderTextureManager
-	if (renderTextureManager_) {
-		renderTextureManager_.reset();
 	}
 
 	// SRVUAVManager
@@ -662,6 +626,9 @@ void MAGISYSTEM::Draw() {
 	viewport_->SettingViewport();
 	// シザー矩形の設定
 	scissorRect_->SettingScissorRect();
+
+	// スワップチェーンに最終描画用レンダーテクスチャを描画
+	renderController_->RenderToSwapChain();
 
 	// レンダーコントローラのフレーム終了処理
 	renderController_->EndFrame();

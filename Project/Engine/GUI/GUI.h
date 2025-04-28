@@ -11,7 +11,6 @@
 class DeltaTimer;
 class DataIO;
 class SRVUAVManager;
-class OffScreenRenderer;
 
 // エンジンのグラフィックUIクラス
 class GUI {
@@ -19,8 +18,7 @@ public:
 	GUI(
 		DeltaTimer* deltaTimer,
 		SRVUAVManager* srvUavManager,
-		DataIO* dataIO,
-		OffScreenRenderer* offScreenRenderer
+		DataIO* dataIO
 	);
 
 	// メインUI描画
@@ -69,7 +67,7 @@ private:
 	// ヒエラルキーウィンドウ
 	ImVec2 hierarchyWindowPosition_ = { 0.0f,64.0f };
 
-		// シーンウィンドウ
+	// シーンウィンドウ
 	ImVec2 sceneTextureSize_ = { 1024.0f,576.0f };
 
 private:
@@ -79,6 +77,4 @@ private:
 	SRVUAVManager* srvUavManager_ = nullptr;
 	// DataIOのインスタンス
 	DataIO* dataIO_ = nullptr;
-	// OffScreenRendererのインスタンス
-	OffScreenRenderer* offScreenRenderer_ = nullptr;
 };

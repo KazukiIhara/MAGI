@@ -8,24 +8,21 @@
 #include "DeltaTimer/DeltaTimer.h"
 #include "ViewManagers/SRVUAVManager/SRVUAVManager.h"
 #include "DataIO/DataIO.h"
-#include "OffScreenRenderer/OffScreenRenderer.h"
 
 // Windows環境限定
 #ifdef _WIN32
 #include <Windows.h>
 #endif
-GUI::GUI(DeltaTimer* deltaTimer, SRVUAVManager* srvUavManager, DataIO* dataIO, OffScreenRenderer* offScreenRenderer) {
+GUI::GUI(DeltaTimer* deltaTimer, SRVUAVManager* srvUavManager, DataIO* dataIO) {
 	// 
 	// インスタンスのセット
 	// 
 	assert(deltaTimer);
 	assert(srvUavManager);
 	assert(dataIO);
-	assert(offScreenRenderer);
 	deltaTimer_ = deltaTimer;
 	srvUavManager_ = srvUavManager;
 	dataIO_ = dataIO;
-	offScreenRenderer_ = offScreenRenderer;
 
 	// 
 	// データIOクラスから受け取るインスタンス
@@ -125,11 +122,7 @@ void GUI::ShowSceneWindow() {
 	// シーンウィンドウ開始
 	ImGui::Begin("Scene", nullptr, ImGuiWindowFlags_NoResize);
 
-	// レンダーテクスチャに描画する内容をウィンドウ内に描画する
-	uint32_t srvIndex = offScreenRenderer_->GetCurrentRenderTextureSrvIndex();
-
-	// 
-	ImGui::ImageWithBg(static_cast<ImTextureID>(srvUavManager_->GetDescriptorHandleGPU(srvIndex).ptr), sceneTextureSize_, ImVec2(0.0f, 0.0f), ImVec2(1.0f, 1.0f), ImVec4(0.0f, 0.0f, 0.0f, 1.0f));
+	//ImGui::ImageWithBg(static_cast<ImTextureID>(srvUavManager_->GetDescriptorHandleGPU(srvIndex).ptr), sceneTextureSize_, ImVec2(0.0f, 0.0f), ImVec2(1.0f, 1.0f), ImVec4(0.0f, 0.0f, 0.0f, 1.0f));
 
 	ImGui::End();
 }

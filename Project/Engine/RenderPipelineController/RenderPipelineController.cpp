@@ -72,11 +72,30 @@ void RenderController::RenderToFinalRenderTexture() {
 	commandList->SetPipelineState(postEffectPipelineManager_->GetPipelineState(PostEffectPipelineStateType::Copy, BlendMode::None));
 
 	// ディスクリプタハンドルを指定
-	commandList->SetGraphicsRootDescriptorTable(0, srvUavManager_->GetDescriptorHandleGPU(finalRenderTexture_->GetSrvIndex()));
+	commandList->SetGraphicsRootDescriptorTable(0, srvUavManager_->GetDescriptorHandleGPU(sceneRenderTexture_->GetSrvIndex()));
+
+	// 描画
+	commandList->DrawInstanced(3, 1, 0, 0);
 
 	// 最終レンダーテクスチャを読み取り可能状態にする
 	finalRenderTexture_->TransitionToRead();
 
+}
+
+void RenderController::RenderToSwapChain() {
+	// コマンドリスト取得
+	ID3D12GraphicsCommandList* commandList = directXCommand_->GetList();
+
+	// ルートシグネイチャを設定
+	commandList->SetGraphicsRootSignature(postEffectPipelineManager_->GetRootSignature(PostEffectPipelineStateType::Copy));
+	// PSOを設定
+	commandList->SetPipelineState(postEffectPipelineManager_->GetPipelineState(PostEffectPipelineStateType::Copy, BlendMode::None));
+
+	// ディスクリプタハンドルを指定
+	commandList->SetGraphicsRootDescriptorTable(0, srvUavManager_->GetDescriptorHandleGPU(finalRenderTexture_->GetSrvIndex()));
+
+	// 描画
+	commandList->DrawInstanced(3, 1, 0, 0);
 }
 
 void RenderController::EndFrame() {

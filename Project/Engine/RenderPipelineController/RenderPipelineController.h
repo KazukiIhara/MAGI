@@ -41,6 +41,9 @@ public:
 	// 最終描画用のテクスチャに描画
 	void RenderToFinalRenderTexture();
 
+	// スワップチェーンに最終描画用のレンダーテクスチャを描画
+	void RenderToSwapChain();
+
 	// フレーム終了処理
 	void EndFrame();
 

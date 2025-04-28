@@ -23,6 +23,7 @@ void BaseRenderTexture::Create(DXGI_FORMAT format, D3D12_RESOURCE_FLAGS resource
 	CreateRTV();
 	// SRVを作成
 	CreateSRV();
+
 }
 
 uint32_t BaseRenderTexture::GetRtvIndex() const {
