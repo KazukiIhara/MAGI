@@ -894,11 +894,11 @@ ID3D12PipelineState* MAGISYSTEM::GetComputePipelineState(ComputePipelineStateTyp
 	return computePipelineManager_->GetPipelineState(pipelineState);
 }
 
-ID3D12RootSignature* MAGISYSTEM::GetPostEffectRootSignature(PostEffectPipelineStateType pipelineState) {
+ID3D12RootSignature* MAGISYSTEM::GetPostEffectRootSignature(PostEffectType pipelineState) {
 	return postEffectPipelineManager_->GetRootSignature(pipelineState);
 }
 
-ID3D12PipelineState* MAGISYSTEM::GetPostEffectPipelineState(PostEffectPipelineStateType pipelineState, BlendMode blendMode) {
+ID3D12PipelineState* MAGISYSTEM::GetPostEffectPipelineState(PostEffectType pipelineState, BlendMode blendMode) {
 	return postEffectPipelineManager_->GetPipelineState(pipelineState, blendMode);
 }
 

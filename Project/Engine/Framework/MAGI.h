@@ -283,9 +283,9 @@ public: // エンジンの機能
 
 #pragma region PostEffectPipelineManager
 	// ルートシグネイチャ取得関数
-	static ID3D12RootSignature* GetPostEffectRootSignature(PostEffectPipelineStateType pipelineState);
+	static ID3D12RootSignature* GetPostEffectRootSignature(PostEffectType pipelineState);
 	// パイプライン取得関数
-	static ID3D12PipelineState* GetPostEffectPipelineState(PostEffectPipelineStateType pipelineState, BlendMode blendMode);
+	static ID3D12PipelineState* GetPostEffectPipelineState(PostEffectType pipelineState, BlendMode blendMode);
 #pragma endregion
 
 #pragma region TextureDataContainer

@@ -6,7 +6,7 @@
 /// <summary>
 /// ポストエフェクトパイプラインの種類
 /// </summary>
-enum class PostEffectPipelineStateType {
+enum class PostEffectType {
 	Copy, // ポストエフェクトなし
 	Grayscale, // グレースケール
 
@@ -14,11 +14,4 @@ enum class PostEffectPipelineStateType {
 };
 
 // パイプラインの種類の数 
-inline constexpr uint32_t kPostEffectPipelineStateNum = static_cast<uint32_t>(PostEffectPipelineStateType::Num);
-
-/// <summary>
-/// ポストエフェクトの種類
-/// </summary>
-enum class PostEffectType {
-	Grayscale,
-};
+inline constexpr uint32_t kPostEffectPipelineStateNum = static_cast<uint32_t>(PostEffectType::Num);

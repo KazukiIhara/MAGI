@@ -21,46 +21,46 @@ void PostEffectPipelineManager::Initialize(DXGI* dxgi, ShaderCompiler* shaderCom
 	// Noneのパイプラインを生成、初期化
 	nonePostEffectPipeline_ = std::make_unique<NonePostEffectPipeline>(dxgi, shaderCompiler);
 	nonePostEffectPipeline_->Initialize();
-	SetRootSignature(PostEffectPipelineStateType::Copy);
-	SetPipelineState(PostEffectPipelineStateType::Copy);
+	SetRootSignature(PostEffectType::Copy);
+	SetPipelineState(PostEffectType::Copy);
 
 	// Grayscaleのパイプラインを生成、初期化
 	grayscalePostEffectPipeline_ = std::make_unique<GrayscalePostEffectPipeline>(dxgi, shaderCompiler);
 	grayscalePostEffectPipeline_->Initialize();
-	SetRootSignature(PostEffectPipelineStateType::Grayscale);
-	SetPipelineState(PostEffectPipelineStateType::Grayscale);
+	SetRootSignature(PostEffectType::Grayscale);
+	SetPipelineState(PostEffectType::Grayscale);
 
 }
 
-ID3D12RootSignature* PostEffectPipelineManager::GetRootSignature(PostEffectPipelineStateType pipelineState) {
+ID3D12RootSignature* PostEffectPipelineManager::GetRootSignature(PostEffectType pipelineState) {
 	return rootSignatures_[static_cast<uint32_t>(pipelineState)].Get();
 }
 
-ID3D12PipelineState* PostEffectPipelineManager::GetPipelineState(PostEffectPipelineStateType pipelineState, BlendMode blendMode) {
+ID3D12PipelineState* PostEffectPipelineManager::GetPipelineState(PostEffectType pipelineState, BlendMode blendMode) {
 	return postEffectPipelineStates_[static_cast<uint32_t>(pipelineState)][static_cast<uint32_t>(blendMode)].Get();
 }
 
-void PostEffectPipelineManager::SetRootSignature(PostEffectPipelineStateType pipelineState) {
+void PostEffectPipelineManager::SetRootSignature(PostEffectType pipelineState) {
 	// パイプラインごとに対応するルートシグネイチャを設定
 	switch (pipelineState) {
-		case PostEffectPipelineStateType::Copy:
+		case PostEffectType::Copy:
 			rootSignatures_[static_cast<uint32_t>(pipelineState)] = nonePostEffectPipeline_->GetRootSignature();
 			break;
-		case PostEffectPipelineStateType::Grayscale:
+		case PostEffectType::Grayscale:
 			rootSignatures_[static_cast<uint32_t>(pipelineState)] = grayscalePostEffectPipeline_->GetRootSignature();
 			break;
 	}
 }
 
-void PostEffectPipelineManager::SetPipelineState(PostEffectPipelineStateType pipelineState) {
+void PostEffectPipelineManager::SetPipelineState(PostEffectType pipelineState) {
 	// パイプラインごとに対応するパイプラインステートを設定
 	switch (pipelineState) {
-		case PostEffectPipelineStateType::Copy:
+		case PostEffectType::Copy:
 			for (int mode = static_cast<uint32_t>(BlendMode::None); mode < static_cast<uint32_t>(BlendMode::Num); ++mode) {
 				postEffectPipelineStates_[static_cast<uint32_t>(pipelineState)][mode] = nonePostEffectPipeline_->GetPipelineState(static_cast<BlendMode>(mode));
 			}
 			break;
-		case PostEffectPipelineStateType::Grayscale:
+		case PostEffectType::Grayscale:
 			for (int mode = static_cast<uint32_t>(BlendMode::None); mode < static_cast<uint32_t>(BlendMode::Num); ++mode) {
 				postEffectPipelineStates_[static_cast<uint32_t>(pipelineState)][mode] = grayscalePostEffectPipeline_->GetPipelineState(static_cast<BlendMode>(mode));
 			}

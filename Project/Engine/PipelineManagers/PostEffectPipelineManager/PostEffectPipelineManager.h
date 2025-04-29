@@ -29,16 +29,16 @@ public:
 	void Initialize(DXGI* dxgi, ShaderCompiler* shaderCompiler);
 
 	// ルートシグネイチャのゲッター
-	ID3D12RootSignature* GetRootSignature(PostEffectPipelineStateType pipelineState);
+	ID3D12RootSignature* GetRootSignature(PostEffectType pipelineState);
 
 	// パイプラインステイトのゲッター
-	ID3D12PipelineState* GetPipelineState(PostEffectPipelineStateType pipelineState, BlendMode blendMode);
+	ID3D12PipelineState* GetPipelineState(PostEffectType pipelineState, BlendMode blendMode);
 
 	// ルートシグネイチャをセット
-	void SetRootSignature(PostEffectPipelineStateType pipelineState);
+	void SetRootSignature(PostEffectType pipelineState);
 
 	// パイプラインをセット
-	void SetPipelineState(PostEffectPipelineStateType pipelineState);
+	void SetPipelineState(PostEffectType pipelineState);
 
 private:
 	// ルートシグネイチャ

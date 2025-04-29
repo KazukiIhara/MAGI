@@ -59,6 +59,9 @@ protected:
 	// レンダーテクスチャ用のリソース
 	ComPtr<ID3D12Resource> resource_ = nullptr;
 
+	// 現在のリソースの状態
+	D3D12_RESOURCE_STATES currentResourceState_ = D3D12_RESOURCE_STATE_RENDER_TARGET;
+
 	// フォーマット
 	DXGI_FORMAT format_{};
 	// リソースフラグ

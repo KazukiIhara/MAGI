@@ -26,6 +26,12 @@ RenderController::RenderController(DirectXCommand* directXCommand, DepthStencil*
 	// 最終描画用のレンダーテクスチャ
 	finalRenderTexture_ = std::make_unique<ColorRenderTexture>();
 	finalRenderTexture_->Initialize();
+
+	// カラーポストエフェクト用のレンダーテクスチャ
+	for (uint32_t i = 0; i < 2; i++) {
+		colorPostEffectRenderTexture_[i] = std::make_unique<ColorRenderTexture>();
+		colorPostEffectRenderTexture_[i]->Initialize();
+	}
 }
 
 RenderController::~RenderController() {
@@ -47,10 +53,65 @@ void RenderController::PreSceneRender() {
 void RenderController::PostSceneRender() {
 	// シーン描画用のレンダーターゲットを読み取り状態に
 	sceneRenderTexture_->TransitionToRead();
+	// 現在のテクスチャをシーン描画結果に
+	currentRenderTexture_ = sceneRenderTexture_.get();
 }
 
 void RenderController::ApplyPostEffect() {
+	// 今回積まれているポストエフェクトの数を取得
+	const uint32_t currentFramePostEffectNum = currentCommandIndex_;
+	if (currentFramePostEffectNum == 0) {
+		return; // 何もなければリターン
+	}
 
+	// コマンドリスト取得
+	ID3D12GraphicsCommandList* commandList = directXCommand_->GetList();
+
+	for (uint32_t i = 0; i < currentFramePostEffectNum; i++) {
+		const auto& command = postEffectCommand_[i];
+
+		switch (command.postEffectType) {
+		case PostEffectType::Copy:
+		case PostEffectType::Grayscale:
+			// 現在の書き込み先のレンダーテクスチャを切り替え
+			currentRenderTarget_ = colorPostEffectRenderTexture_[currentColorPostEffectRenderTextureIndex_].get();
+			// 次のポストエフェクト用にレンダーテクスチャを切り替え
+			SwitchColorRenderTextureIndex();
+			break;
+		default:
+			break;
+		}
+
+		// レンダーターゲットを設定
+		currentRenderTarget_->SetAsRenderTarget();
+		currentRenderTarget_->ClearRenderTarget();
+
+		// ビューポート、シザー設定
+		viewport_->SettingViewport();
+		scissorRect_->SettingScissorRect();
+
+		// ポストエフェクトに対応するパイプラインを設定
+		commandList->SetGraphicsRootSignature(postEffectPipelineManager_->GetRootSignature(command.postEffectType));
+		commandList->SetPipelineState(postEffectPipelineManager_->GetPipelineState(command.postEffectType, BlendMode::None));
+		commandList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+
+		// 入力するテクスチャは「ひとつ前に描画したレンダーテクスチャ」
+		commandList->SetGraphicsRootDescriptorTable(0, srvUavManager_->GetDescriptorHandleGPU(currentRenderTexture_->GetSrvIndex()));
+
+		// 描画
+		commandList->DrawInstanced(3, 1, 0, 0);
+
+		// 出力結果を次の入力にする
+		currentRenderTexture_ = currentRenderTarget_;
+
+		// 描画した対象を読み取り可能状態にする
+		currentRenderTexture_->TransitionToRead();
+
+	}
+
+	// 最後の結果がcurrentRenderTexture_に入っている
+	currentRenderTarget_ = nullptr; // 使い終わったのでnullに
+	currentCommandIndex_ = 0; // コマンドバッファをリセット
 }
 
 void RenderController::RenderToFinalRenderTexture() {
@@ -67,21 +128,20 @@ void RenderController::RenderToFinalRenderTexture() {
 
 	// 最終レンダーテクスチャに描画
 	// ルートシグネイチャを設定
-	commandList->SetGraphicsRootSignature(postEffectPipelineManager_->GetRootSignature(PostEffectPipelineStateType::Copy));
+	commandList->SetGraphicsRootSignature(postEffectPipelineManager_->GetRootSignature(PostEffectType::Copy));
 	// PSOを設定
-	commandList->SetPipelineState(postEffectPipelineManager_->GetPipelineState(PostEffectPipelineStateType::Copy, BlendMode::None));
+	commandList->SetPipelineState(postEffectPipelineManager_->GetPipelineState(PostEffectType::Copy, BlendMode::None));
 	// 形状を設定
 	commandList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
 	// ディスクリプタハンドルを指定
-	commandList->SetGraphicsRootDescriptorTable(0, srvUavManager_->GetDescriptorHandleGPU(sceneRenderTexture_->GetSrvIndex()));
+	commandList->SetGraphicsRootDescriptorTable(0, srvUavManager_->GetDescriptorHandleGPU(currentRenderTexture_->GetSrvIndex()));
 
 	// 描画
 	commandList->DrawInstanced(3, 1, 0, 0);
 
 	// 最終レンダーテクスチャを読み取り可能状態にする
 	finalRenderTexture_->TransitionToRead();
-
 }
 
 void RenderController::RenderToSwapChain() {
@@ -89,9 +149,9 @@ void RenderController::RenderToSwapChain() {
 	ID3D12GraphicsCommandList* commandList = directXCommand_->GetList();
 
 	// ルートシグネイチャを設定
-	commandList->SetGraphicsRootSignature(postEffectPipelineManager_->GetRootSignature(PostEffectPipelineStateType::Copy));
+	commandList->SetGraphicsRootSignature(postEffectPipelineManager_->GetRootSignature(PostEffectType::Copy));
 	// PSOを設定
-	commandList->SetPipelineState(postEffectPipelineManager_->GetPipelineState(PostEffectPipelineStateType::Copy, BlendMode::None));
+	commandList->SetPipelineState(postEffectPipelineManager_->GetPipelineState(PostEffectType::Copy, BlendMode::None));
 	// 形状を設定
 	commandList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
@@ -103,9 +163,33 @@ void RenderController::RenderToSwapChain() {
 }
 
 void RenderController::EndFrame() {
+	// レンダーテクスチャをnullptrに
+	currentRenderTarget_ = nullptr;
+	currentRenderTexture_ = nullptr;
+
 	// 次のフレーム用に書き込み可能状態にする
 	sceneRenderTexture_->TransitionToWrite();
 	finalRenderTexture_->TransitionToWrite();
+
+	for (uint32_t i = 0; i < 2; i++) {
+		colorPostEffectRenderTexture_[i]->TransitionToWrite();
+	}
+
+}
+
+void RenderController::AddPostEffect(const PostEffectCommand& command) {
+	// コマンドを追加
+	postEffectCommand_[currentCommandIndex_] = command;
+	// コマンドインデックスをインクリメント
+	currentCommandIndex_++;
+}
+
+void RenderController::SwitchColorRenderTextureIndex() {
+	if (!currentColorPostEffectRenderTextureIndex_) {
+		currentColorPostEffectRenderTextureIndex_ = 1;
+	} else {
+		currentColorPostEffectRenderTextureIndex_ = 0;
+	}
 }
 
 void RenderController::SetDirectXCommand(DirectXCommand* directXCommand) {

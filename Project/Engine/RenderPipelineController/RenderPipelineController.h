@@ -47,9 +47,12 @@ public:
 	// フレーム終了処理
 	void EndFrame();
 
-	// 
-	// 今フレームのポストエフェクトのコマンドを詰む関数を下に追加していく
-	// 
+	// ポストエフェクト追加
+	void AddPostEffect(const PostEffectCommand& command);
+private:
+
+	// カラーレンダーテクスチャのインデックス切り替え
+	void SwitchColorRenderTextureIndex();
 
 private:
 	void SetDirectXCommand(DirectXCommand* directXCommand);
@@ -68,7 +71,9 @@ private:
 	SRVUAVManager* srvUavManager_ = nullptr;
 	PostEffectPipelineManager* postEffectPipelineManager_ = nullptr;
 private:
-	// 現在描画中のレンダーテクスチャのポインタ
+	// 現在のレンダーターゲット
+	BaseRenderTexture* currentRenderTarget_ = nullptr;
+	// これから描画するレンダーテクスチャ
 	BaseRenderTexture* currentRenderTexture_ = nullptr;
 
 	// シーンを描画するレンダーテクスチャ
@@ -77,10 +82,14 @@ private:
 	std::unique_ptr<ColorRenderTexture> finalRenderTexture_ = nullptr;
 
 	// カラーポストエフェクト用のレンダーテクスチャ
-	std::unique_ptr<ColorRenderTexture> colorPostEffectRenderTexture[2] = { nullptr,nullptr };
+	std::unique_ptr<ColorRenderTexture> colorPostEffectRenderTexture_[2] = { nullptr,nullptr };
 	// 現在使用中のカラーポストエフェクト用のレンダーテクスチャインデックス
 	uint32_t currentColorPostEffectRenderTextureIndex_ = 0;
 
 	// ポストエフェクトをかけるためのコマンド
 	std::vector<PostEffectCommand> postEffectCommand_{};
+	// 現在のコマンドインデックス
+	uint32_t currentCommandIndex_ = 0;
+	// コマンド最大数
+	static const uint32_t kMaxPostEffectNum_ = 32;
 };
