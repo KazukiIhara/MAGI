@@ -902,6 +902,14 @@ ID3D12PipelineState* MAGISYSTEM::GetPostEffectPipelineState(PostEffectType pipel
 	return postEffectPipelineManager_->GetPipelineState(pipelineState, blendMode);
 }
 
+void MAGISYSTEM::AddPostEffectGrayScale() {
+	PostEffectCommand command{
+		.postEffectType = PostEffectType::Grayscale,
+	};
+	// コマンドを追加
+	renderController_->AddPostEffect(command);
+}
+
 uint32_t MAGISYSTEM::LoadTexture(const std::string& fileName, bool isFullPath) {
 	return textureDataCantainer_->Load(fileName, isFullPath);
 }

@@ -32,6 +32,9 @@ RenderController::RenderController(DirectXCommand* directXCommand, DepthStencil*
 		colorPostEffectRenderTexture_[i] = std::make_unique<ColorRenderTexture>();
 		colorPostEffectRenderTexture_[i]->Initialize();
 	}
+
+	// コマンドの最大数をあらかじめ決めておく
+	postEffectCommand_.resize(kMaxPostEffectNum_);
 }
 
 RenderController::~RenderController() {

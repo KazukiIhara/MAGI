@@ -14,5 +14,8 @@ struct PostEffectParamater {
 
 struct PostEffectCommand {
 	PostEffectType postEffectType;
-	PostEffectParamater param;
+	float param0;
+	float param1;
+	float param2;
+	float param3;
 };

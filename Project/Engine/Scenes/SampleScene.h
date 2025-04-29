@@ -163,6 +163,8 @@ inline void SampleScene<Data>::Update() {
 		worldTransform_[i].Update();
 	}
 
+	// ポストエフェクトをかける
+	MAGISYSTEM::AddPostEffectGrayScale();
 
 }
 

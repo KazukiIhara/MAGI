@@ -263,11 +263,6 @@ public: // エンジンの機能
 	static void CreateUavStructuredBuffer(uint32_t viewIndex, ID3D12Resource* pResource, uint32_t numElements, UINT structureByteStride);
 #pragma endregion
 
-#pragma region RenderTextureManager
-
-
-#pragma endregion
-
 #pragma region GraphicsPipelineManager
 	// パイプライン取得関数
 	static ID3D12PipelineState* GetGraphicsPipelineState(GraphicsPipelineStateType pipelineState, BlendMode blendMode);
@@ -286,6 +281,12 @@ public: // エンジンの機能
 	static ID3D12RootSignature* GetPostEffectRootSignature(PostEffectType pipelineState);
 	// パイプライン取得関数
 	static ID3D12PipelineState* GetPostEffectPipelineState(PostEffectType pipelineState, BlendMode blendMode);
+#pragma endregion
+
+#pragma region RenderController
+	// シーンにグレースケールをかける
+	static void AddPostEffectGrayScale();
+
 #pragma endregion
 
 #pragma region TextureDataContainer
@@ -559,10 +560,10 @@ protected:
 	// 
 	// DirectXRenderSystems
 	// 
-	static std::unique_ptr<SwapChain> swapChain_;
-	static std::unique_ptr<DepthStencil> depthStencil_;
 	static std::unique_ptr<Viewport> viewport_;
 	static std::unique_ptr<ScissorRect> scissorRect_;
+	static std::unique_ptr<DepthStencil> depthStencil_;
+	static std::unique_ptr<SwapChain> swapChain_;
 
 	//
 	// PipelineManager

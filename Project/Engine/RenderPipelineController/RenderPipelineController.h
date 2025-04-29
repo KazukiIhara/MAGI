@@ -91,5 +91,5 @@ private:
 	// 現在のコマンドインデックス
 	uint32_t currentCommandIndex_ = 0;
 	// コマンド最大数
-	static const uint32_t kMaxPostEffectNum_ = 32;
+	static const uint32_t kMaxPostEffectNum_ = 64;
 };
