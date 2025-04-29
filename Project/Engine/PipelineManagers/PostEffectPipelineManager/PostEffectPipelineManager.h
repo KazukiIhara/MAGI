@@ -47,7 +47,7 @@ private:
 	ComPtr<ID3D12PipelineState> postEffectPipelineStates_[kPostEffectPipelineStateNum][kBlendModeNum];
 private:
 	// NonePostEffectPipeline
-	std::unique_ptr<NonePostEffectPipeline> nonePostEffectPipeline_ = nullptr;
+	std::unique_ptr<CopyPostEffectPipeline> copyPostEffectPipeline_ = nullptr;
 	// GrayscalePostEffectPipeline
 	std::unique_ptr<GrayscalePostEffectPipeline> grayscalePostEffectPipeline_ = nullptr;
 };

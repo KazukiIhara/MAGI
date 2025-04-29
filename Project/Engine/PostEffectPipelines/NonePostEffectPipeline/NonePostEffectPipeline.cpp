@@ -6,12 +6,12 @@
 #include "DirectX/DXGI/DXGI.h"
 #include "DirectX/ShaderCompiler/ShaderCompiler.h"
 
-NonePostEffectPipeline::NonePostEffectPipeline(DXGI* dxgi, ShaderCompiler* shaderCompiler)
+CopyPostEffectPipeline::CopyPostEffectPipeline(DXGI* dxgi, ShaderCompiler* shaderCompiler)
 	:BaseSimplePostEffectPipeline(dxgi, shaderCompiler) {}
 
-NonePostEffectPipeline::~NonePostEffectPipeline() {}
+CopyPostEffectPipeline::~CopyPostEffectPipeline() {}
 
-void NonePostEffectPipeline::CompileShaders() {
+void CopyPostEffectPipeline::CompileShaders() {
 	vertexShaderBlob_ = nullptr;
 	vertexShaderBlob_ = shaderCompiler_->CompileShader(L"EngineAssets/Shaders/PostEffect/None/None.VS.hlsl", L"vs_6_0");
 	assert(vertexShaderBlob_ != nullptr);

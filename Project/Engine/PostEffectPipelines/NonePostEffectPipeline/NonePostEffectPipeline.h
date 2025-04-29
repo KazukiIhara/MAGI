@@ -5,10 +5,10 @@
 /// <summary>
 /// ポストエフェクトなし
 /// </summary>
-class NonePostEffectPipeline:public BaseSimplePostEffectPipeline {
+class CopyPostEffectPipeline:public BaseSimplePostEffectPipeline {
 public:
-	NonePostEffectPipeline(DXGI* dxgi, ShaderCompiler* shaderCompiler);
-	~NonePostEffectPipeline()override;
+	CopyPostEffectPipeline(DXGI* dxgi, ShaderCompiler* shaderCompiler);
+	~CopyPostEffectPipeline()override;
 private:
 	// シェーダーをコンパイルする
 	void CompileShaders()override;
