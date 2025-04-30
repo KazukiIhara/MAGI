@@ -46,6 +46,10 @@ private:
 
 	// プリミティブ描画用のマテリアルデータ
 	PrimitiveMaterialData3D material_{};
+
+	float vignetteScale_ = 16.0f;
+	float vignetteFalloff_ = 0.8f;
+
 };
 
 template<typename Data>
@@ -158,13 +162,20 @@ inline void SampleScene<Data>::Update() {
 	ImGui::DragFloat("Height", &cylinderData_.height, 0.01f);
 	ImGui::End();
 
+
+	ImGui::Begin("VignetteParamater");
+	ImGui::DragFloat("Scale", &vignetteScale_, 0.01f);
+	ImGui::DragFloat("Falloff", &vignetteFalloff_, 0.01f);
+	ImGui::End();
+
+
 	// トランスフォーム更新
 	for (uint32_t i = 0; i < 5; i++) {
 		worldTransform_[i].Update();
 	}
 
 	// ポストエフェクトをかける
-	MAGISYSTEM::ApplyPostEffectVignette(16.0f, 0.8f);
+	MAGISYSTEM::ApplyPostEffectVignette(vignetteScale_, vignetteFalloff_);
 
 }
 

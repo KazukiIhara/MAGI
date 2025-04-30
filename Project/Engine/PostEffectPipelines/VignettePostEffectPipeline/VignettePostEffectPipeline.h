@@ -1,16 +1,15 @@
 #pragma once
 
-#include "PostEffectPipelines/BaseNoParamaterPostEffectPipeline/BaseNoParamaterPostEffectPipeline.h"
+#include "PostEffectPipelines/BaseWithParamaterPostEffectPipeline/BaseWithParamaterPostEffectPipeline.h"
 
 /// <summary>
 /// ポストエフェクトなし
 /// </summary>
-class VignettePostEffectPipeline :public BaseNoParamaterPostEffectPipeline {
+class VignettePostEffectPipeline :public BaseWithParamaterPostEffectPipeline {
 public:
 	VignettePostEffectPipeline(DXGI* dxgi, ShaderCompiler* shaderCompiler);
 	~VignettePostEffectPipeline()override;
 
-	void CreateRootSignature()override;
 
 private:
 	// シェーダーをコンパイルする
