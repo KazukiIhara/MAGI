@@ -914,7 +914,7 @@ void MAGISYSTEM::ApplyPostEffectVignette(float scale, float falloff) {
 	PostEffectCommand command{
 		.postEffectType = PostEffectType::Vignette,
 		.param = {
-			.param = {scale,falloff,0.0f,0.0f},
+			.param = {scale,falloff},
 		}
 	};
 	// コマンドを追加

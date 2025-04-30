@@ -13,6 +13,6 @@ struct VignetteData
 {
     float scale;
     float falloff;
-    float _padding0;
-    float _padding1;
+    float4 _padding0;
+    float2 _padding1;
 };
