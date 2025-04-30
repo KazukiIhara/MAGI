@@ -164,7 +164,7 @@ inline void SampleScene<Data>::Update() {
 	}
 
 	// ポストエフェクトをかける
-	MAGISYSTEM::AddPostEffectGrayScale();
+	MAGISYSTEM::ApplyPostEffectVignette();
 
 }
 

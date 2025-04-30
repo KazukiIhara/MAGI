@@ -285,7 +285,9 @@ public: // エンジンの機能
 
 #pragma region RenderController
 	// シーンにグレースケールをかける
-	static void AddPostEffectGrayScale();
+	static void ApplyPostEffectGrayScale();
+	// シーンにビネットをかける
+	static void ApplyPostEffectVignette();
 
 #pragma endregion
 

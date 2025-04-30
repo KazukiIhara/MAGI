@@ -76,6 +76,7 @@ void RenderController::ApplyPostEffect() {
 		switch (command.postEffectType) {
 		case PostEffectType::Copy:
 		case PostEffectType::Grayscale:
+		case PostEffectType::Vignette:
 			// 現在の書き込み先のレンダーテクスチャを切り替え
 			currentRenderTarget_ = colorPostEffectRenderTexture_[currentColorPostEffectRenderTextureIndex_].get();
 			// 次のポストエフェクト用にレンダーテクスチャを切り替え
@@ -98,7 +99,7 @@ void RenderController::ApplyPostEffect() {
 		commandList->SetPipelineState(postEffectPipelineManager_->GetPipelineState(command.postEffectType, BlendMode::None));
 		commandList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
-		// 入力するテクスチャは「ひとつ前に描画したレンダーテクスチャ」
+		// 入力するテクスチャはひとつ前に描画したレンダーテクスチャ
 		commandList->SetGraphicsRootDescriptorTable(0, srvUavManager_->GetDescriptorHandleGPU(currentRenderTexture_->GetSrvIndex()));
 
 		// 描画

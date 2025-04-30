@@ -902,9 +902,17 @@ ID3D12PipelineState* MAGISYSTEM::GetPostEffectPipelineState(PostEffectType pipel
 	return postEffectPipelineManager_->GetPipelineState(pipelineState, blendMode);
 }
 
-void MAGISYSTEM::AddPostEffectGrayScale() {
+void MAGISYSTEM::ApplyPostEffectGrayScale() {
 	PostEffectCommand command{
 		.postEffectType = PostEffectType::Grayscale,
+	};
+	// コマンドを追加
+	renderController_->AddPostEffect(command);
+}
+
+void MAGISYSTEM::ApplyPostEffectVignette() {
+	PostEffectCommand command{
+		.postEffectType = PostEffectType::Vignette,
 	};
 	// コマンドを追加
 	renderController_->AddPostEffect(command);
