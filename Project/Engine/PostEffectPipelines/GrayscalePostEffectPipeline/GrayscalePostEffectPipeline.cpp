@@ -7,7 +7,7 @@
 #include "DirectX/ShaderCompiler/ShaderCompiler.h"
 
 GrayscalePostEffectPipeline::GrayscalePostEffectPipeline(DXGI* dxgi, ShaderCompiler* shaderCompiler)
-	:BaseSceneColorPostEffectPipeline(dxgi, shaderCompiler) {}
+	:BaseNoParamaterPostEffectPipeline(dxgi, shaderCompiler) {}
 
 GrayscalePostEffectPipeline::~GrayscalePostEffectPipeline() {}
 

@@ -1,11 +1,11 @@
 #pragma once
 
-#include "PostEffectPipelines/BaseSimplePostEffectPipeline/BaseSimplePostEffectPipeline.h"
+#include "PostEffectPipelines/BaseNoParamaterPostEffectPipeline/BaseNoParamaterPostEffectPipeline.h"
 
 /// <summary>
 /// ポストエフェクトなし
 /// </summary>
-class CopyPostEffectPipeline:public BaseSceneColorPostEffectPipeline {
+class CopyPostEffectPipeline:public BaseNoParamaterPostEffectPipeline {
 public:
 	CopyPostEffectPipeline(DXGI* dxgi, ShaderCompiler* shaderCompiler);
 	~CopyPostEffectPipeline()override;

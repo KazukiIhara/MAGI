@@ -1,11 +1,11 @@
 #pragma once
 
-#include "PostEffectPipelines/BaseSimplePostEffectPipeline/BaseSimplePostEffectPipeline.h"
+#include "PostEffectPipelines/BaseNoParamaterPostEffectPipeline/BaseNoParamaterPostEffectPipeline.h"
 
 /// <summary>
-/// ポストエフェクトなし
+/// グレースケール
 /// </summary>
-class GrayscalePostEffectPipeline:public BaseSceneColorPostEffectPipeline {
+class GrayscalePostEffectPipeline:public BaseNoParamaterPostEffectPipeline {
 public:
 	GrayscalePostEffectPipeline(DXGI* dxgi, ShaderCompiler* shaderCompiler);
 	~GrayscalePostEffectPipeline()override;

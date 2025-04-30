@@ -3,10 +3,12 @@
 #include <vector>
 #include <memory>
 
+#include "DirectX/ComPtr/ComPtr.h"
 #include "RenderTextures/ColorRenderTexture/ColorRenderTexture.h"
 #include "Structs/PostEffectStruct.h"
 
 // 前方宣言
+class DXGI;
 class DirectXCommand;
 class DepthStencil;
 class Viewport;
@@ -20,6 +22,7 @@ class PostEffectPipelineManager;
 class RenderController {
 public:
 	RenderController(
+		DXGI* dxgi,
 		DirectXCommand* directXCommand,
 		DepthStencil* depthStencil,
 		Viewport* viewport,
@@ -50,11 +53,17 @@ public:
 	// ポストエフェクト追加
 	void AddPostEffect(const PostEffectCommand& command);
 private:
-
 	// カラーレンダーテクスチャのインデックス切り替え
 	void SwitchColorRenderTextureIndex();
 
+	// レンダーテクスチャを描画
+	void DrawRenderTexture(ID3D12GraphicsCommandList* commandList, PostEffectCommand command);
+
+	// パラメータ用のリソースを作成する
+	void CreatePostEffectParamaterResource();
+
 private:
+	void SetDXGI(DXGI* dxgi);
 	void SetDirectXCommand(DirectXCommand* directXCommand);
 	void SetDepthStencil(DepthStencil* depthStencil);
 	void SetViewport(Viewport* viewport);
@@ -64,6 +73,7 @@ private:
 
 private:
 	// 各インスタンスを受け取るクラス
+	DXGI* dxgi_ = nullptr;
 	DirectXCommand* directXCommand_ = nullptr;
 	DepthStencil* depthStencil_ = nullptr;
 	Viewport* viewport_ = nullptr;
@@ -85,6 +95,11 @@ private:
 	std::unique_ptr<ColorRenderTexture> colorPostEffectRenderTexture_[2] = { nullptr,nullptr };
 	// 現在使用中のカラーポストエフェクト用のレンダーテクスチャインデックス
 	uint32_t currentColorPostEffectRenderTextureIndex_ = 0;
+
+	// ポストエフェクトのパラメータ用リソース
+	ComPtr<ID3D12Resource> postEffectParamResource_ = nullptr;
+	// ポストエフェクトのパラメータ用データ
+	PostEffectParamater* postEffectParamData_ = nullptr;
 
 	// ポストエフェクトをかけるためのコマンド
 	std::vector<PostEffectCommand> postEffectCommand_{};
