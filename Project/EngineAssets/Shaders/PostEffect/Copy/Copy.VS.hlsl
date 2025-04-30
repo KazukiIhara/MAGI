@@ -1,4 +1,4 @@
-#include "None.hlsli"
+#include "Copy.hlsli"
 
 static const uint kNumVertex = 3;
 static const float4 kPositions[kNumVertex] =

@@ -15,7 +15,7 @@ class ShaderCompiler;
 // MyHedder
 #include "Enums/PostEffectPipelineEnum.h"
 
-#include "PostEffectPipelines/NonePostEffectPipeline/NonePostEffectPipeline.h"
+#include "PostEffectPipelines/CopyPostEffectPipeline/CopyPostEffectPipeline.h"
 #include "PostEffectPipelines/GrayscalePostEffectPipeline/GrayscalePostEffectPipeline.h"
 
 /// <summary>
