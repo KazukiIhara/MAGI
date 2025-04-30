@@ -57,7 +57,8 @@ private:
 	void SwitchColorRenderTextureIndex();
 
 	// レンダーテクスチャを描画
-	void DrawRenderTexture(ID3D12GraphicsCommandList* commandList, PostEffectCommand command);
+	void DrawRenderTextureNoParamater(ID3D12GraphicsCommandList* commandList, const PostEffectType &type);
+	void DrawRenderTextureWithParamater(ID3D12GraphicsCommandList* commandList, const PostEffectCommand &command);
 
 	// パラメータ用のリソースを作成する
 	void CreatePostEffectParamaterResource();

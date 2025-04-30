@@ -164,7 +164,7 @@ inline void SampleScene<Data>::Update() {
 	}
 
 	// ポストエフェクトをかける
-	MAGISYSTEM::ApplyPostEffectVignette();
+	MAGISYSTEM::ApplyPostEffectVignette(16.0f, 0.8f);
 
 }
 

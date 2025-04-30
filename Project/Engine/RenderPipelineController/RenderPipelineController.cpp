@@ -81,8 +81,10 @@ void RenderController::ApplyPostEffect() {
 		switch (command.postEffectType) {
 		case PostEffectType::Copy:
 		case PostEffectType::Grayscale:
+			DrawRenderTextureNoParamater(commandList, command.postEffectType);
+			break;
 		case PostEffectType::Vignette:
-			DrawRenderTexture(commandList, command);
+			DrawRenderTextureWithParamater(commandList, command);
 			break;
 		}
 
@@ -177,7 +179,33 @@ void RenderController::SwitchColorRenderTextureIndex() {
 	}
 }
 
-void RenderController::DrawRenderTexture(ID3D12GraphicsCommandList* commandList, PostEffectCommand command) {
+void RenderController::DrawRenderTextureNoParamater(ID3D12GraphicsCommandList* commandList, const PostEffectType &type) {
+	// 現在の書き込み先のレンダーテクスチャを切り替え
+	currentRenderTarget_ = colorPostEffectRenderTexture_[currentColorPostEffectRenderTextureIndex_].get();
+	// 次のポストエフェクト用にレンダーテクスチャを切り替え
+	SwitchColorRenderTextureIndex();
+
+	// レンダーターゲットを設定
+	currentRenderTarget_->SetAsRenderTarget();
+	currentRenderTarget_->ClearRenderTarget();
+
+	// ビューポート、シザー設定
+	viewport_->SettingViewport();
+	scissorRect_->SettingScissorRect();
+
+	// ポストエフェクトに対応するパイプラインを設定
+	commandList->SetGraphicsRootSignature(postEffectPipelineManager_->GetRootSignature(type));
+	commandList->SetPipelineState(postEffectPipelineManager_->GetPipelineState(type, BlendMode::None));
+	commandList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+
+	// 入力するテクスチャはひとつ前に描画したレンダーテクスチャ
+	commandList->SetGraphicsRootDescriptorTable(0, srvUavManager_->GetDescriptorHandleGPU(currentRenderTexture_->GetSrvIndex()));
+
+	// 描画
+	commandList->DrawInstanced(3, 1, 0, 0);
+}
+
+void RenderController::DrawRenderTextureWithParamater(ID3D12GraphicsCommandList* commandList, const PostEffectCommand& command) {
 	// 現在の書き込み先のレンダーテクスチャを切り替え
 	currentRenderTarget_ = colorPostEffectRenderTexture_[currentColorPostEffectRenderTextureIndex_].get();
 	// 次のポストエフェクト用にレンダーテクスチャを切り替え
@@ -192,7 +220,11 @@ void RenderController::DrawRenderTexture(ID3D12GraphicsCommandList* commandList,
 	scissorRect_->SettingScissorRect();
 
 	// パラメータを更新
-	postEffectParamData_ = &command.param;
+	postEffectParamData_->param0 = command.param.param0;
+	postEffectParamData_->param1 = command.param.param1;
+	postEffectParamData_->param2 = command.param.param2;
+	postEffectParamData_->param3 = command.param.param3;
+
 
 	// ポストエフェクトに対応するパイプラインを設定
 	commandList->SetGraphicsRootSignature(postEffectPipelineManager_->GetRootSignature(command.postEffectType));
@@ -210,7 +242,8 @@ void RenderController::DrawRenderTexture(ID3D12GraphicsCommandList* commandList,
 }
 
 void RenderController::CreatePostEffectParamaterResource() {
-
+	postEffectParamResource_ = dxgi_->CreateBufferResource(sizeof(PostEffectParamater));
+	postEffectParamResource_->Map(0, nullptr, reinterpret_cast<void**>(&postEffectParamData_));
 }
 
 void RenderController::SetDXGI(DXGI* dxgi) {

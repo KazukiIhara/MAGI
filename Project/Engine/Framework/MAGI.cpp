@@ -910,9 +910,15 @@ void MAGISYSTEM::ApplyPostEffectGrayScale() {
 	renderController_->AddPostEffect(command);
 }
 
-void MAGISYSTEM::ApplyPostEffectVignette() {
+void MAGISYSTEM::ApplyPostEffectVignette(float scale, float falloff) {
 	PostEffectCommand command{
 		.postEffectType = PostEffectType::Vignette,
+		.param = {
+			.param0 = scale,
+			.param1 = falloff,
+			.param2 = 0.0f,
+			.param3 = 0.0f
+		}
 	};
 	// コマンドを追加
 	renderController_->AddPostEffect(command);
