@@ -85,3 +85,10 @@ struct MaterialForGPU {
 	Matrix4x4 uvMatrix;
 	int32_t enableNormalMap;
 };
+
+/// <summary>
+/// GPUに送るモデルデータ
+/// </summary>
+struct ModelDataForGPU {
+	Matrix4x4 worldMatrix;
+};

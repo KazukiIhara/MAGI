@@ -18,6 +18,8 @@ class ShaderCompiler;
 #include "PostEffectPipelines/CopyPostEffectPipeline/CopyPostEffectPipeline.h"
 #include "PostEffectPipelines/GrayscalePostEffectPipeline/GrayscalePostEffectPipeline.h"
 #include "PostEffectPipelines/VignettePostEffectPipeline/VignettePostEffectPipeline.h"
+#include "PostEffectPipelines/GaussianBlurXPostEffectPipeline/GaussianBlurXPostEffectPipeline.h"
+#include "PostEffectPipelines/GaussianBlurYPostEffectPipeline/GaussianBlurYPostEffectPipeline.h"
 
 /// <summary>
 /// ポストエフェクトパイプラインマネージャ
@@ -53,4 +55,8 @@ private:
 	std::unique_ptr<GrayscalePostEffectPipeline> grayscalePostEffectPipeline_ = nullptr;
 	// VignettePostEffectPipeline
 	std::unique_ptr<VignettePostEffectPipeline> vignettePostEffectPipeline_ = nullptr;
+	// GaussianBlurXPostEffectPipeline
+	std::unique_ptr<GaussianBlurXPostEffectPipeline> gaussianBlurXPostEffectPipeline_ = nullptr;
+	// GaussianBlurYPostEffectPipeline
+	std::unique_ptr<GaussianBlurYPostEffectPipeline> gaussianBlurYPostEffectPipeline_ = nullptr;
 };

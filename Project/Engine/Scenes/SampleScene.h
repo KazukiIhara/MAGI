@@ -49,7 +49,7 @@ private:
 
 	float vignetteScale_ = 16.0f;
 	float vignetteFalloff_ = 0.8f;
-
+	float gaussianSigma_ = 0.5f;
 };
 
 template<typename Data>
@@ -66,6 +66,7 @@ inline void SampleScene<Data>::Initialize() {
 
 	// モデル
 	MAGISYSTEM::LoadModel("terrain");
+	MAGISYSTEM::LoadModel("teapot");
 
 	// サウンド
 	MAGISYSTEM::LoadWaveSound("Alarm01.wav");
@@ -168,6 +169,9 @@ inline void SampleScene<Data>::Update() {
 	ImGui::DragFloat("Falloff", &vignetteFalloff_, 0.01f);
 	ImGui::End();
 
+	ImGui::Begin("GaussianBlurParamater");
+	ImGui::DragFloat("Sigma", &gaussianSigma_, 0.01f);
+	ImGui::End();
 
 	// トランスフォーム更新
 	for (uint32_t i = 0; i < 5; i++) {
@@ -175,8 +179,10 @@ inline void SampleScene<Data>::Update() {
 	}
 
 	// ポストエフェクトをかける
+	MAGISYSTEM::ApplyPostEffectGrayScale();
+	MAGISYSTEM::ApplyPostEffectGaussianX(gaussianSigma_, 13);
+	MAGISYSTEM::ApplyPostEffectGaussianY(gaussianSigma_, 13);
 	MAGISYSTEM::ApplyPostEffectVignette(vignetteScale_, vignetteFalloff_);
-
 }
 
 template<typename Data>

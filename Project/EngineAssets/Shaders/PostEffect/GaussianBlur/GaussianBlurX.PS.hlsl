@@ -9,16 +9,21 @@ PixelShaderOutput main(VertexShaderOutput input)
     PixelShaderOutput output;
 
     float2 uv = input.texcoord;
-    float2 texOffset = float2(gdata.texelSize.x, 0.0f); // X•ûŒü‚Ì‚Ý
+    float2 texOffset = float2(gdata.param0.x, 0.0f); // X•ûŒü‚Ì‚Ý
+    
+    const float weights[7] = { gdata.param1.xyzw, gdata.param2.xyz };
 
-    float4 color = gTexture.Sample(gSampler, uv) * gdata.weights[0];
+    float4 color = gTexture.Sample(gSampler, uv) * weights[0];
 
     [unroll]
-    for (int i = 1; i <= 3; ++i)
+    for (uint i = 1; i <= 6; ++i)
     {
-        float2 offset = texOffset * float(i);
-        color += gTexture.Sample(gSampler, uv + offset) * gdata.weights[i];
-        color += gTexture.Sample(gSampler, uv - offset) * gdata.weights[i];
+        if (i <= gdata.param3.x)
+        {
+            float2 offset = texOffset * float(i);
+            color += gTexture.Sample(gSampler, uv + offset) * weights[i];
+            color += gTexture.Sample(gSampler, uv - offset) * weights[i];
+        }      
     }
 
     output.color = color;

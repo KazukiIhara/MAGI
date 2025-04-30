@@ -925,14 +925,37 @@ void MAGISYSTEM::ApplyPostEffectVignette(float scale, float falloff) {
 	renderController_->AddPostEffect(command);
 }
 
-void MAGISYSTEM::ApplyPostEffectGaussian(float sigma) {
+void MAGISYSTEM::ApplyPostEffectGaussianX(float sigma, uint32_t karnelSize) {
 	// 重みを計算
 	const std::array<float, 7> weight = GenerateGaussianWeights(sigma);
+	// カーネルの半径を計算
+	const float kernelRadius = (karnelSize - 1) * 0.5f;
 	PostEffectCommand command{
 		.postEffectType = PostEffectType::GaussianX,
 		.param = {
-			.param = {1.0f / WindowApp::kClientWidth,1.0f / WindowApp::kClientHeight,
-				weight[0],weight[1],weight[2],weight[3],weight[4],weight[5],weight[6]
+			.param = {1.0f / WindowApp::kClientWidth,1.0f / WindowApp::kClientHeight,0.0f,0.0f,
+				weight[0],weight[1],weight[2],weight[3],
+				weight[4],weight[5],weight[6],0.0f,
+				kernelRadius,
+			},
+		}
+	};
+	// コマンドを追加
+	renderController_->AddPostEffect(command);
+}
+
+void MAGISYSTEM::ApplyPostEffectGaussianY(float sigma, uint32_t karnelSize) {
+	// 重みを計算
+	const std::array<float, 7> weight = GenerateGaussianWeights(sigma);
+	// カーネルの半径を計算
+	const float kernelRadius = (karnelSize - 1) * 0.5f;
+	PostEffectCommand command{
+		.postEffectType = PostEffectType::GaussianY,
+		.param = {
+			.param = {1.0f / WindowApp::kClientWidth,1.0f / WindowApp::kClientHeight,0.0f,0.0f,
+				weight[0],weight[1],weight[2],weight[3],
+				weight[4],weight[5],weight[6],0.0f,
+				kernelRadius,
 			},
 		}
 	};

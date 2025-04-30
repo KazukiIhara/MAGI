@@ -287,9 +287,11 @@ public: // エンジンの機能
 	// シーンにグレースケールをかける
 	static void ApplyPostEffectGrayScale();
 	// シーンにビネットをかける
-	static void ApplyPostEffectVignette(float scale,float falloff);
-	// シーンにガウスぼかしをかける
-	static void ApplyPostEffectGaussian(float sigma);
+	static void ApplyPostEffectVignette(float scale, float falloff);
+	// シーンにX軸ガウスぼかしをかける(karnelSizeは、3,5,7,9,11,13)
+	static void ApplyPostEffectGaussianX(float sigma, uint32_t karnelSize);
+	// シーンにY軸ガウスぼかしをかける(karnelSizeは、3,5,7,9,11,13)
+	static void ApplyPostEffectGaussianY(float sigma, uint32_t karnelSize);
 #pragma endregion
 
 #pragma region TextureDataContainer

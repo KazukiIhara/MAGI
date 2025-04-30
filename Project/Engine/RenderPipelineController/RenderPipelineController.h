@@ -82,6 +82,9 @@ private:
 	SRVUAVManager* srvUavManager_ = nullptr;
 	PostEffectPipelineManager* postEffectPipelineManager_ = nullptr;
 private:
+	// コマンド最大数
+	static const uint32_t kMaxPostEffectNum_ = 64;
+
 	// 現在のレンダーターゲット
 	BaseRenderTexture* currentRenderTarget_ = nullptr;
 	// これから描画するレンダーテクスチャ
@@ -98,14 +101,12 @@ private:
 	uint32_t currentColorPostEffectRenderTextureIndex_ = 0;
 
 	// ポストエフェクトのパラメータ用リソース
-	ComPtr<ID3D12Resource> postEffectParamResource_ = nullptr;
+	ComPtr<ID3D12Resource> postEffectParamResource_[kMaxPostEffectNum_];
 	// ポストエフェクトのパラメータ用データ
-	PostEffectParamater* postEffectParamData_ = nullptr;
+	PostEffectParamater* postEffectParamData_[kMaxPostEffectNum_];
 
 	// ポストエフェクトをかけるためのコマンド
 	std::vector<PostEffectCommand> postEffectCommand_{};
 	// 現在のコマンドインデックス
 	uint32_t currentCommandIndex_ = 0;
-	// コマンド最大数
-	static const uint32_t kMaxPostEffectNum_ = 64;
 };

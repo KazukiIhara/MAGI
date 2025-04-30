@@ -1,6 +1,7 @@
 #include "RenderPipelineController.h"
 
 #include <cassert>
+#include <format>
 
 #include "DirectX/DXGI/DXGI.h"
 #include "DirectX/DirectXCommand/DirectXCommand.h"
@@ -9,6 +10,8 @@
 #include "DirectX/ScissorRect/ScissorRect.h"
 #include "ViewManagers/SRVUAVManager/SRVUAVManager.h"
 #include "PipelineManagers/PostEffectPipelineManager/PostEffectPipelineManager.h"
+
+#include "Logger/Logger.h"
 
 RenderController::RenderController(DXGI* dxgi, DirectXCommand* directXCommand, DepthStencil* depthStencil, Viewport* viewport, ScissorRect* scissorRect, SRVUAVManager* srvUavManager, PostEffectPipelineManager* postEffectPipelineManager) {
 	// インスタンスを受け取る
@@ -41,9 +44,7 @@ RenderController::RenderController(DXGI* dxgi, DirectXCommand* directXCommand, D
 	postEffectCommand_.resize(kMaxPostEffectNum_);
 }
 
-RenderController::~RenderController() {
-
-}
+RenderController::~RenderController() {}
 
 void RenderController::PreSceneRender() {
 	// レンダーターゲットをシーン描画用のレンダーテクスチャに指定
@@ -83,20 +84,11 @@ void RenderController::ApplyPostEffect() {
 			DrawRenderTextureNoParamater(commandList, command.postEffectType);
 			break;
 		case PostEffectType::Vignette:
-			DrawRenderTextureWithParamater(commandList, command);
-			break;
 		case PostEffectType::GaussianX:
-			DrawRenderTextureWithParamater(commandList, command);
-			command.postEffectType = PostEffectType::GaussianY;
+		case PostEffectType::GaussianY:
 			DrawRenderTextureWithParamater(commandList, command);
 			break;
 		}
-
-		// 出力結果を次の入力にする
-		currentRenderTexture_ = currentRenderTarget_;
-
-		// 描画した対象を読み取り可能状態にする
-		currentRenderTexture_->TransitionToRead();
 
 	}
 
@@ -171,12 +163,14 @@ void RenderController::EndFrame() {
 void RenderController::AddPostEffect(const PostEffectCommand& command) {
 	// コマンドを追加
 	postEffectCommand_[currentCommandIndex_] = command;
+	// インデックスを登録
+	postEffectCommand_[currentCommandIndex_].index = currentCommandIndex_;
 	// コマンドインデックスをインクリメント
 	currentCommandIndex_++;
 }
 
 void RenderController::SwitchColorRenderTextureIndex() {
-	if (!currentColorPostEffectRenderTextureIndex_) {
+	if (currentColorPostEffectRenderTextureIndex_ == 0) {
 		currentColorPostEffectRenderTextureIndex_ = 1;
 	} else {
 		currentColorPostEffectRenderTextureIndex_ = 0;
@@ -186,6 +180,8 @@ void RenderController::SwitchColorRenderTextureIndex() {
 void RenderController::DrawRenderTextureNoParamater(ID3D12GraphicsCommandList* commandList, const PostEffectType& type) {
 	// 現在の書き込み先のレンダーテクスチャを切り替え
 	currentRenderTarget_ = colorPostEffectRenderTexture_[currentColorPostEffectRenderTextureIndex_].get();
+	// 書き込み可能状態にする
+	currentRenderTarget_->TransitionToWrite();
 	// 次のポストエフェクト用にレンダーテクスチャを切り替え
 	SwitchColorRenderTextureIndex();
 
@@ -207,11 +203,19 @@ void RenderController::DrawRenderTextureNoParamater(ID3D12GraphicsCommandList* c
 
 	// 描画
 	commandList->DrawInstanced(3, 1, 0, 0);
+
+	// 出力結果を次の入力にする
+	currentRenderTexture_ = currentRenderTarget_;
+
+	// 描画した対象を読み取り可能状態にする
+	currentRenderTexture_->TransitionToRead();
 }
 
 void RenderController::DrawRenderTextureWithParamater(ID3D12GraphicsCommandList* commandList, const PostEffectCommand& command) {
 	// 現在の書き込み先のレンダーテクスチャを切り替え
 	currentRenderTarget_ = colorPostEffectRenderTexture_[currentColorPostEffectRenderTextureIndex_].get();
+	// 書き込み可能状態にする
+	currentRenderTarget_->TransitionToWrite();
 	// 次のポストエフェクト用にレンダーテクスチャを切り替え
 	SwitchColorRenderTextureIndex();
 
@@ -224,9 +228,7 @@ void RenderController::DrawRenderTextureWithParamater(ID3D12GraphicsCommandList*
 	scissorRect_->SettingScissorRect();
 
 	// パラメータを更新
-	for (uint32_t i = 0; i < 12; i++) {
-		postEffectParamData_->param[i] = command.param.param[i];
-	}
+	std::memcpy(postEffectParamData_[command.index], &command.param, sizeof(PostEffectParamater));
 
 	// ポストエフェクトに対応するパイプラインを設定
 	commandList->SetGraphicsRootSignature(postEffectPipelineManager_->GetRootSignature(command.postEffectType));
@@ -237,15 +239,25 @@ void RenderController::DrawRenderTextureWithParamater(ID3D12GraphicsCommandList*
 	commandList->SetGraphicsRootDescriptorTable(0, srvUavManager_->GetDescriptorHandleGPU(currentRenderTexture_->GetSrvIndex()));
 
 	// パラメータを送信
-	commandList->SetGraphicsRootConstantBufferView(1, postEffectParamResource_->GetGPUVirtualAddress());
+	commandList->SetGraphicsRootConstantBufferView(1, postEffectParamResource_[command.index]->GetGPUVirtualAddress());
 
 	// 描画
 	commandList->DrawInstanced(3, 1, 0, 0);
+
+	// 出力結果を次の入力にする
+	currentRenderTexture_ = currentRenderTarget_;
+
+	// 描画した対象を読み取り可能状態にする
+	currentRenderTexture_->TransitionToRead();
+
 }
 
 void RenderController::CreatePostEffectParamaterResource() {
-	postEffectParamResource_ = dxgi_->CreateBufferResource(sizeof(PostEffectParamater));
-	postEffectParamResource_->Map(0, nullptr, reinterpret_cast<void**>(&postEffectParamData_));
+	for (uint32_t i = 0; i < kMaxPostEffectNum_; i++) {
+		postEffectParamResource_[i] = dxgi_->CreateBufferResource(sizeof(PostEffectParamater));
+		HRESULT hr = postEffectParamResource_[i]->Map(0, nullptr, reinterpret_cast<void**>(&postEffectParamData_[i]));
+		assert(SUCCEEDED(hr));
+	}
 }
 
 void RenderController::SetDXGI(DXGI* dxgi) {

@@ -11,7 +11,8 @@ struct PixelShaderOutput
 
 struct GaussianBlurData
 {
-    float2 texelSize;
-    float weights[7];
-    float3 _padding;
+    float4 param0; // xy {texelSize.x,texelSize.y}
+    float4 param1; // xyzw weight[0] ~ weight[3]
+    float4 param2; // xyz weight[4] ~ weight[6]
+    float4 param3; // x karnelNum
 };
