@@ -8,3 +8,11 @@ struct PixelShaderOutput
 {
     float4 color : SV_TARGET0;
 };
+
+struct VignetteData
+{
+    float scale;
+    float falloff;
+    float4 _padding0;
+    float2 _padding1;
+};

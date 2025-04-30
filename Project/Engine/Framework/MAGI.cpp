@@ -166,7 +166,7 @@ void MAGISYSTEM::Initialize() {
 	postEffectPipelineManager_ = std::make_unique<PostEffectPipelineManager>(dxgi_.get(), shaderCompiler_.get());
 
 	// RenderPipelineController
-	renderController_ = std::make_unique<RenderController>(directXCommand_.get(), depthStencil_.get(), viewport_.get(), scissorRect_.get(), srvuavManager_.get(), postEffectPipelineManager_.get());
+	renderController_ = std::make_unique<RenderController>(dxgi_.get(), directXCommand_.get(), depthStencil_.get(), viewport_.get(), scissorRect_.get(), srvuavManager_.get(), postEffectPipelineManager_.get());
 
 
 	// GameObject3DManager
@@ -910,9 +910,12 @@ void MAGISYSTEM::ApplyPostEffectGrayScale() {
 	renderController_->AddPostEffect(command);
 }
 
-void MAGISYSTEM::ApplyPostEffectVignette() {
+void MAGISYSTEM::ApplyPostEffectVignette(float scale, float falloff) {
 	PostEffectCommand command{
 		.postEffectType = PostEffectType::Vignette,
+		.param = {
+			.param = {scale,falloff},
+		}
 	};
 	// コマンドを追加
 	renderController_->AddPostEffect(command);

@@ -2,6 +2,7 @@
 
 #include <cassert>
 
+#include "DirectX/DXGI/DXGI.h"
 #include "DirectX/DirectXCommand/DirectXCommand.h"
 #include "DirectX/DepthStencil/DepthStencil.h"
 #include "DirectX/Viewport/Viewport.h"
@@ -10,14 +11,18 @@
 #include "PipelineManagers/PostEffectPipelineManager/PostEffectPipelineManager.h"
 
 
-RenderController::RenderController(DirectXCommand* directXCommand, DepthStencil* depthStencil, Viewport* viewport, ScissorRect* scissorRect, SRVUAVManager* srvUavManager, PostEffectPipelineManager* postEffectPipelineManager) {
+RenderController::RenderController(DXGI* dxgi, DirectXCommand* directXCommand, DepthStencil* depthStencil, Viewport* viewport, ScissorRect* scissorRect, SRVUAVManager* srvUavManager, PostEffectPipelineManager* postEffectPipelineManager) {
 	// インスタンスを受け取る
+	SetDXGI(dxgi);
 	SetDirectXCommand(directXCommand);
 	SetDepthStencil(depthStencil);
 	SetViewport(viewport);
 	SetScissorRect(scissorRect);
 	SetSrvUavManager(srvUavManager);
 	SetPostEffectPipelineManager(postEffectPipelineManager);
+
+	// パラメータ用のリソースを作成
+	CreatePostEffectParamaterResource();
 
 	// シーン描画用のレンダーテクスチャ
 	sceneRenderTexture_ = std::make_unique<ColorRenderTexture>();
@@ -76,34 +81,12 @@ void RenderController::ApplyPostEffect() {
 		switch (command.postEffectType) {
 		case PostEffectType::Copy:
 		case PostEffectType::Grayscale:
-		case PostEffectType::Vignette:
-			// 現在の書き込み先のレンダーテクスチャを切り替え
-			currentRenderTarget_ = colorPostEffectRenderTexture_[currentColorPostEffectRenderTextureIndex_].get();
-			// 次のポストエフェクト用にレンダーテクスチャを切り替え
-			SwitchColorRenderTextureIndex();
+			DrawRenderTextureNoParamater(commandList, command.postEffectType);
 			break;
-		default:
+		case PostEffectType::Vignette:
+			DrawRenderTextureWithParamater(commandList, command);
 			break;
 		}
-
-		// レンダーターゲットを設定
-		currentRenderTarget_->SetAsRenderTarget();
-		currentRenderTarget_->ClearRenderTarget();
-
-		// ビューポート、シザー設定
-		viewport_->SettingViewport();
-		scissorRect_->SettingScissorRect();
-
-		// ポストエフェクトに対応するパイプラインを設定
-		commandList->SetGraphicsRootSignature(postEffectPipelineManager_->GetRootSignature(command.postEffectType));
-		commandList->SetPipelineState(postEffectPipelineManager_->GetPipelineState(command.postEffectType, BlendMode::None));
-		commandList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-
-		// 入力するテクスチャはひとつ前に描画したレンダーテクスチャ
-		commandList->SetGraphicsRootDescriptorTable(0, srvUavManager_->GetDescriptorHandleGPU(currentRenderTexture_->GetSrvIndex()));
-
-		// 描画
-		commandList->DrawInstanced(3, 1, 0, 0);
 
 		// 出力結果を次の入力にする
 		currentRenderTexture_ = currentRenderTarget_;
@@ -194,6 +177,76 @@ void RenderController::SwitchColorRenderTextureIndex() {
 	} else {
 		currentColorPostEffectRenderTextureIndex_ = 0;
 	}
+}
+
+void RenderController::DrawRenderTextureNoParamater(ID3D12GraphicsCommandList* commandList, const PostEffectType& type) {
+	// 現在の書き込み先のレンダーテクスチャを切り替え
+	currentRenderTarget_ = colorPostEffectRenderTexture_[currentColorPostEffectRenderTextureIndex_].get();
+	// 次のポストエフェクト用にレンダーテクスチャを切り替え
+	SwitchColorRenderTextureIndex();
+
+	// レンダーターゲットを設定
+	currentRenderTarget_->SetAsRenderTarget();
+	currentRenderTarget_->ClearRenderTarget();
+
+	// ビューポート、シザー設定
+	viewport_->SettingViewport();
+	scissorRect_->SettingScissorRect();
+
+	// ポストエフェクトに対応するパイプラインを設定
+	commandList->SetGraphicsRootSignature(postEffectPipelineManager_->GetRootSignature(type));
+	commandList->SetPipelineState(postEffectPipelineManager_->GetPipelineState(type, BlendMode::None));
+	commandList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+
+	// 入力するテクスチャはひとつ前に描画したレンダーテクスチャ
+	commandList->SetGraphicsRootDescriptorTable(0, srvUavManager_->GetDescriptorHandleGPU(currentRenderTexture_->GetSrvIndex()));
+
+	// 描画
+	commandList->DrawInstanced(3, 1, 0, 0);
+}
+
+void RenderController::DrawRenderTextureWithParamater(ID3D12GraphicsCommandList* commandList, const PostEffectCommand& command) {
+	// 現在の書き込み先のレンダーテクスチャを切り替え
+	currentRenderTarget_ = colorPostEffectRenderTexture_[currentColorPostEffectRenderTextureIndex_].get();
+	// 次のポストエフェクト用にレンダーテクスチャを切り替え
+	SwitchColorRenderTextureIndex();
+
+	// レンダーターゲットを設定
+	currentRenderTarget_->SetAsRenderTarget();
+	currentRenderTarget_->ClearRenderTarget();
+
+	// ビューポート、シザー設定
+	viewport_->SettingViewport();
+	scissorRect_->SettingScissorRect();
+
+	// パラメータを更新
+	for (uint32_t i = 0; i < 4; i++) {
+		postEffectParamData_->param[i] = command.param.param[i];
+	}
+
+	// ポストエフェクトに対応するパイプラインを設定
+	commandList->SetGraphicsRootSignature(postEffectPipelineManager_->GetRootSignature(command.postEffectType));
+	commandList->SetPipelineState(postEffectPipelineManager_->GetPipelineState(command.postEffectType, BlendMode::None));
+	commandList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+
+	// 入力するテクスチャはひとつ前に描画したレンダーテクスチャ
+	commandList->SetGraphicsRootDescriptorTable(0, srvUavManager_->GetDescriptorHandleGPU(currentRenderTexture_->GetSrvIndex()));
+
+	// パラメータを送信
+	commandList->SetGraphicsRootConstantBufferView(1, postEffectParamResource_->GetGPUVirtualAddress());
+
+	// 描画
+	commandList->DrawInstanced(3, 1, 0, 0);
+}
+
+void RenderController::CreatePostEffectParamaterResource() {
+	postEffectParamResource_ = dxgi_->CreateBufferResource(sizeof(PostEffectParamater));
+	postEffectParamResource_->Map(0, nullptr, reinterpret_cast<void**>(&postEffectParamData_));
+}
+
+void RenderController::SetDXGI(DXGI* dxgi) {
+	assert(dxgi);
+	dxgi_ = dxgi;
 }
 
 void RenderController::SetDirectXCommand(DirectXCommand* directXCommand) {

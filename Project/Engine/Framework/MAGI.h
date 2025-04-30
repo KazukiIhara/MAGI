@@ -287,7 +287,7 @@ public: // エンジンの機能
 	// シーンにグレースケールをかける
 	static void ApplyPostEffectGrayScale();
 	// シーンにビネットをかける
-	static void ApplyPostEffectVignette();
+	static void ApplyPostEffectVignette(float scale,float falloff);
 
 #pragma endregion
 
