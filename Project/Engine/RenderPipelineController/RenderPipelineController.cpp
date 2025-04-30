@@ -179,7 +179,7 @@ void RenderController::SwitchColorRenderTextureIndex() {
 	}
 }
 
-void RenderController::DrawRenderTextureNoParamater(ID3D12GraphicsCommandList* commandList, const PostEffectType &type) {
+void RenderController::DrawRenderTextureNoParamater(ID3D12GraphicsCommandList* commandList, const PostEffectType& type) {
 	// 現在の書き込み先のレンダーテクスチャを切り替え
 	currentRenderTarget_ = colorPostEffectRenderTexture_[currentColorPostEffectRenderTextureIndex_].get();
 	// 次のポストエフェクト用にレンダーテクスチャを切り替え
@@ -220,11 +220,9 @@ void RenderController::DrawRenderTextureWithParamater(ID3D12GraphicsCommandList*
 	scissorRect_->SettingScissorRect();
 
 	// パラメータを更新
-	postEffectParamData_->param0 = command.param.param0;
-	postEffectParamData_->param1 = command.param.param1;
-	postEffectParamData_->param2 = command.param.param2;
-	postEffectParamData_->param3 = command.param.param3;
-
+	for (uint32_t i = 0; i < 4; i++) {
+		postEffectParamData_->param[i] = command.param.param[i];
+	}
 
 	// ポストエフェクトに対応するパイプラインを設定
 	commandList->SetGraphicsRootSignature(postEffectPipelineManager_->GetRootSignature(command.postEffectType));
