@@ -17,6 +17,7 @@ class ShaderCompiler;
 
 #include "PostEffectPipelines/CopyPostEffectPipeline/CopyPostEffectPipeline.h"
 #include "PostEffectPipelines/GrayscalePostEffectPipeline/GrayscalePostEffectPipeline.h"
+#include "PostEffectPipelines/VignettePostEffectPipeline/VignettePostEffectPipeline.h"
 
 /// <summary>
 /// ポストエフェクトパイプラインマネージャ
@@ -50,4 +51,6 @@ private:
 	std::unique_ptr<CopyPostEffectPipeline> copyPostEffectPipeline_ = nullptr;
 	// GrayscalePostEffectPipeline
 	std::unique_ptr<GrayscalePostEffectPipeline> grayscalePostEffectPipeline_ = nullptr;
+	// VignettePostEffectPipeline
+	std::unique_ptr<VignettePostEffectPipeline> vignettePostEffectPipeline_ = nullptr;
 };
