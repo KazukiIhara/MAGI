@@ -288,7 +288,8 @@ public: // エンジンの機能
 	static void ApplyPostEffectGrayScale();
 	// シーンにビネットをかける
 	static void ApplyPostEffectVignette(float scale,float falloff);
-
+	// シーンにガウスぼかしをかける
+	static void ApplyPostEffectGaussian(float sigma);
 #pragma endregion
 
 #pragma region TextureDataContainer

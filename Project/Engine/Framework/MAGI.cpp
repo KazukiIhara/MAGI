@@ -2,6 +2,10 @@
 
 #include "Logger/Logger.h"
 
+#include "MAGIUitility/MAGIUtility.h"
+
+using namespace MAGIUtility;
+
 // Staticメンバ変数の初期化
 #ifdef _DEBUG
 std::unique_ptr<D3DResourceLeakChecker> MAGISYSTEM::leakCheck_ = nullptr;
@@ -915,6 +919,21 @@ void MAGISYSTEM::ApplyPostEffectVignette(float scale, float falloff) {
 		.postEffectType = PostEffectType::Vignette,
 		.param = {
 			.param = {scale,falloff},
+		}
+	};
+	// コマンドを追加
+	renderController_->AddPostEffect(command);
+}
+
+void MAGISYSTEM::ApplyPostEffectGaussian(float sigma) {
+	// 重みを計算
+	const std::array<float, 7> weight = GenerateGaussianWeights(sigma);
+	PostEffectCommand command{
+		.postEffectType = PostEffectType::GaussianX,
+		.param = {
+			.param = {1.0f / WindowApp::kClientWidth,1.0f / WindowApp::kClientHeight,
+				weight[0],weight[1],weight[2],weight[3],weight[4],weight[5],weight[6]
+			},
 		}
 	};
 	// コマンドを追加

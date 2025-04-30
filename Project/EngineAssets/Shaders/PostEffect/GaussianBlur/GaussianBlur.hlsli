@@ -9,11 +9,9 @@ struct PixelShaderOutput
     float4 color : SV_TARGET0;
 };
 
-struct VignetteData
+struct GaussianBlurData
 {
-    float scale;
-    float falloff;
-    float4 _padding0;
-    float4 _padding1;
-    float2 _padding2;
+    float2 texelSize;
+    float weights[7];
+    float3 _padding;
 };

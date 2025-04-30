@@ -10,7 +10,6 @@
 #include "ViewManagers/SRVUAVManager/SRVUAVManager.h"
 #include "PipelineManagers/PostEffectPipelineManager/PostEffectPipelineManager.h"
 
-
 RenderController::RenderController(DXGI* dxgi, DirectXCommand* directXCommand, DepthStencil* depthStencil, Viewport* viewport, ScissorRect* scissorRect, SRVUAVManager* srvUavManager, PostEffectPipelineManager* postEffectPipelineManager) {
 	// インスタンスを受け取る
 	SetDXGI(dxgi);
@@ -76,7 +75,7 @@ void RenderController::ApplyPostEffect() {
 	ID3D12GraphicsCommandList* commandList = directXCommand_->GetList();
 
 	for (uint32_t i = 0; i < currentFramePostEffectNum; i++) {
-		const auto& command = postEffectCommand_[i];
+		auto& command = postEffectCommand_[i];
 
 		switch (command.postEffectType) {
 		case PostEffectType::Copy:
@@ -84,6 +83,11 @@ void RenderController::ApplyPostEffect() {
 			DrawRenderTextureNoParamater(commandList, command.postEffectType);
 			break;
 		case PostEffectType::Vignette:
+			DrawRenderTextureWithParamater(commandList, command);
+			break;
+		case PostEffectType::GaussianX:
+			DrawRenderTextureWithParamater(commandList, command);
+			command.postEffectType = PostEffectType::GaussianY;
 			DrawRenderTextureWithParamater(commandList, command);
 			break;
 		}
@@ -220,7 +224,7 @@ void RenderController::DrawRenderTextureWithParamater(ID3D12GraphicsCommandList*
 	scissorRect_->SettingScissorRect();
 
 	// パラメータを更新
-	for (uint32_t i = 0; i < 4; i++) {
+	for (uint32_t i = 0; i < 12; i++) {
 		postEffectParamData_->param[i] = command.param.param[i];
 	}
 

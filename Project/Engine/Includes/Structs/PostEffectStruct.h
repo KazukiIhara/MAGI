@@ -6,7 +6,7 @@
 /// パラメータ
 /// </summary>
 struct PostEffectParamater {
-	float param[8];
+	float param[12];
 };
 
 struct PostEffectCommand {

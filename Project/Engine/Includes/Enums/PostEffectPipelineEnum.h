@@ -10,6 +10,8 @@ enum class PostEffectType {
 	Copy, // ポストエフェクトなし
 	Grayscale, // グレースケール
 	Vignette, // ビネット
+	GaussianX, // ガウスぼかし
+	GaussianY,
 
 	Num,
 };
