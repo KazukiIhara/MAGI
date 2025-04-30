@@ -1,11 +1,11 @@
 #pragma once
 
-#include "PostEffectPipelines/BaseSimplePostEffectPipeline/BaseSimplePostEffectPipeline.h"
+#include "PostEffectPipelines/BaseSceneColorPostEffectPipeline/BaseSceneColorPostEffectPipeline.h"
 
 /// <summary>
 /// ポストエフェクトなし
 /// </summary>
-class VignettePostEffectPipeline:public BaseSimplePostEffectPipeline {
+class VignettePostEffectPipeline:public BaseSceneColorPostEffectPipeline {
 public:
 	VignettePostEffectPipeline(DXGI* dxgi, ShaderCompiler* shaderCompiler);
 	~VignettePostEffectPipeline()override;

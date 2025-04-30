@@ -7,7 +7,7 @@
 #include "DirectX/ShaderCompiler/ShaderCompiler.h"
 
 CopyPostEffectPipeline::CopyPostEffectPipeline(DXGI* dxgi, ShaderCompiler* shaderCompiler)
-	:BaseSimplePostEffectPipeline(dxgi, shaderCompiler) {
+	:BaseSceneColorPostEffectPipeline(dxgi, shaderCompiler) {
 }
 
 CopyPostEffectPipeline::~CopyPostEffectPipeline() {}

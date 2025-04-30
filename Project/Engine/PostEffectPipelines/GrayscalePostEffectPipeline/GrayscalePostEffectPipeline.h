@@ -5,7 +5,7 @@
 /// <summary>
 /// ポストエフェクトなし
 /// </summary>
-class GrayscalePostEffectPipeline:public BaseSimplePostEffectPipeline {
+class GrayscalePostEffectPipeline:public BaseSceneColorPostEffectPipeline {
 public:
 	GrayscalePostEffectPipeline(DXGI* dxgi, ShaderCompiler* shaderCompiler);
 	~GrayscalePostEffectPipeline()override;

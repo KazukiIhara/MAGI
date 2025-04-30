@@ -5,10 +5,10 @@
 /// <summary>
 /// 追加情報をシェーダーに送らないポストエフェクトのパイプライン基底クラス
 /// </summary>
-class BaseSimplePostEffectPipeline:public BasePostEffectPipeline {
+class BaseSceneColorPostEffectPipeline:public BasePostEffectPipeline {
 public:
-	BaseSimplePostEffectPipeline(DXGI* dxgi, ShaderCompiler* shaderCompiler);
-	~BaseSimplePostEffectPipeline()override;
+	BaseSceneColorPostEffectPipeline(DXGI* dxgi, ShaderCompiler* shaderCompiler);
+	~BaseSceneColorPostEffectPipeline()override;
 
 private:
 	// ルートシグネチャを作成する

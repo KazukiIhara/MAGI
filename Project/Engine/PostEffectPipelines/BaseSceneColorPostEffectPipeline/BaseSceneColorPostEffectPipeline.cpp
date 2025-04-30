@@ -1,4 +1,4 @@
-#include "BaseSimplePostEffectPipeline.h"
+#include "BaseSceneColorPostEffectPipeline.h"
 
 #include <cassert>
 
@@ -6,12 +6,12 @@
 #include "DirectX/DXGI/DXGI.h"
 #include "DirectX/ShaderCompiler/ShaderCompiler.h"
 
-BaseSimplePostEffectPipeline::BaseSimplePostEffectPipeline(DXGI* dxgi, ShaderCompiler* shaderCompiler)
+BaseSceneColorPostEffectPipeline::BaseSceneColorPostEffectPipeline(DXGI* dxgi, ShaderCompiler* shaderCompiler)
 	:BasePostEffectPipeline(dxgi, shaderCompiler) {}
 
-BaseSimplePostEffectPipeline::~BaseSimplePostEffectPipeline() {}
+BaseSceneColorPostEffectPipeline::~BaseSceneColorPostEffectPipeline() {}
 
-void BaseSimplePostEffectPipeline::CreateRootSignature() {
+void BaseSceneColorPostEffectPipeline::CreateRootSignature() {
 	HRESULT hr = S_FALSE;
 
 	D3D12_DESCRIPTOR_RANGE descriptorRange[1] = {};
@@ -65,7 +65,7 @@ void BaseSimplePostEffectPipeline::CreateRootSignature() {
 	assert(SUCCEEDED(hr));
 }
 
-void BaseSimplePostEffectPipeline::CreateGraphicsPipelineObject() {
+void BaseSceneColorPostEffectPipeline::CreateGraphicsPipelineObject() {
 	HRESULT hr;
 
 	assert(rootSignature_);
@@ -103,7 +103,7 @@ void BaseSimplePostEffectPipeline::CreateGraphicsPipelineObject() {
 	}
 }
 
-D3D12_BLEND_DESC BaseSimplePostEffectPipeline::BlendStateSetting(uint32_t blendModeNum) {
+D3D12_BLEND_DESC BaseSceneColorPostEffectPipeline::BlendStateSetting(uint32_t blendModeNum) {
 	D3D12_BLEND_DESC blendDesc{};
 	switch (blendModeNum) {
 		case 0:// kBlendModeNone
@@ -173,7 +173,7 @@ D3D12_BLEND_DESC BaseSimplePostEffectPipeline::BlendStateSetting(uint32_t blendM
 	return blendDesc;
 }
 
-D3D12_DEPTH_STENCIL_DESC BaseSimplePostEffectPipeline::DepthStecilDescSetting() {
+D3D12_DEPTH_STENCIL_DESC BaseSceneColorPostEffectPipeline::DepthStecilDescSetting() {
 	// DepthStencilStateの設定
 	D3D12_DEPTH_STENCIL_DESC depthStencilDesc{};
 	// Depthの機能を無効化する
@@ -181,14 +181,14 @@ D3D12_DEPTH_STENCIL_DESC BaseSimplePostEffectPipeline::DepthStecilDescSetting() 
 	return depthStencilDesc;
 }
 
-D3D12_INPUT_LAYOUT_DESC BaseSimplePostEffectPipeline::InputLayoutSetting() {
+D3D12_INPUT_LAYOUT_DESC BaseSceneColorPostEffectPipeline::InputLayoutSetting() {
 	D3D12_INPUT_LAYOUT_DESC inputLayoutDesc{};
 	inputLayoutDesc.pInputElementDescs = nullptr;
 	inputLayoutDesc.NumElements = 0;
 	return inputLayoutDesc;
 }
 
-D3D12_RASTERIZER_DESC BaseSimplePostEffectPipeline::RasterizerStateSetting() {
+D3D12_RASTERIZER_DESC BaseSceneColorPostEffectPipeline::RasterizerStateSetting() {
 	// RasterizerStateの設定
 	D3D12_RASTERIZER_DESC rasterizerDesc_{};
 	// 裏側(時計回り)を表示しない

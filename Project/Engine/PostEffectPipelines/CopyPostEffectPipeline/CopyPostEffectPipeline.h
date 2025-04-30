@@ -5,7 +5,7 @@
 /// <summary>
 /// ポストエフェクトなし
 /// </summary>
-class CopyPostEffectPipeline:public BaseSimplePostEffectPipeline {
+class CopyPostEffectPipeline:public BaseSceneColorPostEffectPipeline {
 public:
 	CopyPostEffectPipeline(DXGI* dxgi, ShaderCompiler* shaderCompiler);
 	~CopyPostEffectPipeline()override;

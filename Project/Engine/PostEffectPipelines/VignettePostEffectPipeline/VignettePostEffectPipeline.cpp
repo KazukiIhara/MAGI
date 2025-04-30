@@ -7,7 +7,7 @@
 #include "DirectX/ShaderCompiler/ShaderCompiler.h"
 
 VignettePostEffectPipeline::VignettePostEffectPipeline(DXGI* dxgi, ShaderCompiler* shaderCompiler)
-	:BaseSimplePostEffectPipeline(dxgi, shaderCompiler) {
+	:BaseSceneColorPostEffectPipeline(dxgi, shaderCompiler) {
 }
 
 VignettePostEffectPipeline::~VignettePostEffectPipeline() {}
