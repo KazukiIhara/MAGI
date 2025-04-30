@@ -11,8 +11,8 @@ struct PixelShaderOutput
 
 struct VignetteData
 {
-    float scale;
-    float falloff;
-    float4 _padding0;
-    float2 _padding1;
+    float4 param0; // xy {scale,falloff}
+    float4 param1;
+    float4 param2;
+    float4 param3;
 };

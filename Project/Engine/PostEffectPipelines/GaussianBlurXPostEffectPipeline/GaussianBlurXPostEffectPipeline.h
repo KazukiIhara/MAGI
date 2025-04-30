@@ -3,13 +3,12 @@
 #include "PostEffectPipelines/BaseWithParamaterPostEffectPipeline/BaseWithParamaterPostEffectPipeline.h"
 
 /// <summary>
-/// ビネット
+/// X軸ガウシアンブラー
 /// </summary>
-class VignettePostEffectPipeline :public BaseWithParamaterPostEffectPipeline {
+class GaussianBlurXPostEffectPipeline :public BaseWithParamaterPostEffectPipeline {
 public:
-	VignettePostEffectPipeline(DXGI* dxgi, ShaderCompiler* shaderCompiler);
-	~VignettePostEffectPipeline()override;
-
+	GaussianBlurXPostEffectPipeline(DXGI* dxgi, ShaderCompiler* shaderCompiler);
+	~GaussianBlurXPostEffectPipeline()override;
 
 private:
 	// シェーダーをコンパイルする

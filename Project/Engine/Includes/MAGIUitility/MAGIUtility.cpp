@@ -43,3 +43,19 @@ Quaternion MAGIUtility::CalculateValue(const std::vector<KeyframeQuaternion>& ke
 
 	return (*keyframes.rbegin()).value;
 }
+
+std::array<float, 7> MAGIUtility::GenerateGaussianWeights(float sigma) {
+	std::array<float, 7> weights{};
+	float sum = 0.0f;
+
+	for (int i = 0; i <= 3; ++i) {
+		float x = static_cast<float>(i);
+		weights[i] = std::exp(-(x * x) / (2.0f * sigma * sigma));
+		sum += (i == 0) ? weights[i] : weights[i] * 2.0f; // 対称のため2倍
+	}
+
+	// 正規化
+	for (float& w : weights) w /= sum;
+
+	return weights;
+}

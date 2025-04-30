@@ -10,8 +10,8 @@ PixelShaderOutput main(VertexShaderOutput input)
     output.color = gTexture.Sample(gSampler, input.texcoord);
     
     float2 correct = input.texcoord * (1.0f - input.texcoord.yx);
-    float vignette = correct.x * correct.y * gdata.scale;
-    vignette = saturate(pow(vignette, gdata.falloff));
+    float vignette = correct.x * correct.y * gdata.param0.x;
+    vignette = saturate(pow(vignette, gdata.param0.y));
     output.color.rgb *= vignette;
     
     return output;

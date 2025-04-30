@@ -36,6 +36,18 @@ void PostEffectPipelineManager::Initialize(DXGI* dxgi, ShaderCompiler* shaderCom
 	SetRootSignature(PostEffectType::Vignette);
 	SetPipelineState(PostEffectType::Vignette);
 
+	// GaussianBlurXのパイプラインを生成、初期化
+	gaussianBlurXPostEffectPipeline_ = std::make_unique<GaussianBlurXPostEffectPipeline>(dxgi, shaderCompiler);
+	gaussianBlurXPostEffectPipeline_->Initialize();
+	SetRootSignature(PostEffectType::GaussianX);
+	SetPipelineState(PostEffectType::GaussianX);
+
+	// GaussianBlurYのパイプラインを生成、初期化
+	gaussianBlurYPostEffectPipeline_ = std::make_unique<GaussianBlurYPostEffectPipeline>(dxgi, shaderCompiler);
+	gaussianBlurYPostEffectPipeline_->Initialize();
+	SetRootSignature(PostEffectType::GaussianY);
+	SetPipelineState(PostEffectType::GaussianY);
+
 }
 
 ID3D12RootSignature* PostEffectPipelineManager::GetRootSignature(PostEffectType pipelineState) {
@@ -58,6 +70,12 @@ void PostEffectPipelineManager::SetRootSignature(PostEffectType pipelineState) {
 	case PostEffectType::Vignette:
 		rootSignatures_[static_cast<uint32_t>(pipelineState)] = vignettePostEffectPipeline_->GetRootSignature();
 		break;
+	case PostEffectType::GaussianX:
+		rootSignatures_[static_cast<uint32_t>(pipelineState)] = gaussianBlurXPostEffectPipeline_->GetRootSignature();
+		break;
+	case PostEffectType::GaussianY:
+		rootSignatures_[static_cast<uint32_t>(pipelineState)] = gaussianBlurYPostEffectPipeline_->GetRootSignature();
+		break;
 	}
 }
 
@@ -77,6 +95,16 @@ void PostEffectPipelineManager::SetPipelineState(PostEffectType pipelineState) {
 	case PostEffectType::Vignette:
 		for (int mode = static_cast<uint32_t>(BlendMode::None); mode < static_cast<uint32_t>(BlendMode::Num); ++mode) {
 			postEffectPipelineStates_[static_cast<uint32_t>(pipelineState)][mode] = vignettePostEffectPipeline_->GetPipelineState(static_cast<BlendMode>(mode));
+		}
+		break;
+	case PostEffectType::GaussianX:
+		for (int mode = static_cast<uint32_t>(BlendMode::None); mode < static_cast<uint32_t>(BlendMode::Num); ++mode) {
+			postEffectPipelineStates_[static_cast<uint32_t>(pipelineState)][mode] = gaussianBlurXPostEffectPipeline_->GetPipelineState(static_cast<BlendMode>(mode));
+		}
+		break;
+	case PostEffectType::GaussianY:
+		for (int mode = static_cast<uint32_t>(BlendMode::None); mode < static_cast<uint32_t>(BlendMode::Num); ++mode) {
+			postEffectPipelineStates_[static_cast<uint32_t>(pipelineState)][mode] = gaussianBlurYPostEffectPipeline_->GetPipelineState(static_cast<BlendMode>(mode));
 		}
 		break;
 	}

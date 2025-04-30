@@ -6,10 +6,11 @@
 /// パラメータ
 /// </summary>
 struct PostEffectParamater {
-	float param[8];
+	float param[16];
 };
 
 struct PostEffectCommand {
 	PostEffectType postEffectType;
 	PostEffectParamater param;
+	uint32_t index;
 };
