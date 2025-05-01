@@ -1,39 +1,47 @@
 ﻿#include "Model3D.hlsli"
 
 ConstantBuffer<Camera> gCamera : register(b0);
-StructuredBuffer<ModelDataForGPU> gInstanceData : register(t0);
-StructuredBuffer<VertexData3D> gVertexData : register(t1);
-StructuredBuffer<uint> gIndexData : register(t2);
+StructuredBuffer<ModelDataForGPU> gInstance : register(t0);
+StructuredBuffer<VertexData3D> gVertices : register(t1);
+StructuredBuffer<uint> gUniqueVert : register(t4);
+StructuredBuffer<PackedTriangle> gPrimIB : register(t5);
+StructuredBuffer<Meshlet> gMeshlets : register(t3);
+
+#define MAX_VERTS 64
+#define MAX_PRIMS 126
 
 [outputtopology("triangle")]
 [numthreads(1, 1, 1)]
 void main(in payload ASPayload payload,
-          uint3 tid : SV_DispatchThreadID,
-          out indices uint3 tris[1],
-          out vertices MeshOutput verts[3])
+          out indices uint3 tris[MAX_PRIMS],
+          out vertices MeshOutput verts[MAX_VERTS])
 {
-    uint triID = tid.x;
-    uint base = payload.firstIndex + triID * 3;
-    uint3 idx = uint3(gIndexData[base + 0],
-                       gIndexData[base + 1],
-                       gIndexData[base + 2]);
+    Meshlet ml = gMeshlets[payload.meshletID];
 
-    VertexData3D v[3] =
+    SetMeshOutputCounts(ml.vertCount, ml.primCount);
+
+    // ── 頂点展開 ──
+    [loop]
+    for (uint i = 0; i < ml.vertCount; ++i)
     {
-        gVertexData[idx.x],
-        gVertexData[idx.y],
-        gVertexData[idx.z]
-    };
+        uint vertIdx = gUniqueVert[ml.vertOffset + i];
+        VertexData3D v = gVertices[vertIdx];
 
-    SetMeshOutputCounts(3, 1);
-
-    [unroll]
-    for (uint i = 0; i < 3; ++i)
-    {
-        float4 wp = mul(v[i].position, gInstanceData[payload.instanceID].worldMatrix);
+        float4 wp = mul(v.position, gInstance[payload.instanceID].worldMatrix);
         verts[i].position = mul(wp, gCamera.viewProjection);
-        verts[i].uv = v[i].uv;
+        verts[i].uv = v.uv;
         verts[i].instanceIndex = payload.instanceID;
     }
-    tris[0] = uint3(0, 1, 2);
+
+    // ── 三角形書き込み ──
+    [loop]
+    for (uint i = 0; i < ml.primCount; ++i)
+    {
+        uint packed = gPrimIB[ml.primOffset + i];
+        uint3 tri;
+        tri.x = packed & 0x3FF; // 0-9bit
+        tri.y = (packed >> 10) & 0x3FF; // 10-19bit
+        tri.z = (packed >> 20) & 0x3FF; // 20-29bit
+        tris[i] = tri;
+    }
 }

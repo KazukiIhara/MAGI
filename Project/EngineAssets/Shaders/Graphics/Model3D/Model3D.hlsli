@@ -1,4 +1,8 @@
-// ƒƒbƒVƒ…ƒVƒF[ƒ_[‚©‚çƒsƒNƒZƒ‹ƒVƒF[ƒ_[‚É“n‚·ƒf[ƒ^
+ï»¿// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+//  Model3D.hlsli   â€•  å…±é€šã‚·ã‚§ãƒ¼ãƒ€ãƒ¼å®šç¾©
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+
+// ===== PS ã¸æ¸¡ã™é ‚ç‚¹ =====
 struct MeshOutput
 {
     float4 position : SV_Position;
@@ -6,7 +10,7 @@ struct MeshOutput
     uint instanceIndex : TEXCOORD1;
 };
 
-// ’¸“_ƒf[ƒ^
+// ===== é ‚ç‚¹ï¼ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ï¼ãƒãƒ†ãƒªã‚¢ãƒ« =====
 struct VertexData3D
 {
     float4 position;
@@ -14,48 +18,46 @@ struct VertexData3D
     float3 normal;
     float3 tangent;
 };
-
-// ƒCƒ“ƒXƒ^ƒ“ƒVƒ“ƒOƒf[ƒ^
 struct ModelDataForGPU
 {
     float4x4 worldMatrix;
 };
 
-// ƒ}ƒeƒŠƒAƒ‹ƒf[ƒ^
 struct PrimitiveMaterialData3D
 {
     uint textureIndex;
-    float3 _padding0;
+    float3 _pad0;
     float4 baseColor;
     float4x4 uvMatrix;
 };
 
-// ƒJƒƒ‰ƒf[ƒ^
 struct Camera
 {
     float4x4 viewProjection;
     float3 worldPosition;
-    float _padding;
+    float _pad;
 };
 
-// ƒ‹[ƒg’è”
 struct RootConstants
 {
     uint baseInstanceIndex;
-    uint _pad0, _pad1, _pad2;
+    uint _0, _1, _2;
 };
 
-// AS—pPayload
+// ===== Meshlet ãƒ‡ãƒ¼ã‚¿ =====
+struct Meshlet
+{
+    uint vertOffset; // gUniqueVert ã®å…ˆé ­
+    uint vertCount; // â‰¤ 64
+    uint primOffset; // gPrimIB ã®å…ˆé ­
+    uint primCount; // â‰¤ 126
+};
+
+typedef uint PackedTriangle;
+
+// ===== AS â†’ MS Payload =====
 struct ASPayload
 {
     uint instanceID;
-    uint firstIndex;
-};
-
-// Meshlet—p
-struct DrawMeshlet
-{
-    uint firstIndex;
-    uint primitiveCount;
-    uint _pad0, pad1;
+    uint meshletID;
 };
