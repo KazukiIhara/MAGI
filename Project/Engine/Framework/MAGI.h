@@ -221,6 +221,8 @@ public: // エンジンの機能
 #pragma region DirectXCommandの機能
 	// コマンドリストを取得
 	static ID3D12GraphicsCommandList* GetDirectXCommandList();
+	// 新型のコマンドリストを取得
+	static ID3D12GraphicsCommandList6* GetDirectXCommandList6();
 	// コマンドのクローズと実行
 	static void KickCommand();
 	// コマンドのリセット

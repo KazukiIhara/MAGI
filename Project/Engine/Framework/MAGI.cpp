@@ -826,6 +826,10 @@ ID3D12GraphicsCommandList* MAGISYSTEM::GetDirectXCommandList() {
 	return directXCommand_->GetList();
 }
 
+ID3D12GraphicsCommandList6* MAGISYSTEM::GetDirectXCommandList6() {
+	return directXCommand_->GetList6();
+}
+
 void MAGISYSTEM::KickCommand() {
 	directXCommand_->KickCommand();
 }

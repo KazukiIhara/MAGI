@@ -87,8 +87,15 @@ struct MaterialForGPU {
 };
 
 /// <summary>
-/// GPUに送るモデルデータ
+/// GPUに送るモデル描画用のデータ
 /// </summary>
 struct ModelDataForGPU {
 	Matrix4x4 worldMatrix;
+};
+
+/// <summary>
+/// モデルマテリアルデータ
+/// </summary>
+struct ModelMaterial {
+	BlendMode blendMode = BlendMode::None;
 };

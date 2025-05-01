@@ -5,29 +5,89 @@
 
 // MyHedder
 #include "Logger/Logger.h"
+#include "Framework/MAGI.h"
 
 ModelDrawer::ModelDrawer(const ModelData& modelData) {
-	modelData;
+	// モデルのメッシュの数を取得
+	const uint32_t meshSize = modelData.meshes.size();
+
+	// メッシュを作成
+	for (uint32_t i = 0; i < meshSize; i++) {
+		std::unique_ptr<MeshDrawer> newMesh = std::make_unique<MeshDrawer>(modelData.meshes[i]);
+		meshes_.push_back(std::move(newMesh));
+	}
+
+	// 描画用のリソースを準備
+	for (uint32_t i = 0; i < kBlendModeNum; i++) {
+		modelDatasForRender_[i].resize(kNumMaxInstance);
+
+		instancingResource_[i] = MAGISYSTEM::CreateBufferResource(sizeof(ModelDataForGPU) * kNumMaxInstance);
+		instancingSrvIndex_[i] = MAGISYSTEM::SrvUavAllocate();
+		MAGISYSTEM::CreateSrvStructuredBuffer(instancingSrvIndex_[i], instancingResource_[i].Get(), kNumMaxInstance, sizeof(ModelDataForGPU));
+		instancingResource_[i]->Map(0, nullptr, reinterpret_cast<void**>(&instancingData_[i]));
+
+		currentIndex_[i] = 0;
+		instanceCount_[i] = 0;
+	}
+
 }
 
 ModelDrawer::~ModelDrawer() {
 
 }
 
-void ModelDrawer::AddDrawCommand(const Matrix4x4& worldMatrix) {
-	worldMatrix;
+void ModelDrawer::AddDrawCommand(const Matrix4x4& worldMatrix, const ModelMaterial& material) {
+	const uint32_t blendIndex = static_cast<uint32_t>(material.blendMode);
+	if (currentIndex_[blendIndex] >= kNumMaxInstance) {
+		Logger::Log("ModelDrawer3D: Max instance count exceeded!\n");
+		return;
+	}
+
+	ModelDataForGPU newModelData{
+		.worldMatrix = worldMatrix,
+	};
+
+	// コンテナに挿入
+	modelDatasForRender_[blendIndex][currentIndex_[blendIndex]] = newModelData;
+	// インデックスをインクリメント
+	currentIndex_[blendIndex]++;
 }
 
 void ModelDrawer::Update() {
+	for (uint32_t i = 0; i < kBlendModeNum; i++) {
+		assert(currentIndex_[i] <= kNumMaxInstance);
+		instanceCount_[i] = currentIndex_[i];
+
+		if (instanceCount_[i] > 0 && instancingData_[i]) {
+			std::memcpy(instancingData_[i], modelDatasForRender_[i].data(), sizeof(ModelDataForGPU) * instanceCount_[i]);
+		}
+
+		currentIndex_[i] = 0;
+	}
+
 	// 各メッシュの更新
 	for (auto& mesh : meshes_) {
 		mesh->Update();
 	}
 }
 
-void ModelDrawer::Draw() {
+void ModelDrawer::Draw(BlendMode mode) {
+	const uint32_t blendIndex = static_cast<uint32_t>(mode);
+	if (instanceCount_[blendIndex] == 0) return;
+	ID3D12GraphicsCommandList6* commandList = MAGISYSTEM::GetDirectXCommandList6();
+
+	// 
+	// パイプラインの設定
+	// 
+
+	// カメラの送信
+	MAGISYSTEM::TransferCamera(0);
+
+	// inctancing描画用のデータを送信
+	commandList->SetGraphicsRootDescriptorTable(1, MAGISYSTEM::GetSrvUavDescriptorHandleGPU(instancingSrvIndex_[blendIndex]));
+
 	// 各メッシュの描画
 	for (auto& mesh : meshes_) {
-		mesh->Draw();
+		mesh->Draw(mode, instanceCount_[blendIndex]);
 	}
 }
