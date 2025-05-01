@@ -7,6 +7,6 @@ ConstantBuffer<PrimitiveMaterialData3D> gMaterialData : register(b1);
 float4 main(MeshOutput input) : SV_Target
 {
     PrimitiveMaterialData3D mat = gMaterialData;
-    float4 texColor = gTextures[mat.textureIndex].Sample(gSampler, input.uv);
+    float4 texColor = gTextures[mat.texIdx].Sample(gSampler, input.uv);
     return texColor * mat.baseColor;
 }

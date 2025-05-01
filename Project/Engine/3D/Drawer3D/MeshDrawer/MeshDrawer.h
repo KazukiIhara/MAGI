@@ -36,7 +36,8 @@ private:
 	uint32_t meshletCount_ = 0;
 	uint32_t meshletSrvIdx_ = 0;
 
-	ComPtr<ID3D12Resource> meshletUniqueVertIB_;        // ByteAddressBuffer
+	ComPtr<ID3D12Resource> meshletUniqueVertIB_;        // StructuredBuffer
+	uint32_t uniqueVertCount_ = 0;
 	uint32_t uniqueVertSrvIdx_ = 0;
 
 	ComPtr<ID3D12Resource> meshletPrimIB_;              // StructuredBuffer<MeshletTriangle>

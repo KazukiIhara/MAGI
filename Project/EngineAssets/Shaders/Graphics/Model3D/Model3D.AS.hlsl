@@ -1,20 +1,14 @@
-#include "Model3D.hlsli"
+//#include "Model3D.hlsli"
 
-ConstantBuffer<RootConstants> gRootConst : register(b2);
-StructuredBuffer<Meshlet> gMeshlets : register(t3);
+//ConstantBuffer<RootConstants> gRootConst : register(b2);
+//StructuredBuffer<Meshlet> gMeshlets : register(t3);
 
-[numthreads(1, 1, 1)]
-void main(uint3 gid : SV_GroupID)
-{
-    uint meshletID = gid.x;
-    uint instanceID = gRootConst.baseInstanceIndex + gid.y;
+//[numthreads(1, 1, 1)]
+//void main(uint3 gid : SV_GroupID)
+//{
+//    ASPayload p;
+//    p.instanceID = gRootConst.baseInstanceIndex + gid.y;
+//    p.meshletID = gid.x; // 0cmeshletCount_-1
 
-    if (meshletID >= gMeshlets.Length)
-        return;
-
-    ASPayload p;
-    p.instanceID = instanceID;
-    p.meshletID = meshletID;
-
-    DispatchMesh(1, 1, 1, p);
-}
+//    DispatchMesh(1, 1, 1, p);
+//}

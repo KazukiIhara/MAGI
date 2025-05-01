@@ -32,32 +32,26 @@ void Model3DGraphicsPipeline::CreateRootSignature() {
 	descriptorRangeVertex.RangeType = D3D12_DESCRIPTOR_RANGE_TYPE_SRV;
 	descriptorRangeVertex.OffsetInDescriptorsFromTableStart = D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND;
 
-	D3D12_DESCRIPTOR_RANGE descriptorRangeIndex{};
-	descriptorRangeIndex.BaseShaderRegister = 2;
-	descriptorRangeIndex.NumDescriptors = 1;
-	descriptorRangeIndex.RangeType = D3D12_DESCRIPTOR_RANGE_TYPE_SRV;
-	descriptorRangeIndex.OffsetInDescriptorsFromTableStart = D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND;
-
 	D3D12_DESCRIPTOR_RANGE descriptorRangeMeshlet{};
-	descriptorRangeMeshlet.BaseShaderRegister = 3;
+	descriptorRangeMeshlet.BaseShaderRegister = 2;
 	descriptorRangeMeshlet.NumDescriptors = 1;
 	descriptorRangeMeshlet.RangeType = D3D12_DESCRIPTOR_RANGE_TYPE_SRV;
 	descriptorRangeMeshlet.OffsetInDescriptorsFromTableStart = D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND;
 
 	D3D12_DESCRIPTOR_RANGE rangeUnique{};
-	rangeUnique.BaseShaderRegister = 4;
+	rangeUnique.BaseShaderRegister = 3;
 	rangeUnique.NumDescriptors = 1;
 	rangeUnique.RangeType = D3D12_DESCRIPTOR_RANGE_TYPE_SRV;
 	rangeUnique.OffsetInDescriptorsFromTableStart = D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND;
 
 	D3D12_DESCRIPTOR_RANGE rangePrim{};
-	rangePrim.BaseShaderRegister = 5;
+	rangePrim.BaseShaderRegister = 4;
 	rangePrim.NumDescriptors = 1;
 	rangePrim.RangeType = D3D12_DESCRIPTOR_RANGE_TYPE_SRV;
 	rangePrim.OffsetInDescriptorsFromTableStart = D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND;
 
 	// Root Parameters
-	D3D12_ROOT_PARAMETER rootParams[10] = {};
+	D3D12_ROOT_PARAMETER rootParams[8] = {};
 
 	// b0 : Camera
 	rootParams[0].ParameterType = D3D12_ROOT_PARAMETER_TYPE_CBV;
@@ -81,41 +75,29 @@ void Model3DGraphicsPipeline::CreateRootSignature() {
 	rootParams[3].DescriptorTable.pDescriptorRanges = &descriptorRangeTextures;
 	rootParams[3].DescriptorTable.NumDescriptorRanges = 1;
 
-	// RootConstants b2
-	rootParams[4].ParameterType = D3D12_ROOT_PARAMETER_TYPE_32BIT_CONSTANTS;
-	rootParams[4].ShaderVisibility = D3D12_SHADER_VISIBILITY_AMPLIFICATION;
-	rootParams[4].Constants.Num32BitValues = 4;
-	rootParams[4].Constants.ShaderRegister = 2;
-
 	// t1 : VertexBuffer
+	rootParams[4].ParameterType = D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE;
+	rootParams[4].ShaderVisibility = D3D12_SHADER_VISIBILITY_MESH;
+	rootParams[4].DescriptorTable.pDescriptorRanges = &descriptorRangeVertex;
+	rootParams[4].DescriptorTable.NumDescriptorRanges = 1;
+
+	// t2 : MeshletBuffer
 	rootParams[5].ParameterType = D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE;
-	rootParams[5].ShaderVisibility = D3D12_SHADER_VISIBILITY_MESH;
-	rootParams[5].DescriptorTable.pDescriptorRanges = &descriptorRangeVertex;
+	rootParams[5].ShaderVisibility = D3D12_SHADER_VISIBILITY_ALL;
+	rootParams[5].DescriptorTable.pDescriptorRanges = &descriptorRangeMeshlet;
 	rootParams[5].DescriptorTable.NumDescriptorRanges = 1;
 
-	// t2 : IndexBuffer
+	// t3 unique
 	rootParams[6].ParameterType = D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE;
 	rootParams[6].ShaderVisibility = D3D12_SHADER_VISIBILITY_MESH;
-	rootParams[6].DescriptorTable.pDescriptorRanges = &descriptorRangeIndex;
+	rootParams[6].DescriptorTable.pDescriptorRanges = &rangeUnique;
 	rootParams[6].DescriptorTable.NumDescriptorRanges = 1;
 
-	// t3 : MeshletBuffer
+	// t4 prim
 	rootParams[7].ParameterType = D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE;
-	rootParams[7].ShaderVisibility = D3D12_SHADER_VISIBILITY_AMPLIFICATION;
-	rootParams[7].DescriptorTable.pDescriptorRanges = &descriptorRangeMeshlet;
+	rootParams[7].ShaderVisibility = D3D12_SHADER_VISIBILITY_MESH;
+	rootParams[7].DescriptorTable.pDescriptorRanges = &rangePrim;
 	rootParams[7].DescriptorTable.NumDescriptorRanges = 1;
-
-	// t4 unique
-	rootParams[8].ParameterType = D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE;
-	rootParams[8].ShaderVisibility = D3D12_SHADER_VISIBILITY_MESH;
-	rootParams[8].DescriptorTable.pDescriptorRanges = &rangeUnique;
-	rootParams[8].DescriptorTable.NumDescriptorRanges = 1;
-
-	// t5 prim
-	rootParams[9].ParameterType = D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE;
-	rootParams[9].ShaderVisibility = D3D12_SHADER_VISIBILITY_MESH;
-	rootParams[9].DescriptorTable.pDescriptorRanges = &rangePrim;
-	rootParams[9].DescriptorTable.NumDescriptorRanges = 1;
 
 	// Static Sampler
 	D3D12_STATIC_SAMPLER_DESC staticSampler{};
@@ -152,8 +134,8 @@ void Model3DGraphicsPipeline::CreateRootSignature() {
 }
 
 void Model3DGraphicsPipeline::CompileShaders() {
-	amplificationShaderBlob_ = shaderCompiler_->CompileShader(L"EngineAssets/Shaders/Graphics/Model3D/Model3D.AS.hlsl", L"as_6_5");
-	assert(amplificationShaderBlob_);
+	//amplificationShaderBlob_ = shaderCompiler_->CompileShader(L"EngineAssets/Shaders/Graphics/Model3D/Model3D.AS.hlsl", L"as_6_5");
+	//assert(amplificationShaderBlob_);
 
 	meshShaderBlob_ = shaderCompiler_->CompileShader(L"EngineAssets/Shaders/Graphics/Model3D/Model3D.MS.hlsl", L"ms_6_5");
 	assert(meshShaderBlob_);
@@ -169,7 +151,7 @@ void Model3DGraphicsPipeline::CreateGraphicsPipelineObject() {
 
 	const D3D12_SHADER_BYTECODE meshShader = { meshShaderBlob_->GetBufferPointer(), meshShaderBlob_->GetBufferSize() };
 	const D3D12_SHADER_BYTECODE pixelShader = { pixelShaderBlob_->GetBufferPointer(), pixelShaderBlob_->GetBufferSize() };
-	const D3D12_SHADER_BYTECODE amplificationShader = { amplificationShaderBlob_->GetBufferPointer(), amplificationShaderBlob_->GetBufferSize() };
+	//const D3D12_SHADER_BYTECODE amplificationShader = { amplificationShaderBlob_->GetBufferPointer(), amplificationShaderBlob_->GetBufferSize() };
 
 	const DXGI_FORMAT rtvFormat = DXGI_FORMAT_R8G8B8A8_UNORM_SRGB;
 	const DXGI_FORMAT dsvFormat = DXGI_FORMAT_D24_UNORM_S8_UINT;
@@ -187,9 +169,8 @@ void Model3DGraphicsPipeline::CreateGraphicsPipelineObject() {
 		rtArray.NumRenderTargets = 1;
 		rtArray.RTFormats[0] = rtvFormat;
 
-		Primitive3DPipelineStateStream stream = {
+		Primitive3DPipelineStateStreamT stream = {
 			CD3DX12_PIPELINE_STATE_STREAM_ROOT_SIGNATURE(rootSignature_.Get()),
-			CD3DX12_PIPELINE_STATE_STREAM_AS(amplificationShader),
 			CD3DX12_PIPELINE_STATE_STREAM_MS(meshShader),
 			CD3DX12_PIPELINE_STATE_STREAM_PS(pixelShader),
 			CD3DX12_PIPELINE_STATE_STREAM_RASTERIZER(rast),
