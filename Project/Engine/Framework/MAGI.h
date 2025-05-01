@@ -266,6 +266,8 @@ public: // エンジンの機能
 #pragma endregion
 
 #pragma region GraphicsPipelineManager
+	// ルートシグネイチャ取得関数
+	static ID3D12RootSignature* GetGraphicsRootSignature(GraphicsPipelineStateType pipelineState);
 	// パイプライン取得関数
 	static ID3D12PipelineState* GetGraphicsPipelineState(GraphicsPipelineStateType pipelineState, BlendMode blendMode);
 

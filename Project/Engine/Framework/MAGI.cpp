@@ -886,6 +886,10 @@ void MAGISYSTEM::CreateUavStructuredBuffer(uint32_t viewIndex, ID3D12Resource* p
 	srvuavManager_->CreateUavStructuredBuffer(viewIndex, pResource, numElements, structureByteStride);
 }
 
+ID3D12RootSignature* MAGISYSTEM::GetGraphicsRootSignature(GraphicsPipelineStateType pipelineState) {
+	return graphicsPipelineManager_->GetRootSignature(pipelineState);
+}
+
 ID3D12PipelineState* MAGISYSTEM::GetGraphicsPipelineState(GraphicsPipelineStateType pipelineState, BlendMode blendMode) {
 	return graphicsPipelineManager_->GetPipelineState(pipelineState, blendMode);
 }

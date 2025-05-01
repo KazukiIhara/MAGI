@@ -59,22 +59,28 @@ void MeshDrawer::Draw(uint32_t instanceCount) {
 
 	ID3D12GraphicsCommandList6* commandList = MAGISYSTEM::GetDirectXCommandList6();
 
-	// 頂点バッファとインデックスバッファ、マテリアルを送信
+	// マテリアルバッファ (b2 : ConstantBufferView)
 	commandList->SetGraphicsRootConstantBufferView(2, materialResource_->GetGPUVirtualAddress());
+
+	// テクスチャ一覧 (t1000)
 	commandList->SetGraphicsRootDescriptorTable(3, MAGISYSTEM::GetSrvUavDescriptorHandleGPU(0));
 
+	// 頂点バッファ (t5)
+	commandList->SetGraphicsRootDescriptorTable(5, MAGISYSTEM::GetSrvUavDescriptorHandleGPU(vertexSrvIndex_));
+
+	// インデックスバッファ (t6)
+	commandList->SetGraphicsRootDescriptorTable(6, MAGISYSTEM::GetSrvUavDescriptorHandleGPU(indexSrvIndex_));
+
+	// ルート定数（b1）BaseInstanceIndex（必ず0スタートで）
 	RootConstants rootConstants{};
 	rootConstants.baseInstanceIndex = 0;
 	commandList->SetGraphicsRoot32BitConstants(4, 1, &rootConstants, 0);
 
-	commandList->SetGraphicsRootDescriptorTable(5, MAGISYSTEM::GetSrvUavDescriptorHandleGPU(vertexSrvIndex_));
-	commandList->SetGraphicsRootDescriptorTable(6, MAGISYSTEM::GetSrvUavDescriptorHandleGPU(indexSrvIndex_));
-
-	// インスタンシング描画（MeshShaderなら DispatchMesh 予定）
+	// DispatchMesh呼び出し
 	commandList->DispatchMesh(
-		(indexCount_ + 2) / 3,
-		instanceCount,
-		1
+		(indexCount_ + 2) / 3, // 三角形数
+		instanceCount,         // インスタンス数
+		1                      // Z方向は1
 	);
 
 }
