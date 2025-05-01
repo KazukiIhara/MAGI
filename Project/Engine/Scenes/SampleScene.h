@@ -174,6 +174,12 @@ inline void SampleScene<Data>::Update() {
 	ImGui::DragFloat("Sigma", &gaussianSigma_, 0.01f);
 	ImGui::End();
 
+	ImGui::Begin("Sound");
+	if (ImGui::Button("Coin")) {
+		MAGISYSTEM::PlayWaveSound("coin.wav");
+	}
+	ImGui::End();
+
 	// トランスフォーム更新
 	for (uint32_t i = 0; i < 5; i++) {
 		worldTransform_[i].Update();
