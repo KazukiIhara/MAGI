@@ -179,10 +179,10 @@ inline void SampleScene<Data>::Update() {
 	}
 
 	// ポストエフェクトをかける
-	MAGISYSTEM::ApplyPostEffectGrayScale();
-	MAGISYSTEM::ApplyPostEffectGaussianX(gaussianSigma_, 13);
-	MAGISYSTEM::ApplyPostEffectGaussianY(gaussianSigma_, 13);
-	MAGISYSTEM::ApplyPostEffectVignette(vignetteScale_, vignetteFalloff_);
+	//MAGISYSTEM::ApplyPostEffectGrayScale();
+	//MAGISYSTEM::ApplyPostEffectGaussianX(gaussianSigma_, 13);
+	//MAGISYSTEM::ApplyPostEffectGaussianY(gaussianSigma_, 13);
+	//MAGISYSTEM::ApplyPostEffectVignette(vignetteScale_, vignetteFalloff_);
 }
 
 template<typename Data>
