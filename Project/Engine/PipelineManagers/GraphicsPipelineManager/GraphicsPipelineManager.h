@@ -20,6 +20,8 @@
 #include "GraphicsPipelines/Ring3DGraphicsPipeline/Ring3DGraphicsPipeline.h"
 #include "GraphicsPipelines/Cylinder3DGraphicsPipeline/Cylinder3DGraphicsPipeline.h"
 
+#include "GraphicsPipelines/Model3DGraphicsPipeline/Model3DGraphicsPipeline.h"
+
 #include "GraphicsPipelines/Object3DGraphicsPipeline/Object3DGraphicsPipeline.h"
 #include "GraphicsPipelines/Particle3DGraphicsPipeline/Particle3DGraphicsPipeline.h"
 #include "GraphicsPipelines/Object3DGroupGraphicsPipeline/Object3DGroupGraphicsPipeline.h"
@@ -71,6 +73,9 @@ private:
 	std::unique_ptr<Ring3DGraphicsPipeline> ring3DGraphicsPipeline_ = nullptr;
 	// Cylinder3DGraphicsPipeline
 	std::unique_ptr<Cylinder3DGraphicsPipeline> cylinder3DGraphicsPipeline_ = nullptr;
+
+	// Model3DGraphicsPipeline
+	std::unique_ptr<Model3DGraphicsPipeline> model3DGraphicsPipeline_ = nullptr;
 
 	// Object3DGraphicsPipeline
 	std::unique_ptr<Object3DGraphicsPipeline> object3DGraphicsPipeline_ = nullptr;

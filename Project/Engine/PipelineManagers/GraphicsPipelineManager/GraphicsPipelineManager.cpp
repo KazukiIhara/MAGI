@@ -60,6 +60,11 @@ void GraphicsPipelineManager::Initialize(DXGI* dxgi, ShaderCompiler* shaderCompi
 	SetRootSignature(GraphicsPipelineStateType::Cylinder3D);
 	SetPipelineState(GraphicsPipelineStateType::Cylinder3D);
 
+	// Modelのグラフィックスパイプラインを生成、初期化
+	model3DGraphicsPipeline_ = std::make_unique<Model3DGraphicsPipeline>(dxgi, shaderCompiler);
+	model3DGraphicsPipeline_->Initialize();
+	SetRootSignature(GraphicsPipelineStateType::Model3D);
+	SetPipelineState(GraphicsPipelineStateType::Model3D);
 
 	// 3Dオブジェクトのグラフィックスパイプラインを生成、初期化
 	object3DGraphicsPipeline_ = std::make_unique<Object3DGraphicsPipeline>(dxgi, shaderCompiler);
@@ -121,6 +126,10 @@ void GraphicsPipelineManager::SetRootSignature(GraphicsPipelineStateType pipelin
 		// 3Dシリンダー用のルートシグネイチャを設定
 		rootSignatures_[static_cast<uint32_t>(pipelineState)] = cylinder3DGraphicsPipeline_->GetRootSignature();
 		break;
+	case GraphicsPipelineStateType::Model3D:
+		// 3Dモデル用のルートシグネイチャを設定
+		rootSignatures_[static_cast<uint32_t>(pipelineState)] = model3DGraphicsPipeline_->GetRootSignature();
+		break;
 	case GraphicsPipelineStateType::Object3D:
 		// 3Dオブジェクト描画用のルートシグネチャを設定
 		rootSignatures_[static_cast<uint32_t>(pipelineState)] = object3DGraphicsPipeline_->GetRootSignature();
@@ -170,6 +179,11 @@ void GraphicsPipelineManager::SetPipelineState(GraphicsPipelineStateType pipelin
 	case GraphicsPipelineStateType::Cylinder3D:
 		for (int mode = static_cast<uint32_t>(BlendMode::None); mode < static_cast<uint32_t>(BlendMode::Num); ++mode) {
 			graphicsPipelineStates_[static_cast<uint32_t>(pipelineState)][mode] = cylinder3DGraphicsPipeline_->GetPipelineState(static_cast<BlendMode>(mode));
+		}
+		break;
+	case GraphicsPipelineStateType::Model3D:
+		for (int mode = static_cast<uint32_t>(BlendMode::None); mode < static_cast<uint32_t>(BlendMode::Num); ++mode) {
+			graphicsPipelineStates_[static_cast<uint32_t>(pipelineState)][mode] = model3DGraphicsPipeline_->GetPipelineState(static_cast<BlendMode>(mode));
 		}
 		break;
 	case GraphicsPipelineStateType::Object3D:

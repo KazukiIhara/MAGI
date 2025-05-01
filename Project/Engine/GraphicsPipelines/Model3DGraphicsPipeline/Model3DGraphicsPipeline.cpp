@@ -1,4 +1,4 @@
-#include "Plane3DGraphicsPipeline.h"
+#include "Model3DGraphicsPipeline.h"
 
 #include <cassert>
 
@@ -6,11 +6,11 @@
 #include "DirectX/DXGI/DXGI.h"
 #include "DirectX/ShaderCompiler/ShaderCompiler.h"
 
-Plane3DGraphicsPipeline::Plane3DGraphicsPipeline(DXGI* dxgi, ShaderCompiler* shaderCompiler)
+Model3DGraphicsPipeline::Model3DGraphicsPipeline(DXGI* dxgi, ShaderCompiler* shaderCompiler)
 	: BaseGraphicsPipeline(dxgi, shaderCompiler) {
 }
 
-void Plane3DGraphicsPipeline::CreateRootSignature() {
+void Model3DGraphicsPipeline::CreateRootSignature() {
 	HRESULT hr;
 
 	// Descriptor Ranges
@@ -20,45 +20,68 @@ void Plane3DGraphicsPipeline::CreateRootSignature() {
 	descriptorRangeInstance.RangeType = D3D12_DESCRIPTOR_RANGE_TYPE_SRV;
 	descriptorRangeInstance.OffsetInDescriptorsFromTableStart = D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND;
 
-	D3D12_DESCRIPTOR_RANGE descriptorRangeMaterial{};
-	descriptorRangeMaterial.BaseShaderRegister = 1;
-	descriptorRangeMaterial.NumDescriptors = 1;
-	descriptorRangeMaterial.RangeType = D3D12_DESCRIPTOR_RANGE_TYPE_SRV;
-	descriptorRangeMaterial.OffsetInDescriptorsFromTableStart = D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND;
-
 	D3D12_DESCRIPTOR_RANGE descriptorRangeTextures{};
 	descriptorRangeTextures.BaseShaderRegister = 1000;
 	descriptorRangeTextures.NumDescriptors = 1024;
 	descriptorRangeTextures.RangeType = D3D12_DESCRIPTOR_RANGE_TYPE_SRV;
 	descriptorRangeTextures.OffsetInDescriptorsFromTableStart = D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND;
 
-	D3D12_ROOT_PARAMETER rootParams[5] = {};
+	D3D12_DESCRIPTOR_RANGE descriptorRangeVertex{};
+	descriptorRangeVertex.BaseShaderRegister = 1;
+	descriptorRangeVertex.NumDescriptors = 1;
+	descriptorRangeVertex.RangeType = D3D12_DESCRIPTOR_RANGE_TYPE_SRV;
+	descriptorRangeVertex.OffsetInDescriptorsFromTableStart = D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND;
 
+	D3D12_DESCRIPTOR_RANGE descriptorRangeIndex{};
+	descriptorRangeIndex.BaseShaderRegister = 2;
+	descriptorRangeIndex.NumDescriptors = 1;
+	descriptorRangeIndex.RangeType = D3D12_DESCRIPTOR_RANGE_TYPE_SRV;
+	descriptorRangeIndex.OffsetInDescriptorsFromTableStart = D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND;
+
+	// Root Parameters
+	D3D12_ROOT_PARAMETER rootParams[7] = {};
+
+	// b0 : Camera
 	rootParams[0].ParameterType = D3D12_ROOT_PARAMETER_TYPE_CBV;
 	rootParams[0].ShaderVisibility = D3D12_SHADER_VISIBILITY_MESH;
 	rootParams[0].Descriptor.ShaderRegister = 0;
 
+	// t0 : InstanceData
 	rootParams[1].ParameterType = D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE;
 	rootParams[1].ShaderVisibility = D3D12_SHADER_VISIBILITY_MESH;
 	rootParams[1].DescriptorTable.pDescriptorRanges = &descriptorRangeInstance;
 	rootParams[1].DescriptorTable.NumDescriptorRanges = 1;
 
-	rootParams[2].ParameterType = D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE;
+	// b1 : MaterialData
+	rootParams[2].ParameterType = D3D12_ROOT_PARAMETER_TYPE_CBV;
 	rootParams[2].ShaderVisibility = D3D12_SHADER_VISIBILITY_ALL;
-	rootParams[2].DescriptorTable.pDescriptorRanges = &descriptorRangeMaterial;
-	rootParams[2].DescriptorTable.NumDescriptorRanges = 1;
+	rootParams[2].Descriptor.ShaderRegister = 1;
 
+	// t1000 : Textures
 	rootParams[3].ParameterType = D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE;
 	rootParams[3].ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL;
 	rootParams[3].DescriptorTable.pDescriptorRanges = &descriptorRangeTextures;
 	rootParams[3].DescriptorTable.NumDescriptorRanges = 1;
 
-	// RootConstants (b1)
+	// RootConstants b2
 	rootParams[4].ParameterType = D3D12_ROOT_PARAMETER_TYPE_32BIT_CONSTANTS;
 	rootParams[4].ShaderVisibility = D3D12_SHADER_VISIBILITY_AMPLIFICATION;
 	rootParams[4].Constants.Num32BitValues = 4;
-	rootParams[4].Constants.ShaderRegister = 1;
+	rootParams[4].Constants.ShaderRegister = 2;
 
+	// t1 : VertexBuffer
+	rootParams[5].ParameterType = D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE;
+	rootParams[5].ShaderVisibility = D3D12_SHADER_VISIBILITY_MESH;
+	rootParams[5].DescriptorTable.pDescriptorRanges = &descriptorRangeVertex;
+	rootParams[5].DescriptorTable.NumDescriptorRanges = 1;
+
+	// t2 : IndexBuffer
+	rootParams[6].ParameterType = D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE;
+	rootParams[6].ShaderVisibility = D3D12_SHADER_VISIBILITY_MESH;
+	rootParams[6].DescriptorTable.pDescriptorRanges = &descriptorRangeIndex;
+	rootParams[6].DescriptorTable.NumDescriptorRanges = 1;
+
+	// Static Sampler
 	D3D12_STATIC_SAMPLER_DESC staticSampler{};
 	staticSampler.Filter = D3D12_FILTER_MIN_MAG_MIP_LINEAR;
 	staticSampler.AddressU = D3D12_TEXTURE_ADDRESS_MODE_WRAP;
@@ -70,6 +93,7 @@ void Plane3DGraphicsPipeline::CreateRootSignature() {
 	staticSampler.RegisterSpace = 0;
 	staticSampler.ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL;
 
+	// Root Signature
 	D3D12_ROOT_SIGNATURE_DESC rootSigDesc{};
 	rootSigDesc.NumParameters = _countof(rootParams);
 	rootSigDesc.pParameters = rootParams;
@@ -91,25 +115,25 @@ void Plane3DGraphicsPipeline::CreateRootSignature() {
 	assert(SUCCEEDED(hr));
 }
 
-void Plane3DGraphicsPipeline::CompileShaders() {
-	amplificationShaderBlob_ = shaderCompiler_->CompileShader(L"EngineAssets/Shaders/Graphics/Plane3D/Plane3D.AS.hlsl", L"as_6_5");
-	assert(amplificationShaderBlob_ != nullptr);
+void Model3DGraphicsPipeline::CompileShaders() {
+	amplificationShaderBlob_ = shaderCompiler_->CompileShader(L"EngineAssets/Shaders/Graphics/Model3D/Model3D.AS.hlsl", L"as_6_5");
+	assert(amplificationShaderBlob_);
 
-	meshShaderBlob_ = shaderCompiler_->CompileShader(L"EngineAssets/Shaders/Graphics/Plane3D/Plane3D.MS.hlsl", L"ms_6_5");
-	assert(meshShaderBlob_ != nullptr);
+	meshShaderBlob_ = shaderCompiler_->CompileShader(L"EngineAssets/Shaders/Graphics/Model3D/Model3D.MS.hlsl", L"ms_6_5");
+	assert(meshShaderBlob_);
 
-	pixelShaderBlob_ = shaderCompiler_->CompileShader(L"EngineAssets/Shaders/Graphics/Plane3D/Plane3D.PS.hlsl", L"ps_6_5");
-	assert(pixelShaderBlob_ != nullptr);
+	pixelShaderBlob_ = shaderCompiler_->CompileShader(L"EngineAssets/Shaders/Graphics/Model3D/Model3D.PS.hlsl", L"ps_6_5");
+	assert(pixelShaderBlob_);
 }
 
-void Plane3DGraphicsPipeline::CreateGraphicsPipelineObject() {
+void Model3DGraphicsPipeline::CreateGraphicsPipelineObject() {
 	assert(rootSignature_);
 	assert(meshShaderBlob_);
 	assert(pixelShaderBlob_);
 
 	const D3D12_SHADER_BYTECODE meshShader = { meshShaderBlob_->GetBufferPointer(), meshShaderBlob_->GetBufferSize() };
 	const D3D12_SHADER_BYTECODE pixelShader = { pixelShaderBlob_->GetBufferPointer(), pixelShaderBlob_->GetBufferSize() };
-	const D3D12_SHADER_BYTECODE amplificationShader = { amplificationShaderBlob_->GetBufferPointer(),amplificationShaderBlob_->GetBufferSize() };
+	const D3D12_SHADER_BYTECODE amplificationShader = { amplificationShaderBlob_->GetBufferPointer(), amplificationShaderBlob_->GetBufferSize() };
 
 	const DXGI_FORMAT rtvFormat = DXGI_FORMAT_R8G8B8A8_UNORM_SRGB;
 	const DXGI_FORMAT dsvFormat = DXGI_FORMAT_D24_UNORM_S8_UINT;
@@ -145,13 +169,13 @@ void Plane3DGraphicsPipeline::CreateGraphicsPipelineObject() {
 
 		HRESULT hr = dxgi_->GetDevice10()->CreatePipelineState(&streamDesc, IID_PPV_ARGS(&pipelineState_[i]));
 		if (FAILED(hr)) {
-			Logger::Log("Plane3DGraphicsPipeline: Failed to create PSO for blendMode " + std::to_string(i));
+			Logger::Log("Model3DGraphicsPipeline: Failed to create PSO for blendMode " + std::to_string(i));
 			assert(false);
 		}
 	}
 }
 
-D3D12_BLEND_DESC Plane3DGraphicsPipeline::BlendStateSetting(uint32_t blendModeNum) {
+D3D12_BLEND_DESC Model3DGraphicsPipeline::BlendStateSetting(uint32_t blendModeNum) {
 	D3D12_BLEND_DESC blendDesc{};
 	switch (blendModeNum) {
 	case 0:// kBlendModeNone
@@ -221,15 +245,11 @@ D3D12_BLEND_DESC Plane3DGraphicsPipeline::BlendStateSetting(uint32_t blendModeNu
 	return blendDesc;
 }
 
-D3D12_DEPTH_STENCIL_DESC Plane3DGraphicsPipeline::DepthStecilDescSetting() {
-	D3D12_DEPTH_STENCIL_DESC depthDesc{};
-	depthDesc.DepthEnable = TRUE;
-	depthDesc.DepthWriteMask = D3D12_DEPTH_WRITE_MASK_ALL;
-	depthDesc.DepthFunc = D3D12_COMPARISON_FUNC_LESS;
-	return depthDesc;
+D3D12_DEPTH_STENCIL_DESC Model3DGraphicsPipeline::DepthStecilDescSetting() {
+	return D3D12_DEPTH_STENCIL_DESC();
 }
 
-D3D12_DEPTH_STENCIL_DESC Plane3DGraphicsPipeline::DepthStecilDescSettingBlend(uint32_t blendModeNum) {
+D3D12_DEPTH_STENCIL_DESC Model3DGraphicsPipeline::DepthStecilDescSettingBlend(uint32_t blendModeNum) {
 	D3D12_DEPTH_STENCIL_DESC desc{};
 	desc.DepthEnable = TRUE;
 
@@ -251,11 +271,11 @@ D3D12_DEPTH_STENCIL_DESC Plane3DGraphicsPipeline::DepthStecilDescSettingBlend(ui
 	return desc;
 }
 
-D3D12_INPUT_LAYOUT_DESC Plane3DGraphicsPipeline::InputLayoutSetting() {
+D3D12_INPUT_LAYOUT_DESC Model3DGraphicsPipeline::InputLayoutSetting() {
 	return { nullptr, 0 };
 }
 
-D3D12_RASTERIZER_DESC Plane3DGraphicsPipeline::RasterizerStateSetting() {
+D3D12_RASTERIZER_DESC Model3DGraphicsPipeline::RasterizerStateSetting() {
 	D3D12_RASTERIZER_DESC desc{};
 	desc.FillMode = D3D12_FILL_MODE_SOLID;
 	desc.CullMode = D3D12_CULL_MODE_BACK;

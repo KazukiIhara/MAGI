@@ -14,6 +14,8 @@ enum class GraphicsPipelineStateType {
 	Sphere3D,
 	Ring3D,
 	Cylinder3D,
+	Model3D,
+
 	Object3D,
 	Particle3D,
 	Object3DGroup,

@@ -4,6 +4,7 @@
 #include "Math/Utility/MathUtility.h"
 #include "Structs/ModelStruct.h"
 #include "Enums/BlendModeEnum.h"
+#include "Structs/Primitive3DStruct.h"
 
 /// <summary>
 /// メッシュ描画クラス
@@ -20,7 +21,7 @@ private:
 	// 頂点用のリソース
 	ComPtr<ID3D12Resource> vertexBuffer_;
 	// 頂点データ
-	VertexData3D* vertexData_;
+	VertexData3D* vertexData_ = nullptr;
 	// 頂点数
 	uint32_t vertexCount_ = 0;
 	// 頂点のsrvインデックス
@@ -29,7 +30,7 @@ private:
 	// インデックス用のリソース
 	ComPtr<ID3D12Resource> indexBuffer_;
 	// インデックスデータ
-	uint32_t* indexData_;
+	uint32_t* indexData_ = nullptr;
 	// インデックス数
 	uint32_t indexCount_ = 0;
 	// インデックスのsrvインデックス
@@ -38,6 +39,6 @@ private:
 	// マテリアル用のリソース
 	ComPtr<ID3D12Resource> materialResource_;
 	// マテリアル用のデータ
-	ModelMaterialDataForGPU* materiralData_;
+	ModelMaterialDataForGPU* materialData_ = nullptr;
 
 };
