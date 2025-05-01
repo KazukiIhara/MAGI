@@ -82,17 +82,11 @@ void PlaneDrawer3D::Draw(BlendMode mode) {
 
 	commandList->SetGraphicsRootDescriptorTable(1, srvUavManager_->GetDescriptorHandleGPU(instancingSrvIndex_[i]));
 	commandList->SetGraphicsRootDescriptorTable(2, srvUavManager_->GetDescriptorHandleGPU(materialSrvIndex_[i]));
+	commandList->SetGraphicsRootDescriptorTable(3, srvUavManager_->GetDescriptorHandleGPU(0)); // t1000
 
 	RootConstants rootConstants{};
 	rootConstants.baseInstanceIndex = 0;
-	commandList->SetGraphicsRoot32BitConstants(4, 4, &rootConstants, 0);
-
-	commandList->SetGraphicsRootDescriptorTable(3, srvUavManager_->GetDescriptorHandleGPU(0)); // t1000
-
-	ID3D12DescriptorHeap* descriptorHeaps[] = {
-		srvUavManager_->GetDescriptorHeap()
-	};
-	commandList->SetDescriptorHeaps(_countof(descriptorHeaps), descriptorHeaps);
+	commandList->SetGraphicsRoot32BitConstants(4, 1, &rootConstants, 0);
 
 	commandList->DispatchMesh(1, instanceCount_[i], 1);
 }

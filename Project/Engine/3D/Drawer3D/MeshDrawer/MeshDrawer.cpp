@@ -19,7 +19,6 @@ void MeshDrawer::Update() {
 
 }
 
-void MeshDrawer::Draw(BlendMode blendMode, uint32_t instanceCount) {
-	blendMode;
+void MeshDrawer::Draw(uint32_t instanceCount) {
 	instanceCount;
 }

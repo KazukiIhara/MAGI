@@ -88,19 +88,14 @@ void TriangleDrawer3D::Draw(BlendMode mode) {
 	commandList->SetGraphicsRootDescriptorTable(1, srvUavManager_->GetDescriptorHandleGPU(instancingSrvIndex_[blendIndex]));
 	commandList->SetGraphicsRootDescriptorTable(2, srvUavManager_->GetDescriptorHandleGPU(materialSrvIndex_[blendIndex]));
 
+	// Bindless Texture（t1000）
+	commandList->SetGraphicsRootDescriptorTable(3, srvUavManager_->GetDescriptorHandleGPU(0));
+
 	// RootConstants（b1）
 	RootConstants rootConstants{};
 	rootConstants.baseInstanceIndex = 0;
 	commandList->SetGraphicsRoot32BitConstants(4, 1, &rootConstants, 0);
 
-	// Bindless Texture（t1000）
-	commandList->SetGraphicsRootDescriptorTable(3, srvUavManager_->GetDescriptorHandleGPU(0));
-
-	// DescriptorHeap設定
-	ID3D12DescriptorHeap* descriptorHeaps[] = {
-		srvUavManager_->GetDescriptorHeap()
-	};
-	commandList->SetDescriptorHeaps(_countof(descriptorHeaps), descriptorHeaps);
 
 	// 描画実行
 	commandList->DispatchMesh(1, instanceCount_[blendIndex], 1);

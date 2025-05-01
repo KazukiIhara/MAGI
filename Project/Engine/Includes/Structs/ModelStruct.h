@@ -100,3 +100,13 @@ struct ModelDataForGPU {
 struct ModelMaterial {
 	BlendMode blendMode = BlendMode::None;
 };
+
+/// <summary>
+/// GPUに送るモデルマテリアルデータ
+/// </summary>
+struct ModelMaterialDataForGPU {
+	uint32_t textureIndex;
+	float padding0[3];
+	Vector4 baseColor;
+	Matrix4x4 uvMatrix;
+};

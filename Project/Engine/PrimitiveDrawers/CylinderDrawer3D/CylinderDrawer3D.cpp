@@ -86,9 +86,6 @@ void CylinderDrawer3D::Draw(BlendMode mode) {
 	rootConstants.baseInstanceIndex = 0;
 	commandList->SetGraphicsRoot32BitConstants(4, 1, &rootConstants, 0);
 
-	ID3D12DescriptorHeap* descriptorHeaps[] = { srvUavManager_->GetDescriptorHeap() };
-	commandList->SetDescriptorHeaps(_countof(descriptorHeaps), descriptorHeaps);
-
 	commandList->DispatchMesh(1, instanceCount_[i], 1);
 }
 

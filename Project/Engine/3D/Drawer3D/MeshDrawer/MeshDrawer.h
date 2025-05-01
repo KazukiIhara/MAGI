@@ -14,11 +14,13 @@ public:
 	~MeshDrawer();
 
 	void Update();
-	void Draw(BlendMode blendMode, uint32_t instanceCount);
+	void Draw(uint32_t instanceCount);
 
 private:
 	// 頂点用のリソース
 	ComPtr<ID3D12Resource> vertexBuffer_;
+	// 頂点データ
+	VertexData3D* vertexData_;
 	// 頂点数
 	uint32_t vertexCount_ = 0;
 	// 頂点のsrvインデックス
@@ -26,9 +28,16 @@ private:
 
 	// インデックス用のリソース
 	ComPtr<ID3D12Resource> indexBuffer_;
+	// インデックスデータ
+	uint32_t* indexData_;
 	// インデックス数
 	uint32_t indexCount_ = 0;
 	// インデックスのsrvインデックス
 	uint32_t indexSrvIndex_ = 0;
+
+	// マテリアル用のリソース
+	ComPtr<ID3D12Resource> materialResource_;
+	// マテリアル用のデータ
+	ModelMaterialDataForGPU* materiralData_;
 
 };

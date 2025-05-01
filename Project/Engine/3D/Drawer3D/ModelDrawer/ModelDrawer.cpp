@@ -80,6 +80,8 @@ void ModelDrawer::Draw(BlendMode mode) {
 	// パイプラインの設定
 	// 
 
+	mode;
+
 	// カメラの送信
 	MAGISYSTEM::TransferCamera(0);
 
@@ -88,6 +90,6 @@ void ModelDrawer::Draw(BlendMode mode) {
 
 	// 各メッシュの描画
 	for (auto& mesh : meshes_) {
-		mesh->Draw(mode, instanceCount_[blendIndex]);
+		mesh->Draw(instanceCount_[blendIndex]);
 	}
 }
