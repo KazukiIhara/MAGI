@@ -22,6 +22,14 @@ workspace "MAGI"
       uuid "22345678-ABCD-4321-DCBA-1234567890AB"
       kind "StaticLib"
       language "C++"
+   
+   -- DirectXMeshを外部プロジェクトとして登録
+   externalproject "DirectXMesh"
+      location "Externals/DirectXMesh"
+      filename "DirectXMesh_Desktop_2022_Win10"
+      uuid "32345678-ABCD-4321-DCBA-1234567890AB"
+      kind "StaticLib"
+      language "C++"
 
 -- MAGIの設定
 
@@ -51,12 +59,13 @@ project "MAGI" -- プロジェクト名
       "Engine/Includes",
       "App",
       "Externals",
-      "Externals/assimp/include"
+      "Externals/assimp/include",
+      "Externals/DirectXMesh/Inc"
     } 
 
-   dependson { "DirectXTex","imgui" } -- 依存していることを指定
+   dependson { "DirectXTex","imgui", "DirectXMesh" } -- 依存していることを指定
 
-   links { "DirectXTex","imgui" }  -- リンク対象のプロジェクト
+   links { "DirectXTex","imgui", "DirectXMesh" }  -- リンク対象のプロジェクト
 
    warnings "High" -- 警告レベル4を設定
 
