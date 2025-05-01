@@ -35,15 +35,15 @@ ModelDrawerManager::~ModelDrawerManager() {
 void ModelDrawerManager::CreateModelDrawer(const std::string& modelDrawerName, const ModelData& modelData) {
 	// 追加する描画クラスを作成
 	std::unique_ptr<ModelDrawer> newModelDrawer = std::make_unique<ModelDrawer>(modelData);
-		
+
 	// ペアを作って挿入
 	modelDrawers_.insert(std::make_pair(modelDrawerName, std::move(newModelDrawer)));
 }
 
-void ModelDrawerManager::DrawModel(const std::string& modelDrawerName, const Matrix4x4& worldMatrix) {
+void ModelDrawerManager::DrawModel(const std::string& modelDrawerName, const Matrix4x4& worldMatrix, const ModelMaterial& material) {
 	auto it = modelDrawers_.find(modelDrawerName);
 	if (it != modelDrawers_.end()) {
-		it->second->AddDrawCommand(worldMatrix);
+		it->second->AddDrawCommand(worldMatrix, material);
 	}
 }
 
@@ -54,10 +54,10 @@ void ModelDrawerManager::UpdateAll() {
 	}
 }
 
-void ModelDrawerManager::DrawAll() {
+void ModelDrawerManager::DrawAll(BlendMode mode) {
 	// 全モデル描画クラスを描画
 	for (auto& modelDrawer : modelDrawers_) {
-		modelDrawer.second->Draw();
+		modelDrawer.second->Draw(mode);
 	}
 }
 

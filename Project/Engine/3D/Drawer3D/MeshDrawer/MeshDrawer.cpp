@@ -8,7 +8,7 @@
 #include "Enums/BlendModeEnum.h"
 
 MeshDrawer::MeshDrawer(const MeshData& meshData) {
-
+	meshData;
 }
 
 MeshDrawer::~MeshDrawer() {
@@ -20,5 +20,6 @@ void MeshDrawer::Update() {
 }
 
 void MeshDrawer::Draw(BlendMode blendMode, uint32_t instanceCount) {
-
+	blendMode;
+	instanceCount;
 }

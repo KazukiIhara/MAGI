@@ -9,7 +9,7 @@
 
 ModelDrawer::ModelDrawer(const ModelData& modelData) {
 	// モデルのメッシュの数を取得
-	const uint32_t meshSize = modelData.meshes.size();
+	const uint32_t meshSize = static_cast<uint32_t>(modelData.meshes.size());
 
 	// メッシュを作成
 	for (uint32_t i = 0; i < meshSize; i++) {

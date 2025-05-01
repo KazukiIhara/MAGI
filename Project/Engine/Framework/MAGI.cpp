@@ -603,12 +603,8 @@ void MAGISYSTEM::Draw() {
 		sphereDrawer3D_->Draw(mode);
 		ringDrawer3D_->Draw(mode);
 		cylinderDrawer3D_->Draw(mode);
+		modelDrawerManager_->DrawAll(mode);
 	}
-
-	//
-	// ModelDrawerの描画処理
-	// 
-	modelDrawerManager_->DrawAll();
 
 
 	// シーンの描画後処理

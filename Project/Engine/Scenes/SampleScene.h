@@ -70,6 +70,7 @@ inline void SampleScene<Data>::Initialize() {
 
 	// サウンド
 	MAGISYSTEM::LoadWaveSound("Alarm01.wav");
+	MAGISYSTEM::LoadWaveSound("coin.wav");
 
 	//
 	// オブジェクトの作成

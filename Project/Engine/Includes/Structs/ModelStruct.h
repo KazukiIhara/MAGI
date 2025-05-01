@@ -8,6 +8,7 @@
 #include "Math/Utility/MathUtility.h"
 #include "Structs/SkeletonStruct.h"
 #include "Structs/SkinningStruct.h"
+#include "Enums/BlendModeEnum.h"
 
 /// <summary>
 /// 3D頂点データ
