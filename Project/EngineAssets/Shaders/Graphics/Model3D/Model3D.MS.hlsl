@@ -13,7 +13,7 @@ void main(in payload ASPayload payload,
           out vertices MeshOutput verts[3])
 {
     uint triID = tid.x;
-    uint base = triID * 3;
+    uint base = payload.firstIndex + triID * 3;
     uint3 idx = uint3(gIndexData[base + 0],
                        gIndexData[base + 1],
                        gIndexData[base + 2]);

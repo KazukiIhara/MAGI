@@ -49,4 +49,13 @@ struct RootConstants
 struct ASPayload
 {
     uint instanceID;
+    uint firstIndex;
+};
+
+// Meshlet—p
+struct DrawMeshlet
+{
+    uint firstIndex;
+    uint primitiveCount;
+    uint _pad0, pad1;
 };

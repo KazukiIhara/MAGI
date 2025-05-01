@@ -38,8 +38,14 @@ void Model3DGraphicsPipeline::CreateRootSignature() {
 	descriptorRangeIndex.RangeType = D3D12_DESCRIPTOR_RANGE_TYPE_SRV;
 	descriptorRangeIndex.OffsetInDescriptorsFromTableStart = D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND;
 
+	D3D12_DESCRIPTOR_RANGE descriptorRangeMeshlet{};
+	descriptorRangeMeshlet.BaseShaderRegister = 3;
+	descriptorRangeMeshlet.NumDescriptors = 1;
+	descriptorRangeMeshlet.RangeType = D3D12_DESCRIPTOR_RANGE_TYPE_SRV;
+	descriptorRangeMeshlet.OffsetInDescriptorsFromTableStart = D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND;
+
 	// Root Parameters
-	D3D12_ROOT_PARAMETER rootParams[7] = {};
+	D3D12_ROOT_PARAMETER rootParams[8] = {};
 
 	// b0 : Camera
 	rootParams[0].ParameterType = D3D12_ROOT_PARAMETER_TYPE_CBV;
@@ -77,9 +83,15 @@ void Model3DGraphicsPipeline::CreateRootSignature() {
 
 	// t2 : IndexBuffer
 	rootParams[6].ParameterType = D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE;
-	rootParams[6].ShaderVisibility = D3D12_SHADER_VISIBILITY_ALL;
+	rootParams[6].ShaderVisibility = D3D12_SHADER_VISIBILITY_MESH;
 	rootParams[6].DescriptorTable.pDescriptorRanges = &descriptorRangeIndex;
 	rootParams[6].DescriptorTable.NumDescriptorRanges = 1;
+
+	// t3 : MeshletBuffer
+	rootParams[7].ParameterType = D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE;
+	rootParams[7].ShaderVisibility = D3D12_SHADER_VISIBILITY_AMPLIFICATION;
+	rootParams[7].DescriptorTable.pDescriptorRanges = &descriptorRangeMeshlet;
+	rootParams[7].DescriptorTable.NumDescriptorRanges = 1;
 
 	// Static Sampler
 	D3D12_STATIC_SAMPLER_DESC staticSampler{};

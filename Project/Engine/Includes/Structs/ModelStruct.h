@@ -110,3 +110,13 @@ struct ModelMaterialDataForGPU {
 	Vector4 baseColor;
 	Matrix4x4 uvMatrix;
 };
+
+struct DrawMeshlet
+{
+    uint32_t firstIndex;      
+    uint32_t primitiveCount;  
+    uint32_t padding[2];
+};
+
+constexpr uint32_t kMaxTriPerMeshlet = 128;
+constexpr uint32_t kThreadsPerAS      = 32;

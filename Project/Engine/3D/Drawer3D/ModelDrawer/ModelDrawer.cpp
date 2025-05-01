@@ -91,7 +91,7 @@ void ModelDrawer::Draw(BlendMode mode) {
 	// テクスチャ一覧 (t1000)
 	commandList->SetGraphicsRootDescriptorTable(3, MAGISYSTEM::GetSrvUavDescriptorHandleGPU(0));
 
-	// ルート定数（b1）BaseInstanceIndex
+	// ルート定数（b2）BaseInstanceIndex
 	RootConstants rootConstants{};
 	rootConstants.baseInstanceIndex = 0;
 	commandList->SetGraphicsRoot32BitConstants(4, 1, &rootConstants, 0);

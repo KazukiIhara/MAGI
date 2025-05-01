@@ -36,6 +36,15 @@ private:
 	// インデックスのsrvインデックス
 	uint32_t indexSrvIndex_ = 0;
 
+	// メッシュ分割用のリソース
+	ComPtr<ID3D12Resource> meshletBuffer_;
+	// メッシュ分割用のデータ
+	DrawMeshlet* meshletData_ = nullptr;
+	// メッシュ分割数
+	uint32_t meshletCount_ = 0;
+	// メッシュ分割のsrvインデックス
+	uint32_t meshletSrvIndex_ = 0;
+
 	// マテリアル用のリソース
 	ComPtr<ID3D12Resource> materialResource_;
 	// マテリアル用のデータ
