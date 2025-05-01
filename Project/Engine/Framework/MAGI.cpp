@@ -882,6 +882,10 @@ void MAGISYSTEM::CreateSrvTexture2D(uint32_t srvIndex, ID3D12Resource* pResource
 	srvuavManager_->CreateSrvTexture2d(srvIndex, pResource, format, mipLevels);
 }
 
+void MAGISYSTEM::CreateSrvByteAddressBuffer(uint32_t viewIndex, ID3D12Resource* pResource, uint32_t byteSize) {
+	srvuavManager_->CreateSrvByteAddressBuffer(viewIndex, pResource, byteSize);
+}
+
 void MAGISYSTEM::CreateUavStructuredBuffer(uint32_t viewIndex, ID3D12Resource* pResource, uint32_t numElements, UINT structureByteStride) {
 	srvuavManager_->CreateUavStructuredBuffer(viewIndex, pResource, numElements, structureByteStride);
 }

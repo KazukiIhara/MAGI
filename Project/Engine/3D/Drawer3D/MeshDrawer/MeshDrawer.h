@@ -1,53 +1,48 @@
 #pragma once
+// DirectX
+#include <d3d12.h>
 
-// MyHedder
-#include "Math/Utility/MathUtility.h"
+// DirectXMesh
+#include <DirectXMesh/DirectXMesh.h>
+
+// MAGI
+#include "DirectX/ComPtr/ComPtr.h"
 #include "Structs/ModelStruct.h"
-#include "Enums/BlendModeEnum.h"
 #include "Structs/Primitive3DStruct.h"
 
-/// <summary>
-/// メッシュ描画クラス
-/// </summary>
+/// <summary>メッシュ描画クラス（Mesh Shader + Meshlet）</summary>
 class MeshDrawer {
 public:
-	MeshDrawer(const MeshData& meshData);
+	explicit MeshDrawer(const MeshData& meshData);
 	~MeshDrawer();
 
 	void Update();
 	void Draw(uint32_t instanceCount);
 
 private:
-	// 頂点用のリソース
+	/* ---------- 頂点 / インデックス ---------- */
 	ComPtr<ID3D12Resource> vertexBuffer_;
-	// 頂点データ
 	VertexData3D* vertexData_ = nullptr;
-	// 頂点数
 	uint32_t vertexCount_ = 0;
-	// 頂点のsrvインデックス
-	uint32_t vertexSrvIndex_ = 0;
+	uint32_t vertexSrvIdx_ = 0;
 
-	// インデックス用のリソース
 	ComPtr<ID3D12Resource> indexBuffer_;
-	// インデックスデータ
 	uint32_t* indexData_ = nullptr;
-	// インデックス数
 	uint32_t indexCount_ = 0;
-	// インデックスのsrvインデックス
-	uint32_t indexSrvIndex_ = 0;
+	uint32_t indexSrvIdx_ = 0;
 
-	// メッシュ分割用のリソース
-	ComPtr<ID3D12Resource> meshletBuffer_;
-	// メッシュ分割用のデータ
-	DrawMeshlet* meshletData_ = nullptr;
-	// メッシュ分割数
+	/* ---------- Meshlet ---------- */
+	ComPtr<ID3D12Resource> meshletBuffer_;              // StructuredBuffer<Meshlet>
 	uint32_t meshletCount_ = 0;
-	// メッシュ分割のsrvインデックス
-	uint32_t meshletSrvIndex_ = 0;
+	uint32_t meshletSrvIdx_ = 0;
 
-	// マテリアル用のリソース
-	ComPtr<ID3D12Resource> materialResource_;
-	// マテリアル用のデータ
-	ModelMaterialDataForGPU* materialData_ = nullptr;
+	ComPtr<ID3D12Resource> meshletUniqueVertIB_;        // ByteAddressBuffer
+	uint32_t uniqueVertSrvIdx_ = 0;
 
+	ComPtr<ID3D12Resource> meshletPrimIB_;              // StructuredBuffer<MeshletTriangle>
+	uint32_t primSrvIdx_ = 0;
+
+	/* ---------- マテリアル ---------- */
+	ComPtr<ID3D12Resource> materialBuffer_;
+	ModelMaterialDataForGPU* material_ = nullptr;
 };

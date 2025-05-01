@@ -53,6 +53,10 @@ private:
 	float vignetteScale_ = 16.0f;
 	float vignetteFalloff_ = 0.8f;
 	float gaussianSigma_ = 0.5f;
+
+	static const uint32_t wtsNum_ = 10000;
+
+	std::array<WorldTransform, wtsNum_> wts_;
 };
 
 template<typename Data>
@@ -134,6 +138,12 @@ inline void SampleScene<Data>::Initialize() {
 	// デフォルトのテクスチャを取得　TODO:マテリアルもクラス化して初期化できるようにする
 	material_.textureIndex = MAGISYSTEM::GetDefaultTextureIndex();
 	material_.blendMode = BlendMode::None;
+
+	for (uint32_t i = 0; i < wtsNum_; i++) {
+		wts_[i].Initialize();
+		wts_[i].translate_.x = float(i);
+	}
+
 }
 
 template<typename Data>
@@ -215,6 +225,10 @@ inline void SampleScene<Data>::Update() {
 		worldTransform_[i].Update();
 	}
 
+	for (uint32_t i = 0; i < wtsNum_; i++) {
+		wts_[i].Update();
+	}
+
 	// ポストエフェクトをかける
 	//MAGISYSTEM::ApplyPostEffectGrayScale();
 	//MAGISYSTEM::ApplyPostEffectGaussianX(gaussianSigma_, 13);
@@ -224,27 +238,30 @@ inline void SampleScene<Data>::Update() {
 
 template<typename Data>
 inline void SampleScene<Data>::Draw() {
-	// 板ポリ描画
-	MAGISYSTEM::DrawPlane3D(worldTransform_[0].worldMatrix_, planeData_, material_);
+	//// 板ポリ描画
+	//MAGISYSTEM::DrawPlane3D(worldTransform_[0].worldMatrix_, planeData_, material_);
 
-	// 球体描画
-	MAGISYSTEM::DrawSphere3D(worldTransform_[1].worldMatrix_, sphereData_, material_);
+	//// 球体描画
+	//MAGISYSTEM::DrawSphere3D(worldTransform_[1].worldMatrix_, sphereData_, material_);
 
 	//// 三角形描画
 	//MAGISYSTEM::DrawTriangle3D(worldTransform_[2].worldMatrix_, triangleData_, material_);
 
-	// モデル描画
-	MAGISYSTEM::DrawModel("test", worldTransform_[2].worldMatrix_, modelMaterial_);
+	//// モデル描画
+	//MAGISYSTEM::DrawModel("test", worldTransform_[2].worldMatrix_, modelMaterial_);
 
 	// モデル描画
-	MAGISYSTEM::DrawModel("test", worldTransform_[3].worldMatrix_, modelMaterial_);
 
+
+	for (uint32_t i = 0; i < wtsNum_; i++) {
+		MAGISYSTEM::DrawModel("test", wts_[i].worldMatrix_, modelMaterial_);
+	}
 
 	// リング描画
 	// MAGISYSTEM::DrawRing3D(worldTransform_[3].worldMatrix_, ringData_, material_);
 
-	// シリンダー描画
-	MAGISYSTEM::DrawCylinder3D(worldTransform_[4].worldMatrix_, cylinderData_, material_);
+	//// シリンダー描画
+	//MAGISYSTEM::DrawCylinder3D(worldTransform_[4].worldMatrix_, cylinderData_, material_);
 
 	// 
 	// オブジェクト2Dの描画前処理
