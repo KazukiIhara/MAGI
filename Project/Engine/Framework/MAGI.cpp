@@ -603,12 +603,8 @@ void MAGISYSTEM::Draw() {
 		sphereDrawer3D_->Draw(mode);
 		ringDrawer3D_->Draw(mode);
 		cylinderDrawer3D_->Draw(mode);
+		modelDrawerManager_->DrawAll(mode);
 	}
-
-	//
-	// ModelDrawerの描画処理
-	// 
-	modelDrawerManager_->DrawAll();
 
 
 	// シーンの描画後処理
@@ -824,6 +820,10 @@ ComPtr<ID3D12Resource> MAGISYSTEM::CreateBufferResource(size_t sizeInBytes, bool
 
 ID3D12GraphicsCommandList* MAGISYSTEM::GetDirectXCommandList() {
 	return directXCommand_->GetList();
+}
+
+ID3D12GraphicsCommandList6* MAGISYSTEM::GetDirectXCommandList6() {
+	return directXCommand_->GetList6();
 }
 
 void MAGISYSTEM::KickCommand() {

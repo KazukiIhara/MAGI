@@ -70,6 +70,7 @@ inline void SampleScene<Data>::Initialize() {
 
 	// サウンド
 	MAGISYSTEM::LoadWaveSound("Alarm01.wav");
+	MAGISYSTEM::LoadWaveSound("coin.wav");
 
 	//
 	// オブジェクトの作成
@@ -173,16 +174,22 @@ inline void SampleScene<Data>::Update() {
 	ImGui::DragFloat("Sigma", &gaussianSigma_, 0.01f);
 	ImGui::End();
 
+	ImGui::Begin("Sound");
+	if (ImGui::Button("Coin")) {
+		MAGISYSTEM::PlayWaveSound("coin.wav");
+	}
+	ImGui::End();
+
 	// トランスフォーム更新
 	for (uint32_t i = 0; i < 5; i++) {
 		worldTransform_[i].Update();
 	}
 
 	// ポストエフェクトをかける
-	MAGISYSTEM::ApplyPostEffectGrayScale();
-	MAGISYSTEM::ApplyPostEffectGaussianX(gaussianSigma_, 13);
-	MAGISYSTEM::ApplyPostEffectGaussianY(gaussianSigma_, 13);
-	MAGISYSTEM::ApplyPostEffectVignette(vignetteScale_, vignetteFalloff_);
+	//MAGISYSTEM::ApplyPostEffectGrayScale();
+	//MAGISYSTEM::ApplyPostEffectGaussianX(gaussianSigma_, 13);
+	//MAGISYSTEM::ApplyPostEffectGaussianY(gaussianSigma_, 13);
+	//MAGISYSTEM::ApplyPostEffectVignette(vignetteScale_, vignetteFalloff_);
 }
 
 template<typename Data>

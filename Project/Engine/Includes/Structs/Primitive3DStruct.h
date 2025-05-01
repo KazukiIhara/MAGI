@@ -131,7 +131,7 @@ struct PrimitiveMaterialData3D {
 	Vector2 uvTranslate = { 0.0f,0.0f };
 	Vector2 uvScale = { 1.0f,1.0f };
 	float uvRotate = 0.0f;
-	BlendMode blendMode = BlendMode::Normal;
+	BlendMode blendMode = BlendMode::None;
 };
 
 /// <summary>

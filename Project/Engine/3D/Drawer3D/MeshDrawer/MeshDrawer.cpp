@@ -5,10 +5,10 @@
 
 // MyHedder
 #include "Logger/Logger.h"
+#include "Enums/BlendModeEnum.h"
 
-
-MeshDrawer::MeshDrawer() {
-
+MeshDrawer::MeshDrawer(const MeshData& meshData) {
+	meshData;
 }
 
 MeshDrawer::~MeshDrawer() {
@@ -16,8 +16,10 @@ MeshDrawer::~MeshDrawer() {
 }
 
 void MeshDrawer::Update() {
+
 }
 
-void MeshDrawer::Draw() {
-
+void MeshDrawer::Draw(BlendMode blendMode, uint32_t instanceCount) {
+	blendMode;
+	instanceCount;
 }
