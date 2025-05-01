@@ -77,7 +77,7 @@ void Model3DGraphicsPipeline::CreateRootSignature() {
 
 	// t2 : IndexBuffer
 	rootParams[6].ParameterType = D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE;
-	rootParams[6].ShaderVisibility = D3D12_SHADER_VISIBILITY_MESH;
+	rootParams[6].ShaderVisibility = D3D12_SHADER_VISIBILITY_ALL;
 	rootParams[6].DescriptorTable.pDescriptorRanges = &descriptorRangeIndex;
 	rootParams[6].DescriptorTable.NumDescriptorRanges = 1;
 

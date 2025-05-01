@@ -47,6 +47,9 @@ private:
 	// プリミティブ描画用のマテリアルデータ
 	PrimitiveMaterialData3D material_{};
 
+	// モデル用のマテリアルデータ
+	ModelMaterial modelMaterial_{};
+
 	float vignetteScale_ = 16.0f;
 	float vignetteFalloff_ = 0.8f;
 	float gaussianSigma_ = 0.5f;
@@ -89,6 +92,33 @@ inline void SampleScene<Data>::Initialize() {
 
 	// ライト
 	MAGISYSTEM::AddPunctualLight("SampleLight");
+
+	// テスト用のModelDataを作成
+	ModelData testModelData{};
+
+	// メッシュ作成
+	MeshData meshData;
+
+	// 頂点情報
+	meshData.vertices = {
+		{ { 0.0f, 0.5f, 0.0f ,1.0f}, { 0.5f, 0.0f } }, // 上
+		{ { 0.5f, -0.5f, 0.0f ,1.0f }, { 1.0f, 1.0f } }, // 右下
+		{ { -0.5f, -0.5f, 0.0f,1.0f }, { 0.0f, 1.0f } } // 左下
+	};
+
+	// インデックス情報
+	meshData.indices = { 0, 1, 2 };
+
+	// マテリアル情報
+	meshData.material.color = { 1.0f, 1.0f, 1.0f, 1.0f };
+	meshData.material.textureFilePath = "EngineAssets/Images/uvChecker.png"; // 仮テクスチャ
+
+	testModelData.meshes.push_back(meshData);
+
+	modelMaterial_.blendMode = BlendMode::None;
+
+	// ModelDrawer
+	MAGISYSTEM::CreateModelDrawer("test", MAGISYSTEM::FindModel("teapot"));
 
 	// トランスフォーム初期化
 	for (uint32_t i = 0; i < 5; i++) {
@@ -200,11 +230,18 @@ inline void SampleScene<Data>::Draw() {
 	// 球体描画
 	MAGISYSTEM::DrawSphere3D(worldTransform_[1].worldMatrix_, sphereData_, material_);
 
-	// 三角形描画
-	MAGISYSTEM::DrawTriangle3D(worldTransform_[2].worldMatrix_, triangleData_, material_);
+	//// 三角形描画
+	//MAGISYSTEM::DrawTriangle3D(worldTransform_[2].worldMatrix_, triangleData_, material_);
+
+	// モデル描画
+	MAGISYSTEM::DrawModel("test", worldTransform_[2].worldMatrix_, modelMaterial_);
+
+	// モデル描画
+	MAGISYSTEM::DrawModel("test", worldTransform_[3].worldMatrix_, modelMaterial_);
+
 
 	// リング描画
-	MAGISYSTEM::DrawRing3D(worldTransform_[3].worldMatrix_, ringData_, material_);
+	// MAGISYSTEM::DrawRing3D(worldTransform_[3].worldMatrix_, ringData_, material_);
 
 	// シリンダー描画
 	MAGISYSTEM::DrawCylinder3D(worldTransform_[4].worldMatrix_, cylinderData_, material_);

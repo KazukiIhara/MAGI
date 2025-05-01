@@ -1167,6 +1167,14 @@ void MAGISYSTEM::DrawCylinder3D(const Matrix4x4& worldMatrix, const CylinderData
 	cylinderDrawer3D_->AddCylinder(worldMatrix, data, material);
 }
 
+void MAGISYSTEM::CreateModelDrawer(const std::string& name, const ModelData& modelData) {
+	modelDrawerManager_->CreateModelDrawer(name, modelData);
+}
+
+void MAGISYSTEM::DrawModel(const std::string& name, const Matrix4x4& worldMatrix, const ModelMaterial& material) {
+	modelDrawerManager_->DrawModel(name, worldMatrix, material);
+}
+
 void MAGISYSTEM::AddGrobalDataGroup(const std::string& groupname) {
 	grobalDataManager_->CreateGroup(groupname);
 }

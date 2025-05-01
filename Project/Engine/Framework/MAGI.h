@@ -485,6 +485,22 @@ public: // エンジンの機能
 	);
 #pragma endregion
 
+#pragma region ModelDrawer3D
+	// Drawer追加
+	static void CreateModelDrawer(
+		const std::string& name,
+		const ModelData& modelData
+	);
+
+	// モデル描画
+	static void DrawModel(
+		const std::string& name,
+		const Matrix4x4& worldMatrix,
+		const ModelMaterial& material
+	);
+#pragma endregion
+
+
 
 #pragma region CollisionManager
 

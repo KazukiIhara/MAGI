@@ -88,6 +88,14 @@ void ModelDrawer::Draw(BlendMode mode) {
 	// inctancing描画用のデータを送信
 	commandList->SetGraphicsRootDescriptorTable(1, MAGISYSTEM::GetSrvUavDescriptorHandleGPU(instancingSrvIndex_[blendIndex]));
 
+	// テクスチャ一覧 (t1000)
+	commandList->SetGraphicsRootDescriptorTable(3, MAGISYSTEM::GetSrvUavDescriptorHandleGPU(0));
+
+	// ルート定数（b1）BaseInstanceIndex
+	RootConstants rootConstants{};
+	rootConstants.baseInstanceIndex = 0;
+	commandList->SetGraphicsRoot32BitConstants(4, 1, &rootConstants, 0);
+
 	// 各メッシュの描画
 	for (auto& mesh : meshes_) {
 		mesh->Draw(instanceCount_[blendIndex]);

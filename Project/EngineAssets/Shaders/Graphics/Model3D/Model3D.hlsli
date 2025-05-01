@@ -9,8 +9,10 @@ struct MeshOutput
 // 頂点データ
 struct VertexData3D
 {
-    float3 position;
+    float4 position;
     float2 uv;
+    float3 normal;
+    float3 tangent;
 };
 
 // インスタンシングデータ

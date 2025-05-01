@@ -40,6 +40,7 @@ MeshDrawer::MeshDrawer(const MeshData& meshData) {
 	*materialData_ = {
 		.textureIndex = MAGISYSTEM::GetTextureIndex(meshData.material.textureFilePath),
 		.baseColor = meshData.material.color,
+		.uvMatrix = MAGIMath::MakeIdentityMatrix4x4(),
 	};
 
 }
@@ -62,25 +63,14 @@ void MeshDrawer::Draw(uint32_t instanceCount) {
 	// マテリアルバッファ (b2 : ConstantBufferView)
 	commandList->SetGraphicsRootConstantBufferView(2, materialResource_->GetGPUVirtualAddress());
 
-	// テクスチャ一覧 (t1000)
-	commandList->SetGraphicsRootDescriptorTable(3, MAGISYSTEM::GetSrvUavDescriptorHandleGPU(0));
-
 	// 頂点バッファ (t5)
 	commandList->SetGraphicsRootDescriptorTable(5, MAGISYSTEM::GetSrvUavDescriptorHandleGPU(vertexSrvIndex_));
 
 	// インデックスバッファ (t6)
 	commandList->SetGraphicsRootDescriptorTable(6, MAGISYSTEM::GetSrvUavDescriptorHandleGPU(indexSrvIndex_));
 
-	// ルート定数（b1）BaseInstanceIndex（必ず0スタートで）
-	RootConstants rootConstants{};
-	rootConstants.baseInstanceIndex = 0;
-	commandList->SetGraphicsRoot32BitConstants(4, 1, &rootConstants, 0);
 
 	// DispatchMesh呼び出し
-	commandList->DispatchMesh(
-		(indexCount_ + 2) / 3, // 三角形数
-		instanceCount,         // インスタンス数
-		1                      // Z方向は1
-	);
+	commandList->DispatchMesh(1, instanceCount, 1);
 
 }
