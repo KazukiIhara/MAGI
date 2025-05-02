@@ -72,7 +72,7 @@ struct Meshlet
 
 struct Payload          // AS → MS で渡す最小ペイロード
 {
-    uint meshletIndices[AS_GROUP_SIZE];
+    uint meshletIndex;
     uint instanceID;
     uint _pad[2];
 };

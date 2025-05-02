@@ -63,7 +63,7 @@ void main(
 )
 {
     const uint instID = payload.instanceID;
-    uint meshletIndex = payload.meshletIndices[gid];
+    uint meshletIndex = payload.meshletIndex;
 
     Meshlet m = gMeshlets[meshletIndex];
     
