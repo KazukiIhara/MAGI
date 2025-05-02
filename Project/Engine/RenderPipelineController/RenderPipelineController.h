@@ -4,8 +4,12 @@
 #include <memory>
 
 #include "DirectX/ComPtr/ComPtr.h"
-#include "RenderTextures/ColorRenderTexture/ColorRenderTexture.h"
 #include "Structs/PostEffectStruct.h"
+
+#include "RenderTextures/ColorRenderTexture/ColorRenderTexture.h"
+#include "RenderTextures/GBuffers/GBufferAlbedoRenderTexture/GBufferAlbedoRenderTexture.h"
+#include "RenderTextures/GBuffers/GBufferNormalRenderTexture/GBufferNormalRenderTexture.h"
+#include "RenderTextures/GBuffers/GBufferPositionRenderTexture/GBufferPositionRenderTexture.h"
 
 // 前方宣言
 class DXGI;
@@ -57,8 +61,8 @@ private:
 	void SwitchColorRenderTextureIndex();
 
 	// レンダーテクスチャを描画
-	void DrawRenderTextureNoParamater(ID3D12GraphicsCommandList* commandList, const PostEffectType &type);
-	void DrawRenderTextureWithParamater(ID3D12GraphicsCommandList* commandList, const PostEffectCommand &command);
+	void DrawRenderTextureNoParamater(ID3D12GraphicsCommandList* commandList, const PostEffectType& type);
+	void DrawRenderTextureWithParamater(ID3D12GraphicsCommandList* commandList, const PostEffectCommand& command);
 
 	// パラメータ用のリソースを作成する
 	void CreatePostEffectParamaterResource();
@@ -109,4 +113,18 @@ private:
 	std::vector<PostEffectCommand> postEffectCommand_{};
 	// 現在のコマンドインデックス
 	uint32_t currentCommandIndex_ = 0;
+
+
+	//================================================
+	// GBuffer用
+	//================================================
+
+	// アルベド
+	std::unique_ptr<GBufferAlbedoRenderTexture> gBufferAlbedoRenderTexture_ = nullptr;
+	// 法線
+	std::unique_ptr<GBufferNormalRenderTexture> gBufferNormalRenderTexture_ = nullptr;
+	// 座標
+	std::unique_ptr<GBufferPositionRenderTexture> gBufferPositionRenderTexture_ = nullptr;
+
+
 };
