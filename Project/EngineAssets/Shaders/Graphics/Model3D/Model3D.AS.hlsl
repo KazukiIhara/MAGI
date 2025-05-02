@@ -8,16 +8,15 @@ ConstantBuffer<MeshInfo> gMeshInfo : register(b2);
 // この AS が gMeshInfo.MeshletCount 個の MS スレッドグループを生成するだけ。
 [shader("amplification")]
 [numthreads(AS_GROUP_SIZE, 1, 1)]
-void main(uint dtid : SV_DispatchThreadID)
+void main(uint3 dtid : SV_DispatchThreadID)
 {
     bool visible = true;
-    
-    // 今は 1 インスタンス描画だけなので 0 を固定 
+   
     Payload payload;
-    payload.baseInstance = 0;
-
+    payload.instanceID = dtid.y;
+    
     uint index = WavePrefixCountBits(visible);
-    payload.meshletIndices[index] = dtid;
+    payload.meshletIndices[index] = dtid.x;
 
     // MS へは meshletCount × 1 × 1 TG を飛ばす
     DispatchMesh(gMeshInfo.MeshletCount, 1, 1, payload);

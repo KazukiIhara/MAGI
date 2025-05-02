@@ -9,6 +9,7 @@ struct MeshOutput
     float4 position : SV_Position;
     float2 uv : TEXCOORD0;
     uint instID : TEXCOORD1;
+    uint meshletIndex : COLOR0;
 };
 
 // 頂点データ
@@ -72,6 +73,6 @@ struct Meshlet
 struct Payload          // AS → MS で渡す最小ペイロード
 {
     uint meshletIndices[AS_GROUP_SIZE];
-    uint baseInstance; // 今回は 0 固定
+    uint instanceID;
     uint _pad[2];
 };

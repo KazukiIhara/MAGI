@@ -36,48 +36,55 @@ uint3 GetPrimitive(in Meshlet m, uint localPrim)
     return UnpackPrimitive(packed);
 }
 
-MeshOutput MakeVertex(uint vertGlobal, uint instID)
+MeshOutput GetVertexAttributes(uint meshletIndex, uint vertexIndex, uint instID)
 {
-    VertexData3D v = gVertexBuffer[vertGlobal];
+    VertexData3D v = gVertexBuffer[vertexIndex];
 
-    float4 posWS = mul(v.position, gInstanceData[instID].world);
+    float4 positionWS = mul(v.position, gInstanceData[instID].world);
 
-    MeshOutput o;
-    o.position = mul(posWS, gCamera.viewProjection);
-    o.uv = v.uv;
-    o.instID = instID;
-    return o;
+    MeshOutput vout;
+    vout.position = mul(positionWS, gCamera.viewProjection);
+    vout.uv = v.uv;
+    vout.instID = instID;
+    vout.meshletIndex = meshletIndex;
+    
+    return vout;
 }
 
 // ───── MS 本体 ─────
 [outputtopology("triangle")]
 [numthreads(128, 1, 1)]
-void main(uint3 gtid : SV_GroupThreadID,
-           uint gid : SV_GroupID,
-           in payload Payload payload,
-           out vertices MeshOutput verts[256],
-           out indices uint3 tris[256])
+void main(
+     uint gtid : SV_GroupThreadID,
+     uint gid : SV_GroupID,
+     in payload Payload payload,
+     out vertices MeshOutput verts[256],
+     out indices uint3 tris[256]
+)
 {
-    /*--- 今はインスタンス 0 のみ ---*/
-    const uint instID = 0;
+    const uint instID = payload.instanceID;
     uint meshletIndex = payload.meshletIndices[gid];
-    
-    if (meshletIndex >= gMeshInfo.MeshletCount)
-        return;
 
     Meshlet m = gMeshlets[meshletIndex];
+    
+    if (meshletIndex >= gMeshInfo.MeshletCount)
+    {
+        m.VertCount = 0;
+        m.PrimCount = 0;
+    }
 
     // Our vertex and primitive counts come directly from the meshlet
     SetMeshOutputCounts(m.VertCount, m.PrimCount);
 
     //------------------- 頂点 --------------------
-    for (uint v = gtid.x; v < m.VertCount; v += 128)
+    if (gtid.x < m.VertCount)
     {
-        uint globalIdx = GetVertexIndex(m, v);
-        verts[v] = MakeVertex(globalIdx, instID);
+        uint vertexIndex = GetVertexIndex(m, gtid);
+        verts[gtid] = GetVertexAttributes(meshletIndex, vertexIndex, instID);
     }
 
-    //------------------- プリミティブ -------------
-    for (uint p = gtid.x; p < m.PrimCount; p += 128)
-        tris[p] = GetPrimitive(m, p);
+    if (gtid.x < m.PrimCount)
+    {
+        tris[gtid] = GetPrimitive(m, gtid);
+    }
 }
