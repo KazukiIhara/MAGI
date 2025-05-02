@@ -111,12 +111,10 @@ struct ModelMaterialDataForGPU {
 	Matrix4x4 uvMatrix;
 };
 
-struct DrawMeshlet
-{
-    uint32_t firstIndex;      
-    uint32_t primitiveCount;  
-    uint32_t padding[2];
-};
+struct MeshInfo {
+	uint32_t indexSize;
+	uint32_t meshletCount;
 
-constexpr uint32_t kMaxTriPerMeshlet = 128;
-constexpr uint32_t kThreadsPerAS      = 32;
+	uint32_t lastMeshletVertCount;
+	uint32_t lastMeshletPrimCount;
+};

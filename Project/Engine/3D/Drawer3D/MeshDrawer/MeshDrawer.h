@@ -20,30 +20,28 @@ public:
 	void Draw(uint32_t instanceCount);
 
 private:
-	/* ---------- 頂点 / インデックス ---------- */
+	// 頂点
 	ComPtr<ID3D12Resource> vertexBuffer_;
 	VertexData3D* vertexData_ = nullptr;
 	uint32_t vertexCount_ = 0;
 	uint32_t vertexSrvIdx_ = 0;
 
-	ComPtr<ID3D12Resource> indexBuffer_;
-	uint32_t* indexData_ = nullptr;
+	// インデックスの数
 	uint32_t indexCount_ = 0;
-	uint32_t indexSrvIdx_ = 0;
 
-	/* ---------- Meshlet ---------- */
+	// メッシュ分割
 	ComPtr<ID3D12Resource> meshletBuffer_;              // StructuredBuffer<Meshlet>
 	uint32_t meshletCount_ = 0;
 	uint32_t meshletSrvIdx_ = 0;
 
-	ComPtr<ID3D12Resource> meshletUniqueVertIB_;        // StructuredBuffer
-	uint32_t uniqueVertCount_ = 0;
+	ComPtr<ID3D12Resource> meshletUniqueVertIB_;        // ByteAddressBuffer
 	uint32_t uniqueVertSrvIdx_ = 0;
 
 	ComPtr<ID3D12Resource> meshletPrimIB_;              // StructuredBuffer<MeshletTriangle>
 	uint32_t primSrvIdx_ = 0;
 
-	/* ---------- マテリアル ---------- */
+
+	// マテリアル
 	ComPtr<ID3D12Resource> materialBuffer_;
 	ModelMaterialDataForGPU* material_ = nullptr;
 };

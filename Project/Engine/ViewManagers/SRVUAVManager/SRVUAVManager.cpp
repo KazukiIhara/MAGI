@@ -43,16 +43,15 @@ void SRVUAVManager::CreateSrvStructuredBuffer(uint32_t viewIndex, ID3D12Resource
 	dxgi_->GetDevice()->CreateShaderResourceView(pResource, &srvDesc, GetDescriptorHandleCPU(viewIndex));
 }
 
-void SRVUAVManager::CreateSrvByteAddressBuffer(uint32_t viewIndex,
-	ID3D12Resource* pResource,
-	uint32_t byteSize) {
+void SRVUAVManager::CreateSrvByteAddressBuffer(uint32_t viewIndex, ID3D12Resource* pResource, uint32_t byteSize) {
 	D3D12_SHADER_RESOURCE_VIEW_DESC srvDesc{};
-	srvDesc.Format = DXGI_FORMAT_R32_TYPELESS;      // RAW バッファ
+	srvDesc.Format = DXGI_FORMAT_R32_TYPELESS;
 	srvDesc.Shader4ComponentMapping = D3D12_DEFAULT_SHADER_4_COMPONENT_MAPPING;
 	srvDesc.ViewDimension = D3D12_SRV_DIMENSION_BUFFER;
 	srvDesc.Buffer.FirstElement = 0;
-	srvDesc.Buffer.NumElements = byteSize / 4;                  // 4Byte = 1 要素扱い
-	srvDesc.Buffer.Flags = D3D12_BUFFER_SRV_FLAG_RAW;     // ←★重要★
+	srvDesc.Buffer.NumElements = byteSize / 4;                  
+	srvDesc.Buffer.Flags =  D3D12_BUFFER_SRV_FLAG_RAW;
+	srvDesc.Buffer.StructureByteStride = 0;
 
 	dxgi_->GetDevice()->CreateShaderResourceView(
 		pResource, &srvDesc, GetDescriptorHandleCPU(viewIndex));

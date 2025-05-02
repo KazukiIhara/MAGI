@@ -1,4 +1,9 @@
-﻿// ────────── Model3D.hlsli (Mesh-only) ──────────
+﻿// ────────── Model3D.hlsli ──────────
+
+#define THREADS_PER_WAVE 32
+#define AS_GROUP_SIZE THREADS_PER_WAVE
+
+// 頂点出力
 struct MeshOutput
 {
     float4 position : SV_Position;
@@ -6,38 +11,67 @@ struct MeshOutput
     uint instID : TEXCOORD1;
 };
 
-// 頂点・インスタンス・マテリアル
+// 頂点データ
 struct VertexData3D
 {
-    float4 pos;
+    float4 position;
     float2 uv;
-    float3 nrm;
-    float3 tan;
+    float3 normal;
+    float3 tangent;
 };
+
+struct VertexOutPut
+{
+    float4 position;
+    float2 uv;
+    uint meshletIndex;
+};
+
+// インスタンスデータ
 struct ModelDataForGPU
 {
     float4x4 world;
 };
-struct PrimitiveMaterialData3D
+
+// マテリアルデータ
+struct MaterialData3D
 {
     uint texIdx;
     float3 _pad;
     float4 baseColor;
     float4x4 uvMatrix;
 };
+
+// カメラデータ
 struct Camera
 {
-    float4x4 vp;
-    float3 eye;
-    float _;
+    float4x4 viewProjection;
+    float3 worldPosition;
+    float _pad;
 };
 
-// Meshlet header（DXMesh v168）
+// ────────── Meshlet関連構造体 ──────────
+
+struct MeshInfo
+{
+    uint IndexSize;
+    uint MeshletCount;
+
+    uint LastMeshletVertCount;
+    uint LastMeshletPrimCount;
+};
+
 struct Meshlet
 {
-    uint vertOffset, vertCount;
-    uint primOffset, primCount;
+    uint VertCount;
+    uint VertOffset;
+    uint PrimCount;
+    uint PrimOffset;
 };
 
-// 10-bit×3 packed triangle (= uint32)
-typedef uint PackedTriangle;
+struct Payload          // AS → MS で渡す最小ペイロード
+{
+    uint meshletIndices[AS_GROUP_SIZE];
+    uint baseInstance; // 今回は 0 固定
+    uint _pad[2];
+};

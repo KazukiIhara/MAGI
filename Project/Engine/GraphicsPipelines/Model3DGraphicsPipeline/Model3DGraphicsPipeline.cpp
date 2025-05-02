@@ -51,7 +51,7 @@ void Model3DGraphicsPipeline::CreateRootSignature() {
 	rangePrim.OffsetInDescriptorsFromTableStart = D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND;
 
 	// Root Parameters
-	D3D12_ROOT_PARAMETER rootParams[8] = {};
+	D3D12_ROOT_PARAMETER rootParams[9] = {};
 
 	// b0 : Camera
 	rootParams[0].ParameterType = D3D12_ROOT_PARAMETER_TYPE_CBV;
@@ -88,16 +88,21 @@ void Model3DGraphicsPipeline::CreateRootSignature() {
 	rootParams[5].DescriptorTable.NumDescriptorRanges = 1;
 
 	// t3 unique
-	rootParams[6].ParameterType = D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE;
+	rootParams[6].ParameterType = D3D12_ROOT_PARAMETER_TYPE_SRV;
 	rootParams[6].ShaderVisibility = D3D12_SHADER_VISIBILITY_MESH;
-	rootParams[6].DescriptorTable.pDescriptorRanges = &rangeUnique;
-	rootParams[6].DescriptorTable.NumDescriptorRanges = 1;
+	rootParams[6].Descriptor.ShaderRegister = 3;
 
 	// t4 prim
 	rootParams[7].ParameterType = D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE;
 	rootParams[7].ShaderVisibility = D3D12_SHADER_VISIBILITY_MESH;
 	rootParams[7].DescriptorTable.pDescriptorRanges = &rangePrim;
 	rootParams[7].DescriptorTable.NumDescriptorRanges = 1;
+
+	// b2 MeshInfo
+	rootParams[8].ParameterType = D3D12_ROOT_PARAMETER_TYPE_32BIT_CONSTANTS;
+	rootParams[8].ShaderVisibility = D3D12_SHADER_VISIBILITY_ALL;
+	rootParams[8].Constants.Num32BitValues = 4;
+	rootParams[8].Constants.ShaderRegister = 2;
 
 	// Static Sampler
 	D3D12_STATIC_SAMPLER_DESC staticSampler{};
@@ -134,8 +139,8 @@ void Model3DGraphicsPipeline::CreateRootSignature() {
 }
 
 void Model3DGraphicsPipeline::CompileShaders() {
-	//amplificationShaderBlob_ = shaderCompiler_->CompileShader(L"EngineAssets/Shaders/Graphics/Model3D/Model3D.AS.hlsl", L"as_6_5");
-	//assert(amplificationShaderBlob_);
+	amplificationShaderBlob_ = shaderCompiler_->CompileShader(L"EngineAssets/Shaders/Graphics/Model3D/Model3D.AS.hlsl", L"as_6_5");
+	assert(amplificationShaderBlob_);
 
 	meshShaderBlob_ = shaderCompiler_->CompileShader(L"EngineAssets/Shaders/Graphics/Model3D/Model3D.MS.hlsl", L"ms_6_5");
 	assert(meshShaderBlob_);
@@ -151,7 +156,7 @@ void Model3DGraphicsPipeline::CreateGraphicsPipelineObject() {
 
 	const D3D12_SHADER_BYTECODE meshShader = { meshShaderBlob_->GetBufferPointer(), meshShaderBlob_->GetBufferSize() };
 	const D3D12_SHADER_BYTECODE pixelShader = { pixelShaderBlob_->GetBufferPointer(), pixelShaderBlob_->GetBufferSize() };
-	//const D3D12_SHADER_BYTECODE amplificationShader = { amplificationShaderBlob_->GetBufferPointer(), amplificationShaderBlob_->GetBufferSize() };
+	const D3D12_SHADER_BYTECODE amplificationShader = { amplificationShaderBlob_->GetBufferPointer(), amplificationShaderBlob_->GetBufferSize() };
 
 	const DXGI_FORMAT rtvFormat = DXGI_FORMAT_R8G8B8A8_UNORM_SRGB;
 	const DXGI_FORMAT dsvFormat = DXGI_FORMAT_D24_UNORM_S8_UINT;
@@ -169,8 +174,9 @@ void Model3DGraphicsPipeline::CreateGraphicsPipelineObject() {
 		rtArray.NumRenderTargets = 1;
 		rtArray.RTFormats[0] = rtvFormat;
 
-		Primitive3DPipelineStateStreamT stream = {
+		Primitive3DPipelineStateStream stream = {
 			CD3DX12_PIPELINE_STATE_STREAM_ROOT_SIGNATURE(rootSignature_.Get()),
+			CD3DX12_PIPELINE_STATE_STREAM_AS(amplificationShader),
 			CD3DX12_PIPELINE_STATE_STREAM_MS(meshShader),
 			CD3DX12_PIPELINE_STATE_STREAM_PS(pixelShader),
 			CD3DX12_PIPELINE_STATE_STREAM_RASTERIZER(rast),

@@ -1,45 +1,83 @@
 ﻿#include "Model3D.hlsli"
 
-// ------ RootSignature ------
-// b0:Camera  b1:Material
-// t0:InstanceData  t1:Vertex  t3:Meshlet  t4:Unique  t5:Tri
+// ───── バッファ宣言はそのまま ─────
+ConstantBuffer<Camera> gCamera : register(b0);
+ConstantBuffer<MeshInfo> gMeshInfo : register(b2);
+StructuredBuffer<ModelDataForGPU> gInstanceData : register(t0);
+StructuredBuffer<VertexData3D> gVertexBuffer : register(t1);
+StructuredBuffer<Meshlet> gMeshlets : register(t2);
+ByteAddressBuffer gUniqueVertexIndices : register(t3);
+ByteAddressBuffer gPrimitiveIndices : register(t4);
 
+// ───── 10bit プリミティブ unpack ────
+inline uint3 UnpackPrimitive(uint v)
+{
+    return uint3(v & 0x3FF, (v >> 10) & 0x3FF, (v >> 20) & 0x3FF);
+}
 
-ConstantBuffer<Camera> gCam : register(b0);
-ConstantBuffer<PrimitiveMaterialData3D> gMat : register(b1);
-StructuredBuffer<ModelDataForGPU> gInst : register(t0);
-StructuredBuffer<VertexData3D> gVtx : register(t1);
-StructuredBuffer<Meshlet> gML : register(t2);
-StructuredBuffer<uint> gUNI : register(t3);
-StructuredBuffer<PackedTriangle> gTRI : register(t4);
+// ───── Meshlet から頂点/三角形を読む ─────
+uint GetVertexIndex(in Meshlet m, uint local)
+{
+    uint global = m.VertOffset + local;
 
+    if (gMeshInfo.IndexSize == 4)                     // 32‑bit index
+        return gUniqueVertexIndices.Load(global * 4);
+
+    /* 16‑bit index -------------------------------------------------------- */
+    uint word = global & 1;
+    uint bytes = (global >> 1) * 4;
+    uint pair = gUniqueVertexIndices.Load(bytes);
+    return (pair >> (word * 16)) & 0xFFFF;
+}
+
+uint3 GetPrimitive(in Meshlet m, uint localPrim)
+{
+    uint packed = gPrimitiveIndices.Load((m.PrimOffset + localPrim) * 4);
+    return UnpackPrimitive(packed);
+}
+
+MeshOutput MakeVertex(uint vertGlobal, uint instID)
+{
+    VertexData3D v = gVertexBuffer[vertGlobal];
+
+    float4 posWS = mul(v.position, gInstanceData[instID].world);
+
+    MeshOutput o;
+    o.position = mul(posWS, gCamera.viewProjection);
+    o.uv = v.uv;
+    o.instID = instID;
+    return o;
+}
+
+// ───── MS 本体 ─────
 [outputtopology("triangle")]
 [numthreads(128, 1, 1)]
-void main(uint3 gid : SV_GroupID, uint lid : SV_GroupIndex,
-          out vertices MeshOutput vOut[128],
-          out indices uint3 idx[128])
+void main(uint3 gtid : SV_GroupThreadID,
+           uint gid : SV_GroupID,
+           in payload Payload payload,
+           out vertices MeshOutput verts[256],
+           out indices uint3 tris[256])
 {
-    Meshlet ml = gML[gid.x]; // x=MeshletID, y=InstanceID
+    /*--- 今はインスタンス 0 のみ ---*/
+    const uint instID = 0;
+    uint meshletIndex = payload.meshletIndices[gid];
+    
+    if (meshletIndex >= gMeshInfo.MeshletCount)
+        return;
 
-    // 必ず 1 回
-    SetMeshOutputCounts(ml.vertCount, ml.primCount);
+    Meshlet m = gMeshlets[meshletIndex];
 
-    // ----- 三角形 -----
-    if (lid < ml.primCount)
+    // Our vertex and primitive counts come directly from the meshlet
+    SetMeshOutputCounts(m.VertCount, m.PrimCount);
+
+    //------------------- 頂点 --------------------
+    for (uint v = gtid.x; v < m.VertCount; v += 128)
     {
-        uint p = gTRI[ml.primOffset + lid];
-        idx[lid] = uint3(p & 0x3FF, (p >> 10) & 0x3FF, (p >> 20) & 0x3FF);
+        uint globalIdx = GetVertexIndex(m, v);
+        verts[v] = MakeVertex(globalIdx, instID);
     }
 
-    // ----- 頂点 -----
-    if (lid < ml.vertCount)
-    {
-        uint vIdx = gUNI[ml.vertOffset + lid];
-        VertexData3D v = gVtx[vIdx];
-
-        float4 wp = mul(v.pos, gInst[gid.y].world); // gid.y = instance
-        vOut[lid].position = mul(wp, gCam.vp);
-        vOut[lid].uv = v.uv;
-        vOut[lid].instID = gid.y;
-    }
+    //------------------- プリミティブ -------------
+    for (uint p = gtid.x; p < m.PrimCount; p += 128)
+        tris[p] = GetPrimitive(m, p);
 }
