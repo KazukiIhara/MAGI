@@ -54,7 +54,7 @@ private:
 	float vignetteFalloff_ = 0.8f;
 	float gaussianSigma_ = 0.5f;
 
-	static const uint32_t wtsNum_ = 1;
+	static const uint32_t wtsNum_ = 7000;
 
 	std::array<WorldTransform, wtsNum_> wts_;
 };
@@ -74,7 +74,7 @@ inline void SampleScene<Data>::Initialize() {
 	// モデル
 	MAGISYSTEM::LoadModel("terrain");
 	MAGISYSTEM::LoadModel("teapot");
-	MAGISYSTEM::LoadModel("Dragon");
+	//MAGISYSTEM::LoadModel("Dragon");
 
 	// サウンド
 	MAGISYSTEM::LoadWaveSound("Alarm01.wav");
@@ -98,32 +98,11 @@ inline void SampleScene<Data>::Initialize() {
 	// ライト
 	MAGISYSTEM::AddPunctualLight("SampleLight");
 
-	// テスト用のModelDataを作成
-	ModelData testModelData{};
-
-	// メッシュ作成
-	MeshData meshData;
-
-	// 頂点情報
-	meshData.vertices = {
-		{ { 0.0f, 0.5f, 0.0f ,1.0f}, { 0.5f, 0.0f } }, // 上
-		{ { 0.5f, -0.5f, 0.0f ,1.0f }, { 1.0f, 1.0f } }, // 右下
-		{ { -0.5f, -0.5f, 0.0f,1.0f }, { 0.0f, 1.0f } } // 左下
-	};
-
-	// インデックス情報
-	meshData.indices = { 0, 1, 2 };
-
-	// マテリアル情報
-	meshData.material.color = { 1.0f, 1.0f, 1.0f, 1.0f };
-	meshData.material.textureFilePath = "EngineAssets/Images/uvChecker.png"; // 仮テクスチャ
-
-	testModelData.meshes.push_back(meshData);
 
 	modelMaterial_.blendMode = BlendMode::None;
 
 	// ModelDrawer
-	MAGISYSTEM::CreateModelDrawer("test", MAGISYSTEM::FindModel("Dragon"));
+	MAGISYSTEM::CreateModelDrawer("test", MAGISYSTEM::FindModel("teapot"));
 
 	// トランスフォーム初期化
 	for (uint32_t i = 0; i < 5; i++) {
@@ -142,7 +121,7 @@ inline void SampleScene<Data>::Initialize() {
 
 	for (uint32_t i = 0; i < wtsNum_; i++) {
 		wts_[i].Initialize();
-		wts_[i].translate_.x = float(i);
+		wts_[i].translate_.z = float(i);
 	}
 
 }
