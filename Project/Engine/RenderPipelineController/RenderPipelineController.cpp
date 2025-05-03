@@ -2,6 +2,7 @@
 
 #include <cassert>
 #include <format>
+#include <array>
 
 #include "DirectX/DXGI/DXGI.h"
 #include "DirectX/DirectXCommand/DirectXCommand.h"
@@ -39,6 +40,19 @@ RenderController::RenderController(DXGI* dxgi, DirectXCommand* directXCommand, D
 		colorPostEffectRenderTexture_[i] = std::make_unique<ColorRenderTexture>();
 		colorPostEffectRenderTexture_[i]->Initialize();
 	}
+
+	// GBuffr用のレンダーテクスチャ
+	// アルベド
+	gBufferAlbedoRenderTexture_ = std::make_unique<GBufferAlbedoRenderTexture>();
+	gBufferAlbedoRenderTexture_->Initialize();
+
+	// 法線
+	gBufferNormalRenderTexture_ = std::make_unique<GBufferNormalRenderTexture>();
+	gBufferNormalRenderTexture_->Initialize();
+
+	// 座標
+	gBufferPositionRenderTexture_ = std::make_unique<GBufferPositionRenderTexture>();
+	gBufferPositionRenderTexture_->Initialize();
 
 	// コマンドの最大数をあらかじめ決めておく
 	postEffectCommand_.resize(kMaxPostEffectNum_);
@@ -250,6 +264,10 @@ void RenderController::DrawRenderTextureWithParamater(ID3D12GraphicsCommandList*
 	// 描画した対象を読み取り可能状態にする
 	currentRenderTexture_->TransitionToRead();
 
+}
+
+void RenderController::SetRenderTargets(const std::array<D3D12_CPU_DESCRIPTOR_HANDLE, 3>& rtvs, D3D12_CPU_DESCRIPTOR_HANDLE dsv) {
+	directXCommand_->GetList()->OMSetRenderTargets(static_cast<UINT>(rtvs.size()), rtvs.data(), FALSE, &dsv);
 }
 
 void RenderController::CreatePostEffectParamaterResource() {
