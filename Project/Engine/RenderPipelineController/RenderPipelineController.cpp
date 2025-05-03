@@ -72,6 +72,10 @@ void RenderController::PreSceneRender() {
 	scissorRect_->SettingScissorRect();
 }
 
+void RenderController::LightingPass() {
+
+}
+
 void RenderController::PostSceneRender() {
 	// シーン描画用のレンダーターゲットを読み取り状態に
 	sceneRenderTexture_->TransitionToRead();
