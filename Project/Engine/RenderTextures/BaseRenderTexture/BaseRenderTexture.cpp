@@ -101,7 +101,7 @@ void BaseRenderTexture::CreateResource() {
 
 	// クリアカラーの設定
 	D3D12_CLEAR_VALUE clearValue{};
-	clearValue.Format = DXGI_FORMAT_R8G8B8A8_UNORM_SRGB;
+	clearValue.Format = format_;
 	clearValue.Color[0] = clearColor_.x;
 	clearValue.Color[1] = clearColor_.y;
 	clearValue.Color[2] = clearColor_.z;
@@ -125,13 +125,13 @@ void BaseRenderTexture::CreateRTV() {
 	// インデックスを割り当て
 	rtvIndex_ = MAGISYSTEM::RTVAllocate();
 	// RTVを作成
-	MAGISYSTEM::CreateRTVTexture2d(rtvIndex_, resource_.Get());
+	MAGISYSTEM::CreateRTVTexture2d(rtvIndex_, resource_.Get(), format_);
 }
 
 void BaseRenderTexture::CreateSRV() {
 	// インデックス割り当て
 	srvIndex_ = MAGISYSTEM::SrvUavAllocate();
 	// SRVを作成
-	MAGISYSTEM::CreateSrvTexture2D(srvIndex_, resource_.Get(), DXGI_FORMAT_R8G8B8A8_UNORM_SRGB, 1);
+	MAGISYSTEM::CreateSrvTexture2D(srvIndex_, resource_.Get(), format_, 1);
 }
 

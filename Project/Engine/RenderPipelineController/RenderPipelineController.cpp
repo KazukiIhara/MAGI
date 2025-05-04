@@ -9,18 +9,20 @@
 #include "DirectX/DepthStencil/DepthStencil.h"
 #include "DirectX/Viewport/Viewport.h"
 #include "DirectX/ScissorRect/ScissorRect.h"
+#include "ViewManagers/RTVManager/RTVManager.h"
 #include "ViewManagers/SRVUAVManager/SRVUAVManager.h"
 #include "PipelineManagers/PostEffectPipelineManager/PostEffectPipelineManager.h"
 
 #include "Logger/Logger.h"
 
-RenderController::RenderController(DXGI* dxgi, DirectXCommand* directXCommand, DepthStencil* depthStencil, Viewport* viewport, ScissorRect* scissorRect, SRVUAVManager* srvUavManager, PostEffectPipelineManager* postEffectPipelineManager) {
+RenderController::RenderController(DXGI* dxgi, DirectXCommand* directXCommand, DepthStencil* depthStencil, Viewport* viewport, ScissorRect* scissorRect, RTVManager* rtvManager, SRVUAVManager* srvUavManager, PostEffectPipelineManager* postEffectPipelineManager) {
 	// インスタンスを受け取る
 	SetDXGI(dxgi);
 	SetDirectXCommand(directXCommand);
 	SetDepthStencil(depthStencil);
 	SetViewport(viewport);
 	SetScissorRect(scissorRect);
+	SetRTVManager(rtvManager);
 	SetSrvUavManager(srvUavManager);
 	SetPostEffectPipelineManager(postEffectPipelineManager);
 
@@ -61,14 +63,24 @@ RenderController::RenderController(DXGI* dxgi, DirectXCommand* directXCommand, D
 RenderController::~RenderController() {}
 
 void RenderController::PreSceneRender() {
-	// レンダーターゲットをシーン描画用のレンダーテクスチャに指定
-	sceneRenderTexture_->SetAsRenderTarget(depthStencil_->GetDepthStencilResorceCPUHandle());
-	sceneRenderTexture_->ClearRenderTarget();
-	// 深度をクリア
+	// Gバッファ3枚＋深度バッファをセットする
+	std::array<D3D12_CPU_DESCRIPTOR_HANDLE, 3> rtvs = {
+		rtvManager_->GetDescriptorHandleCPU(gBufferAlbedoRenderTexture_->GetRtvIndex()),
+		rtvManager_->GetDescriptorHandleCPU(gBufferNormalRenderTexture_->GetRtvIndex()),
+		rtvManager_->GetDescriptorHandleCPU(gBufferPositionRenderTexture_->GetRtvIndex())
+	};
+
+	// RenderTargetとDepthStencilViewをバインド
+	SetRenderTargets(rtvs, depthStencil_->GetDepthStencilResorceCPUHandle());
+
+	// 各レンダーターゲットをクリア
+	gBufferAlbedoRenderTexture_->ClearRenderTarget();
+	gBufferNormalRenderTexture_->ClearRenderTarget();
+	gBufferPositionRenderTexture_->ClearRenderTarget();
 	depthStencil_->ClearDepthView();
-	// ビューポートの設定
+
+	// ビューポート、シザー設定
 	viewport_->SettingViewport();
-	// シザー矩形の設定
 	scissorRect_->SettingScissorRect();
 }
 
@@ -169,6 +181,10 @@ void RenderController::EndFrame() {
 	currentRenderTexture_ = nullptr;
 
 	// 次のフレーム用に書き込み可能状態にする
+	gBufferAlbedoRenderTexture_->TransitionToWrite();
+	gBufferNormalRenderTexture_->TransitionToWrite();
+	gBufferPositionRenderTexture_->TransitionToWrite();
+
 	sceneRenderTexture_->TransitionToWrite();
 	finalRenderTexture_->TransitionToWrite();
 
@@ -305,6 +321,11 @@ void RenderController::SetViewport(Viewport* viewport) {
 void RenderController::SetScissorRect(ScissorRect* scissorRect) {
 	assert(scissorRect);
 	scissorRect_ = scissorRect;
+}
+
+void RenderController::SetRTVManager(RTVManager* rtvManager) {
+	assert(rtvManager);
+	rtvManager_ = rtvManager;
 }
 
 void RenderController::SetSrvUavManager(SRVUAVManager* srvUavManager) {

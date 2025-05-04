@@ -17,6 +17,7 @@ class DirectXCommand;
 class DepthStencil;
 class Viewport;
 class ScissorRect;
+class RTVManager;
 class SRVUAVManager;
 class PostEffectPipelineManager;
 
@@ -31,6 +32,7 @@ public:
 		DepthStencil* depthStencil,
 		Viewport* viewport,
 		ScissorRect* scissorRect,
+		RTVManager* rtvManager,
 		SRVUAVManager* srvUavManager,
 		PostEffectPipelineManager* postEffectPipelineManager
 	);
@@ -79,6 +81,7 @@ private:
 	void SetDepthStencil(DepthStencil* depthStencil);
 	void SetViewport(Viewport* viewport);
 	void SetScissorRect(ScissorRect* scissorRect);
+	void SetRTVManager(RTVManager* rtvManager);
 	void SetSrvUavManager(SRVUAVManager* srvUavManager);
 	void SetPostEffectPipelineManager(PostEffectPipelineManager* postEffectPipelineManager);
 
@@ -89,6 +92,7 @@ private:
 	DepthStencil* depthStencil_ = nullptr;
 	Viewport* viewport_ = nullptr;
 	ScissorRect* scissorRect_ = nullptr;
+	RTVManager* rtvManager_ = nullptr;
 	SRVUAVManager* srvUavManager_ = nullptr;
 	PostEffectPipelineManager* postEffectPipelineManager_ = nullptr;
 private:

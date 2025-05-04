@@ -10,8 +10,9 @@ struct MeshOutput
     float2 uv : TEXCOORD0;
     uint instID : TEXCOORD1;
     uint meshletIndex : COLOR0;
+    float3 normal : NORMAL0;
+    float4 worldPosition : TEXCOORD2;
 };
-
 // 頂点データ
 struct VertexData3D
 {

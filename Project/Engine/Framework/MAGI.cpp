@@ -170,7 +170,7 @@ void MAGISYSTEM::Initialize() {
 	postEffectPipelineManager_ = std::make_unique<PostEffectPipelineManager>(dxgi_.get(), shaderCompiler_.get());
 
 	// RenderPipelineController
-	renderController_ = std::make_unique<RenderController>(dxgi_.get(), directXCommand_.get(), depthStencil_.get(), viewport_.get(), scissorRect_.get(), srvuavManager_.get(), postEffectPipelineManager_.get());
+	renderController_ = std::make_unique<RenderController>(dxgi_.get(), directXCommand_.get(), depthStencil_.get(), viewport_.get(), scissorRect_.get(), rtvManager_.get(), srvuavManager_.get(), postEffectPipelineManager_.get());
 
 
 	// GameObject3DManager
@@ -590,7 +590,7 @@ void MAGISYSTEM::Draw() {
 	// 
 	// LineDrawer3Dの描画処理
 	// 
-	lineDrawer3D_->Draw();
+	//lineDrawer3D_->Draw();
 
 	// 
 	// BlendModeごとに描画(透過なしが先に描画されるようにする)
@@ -598,11 +598,11 @@ void MAGISYSTEM::Draw() {
 	for (uint32_t i = 0; i < kBlendModeNum; ++i) {
 		BlendMode mode = static_cast<BlendMode>(i);
 
-		triangleDrawer3D_->Draw(mode);
+		/*triangleDrawer3D_->Draw(mode);
 		planeDrawer3D_->Draw(mode);
 		sphereDrawer3D_->Draw(mode);
 		ringDrawer3D_->Draw(mode);
-		cylinderDrawer3D_->Draw(mode);
+		cylinderDrawer3D_->Draw(mode);*/
 		modelDrawerManager_->DrawAll(mode);
 	}
 
@@ -854,8 +854,8 @@ uint32_t MAGISYSTEM::RTVAllocate() {
 	return rtvManager_->Allocate();
 }
 
-void MAGISYSTEM::CreateRTVTexture2d(uint32_t rtvIndex, ID3D12Resource* pResource) {
-	rtvManager_->CreateRTVTexture2d(rtvIndex, pResource);
+void MAGISYSTEM::CreateRTVTexture2d(uint32_t rtvIndex, ID3D12Resource* pResource, DXGI_FORMAT format) {
+	rtvManager_->CreateRTVTexture2d(rtvIndex, pResource, format);
 }
 
 ID3D12DescriptorHeap* MAGISYSTEM::GetSrvUavDescriptorHeap() {

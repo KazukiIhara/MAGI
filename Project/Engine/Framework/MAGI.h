@@ -244,7 +244,7 @@ public: // エンジンの機能
 	// RTVIndex割り当て関数
 	static uint32_t RTVAllocate();
 	// Texture2D用のRTVの作成
-	static void CreateRTVTexture2d(uint32_t rtvIndex, ID3D12Resource* pResource);
+	static void CreateRTVTexture2d(uint32_t rtvIndex, ID3D12Resource* pResource, DXGI_FORMAT format);
 #pragma endregion
 
 #pragma region SRVUAVManagerの機能

@@ -41,12 +41,15 @@ MeshOutput GetVertexAttributes(uint meshletIndex, uint vertexIndex, uint instID)
     VertexData3D v = gVertexBuffer[vertexIndex];
 
     float4 positionWS = mul(v.position, gInstanceData[instID].world);
-
+    float3 normalWS = normalize(mul((float3x3) gInstanceData[instID].world, v.normal));
+    
     MeshOutput vout;
     vout.position = mul(positionWS, gCamera.viewProjection);
     vout.uv = v.uv;
     vout.instID = instID;
     vout.meshletIndex = meshletIndex;
+    vout.normal = normalWS;
+    vout.worldPosition = positionWS;
     
     return vout;
 }
