@@ -1,8 +1,4 @@
-﻿// ────────── Model3D.hlsli ──────────
-
-#define THREADS_PER_WAVE 32
-#define AS_GROUP_SIZE THREADS_PER_WAVE
-
+﻿
 // 頂点出力
 struct MeshOutput
 {
@@ -13,6 +9,7 @@ struct MeshOutput
     float3 normal : NORMAL0;
     float4 worldPosition : TEXCOORD2;
 };
+
 // 頂点データ
 struct VertexData3D
 {

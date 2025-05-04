@@ -76,7 +76,6 @@ void main(
         m.PrimCount = 0;
     }
 
-    // Our vertex and primitive counts come directly from the meshlet
     SetMeshOutputCounts(m.VertCount, m.PrimCount);
 
     //------------------- 頂点 --------------------

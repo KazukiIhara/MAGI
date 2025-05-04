@@ -598,7 +598,7 @@ protected:
 	//
 	static std::unique_ptr<GraphicsPipelineManager> graphicsPipelineManager_;
 	static std::unique_ptr<ComputePipelineManager> computePipelineManager_;
-	static std::unique_ptr<
+	static std::unique_ptr<DefferedRenderringPipelineManager> defferedRenderringPipelineManager_;
 	static std::unique_ptr<PostEffectPipelineManager> postEffectPipelineManager_;
 
 	// 

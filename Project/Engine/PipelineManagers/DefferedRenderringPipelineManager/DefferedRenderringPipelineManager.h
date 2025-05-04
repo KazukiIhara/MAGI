@@ -17,6 +17,8 @@ class ShaderCompiler;
 
 #include "DirectX/ComPtr/ComPtr.h"
 
+#include "DefferedRenderringPipeline/LightingDefferedRenderringPipeline/LightingDefferedRenderringPipeline.h"
+
 /// <summary>
 /// ディファードレンダリングのパイプラインマネージャ
 /// </summary>
@@ -39,13 +41,12 @@ public:
 	// パイプラインをセット
 	void SetPipelineState(DefferedRenderringType pipelineState);
 
-
 private:
 	// ルートシグネイチャ
 	ComPtr<ID3D12RootSignature> rootSignatures_[kDefferedRenderringPipelineStateNum];
 	// グラフィックスパイプライン
-	ComPtr<ID3D12PipelineState> postEffectPipelineStates_[kDefferedRenderringPipelineStateNum];
+	ComPtr<ID3D12PipelineState> defferedRenderringPipelineStates_[kDefferedRenderringPipelineStateNum];
 private:
 	// LightingDefferedRenderringPipeline
-
+	std::unique_ptr<LightingDefferedRenderringPipeline> lightingDefferedRenderringPipeline_ = nullptr;
 };

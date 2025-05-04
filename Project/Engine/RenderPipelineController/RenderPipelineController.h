@@ -19,6 +19,7 @@ class Viewport;
 class ScissorRect;
 class RTVManager;
 class SRVUAVManager;
+class DefferedRenderringPipelineManager;
 class PostEffectPipelineManager;
 class Camera3DManager;
 
@@ -35,6 +36,7 @@ public:
 		ScissorRect* scissorRect,
 		RTVManager* rtvManager,
 		SRVUAVManager* srvUavManager,
+		DefferedRenderringPipelineManager* defferedRenderringPipelineManager,
 		PostEffectPipelineManager* postEffectPipelineManager,
 		Camera3DManager* camera3DManager
 	);
@@ -48,6 +50,9 @@ public:
 
 	// シーン描画後の処理
 	void PostSceneRender();
+
+	// ライト適用後の処理
+	void PostLightingPass();
 
 	// ポストエフェクトをpingPong方式でかけていく
 	void ApplyPostEffect();
@@ -85,6 +90,7 @@ private:
 	void SetScissorRect(ScissorRect* scissorRect);
 	void SetRTVManager(RTVManager* rtvManager);
 	void SetSrvUavManager(SRVUAVManager* srvUavManager);
+	void SetDefferedRenderringPipelineManager(DefferedRenderringPipelineManager* defferedRenderringPipelineManager);
 	void SetPostEffectPipelineManager(PostEffectPipelineManager* postEffectPipelineManager);
 	void SetCamera3DManager(Camera3DManager* camera3DManager);
 
@@ -97,6 +103,7 @@ private:
 	ScissorRect* scissorRect_ = nullptr;
 	RTVManager* rtvManager_ = nullptr;
 	SRVUAVManager* srvUavManager_ = nullptr;
+	DefferedRenderringPipelineManager* defferedRenderringPipelineManager_ = nullptr;
 	PostEffectPipelineManager* postEffectPipelineManager_ = nullptr;
 	Camera3DManager* camera3DManager_ = nullptr;
 
