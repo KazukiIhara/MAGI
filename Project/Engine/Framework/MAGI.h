@@ -53,6 +53,7 @@
 // 
 #include "PipelineManagers/GraphicsPipelineManager/GraphicsPipelineManager.h"
 #include "PipelineManagers/ComputePipelineManager/ComputePipelineManager.h"
+#include "PipelineManagers/DefferedRenderringPipelineManager/DefferedRenderringPipelineManager.h"
 #include "PipelineManagers/PostEffectPipelineManager/PostEffectPipelineManager.h"
 
 // 
@@ -597,6 +598,7 @@ protected:
 	//
 	static std::unique_ptr<GraphicsPipelineManager> graphicsPipelineManager_;
 	static std::unique_ptr<ComputePipelineManager> computePipelineManager_;
+	static std::unique_ptr<
 	static std::unique_ptr<PostEffectPipelineManager> postEffectPipelineManager_;
 
 	// 

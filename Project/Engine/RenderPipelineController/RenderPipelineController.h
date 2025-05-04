@@ -20,6 +20,7 @@ class ScissorRect;
 class RTVManager;
 class SRVUAVManager;
 class PostEffectPipelineManager;
+class Camera3DManager;
 
 /// <summary>
 /// 描画管理クラス
@@ -34,7 +35,8 @@ public:
 		ScissorRect* scissorRect,
 		RTVManager* rtvManager,
 		SRVUAVManager* srvUavManager,
-		PostEffectPipelineManager* postEffectPipelineManager
+		PostEffectPipelineManager* postEffectPipelineManager,
+		Camera3DManager* camera3DManager
 	);
 	~RenderController();
 
@@ -84,6 +86,7 @@ private:
 	void SetRTVManager(RTVManager* rtvManager);
 	void SetSrvUavManager(SRVUAVManager* srvUavManager);
 	void SetPostEffectPipelineManager(PostEffectPipelineManager* postEffectPipelineManager);
+	void SetCamera3DManager(Camera3DManager* camera3DManager);
 
 private:
 	// 各インスタンスを受け取るクラス
@@ -95,6 +98,8 @@ private:
 	RTVManager* rtvManager_ = nullptr;
 	SRVUAVManager* srvUavManager_ = nullptr;
 	PostEffectPipelineManager* postEffectPipelineManager_ = nullptr;
+	Camera3DManager* camera3DManager_ = nullptr;
+
 private:
 	// コマンド最大数
 	static const uint32_t kMaxPostEffectNum_ = 64;

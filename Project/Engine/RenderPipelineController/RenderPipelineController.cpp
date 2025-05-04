@@ -12,10 +12,22 @@
 #include "ViewManagers/RTVManager/RTVManager.h"
 #include "ViewManagers/SRVUAVManager/SRVUAVManager.h"
 #include "PipelineManagers/PostEffectPipelineManager/PostEffectPipelineManager.h"
+#include "ObjectManagers/Camera3DManager/Camera3DManager.h"
 
 #include "Logger/Logger.h"
 
-RenderController::RenderController(DXGI* dxgi, DirectXCommand* directXCommand, DepthStencil* depthStencil, Viewport* viewport, ScissorRect* scissorRect, RTVManager* rtvManager, SRVUAVManager* srvUavManager, PostEffectPipelineManager* postEffectPipelineManager) {
+RenderController::RenderController(
+	DXGI* dxgi,
+	DirectXCommand* directXCommand,
+	DepthStencil* depthStencil,
+	Viewport* viewport,
+	ScissorRect* scissorRect,
+	RTVManager* rtvManager,
+	SRVUAVManager* srvUavManager,
+	
+	PostEffectPipelineManager* postEffectPipelineManager,
+	Camera3DManager* camera3DManager
+) {
 	// インスタンスを受け取る
 	SetDXGI(dxgi);
 	SetDirectXCommand(directXCommand);
@@ -85,7 +97,35 @@ void RenderController::PreSceneRender() {
 }
 
 void RenderController::LightingPass() {
+	// コマンドリスト取得
+	ID3D12GraphicsCommandList* commandList = directXCommand_->GetList();
 
+	// SceneRenderTextureに書き込む
+	sceneRenderTexture_->SetAsRenderTarget();
+	sceneRenderTexture_->ClearRenderTarget();
+
+	// ビューポートとシザー設定
+	viewport_->SettingViewport();
+	scissorRect_->SettingScissorRect();
+
+	// ルートシグネチャとPSOを設定
+	commandList->SetGraphicsRootSignature(postEffectPipelineManager_->GetRootSignature(PostEffectType::Lighting));
+	commandList->SetPipelineState(postEffectPipelineManager_->GetPipelineState(PostEffectType::Lighting, BlendMode::None));
+	commandList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+
+	// GBufferのSRVをセット（t0, t1, t2）
+	commandList->SetGraphicsRootDescriptorTable(0, srvUavManager_->GetDescriptorHandleGPU(gBufferAlbedoRenderTexture_->GetSrvIndex()));
+	commandList->SetGraphicsRootDescriptorTable(1, srvUavManager_->GetDescriptorHandleGPU(gBufferNormalRenderTexture_->GetSrvIndex()));
+	commandList->SetGraphicsRootDescriptorTable(2, srvUavManager_->GetDescriptorHandleGPU(gBufferPositionRenderTexture_->GetSrvIndex()));
+
+	// カメラをセット
+	camera3DManager_->TransferCurrentCamera(0);
+
+	// 描画
+	commandList->DrawInstanced(3, 1, 0, 0);
+
+	// 最後、SceneRenderTextureを読み取り状態に
+	sceneRenderTexture_->TransitionToRead();
 }
 
 void RenderController::PostSceneRender() {
@@ -336,4 +376,9 @@ void RenderController::SetSrvUavManager(SRVUAVManager* srvUavManager) {
 void RenderController::SetPostEffectPipelineManager(PostEffectPipelineManager* postEffectPipelineManager) {
 	assert(postEffectPipelineManager);
 	postEffectPipelineManager_ = postEffectPipelineManager;
+}
+
+void RenderController::SetCamera3DManager(Camera3DManager* camera3DManager) {
+	assert(camera3DManager);
+	camera3DManager_ = camera3DManager;
 }
