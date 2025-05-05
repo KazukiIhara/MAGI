@@ -114,7 +114,7 @@ void RenderController::LightingPass() {
 	ID3D12GraphicsCommandList* commandList = directXCommand_->GetList();
 
 	// SceneRenderTextureに書き込む
-	sceneRenderTexture_->SetAsRenderTarget();
+	sceneRenderTexture_->SetAsRenderTarget(depthStencil_->GetDepthStencilResorceCPUHandle());
 	sceneRenderTexture_->ClearRenderTarget();
 
 	// ビューポートとシザー設定

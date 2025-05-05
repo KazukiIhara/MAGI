@@ -251,6 +251,8 @@ inline void SampleScene<Data>::Draw() {
 		MAGISYSTEM::DrawModel("test", worldTransform_[2].worldMatrix_, modelMaterial_);
 	}
 
+	MAGISYSTEM::DrawLine3D(Vector3(0.0f, -2.0f, 0.0f), Vector3(0.0f, 2.0f, 0.0f), Color::Crimson);
+
 	// リング描画
 	// MAGISYSTEM::DrawRing3D(worldTransform_[3].worldMatrix_, ringData_, material_);
 
