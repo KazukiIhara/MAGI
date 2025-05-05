@@ -102,6 +102,13 @@ void RenderController::PreSceneRender() {
 	scissorRect_->SettingScissorRect();
 }
 
+void RenderController::PostSceneRender() {
+	// ライティング前に、GバッファをSRV用に遷移
+	gBufferAlbedoRenderTexture_->TransitionToRead();
+	gBufferNormalRenderTexture_->TransitionToRead();
+	gBufferPositionRenderTexture_->TransitionToRead();
+}
+
 void RenderController::LightingPass() {
 	// コマンドリスト取得
 	ID3D12GraphicsCommandList* commandList = directXCommand_->GetList();
@@ -134,15 +141,6 @@ void RenderController::LightingPass() {
 	// 描画
 	commandList->DrawInstanced(3, 1, 0, 0);
 
-	// 最後、SceneRenderTextureを読み取り状態に
-	sceneRenderTexture_->TransitionToRead();
-}
-
-void RenderController::PostSceneRender() {
-	// ライティング前に、GバッファをSRV用に遷移
-	gBufferAlbedoRenderTexture_->TransitionToRead();
-	gBufferNormalRenderTexture_->TransitionToRead();
-	gBufferPositionRenderTexture_->TransitionToRead();
 }
 
 void RenderController::PostLightingPass() {

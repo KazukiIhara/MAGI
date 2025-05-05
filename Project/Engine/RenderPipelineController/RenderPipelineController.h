@@ -47,11 +47,11 @@ public:
 	// シーンを描画するための前準備
 	void PreSceneRender();
 
-	// ライト適用
-	void LightingPass();
-
 	// シーン描画後の処理
 	void PostSceneRender();
+
+	// ライト適用
+	void LightingPass();
 
 	// ライト適用後の処理
 	void PostLightingPass();

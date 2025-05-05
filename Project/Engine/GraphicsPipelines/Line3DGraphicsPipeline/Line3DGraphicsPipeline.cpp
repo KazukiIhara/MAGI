@@ -107,7 +107,7 @@ void Line3DGraphicsPipeline::CreateGraphicsPipelineObject() {
 
 	// DepthStencilの設定
 	graphicsPipelineStateDesc.DepthStencilState = DepthStecilDescSetting();
-	graphicsPipelineStateDesc.DSVFormat = DXGI_FORMAT_D24_UNORM_S8_UINT;
+	graphicsPipelineStateDesc.DSVFormat =  DXGI_FORMAT_UNKNOWN;
 
 	// 実際に生成
 	for (uint32_t i = 0; i < kBlendModeNum; i++) {
@@ -193,11 +193,7 @@ D3D12_DEPTH_STENCIL_DESC Line3DGraphicsPipeline::DepthStecilDescSetting() {
 	// DepthStencilStateの設定
 	D3D12_DEPTH_STENCIL_DESC depthStencilDesc{};
 	// Depthの機能を有効化する
-	depthStencilDesc.DepthEnable = true;
-	// Depthの書き込みを行う
-	depthStencilDesc.DepthWriteMask = D3D12_DEPTH_WRITE_MASK_ALL;
-	// 比較関数はLess
-	depthStencilDesc.DepthFunc = D3D12_COMPARISON_FUNC_LESS;
+	depthStencilDesc.DepthEnable = false;
 
 	return depthStencilDesc;
 }

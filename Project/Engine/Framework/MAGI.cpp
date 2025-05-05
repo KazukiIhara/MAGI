@@ -194,7 +194,7 @@ void MAGISYSTEM::Initialize() {
 	postEffectPipelineManager_ = std::make_unique<PostEffectPipelineManager>(dxgi_.get(), shaderCompiler_.get());
 
 	// RenderPipelineController
-	renderController_ = std::make_unique<RenderController>(dxgi_.get(), directXCommand_.get(), depthStencil_.get(), viewport_.get(), scissorRect_.get(), rtvManager_.get(), srvuavManager_.get(), defferedRenderringPipelineManager_.get(), postEffectPipelineManager_.get(), camera3DManager_.get(),lightManager_.get());
+	renderController_ = std::make_unique<RenderController>(dxgi_.get(), directXCommand_.get(), depthStencil_.get(), viewport_.get(), scissorRect_.get(), rtvManager_.get(), srvuavManager_.get(), defferedRenderringPipelineManager_.get(), postEffectPipelineManager_.get(), camera3DManager_.get(), lightManager_.get());
 
 
 	// LineDrawer3D
@@ -607,11 +607,6 @@ void MAGISYSTEM::Draw() {
 	sceneManager_->Draw();
 
 	// 
-	// LineDrawer3Dの描画処理
-	// 
-	//lineDrawer3D_->Draw();
-
-	// 
 	// BlendModeごとに描画(透過なしが先に描画されるようにする)
 	// 
 	for (uint32_t i = 0; i < kBlendModeNum; ++i) {
@@ -630,6 +625,11 @@ void MAGISYSTEM::Draw() {
 
 	// ライトの適用
 	renderController_->LightingPass();
+
+	// 
+	// LineDrawer3Dの描画処理
+	// 
+	lineDrawer3D_->Draw();
 
 	// ライト適用後の処理
 	renderController_->PostLightingPass();
