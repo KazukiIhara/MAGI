@@ -258,7 +258,7 @@ D3D12_DEPTH_STENCIL_DESC Sphere3DGraphicsPipeline::DepthStecilDescSettingBlend(u
         break;
     }
 
-    desc.DepthFunc = D3D12_COMPARISON_FUNC_LESS;
+    desc.DepthFunc = D3D12_COMPARISON_FUNC_LESS_EQUAL;
     return desc;
 }
 
