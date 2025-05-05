@@ -54,9 +54,14 @@ private:
 	float vignetteFalloff_ = 0.8f;
 	float gaussianSigma_ = 0.5f;
 
-	static const uint32_t wtsNum_ = 7000;
+	static const uint32_t wtsNum_ = 1;
 
 	std::array<WorldTransform, wtsNum_> wts_;
+
+
+	// DirectionalLight
+	DirectionalLight directionalLight_{};
+
 };
 
 template<typename Data>
@@ -200,6 +205,13 @@ inline void SampleScene<Data>::Update() {
 	}
 	ImGui::End();
 
+	ImGui::Begin("DirectionalLight");
+	ImGui::DragFloat3("Direction", &directionalLight_.direction.x, 0.01f);
+	directionalLight_.direction = MAGIMath::Normalize(directionalLight_.direction);
+	ImGui::DragFloat("Intensity", &directionalLight_.intensity, 0.01f);
+	ImGui::ColorEdit3("Color", &directionalLight_.color.x);
+	ImGui::End();
+
 	// トランスフォーム更新
 	for (uint32_t i = 0; i < 5; i++) {
 		worldTransform_[i].Update();
@@ -208,6 +220,8 @@ inline void SampleScene<Data>::Update() {
 	for (uint32_t i = 0; i < wtsNum_; i++) {
 		wts_[i].Update();
 	}
+
+	MAGISYSTEM::SetDirectionalLight(directionalLight_);
 
 	// ポストエフェクトをかける
 	//MAGISYSTEM::ApplyPostEffectGrayScale();
@@ -234,7 +248,7 @@ inline void SampleScene<Data>::Draw() {
 
 
 	for (uint32_t i = 0; i < wtsNum_; i++) {
-		MAGISYSTEM::DrawModel("test", wts_[i].worldMatrix_, modelMaterial_);
+		MAGISYSTEM::DrawModel("test", worldTransform_[2].worldMatrix_, modelMaterial_);
 	}
 
 	// リング描画

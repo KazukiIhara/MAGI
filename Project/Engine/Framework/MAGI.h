@@ -53,6 +53,7 @@
 // 
 #include "PipelineManagers/GraphicsPipelineManager/GraphicsPipelineManager.h"
 #include "PipelineManagers/ComputePipelineManager/ComputePipelineManager.h"
+#include "PipelineManagers/DefferedRenderringPipelineManager/DefferedRenderringPipelineManager.h"
 #include "PipelineManagers/PostEffectPipelineManager/PostEffectPipelineManager.h"
 
 // 
@@ -66,6 +67,7 @@
 #include "ObjectManagers/Emitter3DManager/Emitter3DManager.h"
 #include "ObjectManagers/ParticleGroup3DManager/ParticleGroup3DManager.h"
 #include "ObjectManagers/GameObject3DGroupManager/GameObject3DGroupManager.h"
+#include "ObjectManagers/LightManager/LightManager.h"
 
 // 
 // Drawer
@@ -244,7 +246,7 @@ public: // エンジンの機能
 	// RTVIndex割り当て関数
 	static uint32_t RTVAllocate();
 	// Texture2D用のRTVの作成
-	static void CreateRTVTexture2d(uint32_t rtvIndex, ID3D12Resource* pResource);
+	static void CreateRTVTexture2d(uint32_t rtvIndex, ID3D12Resource* pResource, DXGI_FORMAT format);
 #pragma endregion
 
 #pragma region SRVUAVManagerの機能
@@ -434,6 +436,11 @@ public: // エンジンの機能
 	static const std::vector<std::unique_ptr<BaseParticleGroup3D>>& GetParticleGroupList();
 #pragma endregion
 
+#pragma region LightManager
+	// DirectionalLightをセット
+	static void SetDirectionalLight(const DirectionalLight& directionalLight);
+#pragma endregion
+
 #pragma region LineDrawer3D
 	// ライン描画
 	static void DrawLine3D(const Vector3& start, const Vector3& end, const Vector4& color);
@@ -597,6 +604,7 @@ protected:
 	//
 	static std::unique_ptr<GraphicsPipelineManager> graphicsPipelineManager_;
 	static std::unique_ptr<ComputePipelineManager> computePipelineManager_;
+	static std::unique_ptr<DefferedRenderringPipelineManager> defferedRenderringPipelineManager_;
 	static std::unique_ptr<PostEffectPipelineManager> postEffectPipelineManager_;
 
 	// 
@@ -619,6 +627,7 @@ protected:
 	static std::unique_ptr<Emitter3DManager> emitter3DManager_;
 	static std::unique_ptr<ParticleGroup3DManager> particleGroup3DManager_;
 	static std::unique_ptr<GameObject3DGroupManager> gameObject3DGroupManager_;
+	static std::unique_ptr<LightManager> lightManager_;
 
 	// 
 	// Drawer

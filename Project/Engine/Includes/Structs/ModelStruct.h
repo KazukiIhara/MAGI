@@ -92,6 +92,7 @@ struct MaterialForGPU {
 /// </summary>
 struct ModelDataForGPU {
 	Matrix4x4 worldMatrix;
+	Matrix4x4 WorldInverseTransepose;
 };
 
 /// <summary>

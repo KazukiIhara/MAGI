@@ -39,18 +39,17 @@ uint3 GetPrimitive(in Meshlet m, uint localPrim)
 MeshOutput GetVertexAttributes(uint meshletIndex, uint vertexIndex, uint instID)
 {
     VertexData3D v = gVertexBuffer[vertexIndex];
-
-    float4 positionWS = mul(v.position, gInstanceData[instID].world);
-
+    
     MeshOutput vout;
-    vout.position = mul(positionWS, gCamera.viewProjection);
+    vout.position = mul(v.position, mul(gInstanceData[instID].world, gCamera.viewProjection));
     vout.uv = v.uv;
     vout.instID = instID;
     vout.meshletIndex = meshletIndex;
+    vout.normal = normalize(mul(v.normal, (float3x3) gInstanceData[instID].worldInverseTranspose));
+    vout.worldPosition = mul(v.position, gInstanceData[instID].world);
     
     return vout;
 }
-
 // ───── MS 本体 ─────
 [outputtopology("triangle")]
 [numthreads(128, 1, 1)]
@@ -73,7 +72,6 @@ void main(
         m.PrimCount = 0;
     }
 
-    // Our vertex and primitive counts come directly from the meshlet
     SetMeshOutputCounts(m.VertCount, m.PrimCount);
 
     //------------------- 頂点 --------------------

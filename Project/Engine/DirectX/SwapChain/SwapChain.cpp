@@ -128,10 +128,10 @@ void SwapChain::CreateResources() {
 void SwapChain::CreateRTV() {
 	// 1つめ
 	rtvIndex_[0] = rtvManager_->Allocate();
-	rtvManager_->CreateRTVTexture2d(rtvIndex_[0], swapChainResources_[0].Get());
+	rtvManager_->CreateRTVTexture2d(rtvIndex_[0], swapChainResources_[0].Get(), DXGI_FORMAT_R8G8B8A8_UNORM_SRGB);
 	// 2つめ
 	rtvIndex_[1] = rtvManager_->Allocate();
-	rtvManager_->CreateRTVTexture2d(rtvIndex_[1], swapChainResources_[1].Get());
+	rtvManager_->CreateRTVTexture2d(rtvIndex_[1], swapChainResources_[1].Get(), DXGI_FORMAT_R8G8B8A8_UNORM_SRGB);
 }
 
 void SwapChain::SetWindowApp(WindowApp* windowApp) {

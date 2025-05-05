@@ -6,6 +6,9 @@
 // MyHedder
 #include "Logger/Logger.h"
 #include "Framework/MAGI.h"
+#include "Math/Utility/MathUtility.h"
+
+using namespace MAGIMath;
 
 ModelDrawer::ModelDrawer(const ModelData& modelData) {
 	// モデルのメッシュの数を取得
@@ -45,6 +48,7 @@ void ModelDrawer::AddDrawCommand(const Matrix4x4& worldMatrix, const ModelMateri
 
 	ModelDataForGPU newModelData{
 		.worldMatrix = worldMatrix,
+		.WorldInverseTransepose = MakeInverseTransposeMatrix(worldMatrix),
 	};
 
 	// コンテナに挿入

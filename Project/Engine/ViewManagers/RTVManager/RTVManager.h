@@ -9,7 +9,7 @@ public:
 	~RTVManager()override;
 
 	// Texture2d用のRTVの作成
-	void CreateRTVTexture2d(uint32_t rtvIndex, ID3D12Resource* pResource);
+	void CreateRTVTexture2d(uint32_t rtvIndex, ID3D12Resource* pResource,DXGI_FORMAT format);
 private:
 	// ディスクリプタヒープの作成
 	void CreateDescriptorHeap()override;

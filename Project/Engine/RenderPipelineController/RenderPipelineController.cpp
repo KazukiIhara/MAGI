@@ -2,26 +2,47 @@
 
 #include <cassert>
 #include <format>
+#include <array>
 
 #include "DirectX/DXGI/DXGI.h"
 #include "DirectX/DirectXCommand/DirectXCommand.h"
 #include "DirectX/DepthStencil/DepthStencil.h"
 #include "DirectX/Viewport/Viewport.h"
 #include "DirectX/ScissorRect/ScissorRect.h"
+#include "ViewManagers/RTVManager/RTVManager.h"
 #include "ViewManagers/SRVUAVManager/SRVUAVManager.h"
+#include "PipelineManagers/DefferedRenderringPipelineManager/DefferedRenderringPipelineManager.h"
 #include "PipelineManagers/PostEffectPipelineManager/PostEffectPipelineManager.h"
+#include "ObjectManagers/Camera3DManager/Camera3DManager.h"
+#include "ObjectManagers/LightManager/LightManager.h"
 
 #include "Logger/Logger.h"
 
-RenderController::RenderController(DXGI* dxgi, DirectXCommand* directXCommand, DepthStencil* depthStencil, Viewport* viewport, ScissorRect* scissorRect, SRVUAVManager* srvUavManager, PostEffectPipelineManager* postEffectPipelineManager) {
+RenderController::RenderController(
+	DXGI* dxgi,
+	DirectXCommand* directXCommand,
+	DepthStencil* depthStencil,
+	Viewport* viewport,
+	ScissorRect* scissorRect,
+	RTVManager* rtvManager,
+	SRVUAVManager* srvUavManager,
+	DefferedRenderringPipelineManager* defferedRenderringPipelineManager,
+	PostEffectPipelineManager* postEffectPipelineManager,
+	Camera3DManager* camera3DManager,
+	LightManager* lightManager
+) {
 	// インスタンスを受け取る
 	SetDXGI(dxgi);
 	SetDirectXCommand(directXCommand);
 	SetDepthStencil(depthStencil);
 	SetViewport(viewport);
 	SetScissorRect(scissorRect);
+	SetRTVManager(rtvManager);
 	SetSrvUavManager(srvUavManager);
+	SetDefferedRenderringPipelineManager(defferedRenderringPipelineManager);
 	SetPostEffectPipelineManager(postEffectPipelineManager);
+	SetCamera3DManager(camera3DManager);
+	SetLightManager(lightManager);
 
 	// パラメータ用のリソースを作成
 	CreatePostEffectParamaterResource();
@@ -40,6 +61,19 @@ RenderController::RenderController(DXGI* dxgi, DirectXCommand* directXCommand, D
 		colorPostEffectRenderTexture_[i]->Initialize();
 	}
 
+	// GBuffr用のレンダーテクスチャ
+	// アルベド
+	gBufferAlbedoRenderTexture_ = std::make_unique<GBufferAlbedoRenderTexture>();
+	gBufferAlbedoRenderTexture_->Initialize();
+
+	// 法線
+	gBufferNormalRenderTexture_ = std::make_unique<GBufferNormalRenderTexture>();
+	gBufferNormalRenderTexture_->Initialize();
+
+	// 座標
+	gBufferPositionRenderTexture_ = std::make_unique<GBufferPositionRenderTexture>();
+	gBufferPositionRenderTexture_->Initialize();
+
 	// コマンドの最大数をあらかじめ決めておく
 	postEffectCommand_.resize(kMaxPostEffectNum_);
 }
@@ -47,18 +81,71 @@ RenderController::RenderController(DXGI* dxgi, DirectXCommand* directXCommand, D
 RenderController::~RenderController() {}
 
 void RenderController::PreSceneRender() {
-	// レンダーターゲットをシーン描画用のレンダーテクスチャに指定
-	sceneRenderTexture_->SetAsRenderTarget(depthStencil_->GetDepthStencilResorceCPUHandle());
-	sceneRenderTexture_->ClearRenderTarget();
-	// 深度をクリア
+	// Gバッファ3枚＋深度バッファをセットする
+	std::array<D3D12_CPU_DESCRIPTOR_HANDLE, 3> rtvs = {
+		rtvManager_->GetDescriptorHandleCPU(gBufferAlbedoRenderTexture_->GetRtvIndex()),
+		rtvManager_->GetDescriptorHandleCPU(gBufferNormalRenderTexture_->GetRtvIndex()),
+		rtvManager_->GetDescriptorHandleCPU(gBufferPositionRenderTexture_->GetRtvIndex())
+	};
+
+	// RenderTargetとDepthStencilViewをバインド
+	SetRenderTargets(rtvs, depthStencil_->GetDepthStencilResorceCPUHandle());
+
+	// 各レンダーターゲットをクリア
+	gBufferAlbedoRenderTexture_->ClearRenderTarget();
+	gBufferNormalRenderTexture_->ClearRenderTarget();
+	gBufferPositionRenderTexture_->ClearRenderTarget();
 	depthStencil_->ClearDepthView();
-	// ビューポートの設定
+
+	// ビューポート、シザー設定
 	viewport_->SettingViewport();
-	// シザー矩形の設定
 	scissorRect_->SettingScissorRect();
 }
 
+void RenderController::LightingPass() {
+	// コマンドリスト取得
+	ID3D12GraphicsCommandList* commandList = directXCommand_->GetList();
+
+	// SceneRenderTextureに書き込む
+	sceneRenderTexture_->SetAsRenderTarget();
+	sceneRenderTexture_->ClearRenderTarget();
+
+	// ビューポートとシザー設定
+	viewport_->SettingViewport();
+	scissorRect_->SettingScissorRect();
+
+	// ルートシグネチャとPSOを設定
+	commandList->SetGraphicsRootSignature(defferedRenderringPipelineManager_->GetRootSignature(DefferedRenderringType::Lighting));
+	commandList->SetPipelineState(defferedRenderringPipelineManager_->GetPipelineState(DefferedRenderringType::Lighting));
+	commandList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+
+	// カメラを転送
+	camera3DManager_->TransferCurrentCamera(0);
+
+	// DirectinalLightを転送
+	lightManager_->TransferDirectionalLight(1);
+
+	// GBufferのSRVをセット（t0, t1, t2）
+	commandList->SetGraphicsRootDescriptorTable(2, srvUavManager_->GetDescriptorHandleGPU(gBufferAlbedoRenderTexture_->GetSrvIndex()));
+	commandList->SetGraphicsRootDescriptorTable(3, srvUavManager_->GetDescriptorHandleGPU(gBufferNormalRenderTexture_->GetSrvIndex()));
+	commandList->SetGraphicsRootDescriptorTable(4, srvUavManager_->GetDescriptorHandleGPU(gBufferPositionRenderTexture_->GetSrvIndex()));
+
+
+	// 描画
+	commandList->DrawInstanced(3, 1, 0, 0);
+
+	// 最後、SceneRenderTextureを読み取り状態に
+	sceneRenderTexture_->TransitionToRead();
+}
+
 void RenderController::PostSceneRender() {
+	// ライティング前に、GバッファをSRV用に遷移
+	gBufferAlbedoRenderTexture_->TransitionToRead();
+	gBufferNormalRenderTexture_->TransitionToRead();
+	gBufferPositionRenderTexture_->TransitionToRead();
+}
+
+void RenderController::PostLightingPass() {
 	// シーン描画用のレンダーターゲットを読み取り状態に
 	sceneRenderTexture_->TransitionToRead();
 	// 現在のテクスチャをシーン描画結果に
@@ -151,6 +238,10 @@ void RenderController::EndFrame() {
 	currentRenderTexture_ = nullptr;
 
 	// 次のフレーム用に書き込み可能状態にする
+	gBufferAlbedoRenderTexture_->TransitionToWrite();
+	gBufferNormalRenderTexture_->TransitionToWrite();
+	gBufferPositionRenderTexture_->TransitionToWrite();
+
 	sceneRenderTexture_->TransitionToWrite();
 	finalRenderTexture_->TransitionToWrite();
 
@@ -252,6 +343,10 @@ void RenderController::DrawRenderTextureWithParamater(ID3D12GraphicsCommandList*
 
 }
 
+void RenderController::SetRenderTargets(const std::array<D3D12_CPU_DESCRIPTOR_HANDLE, 3>& rtvs, D3D12_CPU_DESCRIPTOR_HANDLE dsv) {
+	directXCommand_->GetList()->OMSetRenderTargets(static_cast<UINT>(rtvs.size()), rtvs.data(), FALSE, &dsv);
+}
+
 void RenderController::CreatePostEffectParamaterResource() {
 	for (uint32_t i = 0; i < kMaxPostEffectNum_; i++) {
 		postEffectParamResource_[i] = dxgi_->CreateBufferResource(sizeof(PostEffectParamater));
@@ -285,12 +380,32 @@ void RenderController::SetScissorRect(ScissorRect* scissorRect) {
 	scissorRect_ = scissorRect;
 }
 
+void RenderController::SetRTVManager(RTVManager* rtvManager) {
+	assert(rtvManager);
+	rtvManager_ = rtvManager;
+}
+
 void RenderController::SetSrvUavManager(SRVUAVManager* srvUavManager) {
 	assert(srvUavManager);
 	srvUavManager_ = srvUavManager;
 }
 
+void RenderController::SetDefferedRenderringPipelineManager(DefferedRenderringPipelineManager* defferedRenderringPipelineManager) {
+	assert(defferedRenderringPipelineManager);
+	defferedRenderringPipelineManager_ = defferedRenderringPipelineManager;
+}
+
 void RenderController::SetPostEffectPipelineManager(PostEffectPipelineManager* postEffectPipelineManager) {
 	assert(postEffectPipelineManager);
 	postEffectPipelineManager_ = postEffectPipelineManager;
+}
+
+void RenderController::SetCamera3DManager(Camera3DManager* camera3DManager) {
+	assert(camera3DManager);
+	camera3DManager_ = camera3DManager;
+}
+
+void RenderController::SetLightManager(LightManager* lightManager) {
+	assert(lightManager);
+	lightManager_ = lightManager;
 }

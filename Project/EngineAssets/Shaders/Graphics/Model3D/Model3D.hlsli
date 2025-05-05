@@ -1,8 +1,4 @@
-﻿// ────────── Model3D.hlsli ──────────
-
-#define THREADS_PER_WAVE 32
-#define AS_GROUP_SIZE THREADS_PER_WAVE
-
+﻿
 // 頂点出力
 struct MeshOutput
 {
@@ -10,6 +6,8 @@ struct MeshOutput
     float2 uv : TEXCOORD0;
     uint instID : TEXCOORD1;
     uint meshletIndex : COLOR0;
+    float3 normal : NORMAL0;
+    float4 worldPosition : TEXCOORD2;
 };
 
 // 頂点データ
@@ -32,6 +30,7 @@ struct VertexOutPut
 struct ModelDataForGPU
 {
     float4x4 world;
+    float4x4 worldInverseTranspose;
 };
 
 // マテリアルデータ

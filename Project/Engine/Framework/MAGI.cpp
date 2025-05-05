@@ -47,6 +47,7 @@ std::unique_ptr<ScissorRect> MAGISYSTEM::scissorRect_ = nullptr;
 //
 std::unique_ptr<GraphicsPipelineManager> MAGISYSTEM::graphicsPipelineManager_ = nullptr;
 std::unique_ptr<ComputePipelineManager> MAGISYSTEM::computePipelineManager_ = nullptr;
+std::unique_ptr<DefferedRenderringPipelineManager> MAGISYSTEM::defferedRenderringPipelineManager_ = nullptr;
 std::unique_ptr<PostEffectPipelineManager> MAGISYSTEM::postEffectPipelineManager_ = nullptr;
 
 // 
@@ -69,6 +70,7 @@ std::unique_ptr<Renderer3DManager> MAGISYSTEM::renderer3DManager_ = nullptr;
 std::unique_ptr<ColliderManager> MAGISYSTEM::colliderManager_ = nullptr;
 std::unique_ptr<Emitter3DManager> MAGISYSTEM::emitter3DManager_ = nullptr;
 std::unique_ptr<ParticleGroup3DManager> MAGISYSTEM::particleGroup3DManager_ = nullptr;
+std::unique_ptr<LightManager> MAGISYSTEM::lightManager_ = nullptr;
 
 // 
 // Drawer
@@ -162,17 +164,6 @@ void MAGISYSTEM::Initialize() {
 	soundDataContainer_ = std::make_unique<SoundDataContainer>();
 
 
-	// GraphicsPipelineManager
-	graphicsPipelineManager_ = std::make_unique<GraphicsPipelineManager>(dxgi_.get(), shaderCompiler_.get());
-	// ComputePipelineManager
-	computePipelineManager_ = std::make_unique<ComputePipelineManager>(dxgi_.get(), shaderCompiler_.get());
-	// PostEffectPipelineManager
-	postEffectPipelineManager_ = std::make_unique<PostEffectPipelineManager>(dxgi_.get(), shaderCompiler_.get());
-
-	// RenderPipelineController
-	renderController_ = std::make_unique<RenderController>(dxgi_.get(), directXCommand_.get(), depthStencil_.get(), viewport_.get(), scissorRect_.get(), srvuavManager_.get(), postEffectPipelineManager_.get());
-
-
 	// GameObject3DManager
 	gameObject3DManager_ = std::make_unique<GameObject3DManager>();
 	// GameObject3DGroupManager
@@ -189,6 +180,21 @@ void MAGISYSTEM::Initialize() {
 	emitter3DManager_ = std::make_unique<Emitter3DManager>();
 	// ParticleGroup3DManager
 	particleGroup3DManager_ = std::make_unique<ParticleGroup3DManager>();
+	// LightManager
+	lightManager_ = std::make_unique<LightManager>(dxgi_.get(), directXCommand_.get());
+
+
+	// GraphicsPipelineManager
+	graphicsPipelineManager_ = std::make_unique<GraphicsPipelineManager>(dxgi_.get(), shaderCompiler_.get());
+	// ComputePipelineManager
+	computePipelineManager_ = std::make_unique<ComputePipelineManager>(dxgi_.get(), shaderCompiler_.get());
+	// DefferedRenderringPipelineManager
+	defferedRenderringPipelineManager_ = std::make_unique<DefferedRenderringPipelineManager>(dxgi_.get(), shaderCompiler_.get());
+	// PostEffectPipelineManager
+	postEffectPipelineManager_ = std::make_unique<PostEffectPipelineManager>(dxgi_.get(), shaderCompiler_.get());
+
+	// RenderPipelineController
+	renderController_ = std::make_unique<RenderController>(dxgi_.get(), directXCommand_.get(), depthStencil_.get(), viewport_.get(), scissorRect_.get(), rtvManager_.get(), srvuavManager_.get(), defferedRenderringPipelineManager_.get(), postEffectPipelineManager_.get(), camera3DManager_.get(),lightManager_.get());
 
 
 	// LineDrawer3D
@@ -297,6 +303,31 @@ void MAGISYSTEM::Finalize() {
 		lineDrawer3D_.reset();
 	}
 
+	// PostEffectPipelineManager
+	if (postEffectPipelineManager_) {
+		postEffectPipelineManager_.reset();
+	}
+
+	// DefferedRenderringPipelineManager
+	if (defferedRenderringPipelineManager_) {
+		defferedRenderringPipelineManager_.reset();
+	}
+
+	// CompuetPipelineManager
+	if (computePipelineManager_) {
+		computePipelineManager_.reset();
+	}
+
+	// GraphicsPipelineManager
+	if (graphicsPipelineManager_) {
+		graphicsPipelineManager_.reset();
+	}
+
+	// LightManager
+	if (lightManager_) {
+		lightManager_.reset();
+	}
+
 	// ParticleGroup3DManager
 	if (particleGroup3DManager_) {
 		particleGroup3DManager_.reset();
@@ -340,21 +371,6 @@ void MAGISYSTEM::Finalize() {
 	// RenderController
 	if (renderController_) {
 		renderController_.reset();
-	}
-
-	// PostEffectPipelineManager
-	if (postEffectPipelineManager_) {
-		postEffectPipelineManager_.reset();
-	}
-
-	// CompuetPipelineManager
-	if (computePipelineManager_) {
-		computePipelineManager_.reset();
-	}
-
-	// GraphicsPipelineManager
-	if (graphicsPipelineManager_) {
-		graphicsPipelineManager_.reset();
 	}
 
 	// SoundDataContainer
@@ -533,6 +549,9 @@ void MAGISYSTEM::Update() {
 	// 3Dパーティクルグループマネージャの更新処理
 	particleGroup3DManager_->Update();
 
+	// ライトマネージャ(新)の更新
+	lightManager_->Update();
+
 
 	// コリジョンマネージャの更新処理
 	collisionManager_->Update();
@@ -590,7 +609,7 @@ void MAGISYSTEM::Draw() {
 	// 
 	// LineDrawer3Dの描画処理
 	// 
-	lineDrawer3D_->Draw();
+	//lineDrawer3D_->Draw();
 
 	// 
 	// BlendModeごとに描画(透過なしが先に描画されるようにする)
@@ -598,18 +617,22 @@ void MAGISYSTEM::Draw() {
 	for (uint32_t i = 0; i < kBlendModeNum; ++i) {
 		BlendMode mode = static_cast<BlendMode>(i);
 
-		triangleDrawer3D_->Draw(mode);
+		/*triangleDrawer3D_->Draw(mode);
 		planeDrawer3D_->Draw(mode);
 		sphereDrawer3D_->Draw(mode);
 		ringDrawer3D_->Draw(mode);
-		cylinderDrawer3D_->Draw(mode);
+		cylinderDrawer3D_->Draw(mode);*/
 		modelDrawerManager_->DrawAll(mode);
 	}
-
 
 	// シーンの描画後処理
 	renderController_->PostSceneRender();
 
+	// ライトの適用
+	renderController_->LightingPass();
+
+	// ライト適用後の処理
+	renderController_->PostLightingPass();
 
 	// ポストエフェクトをかける処理
 	renderController_->ApplyPostEffect();
@@ -854,8 +877,8 @@ uint32_t MAGISYSTEM::RTVAllocate() {
 	return rtvManager_->Allocate();
 }
 
-void MAGISYSTEM::CreateRTVTexture2d(uint32_t rtvIndex, ID3D12Resource* pResource) {
-	rtvManager_->CreateRTVTexture2d(rtvIndex, pResource);
+void MAGISYSTEM::CreateRTVTexture2d(uint32_t rtvIndex, ID3D12Resource* pResource, DXGI_FORMAT format) {
+	rtvManager_->CreateRTVTexture2d(rtvIndex, pResource, format);
 }
 
 ID3D12DescriptorHeap* MAGISYSTEM::GetSrvUavDescriptorHeap() {
@@ -1117,6 +1140,10 @@ BaseParticleGroup3D* MAGISYSTEM::FindParticleGroup3D(const std::string& particle
 
 const std::vector<std::unique_ptr<BaseParticleGroup3D>>& MAGISYSTEM::GetParticleGroupList() {
 	return particleGroup3DManager_->GetParticleGroups();
+}
+
+void MAGISYSTEM::SetDirectionalLight(const DirectionalLight& directionalLight) {
+	lightManager_->SetDirectionalLight(directionalLight);
 }
 
 void MAGISYSTEM::AddGameObject3D(std::unique_ptr<GameObject3D> newGameObject3D) {
