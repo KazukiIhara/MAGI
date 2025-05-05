@@ -25,18 +25,4 @@ namespace MAGIUtility {
 	// ガウスの重みを生成する
 	std::array<float, 7> GenerateGaussianWeights(float sigma);
 
-	// HashとEqualを透過対応にする
-	struct TransparentHash {
-		using is_transparent = void;
-		size_t operator()(std::string_view key) const {
-			return std::hash<std::string_view>{}(key);
-		}
-	};
-
-	struct TransparentEqual {
-		using is_transparent = void;
-		bool operator()(std::string_view lhs, std::string_view rhs) const {
-			return lhs == rhs;
-		}
-	};
 }
