@@ -634,7 +634,7 @@ void MAGISYSTEM::Draw() {
 	// BlendModeごとに描画(透過あり) 今はいったんコメントアウト
 	// 
 	for (uint32_t i = 1; i < kBlendModeNum; ++i) {
-		BlendMode mode = static_cast<BlendMode>(i);
+		//BlendMode mode = static_cast<BlendMode>(i);
 		/*modelDrawerManager_->DrawAll(mode);*/
 		/*triangleDrawer3D_->Draw(mode);
 		planeDrawer3D_->Draw(mode);

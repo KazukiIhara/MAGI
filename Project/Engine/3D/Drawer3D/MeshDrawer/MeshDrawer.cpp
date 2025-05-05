@@ -8,6 +8,9 @@
 
 #include "Framework/MAGI.h"
 #include "Logger/Logger.h"
+#include "MAGIUitility/MAGIUtility.h"
+
+using namespace MAGIUtility;
 
 // ─────────────────────────────────────────────
 MeshDrawer::MeshDrawer(const MeshData& meshData) {
@@ -179,5 +182,5 @@ void MeshDrawer::Draw(uint32_t instanceCount) {
 
 	cmd->SetGraphicsRoot32BitConstants(8, 4, &info, 0);
 
-	cmd->DispatchMesh(meshletCount_, instanceCount, 1);
+	cmd->DispatchMesh(DivRoundUp(meshletCount_, AS_GROUP_SIZE), instanceCount, 1);
 }

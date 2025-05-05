@@ -1,11 +1,11 @@
 ﻿
+#define AS_GROUP_SIZE 32
+
 // 頂点出力
 struct MeshOutput
 {
     float4 position : SV_Position;
     float2 uv : TEXCOORD0;
-    uint instID : TEXCOORD1;
-    uint meshletIndex : COLOR0;
     float3 normal : NORMAL0;
     float4 worldPosition : TEXCOORD2;
 };
@@ -71,7 +71,7 @@ struct Meshlet
 
 struct Payload          // AS → MS で渡す最小ペイロード
 {
-    uint meshletIndex;
+    uint meshletIndices[32];
     uint instanceID;
     uint _pad[2];
 };

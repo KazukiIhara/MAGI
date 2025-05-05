@@ -36,15 +36,13 @@ uint3 GetPrimitive(in Meshlet m, uint localPrim)
     return UnpackPrimitive(packed);
 }
 
-MeshOutput GetVertexAttributes(uint meshletIndex, uint vertexIndex, uint instID)
+MeshOutput GetVertexAttributes(uint vertexIndex, uint instID)
 {
     VertexData3D v = gVertexBuffer[vertexIndex];
     
     MeshOutput vout;
     vout.position = mul(v.position, mul(gInstanceData[instID].world, gCamera.viewProjection));
     vout.uv = v.uv;
-    vout.instID = instID;
-    vout.meshletIndex = meshletIndex;
     vout.normal = normalize(mul(v.normal, (float3x3) gInstanceData[instID].worldInverseTranspose));
     vout.worldPosition = mul(v.position, gInstanceData[instID].world);
     
@@ -62,7 +60,7 @@ void main(
 )
 {
     const uint instID = payload.instanceID;
-    uint meshletIndex = payload.meshletIndex;
+    uint meshletIndex = payload.meshletIndices[gid];
 
     Meshlet m = gMeshlets[meshletIndex];
     
@@ -78,7 +76,7 @@ void main(
     if (gtid.x < m.VertCount)
     {
         uint vertexIndex = GetVertexIndex(m, gtid);
-        verts[gtid] = GetVertexAttributes(meshletIndex, vertexIndex, instID);
+        verts[gtid] = GetVertexAttributes(vertexIndex, instID);
     }
 
     if (gtid.x < m.PrimCount)

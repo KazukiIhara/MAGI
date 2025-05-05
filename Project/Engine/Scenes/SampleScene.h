@@ -79,7 +79,7 @@ inline void SampleScene<Data>::Initialize() {
 	// モデル
 	MAGISYSTEM::LoadModel("terrain");
 	MAGISYSTEM::LoadModel("teapot");
-	//MAGISYSTEM::LoadModel("Dragon");
+	MAGISYSTEM::LoadModel("Sponza");
 
 	// サウンド
 	MAGISYSTEM::LoadWaveSound("Alarm01.wav");
@@ -107,7 +107,7 @@ inline void SampleScene<Data>::Initialize() {
 	modelMaterial_.blendMode = BlendMode::None;
 
 	// ModelDrawer
-	MAGISYSTEM::CreateModelDrawer("test", MAGISYSTEM::FindModel("teapot"));
+	MAGISYSTEM::CreateModelDrawer("test", MAGISYSTEM::FindModel("Sponza"));
 
 	// トランスフォーム初期化
 	for (uint32_t i = 0; i < 5; i++) {
@@ -248,7 +248,7 @@ inline void SampleScene<Data>::Draw() {
 
 
 	for (uint32_t i = 0; i < wtsNum_; i++) {
-		MAGISYSTEM::DrawModel("test", worldTransform_[2].worldMatrix_, modelMaterial_);
+		MAGISYSTEM::DrawModel("test", wts_[i].worldMatrix_, modelMaterial_);
 	}
 
 	MAGISYSTEM::DrawLine3D(Vector3(0.0f, -2.0f, 0.0f), Vector3(0.0f, 2.0f, 0.0f), Color::Crimson);

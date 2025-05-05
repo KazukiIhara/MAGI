@@ -19,5 +19,5 @@ private:
 	void CreateDescriptorHeap()override;
 private:
 	// 最大SRV数
-	const uint32_t kMaxViewCount_ = 512;
+	const uint32_t kMaxViewCount_ = 65536;
 };
