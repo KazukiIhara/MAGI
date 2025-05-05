@@ -17,20 +17,35 @@ PixelShaderOutput main(VertexShaderOutput input)
     float4 normalRaw = gNormalTex.Sample(gSampler, input.texcoord);
     float4 position = gPositionTex.Sample(gSampler, input.texcoord);
 
-    // normalを[0,1]→[-1,1]に戻す
+    // Normalを[-1,1]空間に戻して正規化（ワールド空間想定）
     float3 normal = normalize(normalRaw.xyz * 2.0f - 1.0f);
 
-    // ----------- 固定ライト情報（ここ直書き） ------------
-    float3 lightDirection = normalize(float3(0.0f, -1.0f, 0.0f)); // 真上から
-    float3 lightColor = float3(1.0f, 1.0f, 1.0f); // 白ライト
-    //------------------------------------------------------
+    // ----------- 固定ライト情報 ------------
 
-    // ランバート反射
-    float3 L = normalize(-lightDirection);
-    float NdotL = saturate(dot(normal, L));
-    float3 diffuse = albedo.rgb * lightColor * NdotL;
+    // Directional Light
+    const float3 directionalLightDirection = normalize(float3(0.0f, -1.0f, 0.0f)); // 真上から
+    const float3 directionalLightColor = float3(1.0f, 1.0f, 1.0f); // 白色
+    const float directionalLightIntensity = 0.5f;
 
-    output.color = float4(diffuse, 1.0f);
+    // ----------------------------------------
+
+    float3 baseColor = albedo.rgb;
+    float alpha = albedo.a;
+    
+    float3 totalDiffuse = float3(0.0f, 0.0f, 0.0f);
+
+    //
+    // DirectionalLight contribution
+    //
+    {
+        float3 L = -normalize(directionalLightDirection); // ライトの逆方向
+        float NdotL = saturate(dot(normal, L));
+        float3 diffuse = directionalLightColor * directionalLightIntensity * NdotL;
+        totalDiffuse += diffuse;
+    }
+    
+    output.color.rgb = baseColor * totalDiffuse;
+    output.color.a = alpha;
     
     return output;
 }

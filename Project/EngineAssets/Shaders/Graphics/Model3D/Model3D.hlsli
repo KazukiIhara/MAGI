@@ -30,6 +30,7 @@ struct VertexOutPut
 struct ModelDataForGPU
 {
     float4x4 world;
+    float4x4 worldInverseTranspose;
 };
 
 // マテリアルデータ

@@ -234,7 +234,7 @@ inline void SampleScene<Data>::Draw() {
 
 
 	for (uint32_t i = 0; i < wtsNum_; i++) {
-		MAGISYSTEM::DrawModel("test", wts_[i].worldMatrix_, modelMaterial_);
+		MAGISYSTEM::DrawModel("test", worldTransform_[2].worldMatrix_, modelMaterial_);
 	}
 
 	// リング描画
