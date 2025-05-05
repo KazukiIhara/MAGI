@@ -67,6 +67,7 @@
 #include "ObjectManagers/Emitter3DManager/Emitter3DManager.h"
 #include "ObjectManagers/ParticleGroup3DManager/ParticleGroup3DManager.h"
 #include "ObjectManagers/GameObject3DGroupManager/GameObject3DGroupManager.h"
+#include "ObjectManagers/LightManager/LightManager.h"
 
 // 
 // Drawer
@@ -621,6 +622,7 @@ protected:
 	static std::unique_ptr<Emitter3DManager> emitter3DManager_;
 	static std::unique_ptr<ParticleGroup3DManager> particleGroup3DManager_;
 	static std::unique_ptr<GameObject3DGroupManager> gameObject3DGroupManager_;
+	static std::unique_ptr<LightManager> lightManager_;
 
 	// 
 	// Drawer

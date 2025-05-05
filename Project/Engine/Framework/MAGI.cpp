@@ -70,6 +70,7 @@ std::unique_ptr<Renderer3DManager> MAGISYSTEM::renderer3DManager_ = nullptr;
 std::unique_ptr<ColliderManager> MAGISYSTEM::colliderManager_ = nullptr;
 std::unique_ptr<Emitter3DManager> MAGISYSTEM::emitter3DManager_ = nullptr;
 std::unique_ptr<ParticleGroup3DManager> MAGISYSTEM::particleGroup3DManager_ = nullptr;
+std::unique_ptr<LightManager> MAGISYSTEM::lightManager_ = nullptr;
 
 // 
 // Drawer
@@ -179,6 +180,8 @@ void MAGISYSTEM::Initialize() {
 	emitter3DManager_ = std::make_unique<Emitter3DManager>();
 	// ParticleGroup3DManager
 	particleGroup3DManager_ = std::make_unique<ParticleGroup3DManager>();
+	// LightManager
+	lightManager_ = std::make_unique<LightManager>(dxgi_.get(), directXCommand_.get(), srvuavManager_.get());
 
 
 	// GraphicsPipelineManager
@@ -319,6 +322,11 @@ void MAGISYSTEM::Finalize() {
 	// GraphicsPipelineManager
 	if (graphicsPipelineManager_) {
 		graphicsPipelineManager_.reset();
+	}
+
+	// LightManager
+	if (lightManager_) {
+		lightManager_.reset();
 	}
 
 	// ParticleGroup3DManager
@@ -541,6 +549,9 @@ void MAGISYSTEM::Update() {
 
 	// 3Dパーティクルグループマネージャの更新処理
 	particleGroup3DManager_->Update();
+
+	// ライトマネージャ(新)の更新
+	lightManager_->Update();
 
 
 	// コリジョンマネージャの更新処理

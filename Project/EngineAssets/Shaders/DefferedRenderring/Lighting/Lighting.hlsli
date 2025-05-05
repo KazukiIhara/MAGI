@@ -17,3 +17,11 @@ struct Camera
     float3 worldPosition;
     float _pad;
 };
+
+struct DirectionalLightData
+{
+    float3 direction;
+    float intencity;
+    float3 color;
+    float padding;
+};
