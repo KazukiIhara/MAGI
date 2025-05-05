@@ -13,85 +13,90 @@ LightingDefferedRenderringPipeline::LightingDefferedRenderringPipeline(DXGI* dxg
 LightingDefferedRenderringPipeline::~LightingDefferedRenderringPipeline() {}
 
 void LightingDefferedRenderringPipeline::CreateRootSignature() {
-    HRESULT hr;
+	HRESULT hr;
 
-    // --- 各SRV（GBufferそれぞれ個別） ---
-    D3D12_DESCRIPTOR_RANGE rangeAlbedo{};
-    rangeAlbedo.BaseShaderRegister = 0; // t0
-    rangeAlbedo.NumDescriptors = 1;
-    rangeAlbedo.RangeType = D3D12_DESCRIPTOR_RANGE_TYPE_SRV;
-    rangeAlbedo.OffsetInDescriptorsFromTableStart = D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND;
+	// --- 各SRV（GBufferそれぞれ個別） ---
+	D3D12_DESCRIPTOR_RANGE rangeAlbedo{};
+	rangeAlbedo.BaseShaderRegister = 0; // t0
+	rangeAlbedo.NumDescriptors = 1;
+	rangeAlbedo.RangeType = D3D12_DESCRIPTOR_RANGE_TYPE_SRV;
+	rangeAlbedo.OffsetInDescriptorsFromTableStart = D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND;
 
-    D3D12_DESCRIPTOR_RANGE rangeNormal{};
-    rangeNormal.BaseShaderRegister = 1; // t1
-    rangeNormal.NumDescriptors = 1;
-    rangeNormal.RangeType = D3D12_DESCRIPTOR_RANGE_TYPE_SRV;
-    rangeNormal.OffsetInDescriptorsFromTableStart = D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND;
+	D3D12_DESCRIPTOR_RANGE rangeNormal{};
+	rangeNormal.BaseShaderRegister = 1; // t1
+	rangeNormal.NumDescriptors = 1;
+	rangeNormal.RangeType = D3D12_DESCRIPTOR_RANGE_TYPE_SRV;
+	rangeNormal.OffsetInDescriptorsFromTableStart = D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND;
 
-    D3D12_DESCRIPTOR_RANGE rangePosition{};
-    rangePosition.BaseShaderRegister = 2; // t2
-    rangePosition.NumDescriptors = 1;
-    rangePosition.RangeType = D3D12_DESCRIPTOR_RANGE_TYPE_SRV;
-    rangePosition.OffsetInDescriptorsFromTableStart = D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND;
+	D3D12_DESCRIPTOR_RANGE rangePosition{};
+	rangePosition.BaseShaderRegister = 2; // t2
+	rangePosition.NumDescriptors = 1;
+	rangePosition.RangeType = D3D12_DESCRIPTOR_RANGE_TYPE_SRV;
+	rangePosition.OffsetInDescriptorsFromTableStart = D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND;
 
-    // --- ルートパラメータ ---
-    D3D12_ROOT_PARAMETER rootParams[4]{};
+	// --- ルートパラメータ ---
+	D3D12_ROOT_PARAMETER rootParams[5]{};
 
-    // b0 : カメラ用CBV
-    rootParams[0].ParameterType = D3D12_ROOT_PARAMETER_TYPE_CBV;
-    rootParams[0].ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL;
-    rootParams[0].Descriptor.ShaderRegister = 0;
+	// b0 : カメラ用CBV
+	rootParams[0].ParameterType = D3D12_ROOT_PARAMETER_TYPE_CBV;
+	rootParams[0].ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL;
+	rootParams[0].Descriptor.ShaderRegister = 0;
 
-    // t0 : AlbedoTexture
-    rootParams[1].ParameterType = D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE;
-    rootParams[1].ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL;
-    rootParams[1].DescriptorTable.pDescriptorRanges = &rangeAlbedo;
-    rootParams[1].DescriptorTable.NumDescriptorRanges = 1;
+	// b1 : DirectionalLight
+	rootParams[1].ParameterType = D3D12_ROOT_PARAMETER_TYPE_CBV;
+	rootParams[1].ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL;
+	rootParams[1].Descriptor.ShaderRegister = 1;
 
-    // t1 : NormalTexture
-    rootParams[2].ParameterType = D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE;
-    rootParams[2].ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL;
-    rootParams[2].DescriptorTable.pDescriptorRanges = &rangeNormal;
-    rootParams[2].DescriptorTable.NumDescriptorRanges = 1;
+	// t0 : AlbedoTexture
+	rootParams[2].ParameterType = D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE;
+	rootParams[2].ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL;
+	rootParams[2].DescriptorTable.pDescriptorRanges = &rangeAlbedo;
+	rootParams[2].DescriptorTable.NumDescriptorRanges = 1;
 
-    // t2 : PositionTexture
-    rootParams[3].ParameterType = D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE;
-    rootParams[3].ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL;
-    rootParams[3].DescriptorTable.pDescriptorRanges = &rangePosition;
-    rootParams[3].DescriptorTable.NumDescriptorRanges = 1;
+	// t1 : NormalTexture
+	rootParams[3].ParameterType = D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE;
+	rootParams[3].ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL;
+	rootParams[3].DescriptorTable.pDescriptorRanges = &rangeNormal;
+	rootParams[3].DescriptorTable.NumDescriptorRanges = 1;
 
-    // --- Static Sampler ---
-    D3D12_STATIC_SAMPLER_DESC samplerDesc{};
-    samplerDesc.Filter = D3D12_FILTER_MIN_MAG_MIP_LINEAR;
-    samplerDesc.AddressU = D3D12_TEXTURE_ADDRESS_MODE_WRAP;
-    samplerDesc.AddressV = D3D12_TEXTURE_ADDRESS_MODE_WRAP;
-    samplerDesc.AddressW = D3D12_TEXTURE_ADDRESS_MODE_WRAP;
-    samplerDesc.ComparisonFunc = D3D12_COMPARISON_FUNC_NEVER;
-    samplerDesc.MaxLOD = D3D12_FLOAT32_MAX;
-    samplerDesc.ShaderRegister = 0;
-    samplerDesc.RegisterSpace = 0;
-    samplerDesc.ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL;
+	// t2 : PositionTexture
+	rootParams[4].ParameterType = D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE;
+	rootParams[4].ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL;
+	rootParams[4].DescriptorTable.pDescriptorRanges = &rangePosition;
+	rootParams[4].DescriptorTable.NumDescriptorRanges = 1;
 
-    // --- ルートシグネチャ作成 ---
-    D3D12_ROOT_SIGNATURE_DESC rootSigDesc{};
-    rootSigDesc.NumParameters = _countof(rootParams);
-    rootSigDesc.pParameters = rootParams;
-    rootSigDesc.NumStaticSamplers = 1;
-    rootSigDesc.pStaticSamplers = &samplerDesc;
-    rootSigDesc.Flags = D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT;
+	// --- Static Sampler ---
+	D3D12_STATIC_SAMPLER_DESC samplerDesc{};
+	samplerDesc.Filter = D3D12_FILTER_MIN_MAG_MIP_LINEAR;
+	samplerDesc.AddressU = D3D12_TEXTURE_ADDRESS_MODE_WRAP;
+	samplerDesc.AddressV = D3D12_TEXTURE_ADDRESS_MODE_WRAP;
+	samplerDesc.AddressW = D3D12_TEXTURE_ADDRESS_MODE_WRAP;
+	samplerDesc.ComparisonFunc = D3D12_COMPARISON_FUNC_NEVER;
+	samplerDesc.MaxLOD = D3D12_FLOAT32_MAX;
+	samplerDesc.ShaderRegister = 0;
+	samplerDesc.RegisterSpace = 0;
+	samplerDesc.ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL;
 
-    ComPtr<ID3DBlob> sigBlob;
-    ComPtr<ID3DBlob> errorBlob;
-    hr = D3D12SerializeRootSignature(&rootSigDesc, D3D_ROOT_SIGNATURE_VERSION_1, &sigBlob, &errorBlob);
-    if (FAILED(hr)) {
-        if (errorBlob) {
-            Logger::Log(reinterpret_cast<const char*>(errorBlob->GetBufferPointer()));
-        }
-        assert(false && "Lighting RootSignature作成失敗");
-    }
+	// --- ルートシグネチャ作成 ---
+	D3D12_ROOT_SIGNATURE_DESC rootSigDesc{};
+	rootSigDesc.NumParameters = _countof(rootParams);
+	rootSigDesc.pParameters = rootParams;
+	rootSigDesc.NumStaticSamplers = 1;
+	rootSigDesc.pStaticSamplers = &samplerDesc;
+	rootSigDesc.Flags = D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT;
 
-    hr = dxgi_->GetDevice()->CreateRootSignature(0, sigBlob->GetBufferPointer(), sigBlob->GetBufferSize(), IID_PPV_ARGS(&rootSignature_));
-    assert(SUCCEEDED(hr));
+	ComPtr<ID3DBlob> sigBlob;
+	ComPtr<ID3DBlob> errorBlob;
+	hr = D3D12SerializeRootSignature(&rootSigDesc, D3D_ROOT_SIGNATURE_VERSION_1, &sigBlob, &errorBlob);
+	if (FAILED(hr)) {
+		if (errorBlob) {
+			Logger::Log(reinterpret_cast<const char*>(errorBlob->GetBufferPointer()));
+		}
+		assert(false && "Lighting RootSignature作成失敗");
+	}
+
+	hr = dxgi_->GetDevice()->CreateRootSignature(0, sigBlob->GetBufferPointer(), sigBlob->GetBufferSize(), IID_PPV_ARGS(&rootSignature_));
+	assert(SUCCEEDED(hr));
 }
 
 

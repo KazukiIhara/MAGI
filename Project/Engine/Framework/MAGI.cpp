@@ -181,7 +181,7 @@ void MAGISYSTEM::Initialize() {
 	// ParticleGroup3DManager
 	particleGroup3DManager_ = std::make_unique<ParticleGroup3DManager>();
 	// LightManager
-	lightManager_ = std::make_unique<LightManager>(dxgi_.get(), directXCommand_.get(), srvuavManager_.get());
+	lightManager_ = std::make_unique<LightManager>(dxgi_.get(), directXCommand_.get());
 
 
 	// GraphicsPipelineManager
@@ -194,8 +194,7 @@ void MAGISYSTEM::Initialize() {
 	postEffectPipelineManager_ = std::make_unique<PostEffectPipelineManager>(dxgi_.get(), shaderCompiler_.get());
 
 	// RenderPipelineController
-	renderController_ = std::make_unique<RenderController>(dxgi_.get(), directXCommand_.get(), depthStencil_.get(), viewport_.get(), scissorRect_.get(), rtvManager_.get(), srvuavManager_.get(), defferedRenderringPipelineManager_.get(), postEffectPipelineManager_.get(), camera3DManager_.get());
-
+	renderController_ = std::make_unique<RenderController>(dxgi_.get(), directXCommand_.get(), depthStencil_.get(), viewport_.get(), scissorRect_.get(), rtvManager_.get(), srvuavManager_.get(), defferedRenderringPipelineManager_.get(), postEffectPipelineManager_.get(), camera3DManager_.get(),lightManager_.get());
 
 
 	// LineDrawer3D
@@ -1141,6 +1140,10 @@ BaseParticleGroup3D* MAGISYSTEM::FindParticleGroup3D(const std::string& particle
 
 const std::vector<std::unique_ptr<BaseParticleGroup3D>>& MAGISYSTEM::GetParticleGroupList() {
 	return particleGroup3DManager_->GetParticleGroups();
+}
+
+void MAGISYSTEM::SetDirectionalLight(const DirectionalLight& directionalLight) {
+	lightManager_->SetDirectionalLight(directionalLight);
 }
 
 void MAGISYSTEM::AddGameObject3D(std::unique_ptr<GameObject3D> newGameObject3D) {

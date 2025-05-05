@@ -22,6 +22,7 @@ class SRVUAVManager;
 class DefferedRenderringPipelineManager;
 class PostEffectPipelineManager;
 class Camera3DManager;
+class LightManager;
 
 /// <summary>
 /// 描画管理クラス
@@ -38,7 +39,8 @@ public:
 		SRVUAVManager* srvUavManager,
 		DefferedRenderringPipelineManager* defferedRenderringPipelineManager,
 		PostEffectPipelineManager* postEffectPipelineManager,
-		Camera3DManager* camera3DManager
+		Camera3DManager* camera3DManager,
+		LightManager* lightManager
 	);
 	~RenderController();
 
@@ -93,6 +95,7 @@ private:
 	void SetDefferedRenderringPipelineManager(DefferedRenderringPipelineManager* defferedRenderringPipelineManager);
 	void SetPostEffectPipelineManager(PostEffectPipelineManager* postEffectPipelineManager);
 	void SetCamera3DManager(Camera3DManager* camera3DManager);
+	void SetLightManager(LightManager* lightManager);
 
 private:
 	// 各インスタンスを受け取るクラス
@@ -106,6 +109,7 @@ private:
 	DefferedRenderringPipelineManager* defferedRenderringPipelineManager_ = nullptr;
 	PostEffectPipelineManager* postEffectPipelineManager_ = nullptr;
 	Camera3DManager* camera3DManager_ = nullptr;
+	LightManager* lightManager_ = nullptr;
 
 private:
 	// コマンド最大数

@@ -436,6 +436,11 @@ public: // エンジンの機能
 	static const std::vector<std::unique_ptr<BaseParticleGroup3D>>& GetParticleGroupList();
 #pragma endregion
 
+#pragma region LightManager
+	// DirectionalLightをセット
+	static void SetDirectionalLight(const DirectionalLight& directionalLight);
+#pragma endregion
+
 #pragma region LineDrawer3D
 	// ライン描画
 	static void DrawLine3D(const Vector3& start, const Vector3& end, const Vector4& color);

@@ -34,7 +34,7 @@ void LightManager::TransferDirectionalLight(uint32_t paramIndex) {
 	commandList->SetGraphicsRootConstantBufferView(paramIndex, directionalLightResource_->GetGPUVirtualAddress());
 }
 
-void LightManager::AddDirectionalLight(const DirectionalLight& directionalLight) {
+void LightManager::SetDirectionalLight(const DirectionalLight& directionalLight) {
 	directionalLight_.direction = directionalLight.direction;
 	directionalLight_.intensity = directionalLight.intensity;
 	directionalLight_.color = directionalLight.color;

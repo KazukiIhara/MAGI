@@ -14,6 +14,7 @@
 #include "PipelineManagers/DefferedRenderringPipelineManager/DefferedRenderringPipelineManager.h"
 #include "PipelineManagers/PostEffectPipelineManager/PostEffectPipelineManager.h"
 #include "ObjectManagers/Camera3DManager/Camera3DManager.h"
+#include "ObjectManagers/LightManager/LightManager.h"
 
 #include "Logger/Logger.h"
 
@@ -27,7 +28,8 @@ RenderController::RenderController(
 	SRVUAVManager* srvUavManager,
 	DefferedRenderringPipelineManager* defferedRenderringPipelineManager,
 	PostEffectPipelineManager* postEffectPipelineManager,
-	Camera3DManager* camera3DManager
+	Camera3DManager* camera3DManager,
+	LightManager* lightManager
 ) {
 	// インスタンスを受け取る
 	SetDXGI(dxgi);
@@ -40,6 +42,7 @@ RenderController::RenderController(
 	SetDefferedRenderringPipelineManager(defferedRenderringPipelineManager);
 	SetPostEffectPipelineManager(postEffectPipelineManager);
 	SetCamera3DManager(camera3DManager);
+	SetLightManager(lightManager);
 
 	// パラメータ用のリソースを作成
 	CreatePostEffectParamaterResource();
@@ -116,13 +119,16 @@ void RenderController::LightingPass() {
 	commandList->SetPipelineState(defferedRenderringPipelineManager_->GetPipelineState(DefferedRenderringType::Lighting));
 	commandList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
-	// カメラをセット
+	// カメラを転送
 	camera3DManager_->TransferCurrentCamera(0);
 
+	// DirectinalLightを転送
+	lightManager_->TransferDirectionalLight(1);
+
 	// GBufferのSRVをセット（t0, t1, t2）
-	commandList->SetGraphicsRootDescriptorTable(1, srvUavManager_->GetDescriptorHandleGPU(gBufferAlbedoRenderTexture_->GetSrvIndex()));
-	commandList->SetGraphicsRootDescriptorTable(2, srvUavManager_->GetDescriptorHandleGPU(gBufferNormalRenderTexture_->GetSrvIndex()));
-	commandList->SetGraphicsRootDescriptorTable(3, srvUavManager_->GetDescriptorHandleGPU(gBufferPositionRenderTexture_->GetSrvIndex()));
+	commandList->SetGraphicsRootDescriptorTable(2, srvUavManager_->GetDescriptorHandleGPU(gBufferAlbedoRenderTexture_->GetSrvIndex()));
+	commandList->SetGraphicsRootDescriptorTable(3, srvUavManager_->GetDescriptorHandleGPU(gBufferNormalRenderTexture_->GetSrvIndex()));
+	commandList->SetGraphicsRootDescriptorTable(4, srvUavManager_->GetDescriptorHandleGPU(gBufferPositionRenderTexture_->GetSrvIndex()));
 
 
 	// 描画
@@ -397,4 +403,9 @@ void RenderController::SetPostEffectPipelineManager(PostEffectPipelineManager* p
 void RenderController::SetCamera3DManager(Camera3DManager* camera3DManager) {
 	assert(camera3DManager);
 	camera3DManager_ = camera3DManager;
+}
+
+void RenderController::SetLightManager(LightManager* lightManager) {
+	assert(lightManager);
+	lightManager_ = lightManager;
 }
