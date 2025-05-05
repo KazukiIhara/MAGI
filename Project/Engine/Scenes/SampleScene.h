@@ -54,7 +54,7 @@ private:
 	float vignetteFalloff_ = 0.8f;
 	float gaussianSigma_ = 0.5f;
 
-	static const uint32_t wtsNum_ = 2000;
+	static const uint32_t wtsNum_ = 40000;
 
 	std::array<WorldTransform, wtsNum_> wts_;
 
@@ -107,7 +107,7 @@ inline void SampleScene<Data>::Initialize() {
 	modelMaterial_.blendMode = BlendMode::None;
 
 	// ModelDrawer
-	MAGISYSTEM::CreateModelDrawer("test", MAGISYSTEM::FindModel("Suzanne"));
+	MAGISYSTEM::CreateModelDrawer("test", MAGISYSTEM::FindModel("teapot"));
 
 	// トランスフォーム初期化
 	for (uint32_t i = 0; i < 5; i++) {
