@@ -54,7 +54,7 @@ private:
 	float vignetteFalloff_ = 0.8f;
 	float gaussianSigma_ = 0.5f;
 
-	static const uint32_t wtsNum_ = 1500;
+	static const uint32_t wtsNum_ = 2000;
 
 	std::array<WorldTransform, wtsNum_> wts_;
 
