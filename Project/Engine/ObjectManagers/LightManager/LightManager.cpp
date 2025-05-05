@@ -7,6 +7,9 @@
 #include "DirectX/DXGI/DXGI.h"
 #include "DirectX/DirectXCommand/DirectXCommand.h"
 #include "ViewManagers/SRVUAVManager/SRVUAVManager.h"
+#include "Math/Utility/MathUtility.h"
+
+using namespace MAGIMath;
 
 LightManager::LightManager(DXGI* dxgi, DirectXCommand* directXCommand) {
 	SetDXGI(dxgi);
@@ -35,7 +38,7 @@ void LightManager::TransferDirectionalLight(uint32_t paramIndex) {
 }
 
 void LightManager::SetDirectionalLight(const DirectionalLight& directionalLight) {
-	directionalLight_.direction = directionalLight.direction;
+	directionalLight_.direction = Normalize(directionalLight.direction);
 	directionalLight_.intensity = directionalLight.intensity;
 	directionalLight_.color = directionalLight.color;
 }
