@@ -54,7 +54,7 @@ private:
 	float vignetteFalloff_ = 0.8f;
 	float gaussianSigma_ = 0.5f;
 
-	static const uint32_t wtsNum_ = 1;
+	static const uint32_t wtsNum_ = 1500;
 
 	std::array<WorldTransform, wtsNum_> wts_;
 
@@ -79,7 +79,7 @@ inline void SampleScene<Data>::Initialize() {
 	// モデル
 	MAGISYSTEM::LoadModel("terrain");
 	MAGISYSTEM::LoadModel("teapot");
-	MAGISYSTEM::LoadModel("Sponza");
+	MAGISYSTEM::LoadModel("Suzanne");
 
 	// サウンド
 	MAGISYSTEM::LoadWaveSound("Alarm01.wav");
@@ -107,7 +107,7 @@ inline void SampleScene<Data>::Initialize() {
 	modelMaterial_.blendMode = BlendMode::None;
 
 	// ModelDrawer
-	MAGISYSTEM::CreateModelDrawer("test", MAGISYSTEM::FindModel("Sponza"));
+	MAGISYSTEM::CreateModelDrawer("test", MAGISYSTEM::FindModel("Suzanne"));
 
 	// トランスフォーム初期化
 	for (uint32_t i = 0; i < 5; i++) {
