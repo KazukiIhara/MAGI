@@ -37,7 +37,7 @@ private:
 
 	// 球体描画用の頂点データ
 	SphereData3D sphereData_{};
-
+	
 	// リング描画用の頂点データ
 	RingData3D ringData_{};
 
@@ -119,7 +119,7 @@ inline void SampleScene<Data>::Initialize() {
 	}
 
 
-	worldTransform_[2].translate_.x = 0.0f;
+
 	worldTransform_[3].translate_.x = 2.0f;
 	worldTransform_[4].translate_.x = 4.0f;
 
@@ -143,6 +143,14 @@ inline void SampleScene<Data>::Initialize() {
 
 	worldTransform_[1].translate_.x = 1.5f;
 	worldTransform_[1].translate_.y = 1.0f;
+
+	worldTransform_[2].rotate_.x = 0.7f;
+	worldTransform_[2].rotate_.y = 0.4f;
+
+	worldTransform_[2].translate_.x = 1.0f;
+	worldTransform_[2].translate_.y = 1.0f;
+	worldTransform_[2].translate_.z = 2.0f;
+
 }
 
 template<typename Data>
