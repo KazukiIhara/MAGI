@@ -611,7 +611,7 @@ void MAGISYSTEM::Draw() {
 	BlendMode noneMode = BlendMode::None;
 
 	triangleDrawer3D_->Draw(noneMode);
-	// planeDrawer3D_->Draw(noneMode);
+	planeDrawer3D_->Draw(noneMode);
 	sphereDrawer3D_->Draw(noneMode);
 	// ringDrawer3D_->Draw(noneMode);
 	// cylinderDrawer3D_->Draw(noneMode);

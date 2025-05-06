@@ -111,7 +111,6 @@ void Plane3DGraphicsPipeline::CreateGraphicsPipelineObject() {
 	const D3D12_SHADER_BYTECODE pixelShader = { pixelShaderBlob_->GetBufferPointer(), pixelShaderBlob_->GetBufferSize() };
 	const D3D12_SHADER_BYTECODE amplificationShader = { amplificationShaderBlob_->GetBufferPointer(),amplificationShaderBlob_->GetBufferSize() };
 
-	const DXGI_FORMAT rtvFormat = DXGI_FORMAT_R8G8B8A8_UNORM_SRGB;
 	const DXGI_FORMAT dsvFormat = DXGI_FORMAT_D24_UNORM_S8_UINT;
 
 	for (uint32_t i = 0; i < kBlendModeNum; ++i) {
@@ -124,8 +123,10 @@ void Plane3DGraphicsPipeline::CreateGraphicsPipelineObject() {
 		const CD3DX12_DEPTH_STENCIL_DESC ds(depthStencilDesc);
 
 		D3D12_RT_FORMAT_ARRAY rtArray{};
-		rtArray.NumRenderTargets = 1;
-		rtArray.RTFormats[0] = rtvFormat;
+		rtArray.NumRenderTargets = 3;
+		rtArray.RTFormats[0] = DXGI_FORMAT_R8G8B8A8_UNORM; // albedo
+		rtArray.RTFormats[1] = DXGI_FORMAT_R16G16B16A16_FLOAT; // normal
+		rtArray.RTFormats[2] = DXGI_FORMAT_R32G32B32A32_FLOAT; // world‐pos
 
 		Primitive3DPipelineStateStream stream = {
 			CD3DX12_PIPELINE_STATE_STREAM_ROOT_SIGNATURE(rootSignature_.Get()),

@@ -4,12 +4,15 @@ struct MeshOutput
     float4 position : SV_Position;
     float2 uv : TEXCOORD0;
     uint instanceIndex : TEXCOORD1;
+    float3 normal : NORMAL0;
+    float4 worldPosition : TEXCOORD2;
 };
 
 // インスタンシングデータ（板ポリ）
 struct PlaneData3D
 {
     float4x4 worldMatrix;
+    float4x4 worldInverseTranspose;
     float4 offsets[4];
 };
 

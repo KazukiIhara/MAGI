@@ -34,11 +34,7 @@ void main(in payload ASPayload payload,
         float2 uv = mul(float4(uvs[i], 0.0f, 1.0f), mat.uvMatrix).xy;
 
         // 法線は面ごとに計算（flat shading）
-        // v0,v1,v2 で一度だけ計算していただければOKですが、ここでは各頂点で同じ法線を出しています
-        float3 p0 = mul(float4(data.vertices[0].xyz, 1.0f), data.worldMatrix).xyz;
-        float3 p1 = mul(float4(data.vertices[1].xyz, 1.0f), data.worldMatrix).xyz;
-        float3 p2 = mul(float4(data.vertices[2].xyz, 1.0f), data.worldMatrix).xyz;
-        float3 normal = normalize(cross(p1 - p0, p2 - p0));
+        float3 normal = normalize(mul(float3(0.0f, 0.0f, -1.0f), (float3x3) data.worldInverseTranspose));
 
         // 頂点出力にセット
         verts[i].position = clipPos;
