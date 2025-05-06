@@ -171,6 +171,7 @@ void RenderController::ApplyPostEffect() {
 		case PostEffectType::Vignette:
 		case PostEffectType::GaussianX:
 		case PostEffectType::GaussianY:
+		case PostEffectType::RadialBlur:
 			DrawRenderTextureWithParamater(commandList, command);
 			break;
 		}

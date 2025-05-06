@@ -7,23 +7,21 @@ ConstantBuffer<RadialBlurData> gdata : register(b0);
 PixelShaderOutput main(VertexShaderOutput input)
 {
     const float2 center = gdata.param0.xy;
+    const float blurWidth = gdata.param1.x;
     const uint numSamples = 10;
-    const float2 blurWidth = gdata.param1.x;
     
-    float2 direction = input.texcoord - center;
+    
     float3 outputColor = float3(0.0f, 0.0f, 0.0f);
-    
+    float2 direction = input.texcoord - center;
     for (uint sampleIndex = 0; sampleIndex < numSamples; ++sampleIndex)
     {
         float2 texcoord = input.texcoord + direction * blurWidth * float(sampleIndex);
-        outputColor.rgb += gTexture.Sample(gSampler, input.texcoord).rgb;  
+        outputColor += gTexture.Sample(gSampler, texcoord).rgb;
     }
     
-    outputColor.rgb *= rcp(float(numSamples));
-    
+    outputColor *= rcp(float(numSamples));
     PixelShaderOutput output;
     output.color.rgb = outputColor;
     output.color.a = 1.0f;
-    
     return output;
 }

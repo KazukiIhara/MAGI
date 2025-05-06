@@ -300,6 +300,8 @@ public: // エンジンの機能
 	static void ApplyPostEffectGaussianX(float sigma, uint32_t karnelSize);
 	// シーンにY軸ガウスぼかしをかける(karnelSizeは、3,5,7,9,11,13)
 	static void ApplyPostEffectGaussianY(float sigma, uint32_t karnelSize);
+	// シーンに集中ぼかしをかける
+	static void ApplyPostEffectRadialBlur(Vector2 center, float blurWidth);
 #pragma endregion
 
 #pragma region TextureDataContainer

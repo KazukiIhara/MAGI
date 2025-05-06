@@ -12,7 +12,7 @@ public:
 
 private:
 	// ルートシグネチャを作成する
-	void CreateRootSignature()override;
+	virtual void CreateRootSignature()override;
 	// シェーダーをコンパイルする
 	void CompileShaders() = 0;
 	// グラフィックスパイプラインオブジェクトを作成する

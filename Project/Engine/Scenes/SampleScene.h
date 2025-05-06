@@ -37,7 +37,7 @@ private:
 
 	// 球体描画用の頂点データ
 	SphereData3D sphereData_{};
-	
+
 	// リング描画用の頂点データ
 	RingData3D ringData_{};
 
@@ -52,13 +52,18 @@ private:
 
 	float vignetteScale_ = 16.0f;
 	float vignetteFalloff_ = 0.8f;
+
 	float gaussianSigma_ = 0.5f;
+
+	Vector2 radialBlurCenter_ = { 0.5f,0.5f };
+	float radialBlurWidth_ = 0.01f;
 
 	bool isOnGrayscale_ = false;
 	bool isOnGaussian_ = false;
 	bool isOnVignette_ = false;
+	bool isRadialBlur_ = false;
 
-	static const uint32_t wtsNum_ = 300;
+	static const uint32_t wtsNum_ = 3;
 
 	std::array<WorldTransform, wtsNum_> wts_;
 
@@ -226,6 +231,12 @@ inline void SampleScene<Data>::Update() {
 	ImGui::DragFloat("Sigma", &gaussianSigma_, 0.01f);
 	ImGui::End();
 
+	ImGui::Begin("RadialBlurParamater");
+	ImGui::Checkbox("On", &isRadialBlur_);
+	ImGui::DragFloat2("Center", &radialBlurCenter_.x, 0.01f);
+	ImGui::DragFloat("BlurWidth", &radialBlurWidth_, 0.001f);
+	ImGui::End();
+
 	ImGui::Begin("Sound");
 	if (ImGui::Button("Coin")) {
 		MAGISYSTEM::PlayWaveSound("coin.wav");
@@ -260,6 +271,9 @@ inline void SampleScene<Data>::Update() {
 	}
 	if (isOnVignette_) {
 		MAGISYSTEM::ApplyPostEffectVignette(vignetteScale_, vignetteFalloff_);
+	}
+	if (isRadialBlur_) {
+		MAGISYSTEM::ApplyPostEffectRadialBlur(radialBlurCenter_, radialBlurWidth_);
 	}
 }
 
