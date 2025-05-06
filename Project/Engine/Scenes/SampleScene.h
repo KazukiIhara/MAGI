@@ -54,7 +54,7 @@ private:
 	float vignetteFalloff_ = 0.8f;
 	float gaussianSigma_ = 0.5f;
 
-	static const uint32_t wtsNum_ = 1;
+	static const uint32_t wtsNum_ = 30;
 
 	std::array<WorldTransform, wtsNum_> wts_;
 
@@ -235,8 +235,8 @@ inline void SampleScene<Data>::Draw() {
 	// 板ポリ描画
 	//MAGISYSTEM::DrawPlane3D(worldTransform_[0].worldMatrix_, planeData_, material_);
 
-	//// 球体描画
-	MAGISYSTEM::DrawSphere3D(worldTransform_[2].worldMatrix_, sphereData_, material_);
+	// 球体描画
+	MAGISYSTEM::DrawSphere3D(worldTransform_[1].worldMatrix_, sphereData_, material_);
 
 	// 三角形描画
 	// MAGISYSTEM::DrawTriangle3D(worldTransform_[2].worldMatrix_, triangleData_, material_);
@@ -258,6 +258,11 @@ inline void SampleScene<Data>::Draw() {
 
 	//// シリンダー描画
 	//MAGISYSTEM::DrawCylinder3D(worldTransform_[4].worldMatrix_, cylinderData_, material_);
+
+
+	for (uint32_t i = 0; i < wtsNum_; i++) {
+		MAGISYSTEM::DrawSphere3D(wts_[i].worldMatrix_, sphereData_, material_);
+	}
 
 	// 
 	// オブジェクト2Dの描画前処理
