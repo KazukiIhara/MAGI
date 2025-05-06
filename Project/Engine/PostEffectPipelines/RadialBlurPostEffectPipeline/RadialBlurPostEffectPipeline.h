@@ -3,12 +3,13 @@
 #include "PostEffectPipelines/BaseWithParamaterPostEffectPipeline/BaseWithParamaterPostEffectPipeline.h"
 
 /// <summary>
-/// X軸ガウシアンブラー
+/// ラジアルブラー
 /// </summary>
-class GaussianBlurXPostEffectPipeline:public BaseWithParamaterPostEffectPipeline {
+class RadialBlurPostEffectPipeline:public BaseWithParamaterPostEffectPipeline {
 public:
-	GaussianBlurXPostEffectPipeline(DXGI* dxgi, ShaderCompiler* shaderCompiler);
-	~GaussianBlurXPostEffectPipeline()override;
+	RadialBlurPostEffectPipeline(DXGI* dxgi, ShaderCompiler* shaderCompiler);
+	~RadialBlurPostEffectPipeline()override;
+
 
 private:
 	void CreateRootSignature()override;

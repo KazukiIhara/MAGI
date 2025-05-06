@@ -1006,6 +1006,19 @@ void MAGISYSTEM::ApplyPostEffectGaussianY(float sigma, uint32_t karnelSize) {
 	renderController_->AddPostEffect(command);
 }
 
+void MAGISYSTEM::ApplyPostEffectRadialBlur(Vector2 center, float blurWidth) {
+	PostEffectCommand command{
+		.postEffectType = PostEffectType::RadialBlur,
+		.param = {
+			.param = {center.x,center.y,0.0f,0.0f,
+				blurWidth,
+			},
+		}
+	};
+	// コマンドを追加
+	renderController_->AddPostEffect(command);
+}
+
 uint32_t MAGISYSTEM::LoadTexture(const std::string& fileName, bool isFullPath) {
 	return textureDataCantainer_->Load(fileName, isFullPath);
 }

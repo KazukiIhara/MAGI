@@ -12,6 +12,7 @@ enum class PostEffectType {
 	Vignette, // ビネット
 	GaussianX, // ガウスぼかし
 	GaussianY,
+	RadialBlur, // 集中ぼかし
 
 	Num,
 };

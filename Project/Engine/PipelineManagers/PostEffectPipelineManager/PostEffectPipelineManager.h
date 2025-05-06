@@ -20,6 +20,7 @@ class ShaderCompiler;
 #include "PostEffectPipelines/VignettePostEffectPipeline/VignettePostEffectPipeline.h"
 #include "PostEffectPipelines/GaussianBlurXPostEffectPipeline/GaussianBlurXPostEffectPipeline.h"
 #include "PostEffectPipelines/GaussianBlurYPostEffectPipeline/GaussianBlurYPostEffectPipeline.h"
+#include "PostEffectPipelines/RadialBlurPostEffectPipeline/RadialBlurPostEffectPipeline.h"
 
 /// <summary>
 /// ポストエフェクトパイプラインマネージャ
@@ -59,4 +60,6 @@ private:
 	std::unique_ptr<GaussianBlurXPostEffectPipeline> gaussianBlurXPostEffectPipeline_ = nullptr;
 	// GaussianBlurYPostEffectPipeline
 	std::unique_ptr<GaussianBlurYPostEffectPipeline> gaussianBlurYPostEffectPipeline_ = nullptr;
+	// RadialBlurPostEffectPipeline
+	std::unique_ptr<RadialBlurPostEffectPipeline> radialBlurPostEffectPipeline_ = nullptr;
 };

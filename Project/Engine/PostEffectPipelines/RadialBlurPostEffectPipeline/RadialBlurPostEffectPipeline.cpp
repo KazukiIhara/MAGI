@@ -1,4 +1,4 @@
-#include "GaussianBlurYPostEffectPipeline.h"
+#include "RadialBlurPostEffectPipeline.h"
 
 #include <cassert>
 
@@ -6,12 +6,12 @@
 #include "DirectX/DXGI/DXGI.h"
 #include "DirectX/ShaderCompiler/ShaderCompiler.h"
 
-GaussianBlurYPostEffectPipeline::GaussianBlurYPostEffectPipeline(DXGI* dxgi, ShaderCompiler* shaderCompiler)
+RadialBlurPostEffectPipeline::RadialBlurPostEffectPipeline(DXGI* dxgi, ShaderCompiler* shaderCompiler)
 	:BaseWithParamaterPostEffectPipeline(dxgi, shaderCompiler) {}
 
-GaussianBlurYPostEffectPipeline::~GaussianBlurYPostEffectPipeline() {}
+RadialBlurPostEffectPipeline::~RadialBlurPostEffectPipeline() {}
 
-void GaussianBlurYPostEffectPipeline::CreateRootSignature() {
+void RadialBlurPostEffectPipeline::CreateRootSignature() {
 	HRESULT hr = S_FALSE;
 
 	D3D12_DESCRIPTOR_RANGE descriptorRange[1] = {};
@@ -69,12 +69,12 @@ void GaussianBlurYPostEffectPipeline::CreateRootSignature() {
 	assert(SUCCEEDED(hr));
 }
 
-void GaussianBlurYPostEffectPipeline::CompileShaders() {
+void RadialBlurPostEffectPipeline::CompileShaders() {
 	vertexShaderBlob_ = nullptr;
-	vertexShaderBlob_ = shaderCompiler_->CompileShader(L"EngineAssets/Shaders/PostEffect/GaussianBlur/GaussianBlur.VS.hlsl", L"vs_6_0");
+	vertexShaderBlob_ = shaderCompiler_->CompileShader(L"EngineAssets/Shaders/PostEffect/RadialBlur/RadialBlur.VS.hlsl", L"vs_6_0");
 	assert(vertexShaderBlob_ != nullptr);
 
 	pixelShaderBlob_ = nullptr;
-	pixelShaderBlob_ = shaderCompiler_->CompileShader(L"EngineAssets/Shaders/PostEffect/GaussianBlur/GaussianBlurY.PS.hlsl", L"ps_6_0");
+	pixelShaderBlob_ = shaderCompiler_->CompileShader(L"EngineAssets/Shaders/PostEffect/RadialBlur/RadialBlur.PS.hlsl", L"ps_6_0");
 	assert(pixelShaderBlob_ != nullptr);
 }
