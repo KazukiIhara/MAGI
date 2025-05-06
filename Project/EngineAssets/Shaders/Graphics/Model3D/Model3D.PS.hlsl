@@ -27,7 +27,6 @@ GBufferOutput main(MeshOutput input)
     output.albedo = texColor * gMaterialData.baseColor;
 
     // --- 法線出力 ---
-    // input.normalはview-spaceまたはworld-spaceで計算されていると仮定
     float3 normal = normalize(input.normal); // 念のため正規化
     output.normal = float4(normal * 0.5f + 0.5f, 1.0f); // [-1,1] → [0,1]マッピングして格納
 

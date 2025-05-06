@@ -54,7 +54,7 @@ private:
 	float vignetteFalloff_ = 0.8f;
 	float gaussianSigma_ = 0.5f;
 
-	static const uint32_t wtsNum_ = 40000;
+	static const uint32_t wtsNum_ = 1;
 
 	std::array<WorldTransform, wtsNum_> wts_;
 
@@ -233,13 +233,13 @@ inline void SampleScene<Data>::Update() {
 template<typename Data>
 inline void SampleScene<Data>::Draw() {
 	// 板ポリ描画
-	MAGISYSTEM::DrawPlane3D(worldTransform_[0].worldMatrix_, planeData_, material_);
+	//MAGISYSTEM::DrawPlane3D(worldTransform_[0].worldMatrix_, planeData_, material_);
 
 	//// 球体描画
 	//MAGISYSTEM::DrawSphere3D(worldTransform_[1].worldMatrix_, sphereData_, material_);
 
-	//// 三角形描画
-	//MAGISYSTEM::DrawTriangle3D(worldTransform_[2].worldMatrix_, triangleData_, material_);
+	// 三角形描画
+	MAGISYSTEM::DrawTriangle3D(worldTransform_[2].worldMatrix_, triangleData_, material_);
 
 	//// モデル描画
 	//MAGISYSTEM::DrawModel("test", worldTransform_[2].worldMatrix_, modelMaterial_);
