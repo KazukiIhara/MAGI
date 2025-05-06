@@ -33,9 +33,15 @@ void main(in payload ASPayload payload,
         float4 clipPos = mul(worldPos, gCamera.viewProjection);
         float2 uv = mul(float4(uvs[i], 0.0f, 1.0f), mat.uvMatrix).xy;
 
+        // 法線は面ごとに計算（flat shading）
+        float3 normal = normalize(mul(float3(0.0f, 0.0f, -1.0f), (float3x3) data.worldInverseTranspose));
+
+        // 頂点出力にセット
         verts[i].position = clipPos;
-        verts[i].uv = uv;
+        verts[i].uv = mul(float4(uvs[i], 0, 1), mat.uvMatrix).xy;
         verts[i].instanceIndex = instanceID;
+        verts[i].normal = normal;
+        verts[i].worldPosition = worldPos;
     }
 
     tris[0] = uint3(0, 1, 2);

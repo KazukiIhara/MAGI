@@ -25,7 +25,7 @@ void main(
         plane.offsets[0], // LT
         plane.offsets[1], // RT
         plane.offsets[2], // LB
-        plane.offsets[3]  // RB
+        plane.offsets[3] // RB
     };
 
     float2 uvs[4] =
@@ -36,6 +36,9 @@ void main(
         float2(1.0f, 1.0f)
     };
 
+    // 法線ベクトル（平面なので一律）
+    float3 normal = normalize(mul(float3(0.0f, 0.0f, -1.0f), (float3x3) plane.worldInverseTranspose));
+
     for (uint i = 0; i < 4; ++i)
     {
         float4 worldPos = mul(positions[i], plane.worldMatrix);
@@ -45,6 +48,8 @@ void main(
         verts[i].position = clipPos;
         verts[i].uv = uv;
         verts[i].instanceIndex = instanceID;
+        verts[i].normal = normal; // ★ normal を書き込み
+        verts[i].worldPosition = worldPos; // ★ worldPosition を書き込み
     }
 
     // 2つの三角形を構成（インデックスは6個使用）

@@ -241,25 +241,25 @@ D3D12_DEPTH_STENCIL_DESC Ring3DGraphicsPipeline::DepthStecilDescSetting() {
 }
 
 D3D12_DEPTH_STENCIL_DESC Ring3DGraphicsPipeline::DepthStecilDescSettingBlend(uint32_t blendModeNum) {
-    D3D12_DEPTH_STENCIL_DESC desc{};
-    desc.DepthEnable = TRUE;
+	D3D12_DEPTH_STENCIL_DESC desc{};
+	desc.DepthEnable = TRUE;
 
-    const auto mode = static_cast<BlendMode>(blendModeNum);
-    switch (mode) {
-    case BlendMode::Normal:
-    case BlendMode::Add:
-    case BlendMode::Subtract:
-    case BlendMode::Multiply:
-    case BlendMode::Screen:
-        desc.DepthWriteMask = D3D12_DEPTH_WRITE_MASK_ZERO; // ブレンド系は書き込まない
-        break;
-    default:
-        desc.DepthWriteMask = D3D12_DEPTH_WRITE_MASK_ALL;
-        break;
-    }
+	const auto mode = static_cast<BlendMode>(blendModeNum);
+	switch (mode) {
+	case BlendMode::Normal:
+	case BlendMode::Add:
+	case BlendMode::Subtract:
+	case BlendMode::Multiply:
+	case BlendMode::Screen:
+		desc.DepthWriteMask = D3D12_DEPTH_WRITE_MASK_ZERO; // ブレンド系は書き込まない
+		break;
+	default:
+		desc.DepthWriteMask = D3D12_DEPTH_WRITE_MASK_ALL;
+		break;
+	}
 
-    desc.DepthFunc = D3D12_COMPARISON_FUNC_LESS;
-    return desc;
+	desc.DepthFunc = D3D12_COMPARISON_FUNC_LESS_EQUAL;
+	return desc;
 }
 
 D3D12_RASTERIZER_DESC Ring3DGraphicsPipeline::RasterizerStateSetting() {

@@ -12,7 +12,7 @@ using namespace MAGIUtility;
 
 // サンプルシーン
 template <typename Data>
-class SampleScene : public BaseScene<Data> {
+class SampleScene: public BaseScene<Data> {
 public:
 	using BaseScene<Data>::BaseScene; // 親クラスのコンストラクタをそのまま継承
 	~SampleScene()override = default;
@@ -54,7 +54,11 @@ private:
 	float vignetteFalloff_ = 0.8f;
 	float gaussianSigma_ = 0.5f;
 
-	static const uint32_t wtsNum_ = 1;
+	bool isOnGrayscale_ = false;
+	bool isOnGaussian_ = false;
+	bool isOnVignette_ = false;
+
+	static const uint32_t wtsNum_ = 300;
 
 	std::array<WorldTransform, wtsNum_> wts_;
 
@@ -79,7 +83,7 @@ inline void SampleScene<Data>::Initialize() {
 	// モデル
 	MAGISYSTEM::LoadModel("terrain");
 	MAGISYSTEM::LoadModel("teapot");
-	//MAGISYSTEM::LoadModel("Dragon");
+	MAGISYSTEM::LoadModel("Suzanne");
 
 	// サウンド
 	MAGISYSTEM::LoadWaveSound("Alarm01.wav");
@@ -114,8 +118,7 @@ inline void SampleScene<Data>::Initialize() {
 		worldTransform_[i].Initialize();
 	}
 
-	worldTransform_[0].translate_.x = -4.0f;
-	worldTransform_[1].translate_.x = -2.0f;
+
 	worldTransform_[2].translate_.x = 0.0f;
 	worldTransform_[3].translate_.x = 2.0f;
 	worldTransform_[4].translate_.x = 4.0f;
@@ -126,9 +129,20 @@ inline void SampleScene<Data>::Initialize() {
 
 	for (uint32_t i = 0; i < wtsNum_; i++) {
 		wts_[i].Initialize();
-		wts_[i].translate_.z = float(i);
+		wts_[i].translate_.x = -1.5f;
+		wts_[i].translate_.z = float(i) * 2.0f;
+		wts_[i].translate_.y = 0.5f;
 	}
 
+	worldTransform_[0].translate_.x = 0.0f;
+	worldTransform_[0].rotate_.x = std::numbers::pi_v<float> *0.5f;
+	planeData_.verticesOffsets[Plane3DVertices::LeftTop] = { -10.0f,10.0f,0.0f };
+	planeData_.verticesOffsets[Plane3DVertices::RightTop] = { 10.0f,10.0f,0.0f };
+	planeData_.verticesOffsets[Plane3DVertices::LeftBottom] = { -10.0f,-10.0f,0.0f };
+	planeData_.verticesOffsets[Plane3DVertices::RightBottom] = { 10.0f,-10.0f,0.0f };
+
+	worldTransform_[1].translate_.x = 1.5f;
+	worldTransform_[1].translate_.y = 1.0f;
 }
 
 template<typename Data>
@@ -189,13 +203,18 @@ inline void SampleScene<Data>::Update() {
 	ImGui::DragFloat("Height", &cylinderData_.height, 0.01f);
 	ImGui::End();
 
+	ImGui::Begin("GrayscaleParamater");
+	ImGui::Checkbox("On", &isOnGrayscale_);
+	ImGui::End();
 
 	ImGui::Begin("VignetteParamater");
+	ImGui::Checkbox("On", &isOnVignette_);
 	ImGui::DragFloat("Scale", &vignetteScale_, 0.01f);
 	ImGui::DragFloat("Falloff", &vignetteFalloff_, 0.01f);
 	ImGui::End();
 
 	ImGui::Begin("GaussianBlurParamater");
+	ImGui::Checkbox("On", &isOnGaussian_);
 	ImGui::DragFloat("Sigma", &gaussianSigma_, 0.01f);
 	ImGui::End();
 
@@ -224,22 +243,28 @@ inline void SampleScene<Data>::Update() {
 	MAGISYSTEM::SetDirectionalLight(directionalLight_);
 
 	// ポストエフェクトをかける
-	//MAGISYSTEM::ApplyPostEffectGrayScale();
-	//MAGISYSTEM::ApplyPostEffectGaussianX(gaussianSigma_, 13);
-	//MAGISYSTEM::ApplyPostEffectGaussianY(gaussianSigma_, 13);
-	//MAGISYSTEM::ApplyPostEffectVignette(vignetteScale_, vignetteFalloff_);
+	if (isOnGrayscale_) {
+		MAGISYSTEM::ApplyPostEffectGrayScale();
+	}
+	if (isOnGaussian_) {
+		MAGISYSTEM::ApplyPostEffectGaussianX(gaussianSigma_, 13);
+		MAGISYSTEM::ApplyPostEffectGaussianY(gaussianSigma_, 13);
+	}
+	if (isOnVignette_) {
+		MAGISYSTEM::ApplyPostEffectVignette(vignetteScale_, vignetteFalloff_);
+	}
 }
 
 template<typename Data>
 inline void SampleScene<Data>::Draw() {
-	//// 板ポリ描画
-	//MAGISYSTEM::DrawPlane3D(worldTransform_[0].worldMatrix_, planeData_, material_);
+	// 板ポリ描画
+	MAGISYSTEM::DrawPlane3D(worldTransform_[0].worldMatrix_, planeData_, material_);
 
-	//// 球体描画
-	//MAGISYSTEM::DrawSphere3D(worldTransform_[1].worldMatrix_, sphereData_, material_);
+	// 球体描画
+	MAGISYSTEM::DrawSphere3D(worldTransform_[1].worldMatrix_, sphereData_, material_);
 
-	//// 三角形描画
-	//MAGISYSTEM::DrawTriangle3D(worldTransform_[2].worldMatrix_, triangleData_, material_);
+	// 三角形描画
+	MAGISYSTEM::DrawTriangle3D(worldTransform_[2].worldMatrix_, triangleData_, material_);
 
 	//// モデル描画
 	//MAGISYSTEM::DrawModel("test", worldTransform_[2].worldMatrix_, modelMaterial_);
@@ -248,14 +273,21 @@ inline void SampleScene<Data>::Draw() {
 
 
 	for (uint32_t i = 0; i < wtsNum_; i++) {
-		MAGISYSTEM::DrawModel("test", worldTransform_[2].worldMatrix_, modelMaterial_);
+		MAGISYSTEM::DrawModel("test", wts_[i].worldMatrix_, modelMaterial_);
 	}
+
+	//MAGISYSTEM::DrawLine3D(Vector3(0.0f, -2.0f, 0.0f), Vector3(0.0f, 2.0f, 0.0f), Color::Crimson);
 
 	// リング描画
 	// MAGISYSTEM::DrawRing3D(worldTransform_[3].worldMatrix_, ringData_, material_);
 
 	//// シリンダー描画
 	//MAGISYSTEM::DrawCylinder3D(worldTransform_[4].worldMatrix_, cylinderData_, material_);
+
+
+	//for (uint32_t i = 0; i < wtsNum_; i++) {
+	//	MAGISYSTEM::DrawSphere3D(wts_[i].worldMatrix_, sphereData_, material_);
+	//}
 
 	// 
 	// オブジェクト2Dの描画前処理

@@ -194,7 +194,7 @@ void MAGISYSTEM::Initialize() {
 	postEffectPipelineManager_ = std::make_unique<PostEffectPipelineManager>(dxgi_.get(), shaderCompiler_.get());
 
 	// RenderPipelineController
-	renderController_ = std::make_unique<RenderController>(dxgi_.get(), directXCommand_.get(), depthStencil_.get(), viewport_.get(), scissorRect_.get(), rtvManager_.get(), srvuavManager_.get(), defferedRenderringPipelineManager_.get(), postEffectPipelineManager_.get(), camera3DManager_.get(),lightManager_.get());
+	renderController_ = std::make_unique<RenderController>(dxgi_.get(), directXCommand_.get(), depthStencil_.get(), viewport_.get(), scissorRect_.get(), rtvManager_.get(), srvuavManager_.get(), defferedRenderringPipelineManager_.get(), postEffectPipelineManager_.get(), camera3DManager_.get(), lightManager_.get());
 
 
 	// LineDrawer3D
@@ -587,9 +587,6 @@ void MAGISYSTEM::Draw() {
 	// DirectX描画前処理
 	// 
 
-	// シーン描画用のレンダーテクスチャを準備
-	renderController_->PreSceneRender();
-
 	// コマンドリスト取得
 	ID3D12GraphicsCommandList* commandList = directXCommand_->GetList();
 
@@ -606,30 +603,45 @@ void MAGISYSTEM::Draw() {
 	//
 	sceneManager_->Draw();
 
-	// 
-	// LineDrawer3Dの描画処理
-	// 
-	//lineDrawer3D_->Draw();
 
-	// 
-	// BlendModeごとに描画(透過なしが先に描画されるようにする)
-	// 
-	for (uint32_t i = 0; i < kBlendModeNum; ++i) {
-		BlendMode mode = static_cast<BlendMode>(i);
+	// シーン描画用のレンダーテクスチャを準備
+	renderController_->PreSceneRender();
 
-		/*triangleDrawer3D_->Draw(mode);
-		planeDrawer3D_->Draw(mode);
-		sphereDrawer3D_->Draw(mode);
-		ringDrawer3D_->Draw(mode);
-		cylinderDrawer3D_->Draw(mode);*/
-		modelDrawerManager_->DrawAll(mode);
-	}
+	// オブジェクトの描画(透過なし)
+	BlendMode noneMode = BlendMode::None;
+
+	triangleDrawer3D_->Draw(noneMode);
+	planeDrawer3D_->Draw(noneMode);
+	sphereDrawer3D_->Draw(noneMode);
+	// ringDrawer3D_->Draw(noneMode);
+	// cylinderDrawer3D_->Draw(noneMode);
+
+	modelDrawerManager_->DrawAll(noneMode);
 
 	// シーンの描画後処理
 	renderController_->PostSceneRender();
 
 	// ライトの適用
 	renderController_->LightingPass();
+
+	// 
+	// LineDrawer3Dの描画処理
+	// 
+
+	lineDrawer3D_->Draw();
+
+	// 
+	// BlendModeごとに描画(透過あり) 今はいったんコメントアウト
+	// 
+	for (uint32_t i = 1; i < kBlendModeNum; ++i) {
+		//BlendMode mode = static_cast<BlendMode>(i);
+		/*modelDrawerManager_->DrawAll(mode);*/
+		/*triangleDrawer3D_->Draw(mode);
+		planeDrawer3D_->Draw(mode);
+		sphereDrawer3D_->Draw(mode);
+		ringDrawer3D_->Draw(mode);
+		cylinderDrawer3D_->Draw(mode);*/
+	}
 
 	// ライト適用後の処理
 	renderController_->PostLightingPass();

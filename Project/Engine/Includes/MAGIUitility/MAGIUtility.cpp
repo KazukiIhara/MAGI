@@ -59,3 +59,7 @@ std::array<float, 7> MAGIUtility::GenerateGaussianWeights(float sigma) {
 
 	return weights;
 }
+
+uint32_t MAGIUtility::DivRoundUp(uint32_t num, uint32_t den) {
+	return (num + den - 1) / den;
+}

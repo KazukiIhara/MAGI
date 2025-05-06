@@ -18,7 +18,7 @@ void Line3DGraphicsPipeline::CreateRootSignature() {
 
 	// DescriptorRange設定
 	D3D12_DESCRIPTOR_RANGE descriptorRange[1] = {};
-	descriptorRange[0].BaseShaderRegister = 0; 
+	descriptorRange[0].BaseShaderRegister = 0;
 	descriptorRange[0].NumDescriptors = 1;
 	descriptorRange[0].RangeType = D3D12_DESCRIPTOR_RANGE_TYPE_SRV;
 	descriptorRange[0].OffsetInDescriptorsFromTableStart = D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND;
@@ -190,14 +190,13 @@ D3D12_BLEND_DESC Line3DGraphicsPipeline::BlendStateSetting(uint32_t blendModeNum
 }
 
 D3D12_DEPTH_STENCIL_DESC Line3DGraphicsPipeline::DepthStecilDescSetting() {
-	// DepthStencilStateの設定
 	D3D12_DEPTH_STENCIL_DESC depthStencilDesc{};
-	// Depthの機能を有効化する
-	depthStencilDesc.DepthEnable = true;
-	// Depthの書き込みを行う
-	depthStencilDesc.DepthWriteMask = D3D12_DEPTH_WRITE_MASK_ALL;
-	// 比較関数はLess
-	depthStencilDesc.DepthFunc = D3D12_COMPARISON_FUNC_LESS;
+
+	depthStencilDesc.DepthEnable = true;   // DepthTestを有効にする
+	depthStencilDesc.DepthWriteMask = D3D12_DEPTH_WRITE_MASK_ZERO; // 書き込みはしない
+	depthStencilDesc.DepthFunc = D3D12_COMPARISON_FUNC_LESS_EQUAL; // 近いもの優先
+
+	depthStencilDesc.StencilEnable = false; // ステンシルは不要
 
 	return depthStencilDesc;
 }

@@ -48,6 +48,7 @@ struct TriangleData3D {
 /// </summary>
 struct TriangleData3DForGPU {
 	Matrix4x4 worldMatrix;
+	Matrix4x4 worldInverseTranspose;
 	Vector4 Offsets[3];
 };
 
@@ -68,6 +69,7 @@ struct PlaneData3D {
 /// </summary>
 struct PlaneData3DForGPU {
 	Matrix4x4 worldMatrix;
+	Matrix4x4 worldInverseTranspose;
 	Vector4 offsets[4];
 };
 
@@ -85,6 +87,7 @@ struct SphereData3D {
 /// </summary>
 struct SphereData3DForGPU {
 	Matrix4x4 worldMatrix;
+	Matrix4x4 worldInverseTranspose;
 	float radius;
 	uint32_t longitudeSegments;
 	uint32_t latitudeSegments;

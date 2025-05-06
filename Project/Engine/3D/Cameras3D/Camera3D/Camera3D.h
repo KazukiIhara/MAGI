@@ -64,7 +64,7 @@ protected:
 	// ニアクリップ距離
 	float nearClipRange_ = 0.1f;
 	// ファークリップ距離
-	float farClipRange_ = 1000.0f;
+	float farClipRange_ = 10000.0f;
 	// ビルボード行列
 	Matrix4x4 billboardMatrix_{};
 	// 有効フラグ

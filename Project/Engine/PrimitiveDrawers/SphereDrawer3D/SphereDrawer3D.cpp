@@ -63,7 +63,7 @@ void SphereDrawer3D::Update() {
 		instanceCount_[i] = currentIndex_[i];
 
 		if (instanceCount_[i] > 0 && instancingData_[i] && materialData_[i]) {
-			std::memcpy(instancingData_[i], spheres_[i].data(), sizeof(RingData3DForGPU) * instanceCount_[i]);
+			std::memcpy(instancingData_[i], spheres_[i].data(), sizeof(SphereData3DForGPU) * instanceCount_[i]);
 			std::memcpy(materialData_[i], materials_[i].data(), sizeof(PrimitiveMaterialData3DForGPU) * instanceCount_[i]);
 		}
 
@@ -100,6 +100,7 @@ void SphereDrawer3D::AddSphere(const Matrix4x4& worldMatrix, const SphereData3D&
 
 	SphereData3DForGPU newSphereData{
 		.worldMatrix = worldMatrix,
+		.worldInverseTranspose = MakeInverseTransposeMatrix(worldMatrix),
 		.radius = data.radius,
 		.longitudeSegments = data.verticalSegments,
 		.latitudeSegments = data.horizontalSegments

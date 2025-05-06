@@ -100,6 +100,7 @@ void PlaneDrawer3D::AddPlane(const Matrix4x4& worldMatrix, const PlaneData3D& da
 
 	PlaneData3DForGPU newPlaneData{
 		.worldMatrix = worldMatrix,
+		.worldInverseTranspose = MakeInverseTransposeMatrix(worldMatrix),
 		.offsets = {
 			Vector4(data.verticesOffsets[0].x, data.verticesOffsets[0].y, data.verticesOffsets[0].z, 1.0f),
 			Vector4(data.verticesOffsets[1].x, data.verticesOffsets[1].y, data.verticesOffsets[1].z, 1.0f),
