@@ -85,6 +85,7 @@ struct SphereData3D {
 /// </summary>
 struct SphereData3DForGPU {
 	Matrix4x4 worldMatrix;
+	Matrix4x4 worldInverseTranspose;
 	float radius;
 	uint32_t longitudeSegments;
 	uint32_t latitudeSegments;

@@ -1,0 +1,263 @@
+[10:47:57] [Logger Initialized]
+[10:47:57] Hello,MAGI ENGINE!
+
+[10:47:57] MAGISYSTEM Start
+
+[10:47:57] WindowApp Initialize
+
+[10:47:57] DeltaTimer Initialize
+
+[10:47:57] DirectInput Initialize
+
+[10:47:57] Use Adapter : NVIDIA GeForce RTX 3060 Laptop GPU
+
+[10:47:57] featureLevel : 12.2
+
+[10:47:57] Complete Create D3D12DDevice
+
+[10:47:57] Device10 (MeshShader対応) を取得しました。
+
+[10:47:57] DXGI Initialize
+
+[10:47:58] DirectXCommand Initialize
+
+[10:47:58] Fence Initialize
+
+[10:47:58] DXC Version 1.7 (4015 commits, hash: 52da17e2)
+
+[10:47:58] ShaderCompiler Initialize
+
+[10:47:58] RTVManager Initialize
+
+[10:47:58] DSVManager Initialize
+
+[10:47:58] SRVUAVManager Initialize
+
+[10:47:58] Viewport Initialize
+
+[10:47:58] ScissorRect Initialize
+
+[10:47:58] DepthStencil Initialize
+
+[10:47:58] SwapChain Initialize
+
+[10:47:58] TextureDataContainer Initialize
+
+[10:47:58] ModelDataContainer Initialize
+
+[10:47:58] AnimationDataContainer Initialize
+
+[10:47:58] SoundDataContainer Initialize
+
+[10:47:58] GameObject3DManager Initialize
+
+[10:47:58] GameObject3DGroupManager Initialize
+
+[10:47:58] Renderer3DManager Initialize
+
+[10:47:58] Initialize CameraManager
+
+[10:47:58] PunctualLightManager Initialize
+
+[10:47:58] ColliderManager Initialize
+
+[10:47:58] Emitter3DManager Initialize
+
+[10:47:58] ParticleGroup3DManager Initialize
+
+[10:47:58] LightManager Initialize
+
+[10:47:58] Begin CompileShader, path:EngineAssets/Shaders/Graphics/Object2D/Object2D.VS.hlsl, profile:vs_6_0
+
+[10:47:58] Compile Succeeded, path:EngineAssets/Shaders/Graphics/Object2D/Object2D.VS.hlsl, profile:vs_6_0
+
+[10:47:58] Begin CompileShader, path:EngineAssets/Shaders/Graphics/Object2D/Object2D.PS.hlsl, profile:ps_6_0
+
+[10:47:58] Compile Succeeded, path:EngineAssets/Shaders/Graphics/Object2D/Object2D.PS.hlsl, profile:ps_6_0
+
+[10:47:58] Begin CompileShader, path:EngineAssets/Shaders/Graphics/Line3D/Line3D.VS.hlsl, profile:vs_6_0
+
+[10:47:58] Compile Succeeded, path:EngineAssets/Shaders/Graphics/Line3D/Line3D.VS.hlsl, profile:vs_6_0
+
+[10:47:58] Begin CompileShader, path:EngineAssets/Shaders/Graphics/Line3D/Line3D.PS.hlsl, profile:ps_6_0
+
+[10:47:58] Compile Succeeded, path:EngineAssets/Shaders/Graphics/Line3D/Line3D.PS.hlsl, profile:ps_6_0
+
+[10:47:58] Begin CompileShader, path:EngineAssets/Shaders/Graphics/Triangle3D/Triangle3D.AS.hlsl, profile:as_6_5
+
+[10:47:58] Compile Succeeded, path:EngineAssets/Shaders/Graphics/Triangle3D/Triangle3D.AS.hlsl, profile:as_6_5
+
+[10:47:58] Begin CompileShader, path:EngineAssets/Shaders/Graphics/Triangle3D/Triangle3D.MS.hlsl, profile:ms_6_5
+
+[10:47:58] Compile Succeeded, path:EngineAssets/Shaders/Graphics/Triangle3D/Triangle3D.MS.hlsl, profile:ms_6_5
+
+[10:47:58] Begin CompileShader, path:EngineAssets/Shaders/Graphics/Triangle3D/Triangle3D.PS.hlsl, profile:ps_6_5
+
+[10:47:58] Compile Succeeded, path:EngineAssets/Shaders/Graphics/Triangle3D/Triangle3D.PS.hlsl, profile:ps_6_5
+
+[10:47:58] Begin CompileShader, path:EngineAssets/Shaders/Graphics/Plane3D/Plane3D.AS.hlsl, profile:as_6_5
+
+[10:47:58] Compile Succeeded, path:EngineAssets/Shaders/Graphics/Plane3D/Plane3D.AS.hlsl, profile:as_6_5
+
+[10:47:58] Begin CompileShader, path:EngineAssets/Shaders/Graphics/Plane3D/Plane3D.MS.hlsl, profile:ms_6_5
+
+[10:47:58] Compile Succeeded, path:EngineAssets/Shaders/Graphics/Plane3D/Plane3D.MS.hlsl, profile:ms_6_5
+
+[10:47:58] Begin CompileShader, path:EngineAssets/Shaders/Graphics/Plane3D/Plane3D.PS.hlsl, profile:ps_6_5
+
+[10:47:58] Compile Succeeded, path:EngineAssets/Shaders/Graphics/Plane3D/Plane3D.PS.hlsl, profile:ps_6_5
+
+[10:47:58] Begin CompileShader, path:EngineAssets/Shaders/Graphics/Sphere3D/Sphere3D.AS.hlsl, profile:as_6_5
+
+[10:47:58] Compile Succeeded, path:EngineAssets/Shaders/Graphics/Sphere3D/Sphere3D.AS.hlsl, profile:as_6_5
+
+[10:47:58] Begin CompileShader, path:EngineAssets/Shaders/Graphics/Sphere3D/Sphere3D.MS.hlsl, profile:ms_6_5
+
+[10:47:58] Compile Succeeded, path:EngineAssets/Shaders/Graphics/Sphere3D/Sphere3D.MS.hlsl, profile:ms_6_5
+
+[10:47:58] Begin CompileShader, path:EngineAssets/Shaders/Graphics/Sphere3D/Sphere3D.PS.hlsl, profile:ps_6_5
+
+[10:47:58] Compile Succeeded, path:EngineAssets/Shaders/Graphics/Sphere3D/Sphere3D.PS.hlsl, profile:ps_6_5
+
+[10:47:58] Begin CompileShader, path:EngineAssets/Shaders/Graphics/Ring3D/Ring3D.AS.hlsl, profile:as_6_5
+
+[10:47:58] Compile Succeeded, path:EngineAssets/Shaders/Graphics/Ring3D/Ring3D.AS.hlsl, profile:as_6_5
+
+[10:47:58] Begin CompileShader, path:EngineAssets/Shaders/Graphics/Ring3D/Ring3D.MS.hlsl, profile:ms_6_5
+
+[10:47:58] Compile Succeeded, path:EngineAssets/Shaders/Graphics/Ring3D/Ring3D.MS.hlsl, profile:ms_6_5
+
+[10:47:58] Begin CompileShader, path:EngineAssets/Shaders/Graphics/Ring3D/Ring3D.PS.hlsl, profile:ps_6_5
+
+[10:47:58] Compile Succeeded, path:EngineAssets/Shaders/Graphics/Ring3D/Ring3D.PS.hlsl, profile:ps_6_5
+
+[10:47:58] Begin CompileShader, path:EngineAssets/Shaders/Graphics/Cylinder3D/Cylinder3D.AS.hlsl, profile:as_6_5
+
+[10:47:58] Compile Succeeded, path:EngineAssets/Shaders/Graphics/Cylinder3D/Cylinder3D.AS.hlsl, profile:as_6_5
+
+[10:47:58] Begin CompileShader, path:EngineAssets/Shaders/Graphics/Cylinder3D/Cylinder3D.MS.hlsl, profile:ms_6_5
+
+[10:47:58] Compile Succeeded, path:EngineAssets/Shaders/Graphics/Cylinder3D/Cylinder3D.MS.hlsl, profile:ms_6_5
+
+[10:47:58] Begin CompileShader, path:EngineAssets/Shaders/Graphics/Cylinder3D/Cylinder3D.PS.hlsl, profile:ps_6_5
+
+[10:47:58] Compile Succeeded, path:EngineAssets/Shaders/Graphics/Cylinder3D/Cylinder3D.PS.hlsl, profile:ps_6_5
+
+[10:47:58] Begin CompileShader, path:EngineAssets/Shaders/Graphics/Model3D/Model3D.AS.hlsl, profile:as_6_5
+
+[10:47:58] Compile Succeeded, path:EngineAssets/Shaders/Graphics/Model3D/Model3D.AS.hlsl, profile:as_6_5
+
+[10:47:58] Begin CompileShader, path:EngineAssets/Shaders/Graphics/Model3D/Model3D.MS.hlsl, profile:ms_6_5
+
+[10:47:58] Compile Succeeded, path:EngineAssets/Shaders/Graphics/Model3D/Model3D.MS.hlsl, profile:ms_6_5
+
+[10:47:58] Begin CompileShader, path:EngineAssets/Shaders/Graphics/Model3D/Model3D.PS.hlsl, profile:ps_6_5
+
+[10:47:58] Compile Succeeded, path:EngineAssets/Shaders/Graphics/Model3D/Model3D.PS.hlsl, profile:ps_6_5
+
+[10:47:58] Begin CompileShader, path:EngineAssets/Shaders/Graphics/Object3D/Object3D.VS.hlsl, profile:vs_6_0
+
+[10:47:58] Compile Succeeded, path:EngineAssets/Shaders/Graphics/Object3D/Object3D.VS.hlsl, profile:vs_6_0
+
+[10:47:58] Begin CompileShader, path:EngineAssets/Shaders/Graphics/Object3D/Object3D.PS.hlsl, profile:ps_6_0
+
+[10:47:58] Compile Succeeded, path:EngineAssets/Shaders/Graphics/Object3D/Object3D.PS.hlsl, profile:ps_6_0
+
+[10:47:58] Begin CompileShader, path:EngineAssets/Shaders/Graphics/Particle3D/Particle3D.VS.hlsl, profile:vs_6_0
+
+[10:47:58] Compile Succeeded, path:EngineAssets/Shaders/Graphics/Particle3D/Particle3D.VS.hlsl, profile:vs_6_0
+
+[10:47:58] Begin CompileShader, path:EngineAssets/Shaders/Graphics/Particle3D/Particle3D.PS.hlsl, profile:ps_6_0
+
+[10:47:58] Compile Succeeded, path:EngineAssets/Shaders/Graphics/Particle3D/Particle3D.PS.hlsl, profile:ps_6_0
+
+[10:47:58] Begin CompileShader, path:EngineAssets/Shaders/Graphics/Object3DGroup/Object3DGroup.VS.hlsl, profile:vs_6_0
+
+[10:47:58] Compile Succeeded, path:EngineAssets/Shaders/Graphics/Object3DGroup/Object3DGroup.VS.hlsl, profile:vs_6_0
+
+[10:47:58] Begin CompileShader, path:EngineAssets/Shaders/Graphics/Object3DGroup/Object3DGroup.PS.hlsl, profile:ps_6_0
+
+[10:47:58] Compile Succeeded, path:EngineAssets/Shaders/Graphics/Object3DGroup/Object3DGroup.PS.hlsl, profile:ps_6_0
+
+[10:47:58] GraphicsPipelineManager Initialize
+
+[10:47:58] Begin CompileShader, path:EngineAssets/Shaders/Compute/Skinning/Skinning.CS.hlsl, profile:cs_6_0
+
+[10:47:58] Compile Succeeded, path:EngineAssets/Shaders/Compute/Skinning/Skinning.CS.hlsl, profile:cs_6_0
+
+[10:47:58] ComputePipelineManager Initialize
+
+[10:47:58] Begin CompileShader, path:EngineAssets/Shaders/DefferedRenderring/Lighting/Lighting.VS.hlsl, profile:vs_6_0
+
+[10:47:58] Compile Succeeded, path:EngineAssets/Shaders/DefferedRenderring/Lighting/Lighting.VS.hlsl, profile:vs_6_0
+
+[10:47:58] Begin CompileShader, path:EngineAssets/Shaders/DefferedRenderring/Lighting/Lighting.PS.hlsl, profile:ps_6_0
+
+[10:47:58] Compile Succeeded, path:EngineAssets/Shaders/DefferedRenderring/Lighting/Lighting.PS.hlsl, profile:ps_6_0
+
+[10:47:58] DefferedRednderringPipelineManager Initialize
+
+[10:47:58] Begin CompileShader, path:EngineAssets/Shaders/PostEffect/Copy/Copy.VS.hlsl, profile:vs_6_0
+
+[10:47:58] Compile Succeeded, path:EngineAssets/Shaders/PostEffect/Copy/Copy.VS.hlsl, profile:vs_6_0
+
+[10:47:58] Begin CompileShader, path:EngineAssets/Shaders/PostEffect/Copy/Copy.PS.hlsl, profile:ps_6_0
+
+[10:47:58] Compile Succeeded, path:EngineAssets/Shaders/PostEffect/Copy/Copy.PS.hlsl, profile:ps_6_0
+
+[10:47:58] Begin CompileShader, path:EngineAssets/Shaders/PostEffect/Grayscale/Grayscale.VS.hlsl, profile:vs_6_0
+
+[10:47:58] Compile Succeeded, path:EngineAssets/Shaders/PostEffect/Grayscale/Grayscale.VS.hlsl, profile:vs_6_0
+
+[10:47:58] Begin CompileShader, path:EngineAssets/Shaders/PostEffect/Grayscale/Grayscale.PS.hlsl, profile:ps_6_0
+
+[10:47:58] Compile Succeeded, path:EngineAssets/Shaders/PostEffect/Grayscale/Grayscale.PS.hlsl, profile:ps_6_0
+
+[10:47:58] Begin CompileShader, path:EngineAssets/Shaders/PostEffect/Vignette/Vignette.VS.hlsl, profile:vs_6_0
+
+[10:47:58] Compile Succeeded, path:EngineAssets/Shaders/PostEffect/Vignette/Vignette.VS.hlsl, profile:vs_6_0
+
+[10:47:58] Begin CompileShader, path:EngineAssets/Shaders/PostEffect/Vignette/Vignette.PS.hlsl, profile:ps_6_0
+
+[10:47:59] Compile Succeeded, path:EngineAssets/Shaders/PostEffect/Vignette/Vignette.PS.hlsl, profile:ps_6_0
+
+[10:47:59] Begin CompileShader, path:EngineAssets/Shaders/PostEffect/GaussianBlur/GaussianBlur.VS.hlsl, profile:vs_6_0
+
+[10:47:59] Compile Succeeded, path:EngineAssets/Shaders/PostEffect/GaussianBlur/GaussianBlur.VS.hlsl, profile:vs_6_0
+
+[10:47:59] Begin CompileShader, path:EngineAssets/Shaders/PostEffect/GaussianBlur/GaussianBlurX.PS.hlsl, profile:ps_6_0
+
+[10:47:59] Compile Succeeded, path:EngineAssets/Shaders/PostEffect/GaussianBlur/GaussianBlurX.PS.hlsl, profile:ps_6_0
+
+[10:47:59] Begin CompileShader, path:EngineAssets/Shaders/PostEffect/GaussianBlur/GaussianBlur.VS.hlsl, profile:vs_6_0
+
+[10:47:59] Compile Succeeded, path:EngineAssets/Shaders/PostEffect/GaussianBlur/GaussianBlur.VS.hlsl, profile:vs_6_0
+
+[10:47:59] Begin CompileShader, path:EngineAssets/Shaders/PostEffect/GaussianBlur/GaussianBlurY.PS.hlsl, profile:ps_6_0
+
+[10:47:59] Compile Succeeded, path:EngineAssets/Shaders/PostEffect/GaussianBlur/GaussianBlurY.PS.hlsl, profile:ps_6_0
+
+[10:47:59] PostEffectPipelineManager Initialize
+
+[10:47:59] LineDrawer3D Initialize
+
+[10:47:59] TriangleDrawer3D Initialize
+
+[10:47:59] PlaneDrawer3D Initialize
+
+[10:47:59] SphereDrawer3D Initialize
+
+[10:47:59] RingDrawer3D Initialize
+
+[10:47:59] CylinderDrawer3D Initialize
+
+[10:47:59] ModelDrawerManager Initialize
+
+[10:47:59] SceneManager Initialize
+
+[10:47:59] DataIO Initialize
+
+[10:47:59] ImGuiController Initialize
+
+[10:47:59] MAGISYSTEM Initialize
+

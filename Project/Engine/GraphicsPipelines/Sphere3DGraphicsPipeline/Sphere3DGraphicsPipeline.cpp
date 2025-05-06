@@ -121,8 +121,6 @@ void Sphere3DGraphicsPipeline::CreateGraphicsPipelineObject() {
 	const D3D12_SHADER_BYTECODE meshShader = { meshShaderBlob_->GetBufferPointer(), meshShaderBlob_->GetBufferSize() };
 	const D3D12_SHADER_BYTECODE pixelShader = { pixelShaderBlob_->GetBufferPointer(), pixelShaderBlob_->GetBufferSize() };
 
-
-	const DXGI_FORMAT rtvFormat = DXGI_FORMAT_R8G8B8A8_UNORM_SRGB;
 	const DXGI_FORMAT dsvFormat = DXGI_FORMAT_D24_UNORM_S8_UINT;
 
 	for (uint32_t i = 0; i < kBlendModeNum; ++i) {
@@ -135,8 +133,10 @@ void Sphere3DGraphicsPipeline::CreateGraphicsPipelineObject() {
 		const CD3DX12_DEPTH_STENCIL_DESC ds(depthStencilDesc);
 
 		D3D12_RT_FORMAT_ARRAY rtArray{};
-		rtArray.NumRenderTargets = 1;
-		rtArray.RTFormats[0] = rtvFormat;
+		rtArray.NumRenderTargets = 3;
+		rtArray.RTFormats[0] = DXGI_FORMAT_R8G8B8A8_UNORM; // albedo
+		rtArray.RTFormats[1] = DXGI_FORMAT_R16G16B16A16_FLOAT; // normal
+		rtArray.RTFormats[2] = DXGI_FORMAT_R32G32B32A32_FLOAT; // world‐pos
 
 		Primitive3DPipelineStateStream stream = {
 			CD3DX12_PIPELINE_STATE_STREAM_ROOT_SIGNATURE(rootSignature_.Get()),
@@ -241,25 +241,25 @@ D3D12_DEPTH_STENCIL_DESC Sphere3DGraphicsPipeline::DepthStecilDescSetting() {
 }
 
 D3D12_DEPTH_STENCIL_DESC Sphere3DGraphicsPipeline::DepthStecilDescSettingBlend(uint32_t blendModeNum) {
-    D3D12_DEPTH_STENCIL_DESC desc{};
-    desc.DepthEnable = TRUE;
+	D3D12_DEPTH_STENCIL_DESC desc{};
+	desc.DepthEnable = TRUE;
 
-    const auto mode = static_cast<BlendMode>(blendModeNum);
-    switch (mode) {
-    case BlendMode::Normal:
-    case BlendMode::Add:
-    case BlendMode::Subtract:
-    case BlendMode::Multiply:
-    case BlendMode::Screen:
-        desc.DepthWriteMask = D3D12_DEPTH_WRITE_MASK_ZERO; // ブレンド系は書き込まない
-        break;
-    default:
-        desc.DepthWriteMask = D3D12_DEPTH_WRITE_MASK_ALL;
-        break;
-    }
+	const auto mode = static_cast<BlendMode>(blendModeNum);
+	switch (mode) {
+	case BlendMode::Normal:
+	case BlendMode::Add:
+	case BlendMode::Subtract:
+	case BlendMode::Multiply:
+	case BlendMode::Screen:
+		desc.DepthWriteMask = D3D12_DEPTH_WRITE_MASK_ZERO; // ブレンド系は書き込まない
+		break;
+	default:
+		desc.DepthWriteMask = D3D12_DEPTH_WRITE_MASK_ALL;
+		break;
+	}
 
-    desc.DepthFunc = D3D12_COMPARISON_FUNC_LESS_EQUAL;
-    return desc;
+	desc.DepthFunc = D3D12_COMPARISON_FUNC_LESS_EQUAL;
+	return desc;
 }
 
 D3D12_RASTERIZER_DESC Sphere3DGraphicsPipeline::RasterizerStateSetting() {

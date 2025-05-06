@@ -236,10 +236,10 @@ inline void SampleScene<Data>::Draw() {
 	//MAGISYSTEM::DrawPlane3D(worldTransform_[0].worldMatrix_, planeData_, material_);
 
 	//// 球体描画
-	//MAGISYSTEM::DrawSphere3D(worldTransform_[1].worldMatrix_, sphereData_, material_);
+	MAGISYSTEM::DrawSphere3D(worldTransform_[2].worldMatrix_, sphereData_, material_);
 
 	// 三角形描画
-	MAGISYSTEM::DrawTriangle3D(worldTransform_[2].worldMatrix_, triangleData_, material_);
+	// MAGISYSTEM::DrawTriangle3D(worldTransform_[2].worldMatrix_, triangleData_, material_);
 
 	//// モデル描画
 	//MAGISYSTEM::DrawModel("test", worldTransform_[2].worldMatrix_, modelMaterial_);
@@ -247,9 +247,9 @@ inline void SampleScene<Data>::Draw() {
 	// モデル描画
 
 
-	for (uint32_t i = 0; i < wtsNum_; i++) {
-		MAGISYSTEM::DrawModel("test", wts_[i].worldMatrix_, modelMaterial_);
-	}
+	//for (uint32_t i = 0; i < wtsNum_; i++) {
+	//	MAGISYSTEM::DrawModel("test", wts_[i].worldMatrix_, modelMaterial_);
+	//}
 
 	MAGISYSTEM::DrawLine3D(Vector3(0.0f, -2.0f, 0.0f), Vector3(0.0f, 2.0f, 0.0f), Color::Crimson);
 
