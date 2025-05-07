@@ -7,7 +7,7 @@ struct MeshOutput
     float4 position : SV_Position;
     float2 uv : TEXCOORD0;
     float3 normal : NORMAL0;
-    float4 worldPosition : TEXCOORD2;
+    float4 worldPosition : TEXCOORD1;
 };
 
 // αありの頂点出力
