@@ -46,6 +46,7 @@ void BaseGraphicsPipeline::CreateGraphicsPipelineObject() {
 		D3D12_SHADER_BYTECODE meshShader;
 		D3D12_SHADER_BYTECODE pixelShader;
 		const D3D12_SHADER_BYTECODE amplificationShader = { amplificationShaderBlob_->GetBufferPointer(), amplificationShaderBlob_->GetBufferSize() };
+		D3D12_RT_FORMAT_ARRAY rtArray{};
 
 		switch (mode) {
 		case BlendMode::Normal:
@@ -55,10 +56,18 @@ void BaseGraphicsPipeline::CreateGraphicsPipelineObject() {
 		case BlendMode::Screen:
 			meshShader = { meshShaderBlobWithAlpha_->GetBufferPointer(),  meshShaderBlobWithAlpha_->GetBufferSize() };
 			pixelShader = { pixelShaderBlobWithAlpha_->GetBufferPointer(), pixelShaderBlobWithAlpha_->GetBufferSize() };
+			
+			rtArray.NumRenderTargets = 1;
+			rtArray.RTFormats[0] = DXGI_FORMAT_R8G8B8A8_UNORM_SRGB;       // Albedo
 			break;
 		default:
 			meshShader = { meshShaderBlob_->GetBufferPointer(), meshShaderBlob_->GetBufferSize() };
 			pixelShader = { pixelShaderBlob_->GetBufferPointer(), pixelShaderBlob_->GetBufferSize() };
+
+			rtArray.NumRenderTargets = 3;
+			rtArray.RTFormats[0] = DXGI_FORMAT_R8G8B8A8_UNORM_SRGB;       // Albedo
+			rtArray.RTFormats[1] = DXGI_FORMAT_R16G16B16A16_FLOAT;        // Normal
+			rtArray.RTFormats[2] = DXGI_FORMAT_R16G16B16A16_FLOAT;        // Position
 			break;
 		}
 
@@ -70,12 +79,6 @@ void BaseGraphicsPipeline::CreateGraphicsPipelineObject() {
 		const CD3DX12_BLEND_DESC blend(blendDesc);
 		const CD3DX12_DEPTH_STENCIL_DESC ds(depthStencilDesc);
 
-		D3D12_RT_FORMAT_ARRAY rtArray{};
-		rtArray.NumRenderTargets = 3;
-
-		rtArray.RTFormats[0] = DXGI_FORMAT_R8G8B8A8_UNORM_SRGB;       // Albedo
-		rtArray.RTFormats[1] = DXGI_FORMAT_R16G16B16A16_FLOAT;        // Normal
-		rtArray.RTFormats[2] = DXGI_FORMAT_R16G16B16A16_FLOAT;        // Position
 
 		Primitive3DPipelineStateStream stream = {
 			CD3DX12_PIPELINE_STATE_STREAM_ROOT_SIGNATURE(rootSignature_.Get()),
