@@ -39,15 +39,16 @@ uint3 GetPrimitive(in Meshlet m, uint localPrim)
 MeshOutput GetVertexAttributes(uint vertexIndex, uint instID)
 {
     VertexData3D v = gVertexBuffer[vertexIndex];
+    ModelDataForGPU instData = gInstanceData[instID];
     
     MeshOutput vout;
-    vout.position = mul(v.position, mul(gInstanceData[instID].world, gCamera.viewProjection));
+    vout.position = mul(v.position, mul(instData.world, gCamera.viewProjection));
     vout.uv = v.uv;
-    vout.normal = normalize(mul(v.normal, (float3x3) gInstanceData[instID].worldInverseTranspose));
-    vout.worldPosition = mul(v.position, gInstanceData[instID].world);
-    
+    vout.normal = normalize(mul(v.normal, (float3x3) instData.worldInverseTranspose));
+    vout.worldPosition = mul(v.position, instData.world);
     return vout;
 }
+
 // ───── MS 本体 ─────
 [outputtopology("triangle")]
 [numthreads(128, 1, 1)]
