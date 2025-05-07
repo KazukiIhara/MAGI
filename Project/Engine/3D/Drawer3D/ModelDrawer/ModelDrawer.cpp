@@ -83,7 +83,6 @@ void ModelDrawer::Draw(BlendMode mode) {
 	// 
 	// パイプラインの設定
 	// 
-	commandList->SetGraphicsRootSignature(MAGISYSTEM::GetGraphicsRootSignature(GraphicsPipelineStateType::Model3D));
 	commandList->SetPipelineState(MAGISYSTEM::GetGraphicsPipelineState(GraphicsPipelineStateType::Model3D, mode));
 
 	// カメラの送信
