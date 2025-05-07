@@ -131,6 +131,7 @@ struct CylinderData3D {
 /// </summary>
 struct CylinderData3DForGPU {
 	Matrix4x4 worldMatrix;
+	Matrix4x4 worldInverseTranspose;
 	uint32_t divide;
 	float topRadius;
 	float bottomRadiu;

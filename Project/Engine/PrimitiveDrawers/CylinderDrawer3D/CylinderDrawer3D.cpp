@@ -98,6 +98,7 @@ void CylinderDrawer3D::AddCylinder(const Matrix4x4& worldMatrix, const CylinderD
 
 	CylinderData3DForGPU newCylinderData{
 		.worldMatrix = worldMatrix,
+		.worldInverseTranspose = MakeInverseTransposeMatrix(worldMatrix),
 		.divide = data.divide,
 		.topRadius = data.topRadius,
 		.bottomRadiu = data.bottomRadius,
