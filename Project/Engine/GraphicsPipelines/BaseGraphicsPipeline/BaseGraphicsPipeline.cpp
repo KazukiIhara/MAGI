@@ -45,7 +45,6 @@ void BaseGraphicsPipeline::CreateGraphicsPipelineObject() {
 
 		D3D12_SHADER_BYTECODE meshShader;
 		D3D12_SHADER_BYTECODE pixelShader;
-		const D3D12_SHADER_BYTECODE amplificationShader = { amplificationShaderBlob_->GetBufferPointer(), amplificationShaderBlob_->GetBufferSize() };
 		D3D12_RT_FORMAT_ARRAY rtArray{};
 
 		switch (mode) {
@@ -56,7 +55,7 @@ void BaseGraphicsPipeline::CreateGraphicsPipelineObject() {
 		case BlendMode::Screen:
 			meshShader = { meshShaderBlobWithAlpha_->GetBufferPointer(),  meshShaderBlobWithAlpha_->GetBufferSize() };
 			pixelShader = { pixelShaderBlobWithAlpha_->GetBufferPointer(), pixelShaderBlobWithAlpha_->GetBufferSize() };
-			
+
 			rtArray.NumRenderTargets = 1;
 			rtArray.RTFormats[0] = DXGI_FORMAT_R8G8B8A8_UNORM_SRGB;       // Albedo
 			break;
@@ -70,6 +69,8 @@ void BaseGraphicsPipeline::CreateGraphicsPipelineObject() {
 			rtArray.RTFormats[2] = DXGI_FORMAT_R16G16B16A16_FLOAT;        // Position
 			break;
 		}
+
+		const D3D12_SHADER_BYTECODE amplificationShader = { amplificationShaderBlob_->GetBufferPointer(), amplificationShaderBlob_->GetBufferSize() };
 
 		const D3D12_RASTERIZER_DESC rasterizerDesc = RasterizerStateSetting();
 		const D3D12_BLEND_DESC blendDesc = BlendStateSetting(i);
