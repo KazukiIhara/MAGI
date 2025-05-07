@@ -3,12 +3,15 @@ struct MeshOutput
     float4 position : SV_Position;
     float2 uv : TEXCOORD0;
     uint instanceIndex : TEXCOORD1;
+    float3 normal : NORMAL0;
+    float4 worldPosition : TEXCOORD2;
 };
 
 
 struct CylinderData3D
 {
     float4x4 worldMatrix;
+    float4x4 worldInverseTranspose;
     uint cylinderDivide;
     float topRadius;
     float bottomRadius;

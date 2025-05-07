@@ -185,6 +185,13 @@ inline void SampleScene<Data>::Update() {
 	ImGui::DragFloat3("Translate", &worldTransform_[3].translate_.x, 0.01f);
 	ImGui::End();
 
+	
+	ImGui::Begin("Translate3");
+	ImGui::DragFloat3("Scale", &worldTransform_[4].scale_.x, 0.01f);
+	ImGui::DragFloat3("Rotate", &worldTransform_[4].rotate_.x, 0.01f);
+	ImGui::DragFloat3("Translate", &worldTransform_[4].translate_.x, 0.01f);
+	ImGui::End();
+
 	ImGui::Begin("PlaneData");
 	ImGui::DragFloat3("LeftTop", &planeData_.verticesOffsets[0].x, 0.01f);
 	ImGui::DragFloat3("RightTop", &planeData_.verticesOffsets[1].x, 0.01f);
@@ -291,6 +298,9 @@ inline void SampleScene<Data>::Draw() {
 	// リング描画
 	MAGISYSTEM::DrawRing3D(worldTransform_[3].worldMatrix_, ringData_, material_);
 
+	// シリンダー描画
+	MAGISYSTEM::DrawCylinder3D(worldTransform_[4].worldMatrix_, cylinderData_, material_);
+
 	//// モデル描画
 	//MAGISYSTEM::DrawModel("test", worldTransform_[2].worldMatrix_, modelMaterial_);
 
@@ -303,8 +313,6 @@ inline void SampleScene<Data>::Draw() {
 
 	//MAGISYSTEM::DrawLine3D(Vector3(0.0f, -2.0f, 0.0f), Vector3(0.0f, 2.0f, 0.0f), Color::Crimson);
 
-	//// シリンダー描画
-	//MAGISYSTEM::DrawCylinder3D(worldTransform_[4].worldMatrix_, cylinderData_, material_);
 
 
 	//for (uint32_t i = 0; i < wtsNum_; i++) {
