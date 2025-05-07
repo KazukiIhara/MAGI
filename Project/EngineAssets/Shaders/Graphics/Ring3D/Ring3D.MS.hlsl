@@ -1,4 +1,5 @@
 ﻿#include "Ring3D.hlsli"
+#include "../Primitive3D/Primitive3D.hlsli"
 
 #define MAX_VERTICES 4
 #define MAX_TRIANGLES 2

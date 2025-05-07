@@ -191,7 +191,7 @@ inline void SampleScene<Data>::Update() {
 	ImGui::End();
 
 
-	ImGui::Begin("Translate3");
+	ImGui::Begin("Translate4");
 	ImGui::DragFloat3("Scale", &worldTransform_[4].scale_.x, 0.01f);
 	ImGui::DragFloat3("Rotate", &worldTransform_[4].rotate_.x, 0.01f);
 	ImGui::DragFloat3("Translate", &worldTransform_[4].translate_.x, 0.01f);

@@ -1,4 +1,5 @@
 #include "Plane3D.hlsli"
+#include "../Primitive3D/Primitive3D.hlsli"
 
 ConstantBuffer<Camera> gCamera : register(b0);
 StructuredBuffer<PlaneData3D> gInstanceData : register(t0);

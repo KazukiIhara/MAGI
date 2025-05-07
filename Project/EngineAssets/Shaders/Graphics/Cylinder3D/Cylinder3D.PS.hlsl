@@ -1,4 +1,5 @@
 #include "Cylinder3D.hlsli"
+#include "../Primitive3D/Primitive3D.hlsli"
 
 Texture2D gTextures[] : register(t1000);
 SamplerState gSampler : register(s0);

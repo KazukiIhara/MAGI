@@ -1,4 +1,5 @@
 #include "Triangle3D.hlsli"
+#include "../Primitive3D/Primitive3D.hlsli"
 
 ConstantBuffer<Camera> gCamera : register(b0);
 StructuredBuffer<TriangleData3D> gInstanceData : register(t0);
