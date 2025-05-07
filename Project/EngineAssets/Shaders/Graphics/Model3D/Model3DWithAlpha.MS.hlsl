@@ -36,15 +36,13 @@ uint3 GetPrimitive(in Meshlet m, uint localPrim)
     return UnpackPrimitive(packed);
 }
 
-MeshOutput GetVertexAttributes(uint vertexIndex, uint instID)
+MeshOutputWithAlpha GetVertexAttributes(uint vertexIndex, uint instID)
 {
     VertexData3D v = gVertexBuffer[vertexIndex];
     
-    MeshOutput vout;
+    MeshOutputWithAlpha vout;
     vout.position = mul(v.position, mul(gInstanceData[instID].world, gCamera.viewProjection));
     vout.uv = v.uv;
-    vout.normal = normalize(mul(v.normal, (float3x3) gInstanceData[instID].worldInverseTranspose));
-    vout.worldPosition = mul(v.position, gInstanceData[instID].world);
     
     return vout;
 }
@@ -55,7 +53,7 @@ void main(
      uint gtid : SV_GroupThreadID,
      uint gid : SV_GroupID,
      in payload Payload payload,
-     out vertices MeshOutput verts[256],
+     out vertices MeshOutputWithAlpha verts[256],
      out indices uint3 tris[256]
 )
 {
