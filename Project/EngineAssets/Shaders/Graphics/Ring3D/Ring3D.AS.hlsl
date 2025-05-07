@@ -1,4 +1,5 @@
 #include "Ring3D.hlsli"
+#include "../Primitive3D/Primitive3D.hlsli"
 
 ConstantBuffer<RootConstants> gRootConstant : register(b1);
 StructuredBuffer<RingData3D> gInstanceData : register(t0);

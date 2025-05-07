@@ -67,13 +67,14 @@ void DXGI::Initialize() {
 	}
 	// デバイスの生成がうまくいかなかったので起動できない
 	assert(device_ != nullptr);
-	// 初期化完了ログ
-	Logger::Log("Complete Create D3D12DDevice\n");
 
 	// MeshShader対応のデバイスを取得
 	hr_ = device_->QueryInterface(IID_PPV_ARGS(&device10_));
 	assert(SUCCEEDED(hr_));
 	Logger::Log("Device10 (MeshShader対応) を取得しました。\n");
+
+	// 初期化完了ログ
+	Logger::Log("Complete Create D3D12DDevice\n");
 
 #ifdef _DEBUG
 	ComPtr<ID3D12InfoQueue> infoQueue = nullptr;

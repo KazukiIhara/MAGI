@@ -1,4 +1,4 @@
-ï»¿#include "Sphere3D.hlsli"
+#include "Sphere3D.hlsli"
 #include "../Primitive3D/Primitive3D.hlsli"
 
 #define MAX_VERTICES 4
@@ -13,7 +13,7 @@ StructuredBuffer<PrimitiveMaterialData3D> gMaterialData : register(t1);
 void main(in payload ASPayload payload,
     uint3 threadID : SV_DispatchThreadID,
     out indices uint3 tris[MAX_TRIANGLES],
-    out vertices MeshOutput verts[MAX_VERTICES])
+    out vertices MeshOutputWithAlpha verts[MAX_VERTICES])
 {
     uint instanceID = payload.instanceID;
     uint tileID = threadID.x;
@@ -30,7 +30,7 @@ void main(in payload ASPayload payload,
     if (!isActive)
         return;
 
-    // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ åˆ†å‰²ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+    // „Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ •ªŠ„ƒCƒ“ƒfƒbƒNƒX „Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ
     uint lonIndex = tileID % lonCount;
     uint latIndex = tileID / lonCount;
 
@@ -59,31 +59,26 @@ void main(in payload ASPayload payload,
         float2((float) (lonIndex + 1) / lonCount, 1.0f - (float) (latIndex + 1) / latCount)
     };
 
-    // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ è¡Œåˆ—å–å¾— â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+    // „Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ s—ñæ“¾ „Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ
     float4x4 world = sphere.worldMatrix;
     float3x3 normalMtx = (float3x3) sphere.worldInverseTranspose;
 
-    // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ é ‚ç‚¹å‡ºåŠ› â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+    // „Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ ’¸“_o—Í „Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ
     [unroll]
     for (uint i = 0; i < 4; ++i)
     {
 
         float4 worldPos = mul(float4(positionsL[i] * sphere.radius, 1.0f), world);
 
-        // ã‚¯ãƒªãƒƒãƒ—åº§æ¨™
+        // ƒNƒŠƒbƒvÀ•W
         float4 clipPos = mul(worldPos, gCamera.viewProjection);
 
-        // æ³•ç·šï¼ˆãƒ¯ãƒ¼ãƒ«ãƒ‰ç©ºé–“ï¼‰
-        float3 worldN = normalize(mul(normalize(positionsL[i]), normalMtx));
-
-        // UV å¤‰æ›
+        // UV •ÏŠ·
         float4 uvTrans = mul(float4(uvs[i], 0.0f, 1.0f), mat.uvMatrix);
 
         verts[i].position = clipPos;
         verts[i].uv = uvTrans.xy;
         verts[i].instanceIndex = instanceID;
-        verts[i].normal = worldN;
-        verts[i].worldPosition = worldPos;
     }
 
     tris[0] = uint3(0, 1, 2);

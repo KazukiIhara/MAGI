@@ -15,7 +15,7 @@ void main(
     in payload ASPayload payload,
     uint3 threadID : SV_DispatchThreadID,
     out indices uint3 tris[MAX_TRIANGLES],
-    out vertices MeshOutput verts[MAX_VERTICES]
+    out vertices MeshOutputWithAlpha verts[MAX_VERTICES]
 )
 {
     uint instanceID = payload.instanceID;
@@ -69,16 +69,11 @@ void main(
         float4 clipPos = mul(worldPos4[i], gCamera.viewProjection);
         float4 worldPosition = worldPos4[i];
         float2 uv = mul(float4(baseUVs[i], 0.0f, 1.0f), mat.uvMatrix).xy;
-        float angle = (i % 2 == 0) ? angle0 : angle1;
-        float3 normalOS = float3(cos(angle), 0.0f, sin(angle));
-        float3 normalWS = normalize(mul(normalOS, (float3x3) cylinder.worldInverseTranspose));
 
         // 出力設定
         verts[i].position = clipPos;
         verts[i].uv = uv;
         verts[i].instanceIndex = instanceID;
-        verts[i].worldPosition = worldPosition;
-        verts[i].normal = normalWS;
     }
 
     // インデックス

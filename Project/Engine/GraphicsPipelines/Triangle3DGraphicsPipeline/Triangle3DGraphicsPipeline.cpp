@@ -118,17 +118,20 @@ void Triangle3DGraphicsPipeline::CreateRootSignature() {
 }
 
 void Triangle3DGraphicsPipeline::CompileShaders() {
-	amplificationShaderBlob_ = shaderCompiler_->CompileShader(
-		L"EngineAssets/Shaders/Graphics/Triangle3D/Triangle3D.AS.hlsl", L"as_6_5");
+	amplificationShaderBlob_ = shaderCompiler_->CompileShader(L"EngineAssets/Shaders/Graphics/Triangle3D/Triangle3D.AS.hlsl", L"as_6_5");
 	assert(amplificationShaderBlob_ != nullptr);
 
-	meshShaderBlob_ = shaderCompiler_->CompileShader(
-		L"EngineAssets/Shaders/Graphics/Triangle3D/Triangle3D.MS.hlsl", L"ms_6_5");
+	meshShaderBlob_ = shaderCompiler_->CompileShader(L"EngineAssets/Shaders/Graphics/Triangle3D/Triangle3D.MS.hlsl", L"ms_6_5");
 	assert(meshShaderBlob_ != nullptr);
 
-	pixelShaderBlob_ = shaderCompiler_->CompileShader(
-		L"EngineAssets/Shaders/Graphics/Triangle3D/Triangle3D.PS.hlsl", L"ps_6_5");
+	pixelShaderBlob_ = shaderCompiler_->CompileShader(L"EngineAssets/Shaders/Graphics/Primitive3D/Primitive3D.PS.hlsl", L"ps_6_5");
 	assert(pixelShaderBlob_ != nullptr);
+
+	meshShaderBlobWithAlpha_ = shaderCompiler_->CompileShader(L"EngineAssets/Shaders/Graphics/Triangle3D/Triangle3DWithAlpha.MS.hlsl", L"ms_6_5");
+	assert(meshShaderBlobWithAlpha_ != nullptr);
+
+	pixelShaderBlobWithAlpha_ = shaderCompiler_->CompileShader(L"EngineAssets/Shaders/Graphics/Primitive3D/Primitive3DWithAlpha.PS.hlsl", L"ps_6_5");
+	assert(pixelShaderBlobWithAlpha_ != nullptr);
 }
 
 

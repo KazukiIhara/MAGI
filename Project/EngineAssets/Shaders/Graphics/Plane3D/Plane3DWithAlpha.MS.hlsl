@@ -11,7 +11,7 @@ void main(
     in payload ASPayload payload,
     uint3 dispatchThreadID : SV_DispatchThreadID,
     out indices uint3 tris[2],
-    out vertices MeshOutput verts[4]
+    out vertices MeshOutputWithAlpha verts[4]
 )
 {
     uint instanceID = payload.instanceID;
@@ -37,9 +37,6 @@ void main(
         float2(1.0f, 1.0f)
     };
 
-    // 法線ベクトル（平面なので一律）
-    float3 normal = normalize(mul(float3(0.0f, 0.0f, -1.0f), (float3x3) plane.worldInverseTranspose));
-
     for (uint i = 0; i < 4; ++i)
     {
         float4 worldPos = mul(positions[i], plane.worldMatrix);
@@ -49,8 +46,6 @@ void main(
         verts[i].position = clipPos;
         verts[i].uv = uv;
         verts[i].instanceIndex = instanceID;
-        verts[i].normal = normal; // ★ normal を書き込み
-        verts[i].worldPosition = worldPos; // ★ worldPosition を書き込み
     }
 
     // 2つの三角形を構成（インデックスは6個使用）

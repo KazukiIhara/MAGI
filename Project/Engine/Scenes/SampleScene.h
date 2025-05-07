@@ -66,7 +66,7 @@ private:
 	bool isOnVignette_ = false;
 	bool isRadialBlur_ = false;
 
-	static const uint32_t wtsNum_ = 40000;
+	static const uint32_t wtsNum_ = 3;
 
 	std::array<WorldTransform, wtsNum_> wts_;
 
@@ -135,7 +135,7 @@ inline void SampleScene<Data>::Initialize() {
 
 	// デフォルトのテクスチャを取得　TODO:マテリアルもクラス化して初期化できるようにする
 	material_.textureIndex = MAGISYSTEM::GetDefaultTextureIndex();
-	material_.blendMode = BlendMode::None;
+	material_.blendMode = BlendMode::Add;
 
 	for (uint32_t i = 0; i < wtsNum_; i++) {
 		wts_[i].Initialize();
@@ -191,7 +191,7 @@ inline void SampleScene<Data>::Update() {
 	ImGui::End();
 
 
-	ImGui::Begin("Translate3");
+	ImGui::Begin("Translate4");
 	ImGui::DragFloat3("Scale", &worldTransform_[4].scale_.x, 0.01f);
 	ImGui::DragFloat3("Rotate", &worldTransform_[4].rotate_.x, 0.01f);
 	ImGui::DragFloat3("Translate", &worldTransform_[4].translate_.x, 0.01f);

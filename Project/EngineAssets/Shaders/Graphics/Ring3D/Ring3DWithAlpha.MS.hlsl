@@ -1,4 +1,4 @@
-ï»¿#include "Ring3D.hlsli"
+#include "Ring3D.hlsli"
 #include "../Primitive3D/Primitive3D.hlsli"
 
 #define MAX_VERTICES 4
@@ -14,7 +14,7 @@ void main(
     in payload ASPayload payload,
     uint3 threadID : SV_DispatchThreadID,
     out indices uint3 tris[MAX_TRIANGLES],
-    out vertices MeshOutput verts[MAX_VERTICES]
+    out vertices MeshOutputWithAlpha verts[MAX_VERTICES]
 )
 {
     uint instanceID = payload.instanceID;
@@ -38,13 +38,13 @@ void main(
     float cos1 = cos(angle1);
     float sin1 = sin(angle1);
 
-    // XYå¹³é¢ã§ã®ãƒªãƒ³ã‚°é ‚ç‚¹
+    // XY•½–Ê‚Å‚ÌƒŠƒ“ƒO’¸“_
     float3 vertices[4] =
     {
-        float3(cos0 * ring.outerRadius, sin0 * ring.outerRadius, 0.0f), // å¤–å´é–‹å§‹
-        float3(cos1 * ring.outerRadius, sin1 * ring.outerRadius, 0.0f), // å¤–å´çµ‚äº†
-        float3(cos0 * ring.innerRadius, sin0 * ring.innerRadius, 0.0f), // å†…å´é–‹å§‹
-        float3(cos1 * ring.innerRadius, sin1 * ring.innerRadius, 0.0f) // å†…å´çµ‚äº†
+        float3(cos0 * ring.outerRadius, sin0 * ring.outerRadius, 0.0f), // ŠO‘¤ŠJn
+        float3(cos1 * ring.outerRadius, sin1 * ring.outerRadius, 0.0f), // ŠO‘¤I—¹
+        float3(cos0 * ring.innerRadius, sin0 * ring.innerRadius, 0.0f), // “à‘¤ŠJn
+        float3(cos1 * ring.innerRadius, sin1 * ring.innerRadius, 0.0f) // “à‘¤I—¹
     };
     
 
@@ -74,13 +74,10 @@ void main(
         float4 worldPos = mul(localPos, ring.worldMatrix);
         float4 clipPos = mul(positions[i], gCamera.viewProjection);
         float2 uv = mul(float4(baseUVs[i], 0.0f, 1.0f), mat.uvMatrix).xy;
-        float3 normal = normalize(mul(float3(0.0f, 0.0f, -1.0f), (float3x3) ring.worldInverseTranspose));
         
         verts[i].position = clipPos;
         verts[i].uv = uv;
         verts[i].instanceIndex = instanceID;
-        verts[i].normal = normal;
-        verts[i].worldPosition = worldPos;
     }
 
 
