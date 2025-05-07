@@ -2,7 +2,7 @@
 #include "../Primitive3D/Primitive3D.hlsli"
 
 ConstantBuffer<Camera> gCamera : register(b0);
-StructuredBuffer<TriangleData3D> gInstanceData : register(t0);
+StructuredBuffer<TriangleData3DWithAlpha> gInstanceData : register(t0);
 StructuredBuffer<PrimitiveMaterialData3D> gMaterialData : register(t1);
 
 [outputtopology("triangle")]
@@ -10,11 +10,11 @@ StructuredBuffer<PrimitiveMaterialData3D> gMaterialData : register(t1);
 void main(in payload ASPayload payload,
           uint3 tid : SV_DispatchThreadID,
           out indices uint3 tris[1],
-          out vertices MeshOutput verts[3])
+          out vertices MeshOutputWithAlpha verts[3])
 {
     const uint instanceID = payload.instanceID;
 
-    TriangleData3D data = gInstanceData[instanceID];
+    TriangleData3DWithAlpha data = gInstanceData[instanceID];
     PrimitiveMaterialData3D mat = gMaterialData[instanceID];
 
     SetMeshOutputCounts(3, 1);
@@ -34,15 +34,10 @@ void main(in payload ASPayload payload,
         float4 clipPos = mul(worldPos, gCamera.viewProjection);
         float2 uv = mul(float4(uvs[i], 0.0f, 1.0f), mat.uvMatrix).xy;
 
-        // 法線は面ごとに計算（flat shading）
-        float3 normal = normalize(mul(float3(0.0f, 0.0f, -1.0f), (float3x3) data.worldInverseTranspose));
-
         // 頂点出力にセット
         verts[i].position = clipPos;
         verts[i].uv = uv;
         verts[i].instanceIndex = instanceID;
-        verts[i].normal = normal;
-        verts[i].worldPosition = worldPos;
     }
 
     tris[0] = uint3(0, 1, 2);

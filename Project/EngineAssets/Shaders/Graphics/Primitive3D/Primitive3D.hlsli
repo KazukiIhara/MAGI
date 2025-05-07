@@ -8,6 +8,14 @@ struct MeshOutput
     float4 worldPosition : TEXCOORD2;
 };
 
+// αありのMeshシェーダーからピクセルシェーダーに渡す構造体
+struct MeshOutputWithAlpha
+{
+    float4 position : SV_Position;
+    float2 uv : TEXCOORD0;
+    uint instanceIndex : TEXCOORD1;
+};
+
 // マテリアルデータ
 struct PrimitiveMaterialData3D
 {

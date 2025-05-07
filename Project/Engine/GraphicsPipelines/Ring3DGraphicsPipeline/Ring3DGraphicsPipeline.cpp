@@ -109,6 +109,12 @@ void Ring3DGraphicsPipeline::CompileShaders() {
 
 	pixelShaderBlob_ = shaderCompiler_->CompileShader(L"EngineAssets/Shaders/Graphics/Primitive3D/Primitive3D.PS.hlsl", L"ps_6_5");
 	assert(pixelShaderBlob_ != nullptr);
+
+	meshShaderBlobWithAlpha_ = shaderCompiler_->CompileShader(L"EngineAssets/Shaders/Graphics/Ring3D/Ring3DWithAlpha.MS.hlsl", L"ms_6_5");
+	assert(meshShaderBlobWithAlpha_ != nullptr);
+
+	pixelShaderBlobWithAlpha_ = shaderCompiler_->CompileShader(L"EngineAssets/Shaders/Graphics/Primitive3D/Primitive3DWithAlpha.PS.hlsl", L"ps_6_5");
+	assert(pixelShaderBlobWithAlpha_ != nullptr);
 }
 
 void Ring3DGraphicsPipeline::CreateGraphicsPipelineObject() {
