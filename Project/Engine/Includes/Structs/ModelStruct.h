@@ -115,7 +115,4 @@ struct ModelMaterialDataForGPU {
 struct MeshInfo {
 	uint32_t indexSize;
 	uint32_t meshletCount;
-
-	uint32_t lastMeshletVertCount;
-	uint32_t lastMeshletPrimCount;
 };
