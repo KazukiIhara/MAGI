@@ -2,7 +2,7 @@
 #include "../Primitive3D/Primitive3D.hlsli"
 
 ConstantBuffer<Camera> gCamera : register(b0);
-StructuredBuffer<TriangleData3DWithAlpha> gInstanceData : register(t0);
+StructuredBuffer<TriangleData3D> gInstanceData : register(t0);
 StructuredBuffer<PrimitiveMaterialData3D> gMaterialData : register(t1);
 
 [outputtopology("triangle")]
@@ -14,7 +14,7 @@ void main(in payload ASPayload payload,
 {
     const uint instanceID = payload.instanceID;
 
-    TriangleData3DWithAlpha data = gInstanceData[instanceID];
+    TriangleData3D data = gInstanceData[instanceID];
     PrimitiveMaterialData3D mat = gMaterialData[instanceID];
 
     SetMeshOutputCounts(3, 1);

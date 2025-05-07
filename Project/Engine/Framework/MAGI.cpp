@@ -636,11 +636,11 @@ void MAGISYSTEM::Draw() {
 	for (uint32_t i = 1; i < kBlendModeNum; ++i) {
 		BlendMode mode = static_cast<BlendMode>(i);
 		modelDrawerManager_->DrawAll(mode);
-		// triangleDrawer3D_->Draw(mode);
-		// planeDrawer3D_->Draw(mode);
-		// sphereDrawer3D_->Draw(mode);
-		// ringDrawer3D_->Draw(mode);
-		// cylinderDrawer3D_->Draw(mode);
+		 triangleDrawer3D_->Draw(mode);
+		 planeDrawer3D_->Draw(mode);
+		 sphereDrawer3D_->Draw(mode);
+		 ringDrawer3D_->Draw(mode);
+		 cylinderDrawer3D_->Draw(mode);
 	}
 
 	// ライト適用後の処理

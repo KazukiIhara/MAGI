@@ -18,7 +18,7 @@ GBufferOutput main(MeshOutput input)
     uint instanceID = input.instanceIndex;
     PrimitiveMaterialData3D mat = gMaterialData[instanceID];
 
-    float2 uv = mul(float4(input.uv, 0.0f, 1.0f), mat.uvMatrix).xy;
+    float2 uv = input.uv;
     float4 texColor = gTextures[mat.textureIndex].Sample(gSampler, uv);
     output.albedo = texColor * mat.baseColor;
     
