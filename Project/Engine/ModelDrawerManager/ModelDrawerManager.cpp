@@ -56,6 +56,10 @@ void ModelDrawerManager::UpdateAll() {
 
 void ModelDrawerManager::DrawAll(BlendMode mode) {
 	// 全モデル描画クラスを描画
+	
+	// ルーシグネイチャをセット
+	directXCommand_->GetList()->SetGraphicsRootSignature(graphicsPipelineManager_->GetRootSignature(GraphicsPipelineStateType::Model3D));
+
 	for (auto& modelDrawer : modelDrawers_) {
 		modelDrawer.second->Draw(mode);
 	}

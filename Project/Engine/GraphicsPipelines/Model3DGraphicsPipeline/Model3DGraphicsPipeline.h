@@ -2,8 +2,6 @@
 
 #include "GraphicsPipelines/BaseGraphicsPipeline/BaseGraphicsPipeline.h"
 
-#include "Structs/Primitive3DStruct.h"
-
 /// <summary>
 /// モデル描画用のパイプライン
 /// </summary>
@@ -17,13 +15,10 @@ private:
 	void CreateRootSignature()override;
 	// シェーダーをコンパイルする
 	void CompileShaders()override;
-	// グラフィックスパイプラインオブジェクトを作成する
-	void CreateGraphicsPipelineObject()override;
 	// BlendStateの設定を行う
 	D3D12_BLEND_DESC BlendStateSetting(uint32_t blendModeNum)override;
 	// DepthStencilStateの設定を行う
 	D3D12_DEPTH_STENCIL_DESC DepthStecilDescSetting()override;
-	D3D12_DEPTH_STENCIL_DESC DepthStecilDescSettingBlend(uint32_t blendModeNum);
 	// InputLayoutの設定を行う
 	D3D12_INPUT_LAYOUT_DESC InputLayoutSetting()override;
 	// RasterizerStateの設定を行う

@@ -159,7 +159,6 @@ MeshDrawer::MeshDrawer(const MeshData& meshData) {
 	};
 	materialBuffer_->Unmap(0, nullptr);
 
-
 }
 
 MeshDrawer::~MeshDrawer() = default;
@@ -177,11 +176,11 @@ void MeshDrawer::Draw(uint32_t instanceCount) {
 	cmd->SetGraphicsRootShaderResourceView(6, meshletUniqueVertIB_->GetGPUVirtualAddress());
 	cmd->SetGraphicsRootDescriptorTable(7, MAGISYSTEM::GetSrvUavDescriptorHandleGPU(primSrvIdx_));
 
-	MeshInfo info = {};
-	info.indexSize = 4;					// 現在の IB フォーマットに合わせる
-	info.meshletCount = meshletCount_;  // ←必須！
-
-	cmd->SetGraphicsRoot32BitConstants(8, 4, &info, 0);
+	MeshInfo info = {
+		.indexSize =4,
+		.meshletCount = meshletCount_,
+	};
+	cmd->SetGraphicsRoot32BitConstants(8, 2, &info, 0);
 
 	cmd->DispatchMesh(DivRoundUp(meshletCount_, AS_GROUP_SIZE), instanceCount, 1);
 }

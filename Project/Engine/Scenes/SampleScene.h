@@ -50,6 +50,9 @@ private:
 	// モデル用のマテリアルデータ
 	ModelMaterial modelMaterial_{};
 
+	// モデル用のマテリアルデータ
+	ModelMaterial modelMatAlpha_{};
+
 	float vignetteScale_ = 16.0f;
 	float vignetteFalloff_ = 0.8f;
 
@@ -70,6 +73,8 @@ private:
 
 	// DirectionalLight
 	DirectionalLight directionalLight_{};
+
+
 
 };
 
@@ -114,6 +119,7 @@ inline void SampleScene<Data>::Initialize() {
 
 
 	modelMaterial_.blendMode = BlendMode::None;
+	modelMatAlpha_.blendMode = BlendMode::Add;
 
 	// ModelDrawer
 	MAGISYSTEM::CreateModelDrawer("test", MAGISYSTEM::FindModel("teapot"));
@@ -122,7 +128,6 @@ inline void SampleScene<Data>::Initialize() {
 	for (uint32_t i = 0; i < 5; i++) {
 		worldTransform_[i].Initialize();
 	}
-
 
 
 	worldTransform_[3].translate_.x = 2.0f;
@@ -185,7 +190,7 @@ inline void SampleScene<Data>::Update() {
 	ImGui::DragFloat3("Translate", &worldTransform_[3].translate_.x, 0.01f);
 	ImGui::End();
 
-	
+
 	ImGui::Begin("Translate3");
 	ImGui::DragFloat3("Scale", &worldTransform_[4].scale_.x, 0.01f);
 	ImGui::DragFloat3("Rotate", &worldTransform_[4].rotate_.x, 0.01f);
@@ -293,7 +298,7 @@ inline void SampleScene<Data>::Draw() {
 	MAGISYSTEM::DrawSphere3D(worldTransform_[1].worldMatrix_, sphereData_, material_);
 
 	// 三角形描画
-	MAGISYSTEM::DrawTriangle3D(worldTransform_[2].worldMatrix_, triangleData_, material_);
+	//MAGISYSTEM::DrawTriangle3D(worldTransform_[2].worldMatrix_, triangleData_, material_);
 
 	// リング描画
 	MAGISYSTEM::DrawRing3D(worldTransform_[3].worldMatrix_, ringData_, material_);
@@ -301,8 +306,8 @@ inline void SampleScene<Data>::Draw() {
 	// シリンダー描画
 	MAGISYSTEM::DrawCylinder3D(worldTransform_[4].worldMatrix_, cylinderData_, material_);
 
-	//// モデル描画
-	//MAGISYSTEM::DrawModel("test", worldTransform_[2].worldMatrix_, modelMaterial_);
+	// モデル描画
+	MAGISYSTEM::DrawModel("test", worldTransform_[2].worldMatrix_, modelMatAlpha_);
 
 	// モデル描画
 
