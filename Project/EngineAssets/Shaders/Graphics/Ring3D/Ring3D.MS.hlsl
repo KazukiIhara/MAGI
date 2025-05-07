@@ -38,17 +38,21 @@ void main(
     float sin1 = sin(angle1);
 
     // XY平面でのリング頂点
-    float3 p0 = float3(cos0 * ring.outerRadius, sin0 * ring.outerRadius, 0.0f); // 外側開始
-    float3 p1 = float3(cos1 * ring.outerRadius, sin1 * ring.outerRadius, 0.0f); // 外側終了
-    float3 p2 = float3(cos0 * ring.innerRadius, sin0 * ring.innerRadius, 0.0f); // 内側開始
-    float3 p3 = float3(cos1 * ring.innerRadius, sin1 * ring.innerRadius, 0.0f); // 内側終了
+    float3 vertices[4] =
+    {
+        float3(cos0 * ring.outerRadius, sin0 * ring.outerRadius, 0.0f), // 外側開始
+        float3(cos1 * ring.outerRadius, sin1 * ring.outerRadius, 0.0f), // 外側終了
+        float3(cos0 * ring.innerRadius, sin0 * ring.innerRadius, 0.0f), // 内側開始
+        float3(cos1 * ring.innerRadius, sin1 * ring.innerRadius, 0.0f) // 内側終了
+    };
+    
 
     float4 positions[4] =
     {
-        mul(float4(p0, 1.0f), ring.worldMatrix),
-        mul(float4(p1, 1.0f), ring.worldMatrix),
-        mul(float4(p2, 1.0f), ring.worldMatrix),
-        mul(float4(p3, 1.0f), ring.worldMatrix)
+        mul(float4(vertices[0], 1.0f), ring.worldMatrix),
+        mul(float4(vertices[1], 1.0f), ring.worldMatrix),
+        mul(float4(vertices[2], 1.0f), ring.worldMatrix),
+        mul(float4(vertices[3], 1.0f), ring.worldMatrix)
     };
 
     float u0 = (float) tileID / (float) divide;
@@ -65,12 +69,17 @@ void main(
     [unroll]
     for (uint i = 0; i < 4; ++i)
     {
+        float4 localPos = float4(vertices[i], 1.0f);
+        float4 worldPos = mul(localPos, ring.worldMatrix);
         float4 clipPos = mul(positions[i], gCamera.viewProjection);
-        float4 transformedUV = mul(float4(baseUVs[i], 0.0f, 1.0f), mat.uvMatrix);
-
+        float2 uv = mul(float4(baseUVs[i], 0.0f, 1.0f), mat.uvMatrix).xy;
+        float3 normal = normalize(mul(float3(0.0f, 0.0f, -1.0f), (float3x3) ring.worldInverseTranspose));
+        
         verts[i].position = clipPos;
-        verts[i].uv = transformedUV.xy;
+        verts[i].uv = uv;
         verts[i].instanceIndex = instanceID;
+        verts[i].normal = normal;
+        verts[i].worldPosition = worldPos;
     }
 
 

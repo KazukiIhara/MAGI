@@ -613,7 +613,7 @@ void MAGISYSTEM::Draw() {
 	triangleDrawer3D_->Draw(noneMode);
 	planeDrawer3D_->Draw(noneMode);
 	sphereDrawer3D_->Draw(noneMode);
-	// ringDrawer3D_->Draw(noneMode);
+	ringDrawer3D_->Draw(noneMode);
 	// cylinderDrawer3D_->Draw(noneMode);
 
 	modelDrawerManager_->DrawAll(noneMode);

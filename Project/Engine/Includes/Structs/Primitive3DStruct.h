@@ -108,6 +108,7 @@ struct RingData3D {
 /// </summary>
 struct RingData3DForGPU {
 	Matrix4x4 worldMatrix;
+	Matrix4x4 worldInverseTranspose;
 	uint32_t ringDivide;
 	float outerRadius;
 	float innerRadius;

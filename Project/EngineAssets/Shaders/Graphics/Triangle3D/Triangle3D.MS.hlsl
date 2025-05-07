@@ -38,7 +38,7 @@ void main(in payload ASPayload payload,
 
         // 頂点出力にセット
         verts[i].position = clipPos;
-        verts[i].uv = mul(float4(uvs[i], 0, 1), mat.uvMatrix).xy;
+        verts[i].uv = uv;
         verts[i].instanceIndex = instanceID;
         verts[i].normal = normal;
         verts[i].worldPosition = worldPos;

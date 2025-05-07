@@ -98,6 +98,7 @@ void RingDrawer3D::AddRing(const Matrix4x4& worldMatrix, const RingData3D& data,
 
 	RingData3DForGPU newRingData{
 		.worldMatrix = worldMatrix,
+		.worldInverseTranspose = MakeInverseTransposeMatrix(worldMatrix),
 		.ringDivide = data.ringDivide,
 		.outerRadius = data.outerRadius,
 		.innerRadius = data.innerRadius,
