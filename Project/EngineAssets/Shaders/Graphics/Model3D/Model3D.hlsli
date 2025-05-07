@@ -10,6 +10,13 @@ struct MeshOutput
     float4 worldPosition : TEXCOORD2;
 };
 
+// αありの頂点出力
+struct MeshOutputWithAlpha
+{
+    float4 position : SV_Position;
+    float2 uv : TEXCOORD0;
+};
+
 // 頂点データ
 struct VertexData3D
 {
@@ -19,18 +26,17 @@ struct VertexData3D
     float3 tangent;
 };
 
-struct VertexOutPut
-{
-    float4 position;
-    float2 uv;
-    uint meshletIndex;
-};
-
 // インスタンスデータ
 struct ModelDataForGPU
 {
     float4x4 world;
     float4x4 worldInverseTranspose;
+};
+
+// αありのインスタンスデータ
+struct ModelDataWithAlphaForGPU
+{
+    float4x4 world;
 };
 
 // マテリアルデータ

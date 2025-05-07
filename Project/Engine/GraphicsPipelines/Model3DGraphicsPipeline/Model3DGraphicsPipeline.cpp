@@ -147,57 +147,12 @@ void Model3DGraphicsPipeline::CompileShaders() {
 
 	pixelShaderBlob_ = shaderCompiler_->CompileShader(L"EngineAssets/Shaders/Graphics/Model3D/Model3D.PS.hlsl", L"ps_6_5");
 	assert(pixelShaderBlob_);
-}
 
-void Model3DGraphicsPipeline::CreateGraphicsPipelineObject() {
-	assert(rootSignature_);
-	assert(meshShaderBlob_);
-	assert(pixelShaderBlob_);
+	meshShaderBlobWithAlpha_ = shaderCompiler_->CompileShader(L"EngineAssets/Shaders/Graphics/Model3D/Model3DWithAlpha.MS.hlsl", L"ms_6_5");
+	assert(meshShaderBlobWithAlpha_);
 
-	const D3D12_SHADER_BYTECODE meshShader = { meshShaderBlob_->GetBufferPointer(), meshShaderBlob_->GetBufferSize() };
-	const D3D12_SHADER_BYTECODE pixelShader = { pixelShaderBlob_->GetBufferPointer(), pixelShaderBlob_->GetBufferSize() };
-	const D3D12_SHADER_BYTECODE amplificationShader = { amplificationShaderBlob_->GetBufferPointer(), amplificationShaderBlob_->GetBufferSize() };
-
-	const DXGI_FORMAT dsvFormat = DXGI_FORMAT_D24_UNORM_S8_UINT;
-
-	for (uint32_t i = 0; i < kBlendModeNum; ++i) {
-		const D3D12_RASTERIZER_DESC rasterizerDesc = RasterizerStateSetting();
-		const D3D12_BLEND_DESC blendDesc = BlendStateSetting(i);
-		const D3D12_DEPTH_STENCIL_DESC depthStencilDesc = DepthStecilDescSettingBlend(i);
-
-		const CD3DX12_RASTERIZER_DESC rast(rasterizerDesc);
-		const CD3DX12_BLEND_DESC blend(blendDesc);
-		const CD3DX12_DEPTH_STENCIL_DESC ds(depthStencilDesc);
-
-		D3D12_RT_FORMAT_ARRAY rtArray{};
-		rtArray.NumRenderTargets = 3;
-
-		rtArray.RTFormats[0] = DXGI_FORMAT_R8G8B8A8_UNORM_SRGB;       // Albedo
-		rtArray.RTFormats[1] = DXGI_FORMAT_R16G16B16A16_FLOAT;        // Normal
-		rtArray.RTFormats[2] = DXGI_FORMAT_R16G16B16A16_FLOAT;        // Position
-
-		Primitive3DPipelineStateStream stream = {
-			CD3DX12_PIPELINE_STATE_STREAM_ROOT_SIGNATURE(rootSignature_.Get()),
-			CD3DX12_PIPELINE_STATE_STREAM_AS(amplificationShader),
-			CD3DX12_PIPELINE_STATE_STREAM_MS(meshShader),
-			CD3DX12_PIPELINE_STATE_STREAM_PS(pixelShader),
-			CD3DX12_PIPELINE_STATE_STREAM_RASTERIZER(rast),
-			CD3DX12_PIPELINE_STATE_STREAM_BLEND_DESC(blend),
-			CD3DX12_PIPELINE_STATE_STREAM_DEPTH_STENCIL(ds),
-			CD3DX12_PIPELINE_STATE_STREAM_RENDER_TARGET_FORMATS(rtArray),
-			CD3DX12_PIPELINE_STATE_STREAM_DEPTH_STENCIL_FORMAT(dsvFormat)
-		};
-
-		D3D12_PIPELINE_STATE_STREAM_DESC streamDesc{};
-		streamDesc.SizeInBytes = sizeof(stream);
-		streamDesc.pPipelineStateSubobjectStream = &stream;
-
-		HRESULT hr = dxgi_->GetDevice10()->CreatePipelineState(&streamDesc, IID_PPV_ARGS(&pipelineState_[i]));
-		if (FAILED(hr)) {
-			Logger::Log("Model3DGraphicsPipeline: Failed to create PSO for blendMode " + std::to_string(i));
-			assert(false);
-		}
-	}
+	pixelShaderBlobWithAlpha_ = shaderCompiler_->CompileShader(L"EngineAssets/Shaders/Graphics/Model3D/Model3DWithAlpha.PS.hlsl", L"ps_6_5");
+	assert(pixelShaderBlobWithAlpha_);
 }
 
 D3D12_BLEND_DESC Model3DGraphicsPipeline::BlendStateSetting(uint32_t blendModeNum) {
@@ -272,28 +227,6 @@ D3D12_BLEND_DESC Model3DGraphicsPipeline::BlendStateSetting(uint32_t blendModeNu
 
 D3D12_DEPTH_STENCIL_DESC Model3DGraphicsPipeline::DepthStecilDescSetting() {
 	return D3D12_DEPTH_STENCIL_DESC();
-}
-
-D3D12_DEPTH_STENCIL_DESC Model3DGraphicsPipeline::DepthStecilDescSettingBlend(uint32_t blendModeNum) {
-	D3D12_DEPTH_STENCIL_DESC desc{};
-	desc.DepthEnable = TRUE;
-
-	const auto mode = static_cast<BlendMode>(blendModeNum);
-	switch (mode) {
-	case BlendMode::Normal:
-	case BlendMode::Add:
-	case BlendMode::Subtract:
-	case BlendMode::Multiply:
-	case BlendMode::Screen:
-		desc.DepthWriteMask = D3D12_DEPTH_WRITE_MASK_ZERO; // ブレンド系は書き込まない
-		break;
-	default:
-		desc.DepthWriteMask = D3D12_DEPTH_WRITE_MASK_ALL;
-		break;
-	}
-
-	desc.DepthFunc = D3D12_COMPARISON_FUNC_LESS_EQUAL;
-	return desc;
 }
 
 D3D12_INPUT_LAYOUT_DESC Model3DGraphicsPipeline::InputLayoutSetting() {

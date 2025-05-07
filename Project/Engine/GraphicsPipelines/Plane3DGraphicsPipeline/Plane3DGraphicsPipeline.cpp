@@ -222,36 +222,6 @@ D3D12_BLEND_DESC Plane3DGraphicsPipeline::BlendStateSetting(uint32_t blendModeNu
 	return blendDesc;
 }
 
-D3D12_DEPTH_STENCIL_DESC Plane3DGraphicsPipeline::DepthStecilDescSetting() {
-	D3D12_DEPTH_STENCIL_DESC depthDesc{};
-	depthDesc.DepthEnable = TRUE;
-	depthDesc.DepthWriteMask = D3D12_DEPTH_WRITE_MASK_ALL;
-	depthDesc.DepthFunc = D3D12_COMPARISON_FUNC_LESS;
-	return depthDesc;
-}
-
-D3D12_DEPTH_STENCIL_DESC Plane3DGraphicsPipeline::DepthStecilDescSettingBlend(uint32_t blendModeNum) {
-	D3D12_DEPTH_STENCIL_DESC desc{};
-	desc.DepthEnable = TRUE;
-
-	const auto mode = static_cast<BlendMode>(blendModeNum);
-	switch (mode) {
-	case BlendMode::Normal:
-	case BlendMode::Add:
-	case BlendMode::Subtract:
-	case BlendMode::Multiply:
-	case BlendMode::Screen:
-		desc.DepthWriteMask = D3D12_DEPTH_WRITE_MASK_ZERO; // ブレンド系は書き込まない
-		break;
-	default:
-		desc.DepthWriteMask = D3D12_DEPTH_WRITE_MASK_ALL;
-		break;
-	}
-
-	desc.DepthFunc = D3D12_COMPARISON_FUNC_LESS_EQUAL;
-	return desc;
-}
-
 D3D12_INPUT_LAYOUT_DESC Plane3DGraphicsPipeline::InputLayoutSetting() {
 	return { nullptr, 0 };
 }
