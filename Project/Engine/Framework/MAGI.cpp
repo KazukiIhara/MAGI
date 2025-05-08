@@ -649,7 +649,6 @@ void MAGISYSTEM::Draw() {
 	// ポストエフェクトをかける処理
 	renderController_->ApplyPostEffect();
 
-
 	// スワップチェーン前最終描画
 	renderController_->RenderToFinalRenderTexture();
 
