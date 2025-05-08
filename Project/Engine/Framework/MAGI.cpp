@@ -892,6 +892,26 @@ void MAGISYSTEM::CreateRTVTexture2d(uint32_t rtvIndex, ID3D12Resource* pResource
 	rtvManager_->CreateRTVTexture2d(rtvIndex, pResource, format);
 }
 
+ID3D12DescriptorHeap* MAGISYSTEM::GetDSVDescriptorHeap() {
+	return dsvManager_->GetDescriptorHeap();
+}
+
+D3D12_CPU_DESCRIPTOR_HANDLE MAGISYSTEM::GetDSVDescriptorHandleCPU(uint32_t index) {
+	return dsvManager_->GetDescriptorHandleCPU(index);
+}
+
+D3D12_GPU_DESCRIPTOR_HANDLE MAGISYSTEM::GetDSVDescriptorHandleGPU(uint32_t index) {
+	return dsvManager_->GetDescriptorHandleGPU(index);
+}
+
+uint32_t MAGISYSTEM::DSVAllocate() {
+	return dsvManager_->Allocate();
+}
+
+void MAGISYSTEM::CreateDSVTexture2d(uint32_t rtvIndex, ID3D12Resource* pResource, DXGI_FORMAT format) {
+	dsvManager_->CreateDSVTexture2d(rtvIndex, pResource, format);
+}
+
 ID3D12DescriptorHeap* MAGISYSTEM::GetSrvUavDescriptorHeap() {
 	return srvuavManager_->GetDescriptorHeap();
 }

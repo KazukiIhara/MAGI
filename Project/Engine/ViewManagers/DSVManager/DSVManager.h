@@ -14,5 +14,5 @@ private:
 	void CreateDescriptorHeap()override;
 private:
 	// 最大dsv数
-	const uint32_t kMaxDSVCount_ = 1;
+	const uint32_t kMaxDSVCount_ = 2;
 };
