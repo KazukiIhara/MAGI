@@ -119,7 +119,7 @@ inline void SampleScene<Data>::Initialize() {
 
 
 	modelMaterial_.blendMode = BlendMode::None;
-	modelMatAlpha_.blendMode = BlendMode::Add;
+	modelMatAlpha_.blendMode = BlendMode::None;
 
 	// ModelDrawer
 	MAGISYSTEM::CreateModelDrawer("test", MAGISYSTEM::FindModel("teapot"));
