@@ -631,16 +631,16 @@ void MAGISYSTEM::Draw() {
 	lineDrawer3D_->Draw();
 
 	// 
-	// BlendModeごとに描画(透過あり) 今はいったんコメントアウト
+	// BlendModeごとに描画(透過ありを順番に描画)
 	// 
-	for (uint32_t i = 1; i < kBlendModeNum; ++i) {
+	for (uint32_t i = static_cast<uint32_t>(BlendMode::Normal); i < kBlendModeNum; ++i) {
 		BlendMode mode = static_cast<BlendMode>(i);
 		modelDrawerManager_->DrawAll(mode);
-		 triangleDrawer3D_->Draw(mode);
-		 planeDrawer3D_->Draw(mode);
-		 sphereDrawer3D_->Draw(mode);
-		 ringDrawer3D_->Draw(mode);
-		 cylinderDrawer3D_->Draw(mode);
+		triangleDrawer3D_->Draw(mode);
+		planeDrawer3D_->Draw(mode);
+		sphereDrawer3D_->Draw(mode);
+		ringDrawer3D_->Draw(mode);
+		cylinderDrawer3D_->Draw(mode);
 	}
 
 	// ライト適用後の処理
