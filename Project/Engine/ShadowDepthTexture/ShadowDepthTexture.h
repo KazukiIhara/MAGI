@@ -28,7 +28,7 @@ private:
 
 private:
 
-    Microsoft::WRL::ComPtr<ID3D12Resource> resource_;
+    ComPtr<ID3D12Resource> resource_;
     D3D12_RESOURCE_STATES currentResourceState_ = D3D12_RESOURCE_STATE_DEPTH_WRITE;
 
     uint32_t dsvIndex_ = 0;

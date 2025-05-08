@@ -218,6 +218,9 @@ public: // エンジンの機能
 	static ID3D12Device* GetDirectXDevice();
 	// バッファリソースを作成
 	static ComPtr<ID3D12Resource> CreateBufferResource(size_t sizeInBytes, bool isUav = false);
+	// DepthStencilTexリソースの作成
+	static ComPtr<ID3D12Resource> CreateDepthStencilTextureResource(int32_t width, int32_t height, DXGI_FORMAT format);
+
 #pragma endregion
 
 #pragma region DirectXCommandの機能

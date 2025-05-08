@@ -852,6 +852,10 @@ ComPtr<ID3D12Resource> MAGISYSTEM::CreateBufferResource(size_t sizeInBytes, bool
 	return dxgi_->CreateBufferResource(sizeInBytes, isUav);
 }
 
+ComPtr<ID3D12Resource> MAGISYSTEM::CreateDepthStencilTextureResource(int32_t width, int32_t height, DXGI_FORMAT format) {
+	return dxgi_->CreateDepthStencilTextureResource(width, height, format);
+}
+
 ID3D12GraphicsCommandList* MAGISYSTEM::GetDirectXCommandList() {
 	return directXCommand_->GetList();
 }
