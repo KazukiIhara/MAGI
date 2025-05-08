@@ -21,6 +21,7 @@ public:
 	void AddDrawCommand(const Matrix4x4& worldMatrix, const ModelMaterial& material);
 	void Update();
 	void Draw(BlendMode mode);
+	void DrawShadow(BlendMode mode);
 
 private:
 	// インスタンスの最大数

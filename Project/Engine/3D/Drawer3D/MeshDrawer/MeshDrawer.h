@@ -18,6 +18,7 @@ public:
 
 	void Update();
 	void Draw(uint32_t instanceCount);
+	void DrawShadow(uint32_t instanceCount);
 
 private:
 	// 頂点
