@@ -74,8 +74,6 @@ private:
 	// DirectionalLight
 	DirectionalLight directionalLight_{};
 
-
-
 };
 
 template<typename Data>
@@ -119,7 +117,7 @@ inline void SampleScene<Data>::Initialize() {
 
 
 	modelMaterial_.blendMode = BlendMode::None;
-	modelMatAlpha_.blendMode = BlendMode::None;
+	modelMatAlpha_.blendMode = BlendMode::Add;
 
 	// ModelDrawer
 	MAGISYSTEM::CreateModelDrawer("test", MAGISYSTEM::FindModel("teapot"));
@@ -135,7 +133,7 @@ inline void SampleScene<Data>::Initialize() {
 
 	// デフォルトのテクスチャを取得　TODO:マテリアルもクラス化して初期化できるようにする
 	material_.textureIndex = MAGISYSTEM::GetDefaultTextureIndex();
-	material_.blendMode = BlendMode::Add;
+	material_.blendMode = BlendMode::None;
 
 	for (uint32_t i = 0; i < wtsNum_; i++) {
 		wts_[i].Initialize();
