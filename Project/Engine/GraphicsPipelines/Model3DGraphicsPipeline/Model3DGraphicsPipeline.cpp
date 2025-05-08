@@ -153,6 +153,12 @@ void Model3DGraphicsPipeline::CompileShaders() {
 
 	pixelShaderBlobWithAlpha_ = shaderCompiler_->CompileShader(L"EngineAssets/Shaders/Graphics/Model3D/Model3DWithAlpha.PS.hlsl", L"ps_6_5");
 	assert(pixelShaderBlobWithAlpha_);
+
+	meshShaderBlobShadow_ = shaderCompiler_->CompileShader(L"EngineAssets/Shaders/Graphics/Model3D/Model3DShadow.MS.hlsl", L"ms_6_5");
+	assert(meshShaderBlobShadow_);
+
+	pixelShaderBlobShadow_ = shaderCompiler_->CompileShader(L"EngineAssets/Shaders/Graphics/Model3D/Model3DShadow.PS.hlsl", L"ps_6_5");
+	assert(pixelShaderBlobShadow_);
 }
 
 D3D12_BLEND_DESC Model3DGraphicsPipeline::BlendStateSetting(uint32_t blendModeNum) {
