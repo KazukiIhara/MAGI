@@ -1,6 +1,5 @@
 ﻿#include "Model3D.hlsli"
 
-// ───── バッファ宣言はそのまま ─────
 ConstantBuffer<Camera> gCamera : register(b0);
 ConstantBuffer<MeshInfo> gMeshInfo : register(b2);
 StructuredBuffer<ModelDataForGPU> gInstanceData : register(t0);
