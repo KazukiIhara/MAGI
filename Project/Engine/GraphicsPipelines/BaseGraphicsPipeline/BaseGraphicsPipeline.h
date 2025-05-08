@@ -21,11 +21,22 @@ public:
 	virtual ~BaseGraphicsPipeline();
 
 	// 初期化
-	void Initialize();
+	virtual void Initialize();
 	// ルートシグネチャを取得する
 	ID3D12RootSignature* GetRootSignature();
 	// 指定されたブレンドモードに対応するパイプラインステートを取得する
 	ID3D12PipelineState* GetPipelineState(BlendMode blendMode);
+
+
+	//==============================================
+	// ShadowMap用(クラス分け考慮)
+	//==============================================
+
+	// シャドウマップ用のルートシグネイチャ
+	ID3D12RootSignature* GetRootSignatureShadow();
+	// シャドウマップ用のパイプラインステートを取得
+	ID3D12PipelineState* GetPipelineStateShadow();
+
 
 protected:
 	// ルートシグネチャを作成する
@@ -44,6 +55,16 @@ protected:
 	virtual D3D12_INPUT_LAYOUT_DESC InputLayoutSetting() = 0;
 	// RasterizerStateの設定を行う
 	virtual D3D12_RASTERIZER_DESC RasterizerStateSetting() = 0;
+
+
+	//==============================================
+	// ShadowMap用(クラス分け考慮)
+	//==============================================
+
+	// シャドウマップ用のpso作成
+	void CreateGraphicsPipelineObjectShadow();
+
+
 private:
 	// DXGIのインスタンスをセット
 	void SetDXGI(DXGI* dxgi);
@@ -56,7 +77,6 @@ protected:
 	// グラフィックスパイプラインステート (ブレンドモードごとに設定)
 	ComPtr<ID3D12PipelineState> pipelineState_[kBlendModeNum];
 
-
 	// 頂点シェーダーのバイナリデータ
 	ComPtr<ID3DBlob> vertexShaderBlob_ = nullptr;
 	// ピクセルシェーダーのバイナリデータ
@@ -66,10 +86,20 @@ protected:
 	// 増幅シェーダーのバイナリデータ
 	ComPtr<ID3DBlob> amplificationShaderBlob_ = nullptr;
 
+
 	// αありのピクセルシェーダーのバイナリデータ
 	ComPtr<ID3DBlob> pixelShaderBlobWithAlpha_ = nullptr;
 	// αありのメッシュシェーダーのバイナリデータ
 	ComPtr<ID3DBlob> meshShaderBlobWithAlpha_ = nullptr;
+
+	//==============================================
+	// ShadowMap用(クラス分け考慮)
+	//==============================================
+
+	// シャドウマップ用のルートシグネイチャ
+	ComPtr<ID3D12RootSignature> rootSignatureShadow_;
+	// シャドウマップ描画用のパイプラインステート
+	ComPtr<ID3D12PipelineState> pipelineStateShadow_;
 
 	// ShadowMap用のピクセルシェーダーのバイナリデータ
 	ComPtr<ID3DBlob> pixelShaderBlobShadow_ = nullptr;

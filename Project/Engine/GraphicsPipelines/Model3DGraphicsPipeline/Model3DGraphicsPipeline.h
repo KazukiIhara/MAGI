@@ -10,6 +10,9 @@ public:
 	Model3DGraphicsPipeline(DXGI* dxgi, ShaderCompiler* shaderCompiler);
 	~Model3DGraphicsPipeline()override = default;
 
+	// 初期化
+	void Initialize()override;
+
 private:
 	// ルートシグネチャを作成する
 	void CreateRootSignature()override;
@@ -23,4 +26,7 @@ private:
 	D3D12_INPUT_LAYOUT_DESC InputLayoutSetting()override;
 	// RasterizerStateの設定を行う
 	D3D12_RASTERIZER_DESC RasterizerStateSetting()override;
+
+	// シャドウマップ用のルートシグネイチャ作成
+	void CreateRootSignatureShadow();
 };

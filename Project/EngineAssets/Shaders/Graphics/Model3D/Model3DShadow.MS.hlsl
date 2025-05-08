@@ -1,18 +1,21 @@
 #include "Model3D.hlsli"
 
+// バインドするバッファ
 ConstantBuffer<Camera> gCamera : register(b0);
-ConstantBuffer<MeshInfo> gMeshInfo : register(b2);
 StructuredBuffer<ModelDataForGPU> gInstanceData : register(t0);
 StructuredBuffer<VertexData3D> gVertexBuffer : register(t1);
 StructuredBuffer<Meshlet> gMeshlets : register(t2);
 ByteAddressBuffer gUniqueVertexIndices : register(t3);
 ByteAddressBuffer gPrimitiveIndices : register(t4);
+ConstantBuffer<MeshInfo> gMeshInfo : register(b2);
 
+// 10bitパックプリミティブのアンパック
 inline uint3 UnpackPrimitive(uint v)
 {
     return uint3(v & 0x3FF, (v >> 10) & 0x3FF, (v >> 20) & 0x3FF);
 }
 
+// メシュレットから頂点インデックスを取得
 uint GetVertexIndex(in Meshlet m, uint local)
 {
     uint global = m.VertOffset + local;
@@ -26,6 +29,7 @@ uint GetVertexIndex(in Meshlet m, uint local)
     return (pair >> (word * 16)) & 0xFFFF;
 }
 
+// メシュレットからプリミティブを取得
 uint3 GetPrimitive(in Meshlet m, uint localPrim)
 {
     uint packed = gPrimitiveIndices.Load((m.PrimOffset + localPrim) * 4);
@@ -38,6 +42,7 @@ struct ShadowMeshOutput
     float4 position : SV_Position;
 };
 
+// 頂点データをワールド変換＆ビュープロジェクション適用
 ShadowMeshOutput GetVertexAttributes(uint vertexIndex, uint instID)
 {
     VertexData3D v = gVertexBuffer[vertexIndex];
@@ -48,6 +53,7 @@ ShadowMeshOutput GetVertexAttributes(uint vertexIndex, uint instID)
     return vout;
 }
 
+// MS本体
 [outputtopology("triangle")]
 [numthreads(128, 1, 1)]
 void main(
@@ -63,6 +69,7 @@ void main(
 
     Meshlet m = gMeshlets[meshletIndex];
 
+    // 不正meshletは0出力に
     if (meshletIndex >= gMeshInfo.MeshletCount)
     {
         m.VertCount = 0;
@@ -71,12 +78,14 @@ void main(
 
     SetMeshOutputCounts(m.VertCount, m.PrimCount);
 
+    // 頂点出力
     if (gtid.x < m.VertCount)
     {
         uint vertexIndex = GetVertexIndex(m, gtid);
         verts[gtid] = GetVertexAttributes(vertexIndex, instID);
     }
 
+    // インデックス出力
     if (gtid.x < m.PrimCount)
     {
         tris[gtid] = GetPrimitive(m, gtid);
