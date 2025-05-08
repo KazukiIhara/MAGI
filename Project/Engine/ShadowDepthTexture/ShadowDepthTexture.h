@@ -12,25 +12,29 @@
 /// </summary>
 class ShadowDepthTexture {
 public:
-    ShadowDepthTexture();
-    ~ShadowDepthTexture();
+	ShadowDepthTexture();
+	~ShadowDepthTexture();
 
-    void ClearRenderTarget();
-    void SetAsRenderTarget();
-    void TransitionToWrite();
-    void TransitionToRead();
+	void Clear();
+	void SetAsRenderTarget();
+	void TransitionToWrite();
+	void TransitionToRead();
 
-    uint32_t GetDsvIndex()const;
-    uint32_t GetSrvIndex()const;
+	uint32_t GetDsvIndex()const;
+	uint32_t GetSrvIndex()const;
+
+public:
+	static const uint32_t kShadowMapWidth = 2048;
+	static const uint32_t kShadowMapHeight = 2048;
 
 private:
-    void CreateResource();
+	void CreateResource();
 
 private:
 
-    ComPtr<ID3D12Resource> resource_;
-    D3D12_RESOURCE_STATES currentResourceState_ = D3D12_RESOURCE_STATE_DEPTH_WRITE;
+	ComPtr<ID3D12Resource> resource_;
+	D3D12_RESOURCE_STATES currentResourceState_ = D3D12_RESOURCE_STATE_DEPTH_WRITE;
 
-    uint32_t dsvIndex_ = 0;
-    uint32_t srvIndex_ = 0;
+	uint32_t dsvIndex_ = 0;
+	uint32_t srvIndex_ = 0;
 };

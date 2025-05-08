@@ -6,10 +6,16 @@
 #include "DirectX/ComPtr/ComPtr.h"
 #include "Structs/PostEffectStruct.h"
 
+// シーンカラー用のレンダーテクスチャ
 #include "RenderTextures/ColorRenderTexture/ColorRenderTexture.h"
+
+// GBuffe用のレンダーテクスチャ
 #include "RenderTextures/GBuffers/GBufferAlbedoRenderTexture/GBufferAlbedoRenderTexture.h"
 #include "RenderTextures/GBuffers/GBufferNormalRenderTexture/GBufferNormalRenderTexture.h"
 #include "RenderTextures/GBuffers/GBufferPositionRenderTexture/GBufferPositionRenderTexture.h"
+
+// シャドウマップ用の深度テクスチャ
+#include "ShadowDepthTexture/ShadowDepthTexture.h"
 
 // 前方宣言
 class DXGI;
@@ -43,6 +49,9 @@ public:
 		LightManager* lightManager
 	);
 	~RenderController();
+
+	// シャドウマップ用の深度描画前準備
+	void PreShadowRender();
 
 	// シーンを描画するための前準備
 	void PreSceneRender();
@@ -152,5 +161,12 @@ private:
 	// 座標
 	std::unique_ptr<GBufferPositionRenderTexture> gBufferPositionRenderTexture_ = nullptr;
 
+
+	//================================================
+	// ShadowMap用
+	//================================================
+
+	// 影深度テクスチャ
+	std::unique_ptr<ShadowDepthTexture> shadowDepthTexture_ = nullptr;
 
 };

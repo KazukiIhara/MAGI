@@ -11,8 +11,6 @@ ShadowDepthTexture::ShadowDepthTexture() {}
 ShadowDepthTexture::~ShadowDepthTexture() {}
 
 void ShadowDepthTexture::CreateResource() {
-	constexpr uint32_t kShadowMapWidth = 2048;
-	constexpr uint32_t kShadowMapHeight = 2048;
 
 	// リソース作成
 	resource_ = MAGISYSTEM::CreateDepthStencilTextureResource(
@@ -31,7 +29,7 @@ void ShadowDepthTexture::CreateResource() {
 	currentResourceState_ = D3D12_RESOURCE_STATE_DEPTH_WRITE;
 }
 
-void ShadowDepthTexture::ClearRenderTarget() {
+void ShadowDepthTexture::Clear() {
 	MAGISYSTEM::GetDirectXCommandList()->ClearDepthStencilView(
 		MAGISYSTEM::GetDSVDescriptorHandleCPU(dsvIndex_),
 		D3D12_CLEAR_FLAG_DEPTH,

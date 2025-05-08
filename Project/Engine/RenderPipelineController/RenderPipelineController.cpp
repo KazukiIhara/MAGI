@@ -74,11 +74,30 @@ RenderController::RenderController(
 	gBufferPositionRenderTexture_ = std::make_unique<GBufferPositionRenderTexture>();
 	gBufferPositionRenderTexture_->Initialize();
 
+
+	// Shadow用の深度テクスチャ
+	shadowDepthTexture_ = std::make_unique<ShadowDepthTexture>();
+
 	// コマンドの最大数をあらかじめ決めておく
 	postEffectCommand_.resize(kMaxPostEffectNum_);
 }
 
 RenderController::~RenderController() {}
+
+void RenderController::PreShadowRender() {
+	// まずリソース状態を「書き込み可能」に遷移
+	shadowDepthTexture_->TransitionToWrite();
+
+	// シャドウマップをクリア
+	shadowDepthTexture_->Clear();
+
+	// シャドウマップ用DSVセット
+	shadowDepthTexture_->SetAsRenderTarget();
+
+	// Viewport、Scissorを設定
+	viewport_->SettingViewport(ShadowDepthTexture::kShadowMapWidth, ShadowDepthTexture::kShadowMapHeight);
+	scissorRect_->SettingScissorRect(ShadowDepthTexture::kShadowMapWidth, ShadowDepthTexture::kShadowMapHeight);
+}
 
 void RenderController::PreSceneRender() {
 	// Gバッファ3枚＋深度バッファをセットする
