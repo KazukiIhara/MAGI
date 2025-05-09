@@ -148,6 +148,9 @@ namespace MAGIMath {
 	// ベクトルの向きを取得
 	Vector3 Forward(const Vector3& rotate);
 
+	// 向きから回転を取得
+	Vector3 DirectionToEuler(const Vector3& dir);
+
 	// 線形補完
 	Vector3 Lerp(const Vector3& v1, const Vector3& v2, float t);
 
@@ -163,6 +166,11 @@ namespace MAGIMath {
 	// ワールド行列からワールド座標取得
 	Vector3 ExtractionWorldPos(const Matrix4x4& m);
 
+	// 回転の向きと量から回転行列を作る
+	Matrix4x4 MakeRotateAxisAngle(const Vector3& axis, float angle);
+
+	// 指定した回転から指定した回転にするための回転行列
+	Matrix4x4 DirectionToDirection(const Vector3& from, const Vector3& to);
 
 	// 4x4単位行列を返す
 	Matrix4x4 MakeIdentityMatrix4x4();
@@ -228,6 +236,9 @@ namespace MAGIMath {
 
 	// オイラー角をクオータニオンに変換
 	Quaternion EulerToQuaternion(const Vector3& euler);
+
+	// 向きからクオータニオン角を取得
+	Quaternion DirectionToQuaternion(const Vector3& direction);
 
 	// 正規化したクオータニオンを返す
 	Quaternion Normalize(const Quaternion& quaternion);

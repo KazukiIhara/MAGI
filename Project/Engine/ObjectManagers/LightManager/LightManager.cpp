@@ -29,19 +29,19 @@ LightManager::~LightManager() {
 }
 
 void LightManager::Update() {
+	// ライト情報の更新
 	directionalLightData_->direction = directionalLight_.direction;
 	directionalLightData_->intensity = directionalLight_.intensity;
 	directionalLightData_->color = directionalLight_.color;
 
-	// VP行列を構築して転送(ひとまず定数)
-	const Vector3 target = { 0.0f, 0.0f, 0.0f };
-	const float width = 100.0f;
-	const float height = 100.0f;
-	const float nearClip = 0.1f;
-	const float farClip = 200.0f;
 
-	Matrix4x4 vp = MakeLightViewProjectionMatrix(directionalLight_.direction, target, width, height, nearClip, farClip);
-	diractionalLightCameraData_->viewProjection = vp;
+	Matrix4x4 translateMat = MakeTranslateMatrix(-directionalLight_.direction * 5.0f);
+	Matrix4x4 rotateMat = MakeRotateMatrix(DirectionToQuaternion(directionalLight_.direction));
+
+	Matrix4x4 viewMat = Inverse(rotateMat * translateMat);
+	Matrix4x4 projMat = MakePerspectiveFovMatrix(fovY_, aspectRaito_, nearClipRange_, farClipRange_);
+
+	diractionalLightCameraData_->viewProjection = viewMat * projMat;
 }
 
 void LightManager::TransferDirectionalLight(uint32_t paramIndex) {
@@ -84,33 +84,6 @@ void LightManager::MapDirectionalLightCameraData() {
 	diractionalLightCameraData_ = nullptr;
 	directionalLightCameraResource_->Map(0, nullptr, reinterpret_cast<void**>(&diractionalLightCameraData_));
 	diractionalLightCameraData_->viewProjection = MakeIdentityMatrix4x4();
-}
-
-Matrix4x4 LightManager::MakeLightViewProjectionMatrix(const Vector3& lightDirection, const Vector3& target, float width, float height, float nearClip, float farClip) {
-	Vector3 dir = Normalize(lightDirection);
-	Vector3 pos = target - dir * 10.0f; // ライト位置（ターゲットから10m上空）
-
-	// カメラの軸を構築
-	Vector3 zAxis = Normalize(target - pos);
-	Vector3 xAxis = Normalize(Cross(MakeUpVector3(), zAxis));
-	Vector3 yAxis = Cross(zAxis, xAxis);
-
-	// ビュー行列の作成
-	Matrix4x4 view = {
-		xAxis.x, yAxis.x, zAxis.x, 0.0f,
-		xAxis.y, yAxis.y, zAxis.y, 0.0f,
-		xAxis.z, yAxis.z, zAxis.z, 0.0f,
-		-Dot(xAxis, pos), -Dot(yAxis, pos), -Dot(zAxis, pos), 1.0f
-	};
-
-	// 正射影行列（シャドウマップ用）
-	float left = -width / 2.0f;
-	float right = width / 2.0f;
-	float bottom = -height / 2.0f;
-	float top = height / 2.0f;
-	Matrix4x4 proj = MakeOrthographicMatrix(left, top, right, bottom, nearClip, farClip);
-
-	return view * proj;
 }
 
 void LightManager::SetDXGI(DXGI* dxgi) {

@@ -270,6 +270,21 @@ Vector3 MAGIMath::Forward(const Vector3& rotate) {
 	return Normalize(forward);
 }
 
+Vector3 MAGIMath::DirectionToEuler(const Vector3& dir) {
+	Vector3 forward = Normalize(dir);
+
+	// yaw: Y軸回転（XZ平面での角度）
+	float yaw = std::atan2(forward.x, -forward.z);
+
+	// pitch: X軸回転（Y方向への傾き）
+	float pitch = std::asin(forward.y);
+
+	// roll: Z軸回転 → ライトやカメラでは通常不要（=0）
+	float roll = 0.0f;
+
+	return Vector3(pitch, yaw, roll); // X=Pitch, Y=Yaw, Z=Roll
+}
+
 Vector3 MAGIMath::Lerp(const Vector3& v1, const Vector3& v2, float t) {
 	return Vector3(
 		v1.x + t * (v2.x - v1.x),
@@ -335,6 +350,95 @@ Vector3 MAGIMath::ExtractionWorldPos(const Matrix4x4& m) {
 	result.y = m.m[3][1];
 	result.z = m.m[3][2];
 	return result;
+}
+
+Matrix4x4 MAGIMath::MakeRotateAxisAngle(const Vector3& axis, float angle) {
+
+	Vector3 u = axis;
+	float x = u.x;
+	float y = u.y;
+	float z = u.z;
+
+	float c = std::cos(-angle);
+	float s = std::sin(-angle);
+	float sub = 1.0f - c;
+
+	Matrix4x4 rotation;
+
+	rotation.m[0][0] = c + x * x * sub;
+	rotation.m[0][1] = x * y * sub - z * s;
+	rotation.m[0][2] = x * z * sub + y * s;
+	rotation.m[0][3] = 0.0f;
+
+	rotation.m[1][0] = y * x * sub + z * s;
+	rotation.m[1][1] = c + y * y * sub;
+	rotation.m[1][2] = y * z * sub - x * s;
+	rotation.m[1][3] = 0.0f;
+
+	rotation.m[2][0] = z * x * sub - y * s;
+	rotation.m[2][1] = z * y * sub + x * s;
+	rotation.m[2][2] = c + z * z * sub;
+	rotation.m[2][3] = 0.0f;
+
+	rotation.m[3][0] = 0.0f;
+	rotation.m[3][1] = 0.0f;
+	rotation.m[3][2] = 0.0f;
+	rotation.m[3][3] = 1.0f;
+
+	return rotation;
+}
+
+Matrix4x4 MAGIMath::DirectionToDirection(const Vector3& from, const Vector3& to) {
+
+	Vector3 fromTmp = from;
+	Vector3 toTmp = to;
+
+	// 正規化
+	Vector3 f = Normalize(fromTmp);
+	Vector3 t = Normalize(toTmp);
+
+	// f と t の内積 (角度計算用) を求める
+	float dotFT = Dot(f, t);
+	// -1.0f～1.0f の範囲にクリップして acos のドメインエラーを回避
+	dotFT = std::max(-1.0f, std::min(dotFT, 1.0f));
+
+	// なす角 θ
+	float angle = std::acos(dotFT);
+
+	// クロス積で回転軸を求める (f -> t の回転軸)
+	Vector3 axis = Cross(f, t);
+	float axisLen = Length(axis);
+
+	// 回転軸の長さがほぼ0なら、f と t は平行か反平行
+	if (axisLen < EPSILON) {
+		// ほぼ同方向 (dotFT ~ 1.0f) の場合は回転不要→単位行列を返す
+		if (dotFT > 0.9999f) {
+			return Matrix4x4(); // 単位行列
+		} else {
+			// ほぼ反対方向 (dotFT ~ -1.0f) の場合
+			// 180度回転させる軸が必要（f に直交する任意の軸でOK）
+			// 例えば f が (0,0,1) に近ければ x軸やy軸などに対して 180度回転
+			// 一例として、f に対して最も小さい成分の軸を選ぶなど
+			Vector3 orth(0.0f, 0.0f, 0.0f);
+			if (std::fabs(f.x) < std::fabs(f.y) && std::fabs(f.x) < std::fabs(f.z))
+				orth = Vector3(1.0f, 0.0f, 0.0f);
+			else if (std::fabs(f.y) < std::fabs(f.x) && std::fabs(f.y) < std::fabs(f.z))
+				orth = Vector3(0.0f, 1.0f, 0.0f);
+			else
+				orth = Vector3(0.0f, 0.0f, 1.0f);
+
+			// f と直交するベクトルを作る
+			axis = Cross(f, orth);
+			axis = Normalize(axis);
+			angle = static_cast<float>(std::numbers::pi_v<float>); // 180度回転
+
+			return MakeRotateAxisAngle(axis, angle);
+		}
+	} else {
+		// 軸を正規化して Rodrigues の回転公式により行列を作る
+		axis = Vector3(axis.x / axisLen, axis.y / axisLen, axis.z / axisLen);
+		return MakeRotateAxisAngle(axis, angle);
+	}
 }
 
 Matrix4x4 MAGIMath::MakeIdentityMatrix4x4() {
@@ -666,6 +770,39 @@ Quaternion MAGIMath::EulerToQuaternion(const Vector3& euler) {
 
 	return q;
 }
+
+Quaternion MAGIMath::DirectionToQuaternion(const Vector3& direction) {
+    Vector3 forward = Normalize(direction);
+    Vector3 baseForward = Vector3(0.0f, 0.0f, -1.0f); // Z-方向を前方とする
+
+    float dot = Dot(baseForward, forward);
+    dot = std::clamp(dot, -1.0f, 1.0f); // 安全のためクランプ
+
+    if (dot > 0.9999f) {
+        // 同じ方向 → 単位クォータニオン
+        return Quaternion(0.0f, 0.0f, 0.0f, 1.0f);
+    }
+
+    if (dot < -0.9999f) {
+        // 反対方向 → 任意の直交ベクトルを軸に180度回転
+        Vector3 orth;
+        if (std::fabs(baseForward.x) < std::fabs(baseForward.y) && std::fabs(baseForward.x) < std::fabs(baseForward.z))
+            orth = Vector3(1.0f, 0.0f, 0.0f);
+        else if (std::fabs(baseForward.y) < std::fabs(baseForward.z))
+            orth = Vector3(0.0f, 1.0f, 0.0f);
+        else
+            orth = Vector3(0.0f, 0.0f, 1.0f);
+
+        Vector3 axis = Normalize(Cross(baseForward, orth));
+        return MakeRotateAxisAngleQuaternion(axis, static_cast<float>(std::numbers::pi_v<float>));
+    }
+
+    Vector3 axis = Normalize(Cross(baseForward, forward));
+    float angle = std::acos(dot);
+
+    return MakeRotateAxisAngleQuaternion(axis, angle);
+}
+
 
 Quaternion MAGIMath::Normalize(const Quaternion& quaternion) {
 	// ノルムを求める
