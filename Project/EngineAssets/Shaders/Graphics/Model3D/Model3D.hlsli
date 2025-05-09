@@ -56,6 +56,12 @@ struct Camera
     float _pad;
 };
 
+// ライトのカメラ
+struct DirectionalLightCamera
+{
+    float4x4 viewProjection;
+};
+
 // ────────── Meshlet関連構造体 ──────────
 
 struct MeshInfo

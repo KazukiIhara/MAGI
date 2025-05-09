@@ -1,7 +1,7 @@
 #include "Model3D.hlsli"
 
 // バインドするバッファ
-ConstantBuffer<Camera> gCamera : register(b0);
+ConstantBuffer<DirectionalLightCamera> gCamera : register(b0);
 StructuredBuffer<ModelDataForGPU> gInstanceData : register(t0);
 StructuredBuffer<VertexData3D> gVertexBuffer : register(t1);
 StructuredBuffer<Meshlet> gMeshlets : register(t2);
