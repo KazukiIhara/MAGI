@@ -16,6 +16,7 @@ class DXGI;
 class DirectXCommand;
 class SRVUAVManager;
 class GraphicsPipelineManager;
+class ShadowPipelineManager;
 class Camera3DManager;
 
 /// <summary>
@@ -37,11 +38,14 @@ public:
 	void UpdateAll();
 	void DrawAll(BlendMode mode);
 
+	void DrawShadowAll(BlendMode mode);
+
 private:
 	void SetDXGI(DXGI* dxgi);
 	void SetDirectXCommand(DirectXCommand* directXCommand);
 	void SetSRVUAVManager(SRVUAVManager* srvUavManager);
 	void SetGraphicsPipelineManager(GraphicsPipelineManager* graphicsPipelineManager);
+	void SetShadowPipelineManager(ShadowPipelineManager* shadowPipelineManager);
 	void SetCamera3DManager(Camera3DManager* camera3DManager);
 
 private:
@@ -53,5 +57,6 @@ private:
 	DirectXCommand* directXCommand_ = nullptr;
 	SRVUAVManager* srvUavManager_ = nullptr;
 	GraphicsPipelineManager* graphicsPipelineManager_ = nullptr;
+	ShadowPipelineManager* shadowPipelineManager_ = nullptr;
 	Camera3DManager* camera3DManager_ = nullptr;
 };

@@ -26,12 +26,14 @@ public:
 	void Update();
 
 	void TransferDirectionalLight(uint32_t paramIndex);
-
 	void SetDirectionalLight(const DirectionalLight& directionalLight);
-private:
 
+private:
 	void CreateDirectionalLightResource();
 	void MapDirectionalLightData();
+
+	void CreateDirectionalLightCameraResource();
+	void MapDirectionalLightCameraData();
 
 	Matrix4x4 MakeLightViewProjectionMatrix(const Vector3& lightDirection, const Vector3& target, float width, float height, float nearClip, float farClip);
 private:
@@ -40,9 +42,8 @@ private:
 	void SetSrvUavManager(SRVUAVManager* srvuavManager);
 
 private:
-
-	ComPtr<ID3D12Resource> lightCameraResource_;
-	LightCameraForGPU* lightCameraData_ = nullptr;
+	ComPtr<ID3D12Resource> directionalLightCameraResource_;
+	DirectionalLightCameraForGPU* diractionalLightCameraData_ = nullptr;
 
 	DirectionalLight directionalLight_{};
 	ComPtr<ID3D12Resource> directionalLightResource_ = nullptr;

@@ -108,10 +108,10 @@ void ModelDrawer::DrawShadow(BlendMode mode) {
 	// 
 	// パイプラインの設定
 	// 
-	commandList->SetPipelineState(MAGISYSTEM::GetGraphicsPipelineState(GraphicsPipelineStateType::Model3D, mode));
+	commandList->SetPipelineState(MAGISYSTEM::GetShadowPipelineState(ShadowPipelineStateType::Model));
 
 	// ライトのVPを転送　(b0)
-	
+	MAGISYSTEM::TransferDirectionalLightCamera();
 
 	// inctancing描画用のデータを送信
 	commandList->SetGraphicsRootDescriptorTable(1, MAGISYSTEM::GetSrvUavDescriptorHandleGPU(instancingSrvIndex_[blendIndex]));

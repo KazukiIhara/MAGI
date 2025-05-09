@@ -985,6 +985,14 @@ ID3D12PipelineState* MAGISYSTEM::GetPostEffectPipelineState(PostEffectType pipel
 	return postEffectPipelineManager_->GetPipelineState(pipelineState, blendMode);
 }
 
+ID3D12RootSignature* MAGISYSTEM::GetShadowRootSignature(ShadowPipelineStateType pipelineState) {
+	return shadowPipelineManager_->GetRootSignature(pipelineState);
+}
+
+ID3D12PipelineState* MAGISYSTEM::GetShadowPipelineState(ShadowPipelineStateType pipelineState) {
+	return shadowPipelineManager_->GetPipelineState(pipelineState);
+}
+
 void MAGISYSTEM::ApplyPostEffectGrayScale() {
 	PostEffectCommand command{
 		.postEffectType = PostEffectType::Grayscale,
@@ -1205,6 +1213,10 @@ const std::vector<std::unique_ptr<BaseParticleGroup3D>>& MAGISYSTEM::GetParticle
 
 void MAGISYSTEM::SetDirectionalLight(const DirectionalLight& directionalLight) {
 	lightManager_->SetDirectionalLight(directionalLight);
+}
+
+void MAGISYSTEM::TransferDirectionalLightCamera() {
+	
 }
 
 void MAGISYSTEM::AddGameObject3D(std::unique_ptr<GameObject3D> newGameObject3D) {

@@ -467,6 +467,8 @@ public: // エンジンの機能
 #pragma region LightManager
 	// DirectionalLightをセット
 	static void SetDirectionalLight(const DirectionalLight& directionalLight);
+	// ライトカメラを転送
+	static void TransferDirectionalLightCamera();
 #pragma endregion
 
 #pragma region LineDrawer3D

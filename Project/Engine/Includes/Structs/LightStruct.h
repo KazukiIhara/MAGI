@@ -3,7 +3,7 @@
 #include "Math/Types/Vector3.h"
 #include "Math/Types/Matrix4x4.h"
 
-struct LightCameraForGPU {
+struct DirectionalLightCameraForGPU {
 	Matrix4x4 viewProjection;
 };
 

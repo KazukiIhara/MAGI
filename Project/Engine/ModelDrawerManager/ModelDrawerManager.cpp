@@ -10,6 +10,7 @@
 #include "DirectX/DirectXCommand/DirectXCommand.h"
 #include "ViewManagers/SRVUAVManager/SRVUAVManager.h"
 #include "PipelineManagers/GraphicsPipelineManager/GraphicsPipelineManager.h"
+#include "PipelineManagers/ShadowPipelineManager/ShadowPipelineManager.h"
 #include "ObjectManagers/Camera3DManager/Camera3DManager.h"
 
 ModelDrawerManager::ModelDrawerManager(
@@ -55,13 +56,22 @@ void ModelDrawerManager::UpdateAll() {
 }
 
 void ModelDrawerManager::DrawAll(BlendMode mode) {
-	// 全モデル描画クラスを描画
-	
 	// ルーシグネイチャをセット
 	directXCommand_->GetList()->SetGraphicsRootSignature(graphicsPipelineManager_->GetRootSignature(GraphicsPipelineStateType::Model3D));
 
+	// 描画
 	for (auto& modelDrawer : modelDrawers_) {
 		modelDrawer.second->Draw(mode);
+	}
+}
+
+void ModelDrawerManager::DrawShadowAll(BlendMode mode) {
+	// ルーシグネイチャをセット
+	directXCommand_->GetList()->SetGraphicsRootSignature(shadowPipelineManager_->GetRootSignature(ShadowPipelineStateType::Model));
+
+	// 描画
+	for (auto& modelDrawer : modelDrawers_) {
+		modelDrawer.second->DrawShadow(mode);
 	}
 }
 
@@ -83,6 +93,11 @@ void ModelDrawerManager::SetSRVUAVManager(SRVUAVManager* srvUavManager) {
 void ModelDrawerManager::SetGraphicsPipelineManager(GraphicsPipelineManager* graphicsPipelineManager) {
 	assert(graphicsPipelineManager);
 	graphicsPipelineManager_ = graphicsPipelineManager;
+}
+
+void ModelDrawerManager::SetShadowPipelineManager(ShadowPipelineManager* shadowPipelineManager) {
+	assert(shadowPipelineManager);
+	shadowPipelineManager_ = shadowPipelineManager;
 }
 
 void ModelDrawerManager::SetCamera3DManager(Camera3DManager* camera3DManager) {
