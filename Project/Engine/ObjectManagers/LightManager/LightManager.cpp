@@ -21,6 +21,8 @@ LightManager::LightManager(DXGI* dxgi, DirectXCommand* directXCommand) {
 	CreateDirectionalLightCameraResource();
 	MapDirectionalLightCameraData();
 
+	lightProj_ = MakeOrthographicMatrix(40.0f, 40.0f, nearClipRange_, farClipRange_);
+
 	Logger::Log("LightManager Initialize\n");
 }
 
@@ -38,24 +40,21 @@ void LightManager::Update() {
 	// シャドウマップ用ライトカメラ行列の構築
 	// ----------------------------------------------
 
-	// 1) ライト方向の正規化
+	// ライト方向の正規化
 	const Vector3 lightDir = Normalize(directionalLight_.direction);
 
-	// 2) シーン中心から離れた位置にライト（eye）を置く
+	// シーン中心から離れた位置にライト（eye）を置く
 	const float lightDistance = 500.0f;
 
 	Vector3 position = -directionalLight_.direction * lightDistance;
 	Vector3 target = Vector3(0.0f, 0.0f, 0.0f);
 	Vector3 up = Vector3(1.0f, 0.0f, 0.0f);
 
-	// 3) ビュー行列（ライト空間ビュー）
+	// ビュー行列（ライト空間ビュー）
 	Matrix4x4 lightView = MakeLookAtMatrix(position, target, up);
 
-	// 4) プロジェクション行列
-	Matrix4x4 lightProj = MakeOrthographicMatrix(40.0f, 40.0f, nearClipRange_, farClipRange_);
-
-	// 5) VP 行列を GPU 定数バッファへ書き込み
-	directionalLightCameraData_->viewProjection = lightView * lightProj;
+	// VP 行列を GPU 定数バッファへ書き込み
+	directionalLightCameraData_->viewProjection = lightView * lightProj_;
 }
 
 void LightManager::TransferDirectionalLight(uint32_t paramIndex) {

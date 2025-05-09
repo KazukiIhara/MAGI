@@ -54,6 +54,9 @@ private:
 	// ファークリップ距離
 	const float farClipRange_ = 1000.0f;
 
+	// プロジェクション行列
+	Matrix4x4 lightProj_{};
+
 	//========================
 	// DirectionalLight
 	//========================

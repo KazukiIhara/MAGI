@@ -24,8 +24,8 @@ public:
 	uint32_t GetSrvIndex()const;
 
 public:
-	static const uint32_t kShadowMapWidth = 2048;
-	static const uint32_t kShadowMapHeight = 2048;
+	static const uint32_t kShadowMapWidth = 4096;
+	static const uint32_t kShadowMapHeight = 4096;
 
 private:
 	void CreateResource();

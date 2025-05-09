@@ -12,32 +12,37 @@ Texture2D gPositionTex : register(t2);
 Texture2D<float> gShadowMap : register(t3);
 
 SamplerState gSampler : register(s0);
+SamplerComparisonState gShadowSampler : register(s1);
 
-float ComputeShadow(float3 worldPos)
+float ComputeShadow(float3 worldPos, float3 worldNormal)
 {
-    float shadowMap = 0.0f;
-    
+    // 1. ライト空間投影
     float4 lsPos = mul(float4(worldPos, 1), gLightCamera.viewProjection);
-    
-    // ライトビュースクリーン空間からUV空間に座標変換
-    float2 shadowMapuv = lsPos.xy / lsPos.w;
-    shadowMapuv *= float2(0.5f, -0.5f);
-    shadowMapuv += 0.5f;
-    
-    // ライトビュースクリーン空間でのZ値を計算する
-    float zInLVP = lsPos.z / lsPos.w;
-    
-    if (shadowMapuv.x > 0.0f && shadowMapuv.x < 1.0f
-        && shadowMapuv.y > 0.0f && shadowMapuv.y < 1.0f)
+    lsPos /= lsPos.w;
+
+    // 2. UV 変換（NDC→[0,1]）
+    float2 uv = lsPos.xy * float2(0.5f, -0.5f) + 0.5f;
+
+    // 3. 法線ベースの可変バイアス計算
+    float3 N = normalize(worldNormal);
+    // ディレクショナルライトの向きは gLight.direction（正規化されていること前提）、
+    // ライト方向ベクトル L は「ライト→サーフェス」なので -direction
+    float3 L = normalize(-gDirectionalLight.direction);
+    float ndl = saturate(dot(N, L)); // [0,1]
+    float normalBias = 0.0001f * (1.0f - ndl);
+
+    // 4. 増減バイアスを反映した深度参照値
+    float depthRef = lsPos.z - normalBias;
+
+    // 5. シャドウテスト
+    float shadow = 1.0f;
+    if (uv.x >= 0.0f && uv.x <= 1.0f &&
+        uv.y >= 0.0f && uv.y <= 1.0f)
     {
-        // シャドウマップに描き込まれているZ値と比較する
-        float zInShadowMap = gShadowMap.Sample(gSampler, shadowMapuv).r;
-        if (zInLVP <= zInShadowMap)
-        {
-            shadowMap = 1.0f;
-        }
+        // SampleCmpLevelZero で比較＋PCF
+        shadow = gShadowMap.SampleCmpLevelZero(gShadowSampler, uv, depthRef);
     }
-    return shadowMap;
+    return shadow;
 }
 
 PixelShaderOutput main(VertexShaderOutput input)
@@ -67,7 +72,7 @@ PixelShaderOutput main(VertexShaderOutput input)
     float3 worldPos = position.xyz;
 
     // シャドウ係数を取得
-    float shadow = ComputeShadow(worldPos);
+    float shadow = ComputeShadow(worldPos, normal);
     
     //
     // DirectionalLight

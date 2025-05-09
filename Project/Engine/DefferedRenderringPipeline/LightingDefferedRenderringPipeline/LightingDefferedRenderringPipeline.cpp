@@ -82,7 +82,7 @@ void LightingDefferedRenderringPipeline::CreateRootSignature() {
 	rootParams[6].DescriptorTable.NumDescriptorRanges = 1;
 
 	// --- Static Sampler ---
-	D3D12_STATIC_SAMPLER_DESC samplers[1]{};
+	D3D12_STATIC_SAMPLER_DESC samplers[2]{};
 
 	// s0 : 通常サンプラー
 	samplers[0].Filter = D3D12_FILTER_MIN_MAG_MIP_LINEAR;
@@ -94,6 +94,19 @@ void LightingDefferedRenderringPipeline::CreateRootSignature() {
 	samplers[0].RegisterSpace = 0;
 	samplers[0].ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL;
 	samplers[0].MaxLOD = D3D12_FLOAT32_MAX;
+
+	// s1 : シャドウマップ用比較サンプラー
+	samplers[1].Filter = D3D12_FILTER_COMPARISON_MIN_MAG_LINEAR_MIP_POINT;
+	samplers[1].AddressU = D3D12_TEXTURE_ADDRESS_MODE_BORDER;
+	samplers[1].AddressV = D3D12_TEXTURE_ADDRESS_MODE_BORDER;
+	samplers[1].AddressW = D3D12_TEXTURE_ADDRESS_MODE_BORDER;
+	samplers[1].BorderColor = D3D12_STATIC_BORDER_COLOR_OPAQUE_WHITE;
+	samplers[1].ComparisonFunc = D3D12_COMPARISON_FUNC_LESS_EQUAL;
+	samplers[1].ShaderRegister = 1;  // register(s1)
+	samplers[1].RegisterSpace = 0;
+	samplers[1].ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL;
+	samplers[1].MinLOD = 0;
+	samplers[1].MaxLOD = D3D12_FLOAT32_MAX;
 
 	// --- ルートシグネチャ作成 ---
 	D3D12_ROOT_SIGNATURE_DESC rootSigDesc{};
@@ -190,10 +203,14 @@ D3D12_INPUT_LAYOUT_DESC LightingDefferedRenderringPipeline::InputLayoutSetting()
 
 D3D12_RASTERIZER_DESC LightingDefferedRenderringPipeline::RasterizerStateSetting() {
 	// RasterizerStateの設定
-	D3D12_RASTERIZER_DESC rasterizerDesc_{};
+	D3D12_RASTERIZER_DESC rasterizerDesc{};
 	// 裏側(時計回り)を表示しない
-	rasterizerDesc_.CullMode = D3D12_CULL_MODE_BACK;
+	rasterizerDesc.CullMode = D3D12_CULL_MODE_BACK;
 	// 三角形の中を塗りつぶす
-	rasterizerDesc_.FillMode = D3D12_FILL_MODE_SOLID;
-	return rasterizerDesc_;
+	rasterizerDesc.FillMode = D3D12_FILL_MODE_SOLID;
+
+	rasterizerDesc.DepthBias = 1000;    // 定数バイアス
+	rasterizerDesc.DepthBiasClamp = 0.0f;    // 最大バイアスクランプ（使わないなら 0）
+	rasterizerDesc.SlopeScaledDepthBias = 1.5f;    // 法線傾きに応じたスケールバイアス
+	return rasterizerDesc;
 }
