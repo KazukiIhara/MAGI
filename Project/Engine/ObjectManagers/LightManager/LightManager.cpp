@@ -35,13 +35,37 @@ void LightManager::Update() {
 	directionalLightData_->color = directionalLight_.color;
 
 
-	Matrix4x4 translateMat = MakeTranslateMatrix(-directionalLight_.direction * 5.0f);
-	Matrix4x4 rotateMat = MakeRotateMatrix(DirectionToQuaternion(directionalLight_.direction));
+	// ----------------------------------------------
+	// ビュー行列の構築（ライト方向を逆にたどって視点位置とする）
+	// ----------------------------------------------
+	const Vector3 lightDir = Normalize(directionalLight_.direction);
+	const float lightDistance = 20.0f; // 適切な距離（シーンに応じて調整）
 
-	Matrix4x4 viewMat = Inverse(rotateMat * translateMat);
-	Matrix4x4 projMat = MakePerspectiveFovMatrix(fovY_, aspectRaito_, nearClipRange_, farClipRange_);
+	Vector3 eye = -lightDir * lightDistance;
+	Vector3 target = Vector3(0.0f, 0.0f, 0.0f); // 原点を注視（シーン中心など）
+	Vector3 up = Vector3(0.0f, 1.0f, 0.0f);     // 上方向
 
+	Matrix4x4 viewMat = MakeLookAtMatrix(eye, target, up);
+
+	// ----------------------------------------------
+	// 正射影行列の構築（MakeOrthographicMatrixに合わせて設定）
+	// ----------------------------------------------
+	const float width = 40.0f;
+	const float height = 40.0f;
+	const float nearZ = 0.1f;
+	const float farZ = 100.0f;
+
+	// left, top, right, bottomの順番に注意
+	float left = -width / 2.0f;
+	float right = width / 2.0f;
+	float bottom = -height / 2.0f;
+	float top = height / 2.0f;
+
+	Matrix4x4 projMat = MAGIMath::MakeOrthographicMatrix(left, top, right, bottom, nearZ, farZ);
+
+	// VP行列を設定
 	diractionalLightCameraData_->viewProjection = viewMat * projMat;
+
 }
 
 void LightManager::TransferDirectionalLight(uint32_t paramIndex) {
