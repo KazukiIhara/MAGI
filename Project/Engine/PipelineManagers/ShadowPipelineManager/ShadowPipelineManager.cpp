@@ -18,7 +18,7 @@ ShadowPipelineManager::~ShadowPipelineManager() {
 }
 
 void ShadowPipelineManager::Initialize(DXGI* dxgi, ShaderCompiler* shaderCompiler) {
-
+	dxgi, shaderCompiler;
 }
 
 ID3D12RootSignature* ShadowPipelineManager::GetRootSignature(ShadowPipelineStateType pipelineState) {
@@ -30,9 +30,9 @@ ID3D12PipelineState* ShadowPipelineManager::GetPipelineState(ShadowPipelineState
 }
 
 void ShadowPipelineManager::SetRootSignature(ShadowPipelineStateType pipelineState) {
-
+	pipelineState;
 }
 
 void ShadowPipelineManager::SetPipelineState(ShadowPipelineStateType pipelineState) {
-
+	pipelineState;
 }

@@ -27,17 +27,6 @@ public:
 	// 指定されたブレンドモードに対応するパイプラインステートを取得する
 	ID3D12PipelineState* GetPipelineState(BlendMode blendMode);
 
-
-	//==============================================
-	// ShadowMap用(クラス分け考慮)
-	//==============================================
-
-	// シャドウマップ用のルートシグネイチャ
-	ID3D12RootSignature* GetRootSignatureShadow();
-	// シャドウマップ用のパイプラインステートを取得
-	ID3D12PipelineState* GetPipelineStateShadow();
-
-
 protected:
 	// ルートシグネチャを作成する
 	virtual void CreateRootSignature() = 0;
@@ -55,15 +44,6 @@ protected:
 	virtual D3D12_INPUT_LAYOUT_DESC InputLayoutSetting() = 0;
 	// RasterizerStateの設定を行う
 	virtual D3D12_RASTERIZER_DESC RasterizerStateSetting() = 0;
-
-
-	//==============================================
-	// ShadowMap用(クラス分け考慮)
-	//==============================================
-
-	// シャドウマップ用のpso作成
-	void CreateGraphicsPipelineObjectShadow();
-
 
 private:
 	// DXGIのインスタンスをセット
@@ -91,20 +71,6 @@ protected:
 	ComPtr<ID3DBlob> pixelShaderBlobWithAlpha_ = nullptr;
 	// αありのメッシュシェーダーのバイナリデータ
 	ComPtr<ID3DBlob> meshShaderBlobWithAlpha_ = nullptr;
-
-	//==============================================
-	// ShadowMap用(クラス分け考慮)
-	//==============================================
-
-	// シャドウマップ用のルートシグネイチャ
-	ComPtr<ID3D12RootSignature> rootSignatureShadow_;
-	// シャドウマップ描画用のパイプラインステート
-	ComPtr<ID3D12PipelineState> pipelineStateShadow_;
-
-	// ShadowMap用のピクセルシェーダーのバイナリデータ
-	ComPtr<ID3DBlob> pixelShaderBlobShadow_ = nullptr;
-	// ShadowMap用のメッシュシェーダーのバイナリデータ
-	ComPtr<ID3DBlob> meshShaderBlobShadow_ = nullptr;
 
 protected:
 	DXGI* dxgi_ = nullptr;
