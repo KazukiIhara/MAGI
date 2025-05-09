@@ -28,6 +28,7 @@ RenderController::RenderController(
 	SRVUAVManager* srvUavManager,
 	DefferedRenderringPipelineManager* defferedRenderringPipelineManager,
 	PostEffectPipelineManager* postEffectPipelineManager,
+	ShadowPipelineManager* shadowPipelineManager,
 	Camera3DManager* camera3DManager,
 	LightManager* lightManager
 ) {
@@ -41,6 +42,7 @@ RenderController::RenderController(
 	SetSrvUavManager(srvUavManager);
 	SetDefferedRenderringPipelineManager(defferedRenderringPipelineManager);
 	SetPostEffectPipelineManager(postEffectPipelineManager);
+	SetShadowPipelineManager(shadowPipelineManager);
 	SetCamera3DManager(camera3DManager);
 	SetLightManager(lightManager);
 
@@ -416,6 +418,11 @@ void RenderController::SetDefferedRenderringPipelineManager(DefferedRenderringPi
 void RenderController::SetPostEffectPipelineManager(PostEffectPipelineManager* postEffectPipelineManager) {
 	assert(postEffectPipelineManager);
 	postEffectPipelineManager_ = postEffectPipelineManager;
+}
+
+void RenderController::SetShadowPipelineManager(ShadowPipelineManager* shadowPipelineManager) {
+	assert(shadowPipelineManager);
+	shadowPipelineManager_ = shadowPipelineManager;
 }
 
 void RenderController::SetCamera3DManager(Camera3DManager* camera3DManager) {

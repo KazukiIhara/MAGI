@@ -309,6 +309,14 @@ public: // エンジンの機能
 	static ID3D12PipelineState* GetPostEffectPipelineState(PostEffectType pipelineState, BlendMode blendMode);
 #pragma endregion
 
+#pragma region ShadowPipelineManager
+	// ルートシグネイチャ取得関数
+	static ID3D12RootSignature* GetShadowRootSignature(ShadowPipelineStateType pipelineState);
+	// パイプライン取得関数
+	static ID3D12PipelineState* GetShadowPipelineState(ShadowPipelineStateType pipelineState);
+#pragma endregion
+
+
 #pragma region RenderController
 	// シーンにグレースケールをかける
 	static void ApplyPostEffectGrayScale();
