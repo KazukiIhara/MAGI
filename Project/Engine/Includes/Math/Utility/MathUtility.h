@@ -136,6 +136,9 @@ namespace MAGIMath {
 	// ベクトルの長さ
 	float Length(const Vector3& a);
 
+	// 内積
+	float Dot(const Vector3& a, const Vector3& b);
+
 	// ベクトルの長さとの二乗値
 	float LengthSquared(const Vector3& v);
 
