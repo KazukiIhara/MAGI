@@ -49,6 +49,7 @@ std::unique_ptr<GraphicsPipelineManager> MAGISYSTEM::graphicsPipelineManager_ = 
 std::unique_ptr<ComputePipelineManager> MAGISYSTEM::computePipelineManager_ = nullptr;
 std::unique_ptr<DefferedRenderringPipelineManager> MAGISYSTEM::defferedRenderringPipelineManager_ = nullptr;
 std::unique_ptr<PostEffectPipelineManager> MAGISYSTEM::postEffectPipelineManager_ = nullptr;
+std::unique_ptr<ShadowPipelineManager> MAGISYSTEM::shadowPipelineManager_ = nullptr;
 
 // 
 // AssetContainer
@@ -192,6 +193,8 @@ void MAGISYSTEM::Initialize() {
 	defferedRenderringPipelineManager_ = std::make_unique<DefferedRenderringPipelineManager>(dxgi_.get(), shaderCompiler_.get());
 	// PostEffectPipelineManager
 	postEffectPipelineManager_ = std::make_unique<PostEffectPipelineManager>(dxgi_.get(), shaderCompiler_.get());
+	// ShadowPipelineManager
+	shadowPipelineManager_ = std::make_unique<ShadowPipelineManager>(dxgi_.get(), shaderCompiler_.get());
 
 	// RenderPipelineController
 	renderController_ = std::make_unique<RenderController>(dxgi_.get(), directXCommand_.get(), depthStencil_.get(), viewport_.get(), scissorRect_.get(), rtvManager_.get(), srvuavManager_.get(), defferedRenderringPipelineManager_.get(), postEffectPipelineManager_.get(), camera3DManager_.get(), lightManager_.get());
@@ -301,6 +304,11 @@ void MAGISYSTEM::Finalize() {
 	// LineDrawer3D
 	if (lineDrawer3D_) {
 		lineDrawer3D_.reset();
+	}
+
+	// ShadowPipelineManager
+	if (shadowPipelineManager_) {
+		shadowPipelineManager_.reset();
 	}
 
 	// PostEffectPipelineManager

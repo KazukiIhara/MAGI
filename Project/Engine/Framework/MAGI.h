@@ -55,6 +55,7 @@
 #include "PipelineManagers/ComputePipelineManager/ComputePipelineManager.h"
 #include "PipelineManagers/DefferedRenderringPipelineManager/DefferedRenderringPipelineManager.h"
 #include "PipelineManagers/PostEffectPipelineManager/PostEffectPipelineManager.h"
+#include "PipelineManagers/ShadowPipelineManager/ShadowPipelineManager.h"
 
 // 
 // ObjectManager
@@ -625,6 +626,7 @@ protected:
 	static std::unique_ptr<ComputePipelineManager> computePipelineManager_;
 	static std::unique_ptr<DefferedRenderringPipelineManager> defferedRenderringPipelineManager_;
 	static std::unique_ptr<PostEffectPipelineManager> postEffectPipelineManager_;
+	static std::unique_ptr<ShadowPipelineManager> shadowPipelineManager_;
 
 	// 
 	// AssetContainer
