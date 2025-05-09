@@ -69,7 +69,6 @@ void ModelShadowPipeline::CreateRootSignature() {
 	rootParams[4].ShaderVisibility = D3D12_SHADER_VISIBILITY_MESH;
 	rootParams[4].Descriptor.ShaderRegister = 3;
 
-
 	// t4 : PrimitiveIndices
 	rootParams[5].ParameterType = D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE;
 	rootParams[5].ShaderVisibility = D3D12_SHADER_VISIBILITY_MESH;

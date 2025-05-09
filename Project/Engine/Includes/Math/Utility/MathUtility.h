@@ -221,6 +221,7 @@ namespace MAGIMath {
 
 	// 正射影行列作成
 	Matrix4x4 MakeOrthographicMatrix(float left, float top, float right, float bottom, float nearClip, float farClip);
+	Matrix4x4 MakeOrthographicMatrix(float width, float height, float nearClip, float farClip);
 
 	// UV行列を作成
 	Matrix4x4 MakeUVMatrix(const Vector2& scale, const float& rotateZ, const Vector2& translate);

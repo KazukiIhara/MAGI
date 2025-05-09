@@ -34,38 +34,32 @@ void LightManager::Update() {
 	directionalLightData_->intensity = directionalLight_.intensity;
 	directionalLightData_->color = directionalLight_.color;
 
+	// ----------------------------------------------
+	// シャドウマップ用ライトカメラ行列の構築
+	// ----------------------------------------------
 
-	// ----------------------------------------------
-	// ビュー行列の構築（ライト方向を逆にたどって視点位置とする）
-	// ----------------------------------------------
+	// 1) ライト方向の正規化
 	const Vector3 lightDir = Normalize(directionalLight_.direction);
-	const float lightDistance = 20.0f; // 適切な距離（シーンに応じて調整）
 
+	// 2) シーン中心から離れた位置にライト（eye）を置く
+	//    シーンの中心が (0,0,0) であればこれで OK
+	const float lightDistance = 50.0f; // シーンのスケールに合わせて調整
 	Vector3 eye = -lightDir * lightDistance;
-	Vector3 target = Vector3(0.0f, 0.0f, 0.0f); // 原点を注視（シーン中心など）
-	Vector3 up = Vector3(0.0f, 1.0f, 0.0f);     // 上方向
+	Vector3 target = Vector3(0.0f, 0.0f, 0.0f);
+	Vector3 up = Vector3(0.0f, 1.0f, 0.0f);
 
-	Matrix4x4 viewMat = MakeLookAtMatrix(eye, target, up);
+	// 3) ビュー行列（ライト空間ビュー）
+	Matrix4x4 lightView = MakeLookAtMatrix(eye, target, up);
 
-	// ----------------------------------------------
-	// 正射影行列の構築（MakeOrthographicMatrixに合わせて設定）
-	// ----------------------------------------------
-	const float width = 40.0f;
-	const float height = 40.0f;
-	const float nearZ = 0.1f;
+	// 4) 直交投影行列（シャドウマップ範囲）
+	const float orthoWidth = 40.0f;
+	const float orthoHeight = 40.0f;
+	const float nearZ = 1.0f;
 	const float farZ = 100.0f;
+	Matrix4x4 lightProj = MakeOrthographicMatrix(orthoWidth, orthoHeight, nearZ, farZ);
 
-	// left, top, right, bottomの順番に注意
-	float left = -width / 2.0f;
-	float right = width / 2.0f;
-	float bottom = -height / 2.0f;
-	float top = height / 2.0f;
-
-	Matrix4x4 projMat = MAGIMath::MakeOrthographicMatrix(left, top, right, bottom, nearZ, farZ);
-
-	// VP行列を設定
-	diractionalLightCameraData_->viewProjection = viewMat * projMat;
-
+	// 5) VP 行列を GPU 定数バッファへ書き込み
+	directionalLightCameraData_->viewProjection = lightView * lightProj;
 }
 
 void LightManager::TransferDirectionalLight(uint32_t paramIndex) {
@@ -105,9 +99,9 @@ void LightManager::CreateDirectionalLightCameraResource() {
 }
 
 void LightManager::MapDirectionalLightCameraData() {
-	diractionalLightCameraData_ = nullptr;
-	directionalLightCameraResource_->Map(0, nullptr, reinterpret_cast<void**>(&diractionalLightCameraData_));
-	diractionalLightCameraData_->viewProjection = MakeIdentityMatrix4x4();
+	directionalLightCameraData_ = nullptr;
+	directionalLightCameraResource_->Map(0, nullptr, reinterpret_cast<void**>(&directionalLightCameraData_));
+	directionalLightCameraData_->viewProjection = MakeIdentityMatrix4x4();
 }
 
 void LightManager::SetDXGI(DXGI* dxgi) {

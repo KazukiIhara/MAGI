@@ -543,30 +543,30 @@ Matrix4x4 MAGIMath::RemoveScaling(const Matrix4x4& mat) {
 }
 
 Matrix4x4 MAGIMath::MakeLookAtMatrix(const Vector3& eye, const Vector3& target, const Vector3& upHint) {
-    Vector3 zaxis = Normalize(target - eye); // forward方向（左手系）
+	Vector3 zaxis = Normalize(target - eye); // forward方向（左手系）
 
-    Vector3 up = Normalize(upHint);
-    if (std::abs(Dot(zaxis, up)) > 0.999f) {
-        // zaxis と up がほぼ同じ方向なら直交するベクトルに切り替える
-        if (std::abs(zaxis.x) < std::abs(zaxis.y) && std::abs(zaxis.x) < std::abs(zaxis.z)) {
-            up = Vector3(1, 0, 0); // X軸
-        } else if (std::abs(zaxis.y) < std::abs(zaxis.z)) {
-            up = Vector3(0, 1, 0); // Y軸
-        } else {
-            up = Vector3(0, 0, 1); // Z軸
-        }
-    }
+	Vector3 up = Normalize(upHint);
+	if (std::abs(Dot(zaxis, up)) > 0.999f) {
+		// zaxis と up がほぼ同じ方向なら直交するベクトルに切り替える
+		if (std::abs(zaxis.x) < std::abs(zaxis.y) && std::abs(zaxis.x) < std::abs(zaxis.z)) {
+			up = Vector3(1, 0, 0); // X軸
+		} else if (std::abs(zaxis.y) < std::abs(zaxis.z)) {
+			up = Vector3(0, 1, 0); // Y軸
+		} else {
+			up = Vector3(0, 0, 1); // Z軸
+		}
+	}
 
-    Vector3 xaxis = Normalize(Cross(up, zaxis));   // 右方向
-    Vector3 yaxis = Cross(zaxis, xaxis);           // 修正された上方向
+	Vector3 xaxis = Normalize(Cross(up, zaxis));   // 右方向
+	Vector3 yaxis = Cross(zaxis, xaxis);           // 修正された上方向
 
-    Matrix4x4 result = {
-        xaxis.x, yaxis.x, zaxis.x, 0.0f,
-        xaxis.y, yaxis.y, zaxis.y, 0.0f,
-        xaxis.z, yaxis.z, zaxis.z, 0.0f,
-        -Dot(xaxis, eye), -Dot(yaxis, eye), -Dot(zaxis, eye), 1.0f
-    };
-    return result;
+	Matrix4x4 result = {
+		xaxis.x, yaxis.x, zaxis.x, 0.0f,
+		xaxis.y, yaxis.y, zaxis.y, 0.0f,
+		xaxis.z, yaxis.z, zaxis.z, 0.0f,
+		-Dot(xaxis, eye), -Dot(yaxis, eye), -Dot(zaxis, eye), 1.0f
+	};
+	return result;
 }
 
 Matrix4x4 MAGIMath::MakeScaleMatrix(const Vector3& scale) {
@@ -736,6 +736,29 @@ Matrix4x4 MAGIMath::MakeOrthographicMatrix(float left, float top, float right, f
 	return result;
 }
 
+Matrix4x4 MAGIMath::MakeOrthographicMatrix(float width, float height, float nearClip, float farClip) {
+	const float l = -width * 0.5f;
+	const float r = width * 0.5f;
+	const float b = -height * 0.5f;
+	const float t = height * 0.5f;
+
+	Matrix4x4 result =
+	{
+		// row0
+		2.0f / (r - l), 0.0f,           0.0f,                       0.0f,
+		// row1
+		0.0f,           2.0f / (t - b), 0.0f,                       0.0f,
+		// row2
+		0.0f,           0.0f,           1.0f / (farClip - nearClip), 0.0f,
+		// row3
+		-(r + l) / (r - l),
+		-(t + b) / (t - b),
+		-nearClip / (farClip - nearClip),
+		1.0f,
+	};
+	return result;
+}
+
 Matrix4x4 MAGIMath::MakeUVMatrix(const Vector2& scale, const float& rotateZ, const Vector2& translate) {
 	Matrix4x4 rotateZMatrix = MakeRotateZMatrix(rotateZ);
 	Matrix4x4 scaleMatrix = MakeScaleMatrix(Vector3(scale.x, scale.y, 1.0f));
@@ -800,35 +823,35 @@ Quaternion MAGIMath::EulerToQuaternion(const Vector3& euler) {
 }
 
 Quaternion MAGIMath::DirectionToQuaternion(const Vector3& direction) {
-    Vector3 forward = Normalize(direction);
-    Vector3 baseForward = Vector3(0.0f, 0.0f, -1.0f); // Z-方向を前方とする
+	Vector3 forward = Normalize(direction);
+	Vector3 baseForward = Vector3(0.0f, 0.0f, -1.0f); // Z-方向を前方とする
 
-    float dot = Dot(baseForward, forward);
-    dot = std::clamp(dot, -1.0f, 1.0f); // 安全のためクランプ
+	float dot = Dot(baseForward, forward);
+	dot = std::clamp(dot, -1.0f, 1.0f); // 安全のためクランプ
 
-    if (dot > 0.9999f) {
-        // 同じ方向 → 単位クォータニオン
-        return Quaternion(0.0f, 0.0f, 0.0f, 1.0f);
-    }
+	if (dot > 0.9999f) {
+		// 同じ方向 → 単位クォータニオン
+		return Quaternion(0.0f, 0.0f, 0.0f, 1.0f);
+	}
 
-    if (dot < -0.9999f) {
-        // 反対方向 → 任意の直交ベクトルを軸に180度回転
-        Vector3 orth;
-        if (std::fabs(baseForward.x) < std::fabs(baseForward.y) && std::fabs(baseForward.x) < std::fabs(baseForward.z))
-            orth = Vector3(1.0f, 0.0f, 0.0f);
-        else if (std::fabs(baseForward.y) < std::fabs(baseForward.z))
-            orth = Vector3(0.0f, 1.0f, 0.0f);
-        else
-            orth = Vector3(0.0f, 0.0f, 1.0f);
+	if (dot < -0.9999f) {
+		// 反対方向 → 任意の直交ベクトルを軸に180度回転
+		Vector3 orth;
+		if (std::fabs(baseForward.x) < std::fabs(baseForward.y) && std::fabs(baseForward.x) < std::fabs(baseForward.z))
+			orth = Vector3(1.0f, 0.0f, 0.0f);
+		else if (std::fabs(baseForward.y) < std::fabs(baseForward.z))
+			orth = Vector3(0.0f, 1.0f, 0.0f);
+		else
+			orth = Vector3(0.0f, 0.0f, 1.0f);
 
-        Vector3 axis = Normalize(Cross(baseForward, orth));
-        return MakeRotateAxisAngleQuaternion(axis, static_cast<float>(std::numbers::pi_v<float>));
-    }
+		Vector3 axis = Normalize(Cross(baseForward, orth));
+		return MakeRotateAxisAngleQuaternion(axis, static_cast<float>(std::numbers::pi_v<float>));
+	}
 
-    Vector3 axis = Normalize(Cross(baseForward, forward));
-    float angle = std::acos(dot);
+	Vector3 axis = Normalize(Cross(baseForward, forward));
+	float angle = std::acos(dot);
 
-    return MakeRotateAxisAngleQuaternion(axis, angle);
+	return MakeRotateAxisAngleQuaternion(axis, angle);
 }
 
 

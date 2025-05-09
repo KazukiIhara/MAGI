@@ -157,11 +157,16 @@ void RenderController::LightingPass() {
 	// DirectinalLightを転送
 	lightManager_->TransferDirectionalLight(1);
 
-	// GBufferのSRVをセット（t0, t1, t2）
-	commandList->SetGraphicsRootDescriptorTable(2, srvUavManager_->GetDescriptorHandleGPU(gBufferAlbedoRenderTexture_->GetSrvIndex()));
-	commandList->SetGraphicsRootDescriptorTable(3, srvUavManager_->GetDescriptorHandleGPU(gBufferNormalRenderTexture_->GetSrvIndex()));
-	commandList->SetGraphicsRootDescriptorTable(4, srvUavManager_->GetDescriptorHandleGPU(gBufferPositionRenderTexture_->GetSrvIndex()));
+	// DirectionalLightCamera転送
+	lightManager_->TransferDirectionalLightCamera(2);
 
+	// GBufferのSRVをセット（t0, t1, t2）
+	commandList->SetGraphicsRootDescriptorTable(3, srvUavManager_->GetDescriptorHandleGPU(gBufferAlbedoRenderTexture_->GetSrvIndex()));
+	commandList->SetGraphicsRootDescriptorTable(4, srvUavManager_->GetDescriptorHandleGPU(gBufferNormalRenderTexture_->GetSrvIndex()));
+	commandList->SetGraphicsRootDescriptorTable(5, srvUavManager_->GetDescriptorHandleGPU(gBufferPositionRenderTexture_->GetSrvIndex()));
+
+	// シャドウマップテクスチャのSRVをセット
+	commandList->SetGraphicsRootDescriptorTable(6, srvUavManager_->GetDescriptorHandleGPU(shadowDepthTexture_->GetSrvIndex()));
 
 	// 描画
 	commandList->DrawInstanced(3, 1, 0, 0);

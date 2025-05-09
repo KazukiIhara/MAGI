@@ -25,3 +25,8 @@ struct DirectionalLightData
     float3 color;
     float padding;
 };
+
+struct LightCameraData
+{
+    float4x4 lightViewProjection;
+};

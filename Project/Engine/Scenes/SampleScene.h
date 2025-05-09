@@ -137,9 +137,8 @@ inline void SampleScene<Data>::Initialize() {
 
 	for (uint32_t i = 0; i < wtsNum_; i++) {
 		wts_[i].Initialize();
-		wts_[i].translate_.x = -1.5f;
 		wts_[i].translate_.z = float(i) * 2.0f;
-		wts_[i].translate_.y = 0.5f;
+		wts_[i].translate_.y = 2.0f;
 	}
 
 	worldTransform_[0].translate_.x = 0.0f;
@@ -293,19 +292,19 @@ inline void SampleScene<Data>::Draw() {
 	MAGISYSTEM::DrawPlane3D(worldTransform_[0].worldMatrix_, planeData_, material_);
 
 	// 球体描画
-	MAGISYSTEM::DrawSphere3D(worldTransform_[1].worldMatrix_, sphereData_, material_);
+	// MAGISYSTEM::DrawSphere3D(worldTransform_[1].worldMatrix_, sphereData_, material_);
 
 	// 三角形描画
 	//MAGISYSTEM::DrawTriangle3D(worldTransform_[2].worldMatrix_, triangleData_, material_);
 
 	// リング描画
-	MAGISYSTEM::DrawRing3D(worldTransform_[3].worldMatrix_, ringData_, material_);
+	// MAGISYSTEM::DrawRing3D(worldTransform_[3].worldMatrix_, ringData_, material_);
 
 	// シリンダー描画
-	MAGISYSTEM::DrawCylinder3D(worldTransform_[4].worldMatrix_, cylinderData_, material_);
+	// MAGISYSTEM::DrawCylinder3D(worldTransform_[4].worldMatrix_, cylinderData_, material_);
 
 	// モデル描画
-	MAGISYSTEM::DrawModel("test", worldTransform_[2].worldMatrix_, modelMatAlpha_);
+	// MAGISYSTEM::DrawModel("test", worldTransform_[2].worldMatrix_, modelMatAlpha_);
 
 	// モデル描画
 

@@ -47,10 +47,10 @@ private:
 	// DirectionalLightCamera
 	//========================
 	ComPtr<ID3D12Resource> directionalLightCameraResource_;
-	DirectionalLightCameraForGPU* diractionalLightCameraData_ = nullptr;
+	DirectionalLightCameraForGPU* directionalLightCameraData_ = nullptr;
 
 	// 水平視野角(度数法)
-	float fovYDegrees_ = 90.0f;
+	float fovYDegrees_ = 60.0f;
 	// 水平方向視野角
 	float fovY_ = fovYDegrees_ * (std::numbers::pi_v<float> / 180.0f);
 	// アスペクト比
@@ -58,7 +58,7 @@ private:
 	// ニアクリップ距離
 	const float nearClipRange_ = 0.1f;
 	// ファークリップ距離
-	const float farClipRange_ = 100.0f;
+	const float farClipRange_ = 500.0f;
 
 	//========================
 	// DirectionalLight
