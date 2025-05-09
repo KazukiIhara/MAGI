@@ -28,6 +28,8 @@ public:
 	void TransferDirectionalLight(uint32_t paramIndex);
 	void SetDirectionalLight(const DirectionalLight& directionalLight);
 
+	void TransferDirectionalLightCamera(uint32_t paramIndex);
+
 private:
 	void CreateDirectionalLightResource();
 	void MapDirectionalLightData();

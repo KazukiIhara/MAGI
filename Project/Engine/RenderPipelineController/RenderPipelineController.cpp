@@ -101,6 +101,10 @@ void RenderController::PreShadowRender() {
 	scissorRect_->SettingScissorRect(ShadowDepthTexture::kShadowMapWidth, ShadowDepthTexture::kShadowMapHeight);
 }
 
+void RenderController::PostShadowRender() {
+	shadowDepthTexture_->TransitionToRead();
+}
+
 void RenderController::PreSceneRender() {
 	// Gバッファ3枚＋深度バッファをセットする
 	std::array<D3D12_CPU_DESCRIPTOR_HANDLE, 3> rtvs = {

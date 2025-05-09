@@ -111,7 +111,7 @@ void ModelDrawer::DrawShadow(BlendMode mode) {
 	commandList->SetPipelineState(MAGISYSTEM::GetShadowPipelineState(ShadowPipelineStateType::Model));
 
 	// ライトのVPを転送　(b0)
-	MAGISYSTEM::TransferDirectionalLightCamera();
+	MAGISYSTEM::TransferDirectionalLightCamera(0);
 
 	// inctancing描画用のデータを送信
 	commandList->SetGraphicsRootDescriptorTable(1, MAGISYSTEM::GetSrvUavDescriptorHandleGPU(instancingSrvIndex_[blendIndex]));

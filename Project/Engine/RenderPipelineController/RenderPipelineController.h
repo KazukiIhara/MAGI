@@ -55,6 +55,9 @@ public:
 	// シャドウマップ用の深度描画前準備
 	void PreShadowRender();
 
+	// シャドウマップ用の深度描画後処理
+	void PostShadowRender();
+
 	// シーンを描画するための前準備
 	void PreSceneRender();
 

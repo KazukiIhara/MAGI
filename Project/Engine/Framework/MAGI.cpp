@@ -219,7 +219,7 @@ void MAGISYSTEM::Initialize() {
 	cylinderDrawer3D_ = std::make_unique<CylinderDrawer3D>(dxgi_.get(), directXCommand_.get(), srvuavManager_.get(), graphicsPipelineManager_.get(), camera3DManager_.get());
 
 	// ModelDrawerManager
-	modelDrawerManager_ = std::make_unique<ModelDrawerManager>(dxgi_.get(), directXCommand_.get(), srvuavManager_.get(), graphicsPipelineManager_.get(), camera3DManager_.get());
+	modelDrawerManager_ = std::make_unique<ModelDrawerManager>(dxgi_.get(), directXCommand_.get(), srvuavManager_.get(), graphicsPipelineManager_.get(), shadowPipelineManager_.get(), camera3DManager_.get());
 
 
 	// CollisionManager
@@ -617,6 +617,24 @@ void MAGISYSTEM::Draw() {
 	sceneManager_->Draw();
 
 
+	//==============================================
+	// ShadowMap用のDepthのみの描画
+	//==============================================
+
+	// シャドウマップ用の描画をするための前準備
+	renderController_->PreShadowRender();
+
+	// シャドウ用にオブジェクトの描画
+	modelDrawerManager_->DrawShadowAll(BlendMode::None);
+
+	// シャドウマップ用の描画後処理
+	renderController_->PostShadowRender();
+
+
+	//==============================================
+	// GBufferにシーンを描画
+	//==============================================
+
 	// シーン描画用のレンダーテクスチャを準備
 	renderController_->PreSceneRender();
 
@@ -634,18 +652,18 @@ void MAGISYSTEM::Draw() {
 	// シーンの描画後処理
 	renderController_->PostSceneRender();
 
+
+	//==============================================
+	// シーン用のレンダーテクスチャに描画
+	//==============================================
+
 	// ライトの適用
 	renderController_->LightingPass();
 
-	// 
 	// LineDrawer3Dの描画処理
-	// 
-
 	lineDrawer3D_->Draw();
 
-	// 
 	// BlendModeごとに描画(透過ありを順番に描画)
-	// 
 	for (uint32_t i = static_cast<uint32_t>(BlendMode::Normal); i < kBlendModeNum; ++i) {
 		BlendMode mode = static_cast<BlendMode>(i);
 		modelDrawerManager_->DrawAll(mode);
@@ -659,11 +677,26 @@ void MAGISYSTEM::Draw() {
 	// ライト適用後の処理
 	renderController_->PostLightingPass();
 
+
+	//==============================================
+	// ポストプロセス
+	//==============================================
+
 	// ポストエフェクトをかける処理
 	renderController_->ApplyPostEffect();
 
+
+	//==============================================
+	// SwapChainに投げる前の最終描画
+	//==============================================
+
 	// スワップチェーン前最終描画
 	renderController_->RenderToFinalRenderTexture();
+
+
+	//==============================================
+	// SwapChainに描画
+	//==============================================
 
 	// スワップチェーン描画前処理
 	swapChain_->PreRender();
@@ -671,14 +704,29 @@ void MAGISYSTEM::Draw() {
 	// スワップチェーンに最終描画用レンダーテクスチャを描画
 	renderController_->RenderToSwapChain();
 
-	// レンダーコントローラのフレーム終了処理
-	renderController_->EndFrame();
-
 	// ImGui内部コマンド生成
-	imguiController_->EndFrame();
+	imguiController_->SetAllCommand();
+
+
+	//==============================================
+	// 描画
+	//==============================================
 
 	// スワップチェーンをプレゼント状態に遷移	
 	swapChain_->TransitionToPresent();
+
+
+	//==============================================
+	// 次のフレームのための後処理
+	//==============================================
+
+	// レンダーコントローラのフレーム終了処理
+	renderController_->EndFrame();
+
+
+	//==============================================
+	// コマンド発行
+	//==============================================
 
 	// コマンドを閉じて実行
 	directXCommand_->KickCommand();
@@ -1215,8 +1263,8 @@ void MAGISYSTEM::SetDirectionalLight(const DirectionalLight& directionalLight) {
 	lightManager_->SetDirectionalLight(directionalLight);
 }
 
-void MAGISYSTEM::TransferDirectionalLightCamera() {
-	
+void MAGISYSTEM::TransferDirectionalLightCamera(uint32_t paramIndex) {
+	lightManager_->TransferDirectionalLightCamera(paramIndex);
 }
 
 void MAGISYSTEM::AddGameObject3D(std::unique_ptr<GameObject3D> newGameObject3D) {

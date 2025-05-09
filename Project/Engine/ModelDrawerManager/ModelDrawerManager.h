@@ -29,6 +29,7 @@ public:
 		DirectXCommand* directXCommand,
 		SRVUAVManager* srvUavManager,
 		GraphicsPipelineManager* graphicsPipelineManager,
+		ShadowPipelineManager* shadowPipelineManager,
 		Camera3DManager* camera3DManager
 	);
 	~ModelDrawerManager();

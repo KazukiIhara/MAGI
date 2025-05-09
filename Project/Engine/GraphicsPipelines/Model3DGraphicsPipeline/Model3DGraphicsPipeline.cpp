@@ -39,12 +39,6 @@ void Model3DGraphicsPipeline::CreateRootSignature() {
 	descriptorRangeMeshlet.RangeType = D3D12_DESCRIPTOR_RANGE_TYPE_SRV;
 	descriptorRangeMeshlet.OffsetInDescriptorsFromTableStart = D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND;
 
-	D3D12_DESCRIPTOR_RANGE rangeUnique{};
-	rangeUnique.BaseShaderRegister = 3;
-	rangeUnique.NumDescriptors = 1;
-	rangeUnique.RangeType = D3D12_DESCRIPTOR_RANGE_TYPE_SRV;
-	rangeUnique.OffsetInDescriptorsFromTableStart = D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND;
-
 	D3D12_DESCRIPTOR_RANGE rangePrim{};
 	rangePrim.BaseShaderRegister = 4;
 	rangePrim.NumDescriptors = 1;

@@ -18,12 +18,14 @@ ModelDrawerManager::ModelDrawerManager(
 	DirectXCommand* directXCommand,
 	SRVUAVManager* srvUavManager,
 	GraphicsPipelineManager* graphicsPipelineManager,
+	ShadowPipelineManager* shadowPipelineManager,
 	Camera3DManager* camera3DManager
 ) {
 	SetDXGI(dxgi);
 	SetDirectXCommand(directXCommand);
 	SetSRVUAVManager(srvUavManager);
 	SetGraphicsPipelineManager(graphicsPipelineManager);
+	SetShadowPipelineManager(shadowPipelineManager);
 	SetCamera3DManager(camera3DManager);
 
 	Logger::Log("ModelDrawerManager Initialize\n");

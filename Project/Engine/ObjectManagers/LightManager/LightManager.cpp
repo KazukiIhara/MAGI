@@ -14,11 +14,12 @@ using namespace MAGIMath;
 LightManager::LightManager(DXGI* dxgi, DirectXCommand* directXCommand) {
 	SetDXGI(dxgi);
 	SetDirectXCommand(directXCommand);
+
 	CreateDirectionalLightResource();
 	MapDirectionalLightData();
 
 	CreateDirectionalLightCameraResource();
-	MapDirectionalLightData();
+	MapDirectionalLightCameraData();
 
 	Logger::Log("LightManager Initialize\n");
 }
@@ -31,6 +32,16 @@ void LightManager::Update() {
 	directionalLightData_->direction = directionalLight_.direction;
 	directionalLightData_->intensity = directionalLight_.intensity;
 	directionalLightData_->color = directionalLight_.color;
+
+	// VP行列を構築して転送(ひとまず定数)
+	const Vector3 target = { 0.0f, 0.0f, 0.0f };
+	const float width = 100.0f;
+	const float height = 100.0f;
+	const float nearClip = 0.1f;
+	const float farClip = 200.0f;
+
+	Matrix4x4 vp = MakeLightViewProjectionMatrix(directionalLight_.direction, target, width, height, nearClip, farClip);
+	diractionalLightCameraData_->viewProjection = vp;
 }
 
 void LightManager::TransferDirectionalLight(uint32_t paramIndex) {
@@ -44,6 +55,13 @@ void LightManager::SetDirectionalLight(const DirectionalLight& directionalLight)
 	directionalLight_.direction = Normalize(directionalLight.direction);
 	directionalLight_.intensity = directionalLight.intensity;
 	directionalLight_.color = directionalLight.color;
+}
+
+void LightManager::TransferDirectionalLightCamera(uint32_t paramIndex) {
+	// コマンドリストを取得
+	ID3D12GraphicsCommandList* commandList = directXCommand_->GetList();
+	// ライト情報を送る
+	commandList->SetGraphicsRootConstantBufferView(paramIndex, directionalLightCameraResource_->GetGPUVirtualAddress());
 }
 
 void LightManager::CreateDirectionalLightResource() {

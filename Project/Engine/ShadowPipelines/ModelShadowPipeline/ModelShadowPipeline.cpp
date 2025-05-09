@@ -32,12 +32,6 @@ void ModelShadowPipeline::CreateRootSignature() {
 	descriptorRangeMeshlet.RangeType = D3D12_DESCRIPTOR_RANGE_TYPE_SRV;
 	descriptorRangeMeshlet.OffsetInDescriptorsFromTableStart = D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND;
 
-	D3D12_DESCRIPTOR_RANGE descriptorRangeUnique{};
-	descriptorRangeUnique.BaseShaderRegister = 3; // t3
-	descriptorRangeUnique.NumDescriptors = 1;
-	descriptorRangeUnique.RangeType = D3D12_DESCRIPTOR_RANGE_TYPE_SRV;
-	descriptorRangeUnique.OffsetInDescriptorsFromTableStart = D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND;
-
 	D3D12_DESCRIPTOR_RANGE descriptorRangePrimitive{};
 	descriptorRangePrimitive.BaseShaderRegister = 4; // t4
 	descriptorRangePrimitive.NumDescriptors = 1;
@@ -71,10 +65,10 @@ void ModelShadowPipeline::CreateRootSignature() {
 	rootParams[3].DescriptorTable.NumDescriptorRanges = 1;
 
 	// t3 : UniqueVertexIndices
-	rootParams[4].ParameterType = D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE;
+	rootParams[4].ParameterType = D3D12_ROOT_PARAMETER_TYPE_SRV;
 	rootParams[4].ShaderVisibility = D3D12_SHADER_VISIBILITY_MESH;
-	rootParams[4].DescriptorTable.pDescriptorRanges = &descriptorRangeUnique;
-	rootParams[4].DescriptorTable.NumDescriptorRanges = 1;
+	rootParams[4].Descriptor.ShaderRegister = 3;
+
 
 	// t4 : PrimitiveIndices
 	rootParams[5].ParameterType = D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE;
