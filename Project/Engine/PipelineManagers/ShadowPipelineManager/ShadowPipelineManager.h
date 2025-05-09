@@ -44,8 +44,9 @@ private:
 	// ルートシグネイチャ
 	ComPtr<ID3D12RootSignature> rootSignatures_[kShadowPipelineStateNum];
 	// グラフィックスパイプライン
-	ComPtr<ID3D12PipelineState> graphicsPipelineStates_[kShadowPipelineStateNum];
+	ComPtr<ID3D12PipelineState> shadowPipelineStates_[kShadowPipelineStateNum];
 private:
-
+	// モデル用のシャドウパイプライン
+	std::unique_ptr<ModelShadowPipeline> modelShadowPipeline_ = nullptr;
 
 };

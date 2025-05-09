@@ -18,7 +18,11 @@ ShadowPipelineManager::~ShadowPipelineManager() {
 }
 
 void ShadowPipelineManager::Initialize(DXGI* dxgi, ShaderCompiler* shaderCompiler) {
-	dxgi, shaderCompiler;
+	// Modelのシャドウパイプラインを生成、初期化
+	modelShadowPipeline_ = std::make_unique<ModelShadowPipeline>(dxgi, shaderCompiler);
+	modelShadowPipeline_->Initialize();
+	SetRootSignature(ShadowPipelineStateType::Model);
+	SetPipelineState(ShadowPipelineStateType::Model);
 }
 
 ID3D12RootSignature* ShadowPipelineManager::GetRootSignature(ShadowPipelineStateType pipelineState) {
@@ -26,13 +30,21 @@ ID3D12RootSignature* ShadowPipelineManager::GetRootSignature(ShadowPipelineState
 }
 
 ID3D12PipelineState* ShadowPipelineManager::GetPipelineState(ShadowPipelineStateType pipelineState) {
-	return graphicsPipelineStates_[static_cast<uint32_t>(pipelineState)].Get();
+	return shadowPipelineStates_[static_cast<uint32_t>(pipelineState)].Get();
 }
 
 void ShadowPipelineManager::SetRootSignature(ShadowPipelineStateType pipelineState) {
-	pipelineState;
+	switch (pipelineState) {
+	case ShadowPipelineStateType::Model:
+		rootSignatures_[static_cast<uint32_t>(pipelineState)] = modelShadowPipeline_->GetRootSignature();
+		break;
+	}
 }
 
 void ShadowPipelineManager::SetPipelineState(ShadowPipelineStateType pipelineState) {
-	pipelineState;
+	switch (pipelineState) {
+	case ShadowPipelineStateType::Model:
+		shadowPipelineStates_[static_cast<uint32_t>(pipelineState)] = modelShadowPipeline_->GetPipelineState();
+		break;
+	}
 }

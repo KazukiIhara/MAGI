@@ -47,9 +47,9 @@ private:
 	void SetShaderCompiler(ShaderCompiler* shaderCompiler);
 
 protected:
-	// シャドウマップ用のルートシグネイチャ
+	// ルートシグネイチャ
 	ComPtr<ID3D12RootSignature> rootSignature_;
-	// シャドウマップ描画用のパイプラインステート
+	// パイプラインステート
 	ComPtr<ID3D12PipelineState> pipelineState_;
 
 	// 増幅シェーダーのバイナリデータ

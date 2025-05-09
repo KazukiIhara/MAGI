@@ -7,7 +7,7 @@
 /// シャドウ用のパイプラインの種類
 /// </summary>
 enum class ShadowPipelineStateType {
-	Model3D,
+	Model,
 
 	Num,
 };
