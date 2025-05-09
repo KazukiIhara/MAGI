@@ -36,12 +36,6 @@ uint3 GetPrimitive(in Meshlet m, uint localPrim)
     return UnpackPrimitive(packed);
 }
 
-// シャドウ用軽量Vertex出力
-struct ShadowMeshOutput
-{
-    float4 position : SV_Position;
-};
-
 // 頂点データをワールド変換＆ビュープロジェクション適用
 ShadowMeshOutput GetVertexAttributes(uint vertexIndex, uint instID)
 {

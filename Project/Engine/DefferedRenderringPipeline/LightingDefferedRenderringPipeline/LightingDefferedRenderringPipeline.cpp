@@ -82,7 +82,7 @@ void LightingDefferedRenderringPipeline::CreateRootSignature() {
 	rootParams[6].DescriptorTable.NumDescriptorRanges = 1;
 
 	// --- Static Sampler ---
-	D3D12_STATIC_SAMPLER_DESC samplers[2]{};
+	D3D12_STATIC_SAMPLER_DESC samplers[1]{};
 
 	// s0 : 通常サンプラー
 	samplers[0].Filter = D3D12_FILTER_MIN_MAG_MIP_LINEAR;
@@ -94,18 +94,6 @@ void LightingDefferedRenderringPipeline::CreateRootSignature() {
 	samplers[0].RegisterSpace = 0;
 	samplers[0].ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL;
 	samplers[0].MaxLOD = D3D12_FLOAT32_MAX;
-
-	// s1 : シャドウ用比較サンプラー
-	samplers[1].Filter = D3D12_FILTER_COMPARISON_MIN_MAG_LINEAR_MIP_POINT;
-	samplers[1].AddressU = D3D12_TEXTURE_ADDRESS_MODE_BORDER;
-	samplers[1].AddressV = D3D12_TEXTURE_ADDRESS_MODE_BORDER;
-	samplers[1].AddressW = D3D12_TEXTURE_ADDRESS_MODE_BORDER;
-	samplers[1].ComparisonFunc = D3D12_COMPARISON_FUNC_LESS_EQUAL;
-	samplers[1].ShaderRegister = 1;
-	samplers[1].RegisterSpace = 0;
-	samplers[1].ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL;
-	samplers[1].BorderColor = D3D12_STATIC_BORDER_COLOR_OPAQUE_WHITE;
-	samplers[1].MaxLOD = D3D12_FLOAT32_MAX;
 
 	// --- ルートシグネチャ作成 ---
 	D3D12_ROOT_SIGNATURE_DESC rootSigDesc{};

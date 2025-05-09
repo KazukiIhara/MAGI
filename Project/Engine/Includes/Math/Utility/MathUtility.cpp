@@ -542,30 +542,24 @@ Matrix4x4 MAGIMath::RemoveScaling(const Matrix4x4& mat) {
 	return result;
 }
 
-Matrix4x4 MAGIMath::MakeLookAtMatrix(const Vector3& eye, const Vector3& target, const Vector3& upHint) {
-	Vector3 zaxis = Normalize(target - eye); // forward方向（左手系）
+Matrix4x4 MAGIMath::MakeLookAtMatrix(const Vector3& eye, const Vector3& target, const Vector3& up) {
+	// 1) 前方向ベクトル（左手系: target - eye）
+	Vector3 z = Normalize(target - eye);
 
-	Vector3 up = Normalize(upHint);
-	if (std::abs(Dot(zaxis, up)) > 0.999f) {
-		// zaxis と up がほぼ同じ方向なら直交するベクトルに切り替える
-		if (std::abs(zaxis.x) < std::abs(zaxis.y) && std::abs(zaxis.x) < std::abs(zaxis.z)) {
-			up = Vector3(1, 0, 0); // X軸
-		} else if (std::abs(zaxis.y) < std::abs(zaxis.z)) {
-			up = Vector3(0, 1, 0); // Y軸
-		} else {
-			up = Vector3(0, 0, 1); // Z軸
-		}
-	}
+	// 2) 右方向ベクトル
+	Vector3 x = Normalize(Cross(up, z));
 
-	Vector3 xaxis = Normalize(Cross(up, zaxis));   // 右方向
-	Vector3 yaxis = Cross(zaxis, xaxis);           // 修正された上方向
+	// 3) 真上ベクトル
+	Vector3 y = Cross(z, x);
 
+	// 4) ビューマトリクスを組み立て
 	Matrix4x4 result = {
-		xaxis.x, yaxis.x, zaxis.x, 0.0f,
-		xaxis.y, yaxis.y, zaxis.y, 0.0f,
-		xaxis.z, yaxis.z, zaxis.z, 0.0f,
-		-Dot(xaxis, eye), -Dot(yaxis, eye), -Dot(zaxis, eye), 1.0f
+		x.x,  y.x,  z.x,  0.0f,   // 第一行
+		x.y,  y.y,  z.y,  0.0f,   // 第二行
+		x.z,  y.z,  z.z,  0.0f,   // 第三行
+	   -Dot(x, eye), -Dot(y, eye), -Dot(z, eye), 1.0f  // 第四行
 	};
+
 	return result;
 }
 

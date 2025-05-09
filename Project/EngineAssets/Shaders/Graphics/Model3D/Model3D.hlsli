@@ -17,6 +17,12 @@ struct MeshOutputWithAlpha
     float2 uv : TEXCOORD0;
 };
 
+// シャドウ用軽量Vertex出力
+struct ShadowMeshOutput
+{
+    float4 position : SV_Position;
+};
+
 // 頂点データ
 struct VertexData3D
 {

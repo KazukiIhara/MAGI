@@ -28,5 +28,5 @@ struct DirectionalLightData
 
 struct LightCameraData
 {
-    float4x4 lightViewProjection;
+    float4x4 viewProjection;
 };

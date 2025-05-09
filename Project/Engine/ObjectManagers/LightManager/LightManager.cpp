@@ -42,21 +42,17 @@ void LightManager::Update() {
 	const Vector3 lightDir = Normalize(directionalLight_.direction);
 
 	// 2) シーン中心から離れた位置にライト（eye）を置く
-	//    シーンの中心が (0,0,0) であればこれで OK
-	const float lightDistance = 50.0f; // シーンのスケールに合わせて調整
-	Vector3 eye = -lightDir * lightDistance;
+	const float lightDistance = 500.0f;
+
+	Vector3 position = -directionalLight_.direction * lightDistance;
 	Vector3 target = Vector3(0.0f, 0.0f, 0.0f);
-	Vector3 up = Vector3(0.0f, 1.0f, 0.0f);
+	Vector3 up = Vector3(1.0f, 0.0f, 0.0f);
 
 	// 3) ビュー行列（ライト空間ビュー）
-	Matrix4x4 lightView = MakeLookAtMatrix(eye, target, up);
+	Matrix4x4 lightView = MakeLookAtMatrix(position, target, up);
 
-	// 4) 直交投影行列（シャドウマップ範囲）
-	const float orthoWidth = 40.0f;
-	const float orthoHeight = 40.0f;
-	const float nearZ = 1.0f;
-	const float farZ = 100.0f;
-	Matrix4x4 lightProj = MakeOrthographicMatrix(orthoWidth, orthoHeight, nearZ, farZ);
+	// 4) プロジェクション行列
+	Matrix4x4 lightProj = MakeOrthographicMatrix(40.0f, 40.0f, nearClipRange_, farClipRange_);
 
 	// 5) VP 行列を GPU 定数バッファへ書き込み
 	directionalLightCameraData_->viewProjection = lightView * lightProj;
