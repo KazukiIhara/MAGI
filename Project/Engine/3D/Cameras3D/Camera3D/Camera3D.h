@@ -56,7 +56,7 @@ protected:
 	// ビュープロジェクションマトリックス
 	Matrix4x4 viewProjectionMatrix_{};
 	// 水平視野角(度数法)
-	float fovYDegrees_ = 60.0f;
+	float fovYDegrees_ = 90.0f;
 	// 水平方向視野角
 	float fovY_ = fovYDegrees_ * (std::numbers::pi_v<float> / 180.0f);
 	// アスペクト比

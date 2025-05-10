@@ -49,7 +49,8 @@ void DepthStencil::CreateDepthStencilView() {
 	// DepthStencilTextureをウィンドウのサイズで作成
 	depthStencilResource_ = dxgi_->CreateDepthStencilTextureResource(
 		WindowApp::kClientWidth,
-		WindowApp::kClientHeight
+		WindowApp::kClientHeight,
+		DXGI_FORMAT_D24_UNORM_S8_UINT
 	);
 	// インデックス割り当て
 	dsvIndex_ = dsvManager_->Allocate();

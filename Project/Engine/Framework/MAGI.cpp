@@ -49,6 +49,7 @@ std::unique_ptr<GraphicsPipelineManager> MAGISYSTEM::graphicsPipelineManager_ = 
 std::unique_ptr<ComputePipelineManager> MAGISYSTEM::computePipelineManager_ = nullptr;
 std::unique_ptr<DefferedRenderringPipelineManager> MAGISYSTEM::defferedRenderringPipelineManager_ = nullptr;
 std::unique_ptr<PostEffectPipelineManager> MAGISYSTEM::postEffectPipelineManager_ = nullptr;
+std::unique_ptr<ShadowPipelineManager> MAGISYSTEM::shadowPipelineManager_ = nullptr;
 
 // 
 // AssetContainer
@@ -192,9 +193,16 @@ void MAGISYSTEM::Initialize() {
 	defferedRenderringPipelineManager_ = std::make_unique<DefferedRenderringPipelineManager>(dxgi_.get(), shaderCompiler_.get());
 	// PostEffectPipelineManager
 	postEffectPipelineManager_ = std::make_unique<PostEffectPipelineManager>(dxgi_.get(), shaderCompiler_.get());
+	// ShadowPipelineManager
+	shadowPipelineManager_ = std::make_unique<ShadowPipelineManager>(dxgi_.get(), shaderCompiler_.get());
+
 
 	// RenderPipelineController
-	renderController_ = std::make_unique<RenderController>(dxgi_.get(), directXCommand_.get(), depthStencil_.get(), viewport_.get(), scissorRect_.get(), rtvManager_.get(), srvuavManager_.get(), defferedRenderringPipelineManager_.get(), postEffectPipelineManager_.get(), camera3DManager_.get(), lightManager_.get());
+	renderController_ = std::make_unique<RenderController>(
+		dxgi_.get(), directXCommand_.get(), depthStencil_.get(), viewport_.get(), scissorRect_.get(),
+		rtvManager_.get(), srvuavManager_.get(), defferedRenderringPipelineManager_.get(), postEffectPipelineManager_.get(), shadowPipelineManager_.get(),
+		camera3DManager_.get(), lightManager_.get()
+	);
 
 
 	// LineDrawer3D
@@ -211,7 +219,7 @@ void MAGISYSTEM::Initialize() {
 	cylinderDrawer3D_ = std::make_unique<CylinderDrawer3D>(dxgi_.get(), directXCommand_.get(), srvuavManager_.get(), graphicsPipelineManager_.get(), camera3DManager_.get());
 
 	// ModelDrawerManager
-	modelDrawerManager_ = std::make_unique<ModelDrawerManager>(dxgi_.get(), directXCommand_.get(), srvuavManager_.get(), graphicsPipelineManager_.get(), camera3DManager_.get());
+	modelDrawerManager_ = std::make_unique<ModelDrawerManager>(dxgi_.get(), directXCommand_.get(), srvuavManager_.get(), graphicsPipelineManager_.get(), shadowPipelineManager_.get(), camera3DManager_.get());
 
 
 	// CollisionManager
@@ -301,6 +309,11 @@ void MAGISYSTEM::Finalize() {
 	// LineDrawer3D
 	if (lineDrawer3D_) {
 		lineDrawer3D_.reset();
+	}
+
+	// ShadowPipelineManager
+	if (shadowPipelineManager_) {
+		shadowPipelineManager_.reset();
 	}
 
 	// PostEffectPipelineManager
@@ -604,6 +617,24 @@ void MAGISYSTEM::Draw() {
 	sceneManager_->Draw();
 
 
+	//==============================================
+	// ShadowMap用のDepthのみの描画
+	//==============================================
+
+	// シャドウマップ用の描画をするための前準備
+	renderController_->PreShadowRender();
+
+	// シャドウ用にオブジェクトの描画
+	modelDrawerManager_->DrawShadowAll(BlendMode::None);
+
+	// シャドウマップ用の描画後処理
+	renderController_->PostShadowRender();
+
+
+	//==============================================
+	// GBufferにシーンを描画
+	//==============================================
+
 	// シーン描画用のレンダーテクスチャを準備
 	renderController_->PreSceneRender();
 
@@ -621,18 +652,18 @@ void MAGISYSTEM::Draw() {
 	// シーンの描画後処理
 	renderController_->PostSceneRender();
 
+
+	//==============================================
+	// シーン用のレンダーテクスチャに描画
+	//==============================================
+
 	// ライトの適用
 	renderController_->LightingPass();
 
-	// 
 	// LineDrawer3Dの描画処理
-	// 
-
 	lineDrawer3D_->Draw();
 
-	// 
 	// BlendModeごとに描画(透過ありを順番に描画)
-	// 
 	for (uint32_t i = static_cast<uint32_t>(BlendMode::Normal); i < kBlendModeNum; ++i) {
 		BlendMode mode = static_cast<BlendMode>(i);
 		modelDrawerManager_->DrawAll(mode);
@@ -646,11 +677,26 @@ void MAGISYSTEM::Draw() {
 	// ライト適用後の処理
 	renderController_->PostLightingPass();
 
+
+	//==============================================
+	// ポストプロセス
+	//==============================================
+
 	// ポストエフェクトをかける処理
 	renderController_->ApplyPostEffect();
 
+
+	//==============================================
+	// SwapChainに投げる前の最終描画
+	//==============================================
+
 	// スワップチェーン前最終描画
 	renderController_->RenderToFinalRenderTexture();
+
+
+	//==============================================
+	// SwapChainに描画
+	//==============================================
 
 	// スワップチェーン描画前処理
 	swapChain_->PreRender();
@@ -658,14 +704,29 @@ void MAGISYSTEM::Draw() {
 	// スワップチェーンに最終描画用レンダーテクスチャを描画
 	renderController_->RenderToSwapChain();
 
-	// レンダーコントローラのフレーム終了処理
-	renderController_->EndFrame();
-
 	// ImGui内部コマンド生成
-	imguiController_->EndFrame();
+	imguiController_->SetAllCommand();
+
+
+	//==============================================
+	// 描画
+	//==============================================
 
 	// スワップチェーンをプレゼント状態に遷移	
 	swapChain_->TransitionToPresent();
+
+
+	//==============================================
+	// 次のフレームのための後処理
+	//==============================================
+
+	// レンダーコントローラのフレーム終了処理
+	renderController_->EndFrame();
+
+
+	//==============================================
+	// コマンド発行
+	//==============================================
 
 	// コマンドを閉じて実行
 	directXCommand_->KickCommand();
@@ -852,6 +913,10 @@ ComPtr<ID3D12Resource> MAGISYSTEM::CreateBufferResource(size_t sizeInBytes, bool
 	return dxgi_->CreateBufferResource(sizeInBytes, isUav);
 }
 
+ComPtr<ID3D12Resource> MAGISYSTEM::CreateDepthStencilTextureResource(int32_t width, int32_t height, DXGI_FORMAT format) {
+	return dxgi_->CreateDepthStencilTextureResource(width, height, format);
+}
+
 ID3D12GraphicsCommandList* MAGISYSTEM::GetDirectXCommandList() {
 	return directXCommand_->GetList();
 }
@@ -890,6 +955,26 @@ uint32_t MAGISYSTEM::RTVAllocate() {
 
 void MAGISYSTEM::CreateRTVTexture2d(uint32_t rtvIndex, ID3D12Resource* pResource, DXGI_FORMAT format) {
 	rtvManager_->CreateRTVTexture2d(rtvIndex, pResource, format);
+}
+
+ID3D12DescriptorHeap* MAGISYSTEM::GetDSVDescriptorHeap() {
+	return dsvManager_->GetDescriptorHeap();
+}
+
+D3D12_CPU_DESCRIPTOR_HANDLE MAGISYSTEM::GetDSVDescriptorHandleCPU(uint32_t index) {
+	return dsvManager_->GetDescriptorHandleCPU(index);
+}
+
+D3D12_GPU_DESCRIPTOR_HANDLE MAGISYSTEM::GetDSVDescriptorHandleGPU(uint32_t index) {
+	return dsvManager_->GetDescriptorHandleGPU(index);
+}
+
+uint32_t MAGISYSTEM::DSVAllocate() {
+	return dsvManager_->Allocate();
+}
+
+void MAGISYSTEM::CreateDSVTexture2d(uint32_t rtvIndex, ID3D12Resource* pResource, DXGI_FORMAT format) {
+	dsvManager_->CreateDSVTexture2d(rtvIndex, pResource, format);
 }
 
 ID3D12DescriptorHeap* MAGISYSTEM::GetSrvUavDescriptorHeap() {
@@ -946,6 +1031,14 @@ ID3D12RootSignature* MAGISYSTEM::GetPostEffectRootSignature(PostEffectType pipel
 
 ID3D12PipelineState* MAGISYSTEM::GetPostEffectPipelineState(PostEffectType pipelineState, BlendMode blendMode) {
 	return postEffectPipelineManager_->GetPipelineState(pipelineState, blendMode);
+}
+
+ID3D12RootSignature* MAGISYSTEM::GetShadowRootSignature(ShadowPipelineStateType pipelineState) {
+	return shadowPipelineManager_->GetRootSignature(pipelineState);
+}
+
+ID3D12PipelineState* MAGISYSTEM::GetShadowPipelineState(ShadowPipelineStateType pipelineState) {
+	return shadowPipelineManager_->GetPipelineState(pipelineState);
 }
 
 void MAGISYSTEM::ApplyPostEffectGrayScale() {
@@ -1168,6 +1261,10 @@ const std::vector<std::unique_ptr<BaseParticleGroup3D>>& MAGISYSTEM::GetParticle
 
 void MAGISYSTEM::SetDirectionalLight(const DirectionalLight& directionalLight) {
 	lightManager_->SetDirectionalLight(directionalLight);
+}
+
+void MAGISYSTEM::TransferDirectionalLightCamera(uint32_t paramIndex) {
+	lightManager_->TransferDirectionalLightCamera(paramIndex);
 }
 
 void MAGISYSTEM::AddGameObject3D(std::unique_ptr<GameObject3D> newGameObject3D) {

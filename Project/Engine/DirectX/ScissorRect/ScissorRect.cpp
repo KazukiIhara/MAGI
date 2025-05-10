@@ -20,14 +20,14 @@ void ScissorRect::Initialize(DirectXCommand* directXCommand) {
 	SetDirectXCommand(directXCommand);
 }
 
-void ScissorRect::SettingScissorRect() {
+void ScissorRect::SettingScissorRect(uint32_t width, uint32_t height) {
 	// シザー矩形の設定
-	D3D12_RECT scissorRect{};
-	// 基本的にビューポートと同じ矩形が構成されるようにする
-	scissorRect.left = 0;
-	scissorRect.right = WindowApp::kClientWidth;
-	scissorRect.top = 0;
-	scissorRect.bottom = WindowApp::kClientHeight;
+	D3D12_RECT scissorRect{
+		.left = 0,
+        .top = 0,
+        .right = static_cast<LONG>(width),
+        .bottom = static_cast<LONG>(height)
+	};
 	directXCommand_->GetList()->RSSetScissorRects(1, &scissorRect);
 }
 

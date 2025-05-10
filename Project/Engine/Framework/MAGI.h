@@ -55,6 +55,7 @@
 #include "PipelineManagers/ComputePipelineManager/ComputePipelineManager.h"
 #include "PipelineManagers/DefferedRenderringPipelineManager/DefferedRenderringPipelineManager.h"
 #include "PipelineManagers/PostEffectPipelineManager/PostEffectPipelineManager.h"
+#include "PipelineManagers/ShadowPipelineManager/ShadowPipelineManager.h"
 
 // 
 // ObjectManager
@@ -218,6 +219,9 @@ public: // エンジンの機能
 	static ID3D12Device* GetDirectXDevice();
 	// バッファリソースを作成
 	static ComPtr<ID3D12Resource> CreateBufferResource(size_t sizeInBytes, bool isUav = false);
+	// DepthStencilTexリソースの作成
+	static ComPtr<ID3D12Resource> CreateDepthStencilTextureResource(int32_t width, int32_t height, DXGI_FORMAT format);
+
 #pragma endregion
 
 #pragma region DirectXCommandの機能
@@ -248,6 +252,20 @@ public: // エンジンの機能
 	// Texture2D用のRTVの作成
 	static void CreateRTVTexture2d(uint32_t rtvIndex, ID3D12Resource* pResource, DXGI_FORMAT format);
 #pragma endregion
+
+#pragma region DSVManagerの機能
+	// DSVのディスクリプタヒープを取得
+	static ID3D12DescriptorHeap* GetDSVDescriptorHeap();
+	// DSVのCPUディスクリプタハンドルを取得
+	static D3D12_CPU_DESCRIPTOR_HANDLE GetDSVDescriptorHandleCPU(uint32_t index);
+	// DSVのGPUディスクリプタハンドルを取得
+	static D3D12_GPU_DESCRIPTOR_HANDLE GetDSVDescriptorHandleGPU(uint32_t index);
+	// DSVIndex割り当て関数
+	static uint32_t DSVAllocate();
+	// Texture2D用のDSV作成
+	static void CreateDSVTexture2d(uint32_t rtvIndex, ID3D12Resource* pResource, DXGI_FORMAT format);
+#pragma endregion
+
 
 #pragma region SRVUAVManagerの機能
 	// SRVUAVのディスクリプタヒープを取得
@@ -290,6 +308,14 @@ public: // エンジンの機能
 	// パイプライン取得関数
 	static ID3D12PipelineState* GetPostEffectPipelineState(PostEffectType pipelineState, BlendMode blendMode);
 #pragma endregion
+
+#pragma region ShadowPipelineManager
+	// ルートシグネイチャ取得関数
+	static ID3D12RootSignature* GetShadowRootSignature(ShadowPipelineStateType pipelineState);
+	// パイプライン取得関数
+	static ID3D12PipelineState* GetShadowPipelineState(ShadowPipelineStateType pipelineState);
+#pragma endregion
+
 
 #pragma region RenderController
 	// シーンにグレースケールをかける
@@ -441,6 +467,8 @@ public: // エンジンの機能
 #pragma region LightManager
 	// DirectionalLightをセット
 	static void SetDirectionalLight(const DirectionalLight& directionalLight);
+	// ライトカメラを転送
+	static void TransferDirectionalLightCamera(uint32_t paramIndex);
 #pragma endregion
 
 #pragma region LineDrawer3D
@@ -608,6 +636,7 @@ protected:
 	static std::unique_ptr<ComputePipelineManager> computePipelineManager_;
 	static std::unique_ptr<DefferedRenderringPipelineManager> defferedRenderringPipelineManager_;
 	static std::unique_ptr<PostEffectPipelineManager> postEffectPipelineManager_;
+	static std::unique_ptr<ShadowPipelineManager> shadowPipelineManager_;
 
 	// 
 	// AssetContainer

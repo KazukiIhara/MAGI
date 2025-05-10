@@ -33,7 +33,7 @@ public:
 	void BeginFrame();
 
 	// 更新処理の最後に呼び出す処理
-	void EndFrame();
+	void SetAllCommand();
 
 	// ImGuiの終了処理
 	void Finalize();

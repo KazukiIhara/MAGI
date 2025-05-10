@@ -1,58 +1,60 @@
-ï»¿#include "Model3D.hlsli"
+#include "Model3D.hlsli"
 
-ConstantBuffer<Camera> gCamera : register(b0);
-ConstantBuffer<MeshInfo> gMeshInfo : register(b2);
+// ƒoƒCƒ“ƒh‚·‚éƒoƒbƒtƒ@
+ConstantBuffer<DirectionalLightCamera> gCamera : register(b0);
 StructuredBuffer<ModelDataForGPU> gInstanceData : register(t0);
 StructuredBuffer<VertexData3D> gVertexBuffer : register(t1);
 StructuredBuffer<Meshlet> gMeshlets : register(t2);
 ByteAddressBuffer gUniqueVertexIndices : register(t3);
 ByteAddressBuffer gPrimitiveIndices : register(t4);
+ConstantBuffer<MeshInfo> gMeshInfo : register(b2);
 
-// â”€â”€â”€â”€â”€ 10bit ãƒ—ãƒªãƒŸãƒ†ã‚£ãƒ– unpack â”€â”€â”€â”€
+// 10bitƒpƒbƒNƒvƒŠƒ~ƒeƒBƒu‚ÌƒAƒ“ƒpƒbƒN
 inline uint3 UnpackPrimitive(uint v)
 {
     return uint3(v & 0x3FF, (v >> 10) & 0x3FF, (v >> 20) & 0x3FF);
 }
 
-// â”€â”€â”€â”€â”€ Meshlet ã‹ã‚‰é ‚ç‚¹/ä¸‰è§’å½¢ã‚’èª­ã‚€ â”€â”€â”€â”€â”€
+// ƒƒVƒ…ƒŒƒbƒg‚©‚ç’¸“_ƒCƒ“ƒfƒbƒNƒX‚ğæ“¾
 uint GetVertexIndex(in Meshlet m, uint local)
 {
     uint global = m.VertOffset + local;
 
-    if (gMeshInfo.IndexSize == 4)                     // 32â€‘bit index
+    if (gMeshInfo.IndexSize == 4)
         return gUniqueVertexIndices.Load(global * 4);
 
-    /* 16â€‘bit index -------------------------------------------------------- */
     uint word = global & 1;
     uint bytes = (global >> 1) * 4;
     uint pair = gUniqueVertexIndices.Load(bytes);
     return (pair >> (word * 16)) & 0xFFFF;
 }
 
+// ƒƒVƒ…ƒŒƒbƒg‚©‚çƒvƒŠƒ~ƒeƒBƒu‚ğæ“¾
 uint3 GetPrimitive(in Meshlet m, uint localPrim)
 {
     uint packed = gPrimitiveIndices.Load((m.PrimOffset + localPrim) * 4);
     return UnpackPrimitive(packed);
 }
 
-MeshOutputWithAlpha GetVertexAttributes(uint vertexIndex, uint instID)
+// ’¸“_ƒf[ƒ^‚ğƒ[ƒ‹ƒh•ÏŠ·•ƒrƒ…[ƒvƒƒWƒFƒNƒVƒ‡ƒ““K—p
+ShadowMeshOutput GetVertexAttributes(uint vertexIndex, uint instID)
 {
     VertexData3D v = gVertexBuffer[vertexIndex];
-    
-    MeshOutputWithAlpha vout;
-    vout.position = mul(v.position, mul(gInstanceData[instID].world, gCamera.viewProjection));
-    vout.uv = v.uv;
-    
+    ModelDataForGPU instData = gInstanceData[instID];
+
+    ShadowMeshOutput vout;
+    vout.position = mul(v.position, mul(instData.world, gCamera.viewProjection));
     return vout;
 }
-// â”€â”€â”€â”€â”€ MS æœ¬ä½“ â”€â”€â”€â”€â”€
+
+// MS–{‘Ì
 [outputtopology("triangle")]
 [numthreads(128, 1, 1)]
 void main(
      uint gtid : SV_GroupThreadID,
      uint gid : SV_GroupID,
      in payload Payload payload,
-     out vertices MeshOutputWithAlpha verts[256],
+     out vertices ShadowMeshOutput verts[256],
      out indices uint3 tris[256]
 )
 {
@@ -60,7 +62,8 @@ void main(
     uint meshletIndex = payload.meshletIndices[gid];
 
     Meshlet m = gMeshlets[meshletIndex];
-    
+
+    // •s³meshlet‚Í0o—Í‚É
     if (meshletIndex >= gMeshInfo.MeshletCount)
     {
         m.VertCount = 0;
@@ -69,13 +72,14 @@ void main(
 
     SetMeshOutputCounts(m.VertCount, m.PrimCount);
 
-    //------------------- é ‚ç‚¹ --------------------
+    // ’¸“_o—Í
     if (gtid.x < m.VertCount)
     {
         uint vertexIndex = GetVertexIndex(m, gtid);
         verts[gtid] = GetVertexAttributes(vertexIndex, instID);
     }
 
+    // ƒCƒ“ƒfƒbƒNƒXo—Í
     if (gtid.x < m.PrimCount)
     {
         tris[gtid] = GetPrimitive(m, gtid);

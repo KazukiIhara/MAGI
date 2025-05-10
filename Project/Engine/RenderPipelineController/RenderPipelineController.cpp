@@ -28,6 +28,7 @@ RenderController::RenderController(
 	SRVUAVManager* srvUavManager,
 	DefferedRenderringPipelineManager* defferedRenderringPipelineManager,
 	PostEffectPipelineManager* postEffectPipelineManager,
+	ShadowPipelineManager* shadowPipelineManager,
 	Camera3DManager* camera3DManager,
 	LightManager* lightManager
 ) {
@@ -41,6 +42,7 @@ RenderController::RenderController(
 	SetSrvUavManager(srvUavManager);
 	SetDefferedRenderringPipelineManager(defferedRenderringPipelineManager);
 	SetPostEffectPipelineManager(postEffectPipelineManager);
+	SetShadowPipelineManager(shadowPipelineManager);
 	SetCamera3DManager(camera3DManager);
 	SetLightManager(lightManager);
 
@@ -74,11 +76,34 @@ RenderController::RenderController(
 	gBufferPositionRenderTexture_ = std::make_unique<GBufferPositionRenderTexture>();
 	gBufferPositionRenderTexture_->Initialize();
 
+
+	// Shadow用の深度テクスチャ
+	shadowDepthTexture_ = std::make_unique<ShadowDepthTexture>();
+
 	// コマンドの最大数をあらかじめ決めておく
 	postEffectCommand_.resize(kMaxPostEffectNum_);
 }
 
 RenderController::~RenderController() {}
+
+void RenderController::PreShadowRender() {
+	// まずリソース状態を「書き込み可能」に遷移
+	shadowDepthTexture_->TransitionToWrite();
+
+	// シャドウマップをクリア
+	shadowDepthTexture_->Clear();
+
+	// シャドウマップ用DSVセット
+	shadowDepthTexture_->SetAsRenderTarget();
+
+	// Viewport、Scissorを設定
+	viewport_->SettingViewport(ShadowDepthTexture::kShadowMapWidth, ShadowDepthTexture::kShadowMapHeight);
+	scissorRect_->SettingScissorRect(ShadowDepthTexture::kShadowMapWidth, ShadowDepthTexture::kShadowMapHeight);
+}
+
+void RenderController::PostShadowRender() {
+	shadowDepthTexture_->TransitionToRead();
+}
 
 void RenderController::PreSceneRender() {
 	// Gバッファ3枚＋深度バッファをセットする
@@ -132,11 +157,16 @@ void RenderController::LightingPass() {
 	// DirectinalLightを転送
 	lightManager_->TransferDirectionalLight(1);
 
-	// GBufferのSRVをセット（t0, t1, t2）
-	commandList->SetGraphicsRootDescriptorTable(2, srvUavManager_->GetDescriptorHandleGPU(gBufferAlbedoRenderTexture_->GetSrvIndex()));
-	commandList->SetGraphicsRootDescriptorTable(3, srvUavManager_->GetDescriptorHandleGPU(gBufferNormalRenderTexture_->GetSrvIndex()));
-	commandList->SetGraphicsRootDescriptorTable(4, srvUavManager_->GetDescriptorHandleGPU(gBufferPositionRenderTexture_->GetSrvIndex()));
+	// DirectionalLightCamera転送
+	lightManager_->TransferDirectionalLightCamera(2);
 
+	// GBufferのSRVをセット（t0, t1, t2）
+	commandList->SetGraphicsRootDescriptorTable(3, srvUavManager_->GetDescriptorHandleGPU(gBufferAlbedoRenderTexture_->GetSrvIndex()));
+	commandList->SetGraphicsRootDescriptorTable(4, srvUavManager_->GetDescriptorHandleGPU(gBufferNormalRenderTexture_->GetSrvIndex()));
+	commandList->SetGraphicsRootDescriptorTable(5, srvUavManager_->GetDescriptorHandleGPU(gBufferPositionRenderTexture_->GetSrvIndex()));
+
+	// シャドウマップテクスチャのSRVをセット
+	commandList->SetGraphicsRootDescriptorTable(6, srvUavManager_->GetDescriptorHandleGPU(shadowDepthTexture_->GetSrvIndex()));
 
 	// 描画
 	commandList->DrawInstanced(3, 1, 0, 0);
@@ -397,6 +427,11 @@ void RenderController::SetDefferedRenderringPipelineManager(DefferedRenderringPi
 void RenderController::SetPostEffectPipelineManager(PostEffectPipelineManager* postEffectPipelineManager) {
 	assert(postEffectPipelineManager);
 	postEffectPipelineManager_ = postEffectPipelineManager;
+}
+
+void RenderController::SetShadowPipelineManager(ShadowPipelineManager* shadowPipelineManager) {
+	assert(shadowPipelineManager);
+	shadowPipelineManager_ = shadowPipelineManager;
 }
 
 void RenderController::SetCamera3DManager(Camera3DManager* camera3DManager) {

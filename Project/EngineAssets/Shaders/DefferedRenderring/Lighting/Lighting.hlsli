@@ -1,4 +1,6 @@
 
+static const float NormalBiasScale = 0.0005f;
+
 struct VertexShaderOutput
 {
     float4 position : SV_POSITION;
@@ -24,4 +26,9 @@ struct DirectionalLightData
     float intencity;
     float3 color;
     float padding;
+};
+
+struct LightCameraData
+{
+    float4x4 viewProjection;
 };

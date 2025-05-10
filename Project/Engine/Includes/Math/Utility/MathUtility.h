@@ -136,6 +136,9 @@ namespace MAGIMath {
 	// ベクトルの長さ
 	float Length(const Vector3& a);
 
+	// 内積
+	float Dot(const Vector3& a, const Vector3& b);
+
 	// ベクトルの長さとの二乗値
 	float LengthSquared(const Vector3& v);
 
@@ -144,6 +147,9 @@ namespace MAGIMath {
 
 	// ベクトルの向きを取得
 	Vector3 Forward(const Vector3& rotate);
+
+	// 向きから回転を取得
+	Vector3 DirectionToEuler(const Vector3& dir);
 
 	// 線形補完
 	Vector3 Lerp(const Vector3& v1, const Vector3& v2, float t);
@@ -160,6 +166,11 @@ namespace MAGIMath {
 	// ワールド行列からワールド座標取得
 	Vector3 ExtractionWorldPos(const Matrix4x4& m);
 
+	// 回転の向きと量から回転行列を作る
+	Matrix4x4 MakeRotateAxisAngle(const Vector3& axis, float angle);
+
+	// 指定した回転から指定した回転にするための回転行列
+	Matrix4x4 DirectionToDirection(const Vector3& from, const Vector3& to);
 
 	// 4x4単位行列を返す
 	Matrix4x4 MakeIdentityMatrix4x4();
@@ -175,6 +186,9 @@ namespace MAGIMath {
 
 	// スケール成分削除関数
 	Matrix4x4 RemoveScaling(const Matrix4x4& mat);
+
+	// 視点行列を作成
+	Matrix4x4 MakeLookAtMatrix(const Vector3& eye, const Vector3& target, const Vector3& up);
 
 	// 拡縮行列作成関数
 	Matrix4x4 MakeScaleMatrix(const Vector3& scale);
@@ -207,6 +221,7 @@ namespace MAGIMath {
 
 	// 正射影行列作成
 	Matrix4x4 MakeOrthographicMatrix(float left, float top, float right, float bottom, float nearClip, float farClip);
+	Matrix4x4 MakeOrthographicMatrix(float width, float height, float nearClip, float farClip);
 
 	// UV行列を作成
 	Matrix4x4 MakeUVMatrix(const Vector2& scale, const float& rotateZ, const Vector2& translate);
@@ -225,6 +240,9 @@ namespace MAGIMath {
 
 	// オイラー角をクオータニオンに変換
 	Quaternion EulerToQuaternion(const Vector3& euler);
+
+	// 向きからクオータニオン角を取得
+	Quaternion DirectionToQuaternion(const Vector3& direction);
 
 	// 正規化したクオータニオンを返す
 	Quaternion Normalize(const Quaternion& quaternion);

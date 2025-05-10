@@ -17,6 +17,12 @@ struct MeshOutputWithAlpha
     float2 uv : TEXCOORD0;
 };
 
+// シャドウ用軽量Vertex出力
+struct ShadowMeshOutput
+{
+    float4 position : SV_Position;
+};
+
 // 頂点データ
 struct VertexData3D
 {
@@ -54,6 +60,12 @@ struct Camera
     float4x4 viewProjection;
     float3 worldPosition;
     float _pad;
+};
+
+// ライトのカメラ
+struct DirectionalLightCamera
+{
+    float4x4 viewProjection;
 };
 
 // ────────── Meshlet関連構造体 ──────────

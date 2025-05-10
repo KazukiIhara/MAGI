@@ -57,6 +57,7 @@ private: // メンバ変数
 	ComPtr<ID3D12RootSignature> rootSignatures_[kGraphicsPipelineStateNum];
 	// グラフィックスパイプライン
 	ComPtr<ID3D12PipelineState> graphicsPipelineStates_[kGraphicsPipelineStateNum][kBlendModeNum];
+
 private:
 	// Object2DGraphicsPipeline
 	std::unique_ptr<Object2DGraphicsPipeline> object2DGraphicsPipeline_ = nullptr;

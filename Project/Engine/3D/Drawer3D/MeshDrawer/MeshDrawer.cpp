@@ -177,10 +177,29 @@ void MeshDrawer::Draw(uint32_t instanceCount) {
 	cmd->SetGraphicsRootDescriptorTable(7, MAGISYSTEM::GetSrvUavDescriptorHandleGPU(primSrvIdx_));
 
 	MeshInfo info = {
-		.indexSize =4,
+		.indexSize = 4,
 		.meshletCount = meshletCount_,
 	};
 	cmd->SetGraphicsRoot32BitConstants(8, 2, &info, 0);
+
+	cmd->DispatchMesh(DivRoundUp(meshletCount_, AS_GROUP_SIZE), instanceCount, 1);
+}
+
+void MeshDrawer::DrawShadow(uint32_t instanceCount) {
+	if (!instanceCount) return;
+
+	auto* cmd = MAGISYSTEM::GetDirectXCommandList6();
+
+	cmd->SetGraphicsRootDescriptorTable(2, MAGISYSTEM::GetSrvUavDescriptorHandleGPU(vertexSrvIdx_));
+	cmd->SetGraphicsRootDescriptorTable(3, MAGISYSTEM::GetSrvUavDescriptorHandleGPU(meshletSrvIdx_));
+	cmd->SetGraphicsRootShaderResourceView(4, meshletUniqueVertIB_->GetGPUVirtualAddress());
+	cmd->SetGraphicsRootDescriptorTable(5, MAGISYSTEM::GetSrvUavDescriptorHandleGPU(primSrvIdx_));
+
+	MeshInfo info = {
+		.indexSize = 4,
+		.meshletCount = meshletCount_,
+	};
+	cmd->SetGraphicsRoot32BitConstants(6, 2, &info, 0);
 
 	cmd->DispatchMesh(DivRoundUp(meshletCount_, AS_GROUP_SIZE), instanceCount, 1);
 }

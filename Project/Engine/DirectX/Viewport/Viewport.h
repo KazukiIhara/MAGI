@@ -1,5 +1,9 @@
 #pragma once
 
+#include <cstdint>
+
+#include "WindowApp/WindowApp.h"
+
 class DirectXCommand;
 
 class Viewport {
@@ -11,7 +15,7 @@ public:
 	void Initialize(DirectXCommand* directXCommand);
 
 	// ビューポートを設定
-	void SettingViewport();
+	void SettingViewport(uint32_t width = WindowApp::kClientWidth, uint32_t height = WindowApp::kClientHeight);
 
 private:
 	// コマンドのインスタンスをセット

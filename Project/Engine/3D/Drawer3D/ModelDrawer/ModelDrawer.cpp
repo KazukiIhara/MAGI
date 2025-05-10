@@ -99,3 +99,25 @@ void ModelDrawer::Draw(BlendMode mode) {
 		mesh->Draw(instanceCount_[blendIndex]);
 	}
 }
+
+void ModelDrawer::DrawShadow(BlendMode mode) {
+	const uint32_t blendIndex = static_cast<uint32_t>(mode);
+	if (instanceCount_[blendIndex] == 0) return;
+	ID3D12GraphicsCommandList6* commandList = MAGISYSTEM::GetDirectXCommandList6();
+
+	// 
+	// パイプラインの設定
+	// 
+	commandList->SetPipelineState(MAGISYSTEM::GetShadowPipelineState(ShadowPipelineStateType::Model));
+
+	// ライトのVPを転送　(b0)
+	MAGISYSTEM::TransferDirectionalLightCamera(0);
+
+	// inctancing描画用のデータを送信
+	commandList->SetGraphicsRootDescriptorTable(1, MAGISYSTEM::GetSrvUavDescriptorHandleGPU(instancingSrvIndex_[blendIndex]));
+
+	// 各メッシュの描画
+	for (auto& mesh : meshes_) {
+		mesh->DrawShadow(instanceCount_[blendIndex]);
+	}
+}

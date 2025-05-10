@@ -6,10 +6,16 @@
 #include "DirectX/ComPtr/ComPtr.h"
 #include "Structs/PostEffectStruct.h"
 
+// シーンカラー用のレンダーテクスチャ
 #include "RenderTextures/ColorRenderTexture/ColorRenderTexture.h"
+
+// GBuffe用のレンダーテクスチャ
 #include "RenderTextures/GBuffers/GBufferAlbedoRenderTexture/GBufferAlbedoRenderTexture.h"
 #include "RenderTextures/GBuffers/GBufferNormalRenderTexture/GBufferNormalRenderTexture.h"
 #include "RenderTextures/GBuffers/GBufferPositionRenderTexture/GBufferPositionRenderTexture.h"
+
+// シャドウマップ用の深度テクスチャ
+#include "ShadowDepthTexture/ShadowDepthTexture.h"
 
 // 前方宣言
 class DXGI;
@@ -21,6 +27,7 @@ class RTVManager;
 class SRVUAVManager;
 class DefferedRenderringPipelineManager;
 class PostEffectPipelineManager;
+class ShadowPipelineManager;
 class Camera3DManager;
 class LightManager;
 
@@ -39,10 +46,17 @@ public:
 		SRVUAVManager* srvUavManager,
 		DefferedRenderringPipelineManager* defferedRenderringPipelineManager,
 		PostEffectPipelineManager* postEffectPipelineManager,
+		ShadowPipelineManager* shadowPipelineManager,
 		Camera3DManager* camera3DManager,
 		LightManager* lightManager
 	);
 	~RenderController();
+
+	// シャドウマップ用の深度描画前準備
+	void PreShadowRender();
+
+	// シャドウマップ用の深度描画後処理
+	void PostShadowRender();
 
 	// シーンを描画するための前準備
 	void PreSceneRender();
@@ -94,6 +108,7 @@ private:
 	void SetSrvUavManager(SRVUAVManager* srvUavManager);
 	void SetDefferedRenderringPipelineManager(DefferedRenderringPipelineManager* defferedRenderringPipelineManager);
 	void SetPostEffectPipelineManager(PostEffectPipelineManager* postEffectPipelineManager);
+	void SetShadowPipelineManager(ShadowPipelineManager* shadowPipelineManager);
 	void SetCamera3DManager(Camera3DManager* camera3DManager);
 	void SetLightManager(LightManager* lightManager);
 
@@ -108,6 +123,7 @@ private:
 	SRVUAVManager* srvUavManager_ = nullptr;
 	DefferedRenderringPipelineManager* defferedRenderringPipelineManager_ = nullptr;
 	PostEffectPipelineManager* postEffectPipelineManager_ = nullptr;
+	ShadowPipelineManager* shadowPipelineManager_ = nullptr;
 	Camera3DManager* camera3DManager_ = nullptr;
 	LightManager* lightManager_ = nullptr;
 
@@ -124,6 +140,10 @@ private:
 	std::unique_ptr<ColorRenderTexture> sceneRenderTexture_ = nullptr;
 	// 最終描画用のレンダーテクスチャ
 	std::unique_ptr<ColorRenderTexture> finalRenderTexture_ = nullptr;
+
+	//================================================
+	// PostEffect用
+	//================================================ 
 
 	// カラーポストエフェクト用のレンダーテクスチャ
 	std::unique_ptr<ColorRenderTexture> colorPostEffectRenderTexture_[2] = { nullptr,nullptr };
@@ -152,5 +172,12 @@ private:
 	// 座標
 	std::unique_ptr<GBufferPositionRenderTexture> gBufferPositionRenderTexture_ = nullptr;
 
+
+	//================================================
+	// ShadowMap用
+	//================================================
+
+	// 影深度テクスチャ
+	std::unique_ptr<ShadowDepthTexture> shadowDepthTexture_ = nullptr;
 
 };

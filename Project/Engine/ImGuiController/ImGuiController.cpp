@@ -48,7 +48,7 @@ void ImGuiController::BeginFrame() {
 	ImGui::NewFrame();
 }
 
-void ImGuiController::EndFrame() {
+void ImGuiController::SetAllCommand() {
 	// ImGui内部コマンドの生成
 	ImGui::Render();
 	// 実際のCommandListのImGuiの描画コマンドを積む
