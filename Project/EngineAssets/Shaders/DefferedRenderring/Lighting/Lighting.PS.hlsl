@@ -1,7 +1,5 @@
 ﻿#include "Lighting.hlsli"
 
-// Lighting.hlsli
-
 ConstantBuffer<Camera> gCamera : register(b0);
 ConstantBuffer<DirectionalLightData> gDirectionalLight : register(b1);
 ConstantBuffer<LightCameraData> gLightCamera : register(b2);
@@ -16,30 +14,28 @@ SamplerComparisonState gShadowSampler : register(s1);
 
 float ComputeShadow(float3 worldPos, float3 worldNormal)
 {
-    // 1. ライト空間投影
+    // ライト空間投影
     float4 lsPos = mul(float4(worldPos, 1), gLightCamera.viewProjection);
     lsPos /= lsPos.w;
 
-    // 2. UV 変換（NDC→[0,1]）
+    // UV 変換（NDC→[0,1]）
     float2 uv = lsPos.xy * float2(0.5f, -0.5f) + 0.5f;
 
-    // 3. 法線ベースの可変バイアス計算
+    // 法線ベースの可変バイアス計算
     float3 N = normalize(worldNormal);
-    // ディレクショナルライトの向きは gLight.direction（正規化されていること前提）、
-    // ライト方向ベクトル L は「ライト→サーフェス」なので -direction
     float3 L = normalize(-gDirectionalLight.direction);
     float ndl = saturate(dot(N, L)); // [0,1]
-    float normalBias = 0.0001f * (1.0f - ndl);
+    float normalBias = NormalBiasScale * (1.0f - ndl);
 
-    // 4. 増減バイアスを反映した深度参照値
+    // 増減バイアスを反映した深度参照値
     float depthRef = lsPos.z - normalBias;
 
-    // 5. シャドウテスト
+    // シャドウテスト
     float shadow = 1.0f;
     if (uv.x >= 0.0f && uv.x <= 1.0f &&
         uv.y >= 0.0f && uv.y <= 1.0f)
     {
-        // SampleCmpLevelZero で比較＋PCF
+        // SampleCmpLevelZero で比較
         shadow = gShadowMap.SampleCmpLevelZero(gShadowSampler, uv, depthRef);
     }
     return shadow;

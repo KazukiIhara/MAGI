@@ -50,9 +50,9 @@ private:
 	DirectionalLightCameraForGPU* directionalLightCameraData_ = nullptr;
 
 	// ニアクリップ距離
-	const float nearClipRange_ = 0.1f;
+	const float nearClipRange_ = 1.0f;
 	// ファークリップ距離
-	const float farClipRange_ = 1000.0f;
+	const float farClipRange_ = 500.0f;
 
 	// プロジェクション行列
 	Matrix4x4 lightProj_{};

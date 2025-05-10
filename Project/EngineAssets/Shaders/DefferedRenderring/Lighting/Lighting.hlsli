@@ -1,4 +1,6 @@
 
+static const float NormalBiasScale = 0.0005f;
+
 struct VertexShaderOutput
 {
     float4 position : SV_POSITION;
