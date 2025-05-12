@@ -32,6 +32,14 @@ SpriteDrawer::SpriteDrawer(
 SpriteDrawer::~SpriteDrawer() {
 }
 
+void SpriteDrawer::Update() {
+
+}
+
+void SpriteDrawer::Draw(BlendMode blendMode) {
+	blendMode;
+}
+
 void SpriteDrawer::SetDXGI(DXGI* dxgi) {
 	assert(dxgi);
 	dxgi_ = dxgi;

@@ -6,12 +6,20 @@
 // DirectX
 #include <d3d12.h>
 
+#include "DirectX/ComPtr/ComPtr.h"
+#include "Math/Utility/MathUtility.h"
+#include "Structs/ColorStruct.h"
+#include "Enums/BlendModeEnum.h"
+
 class DXGI;
 class DirectXCommand;
 class SRVUAVManager;
 class GraphicsPipelineManager;
 class Camera2DManager;
 
+/// <summary>
+/// スプライト描画クラス
+/// </summary>
 class SpriteDrawer {
 public:
 	SpriteDrawer(
@@ -23,6 +31,8 @@ public:
 	);
 	~SpriteDrawer();
 
+	void Update();
+	void Draw(BlendMode blendMode);
 
 
 private:

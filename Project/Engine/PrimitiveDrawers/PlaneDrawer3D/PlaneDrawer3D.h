@@ -49,7 +49,6 @@ private:
 	void SetCamera3DManager(Camera3DManager* camera3DManager);
 
 private:
-
 	// 板ポリデータ
 	std::vector<PlaneData3DForGPU> planes_[static_cast<uint32_t>(BlendMode::Num)];
 	// マテリアルデータ

@@ -17,10 +17,10 @@ using namespace MAGIUtility;
 using namespace MAGIMath;
 
 PlaneDrawer3D::PlaneDrawer3D(
-	DXGI* dxgi, 
-	DirectXCommand* directXCommand, 
-	SRVUAVManager * srvUavManager,
-	GraphicsPipelineManager* graphicsPipelineManager, 
+	DXGI* dxgi,
+	DirectXCommand* directXCommand,
+	SRVUAVManager* srvUavManager,
+	GraphicsPipelineManager* graphicsPipelineManager,
 	Camera3DManager* camera3DManager
 ) {
 	SetDXGI(dxgi);
@@ -66,11 +66,6 @@ void PlaneDrawer3D::Update() {
 	for (uint32_t i = 0; i < kBlendModeNum; ++i) {
 		assert(currentIndex_[i] <= PrimitiveCommonConst::NumMaxInstance);
 		instanceCount_[i] = currentIndex_[i];
-
-		if (instanceCount_[i] > 0 && instancingData_[i] && materialData_[i]) {
-			std::memcpy(instancingData_[i], planes_[i].data(), instanceCount_[i] * sizeof(PlaneData3DForGPU));
-			std::memcpy(materialData_[i], materials_[i].data(), instanceCount_[i] * sizeof(PrimitiveMaterialData3DForGPU));
-		}
 		currentIndex_[i] = 0;
 	}
 }
@@ -99,10 +94,14 @@ void PlaneDrawer3D::Draw(BlendMode mode) {
 
 void PlaneDrawer3D::AddPlane(const Matrix4x4& worldMatrix, const PlaneData3D& data, const PrimitiveMaterialData3D& material) {
 	const uint32_t blendIndex = static_cast<uint32_t>(material.blendMode);
+
+#ifdef _DEBUG
 	if (currentIndex_[blendIndex] >= PrimitiveCommonConst::NumMaxInstance) {
 		Logger::Log("PlaneDrawer3D: Max instance count exceeded!\n");
 		return;
 	}
+#endif // _DEBUG
+
 
 	PlaneData3DForGPU newPlaneData{
 		.worldMatrix = worldMatrix,
@@ -121,8 +120,8 @@ void PlaneDrawer3D::AddPlane(const Matrix4x4& worldMatrix, const PlaneData3D& da
 		.uvMatrix = MakeUVMatrix(material.uvScale, material.uvRotate, material.uvTranslate),
 	};
 
-	planes_[blendIndex][currentIndex_[blendIndex]] = newPlaneData;
-	materials_[blendIndex][currentIndex_[blendIndex]] = newMaterialData;
+	instancingData_[blendIndex][currentIndex_[blendIndex]] = newPlaneData;
+	materialData_[blendIndex][currentIndex_[blendIndex]] = newMaterialData;
 
 	currentIndex_[blendIndex]++;
 }
