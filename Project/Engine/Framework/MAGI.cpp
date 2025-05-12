@@ -1187,6 +1187,10 @@ void MAGISYSTEM::TransferCamera(uint32_t rootParameterIndex) {
 	camera3DManager_->TransferCurrentCamera(rootParameterIndex);
 }
 
+void MAGISYSTEM::ClearCamera3D() {
+	camera3DManager_->Clear();
+}
+
 void MAGISYSTEM::AddPunctualLight(const std::string& lightName, const PunctualLightData& lightData) {
 	punctualLightManager_->AddNewLight(lightName, lightData);
 }
@@ -1197,6 +1201,10 @@ PunctualLightData& MAGISYSTEM::GetLightData(const std::string& lightName) {
 
 void MAGISYSTEM::TransferPunctualLight(uint32_t parmIndex) {
 	punctualLightManager_->TransferLightsData(parmIndex);
+}
+
+void MAGISYSTEM::ClearPunctualLight() {
+	punctualLightManager_->Clear();
 }
 
 std::unique_ptr<PrimitiveRenderer3D> MAGISYSTEM::CreatePrimitiveRenderer3D(const std::string& name, Primitive3DType primitiveRenderer, const std::string& textureName) {
@@ -1219,6 +1227,10 @@ BaseRenderable3D* MAGISYSTEM::FindRenderer3D(const std::string& name) {
 	return renderer3DManager_->Find(name);
 }
 
+void MAGISYSTEM::ClearRenderer3D() {
+	renderer3DManager_->Clear();
+}
+
 std::string MAGISYSTEM::CreateCollider(const std::string& name, Collider3DType colliderType) {
 	return colliderManager_->Create(name, colliderType);
 }
@@ -1231,6 +1243,10 @@ BaseCollider3D* MAGISYSTEM::FindCollider(const std::string& name) {
 	return colliderManager_->Find(name);
 }
 
+void MAGISYSTEM::ClearColliders() {
+	colliderManager_->Clear();
+}
+
 std::string MAGISYSTEM::CreateEmitter3D(const std::string& emitterName, const Vector3& position) {
 	return emitter3DManager_->CreateEmitter(emitterName, position);
 }
@@ -1241,6 +1257,10 @@ void MAGISYSTEM::RemoveEmitter3D(const std::string& emitterName) {
 
 Emitter3D* MAGISYSTEM::FindEmitter3D(const std::string& emitterName) {
 	return emitter3DManager_->Find(emitterName);
+}
+
+void MAGISYSTEM::ClearEmitter3D() {
+	emitter3DManager_->Clear();
 }
 
 std::string MAGISYSTEM::CreatePrimitiveParticleGroup3D(const std::string& particleGroupName, const Primitive3DType& primitiveType, const std::string& textureName) {
@@ -1275,8 +1295,16 @@ GameObject3D* MAGISYSTEM::FindGameObject3D(const std::string& objectName) {
 	return gameObject3DManager_->Find(objectName);
 }
 
+void MAGISYSTEM::ClearGameObject3D() {
+	gameObject3DManager_->Clear();
+}
+
 void MAGISYSTEM::AddGameObejct3DGroup(std::unique_ptr<GameObject3DGroup> newGameObjectGroup) {
 	gameObject3DGroupManager_->Add(std::move(newGameObjectGroup));
+}
+
+void MAGISYSTEM::ClearGameObject3DGroup() {
+	gameObject3DGroupManager_->Clear();
 }
 
 void MAGISYSTEM::AddCamera3D(std::unique_ptr<Camera3D> newCamera3D) {

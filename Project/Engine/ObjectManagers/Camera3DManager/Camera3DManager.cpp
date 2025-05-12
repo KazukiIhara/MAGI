@@ -103,3 +103,7 @@ void Camera3DManager::SetCurrentCameraName(const std::string& cameraName) {
 bool& Camera3DManager::GetIsDebugCamera() {
 	return isDebugCamera_;
 }
+
+void Camera3DManager::Clear() {
+	cameras3D_.clear();
+}

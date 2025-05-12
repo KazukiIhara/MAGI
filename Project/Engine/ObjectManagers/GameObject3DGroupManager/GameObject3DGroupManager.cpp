@@ -72,3 +72,7 @@ GameObject3DGroup* GameObject3DGroupManager::Find(const std::string& objectGroup
 void GameObject3DGroupManager::DeleteGarbages() {
 
 }
+
+void GameObject3DGroupManager::Clear() {
+	gameObject3DGroups_.clear();
+}

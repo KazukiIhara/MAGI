@@ -30,16 +30,21 @@ public:
 	// 新規パーティクルグループ追加
 	void AddParticleGroup(BaseParticleGroup3D* particleGroup);
 
+	// パーティクルグループ削除
+	void RemoveParticleGroup(const std::string& groupName);
+
 	// 設定構造体の取得
 	EmitterSetting& GetEmitterSetting();
 
-private:
+	std::vector<std::string> GetParticleNames() const;
+
+public:
 	// ワールドトランスフォーム
 	WorldTransform worldTransform_{};
-
+private:
 	// エミッターの設定構造体
 	EmitterSetting emitterSetting_{};
-	
+
 	// パーティクルの名前リスト
 	std::vector<std::string> particleNames_;
 	// パーティクルグループのマップ

@@ -124,6 +124,25 @@ void Emitter3D::AddParticleGroup(BaseParticleGroup3D* particleGroup) {
 	particleGroups_.insert(std::pair(particleGroup->name, particleGroup));
 }
 
+void Emitter3D::RemoveParticleGroup(const std::string& groupName) {
+	// particleGroups_からの削除
+	auto it = particleGroups_.find(groupName);
+	if (it != particleGroups_.end()) {
+		particleGroups_.erase(it);
+
+		auto nameIt = std::find(particleNames_.begin(), particleNames_.end(), groupName);
+		if (nameIt != particleNames_.end()) {
+			particleNames_.erase(nameIt);
+		}
+	} else {
+		std::cerr << "Error: Particle group '" << groupName << "' not found!" << std::endl;
+	}
+}
+
 EmitterSetting& Emitter3D::GetEmitterSetting() {
 	return emitterSetting_;
+}
+
+std::vector<std::string> Emitter3D::GetParticleNames() const {
+	return particleNames_;
 }

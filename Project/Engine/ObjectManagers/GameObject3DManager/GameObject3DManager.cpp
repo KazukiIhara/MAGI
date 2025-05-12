@@ -102,3 +102,7 @@ void GameObject3DManager::DeleteGarbages() {
 		}
 	}
 }
+
+void GameObject3DManager::Clear() {
+	gameObjects3D_.clear();
+}

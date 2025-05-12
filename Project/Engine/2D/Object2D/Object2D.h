@@ -34,7 +34,9 @@ public:
 	// トランスフォーム
 	Vector2& GetPosition();
 	Vector2& GetSize();
+	Vector2& GetAnchorPoint();
 	float& GetRotate();
+	float& GetDepth();
 
 	// UVトランスフォーム
 	Vector2& GetUVTranslate();
@@ -45,6 +47,9 @@ public:
 	bool& GetIsAlive();
 	// 描画フラグを取得
 	bool& GetIsShow();
+
+	// マテリアルを取得
+	Material2D& GetMaterial();
 
 private:
 	// 頂点リソースの作成
