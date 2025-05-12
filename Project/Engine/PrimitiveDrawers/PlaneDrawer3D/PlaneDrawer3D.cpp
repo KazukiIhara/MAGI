@@ -16,7 +16,13 @@
 using namespace MAGIUtility;
 using namespace MAGIMath;
 
-PlaneDrawer3D::PlaneDrawer3D(DXGI* dxgi, DirectXCommand* directXCommand, SRVUAVManager* srvUavManager, GraphicsPipelineManager* graphicsPipelineManager, Camera3DManager* camera3DManager) {
+PlaneDrawer3D::PlaneDrawer3D(
+	DXGI* dxgi, 
+	DirectXCommand* directXCommand, 
+	SRVUAVManager * srvUavManager,
+	GraphicsPipelineManager* graphicsPipelineManager, 
+	Camera3DManager* camera3DManager
+) {
 	SetDXGI(dxgi);
 	SetDirectXCommand(directXCommand);
 	SetSRVUAVManager(srvUavManager);
