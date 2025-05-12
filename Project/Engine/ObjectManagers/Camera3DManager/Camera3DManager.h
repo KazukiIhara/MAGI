@@ -28,6 +28,8 @@ public:
 	// デバッグカメラフラグの参照
 	bool& GetIsDebugCamera();
 
+	void Clear();
+
 private:
 	// デバッグカメラ切り替え変数
 	bool isDebugCamera_ = false;

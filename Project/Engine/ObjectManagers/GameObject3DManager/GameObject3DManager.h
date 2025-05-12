@@ -26,6 +26,8 @@ public:
 	// 削除フラグの立ったオブジェクトを削除する
 	void DeleteGarbages();
 
+	void Clear();
+
 private:
 	// ゲームオブジェクトコンテナ
 	std::map<std::string, std::unique_ptr<GameObject3D>> gameObjects3D_;

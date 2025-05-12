@@ -390,12 +390,15 @@ public: // エンジンの機能
 	static void AddGameObject3D(std::unique_ptr<GameObject3D> newGameObject3D);
 	// 3Dゲームオブジェクトを取得
 	static GameObject3D* FindGameObject3D(const std::string& objectName);
+	// 全削除
+	static void ClearGameObject3D();
 #pragma endregion
 
 #pragma region GameObject3DGroupManager
 	// 3Dゲームオブジェクトグループを作成
 	static void AddGameObejct3DGroup(std::unique_ptr<GameObject3DGroup> newGameObjectGroup);
-
+	// 全削除
+	static void ClearGameObject3DGroup();
 #pragma endregion
 
 #pragma region Camera3DManager
@@ -409,6 +412,9 @@ public: // エンジンの機能
 	static void SetCurrentCamera(const std::string& cameraName);
 	// カメラの転送
 	static void TransferCamera(uint32_t rootParameterIndex);
+
+	static void ClearCamera3D();
+
 #pragma endregion
 
 #pragma region PunctualLightManager
@@ -418,6 +424,8 @@ public: // エンジンの機能
 	static PunctualLightData& GetLightData(const std::string& lightName);
 	// ライトの転送
 	static void TransferPunctualLight(uint32_t parmIndex);
+	// 全削除
+	static void ClearPunctualLight();
 #pragma endregion
 
 #pragma region Renderer3DManager
@@ -432,6 +440,8 @@ public: // エンジンの機能
 	static void AddRenderer(std::unique_ptr<BaseRenderable3D> newRederer);
 	// 描画オブジェクトの取得
 	static BaseRenderable3D* FindRenderer3D(const std::string& name);
+	// 全削除
+	static void ClearRenderer3D();
 #pragma endregion
 
 #pragma region ColliderManager
@@ -441,6 +451,8 @@ public: // エンジンの機能
 	static void RemoveCollider(const std::string& name);
 	// コライダーの取得
 	static BaseCollider3D* FindCollider(const std::string& name);
+	// 全削除
+	static void ClearColliders();
 #pragma endregion
 
 #pragma region Emitter3DManager
@@ -450,6 +462,8 @@ public: // エンジンの機能
 	static void RemoveEmitter3D(const std::string& emitterName);
 	// エミッターの取得
 	static Emitter3D* FindEmitter3D(const std::string& emitterName);
+	// 全削除
+	static void ClearEmitter3D();
 #pragma endregion
 
 #pragma region ParticleGroup3DManager

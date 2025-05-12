@@ -89,9 +89,7 @@ inline void SampleScene<Data>::Initialize() {
 	MAGISYSTEM::LoadTexture("gradationLine.png");
 
 	// モデル
-	MAGISYSTEM::LoadModel("terrain");
 	MAGISYSTEM::LoadModel("teapot");
-	MAGISYSTEM::LoadModel("Suzanne");
 
 	// サウンド
 	MAGISYSTEM::LoadWaveSound("Alarm01.wav");

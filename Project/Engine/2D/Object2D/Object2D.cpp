@@ -105,6 +105,7 @@ void Object2D::Update() {
 	// マテリアルデータの更新
 	material_.uvTransformMatrix = MakeUVMatrix(uvTransform_.scale, uvTransform_.rotateZ, uvTransform_.translate);
 	materialData_->uvTransformMatrix = material_.uvTransformMatrix;
+	materialData_->color = material_.color;
 
 }
 
@@ -140,8 +141,16 @@ Vector2& Object2D::GetSize() {
 	return worldTransform_.size;
 }
 
+Vector2& Object2D::GetAnchorPoint() {
+	return anchorPoint_;
+}
+
 float& Object2D::GetRotate() {
 	return worldTransform_.rotateZ;
+}
+
+float& Object2D::GetDepth() {
+	return worldTransform_.depth;
 }
 
 Vector2& Object2D::GetUVTranslate() {
@@ -162,6 +171,10 @@ bool& Object2D::GetIsAlive() {
 
 bool& Object2D::GetIsShow() {
 	return isShow_;
+}
+
+Material2D& Object2D::GetMaterial() {
+	return material_;
 }
 
 void Object2D::CreateVertexResource() {
