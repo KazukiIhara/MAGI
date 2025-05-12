@@ -41,10 +41,13 @@ ModelDrawer::~ModelDrawer() {
 
 void ModelDrawer::AddDrawCommand(const Matrix4x4& worldMatrix, const ModelMaterial& material) {
 	const uint32_t blendIndex = static_cast<uint32_t>(material.blendMode);
+
+#ifdef _DEBUG
 	if (currentIndex_[blendIndex] >= kNumMaxInstance) {
 		Logger::Log("ModelDrawer3D: Max instance count exceeded!\n");
 		return;
 	}
+#endif // _DEBUG
 
 	ModelDataForGPU newModelData{
 		.worldMatrix = worldMatrix,
@@ -52,7 +55,7 @@ void ModelDrawer::AddDrawCommand(const Matrix4x4& worldMatrix, const ModelMateri
 	};
 
 	// コンテナに挿入
-	modelDatasForRender_[blendIndex][currentIndex_[blendIndex]] = newModelData;
+	instancingData_[blendIndex][currentIndex_[blendIndex]] = newModelData;
 	// インデックスをインクリメント
 	currentIndex_[blendIndex]++;
 }
@@ -61,11 +64,6 @@ void ModelDrawer::Update() {
 	for (uint32_t i = 0; i < kBlendModeNum; i++) {
 		assert(currentIndex_[i] <= kNumMaxInstance);
 		instanceCount_[i] = currentIndex_[i];
-
-		if (instanceCount_[i] > 0 && instancingData_[i]) {
-			std::memcpy(instancingData_[i], modelDatasForRender_[i].data(), sizeof(ModelDataForGPU) * instanceCount_[i]);
-		}
-
 		currentIndex_[i] = 0;
 	}
 
