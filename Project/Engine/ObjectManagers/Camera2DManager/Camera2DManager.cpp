@@ -18,4 +18,5 @@ void Camera2Dmanager::Update() {
 }
 
 void Camera2Dmanager::TransferCurrentCamera(uint32_t rootParameterIndex) {
+	rootParameterIndex;
 }
