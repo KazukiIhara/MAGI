@@ -27,9 +27,12 @@ SpriteDrawer::SpriteDrawer(
 	SetGraphicsPipelineManager(graphicsPipelineManager);
 	SetCamera2DManager(camera2DManager);
 
+
+
 }
 
 SpriteDrawer::~SpriteDrawer() {
+
 }
 
 void SpriteDrawer::Update() {
@@ -38,6 +41,10 @@ void SpriteDrawer::Update() {
 
 void SpriteDrawer::Draw(BlendMode blendMode) {
 	blendMode;
+}
+
+void SpriteDrawer::AddSprite(const Vector2& screenPosition) {
+	screenPosition;
 }
 
 void SpriteDrawer::SetDXGI(DXGI* dxgi) {

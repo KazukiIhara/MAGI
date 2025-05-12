@@ -30,6 +30,7 @@ public:
 	std::map<std::string, Texture>& GetTexture();
 	// メタデータを渡す
 	const DirectX::TexMetadata& GetMetaData(const std::string& filePath);
+
 	// コンテナごと渡す
 	const std::map<std::string, Texture>& GetTextureContainer()const;
 	// デフォルトテクスチャのインデックスを渡す
