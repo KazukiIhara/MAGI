@@ -73,6 +73,10 @@ private:
 	// インデックスデータ
 	std::vector<uint32_t> indices_;
 
+	// ワールド行列リソース
+	ComPtr<ID3D12Resource> skyBoxResource_ = nullptr;
+
+
 	// テクスチャのインデックス
 	uint32_t textureIndex_ = 0;
 
