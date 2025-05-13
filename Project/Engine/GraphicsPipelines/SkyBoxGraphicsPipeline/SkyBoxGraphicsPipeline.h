@@ -6,8 +6,9 @@
 class DXGI;
 class ShaderCompiler;
 
-
-
+/// <summary>
+/// スカイボックス描画パイプライン
+/// </summary>
 class SkyBoxGraphicsPipeline :public BaseGraphicsPipeline {
 public:
 	SkyBoxGraphicsPipeline(DXGI* dxgi, ShaderCompiler* shaderCompiler);

@@ -47,6 +47,9 @@ private:
 	void CreateIndexBufferView();
 	void MapIndexData();
 
+	void CreateSkyBoxResource();
+	void MapSkyBoxData();
+
 private:
 	void SetDXGI(DXGI* dxgi);
 	void SetDirectXCommand(DirectXCommand* directXCommand);
@@ -73,9 +76,10 @@ private:
 	// インデックスデータ
 	std::vector<uint32_t> indices_;
 
-	// ワールド行列リソース
+	// スカイボックスのリソース
 	ComPtr<ID3D12Resource> skyBoxResource_ = nullptr;
-
+	// スカイボックスのデータ
+	SkyBoxDataForGPU* skyBoxData_ = nullptr;
 
 	// テクスチャのインデックス
 	uint32_t textureIndex_ = 0;

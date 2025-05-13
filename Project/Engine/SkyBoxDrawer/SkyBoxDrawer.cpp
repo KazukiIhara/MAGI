@@ -58,7 +58,24 @@ void SkyBoxDrawer::Update() {
 }
 
 void SkyBoxDrawer::Draw() {
+	// コマンドリストを取得
+	ID3D12GraphicsCommandList* commandList = directXCommand_->GetList();
+	// VBVを設定
+	commandList->IASetVertexBuffers(0, 1, &vertexBufferView_);
+	// IBVを設定
+	commandList->IASetIndexBuffer(&indexBufferView_);
 
+	// スカイボックスのデータをセット
+	commandList->SetGraphicsRootConstantBufferView(0, skyBoxResource_->GetGPUVirtualAddress());
+
+	// カメラをセット
+	camera3DManager_->TransferCurrentCamera(1);
+
+	// Texture用のSRVをセット
+	commandList->SetGraphicsRootDescriptorTable(2, srvUavManager_->GetDescriptorHandleGPU(textureIndex_));
+
+	// 描画
+	commandList->DrawIndexedInstanced(UINT(indices_.size()), 1, 0, 0, 0);
 }
 
 void SkyBoxDrawer::SetTextureIndex(uint32_t textureIndex) {
@@ -71,7 +88,7 @@ void SkyBoxDrawer::CreateShape() {
 	indices_.resize(36);
 
 	// 右面、描画インデックスは[0,1,2][2,1,3]で内側を向く
-	vertices_[0].position= { 1.0f,1.0f,1.0f,1.0f };
+	vertices_[0].position = { 1.0f,1.0f,1.0f,1.0f };
 	vertices_[1].position = { 1.0f,1.0f,-1.0f,1.0f };
 	vertices_[2].position = { 1.0f,-1.0f,1.0f,1.0f };
 	vertices_[3].position = { 1.0f,-1.0f,-1.0f,1.0f };
@@ -148,6 +165,16 @@ void SkyBoxDrawer::MapIndexData() {
 	indexData_ = nullptr;
 	indexResource_->Map(0, nullptr, reinterpret_cast<void**>(&indexData_));
 	std::memcpy(indexData_, indices_.data(), sizeof(uint32_t) * indices_.size());
+}
+
+void SkyBoxDrawer::CreateSkyBoxResource() {
+	skyBoxResource_ = dxgi_->CreateBufferResource(sizeof(SkyBoxDataForGPU));
+}
+
+void SkyBoxDrawer::MapSkyBoxData() {
+	skyBoxData_ = nullptr;
+	skyBoxResource_->Map(0, nullptr, reinterpret_cast<void**>(&skyBoxData_));
+	skyBoxData_->worldMatrix = MakeIdentityMatrix4x4();
 }
 
 void SkyBoxDrawer::SetDXGI(DXGI* dxgi) {

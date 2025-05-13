@@ -21,5 +21,4 @@ struct SkyBoxVertexData3D {
 /// </summary>
 struct SkyBoxDataForGPU {
 	Matrix4x4 worldMatrix;
-	uint32_t textureIndex;
 };
