@@ -66,6 +66,12 @@ void GraphicsPipelineManager::Initialize(DXGI* dxgi, ShaderCompiler* shaderCompi
 	SetRootSignature(GraphicsPipelineStateType::Model3D);
 	SetPipelineState(GraphicsPipelineStateType::Model3D);
 
+	// SkyBoxのグラフィックスパイプランを生成、初期化
+	skyBoxGraphicsPipeline_ = std::make_unique<SkyBoxGraphicsPipeline>(dxgi, shaderCompiler);
+	skyBoxGraphicsPipeline_->Initialize();
+	SetRootSignature(GraphicsPipelineStateType::SkyBox);
+	SetPipelineState(GraphicsPipelineStateType::SkyBox);
+
 	// 3Dオブジェクトのグラフィックスパイプラインを生成、初期化
 	object3DGraphicsPipeline_ = std::make_unique<Object3DGraphicsPipeline>(dxgi, shaderCompiler);
 	object3DGraphicsPipeline_->Initialize();
