@@ -59,16 +59,16 @@ public:
 	void PostShadowRender();
 
 	// シーンを描画するための前準備
-	void PreSceneRender();
+	void PreRenderForGBuffers();
 
 	// シーン描画後の処理
-	void PostSceneRender();
+	void PostRenderForGBuffers();
 
 	// ライト適用
 	void LightingPass();
 
 	// ライト適用後の処理
-	void PostLightingPass();
+	void PostSceneRender();
 
 	// ポストエフェクトをpingPong方式でかけていく
 	void ApplyPostEffect();

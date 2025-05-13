@@ -85,6 +85,8 @@ std::unique_ptr<CylinderDrawer3D> MAGISYSTEM::cylinderDrawer3D_ = nullptr;
 
 std::unique_ptr<ModelDrawerManager> MAGISYSTEM::modelDrawerManager_ = nullptr;
 
+std::unique_ptr<SkyBoxDrawer> MAGISYSTEM::skyBoxDrawer_ = nullptr;
+
 // 
 // GameManager
 // 
@@ -221,6 +223,9 @@ void MAGISYSTEM::Initialize() {
 	// ModelDrawerManager
 	modelDrawerManager_ = std::make_unique<ModelDrawerManager>(dxgi_.get(), directXCommand_.get(), srvuavManager_.get(), graphicsPipelineManager_.get(), shadowPipelineManager_.get(), camera3DManager_.get());
 
+	// SkyBoxDrawer
+	skyBoxDrawer_ = std::make_unique<SkyBoxDrawer>(dxgi_.get(), directXCommand_.get(), srvuavManager_.get(), graphicsPipelineManager_.get(), camera3DManager_.get());
+
 
 	// CollisionManager
 	collisionManager_ = std::make_unique<CollisionManager>(colliderManager_.get());
@@ -274,6 +279,11 @@ void MAGISYSTEM::Finalize() {
 	// CollisionManager
 	if (collisionManager_) {
 		collisionManager_.reset();
+	}
+
+	// SkyBoxDrawer
+	if (skyBoxDrawer_) {
+		skyBoxDrawer_.reset();
 	}
 
 	// ModelDrawerManager
@@ -586,6 +596,9 @@ void MAGISYSTEM::Update() {
 	// モデル描画クラスマネージャの更新
 	modelDrawerManager_->UpdateAll();
 
+	// 背景ボックス描画クラスの更新
+	skyBoxDrawer_->Update();
+
 
 	// Dataクラスフレーム終了処理
 	dataIO_->EndFrame();
@@ -636,7 +649,7 @@ void MAGISYSTEM::Draw() {
 	//==============================================
 
 	// シーン描画用のレンダーテクスチャを準備
-	renderController_->PreSceneRender();
+	renderController_->PreRenderForGBuffers();
 
 	// オブジェクトの描画(透過なし)
 	BlendMode noneMode = BlendMode::None;
@@ -650,7 +663,7 @@ void MAGISYSTEM::Draw() {
 	modelDrawerManager_->DrawAll(noneMode);
 
 	// シーンの描画後処理
-	renderController_->PostSceneRender();
+	renderController_->PostRenderForGBuffers();
 
 
 	//==============================================
@@ -659,6 +672,9 @@ void MAGISYSTEM::Draw() {
 
 	// ライトの適用
 	renderController_->LightingPass();
+
+	// 背景ボックスを描画
+	skyBoxDrawer_->Draw();
 
 	// LineDrawer3Dの描画処理
 	lineDrawer3D_->Draw();
@@ -675,7 +691,7 @@ void MAGISYSTEM::Draw() {
 	}
 
 	// ライト適用後の処理
-	renderController_->PostLightingPass();
+	renderController_->PostSceneRender();
 
 
 	//==============================================

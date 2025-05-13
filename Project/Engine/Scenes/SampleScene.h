@@ -85,8 +85,8 @@ inline void SampleScene<Data>::Initialize() {
 
 	// テクスチャ
 	MAGISYSTEM::LoadTexture("pronama_chan.png");
-	// テクスチャ
 	MAGISYSTEM::LoadTexture("gradationLine.png");
+	MAGISYSTEM::LoadTexture("rostock_laage_airport_4k.dds");
 
 	// モデル
 	MAGISYSTEM::LoadModel("teapot");

@@ -105,7 +105,7 @@ void RenderController::PostShadowRender() {
 	shadowDepthTexture_->TransitionToRead();
 }
 
-void RenderController::PreSceneRender() {
+void RenderController::PreRenderForGBuffers() {
 	// Gバッファ3枚＋深度バッファをセットする
 	std::array<D3D12_CPU_DESCRIPTOR_HANDLE, 3> rtvs = {
 		rtvManager_->GetDescriptorHandleCPU(gBufferAlbedoRenderTexture_->GetRtvIndex()),
@@ -127,7 +127,7 @@ void RenderController::PreSceneRender() {
 	scissorRect_->SettingScissorRect();
 }
 
-void RenderController::PostSceneRender() {
+void RenderController::PostRenderForGBuffers() {
 	// ライティング前に、GバッファをSRV用に遷移
 	gBufferAlbedoRenderTexture_->TransitionToRead();
 	gBufferNormalRenderTexture_->TransitionToRead();
@@ -173,7 +173,7 @@ void RenderController::LightingPass() {
 
 }
 
-void RenderController::PostLightingPass() {
+void RenderController::PostSceneRender() {
 	// シーン描画用のレンダーターゲットを読み取り状態に
 	sceneRenderTexture_->TransitionToRead();
 	// 現在のテクスチャをシーン描画結果に

@@ -82,6 +82,9 @@
 
 #include "ModelDrawerManager/ModelDrawerManager.h"
 
+#include "SkyBoxDrawer/SkyBoxDrawer.h"
+
+
 // 
 // GameManager
 // 
@@ -685,6 +688,8 @@ protected:
 	static std::unique_ptr<CylinderDrawer3D> cylinderDrawer3D_;
 
 	static std::unique_ptr<ModelDrawerManager> modelDrawerManager_;
+
+	static std::unique_ptr<SkyBoxDrawer> skyBoxDrawer_;
 
 	// 
 	// GameManager

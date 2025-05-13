@@ -31,6 +31,17 @@ void SRVUAVManager::CreateSrvTexture2d(uint32_t viewIndex, ID3D12Resource* pReso
 	dxgi_->GetDevice()->CreateShaderResourceView(pResource, &srvDesc, GetDescriptorHandleCPU(viewIndex));
 }
 
+void SRVUAVManager::CreateSrvTextureCubeMap(uint32_t viewIndex, ID3D12Resource* pResource, DXGI_FORMAT format) {
+	// metaDataをもとにSRVの設定
+	D3D12_SHADER_RESOURCE_VIEW_DESC srvDesc{};
+	srvDesc.Format = format;
+	srvDesc.Shader4ComponentMapping = D3D12_DEFAULT_SHADER_4_COMPONENT_MAPPING;
+	srvDesc.ViewDimension =D3D12_SRV_DIMENSION_TEXTURECUBE;
+	srvDesc.Texture2D.MipLevels = UINT_MAX;
+	srvDesc.TextureCube.ResourceMinLODClamp = 0.0f;
+	dxgi_->GetDevice()->CreateShaderResourceView(pResource, &srvDesc, GetDescriptorHandleCPU(viewIndex));
+}
+
 void SRVUAVManager::CreateSrvStructuredBuffer(uint32_t viewIndex, ID3D12Resource* pResource, uint32_t numElements, UINT structureByteStride) {
 	D3D12_SHADER_RESOURCE_VIEW_DESC srvDesc{};
 	srvDesc.Format = DXGI_FORMAT_UNKNOWN;
@@ -49,8 +60,8 @@ void SRVUAVManager::CreateSrvByteAddressBuffer(uint32_t viewIndex, ID3D12Resourc
 	srvDesc.Shader4ComponentMapping = D3D12_DEFAULT_SHADER_4_COMPONENT_MAPPING;
 	srvDesc.ViewDimension = D3D12_SRV_DIMENSION_BUFFER;
 	srvDesc.Buffer.FirstElement = 0;
-	srvDesc.Buffer.NumElements = byteSize / 4;                  
-	srvDesc.Buffer.Flags =  D3D12_BUFFER_SRV_FLAG_RAW;
+	srvDesc.Buffer.NumElements = byteSize / 4;
+	srvDesc.Buffer.Flags = D3D12_BUFFER_SRV_FLAG_RAW;
 	srvDesc.Buffer.StructureByteStride = 0;
 
 	dxgi_->GetDevice()->CreateShaderResourceView(

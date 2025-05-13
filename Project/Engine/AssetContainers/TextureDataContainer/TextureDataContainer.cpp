@@ -61,10 +61,17 @@ uint32_t TextureDataContainer::Load(const std::string& fileName, bool isFullPath
 
 	// SRVを作成するDescriptorHeapの場所を決める
 	texture.srvIndex = srvUavManager_->Allocate();
-	// srvの作成
-	srvUavManager_->CreateSrvTexture2d(texture.srvIndex, textureDatas_[fileName].resource.Get(), texture.metaData.format, UINT(texture.metaData.mipLevels));
+
+	if (texture.metaData.IsCubemap()) {
+		// CubeMap用のsrvの作成
+		srvUavManager_->CreateSrvTextureCubeMap(texture.srvIndex, textureDatas_[fileName].resource.Get(), texture.metaData.format);
+	} else {
+		// 通常テクスチャのsrvの作成
+		srvUavManager_->CreateSrvTexture2d(texture.srvIndex, textureDatas_[fileName].resource.Get(), texture.metaData.format, UINT(texture.metaData.mipLevels));
+	}
 
 	// インデックス管理のコンテナにも追加
+	textureDatasWithSrvIndex_.insert(std::make_pair(texture.srvIndex, texture));
 
 	// テクスチャ枚数上限チェック
 	assert(srvUavManager_->IsLowerViewMax());
@@ -130,12 +137,23 @@ DirectX::ScratchImage TextureDataContainer::LoadTexture(const std::string& fileP
 	// テクスチャファイルを読んでプログラムで扱えるようにする
 	DirectX::ScratchImage image{};
 	std::wstring filePathW = Logger::ConvertString(filePath);
-	HRESULT hr = DirectX::LoadFromWICFile(filePathW.c_str(), DirectX::WIC_FLAGS_FORCE_SRGB, nullptr, image);
+
+	HRESULT hr{};
+
+	if (filePathW.ends_with(L".dds")) {
+		hr = DirectX::LoadFromDDSFile(filePathW.c_str(), DirectX::DDS_FLAGS_NONE, nullptr, image);
+	} else {
+		hr = DirectX::LoadFromWICFile(filePathW.c_str(), DirectX::WIC_FLAGS_FORCE_SRGB, nullptr, image);
+	}
 	assert(SUCCEEDED(hr));
 
 	// ミップマップの作成
 	DirectX::ScratchImage mipImages{};
-	hr = DirectX::GenerateMipMaps(image.GetImages(), image.GetImageCount(), image.GetMetadata(), DirectX::TEX_FILTER_SRGB, 0, mipImages);
+	if (DirectX::IsCompressed(image.GetMetadata().format)) {
+		mipImages = std::move(image);
+	} else {
+		hr = DirectX::GenerateMipMaps(image.GetImages(), image.GetImageCount(), image.GetMetadata(), DirectX::TEX_FILTER_SRGB, 4, mipImages);
+	}
 	assert(SUCCEEDED(hr));
 
 	//ミップマップ付きのデータを返す

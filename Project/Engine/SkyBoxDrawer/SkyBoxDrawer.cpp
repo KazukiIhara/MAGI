@@ -1,0 +1,176 @@
+#include "SkyBoxDrawer.h"
+
+#include "DirectX/DXGI/DXGI.h"
+#include "DirectX/DirectXCommand/DirectXCommand.h"
+#include "ViewManagers/SRVUAVManager/SRVUAVManager.h"
+#include "PipelineManagers/GraphicsPipelineManager/GraphicsPipelineManager.h"
+#include "ObjectManagers/Camera3DManager/Camera3DManager.h"
+
+#include "Logger/Logger.h"
+#include "MAGIUitility/MAGIUtility.h"
+
+#include <cassert>
+
+using namespace MAGIUtility;
+using namespace MAGIMath;
+
+SkyBoxDrawer::SkyBoxDrawer(
+	DXGI* dxgi,
+	DirectXCommand* directXCommand,
+	SRVUAVManager* srvUavManager,
+	GraphicsPipelineManager* graphicsPipelineManager,
+	Camera3DManager* camera3DManager
+) {
+	SetDXGI(dxgi);
+	SetDirectXCommand(directXCommand);
+	SetSRVUAVManager(srvUavManager);
+	SetGraphicsPipelineManager(graphicsPipelineManager);
+	SetCamera3DManager(camera3DManager);
+
+	// 形状を生成
+	CreateShape();
+
+	// 頂点リソースの作成
+	CreateVertexResource();
+	// 頂点バッファビューの作成
+	CreateVertexBufferView();
+	// 頂点データの書き込み
+	MapVertexData();
+
+	// 描画用のインデックスリソースを作成
+	CreateIndexResource();
+	// インデックスバッファビューの作成
+	CreateIndexBufferView();
+	// インデックスリソースにデータを書き込む
+	MapIndexData();
+
+	// 開始ログを出力
+	Logger::Log("SkyBoxDrawer Initialize\n");
+}
+
+SkyBoxDrawer::~SkyBoxDrawer() {
+	// 終了ログを出力
+	Logger::Log("SkyBoxDrawer Finalize\n");
+}
+
+void SkyBoxDrawer::Update() {
+
+}
+
+void SkyBoxDrawer::Draw() {
+
+}
+
+void SkyBoxDrawer::SetTextureIndex(uint32_t textureIndex) {
+	textureIndex_ = textureIndex;
+}
+
+void SkyBoxDrawer::CreateShape() {
+	// 形状を作成
+	vertices_.resize(24);
+	indices_.resize(36);
+
+	// 右面、描画インデックスは[0,1,2][2,1,3]で内側を向く
+	vertices_[0].position= { 1.0f,1.0f,1.0f,1.0f };
+	vertices_[1].position = { 1.0f,1.0f,-1.0f,1.0f };
+	vertices_[2].position = { 1.0f,-1.0f,1.0f,1.0f };
+	vertices_[3].position = { 1.0f,-1.0f,-1.0f,1.0f };
+
+	// 右面、描画インデックスは[4,5,6][6,5,7]で内側を向く
+	vertices_[4].position = { -1.0f,1.0f,-1.0f,1.0f };
+	vertices_[5].position = { -1.0f,1.0f,1.0f,1.0f };
+	vertices_[6].position = { -1.0f,-1.0f,-1.0f,1.0f };
+	vertices_[7].position = { -1.0f,-1.0f,1.0f,1.0f };
+
+	// 前面、描画インデックスは[8,9,10][10,9,11]で内側を向く
+	vertices_[8].position = { -1.0f,1.0f,1.0f,1.0f };
+	vertices_[9].position = { 1.0f,1.0f,-1.0f,1.0f };
+	vertices_[10].position = { -1.0f,-1.0f,1.0f,1.0f };
+	vertices_[11].position = { 1.0f,-1.0f,1.0f,1.0f };
+
+	// 背面、描画インデックスは[12,13,14][14,13,15]で内側を向く
+	vertices_[12].position = { 1.0f,1.0f,1.0f,1.0f };
+	vertices_[13].position = { -1.0f,1.0f,1.0f,1.0f };
+	vertices_[14].position = { 1.0f,-1.0f,1.0f,1.0f };
+	vertices_[15].position = { -1.0f,-1.0f,1.0f,1.0f };
+
+	// 上面、描画インデックスは[16,17,18][18,17,19]で内側を向く
+	vertices_[16].position = { -1.0f,1.0f,1.0f,1.0f };
+	vertices_[17].position = { 1.0f,1.0f,1.0f,1.0f };
+	vertices_[18].position = { -1.0f,1.0f,-1.0f,1.0f };
+	vertices_[19].position = { 1.0f,1.0f,-1.0f,1.0f };
+
+	// 下面、描画インデックスは[20,21,22][22,21,23]で内側を向く
+	vertices_[20].position = { -1.0f,-1.0f,-1.0f,1.0f };
+	vertices_[21].position = { 1.0f,-1.0f,-1.0f,1.0f };
+	vertices_[22].position = { -1.0f,-1.0f,1.0f,1.0f };
+	vertices_[23].position = { 1.0f,-1.0f,1.0f,1.0f };
+
+	// 各面、2つの三角形（裏面を向くインデックス）
+	indices_ = {
+		0, 1, 2,  2, 1, 3,     // 右面
+		4, 5, 6,  6, 5, 7,     // 左面
+		8, 9,10, 10, 9,11,     // 前面
+	   12,13,14, 14,13,15,     // 背面
+	   16,17,18, 18,17,19,     // 上面
+	   20,21,22, 22,21,23      // 下面
+	};
+
+}
+
+void SkyBoxDrawer::CreateVertexResource() {
+	vertexResource_ = dxgi_->CreateBufferResource(sizeof(SkyBoxVertexData3D) * vertices_.size());
+}
+
+void SkyBoxDrawer::CreateVertexBufferView() {
+	vertexBufferView_.BufferLocation = vertexResource_->GetGPUVirtualAddress();
+	vertexBufferView_.SizeInBytes = UINT(sizeof(SkyBoxVertexData3D) * vertices_.size());
+	vertexBufferView_.StrideInBytes = sizeof(SkyBoxVertexData3D);
+}
+
+void SkyBoxDrawer::MapVertexData() {
+	vertexData_ = nullptr;
+	vertexResource_->Map(0, nullptr, reinterpret_cast<void**>(&vertexData_));
+	std::memcpy(vertexData_, vertices_.data(), sizeof(SkyBoxVertexData3D) * vertices_.size());
+}
+
+void SkyBoxDrawer::CreateIndexResource() {
+	indexResource_ = dxgi_->CreateBufferResource(sizeof(uint32_t) * indices_.size());
+}
+
+void SkyBoxDrawer::CreateIndexBufferView() {
+	indexBufferView_.BufferLocation = indexResource_->GetGPUVirtualAddress();
+	indexBufferView_.SizeInBytes = UINT(sizeof(uint32_t) * indices_.size());
+	indexBufferView_.Format = DXGI_FORMAT_R32_UINT;
+}
+
+void SkyBoxDrawer::MapIndexData() {
+	indexData_ = nullptr;
+	indexResource_->Map(0, nullptr, reinterpret_cast<void**>(&indexData_));
+	std::memcpy(indexData_, indices_.data(), sizeof(uint32_t) * indices_.size());
+}
+
+void SkyBoxDrawer::SetDXGI(DXGI* dxgi) {
+	assert(dxgi);
+	dxgi_ = dxgi;
+}
+
+void SkyBoxDrawer::SetDirectXCommand(DirectXCommand* directXCommand) {
+	assert(directXCommand);
+	directXCommand_ = directXCommand;
+}
+
+void SkyBoxDrawer::SetSRVUAVManager(SRVUAVManager* srvUavManager) {
+	assert(srvUavManager);
+	srvUavManager_ = srvUavManager;
+}
+
+void SkyBoxDrawer::SetGraphicsPipelineManager(GraphicsPipelineManager* graphicsPipelineManager) {
+	assert(graphicsPipelineManager);
+	graphicsPipelineManager_ = graphicsPipelineManager;
+}
+
+void SkyBoxDrawer::SetCamera3DManager(Camera3DManager* camera3DManager) {
+	assert(camera3DManager);
+	camera3DManager_ = camera3DManager;
+}
