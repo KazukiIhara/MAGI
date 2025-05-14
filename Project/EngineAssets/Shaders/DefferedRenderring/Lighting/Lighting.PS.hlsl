@@ -1,18 +1,39 @@
 ﻿#include "Lighting.hlsli"
 
+//================================ 
+// CBV
+//================================
 ConstantBuffer<Camera> gCamera : register(b0);
 ConstantBuffer<DirectionalLightData> gDirectionalLight : register(b1);
 ConstantBuffer<LightCameraData> gLightCamera : register(b2);
 
-Texture2D gAlbedoTex : register(t0);
-Texture2D gNormalTex : register(t1);
-Texture2D gPositionTex : register(t2);
+//================================ 
+// GBuffer
+//================================
+Texture2D<float4> gAlbedoTex : register(t0);
+Texture2D<float4> gNormalTex : register(t1);
+Texture2D<float4> gPositionTex : register(t2);
+
+//================================ 
+// ShadowMapTex
+//================================
 Texture2D<float> gShadowMap : register(t3);
 
+//================================
+// EnvironmentTex
+//================================
+TextureCube<float4> gEnvironmentTex : register(t4);
+
+//================================
+// Samplers
+//================================
 SamplerState gSampler : register(s0);
 SamplerComparisonState gShadowSampler : register(s1);
 
-float ComputeShadow(float3 worldPos, float3 worldNormal)
+//================================
+// HelperFuncs
+//================================
+float ComputeDirectionalLightShadow(float3 worldPos, float3 worldNormal)
 {
     // ライト空間投影
     float4 lsPos = mul(float4(worldPos, 1), gLightCamera.viewProjection);
@@ -41,6 +62,9 @@ float ComputeShadow(float3 worldPos, float3 worldNormal)
     return shadow;
 }
 
+//================================
+// EntryPoint
+//================================
 PixelShaderOutput main(VertexShaderOutput input)
 {
     PixelShaderOutput output;
@@ -64,22 +88,28 @@ PixelShaderOutput main(VertexShaderOutput input)
     const float3 directionalLightDirection = normalize(gDirectionalLight.direction);
     const float directionalLightIntensity = gDirectionalLight.intencity;
     const float3 directionalLightColor = gDirectionalLight.color;
-   
-    float3 worldPos = position.xyz;
 
-    // シャドウ係数を取得
-    float shadow = ComputeShadow(worldPos, normal);
-    
     //
     // DirectionalLight
     //
-    {
+    {      
         float3 L = -directionalLightDirection;
         float NdotL = saturate(dot(normal, L));
-        float3 diffuse = directionalLightColor * directionalLightIntensity * NdotL * shadow;
+        float3 diffuse = directionalLightColor * directionalLightIntensity * NdotL;
         totalDiffuse += diffuse;
     }
     
+    // 
+    // DirectionalLightShadow
+    // 
+    {
+        float directionalLightShadow = ComputeDirectionalLightShadow(position.xyz, normal);
+        totalDiffuse *= directionalLightShadow;
+    } 
+    
+    // 
+    // FinalColor
+    // 
     output.color.rgb = baseColor * totalDiffuse;
     output.color.a = alpha;
     
