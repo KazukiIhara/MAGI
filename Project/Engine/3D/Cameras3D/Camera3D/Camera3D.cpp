@@ -71,6 +71,10 @@ Matrix4x4 Camera3D::GetViewProjectionMatrix() const {
 	return viewProjectionMatrix_;
 }
 
+float Camera3D::GetFarClipRange() const {
+	return farClipRange_;
+}
+
 void Camera3D::CreateCameraResource() {
 	cameraResource_ = MAGISYSTEM::CreateBufferResource(sizeof(CameraForGPU));
 }

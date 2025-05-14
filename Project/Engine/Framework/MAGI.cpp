@@ -1336,7 +1336,7 @@ Camera3D* MAGISYSTEM::FindCamera3D(const std::string& cameraName) {
 }
 
 void MAGISYSTEM::SetCurrentCamera(const std::string& cameraName) {
-	camera3DManager_->SetCurrentCameraName(cameraName);
+	camera3DManager_->SetCurrentCamera(cameraName);
 }
 
 void MAGISYSTEM::DrawLine3D(const Vector3& start, const Vector3& end, const Vector4& color) {

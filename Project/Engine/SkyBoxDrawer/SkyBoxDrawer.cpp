@@ -51,7 +51,7 @@ SkyBoxDrawer::SkyBoxDrawer(
 	// スカイボックス用のデータをマップ
 	MapSkyBoxData();
 
-	textureIndex_= MAGISYSTEM::LoadTexture("rostock_laage_airport_4k.dds");
+	textureIndex_ = MAGISYSTEM::LoadTexture("rostock_laage_airport_4k.dds");
 
 	// 開始ログを出力
 	Logger::Log("SkyBoxDrawer Initialize\n");
@@ -64,6 +64,15 @@ SkyBoxDrawer::~SkyBoxDrawer() {
 
 void SkyBoxDrawer::Update() {
 
+	Camera3D* currentCamera = camera3DManager_->GetCurrentCamera();
+	Vector3 translate = currentCamera->GetTranslate();
+	float farClipRange = currentCamera->GetFarClipRange() * 0.9f;
+	Vector3 scale = { farClipRange,farClipRange,farClipRange };
+
+	Matrix4x4 scaleMat = MakeScaleMatrix(scale);
+	Matrix4x4 translateMat = MakeTranslateMatrix(translate);
+
+	skyBoxData_->worldMatrix = scaleMat * translateMat;
 }
 
 void SkyBoxDrawer::Draw() {

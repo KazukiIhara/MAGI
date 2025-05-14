@@ -81,6 +81,7 @@ private:
 	// スカイボックスのデータ
 	SkyBoxDataForGPU* skyBoxData_ = nullptr;
 
+
 	// テクスチャのインデックス
 	uint32_t textureIndex_ = 0;
 

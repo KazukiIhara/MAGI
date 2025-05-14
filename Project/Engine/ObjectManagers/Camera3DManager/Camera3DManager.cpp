@@ -25,11 +25,9 @@ void Camera3DManager::Update() {
 		return;
 	}
 #endif // _DEBUG
-	// 現在選択中のカメラを見つけて更新
-	Camera3D* currentCamera = Find(currentCameraName_);
-	if (currentCamera) {
-		currentCamera->Update();
-		currentCamera->UpdateData();
+	if (currentCamera_) {
+		currentCamera_->Update();
+		currentCamera_->UpdateData();
 	}
 }
 
@@ -42,7 +40,7 @@ void Camera3DManager::TransferCurrentCamera(uint32_t rootParameterIndex) {
 	}
 #endif // _DEBUG
 	// 現在選択中のカメラを見つけて転送
-	Find(currentCameraName_)->TransferCamera(rootParameterIndex);
+	currentCamera_->TransferCamera(rootParameterIndex);
 }
 
 std::string Camera3DManager::Add(std::unique_ptr<Camera3D> newCamera3D) {
@@ -96,8 +94,18 @@ Camera3D* Camera3DManager::Find(const std::string& cameraName) {
 	return nullptr;
 }
 
-void Camera3DManager::SetCurrentCameraName(const std::string& cameraName) {
-	currentCameraName_ = cameraName;
+void Camera3DManager::SetCurrentCamera(const std::string& cameraName) {
+	currentCamera_ = Find(cameraName);
+}
+
+Camera3D* Camera3DManager::GetCurrentCamera() {
+#ifdef _DEBUG
+	if (isDebugCamera_) {
+		return debugCamera_.get();
+	}
+#endif // _DEBUG
+
+	return currentCamera_;
 }
 
 bool& Camera3DManager::GetIsDebugCamera() {

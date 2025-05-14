@@ -37,6 +37,9 @@ public:
 	// ビュープロジェクションマトリックスを送る
 	Matrix4x4 GetViewProjectionMatrix()const;
 
+	// ファークリップ距離を送る
+	float GetFarClipRange()const;
+
 private:
 	// カメラのリソースを作成
 	void CreateCameraResource();
