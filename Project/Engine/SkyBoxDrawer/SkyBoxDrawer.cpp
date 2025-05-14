@@ -108,6 +108,10 @@ void SkyBoxDrawer::SetTextureIndex(uint32_t textureIndex) {
 	textureIndex_ = textureIndex;
 }
 
+void SkyBoxDrawer::TransferSkyBoxTexture(uint32_t rootParamIndex) {
+	directXCommand_->GetList()->SetGraphicsRootDescriptorTable(rootParamIndex, srvUavManager_->GetDescriptorHandleGPU(textureIndex_));
+}
+
 void SkyBoxDrawer::CreateShape() {
 	// 形状を作成
 	vertices_.resize(24);

@@ -34,6 +34,7 @@ public:
 	void Draw();
 
 	void SetTextureIndex(uint32_t textureIndex);
+	void TransferSkyBoxTexture(uint32_t rootParamIndex);
 
 private:
 

@@ -30,6 +30,7 @@ class PostEffectPipelineManager;
 class ShadowPipelineManager;
 class Camera3DManager;
 class LightManager;
+class SkyBoxDrawer;
 
 /// <summary>
 /// 描画管理クラス
@@ -48,7 +49,8 @@ public:
 		PostEffectPipelineManager* postEffectPipelineManager,
 		ShadowPipelineManager* shadowPipelineManager,
 		Camera3DManager* camera3DManager,
-		LightManager* lightManager
+		LightManager* lightManager,
+		SkyBoxDrawer* skyBoxDrawer
 	);
 	~RenderController();
 
@@ -111,6 +113,7 @@ private:
 	void SetShadowPipelineManager(ShadowPipelineManager* shadowPipelineManager);
 	void SetCamera3DManager(Camera3DManager* camera3DManager);
 	void SetLightManager(LightManager* lightManager);
+	void SetSkyBoxDrawer(SkyBoxDrawer* skyBoxDrawer);
 
 private:
 	// 各インスタンスを受け取るクラス
@@ -126,6 +129,7 @@ private:
 	ShadowPipelineManager* shadowPipelineManager_ = nullptr;
 	Camera3DManager* camera3DManager_ = nullptr;
 	LightManager* lightManager_ = nullptr;
+	SkyBoxDrawer* skyBoxDrawer_ = nullptr;
 
 private:
 	// コマンド最大数

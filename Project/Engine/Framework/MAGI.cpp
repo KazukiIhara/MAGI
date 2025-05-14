@@ -199,14 +199,6 @@ void MAGISYSTEM::Initialize() {
 	shadowPipelineManager_ = std::make_unique<ShadowPipelineManager>(dxgi_.get(), shaderCompiler_.get());
 
 
-	// RenderPipelineController
-	renderController_ = std::make_unique<RenderController>(
-		dxgi_.get(), directXCommand_.get(), depthStencil_.get(), viewport_.get(), scissorRect_.get(),
-		rtvManager_.get(), srvuavManager_.get(), defferedRenderringPipelineManager_.get(), postEffectPipelineManager_.get(), shadowPipelineManager_.get(),
-		camera3DManager_.get(), lightManager_.get()
-	);
-
-
 	// LineDrawer3D
 	lineDrawer3D_ = std::make_unique<LineDrawer3D>(dxgi_.get(), directXCommand_.get(), srvuavManager_.get(), graphicsPipelineManager_.get(), camera3DManager_.get());
 	// TriangleDrawer3D
@@ -226,6 +218,13 @@ void MAGISYSTEM::Initialize() {
 	// SkyBoxDrawer
 	skyBoxDrawer_ = std::make_unique<SkyBoxDrawer>(dxgi_.get(), directXCommand_.get(), srvuavManager_.get(), graphicsPipelineManager_.get(), camera3DManager_.get());
 
+	// RenderPipelineController
+	renderController_ = std::make_unique<RenderController>(
+		dxgi_.get(), directXCommand_.get(), depthStencil_.get(), viewport_.get(), scissorRect_.get(),
+		rtvManager_.get(), srvuavManager_.get(), defferedRenderringPipelineManager_.get(), postEffectPipelineManager_.get(), shadowPipelineManager_.get(),
+		camera3DManager_.get(), lightManager_.get(),
+		skyBoxDrawer_.get()
+	);
 
 	// CollisionManager
 	collisionManager_ = std::make_unique<CollisionManager>(colliderManager_.get());
