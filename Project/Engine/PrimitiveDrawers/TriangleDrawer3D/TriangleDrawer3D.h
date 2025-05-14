@@ -41,12 +41,6 @@ private:
 	void SetCamera3DManager(Camera3DManager* camera3DManager);
 
 private:
-
-	// 三角形データコンテナ
-	std::vector<TriangleData3DForGPU> triangles_[static_cast<uint32_t>(BlendMode::Num)];
-	// マテリアルデータコンテナ
-	std::vector<PrimitiveMaterialData3DForGPU> materials_[static_cast<uint32_t>(BlendMode::Num)];
-
 	// instancing描画用のリソース
 	ComPtr<ID3D12Resource> instancingResource_[static_cast<uint32_t>(BlendMode::Num)];
 	// instancing描画用のデータ

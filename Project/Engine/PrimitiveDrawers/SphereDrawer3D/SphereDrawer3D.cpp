@@ -24,9 +24,6 @@ SphereDrawer3D::SphereDrawer3D(DXGI* dxgi, DirectXCommand* directXCommand, SRVUA
 	SetCamera3DManager(camera3DManager);
 
 	for (uint32_t i = 0; i < kBlendModeNum; ++i) {
-		spheres_[i].resize(PrimitiveCommonConst::NumMaxInstance);
-		materials_[i].resize(PrimitiveCommonConst::NumMaxInstance);
-
 		instancingResource_[i] = dxgi_->CreateBufferResource(sizeof(SphereData3DForGPU) * PrimitiveCommonConst::NumMaxInstance);
 		instancingSrvIndex_[i] = srvUavManager_->Allocate();
 		srvUavManager_->CreateSrvStructuredBuffer(instancingSrvIndex_[i], instancingResource_[i].Get(), PrimitiveCommonConst::NumMaxInstance, sizeof(SphereData3DForGPU));
@@ -61,12 +58,6 @@ void SphereDrawer3D::Update() {
 	for (uint32_t i = 0; i < kBlendModeNum; ++i) {
 		assert(currentIndex_[i] <= PrimitiveCommonConst::NumMaxInstance);
 		instanceCount_[i] = currentIndex_[i];
-
-		if (instanceCount_[i] > 0 && instancingData_[i] && materialData_[i]) {
-			std::memcpy(instancingData_[i], spheres_[i].data(), sizeof(SphereData3DForGPU) * instanceCount_[i]);
-			std::memcpy(materialData_[i], materials_[i].data(), sizeof(PrimitiveMaterialData3DForGPU) * instanceCount_[i]);
-		}
-
 		currentIndex_[i] = 0;
 	}
 }
@@ -112,8 +103,8 @@ void SphereDrawer3D::AddSphere(const Matrix4x4& worldMatrix, const SphereData3D&
 		.uvMatrix = MakeUVMatrix(material.uvScale, material.uvRotate, material.uvTranslate)
 	};
 
-	spheres_[blendIndex][currentIndex_[blendIndex]] = newSphereData;
-	materials_[blendIndex][currentIndex_[blendIndex]] = newMaterialData;
+	instancingData_[blendIndex][currentIndex_[blendIndex]] = newSphereData;
+	materialData_[blendIndex][currentIndex_[blendIndex]] = newMaterialData;
 	currentIndex_[blendIndex]++;
 }
 

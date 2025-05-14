@@ -29,9 +29,6 @@ PlaneDrawer3D::PlaneDrawer3D(
 	SetGraphicsPipelineManager(graphicsPipelineManager);
 	SetCamera3DManager(camera3DManager);
 	for (uint32_t i = 0; i < kBlendModeNum; ++i) {
-		planes_[i].resize(PrimitiveCommonConst::NumMaxInstance);
-		materials_[i].resize(PrimitiveCommonConst::NumMaxInstance);
-
 		// リソース作成
 		instancingResource_[i] = dxgi_->CreateBufferResource(sizeof(PlaneData3DForGPU) * PrimitiveCommonConst::NumMaxInstance);
 		instancingSrvIndex_[i] = srvUavManager_->Allocate();

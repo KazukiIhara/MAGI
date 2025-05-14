@@ -24,9 +24,6 @@ TriangleDrawer3D::TriangleDrawer3D(DXGI* dxgi, DirectXCommand* directXCommand, S
 	SetCamera3DManager(camera3DManager);
 
 	for (uint32_t i = 0; i < kBlendModeNum; ++i) {
-		triangles_[i].resize(PrimitiveCommonConst::NumMaxInstance);
-		materials_[i].resize(PrimitiveCommonConst::NumMaxInstance);
-
 		// リソース作成
 		instancingResource_[i] = dxgi_->CreateBufferResource(sizeof(TriangleData3DForGPU) * PrimitiveCommonConst::NumMaxInstance);
 		instancingSrvIndex_[i] = srvUavManager_->Allocate();
@@ -61,12 +58,6 @@ void TriangleDrawer3D::Update() {
 	for (uint32_t i = 0; i < kBlendModeNum; ++i) {
 		assert(currentIndex_[i] <= PrimitiveCommonConst::NumMaxInstance);
 		instanceCount_[i] = currentIndex_[i];
-
-		if (instanceCount_[i] > 0 && instancingData_[i] && materialData_[i]) {
-			std::memcpy(instancingData_[i], triangles_[i].data(), sizeof(TriangleData3DForGPU) * instanceCount_[i]);
-			std::memcpy(materialData_[i], materials_[i].data(), sizeof(PrimitiveMaterialData3DForGPU) * instanceCount_[i]);
-		}
-
 		currentIndex_[i] = 0;
 	}
 }
@@ -129,8 +120,8 @@ void TriangleDrawer3D::AddTriangle(
 		.uvMatrix = MakeUVMatrix(material.uvScale, material.uvRotate, material.uvTranslate),
 	};
 
-	triangles_[blendIndex][currentIndex_[blendIndex]] = newTriangleData;
-	materials_[blendIndex][currentIndex_[blendIndex]] = newMaterialData;
+	instancingData_[blendIndex][currentIndex_[blendIndex]] = newTriangleData;
+	materialData_[blendIndex][currentIndex_[blendIndex]] = newMaterialData;
 	currentIndex_[blendIndex]++;
 }
 

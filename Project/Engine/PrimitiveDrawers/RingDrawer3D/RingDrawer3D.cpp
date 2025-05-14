@@ -24,9 +24,6 @@ RingDrawer3D::RingDrawer3D(DXGI* dxgi, DirectXCommand* directXCommand, SRVUAVMan
 	SetCamera3DManager(camera3DManager);
 
 	for (uint32_t i = 0; i < kBlendModeNum; ++i) {
-		rings_[i].resize(PrimitiveCommonConst::NumMaxInstance);
-		materials_[i].resize(PrimitiveCommonConst::NumMaxInstance);
-
 		instancingResource_[i] = dxgi_->CreateBufferResource(sizeof(RingData3DForGPU) * PrimitiveCommonConst::NumMaxInstance);
 		instancingSrvIndex_[i] = srvUavManager_->Allocate();
 		srvUavManager_->CreateSrvStructuredBuffer(instancingSrvIndex_[i], instancingResource_[i].Get(), PrimitiveCommonConst::NumMaxInstance, sizeof(RingData3DForGPU));
@@ -59,12 +56,6 @@ void RingDrawer3D::Update() {
 	for (uint32_t i = 0; i < kBlendModeNum; ++i) {
 		assert(currentIndex_[i] <= PrimitiveCommonConst::NumMaxInstance);
 		instanceCount_[i] = currentIndex_[i];
-
-		if (instanceCount_[i] > 0 && instancingData_[i] && materialData_[i]) {
-			std::memcpy(instancingData_[i], rings_[i].data(), sizeof(RingData3DForGPU) * instanceCount_[i]);
-			std::memcpy(materialData_[i], materials_[i].data(), sizeof(PrimitiveMaterialData3DForGPU) * instanceCount_[i]);
-		}
-
 		currentIndex_[i] = 0;
 	}
 }
@@ -111,8 +102,8 @@ void RingDrawer3D::AddRing(const Matrix4x4& worldMatrix, const RingData3D& data,
 		.uvMatrix = MakeUVMatrix(material.uvScale, material.uvRotate, material.uvTranslate)
 	};
 
-	rings_[blendIndex][currentIndex_[blendIndex]] = newRingData;
-	materials_[blendIndex][currentIndex_[blendIndex]] = newMaterialData;
+	instancingData_[blendIndex][currentIndex_[blendIndex]] = newRingData;
+	materialData_[blendIndex][currentIndex_[blendIndex]] = newMaterialData;
 	currentIndex_[blendIndex]++;
 }
 

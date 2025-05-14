@@ -23,9 +23,6 @@ CylinderDrawer3D::CylinderDrawer3D(DXGI* dxgi, DirectXCommand* directXCommand, S
 	SetCamera3DManager(camera3DManager);
 
 	for (uint32_t i = 0; i < kBlendModeNum; ++i) {
-		cylinders_[i].resize(PrimitiveCommonConst::NumMaxInstance);
-		materials_[i].resize(PrimitiveCommonConst::NumMaxInstance);
-
 		instancingResource_[i] = dxgi_->CreateBufferResource(sizeof(CylinderData3DForGPU) * PrimitiveCommonConst::NumMaxInstance);
 		instancingSrvIndex_[i] = srvUavManager_->Allocate();
 		srvUavManager_->CreateSrvStructuredBuffer(instancingSrvIndex_[i], instancingResource_[i].Get(), PrimitiveCommonConst::NumMaxInstance, sizeof(CylinderData3DForGPU));
@@ -58,12 +55,6 @@ void CylinderDrawer3D::Update() {
 	for (uint32_t i = 0; i < kBlendModeNum; ++i) {
 		assert(currentIndex_[i] <= PrimitiveCommonConst::NumMaxInstance);
 		instanceCount_[i] = currentIndex_[i];
-
-		if (instanceCount_[i] > 0 && instancingData_[i] && materialData_[i]) {
-			std::memcpy(instancingData_[i], cylinders_[i].data(), sizeof(CylinderData3DForGPU) * instanceCount_[i]);
-			std::memcpy(materialData_[i], materials_[i].data(), sizeof(PrimitiveMaterialData3DForGPU) * instanceCount_[i]);
-		}
-
 		currentIndex_[i] = 0;
 	}
 }
@@ -111,8 +102,8 @@ void CylinderDrawer3D::AddCylinder(const Matrix4x4& worldMatrix, const CylinderD
 		.uvMatrix = MakeUVMatrix(material.uvScale, material.uvRotate, material.uvTranslate)
 	};
 
-	cylinders_[blendIndex][currentIndex_[blendIndex]] = newCylinderData;
-	materials_[blendIndex][currentIndex_[blendIndex]] = newMaterialData;
+	instancingData_[blendIndex][currentIndex_[blendIndex]] = newCylinderData;
+	materialData_[blendIndex][currentIndex_[blendIndex]] = newMaterialData;
 	currentIndex_[blendIndex]++;
 }
 
