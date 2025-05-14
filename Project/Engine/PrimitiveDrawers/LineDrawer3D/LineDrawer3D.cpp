@@ -60,12 +60,12 @@ void LineDrawer3D::Draw() {
 
 	// ルートシグネイチャを設定
 	commandList->SetGraphicsRootSignature(graphicsPipelineManager_->GetRootSignature(GraphicsPipelineStateType::Line3D));
-	
+	// PSOを設定
+	commandList->SetPipelineState(graphicsPipelineManager_->GetPipelineState(GraphicsPipelineStateType::Line3D, blendMode_));
+
 	// 形状設定
 	commandList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_LINELIST);
 
-	// PSOを設定
-	commandList->SetPipelineState(graphicsPipelineManager_->GetPipelineState(GraphicsPipelineStateType::Line3D, blendMode_));
 	// Cameraを転送
 	camera3DManager_->TransferCurrentCamera(0);
 	// StructuredBufferのSRVを設定する

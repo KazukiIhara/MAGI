@@ -7,7 +7,8 @@
 #include "DirectX/ShaderCompiler/ShaderCompiler.h"
 
 LightingDefferedRenderringPipeline::LightingDefferedRenderringPipeline(DXGI* dxgi, ShaderCompiler* shaderCompiler)
-	:BaseDefferedRenderringPipeline(dxgi, shaderCompiler) {}
+	:BaseDefferedRenderringPipeline(dxgi, shaderCompiler) {
+}
 
 LightingDefferedRenderringPipeline::~LightingDefferedRenderringPipeline() {}
 
@@ -39,8 +40,15 @@ void LightingDefferedRenderringPipeline::CreateRootSignature() {
 	rangeShadow.RangeType = D3D12_DESCRIPTOR_RANGE_TYPE_SRV;
 	rangeShadow.OffsetInDescriptorsFromTableStart = D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND;
 
+	D3D12_DESCRIPTOR_RANGE rangeEnvironmentTex{};
+	rangeEnvironmentTex.BaseShaderRegister = 4; // t4
+	rangeEnvironmentTex.NumDescriptors = 1;
+	rangeEnvironmentTex.RangeType = D3D12_DESCRIPTOR_RANGE_TYPE_SRV;
+	rangeEnvironmentTex.OffsetInDescriptorsFromTableStart = D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND;
+
+
 	// --- ルートパラメータ ---
-	D3D12_ROOT_PARAMETER rootParams[7]{};
+	D3D12_ROOT_PARAMETER rootParams[8]{};
 
 	// b0 : カメラ用CBV
 	rootParams[0].ParameterType = D3D12_ROOT_PARAMETER_TYPE_CBV;
@@ -80,6 +88,12 @@ void LightingDefferedRenderringPipeline::CreateRootSignature() {
 	rootParams[6].ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL;
 	rootParams[6].DescriptorTable.pDescriptorRanges = &rangeShadow;
 	rootParams[6].DescriptorTable.NumDescriptorRanges = 1;
+
+	// t4 : EnvironmentTex
+	rootParams[7].ParameterType = D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE;
+	rootParams[7].ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL;
+	rootParams[7].DescriptorTable.pDescriptorRanges = &rangeEnvironmentTex;
+	rootParams[7].DescriptorTable.NumDescriptorRanges = 1;
 
 	// --- Static Sampler ---
 	D3D12_STATIC_SAMPLER_DESC samplers[2]{};

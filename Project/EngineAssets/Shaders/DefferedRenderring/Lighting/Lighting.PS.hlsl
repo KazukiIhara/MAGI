@@ -1,18 +1,51 @@
 ﻿#include "Lighting.hlsli"
 
+//================================ 
+// CBV
+//================================
 ConstantBuffer<Camera> gCamera : register(b0);
 ConstantBuffer<DirectionalLightData> gDirectionalLight : register(b1);
 ConstantBuffer<LightCameraData> gLightCamera : register(b2);
 
-Texture2D gAlbedoTex : register(t0);
-Texture2D gNormalTex : register(t1);
-Texture2D gPositionTex : register(t2);
+//================================ 
+// GBuffer
+//================================
+Texture2D<float4> gAlbedoTex : register(t0);
+Texture2D<float4> gNormalTex : register(t1);
+Texture2D<float4> gPositionTex : register(t2);
+
+//================================ 
+// ShadowMapTex
+//================================
 Texture2D<float> gShadowMap : register(t3);
 
+//================================
+// EnvironmentTex
+//================================
+TextureCube<float4> gEnvironmentTex : register(t4);
+
+//================================
+// Samplers
+//================================
 SamplerState gSampler : register(s0);
 SamplerComparisonState gShadowSampler : register(s1);
 
-float ComputeShadow(float3 worldPos, float3 worldNormal)
+//================================
+// HelperFuncs
+//================================
+
+float3 ComputeDirectionalLight(float3 normal)
+{
+    const float3 directionalLightDirection = normalize(gDirectionalLight.direction);
+    const float directionalLightIntensity = gDirectionalLight.intencity;
+    const float3 directionalLightColor = gDirectionalLight.color;
+    float3 L = -directionalLightDirection;
+    float NdotL = saturate(dot(normal, L));
+    
+    return directionalLightColor * directionalLightIntensity * NdotL;
+}
+
+float ComputeDirectionalLightShadow(float3 worldPos, float3 worldNormal)
 {
     // ライト空間投影
     float4 lsPos = mul(float4(worldPos, 1), gLightCamera.viewProjection);
@@ -41,6 +74,18 @@ float ComputeShadow(float3 worldPos, float3 worldNormal)
     return shadow;
 }
 
+float3 ComputeEnvironment(float3 position, float3 normal, float coefficient)
+{
+    float3 cameraToPosition = normalize(position - gCamera.worldPosition);
+    float3 reflectedVector = reflect(cameraToPosition, normalize(normal));
+    float3 environmentColor = gEnvironmentTex.Sample(gSampler, reflectedVector).rgb;
+    
+    return environmentColor * coefficient;
+}
+
+//================================
+// EntryPoint
+//================================
 PixelShaderOutput main(VertexShaderOutput input)
 {
     PixelShaderOutput output;
@@ -50,36 +95,43 @@ PixelShaderOutput main(VertexShaderOutput input)
     float4 normalRaw = gNormalTex.Sample(gSampler, input.texcoord);
     float4 position = gPositionTex.Sample(gSampler, input.texcoord);
 
-    // Normalを[-1,1]空間に戻して正規化（ワールド空間想定）
+    // Normalを[-1,1]空間に戻して正規化
     float3 normal = normalize(normalRaw.xyz * 2.0f - 1.0f);
     
     // 元の色とalphaを取得
     float3 baseColor = albedo.rgb;
     float alpha = albedo.a;
     
-    // ライトによる加算用の値
+    // カラー加算用の値
     float3 totalDiffuse = float3(0.0f, 0.0f, 0.0f);
-
-    // Directional Light
-    const float3 directionalLightDirection = normalize(gDirectionalLight.direction);
-    const float directionalLightIntensity = gDirectionalLight.intencity;
-    const float3 directionalLightColor = gDirectionalLight.color;
-   
-    float3 worldPos = position.xyz;
-
-    // シャドウ係数を取得
-    float shadow = ComputeShadow(worldPos, normal);
-    
-    //
+     
+    // 
     // DirectionalLight
-    //
-    {
-        float3 L = -directionalLightDirection;
-        float NdotL = saturate(dot(normal, L));
-        float3 diffuse = directionalLightColor * directionalLightIntensity * NdotL * shadow;
-        totalDiffuse += diffuse;
+    // 
+    {      
+        float3 directionalLightDiffuse = ComputeDirectionalLight(normal);
+        totalDiffuse += directionalLightDiffuse;
     }
     
+    // 
+    // DirectionalLightShadow
+    // 
+    {
+        float directionalLightShadow = ComputeDirectionalLightShadow(position.xyz, normal);
+        totalDiffuse *= directionalLightShadow;
+    }
+    
+    //
+    // Environment
+    //
+    {
+        float3 environmentDiffuse = ComputeEnvironment(position.xyz, normal, 0.5f);
+        totalDiffuse += environmentDiffuse;
+    }
+     
+    // 
+    // FinalColor
+    // 
     output.color.rgb = baseColor * totalDiffuse;
     output.color.a = alpha;
     

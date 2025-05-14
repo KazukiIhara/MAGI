@@ -22,6 +22,8 @@
 
 #include "GraphicsPipelines/Model3DGraphicsPipeline/Model3DGraphicsPipeline.h"
 
+#include "GraphicsPipelines/SkyBoxGraphicsPipeline/SkyBoxGraphicsPipeline.h"
+
 #include "GraphicsPipelines/Object3DGraphicsPipeline/Object3DGraphicsPipeline.h"
 #include "GraphicsPipelines/Particle3DGraphicsPipeline/Particle3DGraphicsPipeline.h"
 #include "GraphicsPipelines/Object3DGroupGraphicsPipeline/Object3DGroupGraphicsPipeline.h"
@@ -77,6 +79,9 @@ private:
 
 	// Model3DGraphicsPipeline
 	std::unique_ptr<Model3DGraphicsPipeline> model3DGraphicsPipeline_ = nullptr;
+
+	// SkyBoxGraphicsPipeline
+	std::unique_ptr<SkyBoxGraphicsPipeline> skyBoxGraphicsPipeline_ = nullptr;
 
 	// Object3DGraphicsPipeline
 	std::unique_ptr<Object3DGraphicsPipeline> object3DGraphicsPipeline_ = nullptr;

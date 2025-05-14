@@ -23,7 +23,10 @@ public:
 	Camera3D* Find(const std::string& cameraName);
 
 	// 現在使用するカメラの名前をセット
-	void SetCurrentCameraName(const std::string& cameraName);
+	void SetCurrentCamera(const std::string& cameraName);
+
+	// 使用中のカメラを取得
+	Camera3D* GetCurrentCamera();
 
 	// デバッグカメラフラグの参照
 	bool& GetIsDebugCamera();
@@ -33,10 +36,10 @@ public:
 private:
 	// デバッグカメラ切り替え変数
 	bool isDebugCamera_ = false;
-	// 使用するカメラの名前
-	std::string currentCameraName_ = "";
 	// カメラコンテナ
 	std::map<std::string, std::unique_ptr<Camera3D>> cameras3D_;
 	// デバッグカメラ
 	std::unique_ptr<DebugCamera3D> debugCamera_;
+	// 現在使用中のカメラ
+	Camera3D* currentCamera_ = nullptr;
 };

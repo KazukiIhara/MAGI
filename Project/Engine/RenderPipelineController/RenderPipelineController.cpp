@@ -15,6 +15,7 @@
 #include "PipelineManagers/PostEffectPipelineManager/PostEffectPipelineManager.h"
 #include "ObjectManagers/Camera3DManager/Camera3DManager.h"
 #include "ObjectManagers/LightManager/LightManager.h"
+#include "SkyBoxDrawer/SkyBoxDrawer.h"
 
 #include "Logger/Logger.h"
 
@@ -30,7 +31,8 @@ RenderController::RenderController(
 	PostEffectPipelineManager* postEffectPipelineManager,
 	ShadowPipelineManager* shadowPipelineManager,
 	Camera3DManager* camera3DManager,
-	LightManager* lightManager
+	LightManager* lightManager,
+	SkyBoxDrawer* skyBoxDrawer
 ) {
 	// インスタンスを受け取る
 	SetDXGI(dxgi);
@@ -45,6 +47,7 @@ RenderController::RenderController(
 	SetShadowPipelineManager(shadowPipelineManager);
 	SetCamera3DManager(camera3DManager);
 	SetLightManager(lightManager);
+	SetSkyBoxDrawer(skyBoxDrawer);
 
 	// パラメータ用のリソースを作成
 	CreatePostEffectParamaterResource();
@@ -105,7 +108,7 @@ void RenderController::PostShadowRender() {
 	shadowDepthTexture_->TransitionToRead();
 }
 
-void RenderController::PreSceneRender() {
+void RenderController::PreRenderForGBuffers() {
 	// Gバッファ3枚＋深度バッファをセットする
 	std::array<D3D12_CPU_DESCRIPTOR_HANDLE, 3> rtvs = {
 		rtvManager_->GetDescriptorHandleCPU(gBufferAlbedoRenderTexture_->GetRtvIndex()),
@@ -127,7 +130,7 @@ void RenderController::PreSceneRender() {
 	scissorRect_->SettingScissorRect();
 }
 
-void RenderController::PostSceneRender() {
+void RenderController::PostRenderForGBuffers() {
 	// ライティング前に、GバッファをSRV用に遷移
 	gBufferAlbedoRenderTexture_->TransitionToRead();
 	gBufferNormalRenderTexture_->TransitionToRead();
@@ -168,12 +171,15 @@ void RenderController::LightingPass() {
 	// シャドウマップテクスチャのSRVをセット
 	commandList->SetGraphicsRootDescriptorTable(6, srvUavManager_->GetDescriptorHandleGPU(shadowDepthTexture_->GetSrvIndex()));
 
+	// 環境マップテクスチャのSRVをセット
+	skyBoxDrawer_->TransferSkyBoxTexture(7);
+
 	// 描画
 	commandList->DrawInstanced(3, 1, 0, 0);
 
 }
 
-void RenderController::PostLightingPass() {
+void RenderController::PostSceneRender() {
 	// シーン描画用のレンダーターゲットを読み取り状態に
 	sceneRenderTexture_->TransitionToRead();
 	// 現在のテクスチャをシーン描画結果に
@@ -442,4 +448,9 @@ void RenderController::SetCamera3DManager(Camera3DManager* camera3DManager) {
 void RenderController::SetLightManager(LightManager* lightManager) {
 	assert(lightManager);
 	lightManager_ = lightManager;
+}
+
+void RenderController::SetSkyBoxDrawer(SkyBoxDrawer* skyBoxDrawer) {
+	assert(skyBoxDrawer);
+	skyBoxDrawer_ = skyBoxDrawer;
 }

@@ -21,7 +21,7 @@ struct SpriteData {
 /// CPU側で使うスプライトのマテリアルデータ
 /// </summary>
 struct SpriteMaterialData {
-	std::string textureName;
+	uint32_t textureIndex;
 	Vector4 color;
 	Vector2 anchorPoint;
 	bool isFlipX;

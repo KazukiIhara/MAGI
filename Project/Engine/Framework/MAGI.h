@@ -82,6 +82,9 @@
 
 #include "ModelDrawerManager/ModelDrawerManager.h"
 
+#include "SkyBoxDrawer/SkyBoxDrawer.h"
+
+
 // 
 // GameManager
 // 
@@ -553,6 +556,12 @@ public: // エンジンの機能
 	);
 #pragma endregion
 
+#pragma region SkyBoxDrawer
+	// スカイボックスのテクスチャインデックスをセット
+	static void SetSkyBoxTextureIndex(uint32_t skyBoxTextureIndex);
+
+#pragma endregion
+
 
 
 #pragma region CollisionManager
@@ -685,6 +694,8 @@ protected:
 	static std::unique_ptr<CylinderDrawer3D> cylinderDrawer3D_;
 
 	static std::unique_ptr<ModelDrawerManager> modelDrawerManager_;
+
+	static std::unique_ptr<SkyBoxDrawer> skyBoxDrawer_;
 
 	// 
 	// GameManager

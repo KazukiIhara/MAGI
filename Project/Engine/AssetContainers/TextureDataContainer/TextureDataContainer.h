@@ -2,7 +2,9 @@
 
 // C++
 #include <map>
+#include <unordered_map>
 #include <string>
+#include <vector>
 
 #include "Structs/TextureStruct.h"
 
@@ -56,6 +58,8 @@ private:
 private:
 	// テクスチャデータコンテナ
 	std::map<std::string, Texture> textureDatas_;
+	// インデックス管理のテクスチャデータコンテナ
+	std::unordered_map<uint32_t, Texture> textureDatasWithSrvIndex_;
 private:
 	// DXGI
 	DXGI* dxgi_ = nullptr;
