@@ -104,50 +104,50 @@ void SkyBoxDrawer::CreateShape() {
 	vertices_.resize(24);
 	indices_.resize(36);
 
-	// 右面、描画インデックスは[0,1,2][2,1,3]で内側を向く
+	// 右面
 	vertices_[0].position = { 1.0f,1.0f,1.0f,1.0f };
 	vertices_[1].position = { 1.0f,1.0f,-1.0f,1.0f };
 	vertices_[2].position = { 1.0f,-1.0f,1.0f,1.0f };
 	vertices_[3].position = { 1.0f,-1.0f,-1.0f,1.0f };
-
-	// 右面、描画インデックスは[4,5,6][6,5,7]で内側を向く
+	// 左面
 	vertices_[4].position = { -1.0f,1.0f,-1.0f,1.0f };
 	vertices_[5].position = { -1.0f,1.0f,1.0f,1.0f };
 	vertices_[6].position = { -1.0f,-1.0f,-1.0f,1.0f };
 	vertices_[7].position = { -1.0f,-1.0f,1.0f,1.0f };
-
-	// 前面、描画インデックスは[8,9,10][10,9,11]で内側を向く
+	// 前面
 	vertices_[8].position = { -1.0f,1.0f,1.0f,1.0f };
-	vertices_[9].position = { 1.0f,1.0f,-1.0f,1.0f };
+	vertices_[9].position = { 1.0f,1.0f,1.0f,1.0f };
 	vertices_[10].position = { -1.0f,-1.0f,1.0f,1.0f };
 	vertices_[11].position = { 1.0f,-1.0f,1.0f,1.0f };
+	// 上面
+	vertices_[12].position = { -1.0f,1.0f,1.0f,1.0f };
+	vertices_[13].position = { 1.0f,1.0f,1.0f,1.0f };
+	vertices_[14].position = { -1.0f,1.0f,-1.0f,1.0f };
+	vertices_[15].position = { 1.0f,1.0f,-1.0f,1.0f };
+	// 下面
+	vertices_[16].position = { -1.0f,-1.0f,1.0f,1.0f };
+	vertices_[17].position = { 1.0f,-1.0f,1.0f,1.0f };
+	vertices_[18].position = { -1.0f,-1.0f,-1.0f,1.0f };
+	vertices_[19].position = { 1.0f,-1.0f,-1.0f,1.0f };
+	// 背面
+	vertices_[20].position = { 1.0f,1.0f,-1.0f,1.0f };
+	vertices_[21].position = { -1.0f,1.0f,-1.0f,1.0f };
+	vertices_[22].position = { 1.0f,-1.0f,-1.0f,1.0f };
+	vertices_[23].position = { -1.0f,-1.0f,-1.0f,1.0f };
 
-	// 背面、描画インデックスは[12,13,14][14,13,15]で内側を向く
-	vertices_[12].position = { 1.0f,1.0f,1.0f,1.0f };
-	vertices_[13].position = { -1.0f,1.0f,1.0f,1.0f };
-	vertices_[14].position = { 1.0f,-1.0f,1.0f,1.0f };
-	vertices_[15].position = { -1.0f,-1.0f,1.0f,1.0f };
-
-	// 上面、描画インデックスは[16,17,18][18,17,19]で内側を向く
-	vertices_[16].position = { -1.0f,1.0f,1.0f,1.0f };
-	vertices_[17].position = { 1.0f,1.0f,1.0f,1.0f };
-	vertices_[18].position = { -1.0f,1.0f,-1.0f,1.0f };
-	vertices_[19].position = { 1.0f,1.0f,-1.0f,1.0f };
-
-	// 下面、描画インデックスは[20,21,22][22,21,23]で内側を向く
-	vertices_[20].position = { -1.0f,-1.0f,-1.0f,1.0f };
-	vertices_[21].position = { 1.0f,-1.0f,-1.0f,1.0f };
-	vertices_[22].position = { -1.0f,-1.0f,1.0f,1.0f };
-	vertices_[23].position = { 1.0f,-1.0f,1.0f,1.0f };
-
-	// 各面、2つの三角形（裏面を向くインデックス）
 	indices_ = {
-		0, 1, 2,  2, 1, 3,     // 右面
-		4, 5, 6,  6, 5, 7,     // 左面
-		8, 9,10, 10, 9,11,     // 前面
-	   12,13,14, 14,13,15,     // 背面
-	   16,17,18, 18,17,19,     // 上面
-	   20,21,22, 22,21,23      // 下面
+		// 右面
+		0, 1, 2, 2, 1, 3,
+		// 左面
+		4, 5, 6, 6, 5, 7,
+		// 前面
+		8, 9, 10, 10, 9, 11,
+		// 上面
+		12, 14, 13, 13, 14, 15,
+		// 下面
+		16, 17, 18, 18, 17, 19,
+		// 背面
+		20, 21, 22, 22, 21, 23
 	};
 
 }
