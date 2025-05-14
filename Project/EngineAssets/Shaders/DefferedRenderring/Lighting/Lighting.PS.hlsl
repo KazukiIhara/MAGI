@@ -22,7 +22,7 @@ Texture2D<float> gShadowMap : register(t3);
 //================================
 // EnvironmentTex
 //================================
-TextureCube<float4> gEnvironmentTex : register(t4);
+// TextureCube<float4> gEnvironmentTex : register(t4);
 
 //================================
 // Samplers
