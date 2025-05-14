@@ -1,13 +1,31 @@
 #pragma once
 
+
+
 // C++
 #include <cstdint>
 #include <string>
+
+#include "DirectX-Headers/include/directx/d3dx12_pipeline_state_stream.h"
 
 // 数学ヘッダ
 #include "Math/Types/Vector2.h"
 #include "Math/Types/Vector4.h"
 #include "Math/Types/Matrix4x4.h"
+
+/// <summary>
+/// スプライトメッシュシェーダー用のパイプラインストリーム
+/// </summary>
+struct SpritePipelineStateStream {
+	CD3DX12_PIPELINE_STATE_STREAM_ROOT_SIGNATURE		rootSignature;
+	CD3DX12_PIPELINE_STATE_STREAM_MS					meshShader;
+	CD3DX12_PIPELINE_STATE_STREAM_PS					pixelShader;
+	CD3DX12_PIPELINE_STATE_STREAM_RASTERIZER			rasterizer;
+	CD3DX12_PIPELINE_STATE_STREAM_BLEND_DESC			blend;
+	CD3DX12_PIPELINE_STATE_STREAM_DEPTH_STENCIL			depthStencil;
+	CD3DX12_PIPELINE_STATE_STREAM_RENDER_TARGET_FORMATS rtvFormats;
+	CD3DX12_PIPELINE_STATE_STREAM_DEPTH_STENCIL_FORMAT	dsvFormat;
+};
 
 /// <summary>
 /// CPU側で使うスプライトのデータ

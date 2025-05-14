@@ -50,12 +50,14 @@ void SpriteGraphicsPipeline::CreateRootSignature() {
 	rootParams[2].DescriptorTable.pDescriptorRanges = &descriptorRangeMaterial;
 	rootParams[2].DescriptorTable.NumDescriptorRanges = 1;
 
-	// テクスチャデータ
+	// BindlessTexture
 	rootParams[3].ParameterType = D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE;
 	rootParams[3].ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL;
 	rootParams[3].DescriptorTable.pDescriptorRanges = &descriptorRangeTextures;
 	rootParams[3].DescriptorTable.NumDescriptorRanges = 1;
 
+
+	// Sampler
 	D3D12_STATIC_SAMPLER_DESC staticSampler{};
 	staticSampler.Filter = D3D12_FILTER_MIN_MAG_MIP_LINEAR;
 	staticSampler.AddressU = D3D12_TEXTURE_ADDRESS_MODE_WRAP;
@@ -67,6 +69,7 @@ void SpriteGraphicsPipeline::CreateRootSignature() {
 	staticSampler.RegisterSpace = 0;
 	staticSampler.ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL;
 
+	// Root signature desc
 	D3D12_ROOT_SIGNATURE_DESC rootSigDesc{};
 	rootSigDesc.NumParameters = _countof(rootParams);
 	rootSigDesc.pParameters = rootParams;
@@ -97,6 +100,53 @@ void SpriteGraphicsPipeline::CompileShaders() {
 }
 
 void SpriteGraphicsPipeline::CreateGraphicsPipelineObject() {
+	assert(rootSignature_);
+	assert(meshShaderBlob_);
+	assert(pixelShaderBlob_);
+
+	const DXGI_FORMAT dsvFormat = DXGI_FORMAT_D24_UNORM_S8_UINT;
+
+	for (uint32_t i = 0; i < kBlendModeNum; ++i) {
+
+		D3D12_SHADER_BYTECODE meshShader = { meshShaderBlobWithAlpha_->GetBufferPointer(),  meshShaderBlobWithAlpha_->GetBufferSize() };
+		D3D12_SHADER_BYTECODE pixelShader = { pixelShaderBlobWithAlpha_->GetBufferPointer(), pixelShaderBlobWithAlpha_->GetBufferSize() };
+
+		D3D12_RT_FORMAT_ARRAY rtArray{};
+		rtArray.NumRenderTargets = 1;
+		rtArray.RTFormats[0] = DXGI_FORMAT_R8G8B8A8_UNORM_SRGB; // Albedo
+
+		const D3D12_SHADER_BYTECODE amplificationShader = { amplificationShaderBlob_->GetBufferPointer(), amplificationShaderBlob_->GetBufferSize() };
+
+		const D3D12_RASTERIZER_DESC rasterizerDesc = RasterizerStateSetting();
+		const D3D12_BLEND_DESC blendDesc = BlendStateSetting(i);
+		const D3D12_DEPTH_STENCIL_DESC depthStencilDesc = DepthStecilDescSettingBlend(i);
+
+		const CD3DX12_RASTERIZER_DESC rast(rasterizerDesc);
+		const CD3DX12_BLEND_DESC blend(blendDesc);
+		const CD3DX12_DEPTH_STENCIL_DESC ds(depthStencilDesc);
+
+
+		SpritePipelineStateStream stream = {
+			CD3DX12_PIPELINE_STATE_STREAM_ROOT_SIGNATURE(rootSignature_.Get()),
+			CD3DX12_PIPELINE_STATE_STREAM_MS(meshShader),
+			CD3DX12_PIPELINE_STATE_STREAM_PS(pixelShader),
+			CD3DX12_PIPELINE_STATE_STREAM_RASTERIZER(rast),
+			CD3DX12_PIPELINE_STATE_STREAM_BLEND_DESC(blend),
+			CD3DX12_PIPELINE_STATE_STREAM_DEPTH_STENCIL(ds),
+			CD3DX12_PIPELINE_STATE_STREAM_RENDER_TARGET_FORMATS(rtArray),
+			CD3DX12_PIPELINE_STATE_STREAM_DEPTH_STENCIL_FORMAT(dsvFormat)
+		};
+
+		D3D12_PIPELINE_STATE_STREAM_DESC streamDesc{};
+		streamDesc.SizeInBytes = sizeof(stream);
+		streamDesc.pPipelineStateSubobjectStream = &stream;
+
+		HRESULT hr = dxgi_->GetDevice10()->CreatePipelineState(&streamDesc, IID_PPV_ARGS(&pipelineState_[i]));
+		if (FAILED(hr)) {
+			Logger::Log("Failed to create PSO for blendMode " + std::to_string(i));
+			assert(false);
+		}
+	}
 
 }
 
@@ -164,8 +214,6 @@ D3D12_BLEND_DESC SpriteGraphicsPipeline::BlendStateSetting(uint32_t blendModeNum
 			blendDesc.RenderTarget[0].DestBlendAlpha = D3D12_BLEND_ONE;
 			break;
 	}
-	// 全ての色要素を書き込む
-	// ブレンドモードNone D3D12_COLOR_WRITE_ENABLE_ALLだけ
 
 	return blendDesc;
 }

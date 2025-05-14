@@ -2,6 +2,8 @@
 
 #include "GraphicsPipelines/BaseGraphicsPipeline/BaseGraphicsPipeline.h"
 
+#include "Structs/SpriteStruct.h"
+
 /// <summary>
 /// スプライト描画用パイプライン
 /// </summary>
