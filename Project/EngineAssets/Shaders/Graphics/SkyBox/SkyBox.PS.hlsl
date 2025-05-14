@@ -1,4 +1,12 @@
-float4 main() : SV_TARGET
+#include "SkyBox.hlsli"
+
+TextureCube<float4> gTexture : register(t0);
+SamplerState gSampler : register(s0);
+
+PixelShaderOutput main(VertexShaderOutput input)
 {
-	return float4(1.0f, 1.0f, 1.0f, 1.0f);
+    PixelShaderOutput output;
+    float4 textureColor = gTexture.Sample(gSampler, input.texcoord);
+    output.color = textureColor;
+    return output;
 }

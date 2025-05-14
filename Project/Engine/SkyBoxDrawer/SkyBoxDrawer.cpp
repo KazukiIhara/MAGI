@@ -9,6 +9,8 @@
 #include "Logger/Logger.h"
 #include "MAGIUitility/MAGIUtility.h"
 
+#include "Framework/MAGI.h"
+
 #include <cassert>
 
 using namespace MAGIUtility;
@@ -44,6 +46,13 @@ SkyBoxDrawer::SkyBoxDrawer(
 	// インデックスリソースにデータを書き込む
 	MapIndexData();
 
+	// スカイボックス用のリソースを作成
+	CreateSkyBoxResource();
+	// スカイボックス用のデータをマップ
+	MapSkyBoxData();
+
+	textureIndex_= MAGISYSTEM::LoadTexture("rostock_laage_airport_4k.dds");
+
 	// 開始ログを出力
 	Logger::Log("SkyBoxDrawer Initialize\n");
 }
@@ -60,6 +69,14 @@ void SkyBoxDrawer::Update() {
 void SkyBoxDrawer::Draw() {
 	// コマンドリストを取得
 	ID3D12GraphicsCommandList* commandList = directXCommand_->GetList();
+
+	// パイプラインをセット
+	commandList->SetGraphicsRootSignature(graphicsPipelineManager_->GetRootSignature(GraphicsPipelineStateType::SkyBox));
+	commandList->SetPipelineState(graphicsPipelineManager_->GetPipelineState(GraphicsPipelineStateType::SkyBox, BlendMode::None));
+
+	// 形状設定
+	commandList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+
 	// VBVを設定
 	commandList->IASetVertexBuffers(0, 1, &vertexBufferView_);
 	// IBVを設定
