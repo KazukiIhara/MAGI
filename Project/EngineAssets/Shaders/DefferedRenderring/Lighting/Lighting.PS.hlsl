@@ -33,6 +33,18 @@ SamplerComparisonState gShadowSampler : register(s1);
 //================================
 // HelperFuncs
 //================================
+
+float3 ComputeDirectionalLight(float3 normal)
+{
+    const float3 directionalLightDirection = normalize(gDirectionalLight.direction);
+    const float directionalLightIntensity = gDirectionalLight.intencity;
+    const float3 directionalLightColor = gDirectionalLight.color;
+    float3 L = -directionalLightDirection;
+    float NdotL = saturate(dot(normal, L));
+    
+    return directionalLightColor * directionalLightIntensity * NdotL;
+}
+
 float ComputeDirectionalLightShadow(float3 worldPos, float3 worldNormal)
 {
     // ライト空間投影
@@ -62,6 +74,15 @@ float ComputeDirectionalLightShadow(float3 worldPos, float3 worldNormal)
     return shadow;
 }
 
+float3 ComputeEnvironment(float3 position, float3 normal, float coefficient)
+{
+    float3 cameraToPosition = normalize(position - gCamera.worldPosition);
+    float3 reflectedVector = reflect(cameraToPosition, normalize(normal));
+    float3 environmentColor = gEnvironmentTex.Sample(gSampler, reflectedVector).rgb;
+    
+    return environmentColor * coefficient;
+}
+
 //================================
 // EntryPoint
 //================================
@@ -83,19 +104,13 @@ PixelShaderOutput main(VertexShaderOutput input)
     
     // カラー加算用の値
     float3 totalDiffuse = float3(0.0f, 0.0f, 0.0f);
-   
-    
+     
     // 
     // DirectionalLight
     // 
     {      
-        const float3 directionalLightDirection = normalize(gDirectionalLight.direction);
-        const float directionalLightIntensity = gDirectionalLight.intencity;
-        const float3 directionalLightColor = gDirectionalLight.color;
-        float3 L = -directionalLightDirection;
-        float NdotL = saturate(dot(normal, L));
-        float3 diffuse = directionalLightColor * directionalLightIntensity * NdotL;
-        totalDiffuse += diffuse;
+        float3 directionalLightDiffuse = ComputeDirectionalLight(normal);
+        totalDiffuse += directionalLightDiffuse;
     }
     
     // 
@@ -107,13 +122,11 @@ PixelShaderOutput main(VertexShaderOutput input)
     }
     
     //
-    //Environment
+    // Environment
     //
     {
-        float3 cameraToPosition = normalize(position.xyz - gCamera.worldPosition);
-        float3 reflectedVector = reflect(cameraToPosition, normalize(normal));
-        float3 environmentColor = gEnvironmentTex.Sample(gSampler, reflectedVector).rgb;
-        totalDiffuse += environmentColor * 0.5f;
+        float3 environmentDiffuse = ComputeEnvironment(position.xyz, normal, 0.5f);
+        totalDiffuse += environmentDiffuse;
     }
      
     // 
