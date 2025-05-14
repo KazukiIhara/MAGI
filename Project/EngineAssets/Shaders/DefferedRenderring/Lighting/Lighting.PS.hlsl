@@ -74,25 +74,24 @@ PixelShaderOutput main(VertexShaderOutput input)
     float4 normalRaw = gNormalTex.Sample(gSampler, input.texcoord);
     float4 position = gPositionTex.Sample(gSampler, input.texcoord);
 
-    // Normalを[-1,1]空間に戻して正規化（ワールド空間想定）
+    // Normalを[-1,1]空間に戻して正規化
     float3 normal = normalize(normalRaw.xyz * 2.0f - 1.0f);
     
     // 元の色とalphaを取得
     float3 baseColor = albedo.rgb;
     float alpha = albedo.a;
     
-    // ライトによる加算用の値
+    // カラー加算用の値
     float3 totalDiffuse = float3(0.0f, 0.0f, 0.0f);
-
-    // Directional Light
-    const float3 directionalLightDirection = normalize(gDirectionalLight.direction);
-    const float directionalLightIntensity = gDirectionalLight.intencity;
-    const float3 directionalLightColor = gDirectionalLight.color;
-
-    //
+   
+    
+    // 
     // DirectionalLight
-    //
+    // 
     {      
+        const float3 directionalLightDirection = normalize(gDirectionalLight.direction);
+        const float directionalLightIntensity = gDirectionalLight.intencity;
+        const float3 directionalLightColor = gDirectionalLight.color;
         float3 L = -directionalLightDirection;
         float NdotL = saturate(dot(normal, L));
         float3 diffuse = directionalLightColor * directionalLightIntensity * NdotL;
@@ -110,8 +109,13 @@ PixelShaderOutput main(VertexShaderOutput input)
     //
     //Environment
     //
-    float3 cametaToPosition = normalize(position.xyz - gCamera.worldPosition);
-    
+    {
+        float3 cameraToPosition = normalize(position.xyz - gCamera.worldPosition);
+        float3 reflectedVector = reflect(cameraToPosition, normalize(normal));
+        float3 environmentColor = gEnvironmentTex.Sample(gSampler, reflectedVector).rgb;
+        totalDiffuse += environmentColor * 0.5f;
+    }
+     
     // 
     // FinalColor
     // 
