@@ -86,6 +86,7 @@ inline void SampleScene<Data>::Initialize() {
 	// テクスチャ
 	MAGISYSTEM::LoadTexture("pronama_chan.png");
 	MAGISYSTEM::LoadTexture("gradationLine.png");
+	uint32_t skyBoxTexutreIndex = MAGISYSTEM::LoadTexture("kloppenheim_06_puresky_2k.dds");
 
 	// モデル
 	MAGISYSTEM::LoadModel("teapot");
@@ -112,7 +113,10 @@ inline void SampleScene<Data>::Initialize() {
 	// ライト
 	MAGISYSTEM::AddPunctualLight("SampleLight");
 
+	// スカイボックスの設定
+	MAGISYSTEM::SetSkyBoxTextureIndex(skyBoxTexutreIndex);
 
+	// モデルのマテリアル設定
 	modelMaterial_.blendMode = BlendMode::None;
 	modelMatAlpha_.blendMode = BlendMode::Add;
 
@@ -123,7 +127,6 @@ inline void SampleScene<Data>::Initialize() {
 	for (uint32_t i = 0; i < 5; i++) {
 		worldTransform_[i].Initialize();
 	}
-
 
 	worldTransform_[3].translate_.x = 2.0f;
 	worldTransform_[4].translate_.x = 4.0f;

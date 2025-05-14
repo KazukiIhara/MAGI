@@ -1371,6 +1371,10 @@ void MAGISYSTEM::DrawModel(const std::string& name, const Matrix4x4& worldMatrix
 	modelDrawerManager_->DrawModel(name, worldMatrix, material);
 }
 
+void MAGISYSTEM::SetSkyBoxTextureIndex(uint32_t skyBoxTextureIndex) {
+	skyBoxDrawer_->SetTextureIndex(skyBoxTextureIndex);
+}
+
 void MAGISYSTEM::AddGrobalDataGroup(const std::string& groupname) {
 	grobalDataManager_->CreateGroup(groupname);
 }

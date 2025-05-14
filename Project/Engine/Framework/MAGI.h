@@ -556,6 +556,12 @@ public: // エンジンの機能
 	);
 #pragma endregion
 
+#pragma region SkyBoxDrawer
+	// スカイボックスのテクスチャインデックスをセット
+	static void SetSkyBoxTextureIndex(uint32_t skyBoxTextureIndex);
+
+#pragma endregion
+
 
 
 #pragma region CollisionManager
