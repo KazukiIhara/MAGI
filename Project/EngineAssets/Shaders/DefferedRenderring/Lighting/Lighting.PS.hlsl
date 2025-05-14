@@ -110,7 +110,7 @@ PixelShaderOutput main(VertexShaderOutput input)
     //
     //Environment
     //
-    
+    float3 cametaToPosition = normalize(position.xyz - gCamera.worldPosition);
     
     // 
     // FinalColor
