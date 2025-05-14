@@ -17,8 +17,7 @@ private:
 	void CreateRootSignature()override;
 	// シェーダーをコンパイルする
 	void CompileShaders()override;
-	// PSO作成
-	void CreateGraphicsPipelineObject();
+
 	// BlendStateの設定を行う
 	D3D12_BLEND_DESC BlendStateSetting(uint32_t blendModeNum)override;
 	// InputLayoutの設定を行う
