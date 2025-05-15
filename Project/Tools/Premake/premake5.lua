@@ -2,14 +2,15 @@ workspace "MAGI"
    configurations { "Debug", "Release" }
    platforms { "x64" }
    startproject "MAGI" -- デフォルトのスタートプロジェクトを指定
+   location "../../"
 
    -- 出力ディレクトリの設定
-   targetdir "../generated/outputs/%{cfg.buildcfg}/%{cfg.platform}"  -- 実行ファイルの出力先
-   objdir "../generated/obj/%{prj.name}/%{cfg.buildcfg}"     -- 中間ファイルの出力先
+   targetdir "../../../generated/outputs/%{cfg.buildcfg}/%{cfg.platform}"  -- 実行ファイルの出力先
+   objdir "../../../generated/obj/%{prj.name}/%{cfg.buildcfg}"     -- 中間ファイルの出力先
 
    -- DirectXTexを外部プロジェクトとして登録
    externalproject "DirectXTex"
-      location "Externals/DirectXTex"           -- フォルダパス（.vcxprojがある場所）
+      location "../../Externals/DirectXTex"           -- フォルダパス（.vcxprojがある場所）
       filename "DirectXTex_Desktop_2022_Win10"  -- 実際のプロジェクトファイル名 (拡張子は不要)
       uuid "12345678-ABCD-4321-DCBA-1234567890AB" -- 適宜修正
       kind "StaticLib"
@@ -17,7 +18,7 @@ workspace "MAGI"
    
    -- imguiを外部プロジェクトとして登録
    externalproject "imgui"
-      location "Externals/imgui"
+      location "../../Externals/imgui"
       filename "imgui"
       uuid "22345678-ABCD-4321-DCBA-1234567890AB"
       kind "StaticLib"
@@ -25,7 +26,7 @@ workspace "MAGI"
    
    -- DirectXMeshを外部プロジェクトとして登録
    externalproject "DirectXMesh"
-      location "Externals/DirectXMesh"
+      location "../../Externals/DirectXMesh"
       filename "DirectXMesh_Desktop_2022_Win10"
       uuid "32345678-ABCD-4321-DCBA-1234567890AB"
       kind "StaticLib"
@@ -40,27 +41,27 @@ project "MAGI" -- プロジェクト名
 
    -- プロジェクトに含むファイル
    files { 
-      "*.cpp",
-      "*.h",
+      "../../*.cpp",
+      "../../*.h",
 
-      "Engine/**.cpp",
-      "Engine/**.h",
-      "Engine/**.ipp",
+      "../../Engine/**.cpp",
+      "../../Engine/**.h",
+      "../../Engine/**.ipp",
 
-      "App/**.cpp",
-      "App/**.h",
+      "../../App/**.cpp",
+      "../../App/**.h",
 
-      "Externals/d3dx12/**.h",
+      "../../Externals/d3dx12/**.h",
    }
    
    -- 追加のインクルードパス
    includedirs { 
-      "Engine",
-      "Engine/Includes",
-      "App",
-      "Externals",
-      "Externals/assimp/include",
-      "Externals/DirectXMesh/Inc"
+      "../../Engine",
+      "../../Engine/Includes",
+      "../../App",
+      "../../Externals",
+      "../../Externals/assimp/include",
+      "../../Externals/DirectXMesh/Inc"
     } 
 
    dependson { "DirectXTex","imgui", "DirectXMesh" } -- 依存していることを指定
@@ -85,7 +86,7 @@ project "MAGI" -- プロジェクト名
       fatalwarnings { "All" }  -- 警告をエラーとして扱う
       staticruntime "On"  -- 静的ランタイム（/MTd）
       linkoptions { "/IGNORE:4049", "/IGNORE:4099" } -- 指定したリンカーの警告を無視
-      libdirs { "Externals/assimp/lib/Debug" } -- デバッグ用追加のライブラリディレクトリ
+      libdirs { "../../Externals/assimp/lib/Debug" } -- デバッグ用追加のライブラリディレクトリ
       links { "assimp-vc143-mtd" } -- デバッグ用ライブラリ
 
    filter "configurations:Release"
@@ -93,5 +94,5 @@ project "MAGI" -- プロジェクト名
       optimize "On"
       staticruntime "On"  -- 静的ランタイム（/MT）
       linkoptions { "/IGNORE:4049", "/IGNORE:4099" } -- 指定したリンカーの警告を無視
-      libdirs { "Externals/assimp/lib/Release" } -- リリース用追加のライブラリディレクトリ
+      libdirs { "../../Externals/assimp/lib/Release" } -- リリース用追加のライブラリディレクトリ
       links { "assimp-vc143-mt" } -- リリース用ライブラリ
