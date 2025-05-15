@@ -49,15 +49,10 @@ private:
 	void SetCamera3DManager(Camera3DManager* camera3DManager);
 
 private:
-	// 球体データコンテナ
-	std::vector<CylinderData3DForGPU> cylinders_[static_cast<uint32_t>(BlendMode::Num)];
-	// マテリアルデータコンテナ
-	std::vector<PrimitiveMaterialData3DForGPU> materials_[static_cast<uint32_t>(BlendMode::Num)];
-
 	// instancing描画用のリソース
 	ComPtr<ID3D12Resource> instancingResource_[static_cast<uint32_t>(BlendMode::Num)];
 	// instancing描画用のデータ
-	RingData3DForGPU* instancingData_[static_cast<uint32_t>(BlendMode::Num)];
+	CylinderData3DForGPU* instancingData_[static_cast<uint32_t>(BlendMode::Num)];
 
 	// マテリアルのリソース
 	ComPtr<ID3D12Resource> materialResource_[static_cast<uint32_t>(BlendMode::Num)];

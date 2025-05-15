@@ -117,58 +117,6 @@ void Ring3DGraphicsPipeline::CompileShaders() {
 	assert(pixelShaderBlobWithAlpha_ != nullptr);
 }
 
-void Ring3DGraphicsPipeline::CreateGraphicsPipelineObject() {
-	assert(rootSignature_);
-	assert(amplificationShaderBlob_);
-	assert(meshShaderBlob_);
-	assert(pixelShaderBlob_);
-
-	const D3D12_SHADER_BYTECODE amplificationShader = { amplificationShaderBlob_->GetBufferPointer(), amplificationShaderBlob_->GetBufferSize() };
-	const D3D12_SHADER_BYTECODE meshShader = { meshShaderBlob_->GetBufferPointer(), meshShaderBlob_->GetBufferSize() };
-	const D3D12_SHADER_BYTECODE pixelShader = { pixelShaderBlob_->GetBufferPointer(), pixelShaderBlob_->GetBufferSize() };
-
-
-	const DXGI_FORMAT dsvFormat = DXGI_FORMAT_D24_UNORM_S8_UINT;
-
-	for (uint32_t i = 0; i < kBlendModeNum; ++i) {
-		const D3D12_RASTERIZER_DESC rasterizerDesc = RasterizerStateSetting();
-		const D3D12_BLEND_DESC blendDesc = BlendStateSetting(i);
-		const D3D12_DEPTH_STENCIL_DESC depthStencilDesc = DepthStecilDescSettingBlend(i);
-
-		const CD3DX12_RASTERIZER_DESC rast(rasterizerDesc);
-		const CD3DX12_BLEND_DESC blend(blendDesc);
-		const CD3DX12_DEPTH_STENCIL_DESC ds(depthStencilDesc);
-
-		D3D12_RT_FORMAT_ARRAY rtArray{};
-		rtArray.NumRenderTargets = 3;
-		rtArray.RTFormats[0] = DXGI_FORMAT_R8G8B8A8_UNORM; // albedo
-		rtArray.RTFormats[1] = DXGI_FORMAT_R16G16B16A16_FLOAT; // normal
-		rtArray.RTFormats[2] = DXGI_FORMAT_R32G32B32A32_FLOAT; // world‐pos
-
-		Primitive3DPipelineStateStream stream = {
-			CD3DX12_PIPELINE_STATE_STREAM_ROOT_SIGNATURE(rootSignature_.Get()),
-			CD3DX12_PIPELINE_STATE_STREAM_AS(amplificationShader),
-			CD3DX12_PIPELINE_STATE_STREAM_MS(meshShader),
-			CD3DX12_PIPELINE_STATE_STREAM_PS(pixelShader),
-			CD3DX12_PIPELINE_STATE_STREAM_RASTERIZER(rast),
-			CD3DX12_PIPELINE_STATE_STREAM_BLEND_DESC(blend),
-			CD3DX12_PIPELINE_STATE_STREAM_DEPTH_STENCIL(ds),
-			CD3DX12_PIPELINE_STATE_STREAM_RENDER_TARGET_FORMATS(rtArray),
-			CD3DX12_PIPELINE_STATE_STREAM_DEPTH_STENCIL_FORMAT(dsvFormat)
-		};
-
-		D3D12_PIPELINE_STATE_STREAM_DESC streamDesc{};
-		streamDesc.SizeInBytes = sizeof(stream);
-		streamDesc.pPipelineStateSubobjectStream = &stream;
-
-		HRESULT hr = dxgi_->GetDevice10()->CreatePipelineState(&streamDesc, IID_PPV_ARGS(&pipelineState_[i]));
-		if (FAILED(hr)) {
-			Logger::Log("Ring3DGraphicsPipeline: Failed to create PSO for blendMode " + std::to_string(i));
-			assert(false);
-		}
-	}
-}
-
 D3D12_BLEND_DESC Ring3DGraphicsPipeline::BlendStateSetting(uint32_t blendModeNum) {
 	D3D12_BLEND_DESC blendDesc{};
 	switch (blendModeNum) {

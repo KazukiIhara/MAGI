@@ -49,11 +49,6 @@ private:
 	void SetCamera3DManager(Camera3DManager* camera3DManager);
 
 private:
-	// 板ポリデータ
-	std::vector<PlaneData3DForGPU> planes_[static_cast<uint32_t>(BlendMode::Num)];
-	// マテリアルデータ
-	std::vector<PrimitiveMaterialData3DForGPU> materials_[static_cast<uint32_t>(BlendMode::Num)];
-
 	// instancing描画用のリソース
 	ComPtr<ID3D12Resource> instancingResource_[static_cast<uint32_t>(BlendMode::Num)];
 	// instancing描画用のデータ

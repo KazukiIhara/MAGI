@@ -2,25 +2,25 @@
 
 #include "GraphicsPipelines/BaseGraphicsPipeline/BaseGraphicsPipeline.h"
 
-#include "Structs/Primitive3DStruct.h"
+#include "Structs/SpriteStruct.h"
 
 /// <summary>
-/// 3Dシリンダー描画用のパイプライン
+/// スプライト描画用パイプライン
 /// </summary>
-class Cylinder3DGraphicsPipeline : public BaseGraphicsPipeline {
+class SpriteGraphicsPipeline: public BaseGraphicsPipeline {
 public:
-	Cylinder3DGraphicsPipeline(DXGI* dxgi, ShaderCompiler* shaderCompiler);
-	~Cylinder3DGraphicsPipeline()override = default;
+	SpriteGraphicsPipeline(DXGI* dxgi, ShaderCompiler* shaderCompiler);
+	~SpriteGraphicsPipeline()override = default;
 
 private:
 	// ルートシグネチャを作成する
 	void CreateRootSignature()override;
 	// シェーダーをコンパイルする
 	void CompileShaders()override;
+	// PSO作成
+	void CreateGraphicsPipelineObject();
 	// BlendStateの設定を行う
 	D3D12_BLEND_DESC BlendStateSetting(uint32_t blendModeNum)override;
-	// DepthStencilStateの設定を行う
-	D3D12_DEPTH_STENCIL_DESC DepthStecilDescSetting()override;
 	// InputLayoutの設定を行う
 	D3D12_INPUT_LAYOUT_DESC InputLayoutSetting()override;
 	// RasterizerStateの設定を行う
