@@ -68,7 +68,7 @@ private:
 	bool isOnVignette_ = false;
 	bool isRadialBlur_ = false;
 
-	static const uint32_t wtsNum_ = 3;
+	static const uint32_t wtsNum_ = 30000;
 
 	std::array<WorldTransform, wtsNum_> wts_;
 
@@ -130,7 +130,7 @@ inline void SampleScene<Data>::Initialize() {
 
 	// スプライト用のマテリアルデータ
 	spriteMaterial.blendmode = BlendMode::Normal;
-	spriteMaterial.color = Vector4(1.0f, 1.0f, 1.0f, 1.0f);
+	spriteMaterial.color = Vector4(1.0f, 1.0f, 1.0f, 0.5f);
 	spriteMaterial.textureName = "pronama_chan.png";
 
 	// ModelDrawer
