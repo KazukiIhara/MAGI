@@ -99,6 +99,13 @@ void PlaneDrawer3D::AddPlane(const Matrix4x4& worldMatrix, const PlaneData3D& da
 	}
 #endif // _DEBUG
 
+	// テクスチャ名を取得
+	std::string textureName = material.textureName;
+
+	// 設定されていなければデフォルトのテクスチャを設定
+	if (textureName == "") {
+		textureName = "EngineAssets/Images/uvChecker.png";
+	}
 
 	PlaneData3DForGPU newPlaneData{
 		.worldMatrix = worldMatrix,
@@ -112,7 +119,7 @@ void PlaneDrawer3D::AddPlane(const Matrix4x4& worldMatrix, const PlaneData3D& da
 	};
 
 	PrimitiveMaterialData3DForGPU newMaterialData{
-		.textureIndex = material.textureIndex,
+		.textureIndex = MAGISYSTEM::GetTextureIndex(textureName),
 		.baseColor = material.baseColor,
 		.uvMatrix = MakeUVMatrix(material.uvScale, material.uvRotate, material.uvTranslate),
 	};

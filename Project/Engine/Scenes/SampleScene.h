@@ -46,6 +46,9 @@ private:
 	// プリミティブ描画用のマテリアルデータ
 	PrimitiveMaterialData3D material_{};
 
+	// スプライト用のマテリアルデータ
+	SpriteMaterialData spriteMaterial{};
+
 	// モデル用のマテリアルデータ
 	ModelMaterial modelMaterial_{};
 
@@ -72,7 +75,6 @@ private:
 
 	// DirectionalLight
 	DirectionalLight directionalLight_{};
-
 };
 
 template<typename Data>
@@ -126,6 +128,11 @@ inline void SampleScene<Data>::Initialize() {
 	modelMaterial_.blendMode = BlendMode::None;
 	modelMatAlpha_.blendMode = BlendMode::Add;
 
+	// スプライト用のマテリアルデータ
+	spriteMaterial.blendmode = BlendMode::Normal;
+	spriteMaterial.color = Vector4(1.0f, 1.0f, 1.0f, 1.0f);
+	spriteMaterial.textureName = "pronama_chan.png";
+
 	// ModelDrawer
 	MAGISYSTEM::CreateModelDrawer("test", MAGISYSTEM::FindModel("teapot"));
 
@@ -137,8 +144,7 @@ inline void SampleScene<Data>::Initialize() {
 	worldTransform_[3].translate_.x = 2.0f;
 	worldTransform_[4].translate_.x = 4.0f;
 
-	// デフォルトのテクスチャを取得　TODO:マテリアルもクラス化して初期化できるようにする
-	material_.textureIndex = MAGISYSTEM::GetDefaultTextureIndex();
+	// マテリアルを設定
 	material_.blendMode = BlendMode::None;
 
 	for (uint32_t i = 0; i < wtsNum_; i++) {
@@ -294,9 +300,10 @@ inline void SampleScene<Data>::Update() {
 
 template<typename Data>
 inline void SampleScene<Data>::Draw() {
-	
+
 	// スプライト描画
 	MAGISYSTEM::DrawSprite(SpriteData{}, SpriteMaterialData{});
+	MAGISYSTEM::DrawSprite(SpriteData{}, spriteMaterial);
 
 
 	// 板ポリ描画

@@ -82,6 +82,7 @@ void SpriteDrawer::AddSprite(const SpriteData& data, const SpriteMaterialData& m
 SpriteDataForGPU SpriteDrawer::ComputeSpriteDataForGPU(const SpriteData& data, const SpriteMaterialData& material) {
 	// テクスチャ名を取得
 	std::string textureName = material.textureName;
+
 	// 設定されていなければデフォルトのテクスチャを設定
 	if (textureName == "") {
 		textureName = "EngineAssets/Images/uvChecker.png";
