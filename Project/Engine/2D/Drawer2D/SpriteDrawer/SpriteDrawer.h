@@ -9,6 +9,7 @@
 #include "DirectX/ComPtr/ComPtr.h"
 #include "Math/Utility/MathUtility.h"
 #include "Structs/ColorStruct.h"
+#include "Structs/SpriteStruct.h"
 #include "Enums/BlendModeEnum.h"
 
 class DXGI;
@@ -35,9 +36,13 @@ public:
 	void Draw(BlendMode blendMode);
 
 	void AddSprite(
-		const Vector2& screenPosition
+		const SpriteData& data,
+		const SpriteMaterialData& material
 	);
 
+private:
+
+	SpriteDataForGPU ComputeSpriteDataForGPU(const SpriteData& data, const SpriteMaterialData& material);
 private:
 	void SetDXGI(DXGI* dxgi);
 	void SetDirectXCommand(DirectXCommand* directXCommand);
@@ -46,23 +51,23 @@ private:
 	void SetCamera2DManager(Camera2DManager* camera2DManager);
 
 private:
+	// インスタンス最大数
+	const uint32_t NumMaxInstance = 262144;
+
 	// instancing描画用のリソース
 	ComPtr<ID3D12Resource> instancingResource_[static_cast<uint32_t>(BlendMode::Num)];
-
-	// マテリアルのリソース
-	ComPtr<ID3D12Resource> materialResource_[static_cast<uint32_t>(BlendMode::Num)];
-
+	// instancing描画用のデータ
+	SpriteDataForGPU* instancingData_[static_cast<uint32_t>(BlendMode::Num)];
 
 	// SpriteSrvIndex
 	uint32_t instancingSrvIndex_[static_cast<uint32_t>(BlendMode::Num)];
-	// MaterialSrvIndex
-	uint32_t materialSrvIndex_[static_cast<uint32_t>(BlendMode::Num)];
 
 	// instance描画する際に使う変数
 	uint32_t instanceCount_[static_cast<uint32_t>(BlendMode::Num)];
 
 	// 現在のインデックス
 	uint32_t currentIndex_[static_cast<uint32_t>(BlendMode::Num)];
+
 private:
 	DXGI* dxgi_ = nullptr;
 	DirectXCommand* directXCommand_ = nullptr;

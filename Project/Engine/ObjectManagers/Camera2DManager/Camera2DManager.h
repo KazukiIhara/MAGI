@@ -7,10 +7,10 @@
 /// <summary>
 /// 2D描画用のカメラマネージャ
 /// </summary>
-class Camera2Dmanager {
+class Camera2DManager {
 public:
-	Camera2Dmanager();
-	~Camera2Dmanager();
+	Camera2DManager();
+	~Camera2DManager();
 
 	void Initialize();
 	void Update();

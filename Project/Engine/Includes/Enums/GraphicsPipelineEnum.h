@@ -8,6 +8,8 @@
 /// </summary>
 enum class GraphicsPipelineStateType {
 	Object2D,
+	Sprite,
+
 	Line3D,
 	Triangle3D,
 	Plane3D,

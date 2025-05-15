@@ -3,20 +3,20 @@
 #include "Logger/Logger.h"
 #include <cassert>
 
-Camera2Dmanager::Camera2Dmanager() {
+Camera2DManager::Camera2DManager() {
 
 }
 
-Camera2Dmanager::~Camera2Dmanager() {
+Camera2DManager::~Camera2DManager() {
 
 }
 
-void Camera2Dmanager::Initialize() {
+void Camera2DManager::Initialize() {
 }
 
-void Camera2Dmanager::Update() {
+void Camera2DManager::Update() {
 }
 
-void Camera2Dmanager::TransferCurrentCamera(uint32_t rootParameterIndex) {
+void Camera2DManager::TransferCurrentCamera(uint32_t rootParameterIndex) {
 	rootParameterIndex;
 }

@@ -76,7 +76,7 @@ float Camera3D::GetFarClipRange() const {
 }
 
 void Camera3D::CreateCameraResource() {
-	cameraResource_ = MAGISYSTEM::CreateBufferResource(sizeof(CameraForGPU));
+	cameraResource_ = MAGISYSTEM::CreateBufferResource(sizeof(Camera3DForGPU));
 }
 
 void Camera3D::MapCameraData() {

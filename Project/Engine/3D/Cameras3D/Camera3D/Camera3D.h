@@ -43,7 +43,7 @@ public:
 private:
 	// カメラのリソースを作成
 	void CreateCameraResource();
-	// カメラのデータを入力
+	// カメラのデータをマップ
 	void MapCameraData();
 	// カメラのデータを更新
 	void UpdateCameraData();
@@ -76,5 +76,5 @@ private:
 	// Camera用リソース
 	ComPtr<ID3D12Resource> cameraResource_ = nullptr;
 	// Camera用データ
-	CameraForGPU* cameraData_ = nullptr;
+	Camera3DForGPU* cameraData_ = nullptr;
 };
