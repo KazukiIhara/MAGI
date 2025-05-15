@@ -108,7 +108,7 @@ inline void SampleScene<Data>::Initialize() {
 	MAGISYSTEM::AddCamera3D(std::move(sceneCamera_));
 
 	// カメラの設定
-	MAGISYSTEM::SetCurrentCamera("SceneCamera");
+	MAGISYSTEM::SetCurrentCamera3D("SceneCamera");
 
 	// ライト
 	MAGISYSTEM::AddPunctualLight("SampleLight");

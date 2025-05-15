@@ -62,7 +62,7 @@ void GameObject3DGroup::PrepareForRendering() {
 	// StructuredBufferのSRVを設定する
 	commandList->SetGraphicsRootDescriptorTable(1, MAGISYSTEM::GetSrvUavDescriptorHandleGPU(srvIndex_));
 	// カメラを転送
-	MAGISYSTEM::TransferCamera(cameraRootParamaterIndex_);
+	MAGISYSTEM::TransferCamera3D(cameraRootParamaterIndex_);
 	// ライトを転送
 	MAGISYSTEM::TransferPunctualLight(lightRootParamaterIndex_);
 }

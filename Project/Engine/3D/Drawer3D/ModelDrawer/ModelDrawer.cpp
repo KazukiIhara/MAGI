@@ -84,7 +84,7 @@ void ModelDrawer::Draw(BlendMode mode) {
 	commandList->SetPipelineState(MAGISYSTEM::GetGraphicsPipelineState(GraphicsPipelineStateType::Model3D, mode));
 
 	// カメラの送信
-	MAGISYSTEM::TransferCamera(0);
+	MAGISYSTEM::TransferCamera3D(0);
 
 	// inctancing描画用のデータを送信
 	commandList->SetGraphicsRootDescriptorTable(1, MAGISYSTEM::GetSrvUavDescriptorHandleGPU(instancingSrvIndex_[blendIndex]));

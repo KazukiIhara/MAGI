@@ -2,6 +2,7 @@
 
 // C++
 #include <memory>
+#include <string>
 
 // DirectX
 #include <d3d12.h>

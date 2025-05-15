@@ -94,7 +94,7 @@ void BaseRenderable3D::PrepareForRendering() {
 	// wvp用のCBufferの場所を設定
 	commandList->SetGraphicsRootConstantBufferView(1, transformationResource_->GetGPUVirtualAddress());
 	// カメラ情報を転送
-	MAGISYSTEM::TransferCamera(cameraRootParamaterIndex_);
+	MAGISYSTEM::TransferCamera3D(cameraRootParamaterIndex_);
 	// ライトを転送
 	MAGISYSTEM::TransferPunctualLight(lightRootParamaterIndex_);
 }
