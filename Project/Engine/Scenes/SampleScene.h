@@ -132,6 +132,7 @@ inline void SampleScene<Data>::Initialize() {
 	spriteMaterial.blendmode = BlendMode::Normal;
 	spriteMaterial.color = Vector4(1.0f, 1.0f, 1.0f, 0.5f);
 	spriteMaterial.textureName = "pronama_chan.png";
+	spriteMaterial.isFlipX = true;
 
 	// ModelDrawer
 	MAGISYSTEM::CreateModelDrawer("test", MAGISYSTEM::FindModel("teapot"));
