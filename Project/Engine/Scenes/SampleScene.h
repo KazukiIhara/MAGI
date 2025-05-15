@@ -6,13 +6,11 @@
 #include "Framework/MAGI.h"
 #include "MAGIUitility/MAGIUtility.h"
 
-#include "2D/Object2D/Object2D.h"
-
 using namespace MAGIUtility;
 
 // サンプルシーン
 template <typename Data>
-class SampleScene: public BaseScene<Data> {
+class SampleScene : public BaseScene<Data> {
 public:
 	using BaseScene<Data>::BaseScene; // 親クラスのコンストラクタをそのまま継承
 	~SampleScene()override = default;
@@ -25,6 +23,7 @@ public:
 private:
 	// カメラ
 	std::unique_ptr<Camera3D> sceneCamera_ = nullptr;
+	std::unique_ptr<Camera2D> sceneCamera2D_ = nullptr;
 
 	// ワールドトランスフォーム
 	WorldTransform worldTransform_[5]{};
@@ -103,12 +102,19 @@ inline void SampleScene<Data>::Initialize() {
 
 	// シーンカメラ作成
 	sceneCamera_ = std::make_unique<Camera3D>("SceneCamera");
-
 	// マネージャに追加
 	MAGISYSTEM::AddCamera3D(std::move(sceneCamera_));
-
-	// カメラの設定
+	// カメラを設定
 	MAGISYSTEM::SetCurrentCamera3D("SceneCamera");
+
+
+	// 2Dカメラ作成
+	sceneCamera2D_ = std::make_unique<Camera2D>("SpriteCamera");
+	// マネージャに追加
+	MAGISYSTEM::AddCamera2D(std::move(sceneCamera2D_));
+	// カメラを設定
+	MAGISYSTEM::SetCurrentCamera2D("SpriteCamera");
+
 
 	// ライト
 	MAGISYSTEM::AddPunctualLight("SampleLight");
@@ -288,6 +294,11 @@ inline void SampleScene<Data>::Update() {
 
 template<typename Data>
 inline void SampleScene<Data>::Draw() {
+	
+	// スプライト描画
+	MAGISYSTEM::DrawSprite(SpriteData{}, SpriteMaterialData{});
+
+
 	// 板ポリ描画
 	MAGISYSTEM::DrawPlane3D(worldTransform_[0].worldMatrix_, planeData_, material_);
 
@@ -321,10 +332,6 @@ inline void SampleScene<Data>::Draw() {
 	//	MAGISYSTEM::DrawSphere3D(wts_[i].worldMatrix_, sphereData_, material_);
 	//}
 
-	// 
-	// オブジェクト2Dの描画前処理
-	// 
-	MAGISYSTEM::PreDrawObject2D();
 
 }
 

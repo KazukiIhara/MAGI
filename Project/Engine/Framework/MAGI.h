@@ -322,7 +322,6 @@ public: // エンジンの機能
 	static ID3D12PipelineState* GetShadowPipelineState(ShadowPipelineStateType pipelineState);
 #pragma endregion
 
-
 #pragma region RenderController
 	// シーンにグレースケールをかける
 	static void ApplyPostEffectGrayScale();
@@ -418,7 +417,6 @@ public: // エンジンの機能
 	static void TransferCamera2D(uint32_t rootParameterIndex);
 	// 2Dカメラ全削除
 	static void ClearCamera2D();
-
 #pragma endregion
 
 #pragma region Camera3DManager
@@ -502,6 +500,11 @@ public: // エンジンの機能
 	static void SetDirectionalLight(const DirectionalLight& directionalLight);
 	// ライトカメラを転送
 	static void TransferDirectionalLightCamera(uint32_t paramIndex);
+#pragma endregion
+
+#pragma region SpriteDrawer
+	// スプライト描画
+	static void DrawSprite(const SpriteData& data, const SpriteMaterialData& material);
 #pragma endregion
 
 #pragma region LineDrawer3D

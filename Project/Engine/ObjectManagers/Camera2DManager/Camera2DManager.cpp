@@ -13,7 +13,7 @@ Camera2DManager::~Camera2DManager() {
 }
 
 void Camera2DManager::Initialize() {
-
+	Clear();
 }
 
 void Camera2DManager::Update() {

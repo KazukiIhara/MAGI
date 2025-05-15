@@ -1329,6 +1329,10 @@ void MAGISYSTEM::TransferDirectionalLightCamera(uint32_t paramIndex) {
 	lightManager_->TransferDirectionalLightCamera(paramIndex);
 }
 
+void MAGISYSTEM::DrawSprite(const SpriteData& data, const SpriteMaterialData& material) {
+	spriteDrawer_->AddSprite(data, material);
+}
+
 void MAGISYSTEM::AddGameObject3D(std::unique_ptr<GameObject3D> newGameObject3D) {
 	gameObject3DManager_->Add(std::move(newGameObject3D));
 }

@@ -80,8 +80,15 @@ void SpriteDrawer::AddSprite(const SpriteData& data, const SpriteMaterialData& m
 }
 
 SpriteDataForGPU SpriteDrawer::ComputeSpriteDataForGPU(const SpriteData& data, const SpriteMaterialData& material) {
+	// テクスチャ名を取得
+	std::string textureName = material.textureName;
+	// 設定されていなければデフォルトのテクスチャを設定
+	if (textureName == "") {
+		textureName = "EngineAssets/Images/uvChecker.png";
+	}
+
 	// テクスチャメタデータ取得
-	const DirectX::TexMetadata& metaData = MAGISYSTEM::GetTextureMetaData(material.textureName);
+	const DirectX::TexMetadata& metaData = MAGISYSTEM::GetTextureMetaData(textureName);
 
 	// アンカーポイントの設定
 	float left = 0.0f - material.anchorPoint.x;
@@ -135,7 +142,7 @@ SpriteDataForGPU SpriteDrawer::ComputeSpriteDataForGPU(const SpriteData& data, c
 			{texLeft,texBottom},
 			{texRight,texBottom},
 		},
-		.textureIndex = MAGISYSTEM::GetTextureIndex(material.textureName),
+		.textureIndex = MAGISYSTEM::GetTextureIndex(textureName),
 		.baseColor = material.color,
 		.uvMatrix = MakeUVMatrix(material.uvScale,material.uvRotate,material.uvTranslate),
 	};
