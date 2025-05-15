@@ -63,8 +63,8 @@ void SpriteDrawer::Draw(BlendMode blendMode) {
 
 	ID3D12GraphicsCommandList6* commandList = directXCommand_->GetList6();
 
-	commandList->SetGraphicsRootSignature(graphicsPipelineManager_->GetRootSignature(GraphicsPipelineStateType::Plane3D));
-	commandList->SetPipelineState(graphicsPipelineManager_->GetPipelineState(GraphicsPipelineStateType::Plane3D, blendMode));
+	commandList->SetGraphicsRootSignature(graphicsPipelineManager_->GetRootSignature(GraphicsPipelineStateType::Sprite));
+	commandList->SetPipelineState(graphicsPipelineManager_->GetPipelineState(GraphicsPipelineStateType::Sprite, blendMode));
 
 	camera2DManager_->TransferCurrentCamera(0);
 	commandList->SetGraphicsRootDescriptorTable(1, srvUavManager_->GetDescriptorHandleGPU(instancingSrvIndex_[i]));

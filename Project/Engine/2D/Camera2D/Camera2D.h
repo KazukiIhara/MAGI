@@ -16,7 +16,7 @@
 /// </summary>
 class Camera2D {
 public:
-	Camera2D();
+	Camera2D(const std::string& name);
 	virtual ~Camera2D() = default;
 
 	// 初期化
@@ -28,6 +28,9 @@ public:
 	// 定数バッファに転送
 	void TransferCamera(uint32_t rootParameterIndex);
 
+	// 名前を取得
+	std::string& GetName();
+
 private:
 	// カメラのリソースを作成
 	void CreateCameraResource();
@@ -35,8 +38,14 @@ private:
 	void MapCameraData();
 
 private:
+	// 名前
+	std::string name_;
+
 	// Camera用リソース
 	ComPtr<ID3D12Resource> cameraResource_ = nullptr;
 	// Camera用データ
 	Camera2DForGPU* cameraData_ = nullptr;
+
+	float nearClip_ = 0.0f;
+	float farClip_ = 100.0f;
 };

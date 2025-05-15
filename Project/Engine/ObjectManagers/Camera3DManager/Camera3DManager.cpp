@@ -5,11 +5,11 @@
 
 Camera3DManager::Camera3DManager() {
 	Initialize();
-	Logger::Log("Initialize CameraManager\n");
+	Logger::Log("Camera3DManager Initialize\n");
 }
 
 Camera3DManager::~Camera3DManager() {
-	Logger::Log("Finalize CameraManager\n");
+	Logger::Log("Camera3DManager Finalize\n");
 }
 
 void Camera3DManager::Initialize() {

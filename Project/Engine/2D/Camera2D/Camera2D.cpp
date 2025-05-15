@@ -4,7 +4,7 @@
 
 using namespace MAGIMath;
 
-Camera2D::Camera2D() {
+Camera2D::Camera2D(const std::string& name) {
 	Initialize();
 }
 
@@ -26,6 +26,10 @@ void Camera2D::TransferCamera(uint32_t rootParameterIndex) {
 	MAGISYSTEM::GetDirectXCommandList()->SetGraphicsRootConstantBufferView(rootParameterIndex, cameraResource_->GetGPUVirtualAddress());
 }
 
+std::string& Camera2D::GetName() {
+	return name_;
+}
+
 void Camera2D::CreateCameraResource() {
 	cameraResource_ = MAGISYSTEM::CreateBufferResource(sizeof(Camera2DForGPU));
 }
@@ -33,5 +37,7 @@ void Camera2D::CreateCameraResource() {
 void Camera2D::MapCameraData() {
 	cameraData_ = nullptr;
 	cameraResource_->Map(0, nullptr, reinterpret_cast<void**>(&cameraData_));
-	cameraData_->viewProjection = MakeIdentityMatrix4x4();
+	Matrix4x4 viewMat = MakeIdentityMatrix4x4();
+	Matrix4x4 projectionMat = MakeOrthographicMatrix(WindowApp::kClientWidth, WindowApp::kClientHeight, nearClip_, farClip_);
+	cameraData_->viewProjection = viewMat * projectionMat;
 }
