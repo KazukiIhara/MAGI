@@ -1,1 +1,0 @@
-.\cmftRelease --input "kloppenheim_06_puresky_2k.hdr" --filter radianceFilterD3d --outputNum 1 --output0 "kloppenheim_06_puresky_2k" --output0params dds,bgra8,cubemap --dstFaceSize 1024
