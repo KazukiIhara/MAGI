@@ -1,4 +1,4 @@
-#include "CylinderShadowPipeline.h"
+#include "SphereShadowPipeline.h"
 
 #include <cassert>
 
@@ -6,11 +6,11 @@
 #include "DirectX/DXGI/DXGI.h"
 #include "DirectX/ShaderCompiler/ShaderCompiler.h"
 
-CylinderShadowPipeline::CylinderShadowPipeline(DXGI* dxgi, ShaderCompiler* shaderCompiler)
+SphereShadowPipeline::SphereShadowPipeline(DXGI* dxgi, ShaderCompiler* shaderCompiler)
 	:BaseShadowPipeline(dxgi, shaderCompiler) {
 }
 
-void CylinderShadowPipeline::CreateRootSignature() {
+void SphereShadowPipeline::CreateRootSignature() {
 	HRESULT hr;
 
 	// Descriptor Ranges
@@ -39,6 +39,7 @@ void CylinderShadowPipeline::CreateRootSignature() {
 	rootParams[2].Constants.Num32BitValues = 4;
 	rootParams[2].Constants.ShaderRegister = 1;
 
+
 	D3D12_ROOT_SIGNATURE_DESC rootSigDesc{};
 	rootSigDesc.NumParameters = _countof(rootParams);
 	rootSigDesc.pParameters = rootParams;
@@ -58,15 +59,8 @@ void CylinderShadowPipeline::CreateRootSignature() {
 	hr = dxgi_->GetDevice()->CreateRootSignature(0, sigBlob->GetBufferPointer(), sigBlob->GetBufferSize(), IID_PPV_ARGS(&rootSignature_));
 	assert(SUCCEEDED(hr));
 
+
 }
 
-void CylinderShadowPipeline::CompileShaders() {
-	amplificationShaderBlob_ = shaderCompiler_->CompileShader(L"EngineAssets/Shaders/Graphics/Cylinder3D/Cylinder3D.AS.hlsl", L"as_6_5");
-	assert(amplificationShaderBlob_);
-
-	meshShaderBlob_ = shaderCompiler_->CompileShader(L"EngineAssets/Shaders/Graphics/Cylinder3D/Cylinder3DShadow.MS.hlsl", L"ms_6_5");
-	assert(meshShaderBlob_);
-
-	pixelShaderBlob_ = shaderCompiler_->CompileShader(L"EngineAssets/Shaders/Graphics/Primitive3D/Primitive3DShadow.PS.hlsl", L"ps_6_5");
-	assert(pixelShaderBlob_);
+void SphereShadowPipeline::CompileShaders() {
 }

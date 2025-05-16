@@ -115,6 +115,7 @@ struct CylinderData3D {
 	float topRadius = 1.0f;
 	float bottomRadius = 1.0f;
 	float height = 3.0f;
+	bool hasCap = true;
 };
 
 /// <summary>
@@ -127,6 +128,8 @@ struct CylinderData3DForGPU {
 	float topRadius;
 	float bottomRadiu;
 	float height;
+	bool hasCap;
+	float padding[3];
 };
 
 /// <summary>
