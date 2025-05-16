@@ -63,4 +63,12 @@ void SphereShadowPipeline::CreateRootSignature() {
 }
 
 void SphereShadowPipeline::CompileShaders() {
+	amplificationShaderBlob_ = shaderCompiler_->CompileShader(L"EngineAssets/Shaders/Graphics/Sphere3D/Sphere3D.AS.hlsl", L"as_6_5");
+	assert(amplificationShaderBlob_);
+
+	meshShaderBlob_ = shaderCompiler_->CompileShader(L"EngineAssets/Shaders/Graphics/Sphere3D/Sphere3DShadow.MS.hlsl", L"ms_6_5");
+	assert(meshShaderBlob_);
+
+	pixelShaderBlob_ = shaderCompiler_->CompileShader(L"EngineAssets/Shaders/Graphics/Primitive3D/Primitive3DShadow.PS.hlsl", L"ps_6_5");
+	assert(pixelShaderBlob_);
 }
