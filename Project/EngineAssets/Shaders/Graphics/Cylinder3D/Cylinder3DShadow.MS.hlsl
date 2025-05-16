@@ -21,7 +21,6 @@ void main(
     uint tileID = threadID.x;
 
     CylinderData3D cylinder = gInstanceData[instanceID];
-    PrimitiveMaterialData3D mat = gMaterialData[instanceID];
     
     uint divide = cylinder.cylinderDivide;
     

@@ -312,8 +312,8 @@ template<typename Data>
 inline void SampleScene<Data>::Draw() {
 
 	// スプライト描画
-	MAGISYSTEM::DrawSprite(SpriteData{}, SpriteMaterialData{});
-	MAGISYSTEM::DrawSprite(SpriteData{}, spriteMaterial);
+	//MAGISYSTEM::DrawSprite(SpriteData{}, SpriteMaterialData{});
+	//MAGISYSTEM::DrawSprite(SpriteData{}, spriteMaterial);
 
 
 	// 板ポリ描画
