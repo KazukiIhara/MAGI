@@ -7,6 +7,11 @@
 /// シャドウ用のパイプラインの種類
 /// </summary>
 enum class ShadowPipelineStateType {
+	Triangle,
+	Plane,
+	Sphere,
+	Ring,
+	Cylinder,
 	Model,
 
 	Num,

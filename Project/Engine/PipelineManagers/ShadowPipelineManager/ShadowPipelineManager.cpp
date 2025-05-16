@@ -18,6 +18,12 @@ ShadowPipelineManager::~ShadowPipelineManager() {
 }
 
 void ShadowPipelineManager::Initialize(DXGI* dxgi, ShaderCompiler* shaderCompiler) {
+	// Cylinderのシャドウパイプラインを生成、初期化
+	cylinderShadowPipeline_ = std::make_unique<CylinderShadowPipeline>(dxgi, shaderCompiler);
+	cylinderShadowPipeline_->Initialize();
+	SetRootSignature(ShadowPipelineStateType::Cylinder);
+	SetPipelineState(ShadowPipelineStateType::Cylinder);
+
 	// Modelのシャドウパイプラインを生成、初期化
 	modelShadowPipeline_ = std::make_unique<ModelShadowPipeline>(dxgi, shaderCompiler);
 	modelShadowPipeline_->Initialize();

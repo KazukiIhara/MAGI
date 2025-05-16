@@ -12,6 +12,12 @@
 #include "Enums/ShadowPipelineEnum.h"
 #include "DirectX/ComPtr/ComPtr.h"
 
+// Triangle
+// Plane
+// Sphere
+// Ring
+#include "ShadowPipelines/CylinderShadowPipeline/CylinderShadowPipeline.h"
+
 #include "ShadowPipelines/ModelShadowPipeline/ModelShadowPipeline.h"
 
 // 前方宣言
@@ -46,6 +52,8 @@ private:
 	// グラフィックスパイプライン
 	ComPtr<ID3D12PipelineState> shadowPipelineStates_[kShadowPipelineStateNum];
 private:
+	// シリンダー用のシャドウパイプライン
+	std::unique_ptr<CylinderShadowPipeline> cylinderShadowPipeline_ = nullptr;
 	// モデル用のシャドウパイプライン
 	std::unique_ptr<ModelShadowPipeline> modelShadowPipeline_ = nullptr;
 
