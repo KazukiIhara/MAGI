@@ -16,6 +16,12 @@ struct MeshOutputWithAlpha
     uint instanceIndex : TEXCOORD1;
 };
 
+// シャドウ用軽量Vertex出力
+struct ShadowMeshOutput
+{
+    float4 position : SV_Position;
+};
+
 // マテリアルデータ
 struct PrimitiveMaterialData3D
 {

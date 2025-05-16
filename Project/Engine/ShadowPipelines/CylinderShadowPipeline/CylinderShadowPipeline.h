@@ -3,12 +3,12 @@
 #include "ShadowPipelines/BaseShadowPipeline/BaseShadowPipeline.h"
 
 /// <summary>
-/// モデルのシャドウマップ描画用パイプライン
+/// シリンダーのシャドウマップ描画用パイプライン
 /// </summary>
-class ModelShadowPipeline :public BaseShadowPipeline {
+class CylinderShadowPipeline :public BaseShadowPipeline {
 public:
-	ModelShadowPipeline(DXGI* dxgi, ShaderCompiler* shaderCompiler);
-	~ModelShadowPipeline() = default;
+	CylinderShadowPipeline(DXGI* dxgi, ShaderCompiler* shaderCompiler);
+	~CylinderShadowPipeline() = default;
 
 private:
 	// ルートシグネチャを作成する
