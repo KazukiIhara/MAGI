@@ -75,6 +75,9 @@ private:
 
 	// DirectionalLight
 	DirectionalLight directionalLight_{};
+
+	// スプライトデータ
+	SpriteData spriteData_{};
 };
 
 template<typename Data>
@@ -132,7 +135,7 @@ inline void SampleScene<Data>::Initialize() {
 	spriteMaterial.blendmode = BlendMode::Normal;
 	spriteMaterial.color = Vector4(1.0f, 1.0f, 1.0f, 0.5f);
 	spriteMaterial.textureName = "pronama_chan.png";
-	spriteMaterial.isFlipX = true;
+	spriteMaterial.isFlipX = false;
 
 	// ModelDrawer
 	MAGISYSTEM::CreateModelDrawer("test", MAGISYSTEM::FindModel("teapot"));
@@ -270,6 +273,12 @@ inline void SampleScene<Data>::Update() {
 	directionalLight_.direction = MAGIMath::Normalize(directionalLight_.direction);
 	ImGui::DragFloat("Intensity", &directionalLight_.intensity, 0.01f);
 	ImGui::ColorEdit3("Color", &directionalLight_.color.x);
+	ImGui::End();
+
+	ImGui::Begin("SpriteData");
+	ImGui::DragFloat2("Position", &spriteData_.position.x, 1.0f);
+	ImGui::Checkbox("IsFlipX", &spriteMaterial.isFlipX);
+	ImGui::Checkbox("IsFlipY", &spriteMaterial.isFlipY);
 	ImGui::End();
 
 	// トランスフォーム更新

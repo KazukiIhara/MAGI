@@ -97,17 +97,6 @@ SpriteDataForGPU SpriteDrawer::ComputeSpriteDataForGPU(const SpriteData& data, c
 	float top = 0.0f - material.anchorPoint.y;
 	float bottom = 1.0f - material.anchorPoint.y;
 
-	// 左右反転
-	if (material.isFlipX) {
-		left = -left;
-		right = -right;
-	}
-	// 上下反転
-	if (material.isFlipY) {
-		top = -top;
-		bottom = -bottom;
-	}
-
 	// 切り取りサイズ
 	Vector2 cutOutSize = material.textureCutOutSize;
 	// 切り取りサイズが設定されていない場合はmetaDataから取得
@@ -127,6 +116,17 @@ SpriteDataForGPU SpriteDrawer::ComputeSpriteDataForGPU(const SpriteData& data, c
 	float texRight = (material.textureLeftTop.x + cutOutSize.x) / metaData.width;
 	float texTop = material.textureLeftTop.y / metaData.height;
 	float texBottom = (material.textureLeftTop.y + cutOutSize.y) / metaData.height;
+
+	// 左右反転
+	if (material.isFlipX) {
+		texLeft = -texLeft;
+		texRight = -texRight;
+	}
+	// 上下反転
+	if (material.isFlipY) {
+		texTop = -texTop;
+		texBottom = -texBottom;
+	}
 
 	// 追加するスプライトデータ
 	SpriteDataForGPU newSpriteData{
