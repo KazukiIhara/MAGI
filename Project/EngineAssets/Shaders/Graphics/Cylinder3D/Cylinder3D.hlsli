@@ -6,6 +6,8 @@ struct CylinderData3D
     float topRadius;
     float bottomRadius;
     float height;
+    bool hasCap;
+    float3 padding;
 };
 
 // ƒ^ƒCƒ‹‚ÌÅ‘å”
