@@ -1,5 +1,7 @@
 #pragma once
 
+#include <string>
+
 #include "DirectX-Headers/include/directx/d3dx12_pipeline_state_stream.h"
 
 #include "Math/Utility/MathUtility.h"
@@ -131,7 +133,7 @@ struct CylinderData3DForGPU {
 /// Primitiveマテリアルデータ
 /// </summary>
 struct PrimitiveMaterialData3D {
-	uint32_t textureIndex = 0xFFFFFFFF; // 無効値
+	std::string textureName = "";
 	Vector4 baseColor = Color::White;
 	Vector2 uvTranslate = { 0.0f,0.0f };
 	Vector2 uvScale = { 1.0f,1.0f };

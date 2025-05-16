@@ -26,7 +26,7 @@ void main(
         plane.offsets[0], // LT
         plane.offsets[1], // RT
         plane.offsets[2], // LB
-        plane.offsets[3] // RB
+        plane.offsets[3]  // RB
     };
 
     float2 uvs[4] =

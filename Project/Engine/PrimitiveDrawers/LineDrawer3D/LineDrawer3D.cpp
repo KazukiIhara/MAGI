@@ -55,6 +55,8 @@ void LineDrawer3D::Update() {
 }
 
 void LineDrawer3D::Draw() {
+	if (instanceCount_ == 0) return;
+
 	// コマンドリストを取得
 	ID3D12GraphicsCommandList* commandList = directXCommand_->GetList();
 

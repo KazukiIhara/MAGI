@@ -65,6 +65,7 @@ std::unique_ptr<SoundDataContainer> MAGISYSTEM::soundDataContainer_ = nullptr;
 //
 std::unique_ptr<GameObject3DManager> MAGISYSTEM::gameObject3DManager_ = nullptr;
 std::unique_ptr<GameObject3DGroupManager> MAGISYSTEM::gameObject3DGroupManager_ = nullptr;
+std::unique_ptr<Camera2DManager> MAGISYSTEM::camera2DManager_ = nullptr;
 std::unique_ptr<Camera3DManager> MAGISYSTEM::camera3DManager_ = nullptr;
 std::unique_ptr<PunctualLightManager> MAGISYSTEM::punctualLightManager_ = nullptr;
 std::unique_ptr<Renderer3DManager> MAGISYSTEM::renderer3DManager_ = nullptr;
@@ -76,6 +77,8 @@ std::unique_ptr<LightManager> MAGISYSTEM::lightManager_ = nullptr;
 // 
 // Drawer
 // 
+std::unique_ptr<SpriteDrawer> MAGISYSTEM::spriteDrawer_ = nullptr;
+
 std::unique_ptr<LineDrawer3D> MAGISYSTEM::lineDrawer3D_ = nullptr;
 std::unique_ptr<TriangleDrawer3D> MAGISYSTEM::triangleDrawer3D_ = nullptr;
 std::unique_ptr<PlaneDrawer3D> MAGISYSTEM::planeDrawer3D_ = nullptr;
@@ -173,6 +176,8 @@ void MAGISYSTEM::Initialize() {
 	gameObject3DGroupManager_ = std::make_unique<GameObject3DGroupManager>();
 	// Renderer3DManager
 	renderer3DManager_ = std::make_unique<Renderer3DManager>();
+	// Camera2DManager
+	camera2DManager_ = std::make_unique<Camera2DManager>();
 	// Camera3DManager
 	camera3DManager_ = std::make_unique<Camera3DManager>();
 	// PunctualLightManager
@@ -198,7 +203,8 @@ void MAGISYSTEM::Initialize() {
 	// ShadowPipelineManager
 	shadowPipelineManager_ = std::make_unique<ShadowPipelineManager>(dxgi_.get(), shaderCompiler_.get());
 
-
+	// SpriteDrawer
+	spriteDrawer_ = std::make_unique<SpriteDrawer>(dxgi_.get(), directXCommand_.get(), srvuavManager_.get(), graphicsPipelineManager_.get(), camera2DManager_.get());
 	// LineDrawer3D
 	lineDrawer3D_ = std::make_unique<LineDrawer3D>(dxgi_.get(), directXCommand_.get(), srvuavManager_.get(), graphicsPipelineManager_.get(), camera3DManager_.get());
 	// TriangleDrawer3D
@@ -320,6 +326,11 @@ void MAGISYSTEM::Finalize() {
 		lineDrawer3D_.reset();
 	}
 
+	// SpriteDrawer
+	if (spriteDrawer_) {
+		spriteDrawer_.reset();
+	}
+
 	// ShadowPipelineManager
 	if (shadowPipelineManager_) {
 		shadowPipelineManager_.reset();
@@ -378,6 +389,11 @@ void MAGISYSTEM::Finalize() {
 	// Camera3DManager
 	if (camera3DManager_) {
 		camera3DManager_.reset();
+	}
+
+	// Camera2DManager
+	if (camera2DManager_) {
+		camera2DManager_.reset();
 	}
 
 	// GameObject3DGroupManager
@@ -553,7 +569,10 @@ void MAGISYSTEM::Update() {
 	// 3Dオブジェクトグループマネージャの更新処理
 	gameObject3DGroupManager_->Update();
 
-	// カメラマネージャの更新処理
+	// 2Dカメラマネージャの更新処理
+	camera2DManager_->Update();
+
+	// 3Dカメラマネージャの更新処理
 	camera3DManager_->Update();
 
 	// ライトマネージャの更新
@@ -578,6 +597,8 @@ void MAGISYSTEM::Update() {
 	// コリジョンマネージャの更新処理
 	collisionManager_->Update();
 
+	// スプライト描画クラスの更新
+	spriteDrawer_->Update();
 
 	// 3Dライン描画クラスの更新
 	lineDrawer3D_->Update();
@@ -687,6 +708,12 @@ void MAGISYSTEM::Draw() {
 		sphereDrawer3D_->Draw(mode);
 		ringDrawer3D_->Draw(mode);
 		cylinderDrawer3D_->Draw(mode);
+	}
+
+	// ポストエフェクトの影響を受けるスプライトを描画
+	for (uint32_t i = static_cast<uint32_t>(BlendMode::None); i < kBlendModeNum; ++i) {
+		BlendMode mode = static_cast<BlendMode>(i);
+		spriteDrawer_->Draw(mode);
 	}
 
 	// ライト適用後の処理
@@ -1198,7 +1225,7 @@ void MAGISYSTEM::StopLoopWaveSound(const std::string& fileName) {
 	soundDataContainer_->StopWaveLoop(fileName);
 }
 
-void MAGISYSTEM::TransferCamera(uint32_t rootParameterIndex) {
+void MAGISYSTEM::TransferCamera3D(uint32_t rootParameterIndex) {
 	camera3DManager_->TransferCurrentCamera(rootParameterIndex);
 }
 
@@ -1302,6 +1329,10 @@ void MAGISYSTEM::TransferDirectionalLightCamera(uint32_t paramIndex) {
 	lightManager_->TransferDirectionalLightCamera(paramIndex);
 }
 
+void MAGISYSTEM::DrawSprite(const SpriteData& data, const SpriteMaterialData& material) {
+	spriteDrawer_->AddSprite(data, material);
+}
+
 void MAGISYSTEM::AddGameObject3D(std::unique_ptr<GameObject3D> newGameObject3D) {
 	gameObject3DManager_->Add(std::move(newGameObject3D));
 }
@@ -1322,6 +1353,26 @@ void MAGISYSTEM::ClearGameObject3DGroup() {
 	gameObject3DGroupManager_->Clear();
 }
 
+void MAGISYSTEM::AddCamera2D(std::unique_ptr<Camera2D> newCamera2D) {
+	camera2DManager_->Add(std::move(newCamera2D));
+}
+
+Camera2D* MAGISYSTEM::FindCamera2D(const std::string& cameraName) {
+	return camera2DManager_->Find(cameraName);
+}
+
+void MAGISYSTEM::SetCurrentCamera2D(const std::string& cameraName) {
+	camera2DManager_->SetCurrentCamera(cameraName);
+}
+
+void MAGISYSTEM::TransferCamera2D(uint32_t rootParameterIndex) {
+	camera2DManager_->TransferCurrentCamera(rootParameterIndex);
+}
+
+void MAGISYSTEM::ClearCamera2D() {
+	camera2DManager_->Clear();
+}
+
 void MAGISYSTEM::AddCamera3D(std::unique_ptr<Camera3D> newCamera3D) {
 	camera3DManager_->Add(std::move(newCamera3D));
 }
@@ -1334,7 +1385,7 @@ Camera3D* MAGISYSTEM::FindCamera3D(const std::string& cameraName) {
 	return camera3DManager_->Find(cameraName);
 }
 
-void MAGISYSTEM::SetCurrentCamera(const std::string& cameraName) {
+void MAGISYSTEM::SetCurrentCamera3D(const std::string& cameraName) {
 	camera3DManager_->SetCurrentCamera(cameraName);
 }
 

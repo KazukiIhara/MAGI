@@ -82,9 +82,20 @@ void CylinderDrawer3D::Draw(BlendMode mode) {
 
 void CylinderDrawer3D::AddCylinder(const Matrix4x4& worldMatrix, const CylinderData3D& data, const PrimitiveMaterialData3D& material) {
 	const uint32_t blendIndex = static_cast<uint32_t>(material.blendMode);
+
+#ifdef _DEBUG
 	if (currentIndex_[blendIndex] >= PrimitiveCommonConst::NumMaxInstance) {
 		Logger::Log("CylinderDrawer3D: Max instance count exceeded!\n");
 		return;
+	}
+#endif // _DEBUG
+
+	// テクスチャ名を取得
+	std::string textureName = material.textureName;
+
+	// 設定されていなければデフォルトのテクスチャを設定
+	if (textureName == "") {
+		textureName = "EngineAssets/Images/uvChecker.png";
 	}
 
 	CylinderData3DForGPU newCylinderData{
@@ -97,7 +108,7 @@ void CylinderDrawer3D::AddCylinder(const Matrix4x4& worldMatrix, const CylinderD
 	};
 
 	PrimitiveMaterialData3DForGPU newMaterialData{
-		.textureIndex = material.textureIndex,
+		.textureIndex = MAGISYSTEM::GetTextureIndex(textureName),
 		.baseColor = material.baseColor,
 		.uvMatrix = MakeUVMatrix(material.uvScale, material.uvRotate, material.uvTranslate)
 	};

@@ -61,6 +61,7 @@
 // ObjectManager
 // 
 #include "ObjectManagers/GameObject3DManager/GameObject3DManager.h"
+#include "ObjectManagers/Camera2DManager/Camera2DManager.h"
 #include "ObjectManagers/Camera3DManager/Camera3DManager.h"
 #include "ObjectManagers/PunctualLightManager/PunctualLightManager.h"
 #include "ObjectManagers/Renderer3DManager/Renderer3DManager.h"
@@ -73,6 +74,8 @@
 // 
 // Drawer
 // 
+#include "2D/Drawer2D/SpriteDrawer/SpriteDrawer.h"
+
 #include "PrimitiveDrawers/LineDrawer3D/LineDrawer3D.h"
 #include "PrimitiveDrawers/TriangleDrawer3D/TriangleDrawer3D.h"
 #include "PrimitiveDrawers/PlaneDrawer3D/PlaneDrawer3D.h"
@@ -319,7 +322,6 @@ public: // エンジンの機能
 	static ID3D12PipelineState* GetShadowPipelineState(ShadowPipelineStateType pipelineState);
 #pragma endregion
 
-
 #pragma region RenderController
 	// シーンにグレースケールをかける
 	static void ApplyPostEffectGrayScale();
@@ -404,20 +406,32 @@ public: // エンジンの機能
 	static void ClearGameObject3DGroup();
 #pragma endregion
 
+#pragma region Camera2DManager
+	// 2Dカメラの追加
+	static void AddCamera2D(std::unique_ptr<Camera2D> newCamera2D);
+	// 2Dカメラの取得
+	static Camera2D* FindCamera2D(const std::string& cameraName);
+	// 使用する2Dカメラのセット
+	static void SetCurrentCamera2D(const std::string& cameraName);
+	// 2Dカメラの転送
+	static void TransferCamera2D(uint32_t rootParameterIndex);
+	// 2Dカメラ全削除
+	static void ClearCamera2D();
+#pragma endregion
+
 #pragma region Camera3DManager
-	// カメラの追加
+	// 3Dカメラの追加
 	static void AddCamera3D(std::unique_ptr<Camera3D> newCamera3D);
-	// カメラの削除
+	// 3Dカメラの削除
 	static void RemoveCamera3D(const std::string& cameraName);
-	// カメラの取得
+	// 3Dカメラの取得
 	static Camera3D* FindCamera3D(const std::string& cameraName);
-	// 使用するカメラのセット
-	static void SetCurrentCamera(const std::string& cameraName);
-	// カメラの転送
-	static void TransferCamera(uint32_t rootParameterIndex);
-
+	// 使用する3Dカメラのセット
+	static void SetCurrentCamera3D(const std::string& cameraName);
+	// 3Dカメラの転送
+	static void TransferCamera3D(uint32_t rootParameterIndex);
+	// 3Dカメラ全削除
 	static void ClearCamera3D();
-
 #pragma endregion
 
 #pragma region PunctualLightManager
@@ -486,6 +500,11 @@ public: // エンジンの機能
 	static void SetDirectionalLight(const DirectionalLight& directionalLight);
 	// ライトカメラを転送
 	static void TransferDirectionalLightCamera(uint32_t paramIndex);
+#pragma endregion
+
+#pragma region SpriteDrawer
+	// スプライト描画
+	static void DrawSprite(const SpriteData& data, const SpriteMaterialData& material);
 #pragma endregion
 
 #pragma region LineDrawer3D
@@ -674,6 +693,7 @@ protected:
 	// ObjectManager
 	//
 	static std::unique_ptr<GameObject3DManager> gameObject3DManager_;
+	static std::unique_ptr<Camera2DManager> camera2DManager_;
 	static std::unique_ptr<Camera3DManager> camera3DManager_;
 	static std::unique_ptr<Renderer3DManager> renderer3DManager_;
 	static std::unique_ptr<PunctualLightManager> punctualLightManager_;
@@ -686,6 +706,8 @@ protected:
 	// 
 	// Drawer
 	// 
+	static std::unique_ptr<SpriteDrawer> spriteDrawer_;
+
 	static std::unique_ptr<LineDrawer3D> lineDrawer3D_;
 	static std::unique_ptr<TriangleDrawer3D> triangleDrawer3D_;
 	static std::unique_ptr<PlaneDrawer3D> planeDrawer3D_;

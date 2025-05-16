@@ -84,9 +84,20 @@ void SphereDrawer3D::Draw(BlendMode mode) {
 
 void SphereDrawer3D::AddSphere(const Matrix4x4& worldMatrix, const SphereData3D& data, const PrimitiveMaterialData3D& material) {
 	const uint32_t blendIndex = static_cast<uint32_t>(material.blendMode);
+
+#ifdef _DEBUG
 	if (currentIndex_[blendIndex] >= PrimitiveCommonConst::NumMaxInstance) {
 		Logger::Log("SphereDrawer3D: Max instance count exceeded!\n");
 		return;
+	}
+#endif // _DEBUG
+
+	// テクスチャ名を取得
+	std::string textureName = material.textureName;
+
+	// 設定されていなければデフォルトのテクスチャを設定
+	if (textureName == "") {
+		textureName = "EngineAssets/Images/uvChecker.png";
 	}
 
 	SphereData3DForGPU newSphereData{
@@ -98,7 +109,7 @@ void SphereDrawer3D::AddSphere(const Matrix4x4& worldMatrix, const SphereData3D&
 	};
 
 	PrimitiveMaterialData3DForGPU newMaterialData{
-		.textureIndex = material.textureIndex,
+		.textureIndex = MAGISYSTEM::GetTextureIndex(textureName),
 		.baseColor = material.baseColor,
 		.uvMatrix = MakeUVMatrix(material.uvScale, material.uvRotate, material.uvTranslate)
 	};

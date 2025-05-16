@@ -6,13 +6,11 @@
 #include "Framework/MAGI.h"
 #include "MAGIUitility/MAGIUtility.h"
 
-#include "2D/Object2D/Object2D.h"
-
 using namespace MAGIUtility;
 
 // サンプルシーン
 template <typename Data>
-class SampleScene: public BaseScene<Data> {
+class SampleScene : public BaseScene<Data> {
 public:
 	using BaseScene<Data>::BaseScene; // 親クラスのコンストラクタをそのまま継承
 	~SampleScene()override = default;
@@ -25,6 +23,7 @@ public:
 private:
 	// カメラ
 	std::unique_ptr<Camera3D> sceneCamera_ = nullptr;
+	std::unique_ptr<Camera2D> sceneCamera2D_ = nullptr;
 
 	// ワールドトランスフォーム
 	WorldTransform worldTransform_[5]{};
@@ -47,6 +46,9 @@ private:
 	// プリミティブ描画用のマテリアルデータ
 	PrimitiveMaterialData3D material_{};
 
+	// スプライト用のマテリアルデータ
+	SpriteMaterialData spriteMaterial{};
+
 	// モデル用のマテリアルデータ
 	ModelMaterial modelMaterial_{};
 
@@ -66,14 +68,13 @@ private:
 	bool isOnVignette_ = false;
 	bool isRadialBlur_ = false;
 
-	static const uint32_t wtsNum_ = 3;
+	static const uint32_t wtsNum_ = 30000;
 
 	std::array<WorldTransform, wtsNum_> wts_;
 
 
 	// DirectionalLight
 	DirectionalLight directionalLight_{};
-
 };
 
 template<typename Data>
@@ -103,12 +104,19 @@ inline void SampleScene<Data>::Initialize() {
 
 	// シーンカメラ作成
 	sceneCamera_ = std::make_unique<Camera3D>("SceneCamera");
-
 	// マネージャに追加
 	MAGISYSTEM::AddCamera3D(std::move(sceneCamera_));
+	// カメラを設定
+	MAGISYSTEM::SetCurrentCamera3D("SceneCamera");
 
-	// カメラの設定
-	MAGISYSTEM::SetCurrentCamera("SceneCamera");
+
+	// 2Dカメラ作成
+	sceneCamera2D_ = std::make_unique<Camera2D>("SpriteCamera");
+	// マネージャに追加
+	MAGISYSTEM::AddCamera2D(std::move(sceneCamera2D_));
+	// カメラを設定
+	MAGISYSTEM::SetCurrentCamera2D("SpriteCamera");
+
 
 	// ライト
 	MAGISYSTEM::AddPunctualLight("SampleLight");
@@ -119,6 +127,12 @@ inline void SampleScene<Data>::Initialize() {
 	// モデルのマテリアル設定
 	modelMaterial_.blendMode = BlendMode::None;
 	modelMatAlpha_.blendMode = BlendMode::Add;
+
+	// スプライト用のマテリアルデータ
+	spriteMaterial.blendmode = BlendMode::Normal;
+	spriteMaterial.color = Vector4(1.0f, 1.0f, 1.0f, 0.5f);
+	spriteMaterial.textureName = "pronama_chan.png";
+	spriteMaterial.isFlipX = true;
 
 	// ModelDrawer
 	MAGISYSTEM::CreateModelDrawer("test", MAGISYSTEM::FindModel("teapot"));
@@ -131,8 +145,7 @@ inline void SampleScene<Data>::Initialize() {
 	worldTransform_[3].translate_.x = 2.0f;
 	worldTransform_[4].translate_.x = 4.0f;
 
-	// デフォルトのテクスチャを取得　TODO:マテリアルもクラス化して初期化できるようにする
-	material_.textureIndex = MAGISYSTEM::GetDefaultTextureIndex();
+	// マテリアルを設定
 	material_.blendMode = BlendMode::None;
 
 	for (uint32_t i = 0; i < wtsNum_; i++) {
@@ -288,6 +301,12 @@ inline void SampleScene<Data>::Update() {
 
 template<typename Data>
 inline void SampleScene<Data>::Draw() {
+
+	// スプライト描画
+	MAGISYSTEM::DrawSprite(SpriteData{}, SpriteMaterialData{});
+	MAGISYSTEM::DrawSprite(SpriteData{}, spriteMaterial);
+
+
 	// 板ポリ描画
 	MAGISYSTEM::DrawPlane3D(worldTransform_[0].worldMatrix_, planeData_, material_);
 
@@ -321,10 +340,6 @@ inline void SampleScene<Data>::Draw() {
 	//	MAGISYSTEM::DrawSphere3D(wts_[i].worldMatrix_, sphereData_, material_);
 	//}
 
-	// 
-	// オブジェクト2Dの描画前処理
-	// 
-	MAGISYSTEM::PreDrawObject2D();
 
 }
 

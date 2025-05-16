@@ -3,13 +3,14 @@
 // MyHedder
 #include "Math/Utility/MathUtility.h"
 
-// シェーダーに送るカメラ座標
-struct CameraForGPU {
+// シェーダーに送る3Dカメラ情報
+struct Camera3DForGPU {
 	Matrix4x4 viewProjection;
 	Vector3 worldPosition;
 	float padding;
 };
 
-struct ViewProjectionForGPU {
+// シェーダーに送る2Dカメラ情報
+struct Camera2DForGPU {
 	Matrix4x4 viewProjection;
 };

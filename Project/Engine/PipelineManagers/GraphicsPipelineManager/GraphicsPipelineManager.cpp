@@ -24,6 +24,12 @@ void GraphicsPipelineManager::Initialize(DXGI* dxgi, ShaderCompiler* shaderCompi
 	SetRootSignature(GraphicsPipelineStateType::Object2D);
 	SetPipelineState(GraphicsPipelineStateType::Object2D);
 
+	// スプライト描画用のグラフィックスパイプラインを生成、初期化
+	spriteGraphicsPipeline_ = std::make_unique<SpriteGraphicsPipeline>(dxgi, shaderCompiler);
+	spriteGraphicsPipeline_->Initialize();
+	SetRootSignature(GraphicsPipelineStateType::Sprite);
+	SetPipelineState(GraphicsPipelineStateType::Sprite);
+
 	// 3Dラインのグラフィックスパイプラインを生成、初期化
 	line3DGraphicsPipeline_ = std::make_unique<Line3DGraphicsPipeline>(dxgi, shaderCompiler);
 	line3DGraphicsPipeline_->Initialize();
@@ -108,6 +114,10 @@ void GraphicsPipelineManager::SetRootSignature(GraphicsPipelineStateType pipelin
 		// 2Dオブジェクト描画用のルートシグネチャを設定
 		rootSignatures_[static_cast<uint32_t>(pipelineState)] = object2DGraphicsPipeline_->GetRootSignature();
 		break;
+	case GraphicsPipelineStateType::Sprite:
+		// スプライト描画用のルートシグネチャを設定
+		rootSignatures_[static_cast<uint32_t>(pipelineState)] = spriteGraphicsPipeline_->GetRootSignature();
+		break;
 	case GraphicsPipelineStateType::Line3D:
 		// 3Dライン描画用のルートシグネチャを設定
 		rootSignatures_[static_cast<uint32_t>(pipelineState)] = line3DGraphicsPipeline_->GetRootSignature();
@@ -159,6 +169,11 @@ void GraphicsPipelineManager::SetPipelineState(GraphicsPipelineStateType pipelin
 	case GraphicsPipelineStateType::Object2D:
 		for (int mode = static_cast<uint32_t>(BlendMode::None); mode < static_cast<uint32_t>(BlendMode::Num); ++mode) {
 			graphicsPipelineStates_[static_cast<uint32_t>(pipelineState)][mode] = object2DGraphicsPipeline_->GetPipelineState(static_cast<BlendMode>(mode));
+		}
+		break;
+	case GraphicsPipelineStateType::Sprite:
+		for (int mode = static_cast<uint32_t>(BlendMode::None); mode < static_cast<uint32_t>(BlendMode::Num); ++mode) {
+			graphicsPipelineStates_[static_cast<uint32_t>(pipelineState)][mode] = spriteGraphicsPipeline_->GetPipelineState(static_cast<BlendMode>(mode));
 		}
 		break;
 	case GraphicsPipelineStateType::Line3D:

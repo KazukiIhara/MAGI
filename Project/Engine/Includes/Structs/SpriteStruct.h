@@ -13,6 +13,8 @@
 #include "Math/Types/Vector4.h"
 #include "Math/Types/Matrix4x4.h"
 
+#include "Enums/BlendModeEnum.h"
+
 /// <summary>
 /// スプライトメッシュシェーダー用のパイプラインストリーム
 /// </summary>
@@ -31,22 +33,27 @@ struct SpritePipelineStateStream {
 /// CPU側で使うスプライトのデータ
 /// </summary>
 struct SpriteData {
-	Vector2 screenPosition;
-	Vector2 size;
+	Vector2 size = { 0.0f,0.0f };
+	float rotate = 0.0f;
+	Vector2 position = { 0.0f,0.0f };
 };
 
 /// <summary>
 /// CPU側で使うスプライトのマテリアルデータ
 /// </summary>
 struct SpriteMaterialData {
-	uint32_t textureIndex;
-	Vector4 color;
-	Vector2 anchorPoint;
-	bool isFlipX;
-	bool isFlipY;
-	Vector2 uvScale;
-	float uvRotate;
-	Vector2 uvTranslate;
+	std::string textureName = "";
+	BlendMode blendmode = BlendMode::None;
+	Vector4 color = { 1.0f,1.0f,1.0f,1.0f };
+	Vector2 anchorPoint = { 0.0f,0.0f };
+	Vector2 textureLeftTop = { 0.0f,0.0f };
+	Vector2 textureCutOutSize = { 0.0f,0.0f };
+
+	bool isFlipX = false;
+	bool isFlipY = false;
+	Vector2 uvScale = { 1.0f,1.0f };
+	float uvRotate = 0.0f;
+	Vector2 uvTranslate = { 0.0f,0.0f };
 };
 
 /// <summary>
@@ -57,14 +64,14 @@ struct SpriteDataForGPU {
 	// 座標や形状
 	// 
 	Matrix4x4 worldMatrix;
-	Vector2 position[4];
+	Vector2 vertexPosition[4];
 	Vector2 texcooed[4];
 
 	// 
 	// マテリアル
 	// 
 	uint32_t textureIndex;
-	float padding0[3];
 	Vector4 baseColor;
 	Matrix4x4 uvMatrix;
+	float padding0[3];
 };

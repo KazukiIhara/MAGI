@@ -19,19 +19,13 @@ void SpriteGraphicsPipeline::CreateRootSignature() {
 	descriptorRangeInstance.RangeType = D3D12_DESCRIPTOR_RANGE_TYPE_SRV;
 	descriptorRangeInstance.OffsetInDescriptorsFromTableStart = D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND;
 
-	D3D12_DESCRIPTOR_RANGE descriptorRangeMaterial{};
-	descriptorRangeMaterial.BaseShaderRegister = 1;
-	descriptorRangeMaterial.NumDescriptors = 1;
-	descriptorRangeMaterial.RangeType = D3D12_DESCRIPTOR_RANGE_TYPE_SRV;
-	descriptorRangeMaterial.OffsetInDescriptorsFromTableStart = D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND;
-
 	D3D12_DESCRIPTOR_RANGE descriptorRangeTextures{};
 	descriptorRangeTextures.BaseShaderRegister = 1000;
 	descriptorRangeTextures.NumDescriptors = 1024;
 	descriptorRangeTextures.RangeType = D3D12_DESCRIPTOR_RANGE_TYPE_SRV;
 	descriptorRangeTextures.OffsetInDescriptorsFromTableStart = D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND;
 
-	D3D12_ROOT_PARAMETER rootParams[4] = {};
+	D3D12_ROOT_PARAMETER rootParams[3] = {};
 
 	// カメラ
 	rootParams[0].ParameterType = D3D12_ROOT_PARAMETER_TYPE_CBV;
@@ -40,21 +34,15 @@ void SpriteGraphicsPipeline::CreateRootSignature() {
 
 	// インスタンスデータ
 	rootParams[1].ParameterType = D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE;
-	rootParams[1].ShaderVisibility = D3D12_SHADER_VISIBILITY_MESH;
+	rootParams[1].ShaderVisibility = D3D12_SHADER_VISIBILITY_ALL;
 	rootParams[1].DescriptorTable.pDescriptorRanges = &descriptorRangeInstance;
 	rootParams[1].DescriptorTable.NumDescriptorRanges = 1;
 
-	// マテリアルデータ
-	rootParams[2].ParameterType = D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE;
-	rootParams[2].ShaderVisibility = D3D12_SHADER_VISIBILITY_ALL;
-	rootParams[2].DescriptorTable.pDescriptorRanges = &descriptorRangeMaterial;
-	rootParams[2].DescriptorTable.NumDescriptorRanges = 1;
-
 	// BindlessTexture
-	rootParams[3].ParameterType = D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE;
-	rootParams[3].ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL;
-	rootParams[3].DescriptorTable.pDescriptorRanges = &descriptorRangeTextures;
-	rootParams[3].DescriptorTable.NumDescriptorRanges = 1;
+	rootParams[2].ParameterType = D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE;
+	rootParams[2].ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL;
+	rootParams[2].DescriptorTable.pDescriptorRanges = &descriptorRangeTextures;
+	rootParams[2].DescriptorTable.NumDescriptorRanges = 1;
 
 
 	// Sampler
@@ -108,14 +96,12 @@ void SpriteGraphicsPipeline::CreateGraphicsPipelineObject() {
 
 	for (uint32_t i = 0; i < kBlendModeNum; ++i) {
 
-		D3D12_SHADER_BYTECODE meshShader = { meshShaderBlobWithAlpha_->GetBufferPointer(),  meshShaderBlobWithAlpha_->GetBufferSize() };
-		D3D12_SHADER_BYTECODE pixelShader = { pixelShaderBlobWithAlpha_->GetBufferPointer(), pixelShaderBlobWithAlpha_->GetBufferSize() };
+		D3D12_SHADER_BYTECODE meshShader = { meshShaderBlob_->GetBufferPointer(),  meshShaderBlob_->GetBufferSize() };
+		D3D12_SHADER_BYTECODE pixelShader = { pixelShaderBlob_->GetBufferPointer(), pixelShaderBlob_->GetBufferSize() };
 
 		D3D12_RT_FORMAT_ARRAY rtArray{};
 		rtArray.NumRenderTargets = 1;
 		rtArray.RTFormats[0] = DXGI_FORMAT_R8G8B8A8_UNORM_SRGB; // Albedo
-
-		const D3D12_SHADER_BYTECODE amplificationShader = { amplificationShaderBlob_->GetBufferPointer(), amplificationShaderBlob_->GetBufferSize() };
 
 		const D3D12_RASTERIZER_DESC rasterizerDesc = RasterizerStateSetting();
 		const D3D12_BLEND_DESC blendDesc = BlendStateSetting(i);

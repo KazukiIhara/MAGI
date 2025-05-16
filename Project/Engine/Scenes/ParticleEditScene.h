@@ -56,7 +56,7 @@ inline void ParticleEditScene<Data>::Initialize() {
 	MAGISYSTEM::AddCamera3D(std::move(sceneCamera_));
 
 	// カメラの設定
-	MAGISYSTEM::SetCurrentCamera("SceneCamera");
+	MAGISYSTEM::SetCurrentCamera3D("SceneCamera");
 
 	// エディター用のエミッターを作成
 	MAGISYSTEM::CreatePrimitiveParticleGroup3D("EditParticle", Primitive3DType::Plane);
