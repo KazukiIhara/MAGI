@@ -68,7 +68,7 @@ private:
 	bool isOnVignette_ = false;
 	bool isRadialBlur_ = false;
 
-	static const uint32_t wtsNum_ = 30000;
+	static const uint32_t wtsNum_ = 3;
 
 	std::array<WorldTransform, wtsNum_> wts_;
 
