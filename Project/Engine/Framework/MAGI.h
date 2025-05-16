@@ -719,16 +719,17 @@ protected:
 
 	static std::unique_ptr<SkyBoxDrawer> skyBoxDrawer_;
 
+	//
+	// AppSystems
+	//
+	static std::unique_ptr<RenderController> renderController_;
+
 	// 
 	// GameManager
 	// 
 	static std::unique_ptr<CollisionManager> collisionManager_;
 	static std::unique_ptr<SceneManager<GameData>> sceneManager_;
 
-	//
-	// AppSystems
-	//
-	static std::unique_ptr<RenderController> renderController_;
 
 	//
 	// Data入出力クラス

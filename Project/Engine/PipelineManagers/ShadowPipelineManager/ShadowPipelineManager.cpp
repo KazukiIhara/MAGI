@@ -41,6 +41,9 @@ ID3D12PipelineState* ShadowPipelineManager::GetPipelineState(ShadowPipelineState
 
 void ShadowPipelineManager::SetRootSignature(ShadowPipelineStateType pipelineState) {
 	switch (pipelineState) {
+	case ShadowPipelineStateType::Cylinder:
+		rootSignatures_[static_cast<uint32_t>(pipelineState)] = cylinderShadowPipeline_->GetRootSignature();
+		break;
 	case ShadowPipelineStateType::Model:
 		rootSignatures_[static_cast<uint32_t>(pipelineState)] = modelShadowPipeline_->GetRootSignature();
 		break;
@@ -49,6 +52,9 @@ void ShadowPipelineManager::SetRootSignature(ShadowPipelineStateType pipelineSta
 
 void ShadowPipelineManager::SetPipelineState(ShadowPipelineStateType pipelineState) {
 	switch (pipelineState) {
+	case ShadowPipelineStateType::Cylinder:
+		shadowPipelineStates_[static_cast<uint32_t>(pipelineState)] = cylinderShadowPipeline_->GetPipelineState();
+		break;
 	case ShadowPipelineStateType::Model:
 		shadowPipelineStates_[static_cast<uint32_t>(pipelineState)] = modelShadowPipeline_->GetPipelineState();
 		break;

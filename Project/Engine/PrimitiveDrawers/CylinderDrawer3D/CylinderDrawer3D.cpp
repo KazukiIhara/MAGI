@@ -15,12 +15,14 @@
 
 using namespace MAGIMath;
 
-CylinderDrawer3D::CylinderDrawer3D(DXGI* dxgi, DirectXCommand* directXCommand, SRVUAVManager* srvUavManager, GraphicsPipelineManager* graphicsPipelineManager, Camera3DManager* camera3DManager) {
+CylinderDrawer3D::CylinderDrawer3D(DXGI* dxgi, DirectXCommand* directXCommand, SRVUAVManager* srvUavManager, GraphicsPipelineManager* graphicsPipelineManager, ShadowPipelineManager* shadowPipelineManager, Camera3DManager* camera3DManager, LightManager* lightManager) {
 	SetDXGI(dxgi);
 	SetDirectXCommand(directXCommand);
 	SetSRVUAVManager(srvUavManager);
 	SetGraphicsPipelineManager(graphicsPipelineManager);
+	SetShadowPipelineManager(shadowPipelineManager);
 	SetCamera3DManager(camera3DManager);
+	SetLightManager(lightManager);
 
 	for (uint32_t i = 0; i < kBlendModeNum; ++i) {
 		instancingResource_[i] = dxgi_->CreateBufferResource(sizeof(CylinderData3DForGPU) * PrimitiveCommonConst::NumMaxInstance);
@@ -45,6 +47,7 @@ CylinderDrawer3D::CylinderDrawer3D(DXGI* dxgi, DirectXCommand* directXCommand, S
 	}
 
 	Logger::Log("CylinderDrawer3D Initialize\n");
+
 }
 
 CylinderDrawer3D::~CylinderDrawer3D() {
@@ -76,6 +79,26 @@ void CylinderDrawer3D::Draw(BlendMode mode) {
 	RootConstants rootConstants{};
 	rootConstants.baseInstanceIndex = 0;
 	commandList->SetGraphicsRoot32BitConstants(4, 1, &rootConstants, 0);
+
+	commandList->DispatchMesh(1, instanceCount_[i], 1);
+}
+
+void CylinderDrawer3D::DrawShadow(BlendMode mode) {
+	const uint32_t i = static_cast<uint32_t>(mode);
+	if (instanceCount_[i] == 0) return;
+
+	ID3D12GraphicsCommandList6* commandList = directXCommand_->GetList6();
+
+	commandList->SetGraphicsRootSignature(shadowPipelineManager_->GetRootSignature(ShadowPipelineStateType::Cylinder));
+	commandList->SetPipelineState(shadowPipelineManager_->GetPipelineState(ShadowPipelineStateType::Cylinder));
+
+	lightManager_->TransferDirectionalLightCamera(0);
+
+	commandList->SetGraphicsRootDescriptorTable(1, srvUavManager_->GetDescriptorHandleGPU(instancingSrvIndex_[i]));
+
+	RootConstants rootConstants{};
+	rootConstants.baseInstanceIndex = 0;
+	commandList->SetGraphicsRoot32BitConstants(2, 1, &rootConstants, 0);
 
 	commandList->DispatchMesh(1, instanceCount_[i], 1);
 }
@@ -138,7 +161,17 @@ void CylinderDrawer3D::SetGraphicsPipelineManager(GraphicsPipelineManager* graph
 	graphicsPipelineManager_ = graphicsPipelineManager;
 }
 
+void CylinderDrawer3D::SetShadowPipelineManager(ShadowPipelineManager* shadowPipelineManager) {
+	assert(shadowPipelineManager);
+	shadowPipelineManager_ = shadowPipelineManager;
+}
+
 void CylinderDrawer3D::SetCamera3DManager(Camera3DManager* camera3DManager) {
 	assert(camera3DManager);
 	camera3DManager_ = camera3DManager;
+}
+
+void CylinderDrawer3D::SetLightManager(LightManager* lightManager) {
+	assert(lightManager);
+	lightManager_ = lightManager;
 }

@@ -90,16 +90,16 @@ std::unique_ptr<ModelDrawerManager> MAGISYSTEM::modelDrawerManager_ = nullptr;
 
 std::unique_ptr<SkyBoxDrawer> MAGISYSTEM::skyBoxDrawer_ = nullptr;
 
+//
+// AppSystem
+//
+std::unique_ptr<RenderController> MAGISYSTEM::renderController_ = nullptr;
+
 // 
 // GameManager
 // 
 std::unique_ptr<CollisionManager> MAGISYSTEM::collisionManager_ = nullptr;
 std::unique_ptr<SceneManager<GameData>> MAGISYSTEM::sceneManager_ = nullptr;
-
-//
-// AppSystem
-//
-std::unique_ptr<RenderController> MAGISYSTEM::renderController_ = nullptr;
 
 //
 // Data入出力クラス
@@ -216,7 +216,7 @@ void MAGISYSTEM::Initialize() {
 	// RingDrawer3D
 	ringDrawer3D_ = std::make_unique<RingDrawer3D>(dxgi_.get(), directXCommand_.get(), srvuavManager_.get(), graphicsPipelineManager_.get(), camera3DManager_.get());
 	// CylinderDrawer3D
-	cylinderDrawer3D_ = std::make_unique<CylinderDrawer3D>(dxgi_.get(), directXCommand_.get(), srvuavManager_.get(), graphicsPipelineManager_.get(), camera3DManager_.get());
+	cylinderDrawer3D_ = std::make_unique<CylinderDrawer3D>(dxgi_.get(), directXCommand_.get(), srvuavManager_.get(), graphicsPipelineManager_.get(),shadowPipelineManager_.get(), camera3DManager_.get(),lightManager_.get());
 
 	// ModelDrawerManager
 	modelDrawerManager_ = std::make_unique<ModelDrawerManager>(dxgi_.get(), directXCommand_.get(), srvuavManager_.get(), graphicsPipelineManager_.get(), shadowPipelineManager_.get(), camera3DManager_.get());
@@ -284,6 +284,11 @@ void MAGISYSTEM::Finalize() {
 	// CollisionManager
 	if (collisionManager_) {
 		collisionManager_.reset();
+	}
+
+	// RenderController
+	if (renderController_) {
+		renderController_.reset();
 	}
 
 	// SkyBoxDrawer
@@ -404,11 +409,6 @@ void MAGISYSTEM::Finalize() {
 	// GameObject3DManager
 	if (gameObject3DManager_) {
 		gameObject3DManager_.reset();
-	}
-
-	// RenderController
-	if (renderController_) {
-		renderController_.reset();
 	}
 
 	// SoundDataContainer
@@ -658,6 +658,7 @@ void MAGISYSTEM::Draw() {
 	renderController_->PreShadowRender();
 
 	// シャドウ用にオブジェクトの描画
+	cylinderDrawer3D_->DrawShadow(BlendMode::None);
 	modelDrawerManager_->DrawShadowAll(BlendMode::None);
 
 	// シャドウマップ用の描画後処理
