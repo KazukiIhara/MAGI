@@ -1,4 +1,4 @@
-#include "Plane3DGraphicsPipeline.h"
+#include "Box3DGraphicsPipeline.h"
 
 #include <cassert>
 
@@ -6,11 +6,11 @@
 #include "DirectX/DXGI/DXGI.h"
 #include "DirectX/ShaderCompiler/ShaderCompiler.h"
 
-Plane3DGraphicsPipeline::Plane3DGraphicsPipeline(DXGI* dxgi, ShaderCompiler* shaderCompiler)
+Box3DGraphicsPipeline::Box3DGraphicsPipeline(DXGI* dxgi, ShaderCompiler* shaderCompiler)
 	: BaseGraphicsPipeline(dxgi, shaderCompiler) {
 }
 
-void Plane3DGraphicsPipeline::CreateRootSignature() {
+void Box3DGraphicsPipeline::CreateRootSignature() {
 	HRESULT hr;
 
 	// Descriptor Ranges
@@ -91,25 +91,24 @@ void Plane3DGraphicsPipeline::CreateRootSignature() {
 	assert(SUCCEEDED(hr));
 }
 
-void Plane3DGraphicsPipeline::CompileShaders() {
-	amplificationShaderBlob_ = shaderCompiler_->CompileShader(L"EngineAssets/Shaders/Graphics/Plane3D/Plane3D.AS.hlsl", L"as_6_5");
+void Box3DGraphicsPipeline::CompileShaders() {
+	amplificationShaderBlob_ = shaderCompiler_->CompileShader(L"EngineAssets/Shaders/Graphics/Box3D/Box3D.AS.hlsl", L"as_6_5");
 	assert(amplificationShaderBlob_ != nullptr);
 
-	meshShaderBlob_ = shaderCompiler_->CompileShader(L"EngineAssets/Shaders/Graphics/Plane3D/Plane3D.MS.hlsl", L"ms_6_5");
+	meshShaderBlob_ = shaderCompiler_->CompileShader(L"EngineAssets/Shaders/Graphics/Box3D/Box3D.MS.hlsl", L"ms_6_5");
 	assert(meshShaderBlob_ != nullptr);
 
 	pixelShaderBlob_ = shaderCompiler_->CompileShader(L"EngineAssets/Shaders/Graphics/Primitive3D/Primitive3D.PS.hlsl", L"ps_6_5");
 	assert(pixelShaderBlob_ != nullptr);
 
-	meshShaderBlobWithAlpha_ = shaderCompiler_->CompileShader(L"EngineAssets/Shaders/Graphics/Plane3D/Plane3DWithAlpha.MS.hlsl", L"ms_6_5");
+	meshShaderBlobWithAlpha_ = shaderCompiler_->CompileShader(L"EngineAssets/Shaders/Graphics/Box3D/Box3DWithAlpha.MS.hlsl", L"ms_6_5");
 	assert(meshShaderBlobWithAlpha_ != nullptr);
 
 	pixelShaderBlobWithAlpha_ = shaderCompiler_->CompileShader(L"EngineAssets/Shaders/Graphics/Primitive3D/Primitive3DWithAlpha.PS.hlsl", L"ps_6_5");
 	assert(pixelShaderBlobWithAlpha_ != nullptr);
 }
 
-
-D3D12_BLEND_DESC Plane3DGraphicsPipeline::BlendStateSetting(uint32_t blendModeNum) {
+D3D12_BLEND_DESC Box3DGraphicsPipeline::BlendStateSetting(uint32_t blendModeNum) {
 	D3D12_BLEND_DESC blendDesc{};
 	switch (blendModeNum) {
 	case 0:// kBlendModeNone
@@ -179,11 +178,11 @@ D3D12_BLEND_DESC Plane3DGraphicsPipeline::BlendStateSetting(uint32_t blendModeNu
 	return blendDesc;
 }
 
-D3D12_INPUT_LAYOUT_DESC Plane3DGraphicsPipeline::InputLayoutSetting() {
+D3D12_INPUT_LAYOUT_DESC Box3DGraphicsPipeline::InputLayoutSetting() {
 	return { nullptr, 0 };
 }
 
-D3D12_RASTERIZER_DESC Plane3DGraphicsPipeline::RasterizerStateSetting() {
+D3D12_RASTERIZER_DESC Box3DGraphicsPipeline::RasterizerStateSetting() {
 	D3D12_RASTERIZER_DESC desc{};
 	desc.FillMode = D3D12_FILL_MODE_SOLID;
 	desc.CullMode = D3D12_CULL_MODE_BACK;

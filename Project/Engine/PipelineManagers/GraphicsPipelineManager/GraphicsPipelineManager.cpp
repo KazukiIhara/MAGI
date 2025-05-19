@@ -48,6 +48,12 @@ void GraphicsPipelineManager::Initialize(DXGI* dxgi, ShaderCompiler* shaderCompi
 	SetRootSignature(GraphicsPipelineStateType::Plane3D);
 	SetPipelineState(GraphicsPipelineStateType::Plane3D);
 
+	// 3Dボックスのグラフィックスパイプラインを生成、初期化
+	box3DGraphicsPipeline_ = std::make_unique<Box3DGraphicsPipeline>(dxgi, shaderCompiler);
+	box3DGraphicsPipeline_->Initialize();
+	SetRootSignature(GraphicsPipelineStateType::Box3D);
+	SetPipelineState(GraphicsPipelineStateType::Box3D);
+
 	// 3D球体のグラフィックスパイプラインを生成、初期化
 	sphere3DGraphicsPipeline_ = std::make_unique<Sphere3DGraphicsPipeline>(dxgi, shaderCompiler);
 	sphere3DGraphicsPipeline_->Initialize();
@@ -130,6 +136,10 @@ void GraphicsPipelineManager::SetRootSignature(GraphicsPipelineStateType pipelin
 		// 3D板ポリ用のルートシグネイチャを設定
 		rootSignatures_[static_cast<uint32_t>(pipelineState)] = plane3DGraphicsPipeline_->GetRootSignature();
 		break;
+	case GraphicsPipelineStateType::Box3D:
+		// 3Dボックス用のルートシグネイチャを設定
+		rootSignatures_[static_cast<uint32_t>(pipelineState)] = box3DGraphicsPipeline_->GetRootSignature();
+		break;
 	case GraphicsPipelineStateType::Sphere3D:
 		// 3D球体用のルートシグネイチャを設定
 		rootSignatures_[static_cast<uint32_t>(pipelineState)] = sphere3DGraphicsPipeline_->GetRootSignature();
@@ -189,6 +199,11 @@ void GraphicsPipelineManager::SetPipelineState(GraphicsPipelineStateType pipelin
 	case GraphicsPipelineStateType::Plane3D:
 		for (int mode = static_cast<uint32_t>(BlendMode::None); mode < static_cast<uint32_t>(BlendMode::Num); ++mode) {
 			graphicsPipelineStates_[static_cast<uint32_t>(pipelineState)][mode] = plane3DGraphicsPipeline_->GetPipelineState(static_cast<BlendMode>(mode));
+		}
+		break;
+	case GraphicsPipelineStateType::Box3D:
+		for (int mode = static_cast<uint32_t>(BlendMode::None); mode < static_cast<uint32_t>(BlendMode::Num); ++mode) {
+			graphicsPipelineStates_[static_cast<uint32_t>(pipelineState)][mode] = box3DGraphicsPipeline_->GetPipelineState(static_cast<BlendMode>(mode));
 		}
 		break;
 	case GraphicsPipelineStateType::Sphere3D:

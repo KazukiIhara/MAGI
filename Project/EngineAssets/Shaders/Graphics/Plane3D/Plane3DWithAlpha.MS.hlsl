@@ -29,19 +29,11 @@ void main(
         plane.offsets[3] // RB
     };
 
-    float2 uvs[4] =
-    {
-        float2(0.0f, 0.0f),
-        float2(1.0f, 0.0f),
-        float2(0.0f, 1.0f),
-        float2(1.0f, 1.0f)
-    };
-
     for (uint i = 0; i < 4; ++i)
     {
         float4 worldPos = mul(positions[i], plane.worldMatrix);
         float4 clipPos = mul(worldPos, gCamera.viewProjection);
-        float2 uv = mul(float4(uvs[i], 0.0f, 1.0f), mat.uvMatrix).xy;
+        float2 uv = mul(float4(PlaneUVs[i], 0.0f, 1.0f), mat.uvMatrix).xy;
 
         verts[i].position = clipPos;
         verts[i].uv = uv;
