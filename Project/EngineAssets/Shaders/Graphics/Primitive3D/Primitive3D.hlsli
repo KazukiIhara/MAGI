@@ -3,7 +3,7 @@
 // ’è”
 //-----------------------------------
 
-static const float2 PlaneUVs[4] =
+static const float2 QuadUVs[4] =
 {
     float2(0.0f, 0.0f),
     float2(1.0f, 0.0f),

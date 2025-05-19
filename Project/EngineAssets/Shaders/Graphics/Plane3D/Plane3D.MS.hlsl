@@ -36,7 +36,7 @@ void main(
     {
         float4 worldPos = mul(positions[i], plane.worldMatrix);
         float4 clipPos = mul(worldPos, gCamera.viewProjection);
-        float2 uv = mul(float4(PlaneUVs[i], 0.0f, 1.0f), mat.uvMatrix).xy;
+        float2 uv = mul(float4(QuadUVs[i], 0.0f, 1.0f), mat.uvMatrix).xy;
 
         verts[i].position = clipPos;
         verts[i].uv = uv;

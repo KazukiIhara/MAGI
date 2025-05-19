@@ -79,6 +79,7 @@
 #include "PrimitiveDrawers/LineDrawer3D/LineDrawer3D.h"
 #include "PrimitiveDrawers/TriangleDrawer3D/TriangleDrawer3D.h"
 #include "PrimitiveDrawers/PlaneDrawer3D/PlaneDrawer3D.h"
+#include "PrimitiveDrawers/BoxDrawer3D/BoxDrawer3D.h"
 #include "PrimitiveDrawers/SphereDrawer3D/SphereDrawer3D.h"
 #include "PrimitiveDrawers/RingDrawer3D/RingDrawer3D.h"
 #include "PrimitiveDrawers/CylinderDrawer3D/CylinderDrawer3D.h"
@@ -531,6 +532,16 @@ public: // エンジンの機能
 
 #pragma endregion
 
+#pragma region BoxDrawer3D
+	// ボックス描画
+	static void DrawBox3D(
+		const Matrix4x4& worldMatrix,
+		const BoxData3D& boxData,
+		const PrimitiveMaterialData3D& 
+	);
+#pragma endregion
+
+
 #pragma region SphereDrawer3D
 	// 球体描画
 	static void DrawSphere3D(
@@ -580,8 +591,6 @@ public: // エンジンの機能
 	static void SetSkyBoxTextureIndex(uint32_t skyBoxTextureIndex);
 
 #pragma endregion
-
-
 
 #pragma region CollisionManager
 
@@ -711,6 +720,7 @@ protected:
 	static std::unique_ptr<LineDrawer3D> lineDrawer3D_;
 	static std::unique_ptr<TriangleDrawer3D> triangleDrawer3D_;
 	static std::unique_ptr<PlaneDrawer3D> planeDrawer3D_;
+	static std::unique_ptr<BoxDrawer3D> boxDrawer3D_;
 	static std::unique_ptr<SphereDrawer3D> sphereDrawer3D_;
 	static std::unique_ptr<RingDrawer3D> ringDrawer3D_;
 	static std::unique_ptr<CylinderDrawer3D> cylinderDrawer3D_;
