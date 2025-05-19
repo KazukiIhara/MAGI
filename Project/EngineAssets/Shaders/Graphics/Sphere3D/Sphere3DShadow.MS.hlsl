@@ -18,7 +18,6 @@ void main(in payload ASPayload payload,
     uint tileID = threadID.x;
 
     SphereData3D sphere = gInstanceData[instanceID];
-    PrimitiveMaterialData3D mat = gMaterialData[instanceID];
 
     const uint lonCount = sphere.longitudeSegments;
     const uint latCount = sphere.latitudeSegments;

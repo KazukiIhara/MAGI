@@ -18,6 +18,19 @@ ShadowPipelineManager::~ShadowPipelineManager() {
 }
 
 void ShadowPipelineManager::Initialize(DXGI* dxgi, ShaderCompiler* shaderCompiler) {
+
+	// Triangle
+	// Plane
+
+	// Sphereのシャドウパイプラインを生成、初期化
+	sphereShadowPipeline_ = std::make_unique<SphereShadowPipeline>(dxgi, shaderCompiler);
+	sphereShadowPipeline_->Initialize();
+	SetRootSignature(ShadowPipelineStateType::Sphere);
+	SetPipelineState(ShadowPipelineStateType::Sphere);
+
+
+	// Ring
+
 	// Cylinderのシャドウパイプラインを生成、初期化
 	cylinderShadowPipeline_ = std::make_unique<CylinderShadowPipeline>(dxgi, shaderCompiler);
 	cylinderShadowPipeline_->Initialize();
@@ -41,6 +54,9 @@ ID3D12PipelineState* ShadowPipelineManager::GetPipelineState(ShadowPipelineState
 
 void ShadowPipelineManager::SetRootSignature(ShadowPipelineStateType pipelineState) {
 	switch (pipelineState) {
+	case ShadowPipelineStateType::Sphere:
+		rootSignatures_[static_cast<uint32_t>(pipelineState)] = sphereShadowPipeline_->GetRootSignature();
+		break;
 	case ShadowPipelineStateType::Cylinder:
 		rootSignatures_[static_cast<uint32_t>(pipelineState)] = cylinderShadowPipeline_->GetRootSignature();
 		break;
@@ -52,6 +68,9 @@ void ShadowPipelineManager::SetRootSignature(ShadowPipelineStateType pipelineSta
 
 void ShadowPipelineManager::SetPipelineState(ShadowPipelineStateType pipelineState) {
 	switch (pipelineState) {
+	case ShadowPipelineStateType::Sphere:
+		shadowPipelineStates_[static_cast<uint32_t>(pipelineState)] = sphereShadowPipeline_->GetPipelineState();
+		break;
 	case ShadowPipelineStateType::Cylinder:
 		shadowPipelineStates_[static_cast<uint32_t>(pipelineState)] = cylinderShadowPipeline_->GetPipelineState();
 		break;

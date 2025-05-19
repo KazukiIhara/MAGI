@@ -224,6 +224,16 @@ inline void SampleScene<Data>::Update() {
 	ImGui::ColorEdit4("Color", &material_.baseColor.x);
 	ImGui::End();
 
+	ImGui::Begin("SphereData");
+	int tempH = sphereData_.horizontalSegments;
+	ImGui::DragInt("HorizontalSegments", &tempH);
+	sphereData_.horizontalSegments = tempH;
+	int tempV = sphereData_.verticalSegments;
+	ImGui::DragInt("VerticalSegments", &tempV);
+	sphereData_.verticalSegments = tempV;
+	ImGui::DragFloat("Radius", &sphereData_.radius);
+	ImGui::End();
+
 	ImGui::Begin("RingData");
 	int ringDivideTemp = ringData_.ringDivide;
 	ImGui::DragInt("Divide", &ringDivideTemp);
@@ -320,7 +330,7 @@ inline void SampleScene<Data>::Draw() {
 	MAGISYSTEM::DrawPlane3D(worldTransform_[0].worldMatrix_, planeData_, material_);
 
 	// 球体描画
-	// MAGISYSTEM::DrawSphere3D(worldTransform_[1].worldMatrix_, sphereData_, material_);
+	MAGISYSTEM::DrawSphere3D(worldTransform_[1].worldMatrix_, sphereData_, material_);
 
 	// 三角形描画
 	//MAGISYSTEM::DrawTriangle3D(worldTransform_[2].worldMatrix_, triangleData_, material_);
