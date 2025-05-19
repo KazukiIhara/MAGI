@@ -48,10 +48,10 @@ struct TriangleData3DForGPU {
 /// </summary>
 struct PlaneData3D {
 	Vector3 verticesOffsets[4]{
-		{ -1.0f,1.0f},
-		{ 1.0f,1.0f},
-		{ -1.0f,-1.0f},
-		{ 1.0f,-1.0f},
+		{ -1.0f,1.0f,0.0f},
+		{ 1.0f,1.0f,0.0f},
+		{ -1.0f,-1.0f,0.0f},
+		{ 1.0f,-1.0f,0.0f},
 	};
 };
 
@@ -62,6 +62,31 @@ struct PlaneData3DForGPU {
 	Matrix4x4 worldMatrix;
 	Matrix4x4 worldInverseTranspose;
 	Vector4 offsets[4];
+};
+
+/// <summary>
+/// 3Dボックスの形状データ
+/// </summary>
+struct BoxData3D {
+	Vector3 verticesOffsets[8]{
+		{ -1.0f,1.0f,-1.0f},
+		{ 1.0f,1.0f,-1.0f},
+		{ -1.0f,-1.0f,-1.0f},
+		{ 1.0f,-1.0f,-1.0f},
+		{ -1.0f,1.0f,1.0f},
+		{ 1.0f,1.0f,1.0f},
+		{ -1.0f,-1.0f,1.0f},
+		{ 1.0f,-1.0f,1.0f},
+	};
+};
+
+/// <summary>
+/// GPUに送る3Dボックスのデータ
+/// </summary>
+struct BoxData3DForGPU {
+	Matrix4x4 worldMatrix;
+	Matrix4x4 worldInverseTranspose;
+	Vector4 offsets[8];
 };
 
 /// <summary>
