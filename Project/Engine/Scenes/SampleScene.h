@@ -34,6 +34,9 @@ private:
 	// 三角形描画用の頂点データ
 	TriangleData3D triangleData_{};
 
+	// ボックス描画用の頂点データ
+	BoxData3D boxData_{};
+
 	// 球体描画用の頂点データ
 	SphereData3D sphereData_{};
 
@@ -153,6 +156,7 @@ inline void SampleScene<Data>::Initialize() {
 
 	for (uint32_t i = 0; i < wtsNum_; i++) {
 		wts_[i].Initialize();
+		wts_[i].translate_.x = -6.0f;
 		wts_[i].translate_.z = float(i) * 2.0f;
 		wts_[i].translate_.y = 2.0f;
 	}
@@ -167,12 +171,8 @@ inline void SampleScene<Data>::Initialize() {
 	worldTransform_[1].translate_.x = 1.5f;
 	worldTransform_[1].translate_.y = 1.0f;
 
-	worldTransform_[2].rotate_.x = 0.7f;
-	worldTransform_[2].rotate_.y = 0.4f;
-
-	worldTransform_[2].translate_.x = 1.0f;
+	worldTransform_[2].translate_.x = -2.0f;
 	worldTransform_[2].translate_.y = 1.0f;
-	worldTransform_[2].translate_.z = 2.0f;
 
 }
 
@@ -217,11 +217,15 @@ inline void SampleScene<Data>::Update() {
 	ImGui::DragFloat3("RightBottom", &planeData_.verticesOffsets[3].x, 0.01f);
 	ImGui::End();
 
-	ImGui::Begin("Material");
-	ImGui::DragFloat2("uvScale", &material_.uvScale.x, 0.01f);
-	ImGui::DragFloat("uvRotate", &material_.uvRotate, 0.01f);
-	ImGui::DragFloat2("uvTranslate", &material_.uvTranslate.x, 0.01f);
-	ImGui::ColorEdit4("Color", &material_.baseColor.x);
+	ImGui::Begin("BoxData");
+	ImGui::DragFloat3("LeftTopFront", &boxData_.verticesOffsets[0].x, 0.01f);
+	ImGui::DragFloat3("RightTopFront", &boxData_.verticesOffsets[1].x, 0.01f);
+	ImGui::DragFloat3("LeftBottomFront", &boxData_.verticesOffsets[2].x, 0.01f);
+	ImGui::DragFloat3("RightBottomFront", &boxData_.verticesOffsets[3].x, 0.01f);
+	ImGui::DragFloat3("LeftTopBack", &boxData_.verticesOffsets[4].x, 0.01f);
+	ImGui::DragFloat3("RightTopBack", &boxData_.verticesOffsets[5].x, 0.01f);
+	ImGui::DragFloat3("LeftBottomBack", &boxData_.verticesOffsets[6].x, 0.01f);
+	ImGui::DragFloat3("RightBottomBack", &boxData_.verticesOffsets[7].x, 0.01f);
 	ImGui::End();
 
 	ImGui::Begin("SphereData");
@@ -249,6 +253,13 @@ inline void SampleScene<Data>::Update() {
 	ImGui::DragFloat("TopRadius", &cylinderData_.topRadius, 0.01f);
 	ImGui::DragFloat("BottomRadius", &cylinderData_.bottomRadius, 0.01f);
 	ImGui::DragFloat("Height", &cylinderData_.height, 0.01f);
+	ImGui::End();
+
+	ImGui::Begin("Material");
+	ImGui::DragFloat2("uvScale", &material_.uvScale.x, 0.01f);
+	ImGui::DragFloat("uvRotate", &material_.uvRotate, 0.01f);
+	ImGui::DragFloat2("uvTranslate", &material_.uvTranslate.x, 0.01f);
+	ImGui::ColorEdit4("Color", &material_.baseColor.x);
 	ImGui::End();
 
 	ImGui::Begin("GrayscaleParamater");
@@ -325,12 +336,14 @@ inline void SampleScene<Data>::Draw() {
 	//MAGISYSTEM::DrawSprite(SpriteData{}, SpriteMaterialData{});
 	//MAGISYSTEM::DrawSprite(SpriteData{}, spriteMaterial);
 
-
 	// 板ポリ描画
 	MAGISYSTEM::DrawPlane3D(worldTransform_[0].worldMatrix_, planeData_, material_);
 
 	// 球体描画
 	MAGISYSTEM::DrawSphere3D(worldTransform_[1].worldMatrix_, sphereData_, material_);
+
+	// ボックス描画
+	MAGISYSTEM::DrawBox3D(worldTransform_[2].worldMatrix_, boxData_, material_);
 
 	// 三角形描画
 	//MAGISYSTEM::DrawTriangle3D(worldTransform_[2].worldMatrix_, triangleData_, material_);

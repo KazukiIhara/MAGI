@@ -82,6 +82,7 @@ std::unique_ptr<SpriteDrawer> MAGISYSTEM::spriteDrawer_ = nullptr;
 std::unique_ptr<LineDrawer3D> MAGISYSTEM::lineDrawer3D_ = nullptr;
 std::unique_ptr<TriangleDrawer3D> MAGISYSTEM::triangleDrawer3D_ = nullptr;
 std::unique_ptr<PlaneDrawer3D> MAGISYSTEM::planeDrawer3D_ = nullptr;
+std::unique_ptr<BoxDrawer3D> MAGISYSTEM::boxDrawer3D_ = nullptr;
 std::unique_ptr<SphereDrawer3D> MAGISYSTEM::sphereDrawer3D_ = nullptr;
 std::unique_ptr<RingDrawer3D> MAGISYSTEM::ringDrawer3D_ = nullptr;
 std::unique_ptr<CylinderDrawer3D> MAGISYSTEM::cylinderDrawer3D_ = nullptr;
@@ -211,6 +212,8 @@ void MAGISYSTEM::Initialize() {
 	triangleDrawer3D_ = std::make_unique<TriangleDrawer3D>(dxgi_.get(), directXCommand_.get(), srvuavManager_.get(), graphicsPipelineManager_.get(), camera3DManager_.get());
 	// PlaneDrawer3D
 	planeDrawer3D_ = std::make_unique<PlaneDrawer3D>(dxgi_.get(), directXCommand_.get(), srvuavManager_.get(), graphicsPipelineManager_.get(), camera3DManager_.get());
+	// BoxDrawer3D
+	boxDrawer3D_ = std::make_unique<BoxDrawer3D>(dxgi_.get(), directXCommand_.get(), srvuavManager_.get(), graphicsPipelineManager_.get(), camera3DManager_.get());
 	// SphereDrawer3D
 	sphereDrawer3D_ = std::make_unique<SphereDrawer3D>(dxgi_.get(), directXCommand_.get(), srvuavManager_.get(), graphicsPipelineManager_.get(), shadowPipelineManager_.get(), camera3DManager_.get(), lightManager_.get());
 	// RingDrawer3D
@@ -314,6 +317,11 @@ void MAGISYSTEM::Finalize() {
 	// SphereDrawer3D
 	if (sphereDrawer3D_) {
 		sphereDrawer3D_.reset();
+	}
+
+	// BoxDrawer3D
+	if (boxDrawer3D_) {
+		boxDrawer3D_.reset();
 	}
 
 	// PlaneDrawer3D
@@ -606,6 +614,8 @@ void MAGISYSTEM::Update() {
 	triangleDrawer3D_->Update();
 	// 3D板ポリ描画クラスの更新
 	planeDrawer3D_->Update();
+	// 3Dボックス描画クラスの更新
+	boxDrawer3D_->Update();
 	// 3D球体描画クラスの更新
 	sphereDrawer3D_->Update();
 	// 3Dリング描画クラスの更新
@@ -678,6 +688,7 @@ void MAGISYSTEM::Draw() {
 
 	triangleDrawer3D_->Draw(noneMode);
 	planeDrawer3D_->Draw(noneMode);
+	boxDrawer3D_->Draw(noneMode);
 	sphereDrawer3D_->Draw(noneMode);
 	ringDrawer3D_->Draw(noneMode);
 	cylinderDrawer3D_->Draw(noneMode);
@@ -707,6 +718,7 @@ void MAGISYSTEM::Draw() {
 		modelDrawerManager_->DrawAll(mode);
 		triangleDrawer3D_->Draw(mode);
 		planeDrawer3D_->Draw(mode);
+		boxDrawer3D_->Draw(mode);
 		sphereDrawer3D_->Draw(mode);
 		ringDrawer3D_->Draw(mode);
 		cylinderDrawer3D_->Draw(mode);
@@ -1401,6 +1413,10 @@ void MAGISYSTEM::DrawTriangle3D(const Matrix4x4& worldMatrix, const TriangleData
 
 void MAGISYSTEM::DrawPlane3D(const Matrix4x4& worldMatrix, const PlaneData3D& planeData, const PrimitiveMaterialData3D& materialData) {
 	planeDrawer3D_->AddPlane(worldMatrix, planeData, materialData);
+}
+
+void MAGISYSTEM::DrawBox3D(const Matrix4x4& worldMatrix, const BoxData3D& boxData, const PrimitiveMaterialData3D& material) {
+	boxDrawer3D_->AddBox(worldMatrix, boxData, material);
 }
 
 void MAGISYSTEM::DrawSphere3D(const Matrix4x4& worldMatrix, const SphereData3D& data, const PrimitiveMaterialData3D& material) {

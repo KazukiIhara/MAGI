@@ -5,10 +5,6 @@ ConstantBuffer<Camera> gCamera : register(b0);
 StructuredBuffer<BoxData3D> gInstanceData : register(t0);
 StructuredBuffer<PrimitiveMaterialData3D> gMaterialData : register(t1);
 
-// ───────────────────────────────────────────────
-// ローカル定数テーブル
-// ───────────────────────────────────────────────
-
 // 8 corner 頂点インデックス → 6 面 × 4 corner への展開
 static const uint kCornerLUT[6][4] =
 {
@@ -60,7 +56,7 @@ void main(
     in payload ASPayload payload,
     uint3 dispatchThreadID : SV_DispatchThreadID,
     out indices uint3 tris[12],
-    out vertices MeshOutput verts[24]
+    out vertices MeshOutputWithAlpha verts[24]
 )
 {
     uint instanceID = payload.instanceID;
@@ -94,8 +90,6 @@ void main(
             float2 uv = mul(float4(QuadUVs[corner], 0.0f, 1.0f), mat.uvMatrix).xy;
 
             verts[outIdx].position = clipPos;
-            verts[outIdx].worldPosition = worldPos;
-            verts[outIdx].normal = worldN;
             verts[outIdx].uv = uv;
             verts[outIdx].instanceIndex = instanceID;
         }
@@ -107,5 +101,5 @@ void main(
     {
         tris[i] = kTriLUT[i];
     }
-        
 }
+        
