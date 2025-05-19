@@ -614,6 +614,8 @@ void MAGISYSTEM::Update() {
 	triangleDrawer3D_->Update();
 	// 3D板ポリ描画クラスの更新
 	planeDrawer3D_->Update();
+	// 3Dボックス描画クラスの更新
+	boxDrawer3D_->Update();
 	// 3D球体描画クラスの更新
 	sphereDrawer3D_->Update();
 	// 3Dリング描画クラスの更新
@@ -686,6 +688,7 @@ void MAGISYSTEM::Draw() {
 
 	triangleDrawer3D_->Draw(noneMode);
 	planeDrawer3D_->Draw(noneMode);
+	boxDrawer3D_->Draw(noneMode);
 	sphereDrawer3D_->Draw(noneMode);
 	ringDrawer3D_->Draw(noneMode);
 	cylinderDrawer3D_->Draw(noneMode);
@@ -715,6 +718,7 @@ void MAGISYSTEM::Draw() {
 		modelDrawerManager_->DrawAll(mode);
 		triangleDrawer3D_->Draw(mode);
 		planeDrawer3D_->Draw(mode);
+		boxDrawer3D_->Draw(mode);
 		sphereDrawer3D_->Draw(mode);
 		ringDrawer3D_->Draw(mode);
 		cylinderDrawer3D_->Draw(mode);

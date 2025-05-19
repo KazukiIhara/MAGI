@@ -171,12 +171,8 @@ inline void SampleScene<Data>::Initialize() {
 	worldTransform_[1].translate_.x = 1.5f;
 	worldTransform_[1].translate_.y = 1.0f;
 
-	worldTransform_[2].rotate_.x = 0.7f;
-	worldTransform_[2].rotate_.y = 0.4f;
-
-	worldTransform_[2].translate_.x = 1.0f;
+	worldTransform_[2].translate_.x = -2.0f;
 	worldTransform_[2].translate_.y = 1.0f;
-	worldTransform_[2].translate_.z = 2.0f;
 
 }
 
