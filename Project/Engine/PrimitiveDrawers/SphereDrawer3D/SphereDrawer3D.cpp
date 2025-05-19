@@ -16,12 +16,14 @@
 using namespace MAGIUtility;
 using namespace MAGIMath;
 
-SphereDrawer3D::SphereDrawer3D(DXGI* dxgi, DirectXCommand* directXCommand, SRVUAVManager* srvUavManager, GraphicsPipelineManager* graphicsPipelineManager, Camera3DManager* camera3DManager) {
+SphereDrawer3D::SphereDrawer3D(DXGI* dxgi, DirectXCommand* directXCommand, SRVUAVManager* srvUavManager, GraphicsPipelineManager* graphicsPipelineManager, ShadowPipelineManager* shadowPipelineManager, Camera3DManager* camera3DManager, LightManager* lightManager) {
 	SetDXGI(dxgi);
 	SetDirectXCommand(directXCommand);
 	SetSRVUAVManager(srvUavManager);
 	SetGraphicsPipelineManager(graphicsPipelineManager);
+	SetShadowPipelineManager(shadowPipelineManager);
 	SetCamera3DManager(camera3DManager);
+	SetLightManager(lightManager);
 
 	for (uint32_t i = 0; i < kBlendModeNum; ++i) {
 		instancingResource_[i] = dxgi_->CreateBufferResource(sizeof(SphereData3DForGPU) * PrimitiveCommonConst::NumMaxInstance);
@@ -78,6 +80,26 @@ void SphereDrawer3D::Draw(BlendMode mode) {
 	RootConstants rootConstants{};
 	rootConstants.baseInstanceIndex = 0;
 	commandList->SetGraphicsRoot32BitConstants(4, 1, &rootConstants, 0);
+
+	commandList->DispatchMesh(1, instanceCount_[i], 1);
+}
+
+void SphereDrawer3D::DrawShadow(BlendMode mode) {
+	const uint32_t i = static_cast<uint32_t>(mode);
+	if (instanceCount_[i] == 0) return;
+
+	ID3D12GraphicsCommandList6* commandList = directXCommand_->GetList6();
+
+	commandList->SetGraphicsRootSignature(shadowPipelineManager_->GetRootSignature(ShadowPipelineStateType::Sphere));
+	commandList->SetPipelineState(shadowPipelineManager_->GetPipelineState(ShadowPipelineStateType::Sphere));
+
+	lightManager_->TransferDirectionalLightCamera(0);
+
+	commandList->SetGraphicsRootDescriptorTable(1, srvUavManager_->GetDescriptorHandleGPU(instancingSrvIndex_[i]));
+
+	RootConstants rootConstants{};
+	rootConstants.baseInstanceIndex = 0;
+	commandList->SetGraphicsRoot32BitConstants(2, 1, &rootConstants, 0);
 
 	commandList->DispatchMesh(1, instanceCount_[i], 1);
 }
@@ -139,7 +161,17 @@ void SphereDrawer3D::SetGraphicsPipelineManager(GraphicsPipelineManager* graphic
 	graphicsPipelineManager_ = graphicsPipelineManager;
 }
 
+void SphereDrawer3D::SetShadowPipelineManager(ShadowPipelineManager* shadowPipelineManager) {
+	assert(shadowPipelineManager);
+	shadowPipelineManager_ = shadowPipelineManager;
+}
+
 void SphereDrawer3D::SetCamera3DManager(Camera3DManager* camera3DManager) {
 	assert(camera3DManager);
 	camera3DManager_ = camera3DManager;
+}
+
+void SphereDrawer3D::SetLightManager(LightManager* lightManager) {
+	assert(lightManager);
+	lightManager_ = lightManager;
 }
