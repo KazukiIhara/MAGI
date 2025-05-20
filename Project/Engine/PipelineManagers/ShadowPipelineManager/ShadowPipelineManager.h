@@ -14,6 +14,7 @@
 
 // Triangle
 // Plane
+#include "ShadowPipelines/BoxShadowPipeline/BoxShadowPipeline.h"
 #include "ShadowPipelines/SphereShadowPipeline/SphereShadowPipeline.h"
 // Ring
 #include "ShadowPipelines/CylinderShadowPipeline/CylinderShadowPipeline.h"
@@ -51,6 +52,8 @@ private:
 	// グラフィックスパイプライン
 	ComPtr<ID3D12PipelineState> shadowPipelineStates_[kShadowPipelineStateNum];
 private:
+	// ボックス用のシャドウパイプライン
+	std::unique_ptr<BoxShadowPipeline> boxShadowPipeline_ = nullptr;
 	// 球体用のシャドウパイプライン
 	std::unique_ptr<SphereShadowPipeline> sphereShadowPipeline_ = nullptr;
 	// シリンダー用のシャドウパイプライン

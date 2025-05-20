@@ -22,12 +22,17 @@ void ShadowPipelineManager::Initialize(DXGI* dxgi, ShaderCompiler* shaderCompile
 	// Triangle
 	// Plane
 
+	// Boxのシャドウパイプラインを生成、初期化
+	boxShadowPipeline_ = std::make_unique<BoxShadowPipeline>(dxgi, shaderCompiler);
+	boxShadowPipeline_->Initialize();
+	SetRootSignature(ShadowPipelineStateType::Box);
+	SetPipelineState(ShadowPipelineStateType::Box);
+
 	// Sphereのシャドウパイプラインを生成、初期化
 	sphereShadowPipeline_ = std::make_unique<SphereShadowPipeline>(dxgi, shaderCompiler);
 	sphereShadowPipeline_->Initialize();
 	SetRootSignature(ShadowPipelineStateType::Sphere);
 	SetPipelineState(ShadowPipelineStateType::Sphere);
-
 
 	// Ring
 
@@ -54,6 +59,9 @@ ID3D12PipelineState* ShadowPipelineManager::GetPipelineState(ShadowPipelineState
 
 void ShadowPipelineManager::SetRootSignature(ShadowPipelineStateType pipelineState) {
 	switch (pipelineState) {
+	case ShadowPipelineStateType::Box:
+		rootSignatures_[static_cast<uint32_t>(pipelineState)] = boxShadowPipeline_->GetRootSignature();
+		break;
 	case ShadowPipelineStateType::Sphere:
 		rootSignatures_[static_cast<uint32_t>(pipelineState)] = sphereShadowPipeline_->GetRootSignature();
 		break;
@@ -68,6 +76,9 @@ void ShadowPipelineManager::SetRootSignature(ShadowPipelineStateType pipelineSta
 
 void ShadowPipelineManager::SetPipelineState(ShadowPipelineStateType pipelineState) {
 	switch (pipelineState) {
+	case ShadowPipelineStateType::Box:
+		shadowPipelineStates_[static_cast<uint32_t>(pipelineState)] = boxShadowPipeline_->GetPipelineState();
+		break;
 	case ShadowPipelineStateType::Sphere:
 		shadowPipelineStates_[static_cast<uint32_t>(pipelineState)] = sphereShadowPipeline_->GetPipelineState();
 		break;
