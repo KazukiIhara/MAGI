@@ -85,8 +85,8 @@ void BoxDrawer3D::DrawShadow(BlendMode mode) {
 
 	ID3D12GraphicsCommandList6* commandList = directXCommand_->GetList6();
 
-	commandList->SetGraphicsRootSignature(shadowPipelineManager_->GetRootSignature(ShadowPipelineStateType::Sphere));
-	commandList->SetPipelineState(shadowPipelineManager_->GetPipelineState(ShadowPipelineStateType::Sphere));
+	commandList->SetGraphicsRootSignature(shadowPipelineManager_->GetRootSignature(ShadowPipelineStateType::Box));
+	commandList->SetPipelineState(shadowPipelineManager_->GetPipelineState(ShadowPipelineStateType::Box));
 
 	lightManager_->TransferDirectionalLightCamera(0);
 
