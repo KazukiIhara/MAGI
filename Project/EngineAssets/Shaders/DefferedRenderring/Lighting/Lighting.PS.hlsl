@@ -110,22 +110,15 @@ PixelShaderOutput main(VertexShaderOutput input)
     // 
     {      
         float3 directionalLightDiffuse = ComputeDirectionalLight(normal);
-        totalDiffuse += directionalLightDiffuse;
-    }
-    
-    // 
-    // DirectionalLightShadow
-    // 
-    {
         float directionalLightShadow = ComputeDirectionalLightShadow(position.xyz, normal);
-        totalDiffuse *= directionalLightShadow;
+        totalDiffuse += directionalLightDiffuse * directionalLightShadow;
     }
     
     //
     // Environment
     //
     {
-        float3 environmentDiffuse = ComputeEnvironment(position.xyz, normal, 0.0f);
+        float3 environmentDiffuse = ComputeEnvironment(position.xyz, normal, 0.04f);
         totalDiffuse += environmentDiffuse;
     }
      

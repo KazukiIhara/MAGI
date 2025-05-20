@@ -15,7 +15,7 @@
 #include "RenderTextures/GBuffers/GBufferPositionRenderTexture/GBufferPositionRenderTexture.h"
 
 // シャドウマップ用の深度テクスチャ
-#include "ShadowDepthTexture/ShadowDepthTexture.h"
+#include "DepthTextures/ShadowDepthTexture/ShadowDepthTexture.h"
 
 // 前方宣言
 class DXGI;

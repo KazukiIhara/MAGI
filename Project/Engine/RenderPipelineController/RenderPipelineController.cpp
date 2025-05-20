@@ -135,6 +135,9 @@ void RenderController::PostRenderForGBuffers() {
 	gBufferAlbedoRenderTexture_->TransitionToRead();
 	gBufferNormalRenderTexture_->TransitionToRead();
 	gBufferPositionRenderTexture_->TransitionToRead();
+
+	// 深度バッファをSRV用に遷移
+	depthStencil_->TransitionToRead();
 }
 
 void RenderController::LightingPass() {
@@ -276,6 +279,8 @@ void RenderController::EndFrame() {
 	gBufferAlbedoRenderTexture_->TransitionToWrite();
 	gBufferNormalRenderTexture_->TransitionToWrite();
 	gBufferPositionRenderTexture_->TransitionToWrite();
+
+	depthStencil_->TransitionToWrite();
 
 	sceneRenderTexture_->TransitionToWrite();
 	finalRenderTexture_->TransitionToWrite();

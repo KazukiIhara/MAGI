@@ -154,7 +154,7 @@ void MAGISYSTEM::Initialize() {
 	// Scissor
 	scissorRect_ = std::make_unique<ScissorRect>(directXCommand_.get());
 	// DepthStencil
-	depthStencil_ = std::make_unique<DepthStencil>(dxgi_.get(), directXCommand_.get(), dsvManager_.get());
+	depthStencil_ = std::make_unique<DepthStencil>(dxgi_.get(), directXCommand_.get(), dsvManager_.get(),srvuavManager_.get());
 	// SwapChain
 	swapChain_ = std::make_unique<SwapChain>(windowApp_.get(), dxgi_.get(), viewport_.get(), scissorRect_.get(), directXCommand_.get(), rtvManager_.get());
 

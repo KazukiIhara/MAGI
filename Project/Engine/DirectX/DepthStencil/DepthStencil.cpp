@@ -8,9 +8,10 @@
 #include "DirectX/DXGI/DXGI.h"
 #include "DirectX/DirectXCommand/DirectXCommand.h"
 #include "ViewManagers/DSVManager/DSVManager.h"
+#include "ViewManagers/SRVUAVManager/SRVUAVManager.h"
 
-DepthStencil::DepthStencil(DXGI* dxgi, DirectXCommand* command, DSVManager* dsvManager) {
-	Initialize(dxgi, command, dsvManager);
+DepthStencil::DepthStencil(DXGI* dxgi, DirectXCommand* command, DSVManager* dsvManager, SRVUAVManager* srvUavManager) {
+	Initialize(dxgi, command, dsvManager, srvUavManager);
 	Logger::Log("DepthStencil Initialize\n");
 }
 
@@ -18,15 +19,17 @@ DepthStencil::~DepthStencil() {
 	Logger::Log("DepthStencil Finalize\n");
 }
 
-void DepthStencil::Initialize(DXGI* dxgi, DirectXCommand* command, DSVManager* dsvManager) {
+void DepthStencil::Initialize(DXGI* dxgi, DirectXCommand* command, DSVManager* dsvManager, SRVUAVManager* srvUavManager) {
 	// DXGIのセット
 	SetDXGI(dxgi);
 	// コマンドをセット
 	SetCommand(command);
 	// DSVマネージャをセット
 	SetDSVManager(dsvManager);
+	// SRVマネージャをセット
+	SetSRVUAVManager(srvUavManager);
 	// DepthStencilViewを作成
-	CreateDepthStencilView();
+	CreateResource();
 }
 
 void DepthStencil::ClearDepthView() {
@@ -41,25 +44,72 @@ void DepthStencil::ClearDepthView() {
 	);
 }
 
+void DepthStencil::TransitionToWrite() {
+	if (currentResourceState_ != D3D12_RESOURCE_STATE_DEPTH_WRITE) {
+		D3D12_RESOURCE_BARRIER barrier = {};
+		barrier.Type = D3D12_RESOURCE_BARRIER_TYPE_TRANSITION;
+		barrier.Transition.pResource = resource_.Get();
+		barrier.Transition.StateBefore = currentResourceState_;
+		barrier.Transition.StateAfter = D3D12_RESOURCE_STATE_DEPTH_WRITE;
+		barrier.Transition.Subresource = D3D12_RESOURCE_BARRIER_ALL_SUBRESOURCES;
+		directXCommand_->GetList()->ResourceBarrier(1, &barrier);
+
+		currentResourceState_ = D3D12_RESOURCE_STATE_DEPTH_WRITE;
+	}
+}
+
+void DepthStencil::TransitionToRead() {
+	// DEPTH_READ | PIXEL_SHADER_RESOURCE の複合ビットへ
+	const auto desired =
+		D3D12_RESOURCE_STATE_DEPTH_READ |
+		D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE;
+
+	if (currentResourceState_ != desired) {
+		D3D12_RESOURCE_BARRIER barrier = {};
+		barrier.Type = D3D12_RESOURCE_BARRIER_TYPE_TRANSITION;
+		barrier.Transition.pResource = resource_.Get();
+		barrier.Transition.StateBefore = currentResourceState_;
+		barrier.Transition.StateAfter = desired;
+		barrier.Transition.Subresource = D3D12_RESOURCE_BARRIER_ALL_SUBRESOURCES;
+		directXCommand_->GetList()->ResourceBarrier(1, &barrier);
+		currentResourceState_ = desired;
+	}
+}
+
 D3D12_CPU_DESCRIPTOR_HANDLE DepthStencil::GetDepthStencilResorceCPUHandle() {
 	return dsvManager_->GetDescriptorHandleCPU(dsvIndex_);
 }
 
-void DepthStencil::CreateDepthStencilView() {
+D3D12_CPU_DESCRIPTOR_HANDLE DepthStencil::GetSrvResourceCPUHandle() {
+	return srvUavManager_->GetDescriptorHandleCPU(srvIndex_);
+}
+
+void DepthStencil::CreateResource() {
 	// DepthStencilTextureをウィンドウのサイズで作成
-	depthStencilResource_ = dxgi_->CreateDepthStencilTextureResource(
+	resource_ = dxgi_->CreateDepthStencilTextureResource(
 		WindowApp::kClientWidth,
 		WindowApp::kClientHeight,
-		DXGI_FORMAT_D24_UNORM_S8_UINT
+		DXGI_FORMAT_D32_FLOAT
 	);
 	// インデックス割り当て
 	dsvIndex_ = dsvManager_->Allocate();
+	srvIndex_ = srvUavManager_->Allocate();
+
 	// dsv作成
 	dsvManager_->CreateDSVTexture2d(
 		dsvIndex_,
-		depthStencilResource_.Get(),
-		DXGI_FORMAT_D24_UNORM_S8_UINT
+		resource_.Get(),
+		DXGI_FORMAT_D32_FLOAT
 	);
+
+	// srv作成
+	srvUavManager_->CreateSrvTexture2d(
+		srvIndex_,
+		resource_.Get(),
+		DXGI_FORMAT_R32_FLOAT, 1
+	);
+
+	currentResourceState_ = D3D12_RESOURCE_STATE_DEPTH_WRITE;
 }
 
 void DepthStencil::SetDXGI(DXGI* dxgi) {
@@ -75,4 +125,9 @@ void DepthStencil::SetCommand(DirectXCommand* command) {
 void DepthStencil::SetDSVManager(DSVManager* dsvManager) {
 	assert(dsvManager);
 	dsvManager_ = dsvManager;
+}
+
+void DepthStencil::SetSRVUAVManager(SRVUAVManager* srvUavManager) {
+	assert(srvUavManager);
+	srvUavManager_ = srvUavManager;
 }

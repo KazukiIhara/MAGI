@@ -107,7 +107,7 @@ void Line3DGraphicsPipeline::CreateGraphicsPipelineObject() {
 
 	// DepthStencilの設定
 	graphicsPipelineStateDesc.DepthStencilState = DepthStecilDescSetting();
-	graphicsPipelineStateDesc.DSVFormat = DXGI_FORMAT_D24_UNORM_S8_UINT;
+	graphicsPipelineStateDesc.DSVFormat = DXGI_FORMAT_D32_FLOAT;
 
 	// 実際に生成
 	for (uint32_t i = 0; i < kBlendModeNum; i++) {

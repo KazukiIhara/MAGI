@@ -31,7 +31,6 @@ private:
 	void CreateResource();
 
 private:
-
 	ComPtr<ID3D12Resource> resource_;
 	D3D12_RESOURCE_STATES currentResourceState_ = D3D12_RESOURCE_STATE_DEPTH_WRITE;
 
