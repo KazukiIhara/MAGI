@@ -25,8 +25,10 @@ public:
 
 	// デプスステンシルリソースのCPUハンドルの取得
 	D3D12_CPU_DESCRIPTOR_HANDLE GetDepthStencilResorceCPUHandle();
-	// SRVのCPUハンドルの取得
-	D3D12_CPU_DESCRIPTOR_HANDLE GetSrvResourceCPUHandle();
+	
+	// Srvインデックスを取得
+	uint32_t GetSrvIndex()const;
+
 private:
 	// デプスステンシルリソースの作成
 	void CreateResource();

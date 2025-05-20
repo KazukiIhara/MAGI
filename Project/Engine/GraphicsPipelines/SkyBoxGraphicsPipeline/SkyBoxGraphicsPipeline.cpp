@@ -115,7 +115,7 @@ void SkyBoxGraphicsPipeline::CreateGraphicsPipelineObject() {
 	graphicsPipelineStateDesc.SampleMask = D3D12_DEFAULT_SAMPLE_MASK;
 	// DepthStencilの設定
 	graphicsPipelineStateDesc.DepthStencilState = DepthStecilDescSetting();
-	graphicsPipelineStateDesc.DSVFormat = DXGI_FORMAT_D32_FLOAT;
+	graphicsPipelineStateDesc.DSVFormat = DXGI_FORMAT_D24_UNORM_S8_UINT;
 
 	// 実際に生成
 	for (uint32_t i = 0; i < kBlendModeNum; i++) {

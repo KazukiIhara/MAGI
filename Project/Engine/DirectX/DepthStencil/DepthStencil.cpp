@@ -80,8 +80,8 @@ D3D12_CPU_DESCRIPTOR_HANDLE DepthStencil::GetDepthStencilResorceCPUHandle() {
 	return dsvManager_->GetDescriptorHandleCPU(dsvIndex_);
 }
 
-D3D12_CPU_DESCRIPTOR_HANDLE DepthStencil::GetSrvResourceCPUHandle() {
-	return srvUavManager_->GetDescriptorHandleCPU(srvIndex_);
+uint32_t DepthStencil::GetSrvIndex() const {
+	return srvIndex_;
 }
 
 void DepthStencil::CreateResource() {
@@ -89,7 +89,8 @@ void DepthStencil::CreateResource() {
 	resource_ = dxgi_->CreateDepthStencilTextureResource(
 		WindowApp::kClientWidth,
 		WindowApp::kClientHeight,
-		DXGI_FORMAT_D32_FLOAT
+		DXGI_FORMAT_R24G8_TYPELESS,
+		DXGI_FORMAT_D24_UNORM_S8_UINT
 	);
 	// インデックス割り当て
 	dsvIndex_ = dsvManager_->Allocate();
@@ -99,14 +100,14 @@ void DepthStencil::CreateResource() {
 	dsvManager_->CreateDSVTexture2d(
 		dsvIndex_,
 		resource_.Get(),
-		DXGI_FORMAT_D32_FLOAT
+		DXGI_FORMAT_D24_UNORM_S8_UINT
 	);
 
 	// srv作成
 	srvUavManager_->CreateSrvTexture2d(
 		srvIndex_,
 		resource_.Get(),
-		DXGI_FORMAT_R32_FLOAT, 1
+		DXGI_FORMAT_R24_UNORM_X8_TYPELESS, 1
 	);
 
 	currentResourceState_ = D3D12_RESOURCE_STATE_DEPTH_WRITE;

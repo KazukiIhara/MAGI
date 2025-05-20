@@ -24,6 +24,8 @@ public:
 	ComPtr<ID3D12Resource> CreateBufferResource(size_t sizeInBytes, bool isforUAV = false);
 	// デプスステンシルリソースの作成
 	ComPtr<ID3D12Resource> CreateDepthStencilTextureResource(int32_t width, int32_t height, DXGI_FORMAT format);
+	// デプスステンシルリソースの作成
+	ComPtr<ID3D12Resource> CreateDepthStencilTextureResource(int32_t width, int32_t height, DXGI_FORMAT format, DXGI_FORMAT clearFormat);
 
 	// DXGIデバイスの取得
 	ID3D12Device* GetDevice();
