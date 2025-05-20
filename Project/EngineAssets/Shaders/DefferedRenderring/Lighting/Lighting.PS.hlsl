@@ -48,7 +48,7 @@ float3 ComputeDirectionalLight(float3 normal)
 float ComputeDirectionalLightShadow(float3 worldPos, float3 worldNormal)
 {
     // ライト空間投影
-    float4 lsPos = mul(float4(worldPos, 1), gLightCamera.viewProjection);
+    float4 lsPos = mul(float4(worldPos, 1.0f), gLightCamera.viewProjection);
     lsPos /= lsPos.w;
 
     // UV 変換（NDC→[0,1]）
@@ -58,7 +58,7 @@ float ComputeDirectionalLightShadow(float3 worldPos, float3 worldNormal)
     float3 N = normalize(worldNormal);
     float3 L = normalize(-gDirectionalLight.direction);
     float ndl = saturate(dot(N, L)); // [0,1]
-    float normalBias = NormalBiasScale * (1.0f - ndl);
+    float normalBias = ConstantBias + (1.0f - ndl) * SlopeBiasScale;
 
     // 増減バイアスを反映した深度参照値
     float depthRef = lsPos.z - normalBias;

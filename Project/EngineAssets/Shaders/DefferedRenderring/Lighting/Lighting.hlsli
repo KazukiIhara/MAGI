@@ -1,5 +1,6 @@
 
-static const float NormalBiasScale = 0.0005f;
+static const float ConstantBias = 0.0001f;
+static const float SlopeBiasScale = 0.0005f;
 
 struct VertexShaderOutput
 {
