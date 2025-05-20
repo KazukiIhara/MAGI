@@ -4,7 +4,9 @@
 #include "DirectX/DirectXCommand/DirectXCommand.h"
 #include "ViewManagers/SRVUAVManager/SRVUAVManager.h"
 #include "PipelineManagers/GraphicsPipelineManager/GraphicsPipelineManager.h"
+#include "PipelineManagers/ShadowPipelineManager/ShadowPipelineManager.h"
 #include "ObjectManagers/Camera3DManager/Camera3DManager.h"
+#include "ObjectManagers/LightManager/LightManager.h"
 
 #include "Logger/Logger.h"
 #include "MAGIUitility/MAGIUtility.h"

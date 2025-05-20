@@ -1,4 +1,4 @@
-#include "SphereShadowPipeline.h"
+#include "BoxShadowPipeline.h"
 
 #include <cassert>
 
@@ -6,11 +6,11 @@
 #include "DirectX/DXGI/DXGI.h"
 #include "DirectX/ShaderCompiler/ShaderCompiler.h"
 
-SphereShadowPipeline::SphereShadowPipeline(DXGI* dxgi, ShaderCompiler* shaderCompiler)
+BoxShadowPipeline::BoxShadowPipeline(DXGI* dxgi, ShaderCompiler* shaderCompiler)
 	:BaseShadowPipeline(dxgi, shaderCompiler) {
 }
 
-void SphereShadowPipeline::CreateRootSignature() {
+void BoxShadowPipeline::CreateRootSignature() {
 	HRESULT hr;
 
 	// Descriptor Ranges
@@ -60,11 +60,11 @@ void SphereShadowPipeline::CreateRootSignature() {
 	assert(SUCCEEDED(hr));
 }
 
-void SphereShadowPipeline::CompileShaders() {
-	amplificationShaderBlob_ = shaderCompiler_->CompileShader(L"EngineAssets/Shaders/Graphics/Sphere3D/Sphere3D.AS.hlsl", L"as_6_5");
+void BoxShadowPipeline::CompileShaders() {
+	amplificationShaderBlob_ = shaderCompiler_->CompileShader(L"EngineAssets/Shaders/Graphics/Box3D/Box3D.AS.hlsl", L"as_6_5");
 	assert(amplificationShaderBlob_);
 
-	meshShaderBlob_ = shaderCompiler_->CompileShader(L"EngineAssets/Shaders/Graphics/Sphere3D/Sphere3DShadow.MS.hlsl", L"ms_6_5");
+	meshShaderBlob_ = shaderCompiler_->CompileShader(L"EngineAssets/Shaders/Graphics/Box3D/Box3DShadow.MS.hlsl", L"ms_6_5");
 	assert(meshShaderBlob_);
 
 	pixelShaderBlob_ = shaderCompiler_->CompileShader(L"EngineAssets/Shaders/Graphics/Primitive3D/Primitive3DShadow.PS.hlsl", L"ps_6_5");

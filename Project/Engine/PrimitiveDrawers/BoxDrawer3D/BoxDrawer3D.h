@@ -16,7 +16,9 @@ class DXGI;
 class DirectXCommand;
 class SRVUAVManager;
 class GraphicsPipelineManager;
+class ShadowPipelineManager;
 class Camera3DManager;
+class LightManager;
 
 class BoxDrawer3D {
 public:
@@ -25,12 +27,15 @@ public:
 		DirectXCommand* directXCommand,
 		SRVUAVManager* srvUavManager,
 		GraphicsPipelineManager* graphicsPipelineManager,
-		Camera3DManager* camera3DManager
+		ShadowPipelineManager* shadowPipelineManager,
+		Camera3DManager* camera3DManager,
+		LightManager* lightManager
 	);
 	~BoxDrawer3D();
 
 	void Update();
 	void Draw(BlendMode mode);
+	void DrawShadow(BlendMode mode);
 
 	void AddBox(
 		const Matrix4x4& worldMatrix,
@@ -43,7 +48,9 @@ private:
 	void SetDirectXCommand(DirectXCommand* directXCommand);
 	void SetSRVUAVManager(SRVUAVManager* srvUavManager);
 	void SetGraphicsPipelineManager(GraphicsPipelineManager* graphicsPipelineManager);
+	void SetShadowPipelineManager(ShadowPipelineManager* shadowPipelineManager);
 	void SetCamera3DManager(Camera3DManager* camera3DManager);
+	void SetLightManager(LightManager* lightManager);
 
 private:
 	// instancing描画用のリソース
@@ -72,5 +79,7 @@ private:
 	DirectXCommand* directXCommand_ = nullptr;
 	SRVUAVManager* srvUavManager_ = nullptr;
 	GraphicsPipelineManager* graphicsPipelineManager_ = nullptr;
+	ShadowPipelineManager* shadowPipelineManager_ = nullptr;
 	Camera3DManager* camera3DManager_ = nullptr;
+	LightManager* lightManager_ = nullptr;
 };

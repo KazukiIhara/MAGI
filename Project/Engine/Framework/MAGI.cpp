@@ -213,7 +213,7 @@ void MAGISYSTEM::Initialize() {
 	// PlaneDrawer3D
 	planeDrawer3D_ = std::make_unique<PlaneDrawer3D>(dxgi_.get(), directXCommand_.get(), srvuavManager_.get(), graphicsPipelineManager_.get(), camera3DManager_.get());
 	// BoxDrawer3D
-	boxDrawer3D_ = std::make_unique<BoxDrawer3D>(dxgi_.get(), directXCommand_.get(), srvuavManager_.get(), graphicsPipelineManager_.get(), camera3DManager_.get());
+	boxDrawer3D_ = std::make_unique<BoxDrawer3D>(dxgi_.get(), directXCommand_.get(), srvuavManager_.get(), graphicsPipelineManager_.get(),shadowPipelineManager_.get(), camera3DManager_.get(),lightManager_.get());
 	// SphereDrawer3D
 	sphereDrawer3D_ = std::make_unique<SphereDrawer3D>(dxgi_.get(), directXCommand_.get(), srvuavManager_.get(), graphicsPipelineManager_.get(), shadowPipelineManager_.get(), camera3DManager_.get(), lightManager_.get());
 	// RingDrawer3D
@@ -668,6 +668,7 @@ void MAGISYSTEM::Draw() {
 	renderController_->PreShadowRender();
 
 	// シャドウ用にオブジェクトの描画
+	boxDrawer3D_->DrawShadow(BlendMode::None);
 	sphereDrawer3D_->DrawShadow(BlendMode::None);
 	cylinderDrawer3D_->DrawShadow(BlendMode::None);
 	modelDrawerManager_->DrawShadowAll(BlendMode::None);

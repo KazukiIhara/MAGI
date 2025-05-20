@@ -4,7 +4,9 @@
 #include "DirectX/DirectXCommand/DirectXCommand.h"
 #include "ViewManagers/SRVUAVManager/SRVUAVManager.h"
 #include "PipelineManagers/GraphicsPipelineManager/GraphicsPipelineManager.h"
+#include "PipelineManagers/ShadowPipelineManager/ShadowPipelineManager.h"
 #include "ObjectManagers/Camera3DManager/Camera3DManager.h"
+#include "ObjectManagers/LightManager/LightManager.h"
 
 #include "Logger/Logger.h"
 #include "MAGIUitility/MAGIUtility.h"
@@ -16,18 +18,14 @@
 using namespace MAGIUtility;
 using namespace MAGIMath;
 
-BoxDrawer3D::BoxDrawer3D(
-	DXGI* dxgi,
-	DirectXCommand* directXCommand,
-	SRVUAVManager* srvUavManager,
-	GraphicsPipelineManager* graphicsPipelineManager,
-	Camera3DManager* camera3DManager
-) {
+BoxDrawer3D::BoxDrawer3D(DXGI* dxgi, DirectXCommand* directXCommand, SRVUAVManager* srvUavManager, GraphicsPipelineManager* graphicsPipelineManager, ShadowPipelineManager* shadowPipelineManager, Camera3DManager* camera3DManager, LightManager* lightManager) {
 	SetDXGI(dxgi);
 	SetDirectXCommand(directXCommand);
 	SetSRVUAVManager(srvUavManager);
 	SetGraphicsPipelineManager(graphicsPipelineManager);
+	SetShadowPipelineManager(shadowPipelineManager);
 	SetCamera3DManager(camera3DManager);
+	SetLightManager(lightManager);
 	for (uint32_t i = 0; i < kBlendModeNum; ++i) {
 		// リソース作成
 		instancingResource_[i] = dxgi_->CreateBufferResource(sizeof(BoxData3DForGPU) * PrimitiveCommonConst::NumMaxInstance);
@@ -44,7 +42,6 @@ BoxDrawer3D::BoxDrawer3D(
 		instanceCount_[i] = 0;
 
 	}
-
 	Logger::Log("BoxDrawer3D Initialize\n");
 }
 
@@ -82,6 +79,26 @@ void BoxDrawer3D::Draw(BlendMode mode) {
 	commandList->DispatchMesh(1, instanceCount_[i], 1);
 }
 
+void BoxDrawer3D::DrawShadow(BlendMode mode) {
+	const uint32_t i = static_cast<uint32_t>(mode);
+	if (instanceCount_[i] == 0) return;
+
+	ID3D12GraphicsCommandList6* commandList = directXCommand_->GetList6();
+
+	commandList->SetGraphicsRootSignature(shadowPipelineManager_->GetRootSignature(ShadowPipelineStateType::Box));
+	commandList->SetPipelineState(shadowPipelineManager_->GetPipelineState(ShadowPipelineStateType::Box));
+
+	lightManager_->TransferDirectionalLightCamera(0);
+
+	commandList->SetGraphicsRootDescriptorTable(1, srvUavManager_->GetDescriptorHandleGPU(instancingSrvIndex_[i]));
+
+	RootConstants rootConstants{};
+	rootConstants.baseInstanceIndex = 0;
+	commandList->SetGraphicsRoot32BitConstants(2, 1, &rootConstants, 0);
+
+	commandList->DispatchMesh(1, instanceCount_[i], 1);
+}
+
 void BoxDrawer3D::AddBox(const Matrix4x4& worldMatrix, const BoxData3D& data, const PrimitiveMaterialData3D& material) {
 	const uint32_t blendIndex = static_cast<uint32_t>(material.blendMode);
 
@@ -108,7 +125,7 @@ void BoxDrawer3D::AddBox(const Matrix4x4& worldMatrix, const BoxData3D& data, co
 			Vector4(data.verticesOffsets[1].x, data.verticesOffsets[1].y, data.verticesOffsets[1].z, 1.0f),
 			Vector4(data.verticesOffsets[2].x, data.verticesOffsets[2].y, data.verticesOffsets[2].z, 1.0f),
 			Vector4(data.verticesOffsets[3].x, data.verticesOffsets[3].y, data.verticesOffsets[3].z, 1.0f),
-			
+
 			Vector4(data.verticesOffsets[4].x, data.verticesOffsets[4].y, data.verticesOffsets[4].z, 1.0f),
 			Vector4(data.verticesOffsets[5].x, data.verticesOffsets[5].y, data.verticesOffsets[5].z, 1.0f),
 			Vector4(data.verticesOffsets[6].x, data.verticesOffsets[6].y, data.verticesOffsets[6].z, 1.0f),
@@ -148,7 +165,17 @@ void BoxDrawer3D::SetGraphicsPipelineManager(GraphicsPipelineManager* graphicsPi
 	graphicsPipelineManager_ = graphicsPipelineManager;
 }
 
+void BoxDrawer3D::SetShadowPipelineManager(ShadowPipelineManager* shadowPipelineManager) {
+	assert(shadowPipelineManager);
+	shadowPipelineManager_ = shadowPipelineManager;
+}
+
 void BoxDrawer3D::SetCamera3DManager(Camera3DManager* camera3DManager) {
 	assert(camera3DManager);
 	camera3DManager_ = camera3DManager;
+}
+
+void BoxDrawer3D::SetLightManager(LightManager* lightManager) {
+	assert(lightManager);
+	lightManager_ = lightManager;
 }

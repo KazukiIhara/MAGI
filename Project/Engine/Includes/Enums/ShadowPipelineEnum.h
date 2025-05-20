@@ -9,6 +9,7 @@
 enum class ShadowPipelineStateType {
 	Triangle,
 	Plane,
+	Box,
 	Sphere,
 	Ring,
 	Cylinder,
