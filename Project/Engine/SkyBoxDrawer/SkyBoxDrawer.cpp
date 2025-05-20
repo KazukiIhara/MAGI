@@ -63,7 +63,6 @@ SkyBoxDrawer::~SkyBoxDrawer() {
 }
 
 void SkyBoxDrawer::Update() {
-
 	Camera3D* currentCamera = camera3DManager_->GetCurrentCamera();
 	Vector3 translate = currentCamera->GetTranslate();
 	float farClipRange = currentCamera->GetFarClipRange() * 0.9f;

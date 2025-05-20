@@ -605,31 +605,6 @@ void MAGISYSTEM::Update() {
 	// コリジョンマネージャの更新処理
 	collisionManager_->Update();
 
-	// スプライト描画クラスの更新
-	spriteDrawer_->Update();
-
-	// 3Dライン描画クラスの更新
-	lineDrawer3D_->Update();
-	// 3D三角形描画クラスの更新
-	triangleDrawer3D_->Update();
-	// 3D板ポリ描画クラスの更新
-	planeDrawer3D_->Update();
-	// 3Dボックス描画クラスの更新
-	boxDrawer3D_->Update();
-	// 3D球体描画クラスの更新
-	sphereDrawer3D_->Update();
-	// 3Dリング描画クラスの更新
-	ringDrawer3D_->Update();
-	// 3Dシリンダー描画クラスの更新
-	cylinderDrawer3D_->Update();
-
-	// モデル描画クラスマネージャの更新
-	modelDrawerManager_->UpdateAll();
-
-	// 背景ボックス描画クラスの更新
-	skyBoxDrawer_->Update();
-
-
 	// Dataクラスフレーム終了処理
 	dataIO_->EndFrame();
 	// グローバルデータ
@@ -659,6 +634,33 @@ void MAGISYSTEM::Draw() {
 	//
 	sceneManager_->Draw();
 
+	//==============================================
+	// 描画クラスの更新
+	//==============================================
+
+	// スプライト描画クラスの更新
+	spriteDrawer_->Update();
+
+	// 3Dライン描画クラスの更新
+	lineDrawer3D_->Update();
+	// 3D三角形描画クラスの更新
+	triangleDrawer3D_->Update();
+	// 3D板ポリ描画クラスの更新
+	planeDrawer3D_->Update();
+	// 3Dボックス描画クラスの更新
+	boxDrawer3D_->Update();
+	// 3D球体描画クラスの更新
+	sphereDrawer3D_->Update();
+	// 3Dリング描画クラスの更新
+	ringDrawer3D_->Update();
+	// 3Dシリンダー描画クラスの更新
+	cylinderDrawer3D_->Update();
+
+	// モデル描画クラスマネージャの更新
+	modelDrawerManager_->UpdateAll();
+
+	// 背景ボックス描画クラスの更新
+	skyBoxDrawer_->Update();
 
 	//==============================================
 	// ShadowMap用のDepthのみの描画
