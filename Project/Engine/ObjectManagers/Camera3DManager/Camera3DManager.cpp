@@ -43,6 +43,18 @@ void Camera3DManager::TransferCurrentCamera(uint32_t rootParameterIndex) {
 	currentCamera_->TransferCamera(rootParameterIndex);
 }
 
+void Camera3DManager::TransferCurrentCameraInverse(uint32_t rootParameterIndex) {
+#ifdef _DEBUG
+	// デバッグカメラフラグがオンの場合デバッグカメラを転送
+	if (isDebugCamera_) {
+		debugCamera_->TransferCameraInv(rootParameterIndex);
+		return;
+	}
+#endif // _DEBUG
+	// 現在選択中のカメラを見つけて転送
+	currentCamera_->TransferCameraInv(rootParameterIndex);
+}
+
 std::string Camera3DManager::Add(std::unique_ptr<Camera3D> newCamera3D) {
 	// 新しいオブジェクト名を決定
 	std::string uniqueName = newCamera3D->name;

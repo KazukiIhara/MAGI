@@ -29,6 +29,8 @@ public:
 	// 定数バッファに転送
 	void TransferCamera(uint32_t rootParameterIndex);
 
+	void TransferCameraInv(uint32_t rootParameterIndex);
+
 	// 回転を送る
 	Vector3& GetRotate();
 	// 移動量を送る
@@ -54,6 +56,8 @@ protected:
 	const Vector3 kDefaultCameraTranslate_ = { 0.0f,2.0f,-3.0f };
 	// ワールドトランスフォーム
 	WorldTransform worldTransform_{};
+	// ビューマトリックス
+	Matrix4x4 viewMatrix_{};
 	// プロジェクション行列
 	Matrix4x4 projectionMatrix_{};
 	// ビュープロジェクションマトリックス
@@ -77,4 +81,10 @@ private:
 	ComPtr<ID3D12Resource> cameraResource_ = nullptr;
 	// Camera用データ
 	Camera3DForGPU* cameraData_ = nullptr;
+
+	// CameraInv用リソース
+	ComPtr<ID3D12Resource> cameraInvResource_ = nullptr;
+	// CameraInv用データ
+	Camera3DInverseForGPU* cameraInvData_ = nullptr;
+
 };

@@ -26,9 +26,9 @@ void Camera3D::Initialize() {
 	worldPosition = ExtractionWorldPos(worldTransform_.worldMatrix_);
 
 	// ビュー行列やらあれこれ
-	Matrix4x4 viewMatrix = Inverse(worldTransform_.worldMatrix_);
+	viewMatrix_ = Inverse(worldTransform_.worldMatrix_);
 	projectionMatrix_ = MakePerspectiveFovMatrix(fovY_, aspectRaito_, nearClipRange_, farClipRange_);
-	viewProjectionMatrix_ = viewMatrix * projectionMatrix_;
+	viewProjectionMatrix_ = viewMatrix_ * projectionMatrix_;
 
 	CreateCameraResource();
 	MapCameraData();
@@ -43,8 +43,8 @@ void Camera3D::Update() {
 void Camera3D::UpdateData() {
 	worldTransform_.Update();
 	worldPosition = ExtractionWorldPos(worldTransform_.worldMatrix_);
-	Matrix4x4 viewMatrix = Inverse(worldTransform_.worldMatrix_);
-	viewProjectionMatrix_ = viewMatrix * projectionMatrix_;
+	viewMatrix_ = Inverse(worldTransform_.worldMatrix_);
+	viewProjectionMatrix_ = viewMatrix_ * projectionMatrix_;
 
 	billboardMatrix_ = worldTransform_.worldMatrix_;
 	// 平行移動成分を削除
@@ -57,6 +57,10 @@ void Camera3D::UpdateData() {
 
 void Camera3D::TransferCamera(uint32_t rootParameterIndex) {
 	MAGISYSTEM::GetDirectXCommandList()->SetGraphicsRootConstantBufferView(rootParameterIndex, cameraResource_->GetGPUVirtualAddress());
+}
+
+void Camera3D::TransferCameraInv(uint32_t rootParameterIndex) {
+	MAGISYSTEM::GetDirectXCommandList()->SetGraphicsRootConstantBufferView(rootParameterIndex, cameraInvResource_->GetGPUVirtualAddress());
 }
 
 Vector3& Camera3D::GetRotate() {
@@ -77,15 +81,21 @@ float Camera3D::GetFarClipRange() const {
 
 void Camera3D::CreateCameraResource() {
 	cameraResource_ = MAGISYSTEM::CreateBufferResource(sizeof(Camera3DForGPU));
+	cameraInvResource_ = MAGISYSTEM::CreateBufferResource(sizeof(Camera3DInverseForGPU));
 }
 
 void Camera3D::MapCameraData() {
 	cameraData_ = nullptr;
 	cameraResource_->Map(0, nullptr, reinterpret_cast<void**>(&cameraData_));
+
+	cameraInvData_ = nullptr;
+	cameraInvResource_->Map(0, nullptr, reinterpret_cast<void**>(&cameraInvData_));
 	UpdateCameraData();
 }
 
 void Camera3D::UpdateCameraData() {
 	cameraData_->worldPosition = worldPosition;
 	cameraData_->viewProjection = viewProjectionMatrix_;
+
+	cameraInvData_->invViewProj = Inverse(viewProjectionMatrix_);
 }

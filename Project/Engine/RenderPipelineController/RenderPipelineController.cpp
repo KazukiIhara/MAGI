@@ -179,7 +179,6 @@ void RenderController::LightingPass() {
 
 	// 描画
 	commandList->DrawInstanced(3, 1, 0, 0);
-
 }
 
 void RenderController::PostSceneRender() {
@@ -203,16 +202,16 @@ void RenderController::ApplyPostEffect() {
 		auto& command = postEffectCommand_[i];
 
 		switch (command.postEffectType) {
-		case PostEffectType::Copy:
-		case PostEffectType::Grayscale:
-			DrawRenderTextureNoParamater(commandList, command.postEffectType);
-			break;
-		case PostEffectType::Vignette:
-		case PostEffectType::GaussianX:
-		case PostEffectType::GaussianY:
-		case PostEffectType::RadialBlur:
-			DrawRenderTextureWithParamater(commandList, command);
-			break;
+			case PostEffectType::Copy:
+			case PostEffectType::Grayscale:
+				DrawRenderTextureNoParamater(commandList, command.postEffectType);
+				break;
+			case PostEffectType::Vignette:
+			case PostEffectType::GaussianX:
+			case PostEffectType::GaussianY:
+			case PostEffectType::RadialBlur:
+				DrawRenderTextureWithParamater(commandList, command);
+				break;
 		}
 
 	}

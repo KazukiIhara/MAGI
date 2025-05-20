@@ -10,6 +10,10 @@ struct Camera3DForGPU {
 	float padding;
 };
 
+struct Camera3DInverseForGPU {
+	Matrix4x4 invViewProj;
+};
+
 // シェーダーに送る2Dカメラ情報
 struct Camera2DForGPU {
 	Matrix4x4 viewProjection;
