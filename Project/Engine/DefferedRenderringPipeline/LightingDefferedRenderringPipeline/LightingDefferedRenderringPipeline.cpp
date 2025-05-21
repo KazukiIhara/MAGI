@@ -28,11 +28,11 @@ void LightingDefferedRenderringPipeline::CreateRootSignature() {
 	rangeNormal.RangeType = D3D12_DESCRIPTOR_RANGE_TYPE_SRV;
 	rangeNormal.OffsetInDescriptorsFromTableStart = D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND;
 
-	D3D12_DESCRIPTOR_RANGE rangePosition{};
-	rangePosition.BaseShaderRegister = 2; // t2
-	rangePosition.NumDescriptors = 1;
-	rangePosition.RangeType = D3D12_DESCRIPTOR_RANGE_TYPE_SRV;
-	rangePosition.OffsetInDescriptorsFromTableStart = D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND;
+	D3D12_DESCRIPTOR_RANGE rangeDepthTex{};
+	rangeDepthTex.BaseShaderRegister = 2; // t2
+	rangeDepthTex.NumDescriptors = 1;
+	rangeDepthTex.RangeType = D3D12_DESCRIPTOR_RANGE_TYPE_SRV;
+	rangeDepthTex.OffsetInDescriptorsFromTableStart = D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND;
 
 	D3D12_DESCRIPTOR_RANGE rangeShadow{};
 	rangeShadow.BaseShaderRegister = 3; // t3
@@ -47,8 +47,9 @@ void LightingDefferedRenderringPipeline::CreateRootSignature() {
 	rangeEnvironmentTex.OffsetInDescriptorsFromTableStart = D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND;
 
 
+
 	// --- ルートパラメータ ---
-	D3D12_ROOT_PARAMETER rootParams[8]{};
+	D3D12_ROOT_PARAMETER rootParams[9]{};
 
 	// b0 : カメラ用CBV
 	rootParams[0].ParameterType = D3D12_ROOT_PARAMETER_TYPE_CBV;
@@ -65,38 +66,43 @@ void LightingDefferedRenderringPipeline::CreateRootSignature() {
 	rootParams[2].ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL;
 	rootParams[2].Descriptor.ShaderRegister = 2;
 
-	// t0 : AlbedoTexture
-	rootParams[3].ParameterType = D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE;
+	// b3 : InvCamera
+	rootParams[3].ParameterType = D3D12_ROOT_PARAMETER_TYPE_CBV;
 	rootParams[3].ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL;
-	rootParams[3].DescriptorTable.pDescriptorRanges = &rangeAlbedo;
-	rootParams[3].DescriptorTable.NumDescriptorRanges = 1;
+	rootParams[3].Descriptor.ShaderRegister = 3;
 
-	// t1 : NormalTexture
+	// t0 : AlbedoTexture
 	rootParams[4].ParameterType = D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE;
 	rootParams[4].ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL;
-	rootParams[4].DescriptorTable.pDescriptorRanges = &rangeNormal;
+	rootParams[4].DescriptorTable.pDescriptorRanges = &rangeAlbedo;
 	rootParams[4].DescriptorTable.NumDescriptorRanges = 1;
 
-	// t2 : PositionTexture
+	// t1 : NormalTexture
 	rootParams[5].ParameterType = D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE;
 	rootParams[5].ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL;
-	rootParams[5].DescriptorTable.pDescriptorRanges = &rangePosition;
+	rootParams[5].DescriptorTable.pDescriptorRanges = &rangeNormal;
 	rootParams[5].DescriptorTable.NumDescriptorRanges = 1;
 
-	// t3 : ShadowMapTex
+	// t2 : DepthTex
 	rootParams[6].ParameterType = D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE;
 	rootParams[6].ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL;
-	rootParams[6].DescriptorTable.pDescriptorRanges = &rangeShadow;
+	rootParams[6].DescriptorTable.pDescriptorRanges = &rangeDepthTex;
 	rootParams[6].DescriptorTable.NumDescriptorRanges = 1;
 
-	// t4 : EnvironmentTex
+	// t3 : ShadowMapTex
 	rootParams[7].ParameterType = D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE;
 	rootParams[7].ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL;
-	rootParams[7].DescriptorTable.pDescriptorRanges = &rangeEnvironmentTex;
+	rootParams[7].DescriptorTable.pDescriptorRanges = &rangeShadow;
 	rootParams[7].DescriptorTable.NumDescriptorRanges = 1;
 
+	// t4 : EnvironmentTex
+	rootParams[8].ParameterType = D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE;
+	rootParams[8].ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL;
+	rootParams[8].DescriptorTable.pDescriptorRanges = &rangeEnvironmentTex;
+	rootParams[8].DescriptorTable.NumDescriptorRanges = 1;
+
 	// --- Static Sampler ---
-	D3D12_STATIC_SAMPLER_DESC samplers[2]{};
+	D3D12_STATIC_SAMPLER_DESC samplers[3]{};
 
 	// s0 : 通常サンプラー
 	samplers[0].Filter = D3D12_FILTER_MIN_MAG_MIP_LINEAR;
@@ -121,6 +127,17 @@ void LightingDefferedRenderringPipeline::CreateRootSignature() {
 	samplers[1].ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL;
 	samplers[1].MinLOD = 0;
 	samplers[1].MaxLOD = D3D12_FLOAT32_MAX;
+
+	// s2 : ポイントフィルター用サンプラー
+	samplers[2].Filter = D3D12_FILTER_MIN_MAG_MIP_POINT;
+	samplers[2].AddressU = D3D12_TEXTURE_ADDRESS_MODE_WRAP;
+	samplers[2].AddressV = D3D12_TEXTURE_ADDRESS_MODE_WRAP;
+	samplers[2].AddressW = D3D12_TEXTURE_ADDRESS_MODE_WRAP;
+	samplers[2].ComparisonFunc = D3D12_COMPARISON_FUNC_NEVER;
+	samplers[2].ShaderRegister = 2;
+	samplers[2].RegisterSpace = 0;
+	samplers[2].ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL;
+	samplers[2].MaxLOD = D3D12_FLOAT32_MAX;
 
 	// --- ルートシグネチャ作成 ---
 	D3D12_ROOT_SIGNATURE_DESC rootSigDesc{};

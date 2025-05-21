@@ -94,7 +94,6 @@ void main(
             float2 uv = mul(float4(QuadUVs[corner], 0.0f, 1.0f), mat.uvMatrix).xy;
 
             verts[outIdx].position = clipPos;
-            verts[outIdx].worldPosition = worldPos;
             verts[outIdx].normal = worldN;
             verts[outIdx].uv = uv;
             verts[outIdx].instanceIndex = instanceID;

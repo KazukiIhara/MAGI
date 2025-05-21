@@ -21,6 +21,12 @@ struct Camera
     float _pad;
 };
 
+struct InverseCamera
+{
+    float4x4 invView;
+    float4x4 invProj;
+};
+
 struct DirectionalLightData
 {
     float3 direction;

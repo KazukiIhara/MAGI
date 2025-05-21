@@ -6,13 +6,18 @@
 ConstantBuffer<Camera> gCamera : register(b0);
 ConstantBuffer<DirectionalLightData> gDirectionalLight : register(b1);
 ConstantBuffer<LightCameraData> gLightCamera : register(b2);
+ConstantBuffer<InverseCamera> gInvCamera : register(b3);
 
 //================================ 
 // GBuffer
 //================================
 Texture2D<float4> gAlbedoTex : register(t0);
 Texture2D<float4> gNormalTex : register(t1);
-Texture2D<float4> gPositionTex : register(t2);
+
+//================================ 
+// DepthTex
+//================================
+Texture2D<float> gDepthTex : register(t2);
 
 //================================ 
 // ShadowMapTex
@@ -24,16 +29,19 @@ Texture2D<float> gShadowMap : register(t3);
 //================================
 TextureCube<float4> gEnvironmentTex : register(t4);
 
+
 //================================
 // Samplers
 //================================
 SamplerState gSampler : register(s0);
 SamplerComparisonState gShadowSampler : register(s1);
+SamplerState gSamplerPoint : register(s2);
 
 //================================
 // HelperFuncs
 //================================
 
+// 平行光源を計算
 float3 ComputeDirectionalLight(float3 normal)
 {
     const float3 directionalLightDirection = normalize(gDirectionalLight.direction);
@@ -45,6 +53,7 @@ float3 ComputeDirectionalLight(float3 normal)
     return directionalLightColor * directionalLightIntensity * NdotL;
 }
 
+// 平行光源の影を計算
 float ComputeDirectionalLightShadow(float3 worldPos, float3 worldNormal)
 {
     // ライト空間投影
@@ -74,6 +83,7 @@ float ComputeDirectionalLightShadow(float3 worldPos, float3 worldNormal)
     return shadow;
 }
 
+// 環境マップ計算
 float3 ComputeEnvironment(float3 position, float3 normal, float coefficient)
 {
     float3 cameraToPosition = normalize(position - gCamera.worldPosition);
@@ -81,6 +91,16 @@ float3 ComputeEnvironment(float3 position, float3 normal, float coefficient)
     float3 environmentColor = gEnvironmentTex.Sample(gSampler, reflectedVector).rgb;
     
     return environmentColor * coefficient;
+}
+
+// uv、深度バッファ、カメラの逆行列からワールド座標を復元
+float3 ReconstructWorldPos(float2 uv, float depth, float4x4 invProj, float4x4 invView)
+{
+    float3 ndc = float3(uv.x * 2.0f - 1.0f, 1.0f - uv.y * 2.0f, depth);
+    float4 viewSpace = mul(float4(ndc, 1.0f), invProj);
+    viewSpace.xyz *= rcp(viewSpace.w); // 同時座標系からデカルト座標系へ変換
+    
+    return mul(float4(viewSpace.xyz, 1.0f), invView).xyz; // ワールド座標に変換
 }
 
 //================================
@@ -93,7 +113,11 @@ PixelShaderOutput main(VertexShaderOutput input)
     // GBufferから取得
     float4 albedo = gAlbedoTex.Sample(gSampler, input.texcoord);
     float4 normalRaw = gNormalTex.Sample(gSampler, input.texcoord);
-    float4 position = gPositionTex.Sample(gSampler, input.texcoord);
+    
+    // 深度バッファから深度を取得
+    float ndxDepth = gDepthTex.Sample(gSamplerPoint, input.texcoord).r;
+    // ワールド座標を復元
+    float3 worldPos = ReconstructWorldPos(input.texcoord, ndxDepth, gInvCamera.invProj, gInvCamera.invView);
 
     // Normalを[-1,1]空間に戻して正規化
     float3 normal = normalize(normalRaw.xyz * 2.0f - 1.0f);
@@ -110,7 +134,7 @@ PixelShaderOutput main(VertexShaderOutput input)
     // 
     {      
         float3 directionalLightDiffuse = ComputeDirectionalLight(normal);
-        float directionalLightShadow = ComputeDirectionalLightShadow(position.xyz, normal);
+        float directionalLightShadow = ComputeDirectionalLightShadow(worldPos, normal);
         totalDiffuse += directionalLightDiffuse * directionalLightShadow;
     }
     
@@ -118,14 +142,16 @@ PixelShaderOutput main(VertexShaderOutput input)
     // Environment
     //
     {
-        float3 environmentDiffuse = ComputeEnvironment(position.xyz, normal, 0.04f);
+        float3 environmentDiffuse = ComputeEnvironment(worldPos, normal, 0.04f);
         totalDiffuse += environmentDiffuse;
     }
      
     // 
     // FinalColor
     // 
+    
     output.color.rgb = baseColor * totalDiffuse;
+    
     output.color.a = alpha;
     
     return output;

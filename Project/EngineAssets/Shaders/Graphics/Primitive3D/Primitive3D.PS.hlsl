@@ -8,7 +8,6 @@ struct GBufferOutput
 {
     float4 albedo : SV_Target0;
     float4 normal : SV_Target1;
-    float4 position : SV_Target2;
 };
 
 GBufferOutput main(MeshOutput input)
@@ -24,8 +23,6 @@ GBufferOutput main(MeshOutput input)
     
     float3 normal = normalize(input.normal); // ”O‚Ì‚½‚ß³‹K‰»
     output.normal = float4(normal * 0.5f + 0.5f, 1.0f); // [-1,1] ¨ [0,1]ƒ}ƒbƒsƒ“ƒO‚µ‚ÄŠi”[
-    
-    output.position = input.worldPosition;
     
     return output;
 }

@@ -11,7 +11,8 @@ struct Camera3DForGPU {
 };
 
 struct Camera3DInverseForGPU {
-	Matrix4x4 invViewProj;
+	Matrix4x4 invView;
+	Matrix4x4 invProj;
 };
 
 // シェーダーに送る2Dカメラ情報
