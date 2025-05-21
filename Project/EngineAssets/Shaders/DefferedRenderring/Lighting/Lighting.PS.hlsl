@@ -13,7 +13,11 @@ ConstantBuffer<InverseCamera> gInvCamera : register(b3);
 //================================
 Texture2D<float4> gAlbedoTex : register(t0);
 Texture2D<float4> gNormalTex : register(t1);
-Texture2D<float4> gPositionTex : register(t2);
+
+//================================ 
+// DepthTex
+//================================
+Texture2D<float> gDepthTex : register(t2);
 
 //================================ 
 // ShadowMapTex
@@ -25,10 +29,6 @@ Texture2D<float> gShadowMap : register(t3);
 //================================
 TextureCube<float4> gEnvironmentTex : register(t4);
 
-//================================ 
-// DepthTex
-//================================
-Texture2D<float> gDepthTex : register(t5);
 
 //================================
 // Samplers

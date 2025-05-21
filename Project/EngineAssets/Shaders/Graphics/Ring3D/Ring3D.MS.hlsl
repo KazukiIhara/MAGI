@@ -80,7 +80,6 @@ void main(
         verts[i].uv = uv;
         verts[i].instanceIndex = instanceID;
         verts[i].normal = normal;
-        verts[i].worldPosition = worldPos;
     }
 
 

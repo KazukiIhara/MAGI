@@ -84,7 +84,6 @@ void main(
         float3 normalW = normalize(mul(normalO, (float3x3) cylinder.worldInverseTranspose));
 
         verts[i].position = mul(worldPos[i], gCamera.viewProjection);
-        verts[i].worldPosition = worldPos[i];
         verts[i].uv = mul(float4(baseUV[i], 0.0f, 1.0f), mat.uvMatrix).xy;
         verts[i].normal = normalW;
         verts[i].instanceIndex = instanceID;
@@ -94,14 +93,12 @@ void main(
     {
         // è„ñ íÜêS (index 4)
         verts[4].position = mul(worldPos[4], gCamera.viewProjection);
-        verts[4].worldPosition = worldPos[4];
         verts[4].uv = float2(0.5f, 0.5f); // îCà”
         verts[4].normal = normalize(mul(float3(0, 1, 0), (float3x3) cylinder.worldInverseTranspose));
         verts[4].instanceIndex = instanceID;
 
         // íÍñ íÜêS (index 5)
         verts[5].position = mul(worldPos[5], gCamera.viewProjection);
-        verts[5].worldPosition = worldPos[5];
         verts[5].uv = float2(0.5f, 0.5f); // îCà”
         verts[5].normal = normalize(mul(float3(0, -1, 0), (float3x3) cylinder.worldInverseTranspose));
         verts[5].instanceIndex = instanceID;

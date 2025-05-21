@@ -75,11 +75,6 @@ RenderController::RenderController(
 	gBufferNormalRenderTexture_ = std::make_unique<GBufferNormalRenderTexture>();
 	gBufferNormalRenderTexture_->Initialize();
 
-	// 座標
-	gBufferPositionRenderTexture_ = std::make_unique<GBufferPositionRenderTexture>();
-	gBufferPositionRenderTexture_->Initialize();
-
-
 	// Shadow用の深度テクスチャ
 	shadowDepthTexture_ = std::make_unique<ShadowDepthTexture>();
 
@@ -109,11 +104,10 @@ void RenderController::PostShadowRender() {
 }
 
 void RenderController::PreRenderForGBuffers() {
-	// Gバッファ3枚＋深度バッファをセットする
-	std::array<D3D12_CPU_DESCRIPTOR_HANDLE, 3> rtvs = {
+	// Gバッファ2枚＋深度バッファをセットする
+	std::array<D3D12_CPU_DESCRIPTOR_HANDLE, 2> rtvs = {
 		rtvManager_->GetDescriptorHandleCPU(gBufferAlbedoRenderTexture_->GetRtvIndex()),
 		rtvManager_->GetDescriptorHandleCPU(gBufferNormalRenderTexture_->GetRtvIndex()),
-		rtvManager_->GetDescriptorHandleCPU(gBufferPositionRenderTexture_->GetRtvIndex())
 	};
 
 	// RenderTargetとDepthStencilViewをバインド
@@ -122,7 +116,6 @@ void RenderController::PreRenderForGBuffers() {
 	// 各レンダーターゲットをクリア
 	gBufferAlbedoRenderTexture_->ClearRenderTarget();
 	gBufferNormalRenderTexture_->ClearRenderTarget();
-	gBufferPositionRenderTexture_->ClearRenderTarget();
 	depthStencil_->ClearDepthView();
 
 	// ビューポート、シザー設定
@@ -134,7 +127,6 @@ void RenderController::PostRenderForGBuffers() {
 	// ライティング前に、GバッファをSRV用に遷移
 	gBufferAlbedoRenderTexture_->TransitionToRead();
 	gBufferNormalRenderTexture_->TransitionToRead();
-	gBufferPositionRenderTexture_->TransitionToRead();
 
 	// 深度バッファをSRV用に遷移
 	depthStencil_->TransitionToRead();
@@ -166,22 +158,19 @@ void RenderController::LightingPass() {
 	// DirectionalLightCamera転送
 	lightManager_->TransferDirectionalLightCamera(2);
 
+	// カメラの逆行列をセット
+	camera3DManager_->TransferCurrentCameraInverse(3);
+
 	// GBufferのSRVをセット（t0, t1, t2）
-	commandList->SetGraphicsRootDescriptorTable(3, srvUavManager_->GetDescriptorHandleGPU(gBufferAlbedoRenderTexture_->GetSrvIndex()));
-	commandList->SetGraphicsRootDescriptorTable(4, srvUavManager_->GetDescriptorHandleGPU(gBufferNormalRenderTexture_->GetSrvIndex()));
-	commandList->SetGraphicsRootDescriptorTable(5, srvUavManager_->GetDescriptorHandleGPU(gBufferPositionRenderTexture_->GetSrvIndex()));
+	commandList->SetGraphicsRootDescriptorTable(4, srvUavManager_->GetDescriptorHandleGPU(gBufferAlbedoRenderTexture_->GetSrvIndex()));
+	commandList->SetGraphicsRootDescriptorTable(5, srvUavManager_->GetDescriptorHandleGPU(gBufferNormalRenderTexture_->GetSrvIndex()));
+	commandList->SetGraphicsRootDescriptorTable(6, srvUavManager_->GetDescriptorHandleGPU(depthStencil_->GetSrvIndex()));
 
 	// シャドウマップテクスチャのSRVをセット
-	commandList->SetGraphicsRootDescriptorTable(6, srvUavManager_->GetDescriptorHandleGPU(shadowDepthTexture_->GetSrvIndex()));
+	commandList->SetGraphicsRootDescriptorTable(7, srvUavManager_->GetDescriptorHandleGPU(shadowDepthTexture_->GetSrvIndex()));
 
 	// 環境マップテクスチャのSRVをセット
-	skyBoxDrawer_->TransferSkyBoxTexture(7);
-
-	// カメラの逆行列をセット
-	camera3DManager_->TransferCurrentCameraInverse(8);
-
-	// Depthを読むためのSRVをセット
-	commandList->SetGraphicsRootDescriptorTable(9, srvUavManager_->GetDescriptorHandleGPU(depthStencil_->GetSrvIndex()));
+	skyBoxDrawer_->TransferSkyBoxTexture(8);
 
 	// 描画
 	commandList->DrawInstanced(3, 1, 0, 0);
@@ -283,7 +272,6 @@ void RenderController::EndFrame() {
 	// 次のフレーム用に書き込み可能状態にする
 	gBufferAlbedoRenderTexture_->TransitionToWrite();
 	gBufferNormalRenderTexture_->TransitionToWrite();
-	gBufferPositionRenderTexture_->TransitionToWrite();
 
 	depthStencil_->TransitionToWrite();
 
@@ -388,7 +376,7 @@ void RenderController::DrawRenderTextureWithParamater(ID3D12GraphicsCommandList*
 
 }
 
-void RenderController::SetRenderTargets(const std::array<D3D12_CPU_DESCRIPTOR_HANDLE, 3>& rtvs, D3D12_CPU_DESCRIPTOR_HANDLE dsv) {
+void RenderController::SetRenderTargets(const std::array<D3D12_CPU_DESCRIPTOR_HANDLE, 2>& rtvs, D3D12_CPU_DESCRIPTOR_HANDLE dsv) {
 	directXCommand_->GetList()->OMSetRenderTargets(static_cast<UINT>(rtvs.size()), rtvs.data(), FALSE, &dsv);
 }
 

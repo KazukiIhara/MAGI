@@ -42,7 +42,6 @@ void main(in payload ASPayload payload,
         verts[i].uv = uv;
         verts[i].instanceIndex = instanceID;
         verts[i].normal = normal;
-        verts[i].worldPosition = worldPos;
     }
 
     tris[0] = uint3(0, 1, 2);

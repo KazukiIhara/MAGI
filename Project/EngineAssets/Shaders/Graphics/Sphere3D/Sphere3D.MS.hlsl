@@ -83,7 +83,6 @@ void main(in payload ASPayload payload,
         verts[i].uv = uvTrans.xy;
         verts[i].instanceIndex = instanceID;
         verts[i].normal = worldN;
-        verts[i].worldPosition = worldPos;
     }
 
     tris[0] = uint3(0, 1, 2);

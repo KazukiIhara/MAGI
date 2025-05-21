@@ -95,7 +95,7 @@ private:
 	void DrawRenderTextureWithParamater(ID3D12GraphicsCommandList* commandList, const PostEffectCommand& command);
 
 	// 複数のレンダーターゲットを追加
-	void SetRenderTargets(const std::array<D3D12_CPU_DESCRIPTOR_HANDLE, 3>& rtvs, D3D12_CPU_DESCRIPTOR_HANDLE dsv);
+	void SetRenderTargets(const std::array<D3D12_CPU_DESCRIPTOR_HANDLE, 2>& rtvs, D3D12_CPU_DESCRIPTOR_HANDLE dsv);
 
 	// パラメータ用のリソースを作成する
 	void CreatePostEffectParamaterResource();
