@@ -97,5 +97,6 @@ void Camera3D::UpdateCameraData() {
 	cameraData_->worldPosition = worldPosition;
 	cameraData_->viewProjection = viewProjectionMatrix_;
 
-	cameraInvData_->invViewProj = Inverse(viewProjectionMatrix_);
+	cameraInvData_->invView = Inverse(viewMatrix_);
+	cameraInvData_->invProj = Inverse(projectionMatrix_);
 }

@@ -46,9 +46,14 @@ void LightingDefferedRenderringPipeline::CreateRootSignature() {
 	rangeEnvironmentTex.RangeType = D3D12_DESCRIPTOR_RANGE_TYPE_SRV;
 	rangeEnvironmentTex.OffsetInDescriptorsFromTableStart = D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND;
 
+	D3D12_DESCRIPTOR_RANGE rangeDepthTex{};
+	rangeDepthTex.BaseShaderRegister = 5; // t5
+	rangeDepthTex.NumDescriptors = 1;
+	rangeDepthTex.RangeType = D3D12_DESCRIPTOR_RANGE_TYPE_SRV;
+	rangeDepthTex.OffsetInDescriptorsFromTableStart = D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND;
 
 	// --- ルートパラメータ ---
-	D3D12_ROOT_PARAMETER rootParams[8]{};
+	D3D12_ROOT_PARAMETER rootParams[10]{};
 
 	// b0 : カメラ用CBV
 	rootParams[0].ParameterType = D3D12_ROOT_PARAMETER_TYPE_CBV;
@@ -95,8 +100,19 @@ void LightingDefferedRenderringPipeline::CreateRootSignature() {
 	rootParams[7].DescriptorTable.pDescriptorRanges = &rangeEnvironmentTex;
 	rootParams[7].DescriptorTable.NumDescriptorRanges = 1;
 
+	// b3 : InvCamera
+	rootParams[8].ParameterType = D3D12_ROOT_PARAMETER_TYPE_CBV;
+	rootParams[8].ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL;
+	rootParams[8].Descriptor.ShaderRegister = 3;
+
+	// t5 : DepthTex
+	rootParams[9].ParameterType = D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE;
+	rootParams[9].ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL;
+	rootParams[9].DescriptorTable.pDescriptorRanges = &rangeDepthTex;
+	rootParams[9].DescriptorTable.NumDescriptorRanges = 1;
+
 	// --- Static Sampler ---
-	D3D12_STATIC_SAMPLER_DESC samplers[2]{};
+	D3D12_STATIC_SAMPLER_DESC samplers[3]{};
 
 	// s0 : 通常サンプラー
 	samplers[0].Filter = D3D12_FILTER_MIN_MAG_MIP_LINEAR;
@@ -121,6 +137,17 @@ void LightingDefferedRenderringPipeline::CreateRootSignature() {
 	samplers[1].ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL;
 	samplers[1].MinLOD = 0;
 	samplers[1].MaxLOD = D3D12_FLOAT32_MAX;
+
+	// s2 : ポイントフィルター用サンプラー
+	samplers[2].Filter = D3D12_FILTER_MIN_MAG_MIP_POINT;
+	samplers[2].AddressU = D3D12_TEXTURE_ADDRESS_MODE_WRAP;
+	samplers[2].AddressV = D3D12_TEXTURE_ADDRESS_MODE_WRAP;
+	samplers[2].AddressW = D3D12_TEXTURE_ADDRESS_MODE_WRAP;
+	samplers[2].ComparisonFunc = D3D12_COMPARISON_FUNC_NEVER;
+	samplers[2].ShaderRegister = 2;
+	samplers[2].RegisterSpace = 0;
+	samplers[2].ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL;
+	samplers[2].MaxLOD = D3D12_FLOAT32_MAX;
 
 	// --- ルートシグネチャ作成 ---
 	D3D12_ROOT_SIGNATURE_DESC rootSigDesc{};

@@ -177,6 +177,12 @@ void RenderController::LightingPass() {
 	// 環境マップテクスチャのSRVをセット
 	skyBoxDrawer_->TransferSkyBoxTexture(7);
 
+	// カメラの逆行列をセット
+	camera3DManager_->TransferCurrentCameraInverse(8);
+
+	// Depthを読むためのSRVをセット
+	commandList->SetGraphicsRootDescriptorTable(9, srvUavManager_->GetDescriptorHandleGPU(depthStencil_->GetSrvIndex()));
+
 	// 描画
 	commandList->DrawInstanced(3, 1, 0, 0);
 }
@@ -202,16 +208,16 @@ void RenderController::ApplyPostEffect() {
 		auto& command = postEffectCommand_[i];
 
 		switch (command.postEffectType) {
-			case PostEffectType::Copy:
-			case PostEffectType::Grayscale:
-				DrawRenderTextureNoParamater(commandList, command.postEffectType);
-				break;
-			case PostEffectType::Vignette:
-			case PostEffectType::GaussianX:
-			case PostEffectType::GaussianY:
-			case PostEffectType::RadialBlur:
-				DrawRenderTextureWithParamater(commandList, command);
-				break;
+		case PostEffectType::Copy:
+		case PostEffectType::Grayscale:
+			DrawRenderTextureNoParamater(commandList, command.postEffectType);
+			break;
+		case PostEffectType::Vignette:
+		case PostEffectType::GaussianX:
+		case PostEffectType::GaussianY:
+		case PostEffectType::RadialBlur:
+			DrawRenderTextureWithParamater(commandList, command);
+			break;
 		}
 
 	}
