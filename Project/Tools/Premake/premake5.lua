@@ -57,7 +57,15 @@ project "MAGI" -- プロジェクト名
    -- 追加のインクルードパス
    includedirs { 
       "../../Engine",
+      "../../Engine/Core",
       "../../Engine/Includes",
+      "../../Engine/DebugTools",
+      "../../Engine/Graphics",
+      "../../Engine/ObjectManagers",
+      "../../Engine/AssetDataContainers",
+      "../../Engine/Animation",
+      "../../Engine/Input",
+      "../../Engine/Scene",
       "../../App",
       "../../Externals",
       "../../Externals/assimp/include",
