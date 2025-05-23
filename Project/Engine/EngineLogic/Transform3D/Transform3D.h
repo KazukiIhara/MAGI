@@ -27,8 +27,6 @@ public:
 	// 親をセット
 	void SetParent(Transform3D* parent);
 
-	// 子を追加
-	void AddChild(Transform3D* chaild);
 
 	//
 	// ゲッター(参照渡しも含む)
@@ -53,4 +51,9 @@ private:
 	Transform3D* parent_ = nullptr;
 	// 子
 	std::vector<Transform3D*> children_;
+
+private:
+	// コピー禁止
+    Transform3D(const Transform3D&) = delete;
+    Transform3D& operator=(const Transform3D&) = delete;
 };

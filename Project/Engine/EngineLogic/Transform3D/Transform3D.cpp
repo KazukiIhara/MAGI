@@ -21,6 +21,25 @@ Transform3D::Transform3D(const Vector3& scale, const Quaternion& rotate, const V
 }
 
 void Transform3D::Update() {
+	// ラジアンの回転をクオータニオンに変換
+	rotate_ = MAGIMath::EulerToQuaternionXYZ(inputRadians_);
+
+	// ワールド行列作成
+	worldMatrix_ = MAGIMath::MakeAffineMatrix(scale_, rotate_, translate_);
+
+	// 親がいる場合
+	if (parent_) {
+		worldMatrix_ = worldMatrix_ * parent_->GetWorldMatrix();
+	}
+
+	// もし子がいる場合
+	if (!children_.empty()) {
+		for (auto& child : children_) {
+			if (child) {
+				child->Update();
+			}
+		}
+	}
 
 }
 
@@ -41,9 +60,25 @@ const Matrix4x4& Transform3D::GetWorldMatrix() const {
 }
 
 void Transform3D::SetParent(Transform3D* parent) {
+	// 同じだった場合は早期リターン
+	if (parent_ == parent) {
+		return;
+	}
 
-}
+	// すでに親がいた場合は旧親から自身を削除する
+	if (parent_) {
+		auto& oldChildren = parent_->children_;
+		oldChildren.erase(
+			std::remove(oldChildren.begin(), oldChildren.end(), this),
+			oldChildren.end()
+		);
+	}
 
-void Transform3D::AddChild(Transform3D* chaild) {
+	// 親をセット
+	parent_ = parent;
 
+	// 親に自身を子としてセット
+	if (parent_) {
+		parent_->children_.push_back(this);
+	}
 }
