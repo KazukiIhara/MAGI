@@ -116,7 +116,8 @@ Quaternion operator+(const Quaternion& q1, const Quaternion& q2);
 Quaternion operator-(const Quaternion& q1, const Quaternion& q2);
 Quaternion operator*(const Quaternion& q1, const Quaternion& q2);
 
-
+bool operator!=(const Quaternion& q1, const Quaternion& q2);
+bool operator==(const Quaternion& q1, const Quaternion& q2);
 
 /// <summary>
 /// 数学関数群　(左手座標系、行ベクトル)

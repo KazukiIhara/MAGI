@@ -21,11 +21,31 @@ Transform3D::Transform3D(const Vector3& scale, const Quaternion& rotate, const V
 }
 
 void Transform3D::Update() {
-	// ラジアンの回転をクオータニオンに変換
-	rotate_ = MAGIMath::EulerToQuaternionXYZ(inputRadians_);
 
-	// ワールド行列作成
-	worldMatrix_ = MAGIMath::MakeAffineMatrix(scale_, rotate_, translate_);
+	// ユーザー入力用の回転に変更があった場合
+	if (preInputRadians_ != preInputRadians_) {
+		// 変換してクオータニオンの回転に適用
+		rotate_ = MAGIMath::EulerToQuaternionXYZ(inputRadians_);
+	}
+
+	// 変更チェック
+	if (preScale_ != scale_ || preRotate_ != rotate_ || preTranslate_ != translate_) {
+		isChanged_ = true;
+	}
+
+	// 変更があった場合
+	if (isChanged_) {
+		// ワールド行列作成
+		worldMatrix_ = MAGIMath::MakeAffineMatrix(scale_, rotate_, translate_);
+
+		// 現在フレームの値を保存
+		preScale_ = scale_;
+		preRotate_ = rotate_;
+		preTranslate_ = translate_;
+
+		// 次フレーム用のフラグを立てる
+		isChanged_ = false;
+	}
 
 	// 親がいる場合
 	if (parent_) {

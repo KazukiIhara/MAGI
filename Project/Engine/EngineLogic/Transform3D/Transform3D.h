@@ -39,11 +39,24 @@ public:
 	const Matrix4x4& GetWorldMatrix()const;
 
 private:
+	//---------------------------- 
+	// トランスフォーム
+	//----------------------------
 	Vector3 scale_ = { 1.0f,1.0f,1.0f };
 	Quaternion rotate_ = { 0.0f,0.0f,0.0f,1.0f };
 	Vector3 translate_ = { 0.0f,0.0f,0.0f };
 
 	Vector3 inputRadians_ = { 0.0f,0.0f,0.0f };
+
+	//---------------------------- 
+	// 1フレーム前の値保存用変数
+	//----------------------------
+	Vector3 preScale_ = { 1.0f,1.0f,1.0f };
+	Quaternion preRotate_ = { 0.0f,0.0f,0.0f,1.0f };
+	Vector3 preTranslate_ = { 0.0f,0.0f,0.0f };
+
+
+	Vector3 preInputRadians_ = { 0.0f,0.0f,0.0f };
 
 	Matrix4x4 worldMatrix_;
 
@@ -52,8 +65,11 @@ private:
 	// 子
 	std::vector<Transform3D*> children_;
 
+	// 変更フラグ
+	bool isChanged_ = false;
+
 private:
 	// コピー禁止
-    Transform3D(const Transform3D&) = delete;
-    Transform3D& operator=(const Transform3D&) = delete;
+	Transform3D(const Transform3D&) = delete;
+	Transform3D& operator=(const Transform3D&) = delete;
 };
