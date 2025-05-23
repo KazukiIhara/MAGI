@@ -64,6 +64,7 @@ project "MAGI" -- プロジェクト名
       "../../Engine/Pipelines",
       "../../Engine/ObjectManagers",
       "../../Engine/AssetDataContainers",
+      "../../Engine/EngineLogic",
       "../../Engine/Animation",
       "../../Engine/Input",
       "../../Engine/Scene",
