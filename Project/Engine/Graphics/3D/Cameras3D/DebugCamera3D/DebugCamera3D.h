@@ -12,7 +12,7 @@ public:
 
 	void UpdateData()override;
 
-	void HandleCameraRotation(Quaternion& cameraRotate, const POINT& delta);
+	void HandleCameraRotation(Vector3& cameraRotate, const POINT& delta);
 
 	void HandleCameraTranslation(Vector3& cameraTranslate, Quaternion& cameraRotate, const POINT& delta);
 

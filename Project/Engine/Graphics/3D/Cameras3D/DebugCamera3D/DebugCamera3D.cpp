@@ -29,7 +29,7 @@ void DebugCamera3D::UpdateData() {
 	int64_t wheelDelta = MAGISYSTEM::GetMouseWheelDelta();
 
 	// カメラ回転処理
-	HandleCameraRotation(transform_->GetQuaternion(), delta);
+	HandleCameraRotation(transform_->GetRotate(), delta);
 	// カメラ移動処理
 	HandleCameraTranslation(transform_->GetTranslate(), transform_->GetQuaternion(), delta);
 	// カメラズーム処理
@@ -42,28 +42,16 @@ void DebugCamera3D::UpdateData() {
 	Camera3D::UpdateData();
 }
 
-void DebugCamera3D::HandleCameraRotation(Quaternion& cameraRotate, const POINT& delta) {
+void DebugCamera3D::HandleCameraRotation(Vector3& cameraRotate, const POINT& delta) {
 	// マウスの右ボタンが押されているか確認
 	if (GetAsyncKeyState(VK_RBUTTON) & 0x8000) {
-		float rotateSpeed = 0.2f;
+		float rotateSpeed = 1.0f;
 		if (MAGISYSTEM::PushKey(DIK_LSHIFT)) {
 			rotateSpeed *= 0.3f;
 		}
-		// 回転からカメラの右方向ベクトルを計算
-		Vector3 right = Right(cameraRotate);
-		// 回転からカメラの正面ベクトルを計算
-		Vector3 forward = Forward(cameraRotate);
-		// クロス積でカメラの上方向ベクトルを計算
-		Vector3 up = Cross(forward, right);
-
 		// カメラの回転を更新
-		float yaw = -delta.x * rotateSpeed * MAGISYSTEM::GetDeltaTime(); // 横方向
-		float pitch = -delta.y * rotateSpeed * MAGISYSTEM::GetDeltaTime(); // 縦方向
-
-		Quaternion qYaw = MakeRotateAxisAngleQuaternion(up, yaw);
-		Quaternion qPitch = MakeRotateAxisAngleQuaternion(right, pitch);
-
-		cameraRotate = Normalize(qPitch * qYaw * cameraRotate);
+		cameraRotate.x -= delta.y * rotateSpeed * MAGISYSTEM::GetDeltaTime(); // 縦方向
+		cameraRotate.y -= delta.x * rotateSpeed * MAGISYSTEM::GetDeltaTime(); // 横方向
 	}
 }
 
@@ -74,11 +62,11 @@ void DebugCamera3D::HandleCameraTranslation(Vector3& cameraTranslate, Quaternion
 		Vector3 right = Right(cameraRotate);
 		// 回転からカメラの正面ベクトルを計算
 		Vector3 forward = Forward(cameraRotate);
-		// クロス積でカメラの上方向ベクトルを計算
+		// 回転からカメラの上方向ベクトルを計算
 		Vector3 up = Cross(forward, right);
 
 		// 移動量をローカル座標系で計算
-		float moveSpeed = 0.3f;
+		float moveSpeed = 1.0f;
 		if (MAGISYSTEM::PushKey(DIK_LSHIFT)) {
 			moveSpeed *= 0.3f;
 		}
@@ -103,4 +91,3 @@ void DebugCamera3D::HandleCameraZoom(Vector3& cameraTranslate, Quaternion& camer
 		cameraTranslate += forward * (wheelDelta * zoomSpeed * MAGISYSTEM::GetDeltaTime());
 	}
 }
-

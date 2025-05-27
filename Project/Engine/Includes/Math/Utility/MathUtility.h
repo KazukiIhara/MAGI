@@ -248,9 +248,9 @@ namespace MAGIMath {
 	float Norm(const Quaternion& quaternion);
 
 	// オイラー角をクオータニオンに変換
-	Quaternion EulerToQuaternionXYZ(const Vector3& euler);
+	Quaternion EulerToQuaternionYXZ(const Vector3& euler);
 
-	Vector3 QuaternionToEulerXYZ(const Quaternion& qIn);
+	Vector3 QuaternionToEuler(const Quaternion& qIn);
 
 	// 向きからクオータニオン角を取得
 	Quaternion DirectionToQuaternion(const Vector3& direction);

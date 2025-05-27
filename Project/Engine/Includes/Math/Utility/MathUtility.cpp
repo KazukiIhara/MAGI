@@ -724,7 +724,7 @@ Matrix4x4 MAGIMath::MakeTranslateMatrix(const Vector3& translate) {
 }
 
 Matrix4x4 MAGIMath::MakeAffineMatrix(const Vector3& scale, const Vector3& rotate, const Vector3& translate) {
-	Matrix4x4 result = MakeScaleMatrix(scale) * MakeRotateXYZMatrix(rotate) * MakeTranslateMatrix(translate);
+	Matrix4x4 result = MakeScaleMatrix(scale) * MakeRotateYXZMatrix(rotate) * MakeTranslateMatrix(translate);
 	return result;
 }
 
@@ -824,32 +824,23 @@ float MAGIMath::Norm(const Quaternion& quaternion) {
 	);
 }
 
-Quaternion MAGIMath::EulerToQuaternionXYZ(const Vector3& euler) {
-	// オイラー角を半分にする
-	float halfPitch = euler.x * 0.5f;
-	float halfYaw = euler.y * 0.5f;
-	float halfRoll = euler.z * 0.5f;
+Quaternion MAGIMath::EulerToQuaternionYXZ(const Vector3& euler) {
+	// 回転角を半分に
+	float halfX = euler.x * 0.5f; // Pitch
+	float halfY = euler.y * 0.5f; // Yaw
+	float halfZ = euler.z * 0.5f; // Roll
 
-	// 三角関数をあらかじめ計算
-	float sinX = std::sin(halfPitch);
-	float cosX = std::cos(halfPitch);
-	float sinY = std::sin(halfYaw);
-	float cosY = std::cos(halfYaw);
-	float sinZ = std::sin(halfRoll);
-	float cosZ = std::cos(halfRoll);
+	// 各軸回転クォータニオンを生成（X→Y→Z 軸）
+	Quaternion qx = MakeRotateAxisAngleQuaternion({ 1, 0, 0 }, halfX);
+	Quaternion qy = MakeRotateAxisAngleQuaternion({ 0, 1, 0 }, halfY);
+	Quaternion qz = MakeRotateAxisAngleQuaternion({ 0, 0, 1 }, halfZ);
 
-	// X → Y → Z 回転順序に基づくクオータニオンの計算
-	Quaternion q = {
-		.x = sinX * cosY * cosZ + cosX * sinY * sinZ,
-		.y = cosX * sinY * cosZ - sinX * cosY * sinZ,
-		.z = cosX * cosY * sinZ + sinX * sinY * cosZ,
-		.w = cosX * cosY * cosZ - sinX * sinY * sinZ
-	};
+	Quaternion q = qy * qx * qz;
 
 	return Normalize(q);
 }
 
-Vector3 MAGIMath::QuaternionToEulerXYZ(const Quaternion& qIn) {
+Vector3 MAGIMath::QuaternionToEuler(const Quaternion& qIn) {
 	// ① 浮動小数誤差で伸びていることがあるので念のため正規化
 	Quaternion q = Normalize(qIn);
 

@@ -3,7 +3,7 @@
 Transform3D::Transform3D(const Vector3& scale, const Vector3& rotate, const Vector3& translate) {
 	scale_ = scale;
 	inputRadians_ = rotate;
-	rotate_ = MAGIMath::EulerToQuaternionXYZ(inputRadians_);
+	rotate_ = MAGIMath::EulerToQuaternionYXZ(inputRadians_);
 	translate_ = translate;
 
 	// ワールド行列作成
@@ -13,7 +13,7 @@ Transform3D::Transform3D(const Vector3& scale, const Vector3& rotate, const Vect
 Transform3D::Transform3D(const Vector3& scale, const Quaternion& rotate, const Vector3& translate) {
 	scale_ = scale;
 	rotate_ = rotate;
-	inputRadians_ = MAGIMath::QuaternionToEulerXYZ(rotate_);
+	inputRadians_ = MAGIMath::QuaternionToEuler(rotate_);
 	translate_ = translate;
 
 	// ワールド行列作成
@@ -23,10 +23,10 @@ Transform3D::Transform3D(const Vector3& scale, const Quaternion& rotate, const V
 void Transform3D::Update() {
 	// 直接Q回転に変更があった場合はこっち優先
 	if (preRotate_ != rotate_) {
-		inputRadians_ = MAGIMath::QuaternionToEulerXYZ(rotate_);
+		inputRadians_ = MAGIMath::QuaternionToEuler(rotate_);
 	} else if (preInputRadians_ != inputRadians_) { 	// ユーザー入力用の回転に変更があった場合
 		// 変換してクオータニオンの回転に適用
-		rotate_ = MAGIMath::EulerToQuaternionXYZ(inputRadians_);
+		rotate_ = MAGIMath::EulerToQuaternionYXZ(inputRadians_);
 	}
 
 	// 変更チェック
