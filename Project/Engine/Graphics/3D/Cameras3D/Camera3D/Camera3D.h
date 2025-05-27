@@ -28,6 +28,8 @@ public:
 	// データ更新
 	virtual void UpdateData();
 
+	Vector3 DirectionFromYawPitch(float yaw, float pitch);
+
 	// カメラのデバッグ描画
 	void DrawFrustum();
 
@@ -36,16 +38,14 @@ public:
 
 	void TransferCameraInv(uint32_t rootParameterIndex);
 
-	// 回転を送る
-	Vector3& GetRotate();
-	// 移動量を送る
-	Vector3& GetTranslate();
-
 	// ビュープロジェクションマトリックスを送る
 	Matrix4x4 GetViewProjectionMatrix()const;
 
 	// ファークリップ距離を送る
 	float GetFarClipRange()const;
+
+	// 視点を送る
+	Vector3 GetEye()const;
 
 private:
 	// カメラのリソースを作成
@@ -59,8 +59,19 @@ protected:
 	// カメラの初期トランスフォーム
 	const Vector3 kDefaultCameraRotate_ = { 0.45f,0.0f,0.0f };
 	const Vector3 kDefaultCameraTranslate_ = { 0.0f,2.0f,-3.0f };
-	// トランスフォーム
-	std::unique_ptr<Transform3D> transform_ = nullptr;
+
+	// 縦軸
+	float yaw_ = 0.0f;
+	// 横軸
+	float pitch_ = 0.0f;
+
+	// カメラの位置
+	Vector3 eye_ = { 0.0f,0.0f,0.0f };
+	// カメラのターゲット
+	Vector3 target_ = { 0.0f,0.0f,1.0f };
+	// 上方向
+	Vector3 up_ = { 0.0f,1.0f,0.0f };
+
 	// ビューマトリックス
 	Matrix4x4 viewMatrix_{};
 	// プロジェクション行列

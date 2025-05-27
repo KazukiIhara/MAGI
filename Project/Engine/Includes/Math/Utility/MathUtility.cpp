@@ -236,6 +236,10 @@ float MAGIMath::LengthSquared(const Vector3& v) {
 	return v.x * v.x + v.y * v.y + v.z * v.z;
 }
 
+float MAGIMath::DegreeToRadian(float degree) {
+	return degree * (std::numbers::pi_v<float> / 180.0f);
+}
+
 Vector3 MAGIMath::Normalize(const Vector3& a) {
 	float length = Length(a);
 	Vector3 normalizedVector{};
