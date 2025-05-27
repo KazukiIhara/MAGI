@@ -26,6 +26,10 @@ public:
 	virtual void Update();
 	// データ更新
 	virtual void UpdateData();
+
+	// カメラのデバッグ描画
+	void DrawFrustum();
+
 	// 定数バッファに転送
 	void TransferCamera(uint32_t rootParameterIndex);
 
@@ -74,6 +78,8 @@ protected:
 	float farClipRange_ = 10000.0f;
 	// ビルボード行列
 	Matrix4x4 billboardMatrix_{};
+	// frustumPlane
+	Vector4 frustumPlanes_[6];
 	// 有効フラグ
 	bool isActive_ = true;
 private:

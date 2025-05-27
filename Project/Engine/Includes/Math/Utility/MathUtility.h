@@ -163,6 +163,9 @@ namespace MAGIMath {
 	// クォータニオンを使用してベクトルを回転させる
 	Vector3 Transform(const Vector3& vector, const Quaternion& rotation);
 
+	// w除算付きのTransform
+	Vector4 Transform(const Vector4& v, const Matrix4x4& m);
+
 	// ワールド行列からワールド座標取得
 	Vector3 ExtractionWorldPos(const Matrix4x4& m);
 
