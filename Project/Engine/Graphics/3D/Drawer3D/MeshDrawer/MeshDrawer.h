@@ -41,9 +41,6 @@ private:
 	ComPtr<ID3D12Resource> meshletPrimIB_;              // StructuredBuffer<MeshletTriangle>
 	uint32_t primSrvIdx_ = 0;
 
-	ComPtr<ID3D12Resource> meshletBoundsBuffer_;
-	uint32_t meshletBoundsSrvIdx_;
-
 	// マテリアル
 	ComPtr<ID3D12Resource> materialBuffer_;
 	ModelMaterialDataForGPU* material_ = nullptr;

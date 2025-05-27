@@ -80,53 +80,6 @@ MeshDrawer::MeshDrawer(const MeshData& meshData) {
 
 
 	//=========================================================================
-	// メシュレットのバウンディング球を計算
-	//=========================================================================
-
-	std::vector<MeshletBounds> meshletBounds;
-	meshletBounds.reserve(meshlets.size());
-
-	for (size_t m = 0; m < meshlets.size(); ++m) {
-		const DirectX::Meshlet& meshlet = meshlets[m];
-
-		uint32_t vertCount = meshlet.VertCount;
-		uint32_t vertOffset = meshlet.VertOffset;
-
-		// 中心点計算
-		DirectX::XMVECTOR center = DirectX::XMVectorZero();
-		for (uint32_t i = 0; i < vertCount; ++i) {
-			uint32_t index = uniqueVertexIB[vertOffset + i];
-			DirectX::XMVECTOR pos = DirectX::XMLoadFloat3(&positions[index]);
-			center = DirectX::XMVectorAdd(center, pos);
-		}
-		center = DirectX::XMVectorScale(center, 1.0f / static_cast<float>(vertCount));
-
-		// 半径の計算（最大距離）
-		float maxDistSqr = 0.0f;
-		for (uint32_t i = 0; i < vertCount; ++i) {
-			uint32_t index = uniqueVertexIB[vertOffset + i];
-			DirectX::XMVECTOR pos = DirectX::XMLoadFloat3(&positions[index]);
-			DirectX::XMVECTOR diff = DirectX::XMVectorSubtract(pos, center);
-			float distSqr = DirectX::XMVectorGetX(DirectX::XMVector3LengthSq(diff));
-			maxDistSqr = std::max(maxDistSqr, distSqr);
-		}
-
-		// 保存
-		MeshletBounds bounds;
-		// ── XMVECTOR → XMFLOAT3
-		DirectX::XMFLOAT3 temp;
-		DirectX::XMStoreFloat3(&temp, center);
-		// ── XMFLOAT3 → Vector3
-		bounds.center.x = temp.x;
-		bounds.center.y = temp.y;
-		bounds.center.z = temp.z;
-
-		bounds.radius = std::sqrt(maxDistSqr);
-
-		meshletBounds.push_back(bounds);
-	}
-
-	//=========================================================================
 	//リソースの作成
 	//=========================================================================
 
@@ -179,7 +132,6 @@ MeshDrawer::MeshDrawer(const MeshData& meshData) {
 		meshletUniqueVertIB_->Unmap(0, nullptr);
 	}
 
-
 	// PrimitiveIndices編
 	meshletPrimIB_ = MAGISYSTEM::CreateBufferResource(sizeof(DirectX::MeshletTriangle) * static_cast<uint32_t>(primitiveIndices.size()));
 	primSrvIdx_ = MAGISYSTEM::SrvUavAllocate();
@@ -196,25 +148,6 @@ MeshDrawer::MeshDrawer(const MeshData& meshData) {
 		meshletPrimIB_->Map(0, nullptr, &mappedPtr);
 		std::memcpy(mappedPtr, primitiveIndices.data(), sizeof(DirectX::MeshletTriangle) * primitiveIndices.size());
 		meshletPrimIB_->Unmap(0, nullptr);
-	}
-
-
-	// メシュレットバウンディング球編
-	meshletBoundsBuffer_ = MAGISYSTEM::CreateBufferResource(sizeof(MeshletBounds) * static_cast<uint32_t>(meshletBounds.size()));
-	meshletBoundsSrvIdx_ = MAGISYSTEM::SrvUavAllocate();
-	MAGISYSTEM::CreateSrvStructuredBuffer(
-		meshletBoundsSrvIdx_,
-		meshletBoundsBuffer_.Get(),
-		static_cast<uint32_t>(meshletBounds.size()),
-		sizeof(MeshletBounds)
-	);
-
-	// バッファにデータコピー
-	{
-		void* mappedPtr = nullptr;
-		meshletBoundsBuffer_->Map(0, nullptr, &mappedPtr);
-		std::memcpy(mappedPtr, meshletBounds.data(), sizeof(MeshletBounds) * meshletBounds.size());
-		meshletBoundsBuffer_->Unmap(0, nullptr);
 	}
 
 	/*=== マテリアル ===========================================================*/
