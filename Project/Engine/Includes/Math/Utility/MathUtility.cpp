@@ -825,15 +825,11 @@ float MAGIMath::Norm(const Quaternion& quaternion) {
 }
 
 Quaternion MAGIMath::EulerToQuaternionYXZ(const Vector3& euler) {
-	// 回転角を半分に
-	float halfX = euler.x * 0.5f; // Pitch
-	float halfY = euler.y * 0.5f; // Yaw
-	float halfZ = euler.z * 0.5f; // Roll
 
 	// 各軸回転クォータニオンを生成（X→Y→Z 軸）
-	Quaternion qx = MakeRotateAxisAngleQuaternion({ 1, 0, 0 }, halfX);
-	Quaternion qy = MakeRotateAxisAngleQuaternion({ 0, 1, 0 }, halfY);
-	Quaternion qz = MakeRotateAxisAngleQuaternion({ 0, 0, 1 }, halfZ);
+	Quaternion qx = MakeRotateAxisAngleQuaternion({ 1, 0, 0 }, euler.x);
+	Quaternion qy = MakeRotateAxisAngleQuaternion({ 0, 1, 0 }, euler.y);
+	Quaternion qz = MakeRotateAxisAngleQuaternion({ 0, 0, 1 }, euler.z);
 
 	Quaternion q = qy * qx * qz;
 

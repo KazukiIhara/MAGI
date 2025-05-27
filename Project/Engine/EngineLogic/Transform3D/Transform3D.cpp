@@ -91,6 +91,9 @@ void Transform3D::SetParent(Transform3D* parent) {
 		return;
 	}
 
+	// 親が変更されたらひとまず更新確定
+	isChanged_ = true;
+
 	// すでに親がいた場合は旧親から自身を削除する
 	if (parent_) {
 		auto& oldChildren = parent_->children_;
