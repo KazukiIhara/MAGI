@@ -13,7 +13,7 @@
 /// <summary>メッシュ描画クラス（Mesh Shader + Meshlet）</summary>
 class MeshDrawer {
 public:
-	explicit MeshDrawer(const MeshData& meshData);
+	MeshDrawer(const MeshData& meshData);
 	~MeshDrawer();
 
 	void Update();
