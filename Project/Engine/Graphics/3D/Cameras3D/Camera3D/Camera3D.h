@@ -61,10 +61,6 @@ protected:
 	const Vector3 kDefaultCameraTranslate_ = { 0.0f,2.0f,-3.0f };
 	// トランスフォーム
 	std::unique_ptr<Transform3D> transform_ = nullptr;
-	// 水平（+Y 軸まわり）
-	float yaw_ = 0.0f;
-	// 垂直（+X 軸まわり）
-	float pitch_ = 0.0f;
 	// ビューマトリックス
 	Matrix4x4 viewMatrix_{};
 	// プロジェクション行列
