@@ -121,3 +121,8 @@ struct MeshInfo {
 	uint32_t indexSize;
 	uint32_t meshletCount;
 };
+
+struct MeshletBounds {
+	Vector3 center;
+	float radius;
+};
