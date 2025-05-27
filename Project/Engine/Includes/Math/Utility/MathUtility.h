@@ -148,6 +148,12 @@ namespace MAGIMath {
 	// ベクトルの向きを取得
 	Vector3 Forward(const Vector3& rotate);
 
+	// クオータニオンから正面を取得
+	Vector3 Forward(const Quaternion& q);
+
+	// クオータニオンから右向きを取得
+	Vector3 Right(const Quaternion& q);
+
 	// 向きから回転を取得
 	Vector3 DirectionToEuler(const Vector3& dir);
 
@@ -255,6 +261,9 @@ namespace MAGIMath {
 	Quaternion Inverse(const Quaternion& quaternion);
 	// 任意回転軸を表すクオータニオンの生成
 	Quaternion MakeRotateAxisAngleQuaternion(const Vector3& axis, float angle);
+
+	// ヨーピッチロールからクオータニオンを求める
+	Quaternion QuaternionFromYawPitchRoll(float yaw, float pitch, float roll);
 
 	// 球面線形補完
 	Quaternion Slerp(Quaternion q1, Quaternion q2, float t);

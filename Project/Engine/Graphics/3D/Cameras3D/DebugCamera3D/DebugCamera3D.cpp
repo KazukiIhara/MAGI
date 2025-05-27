@@ -11,8 +11,6 @@ DebugCamera3D::DebugCamera3D(const std::string& cameraName)
 
 void DebugCamera3D::Initialize() {
 	Camera3D::Initialize();
-	// クオータニオン角を使用しない
-	worldTransform_.isUseQuaternion_ = false;
 }
 
 void DebugCamera3D::UpdateData() {
@@ -31,11 +29,11 @@ void DebugCamera3D::UpdateData() {
 	int64_t wheelDelta = MAGISYSTEM::GetMouseWheelDelta();
 
 	// カメラ回転処理
-	HandleCameraRotation(worldTransform_.rotate_, delta);
+	HandleCameraRotation(transform_->GetQuaternion(), delta);
 	// カメラ移動処理
-	HandleCameraTranslation(worldTransform_.translate_, worldTransform_.rotate_, delta);
+	HandleCameraTranslation(transform_->GetTranslate(), transform_->GetQuaternion(), delta);
 	// カメラズーム処理
-	HandleCameraZoom(worldTransform_.translate_, worldTransform_.rotate_, wheelDelta);
+	HandleCameraZoom(transform_->GetTranslate(), transform_->GetQuaternion(), wheelDelta);
 
 	// 現在のカーソル位置を保存
 	lastCursorPos = cursorPos;
@@ -44,33 +42,40 @@ void DebugCamera3D::UpdateData() {
 	Camera3D::UpdateData();
 }
 
-void DebugCamera3D::HandleCameraRotation(Vector3& cameraRotate, const POINT& delta) {
+void DebugCamera3D::HandleCameraRotation(Quaternion& cameraRotate, const POINT& delta) {
 	// マウスの右ボタンが押されているか確認
 	if (GetAsyncKeyState(VK_RBUTTON) & 0x8000) {
 		float rotateSpeed = 0.2f;
 		if (MAGISYSTEM::PushKey(DIK_LSHIFT)) {
 			rotateSpeed *= 0.3f;
 		}
+		// 回転からカメラの右方向ベクトルを計算
+		Vector3 right = Right(cameraRotate);
+		// 回転からカメラの正面ベクトルを計算
+		Vector3 forward = Forward(cameraRotate);
+		// クロス積でカメラの上方向ベクトルを計算
+		Vector3 up = Cross(forward, right);
+
 		// カメラの回転を更新
-		cameraRotate.x -= delta.y * rotateSpeed * MAGISYSTEM::GetDeltaTime(); // 縦方向
-		cameraRotate.y -= delta.x * rotateSpeed * MAGISYSTEM::GetDeltaTime(); // 横方向
+		float yaw = -delta.x * rotateSpeed * MAGISYSTEM::GetDeltaTime(); // 横方向
+		float pitch = -delta.y * rotateSpeed * MAGISYSTEM::GetDeltaTime(); // 縦方向
+
+		Quaternion qYaw = MakeRotateAxisAngleQuaternion(up, yaw);
+		Quaternion qPitch = MakeRotateAxisAngleQuaternion(right, pitch);
+
+		cameraRotate = Normalize(qPitch * qYaw * cameraRotate);
 	}
 }
 
-void DebugCamera3D::HandleCameraTranslation(Vector3& cameraTranslate, Vector3& cameraRotate, const POINT& delta) {
+void DebugCamera3D::HandleCameraTranslation(Vector3& cameraTranslate, Quaternion& cameraRotate, const POINT& delta) {
 	// 中ボタンドラッグで移動
 	if (GetAsyncKeyState(VK_MBUTTON) & 0x8000) {
 		// 回転からカメラの右方向ベクトルを計算
-		Vector3 right{};
-		right.x = std::cosf(cameraRotate.y);
-		right.y = 0.0f;
-		right.z = -std::sinf(cameraRotate.y);
-
-		// 回転からカメラの上方向ベクトルを計算
-		Vector3 up{};
-		up.x = std::sinf(cameraRotate.x) * std::sinf(cameraRotate.y);
-		up.y = std::cosf(cameraRotate.x);
-		up.z = std::sinf(cameraRotate.x) * std::cosf(cameraRotate.y);
+		Vector3 right = Right(cameraRotate);
+		// 回転からカメラの正面ベクトルを計算
+		Vector3 forward = Forward(cameraRotate);
+		// クロス積でカメラの上方向ベクトルを計算
+		Vector3 up = Cross(forward, right);
 
 		// 移動量をローカル座標系で計算
 		float moveSpeed = 0.3f;
@@ -85,7 +90,7 @@ void DebugCamera3D::HandleCameraTranslation(Vector3& cameraTranslate, Vector3& c
 	}
 }
 
-void DebugCamera3D::HandleCameraZoom(Vector3& cameraTranslate, Vector3& cameraRotate, int64_t wheelDelta) {
+void DebugCamera3D::HandleCameraZoom(Vector3& cameraTranslate, Quaternion& cameraRotate, int64_t wheelDelta) {
 	if (wheelDelta != 0) {
 		float zoomSpeed = 0.3f; // ズーム速度スケール
 		if (MAGISYSTEM::PushKey(DIK_LSHIFT)) {

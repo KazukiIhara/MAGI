@@ -11,6 +11,7 @@
 #include "3D/Base3D/WorldEntity/WorldEntity.h"
 #include "3D/Base3D/WorldTransform/WorldTransform.h"
 #include "Structs/CameraStruct.h"
+#include "EngineLogic/Transform3D/Transform3D.h"
 
 /// <summary>
 /// 3D用カメラ
@@ -58,8 +59,12 @@ protected:
 	// カメラの初期トランスフォーム
 	const Vector3 kDefaultCameraRotate_ = { 0.45f,0.0f,0.0f };
 	const Vector3 kDefaultCameraTranslate_ = { 0.0f,2.0f,-3.0f };
-	// ワールドトランスフォーム
-	WorldTransform worldTransform_{};
+	// トランスフォーム
+	std::unique_ptr<Transform3D> transform_ = nullptr;
+	// 水平（+Y 軸まわり）
+	float yaw_ = 0.0f;
+	// 垂直（+X 軸まわり）
+	float pitch_ = 0.0f;
 	// ビューマトリックス
 	Matrix4x4 viewMatrix_{};
 	// プロジェクション行列

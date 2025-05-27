@@ -21,9 +21,10 @@ Transform3D::Transform3D(const Vector3& scale, const Quaternion& rotate, const V
 }
 
 void Transform3D::Update() {
-
-	// ユーザー入力用の回転に変更があった場合
-	if (preInputRadians_ != preInputRadians_) {
+	// 直接Q回転に変更があった場合はこっち優先
+	if (preRotate_ != rotate_) {
+		inputRadians_ = MAGIMath::QuaternionToEulerXYZ(rotate_);
+	} else if (preInputRadians_ != inputRadians_) { 	// ユーザー入力用の回転に変更があった場合
 		// 変換してクオータニオンの回転に適用
 		rotate_ = MAGIMath::EulerToQuaternionXYZ(inputRadians_);
 	}
@@ -42,6 +43,7 @@ void Transform3D::Update() {
 		preScale_ = scale_;
 		preRotate_ = rotate_;
 		preTranslate_ = translate_;
+		preInputRadians_ = inputRadians_;
 
 		// 次フレーム用のフラグを立てる
 		isChanged_ = false;
@@ -73,6 +75,10 @@ Vector3& Transform3D::GetRotate() {
 
 Vector3& Transform3D::GetTranslate() {
 	return translate_;
+}
+
+Quaternion& Transform3D::GetQuaternion() {
+	return rotate_;
 }
 
 const Matrix4x4& Transform3D::GetWorldMatrix() const {

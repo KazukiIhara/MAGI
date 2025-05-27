@@ -278,6 +278,22 @@ Vector3 MAGIMath::Forward(const Vector3& rotate) {
 	return Normalize(forward);
 }
 
+Vector3 MAGIMath::Forward(const Quaternion& q) {
+	return Normalize(Vector3{
+		2.0f * (q.x * q.z + q.w * q.y),
+		2.0f * (q.y * q.z - q.w * q.x),
+		1.0f - 2.0f * (q.x * q.x + q.y * q.y)
+		});
+}
+
+Vector3 MAGIMath::Right(const Quaternion& q) {
+	return Normalize(Vector3{
+		1.0f - 2.0f * (q.y * q.y + q.z * q.z),
+		2.0f * (q.x * q.y + q.w * q.z),
+		2.0f * (q.x * q.z - q.w * q.y)
+		});
+}
+
 Vector3 MAGIMath::DirectionToEuler(const Vector3& dir) {
 	Vector3 forward = Normalize(dir);
 
@@ -971,6 +987,27 @@ Quaternion MAGIMath::MakeRotateAxisAngleQuaternion(const Vector3& axis, float an
 	q.w = c;
 
 	return q;
+}
+
+Quaternion MAGIMath::QuaternionFromYawPitchRoll(float yaw, float pitch, float roll) {
+	const float halfYaw = yaw * 0.5f;
+	const float halfPitch = pitch * 0.5f;
+	const float halfRoll = roll * 0.5f;
+
+	const float cy = std::cos(halfYaw);
+	const float sy = std::sin(halfYaw);
+	const float cp = std::cos(halfPitch);
+	const float sp = std::sin(halfPitch);
+	const float cr = std::cos(halfRoll);
+	const float sr = std::sin(halfRoll);
+
+	Quaternion q;
+	q.w = cr * cp * cy + sr * sp * sy;  // = cos(R/2)cos(P/2)cos(Y/2) + sin(R/2)sin(P/2)sin(Y/2)
+	q.x = sr * cp * cy - cr * sp * sy;
+	q.y = cr * sp * cy + sr * cp * sy;
+	q.z = cr * cp * sy - sr * sp * cy;
+
+	return Normalize(q);                // MAGIMath::Normalize で長さ1に
 }
 
 Quaternion MAGIMath::Slerp(Quaternion q1, Quaternion q2, float t) {
