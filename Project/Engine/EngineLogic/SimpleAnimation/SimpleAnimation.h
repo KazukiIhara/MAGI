@@ -1,5 +1,22 @@
 #pragma once
 
+// 数学ヘッダ
+#include "Math/Utility/MathUtility.h"
+
+using namespace MAGIMath;
+
+enum class EasingType {
+	Linear,
+	EaseIn,
+	EaseOut,
+	EaseInOut
+};
+
+enum class LoopType {
+	Restart,
+	PingPong
+};
+
 /// <summary>
 /// シンプルアニメーションクラス
 /// </summary>
@@ -7,17 +24,6 @@
 template<typename T>
 class SimpleAnimation {
 public:
-	enum class EasingType {
-		Linear,
-		EaseIn,
-		EaseOut,
-		EaseInOut
-	};
-
-	enum class LoopType {
-		Restart,
-		PingPong
-	};
 
 	SimpleAnimation(
 		const T& start = T{},
