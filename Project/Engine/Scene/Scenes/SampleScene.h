@@ -137,8 +137,6 @@ inline void SampleScene<Data>::Initialize() {
 
 	// モデルのマテリアル設定
 	modelMaterial_.blendMode = BlendMode::None;
-	modelMaterial_.color = { 1.0f,0.0f,0.0f,1.0f };
-	modelMaterial_.isMakeShadow = false;
 
 	modelMatAlpha_.blendMode = BlendMode::Add;
 
