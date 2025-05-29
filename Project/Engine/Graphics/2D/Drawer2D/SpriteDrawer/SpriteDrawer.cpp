@@ -128,9 +128,12 @@ SpriteDataForGPU SpriteDrawer::ComputeSpriteDataForGPU(const SpriteData& data, c
 		texBottom = -texBottom;
 	}
 
+	// 前景か背景か
+	float z = data.isBack ? 10000.0f : 0.0f;
+
 	// 追加するスプライトデータ
 	SpriteDataForGPU newSpriteData{
-		.worldMatrix = MakeAffineMatrix(Vector3(size.x,size.y,1.0f),Vector3(0.0f,0.0f,data.rotate),Vector3(data.position.x,data.position.y,0.0f)),
+		.worldMatrix = MakeAffineMatrix(Vector3(size.x,size.y,1.0f),Vector3(0.0f,0.0f,data.rotate),Vector3(data.position.x,data.position.y,z)),
 		.vertexPosition{
 			{left,top},			// 左上
 			{right,top},		// 右上
