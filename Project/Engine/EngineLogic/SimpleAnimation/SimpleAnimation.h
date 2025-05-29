@@ -3,14 +3,9 @@
 // 数学ヘッダ
 #include "Math/Utility/MathUtility.h"
 
-using namespace MAGIMath;
+#include "Easing/Easing.h"
 
-enum class EasingType {
-	Linear,
-	EaseIn,
-	EaseOut,
-	EaseInOut
-};
+using namespace MAGIMath;
 
 enum class LoopType {
 	Restart,
@@ -41,8 +36,8 @@ public:
 
 	T GetValue(float t) const {
 		float u = NormalizeTime(t);
-		float e = Ease(u);
-		return Lerp(startValue_, endValue_, e);
+		float easedT = Easing::Apply(easing_, u);
+        return Lerp(startValue_, endValue_, easedT);
 	}
 
 	// セッター
@@ -71,33 +66,17 @@ private:
 		}
 		// ループあり
 		switch (loopType_) {
-			case LoopType::Restart:
-				// 1.0 ごとにリセット
-				return t - std::floor(t);
-			case LoopType::PingPong: {
-				// 0–2 のサイクルを折り返し
-				float cycle = t - std::floor(t / 2.0f) * 2.0f;
-				if (cycle <= 1.0f) return cycle;
-				return 2.0f - cycle;
-			}
-			default:
-				return std::clamp(t, 0.0f, 1.0f);
+		case LoopType::Restart:
+			// 1.0 ごとにリセット
+			return t - std::floor(t);
+		case LoopType::PingPong: {
+			// 0–2 のサイクルを折り返し
+			float cycle = t - std::floor(t / 2.0f) * 2.0f;
+			if (cycle <= 1.0f) return cycle;
+			return 2.0f - cycle;
 		}
-	}
-
-	// イージング関数
-	float Ease(float t) const {
-		switch (easing_) {
-			case EasingType::EaseIn:
-				return t * t;
-			case EasingType::EaseOut:
-				return 1.0f - (1.0f - t) * (1.0f - t);
-			case EasingType::EaseInOut:
-				if (t < 0.5f) return 2.0f * t * t;
-				return 1.0f - 2.0f * (1.0f - t) * (1.0f - t);
-			case EasingType::Linear:
-			default:
-				return t;
+		default:
+			return std::clamp(t, 0.0f, 1.0f);
 		}
 	}
 
