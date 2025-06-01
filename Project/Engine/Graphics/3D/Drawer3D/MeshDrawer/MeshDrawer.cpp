@@ -206,12 +206,12 @@ void MeshDrawer::Draw(uint32_t instanceCount) {
 	cmd->SetGraphicsRootDescriptorTable(5, MAGISYSTEM::GetSrvUavDescriptorHandleGPU(meshletSrvIdx_));
 	cmd->SetGraphicsRootShaderResourceView(6, meshletUniqueVertIB_->GetGPUVirtualAddress());
 	cmd->SetGraphicsRootDescriptorTable(7, MAGISYSTEM::GetSrvUavDescriptorHandleGPU(primSrvIdx_));
-
+	cmd->SetGraphicsRootDescriptorTable(8, MAGISYSTEM::GetSrvUavDescriptorHandleGPU(cullDataSrvIndex_));
 	MeshInfo info = {
 		.indexSize = 4,
 		.meshletCount = meshletCount_,
 	};
-	cmd->SetGraphicsRoot32BitConstants(8, 2, &info, 0);
+	cmd->SetGraphicsRoot32BitConstants(9, 2, &info, 0);
 
 	cmd->DispatchMesh(DivRoundUp(meshletCount_, AS_GROUP_SIZE), instanceCount, 1);
 }

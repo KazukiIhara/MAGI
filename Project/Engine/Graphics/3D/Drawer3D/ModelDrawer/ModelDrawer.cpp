@@ -85,6 +85,7 @@ void ModelDrawer::Draw(BlendMode mode) {
 
 	// カメラの送信
 	MAGISYSTEM::TransferCamera3D(0);
+	MAGISYSTEM::TransferCurrentCamera3DFrustum(10);
 
 	// inctancing描画用のデータを送信
 	commandList->SetGraphicsRootDescriptorTable(1, MAGISYSTEM::GetSrvUavDescriptorHandleGPU(instancingSrvIndex_[blendIndex]));

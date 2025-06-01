@@ -163,6 +163,9 @@ namespace MAGIMath {
 	// クオータニオンから右向きを取得
 	Vector3 Right(const Quaternion& q);
 
+	// ヨーとピッチから方向を求める
+	Vector3 DirectionFromYawPitch(float yaw, float pitch);
+
 	// 向きから回転を取得
 	Vector3 DirectionToEuler(const Vector3& dir);
 

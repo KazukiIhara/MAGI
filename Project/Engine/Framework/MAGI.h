@@ -431,6 +431,8 @@ public: // エンジンの機能
 	static void SetCurrentCamera3D(const std::string& cameraName);
 	// 3Dカメラの転送
 	static void TransferCamera3D(uint32_t rootParameterIndex);
+	// Frustumの転送
+	static void TransferCurrentCamera3DFrustum(uint32_t rootParameterIndex);
 	// カメラシェイク
 	static void ShakeCurrentCamera3D(float duration, float intensity);
 	// 3Dカメラ全削除

@@ -106,15 +106,6 @@ void Camera3D::ApplyShake() {
 	}
 }
 
-Vector3 Camera3D::DirectionFromYawPitch(float yaw, float pitch) {
-	float cosPitch = std::cosf(pitch);
-	return Normalize(Vector3{
-		std::sinf(yaw) * cosPitch,
-		std::sinf(pitch),
-		std::cosf(yaw) * cosPitch
-		});
-}
-
 void Camera3D::DrawFrustum() {
 	// NDC空間の8頂点（Z: [0=Near, 1=Far]、左手系）
 	static const Vector3 ndcCorners[8] =
@@ -182,6 +173,10 @@ void Camera3D::TransferCameraInv(uint32_t rootParameterIndex) {
 	MAGISYSTEM::GetDirectXCommandList()->SetGraphicsRootConstantBufferView(rootParameterIndex, cameraInvResource_->GetGPUVirtualAddress());
 }
 
+void Camera3D::TransferCameraFrustum(uint32_t rootParameterIndex) {
+	MAGISYSTEM::GetDirectXCommandList()->SetGraphicsRootConstantBufferView(rootParameterIndex, frustumResource_->GetGPUVirtualAddress());
+}
+
 Matrix4x4 Camera3D::GetViewProjectionMatrix() const {
 	return viewProjectionMatrix_;
 }
@@ -194,9 +189,18 @@ Vector3 Camera3D::GetEye() const {
 	return eye_;
 }
 
+void Camera3D::SetEye(const Vector3& eye) {
+	eye_ = eye;
+}
+
+void Camera3D::SetTarget(const Vector3& target) {
+	target_ = target;
+}
+
 void Camera3D::CreateCameraResource() {
 	cameraResource_ = MAGISYSTEM::CreateBufferResource(sizeof(Camera3DForGPU));
 	cameraInvResource_ = MAGISYSTEM::CreateBufferResource(sizeof(Camera3DInverseForGPU));
+	frustumResource_ = MAGISYSTEM::CreateBufferResource(sizeof(Camera3DFrustumForGPU));
 }
 
 void Camera3D::MapCameraData() {
@@ -205,6 +209,10 @@ void Camera3D::MapCameraData() {
 
 	cameraInvData_ = nullptr;
 	cameraInvResource_->Map(0, nullptr, reinterpret_cast<void**>(&cameraInvData_));
+
+	frustumData_ = nullptr;
+	frustumResource_->Map(0, nullptr, reinterpret_cast<void**>(&frustumData_));
+
 	UpdateCameraData();
 }
 
@@ -214,4 +222,12 @@ void Camera3D::UpdateCameraData() {
 
 	cameraInvData_->invView = Inverse(viewMatrix_);
 	cameraInvData_->invProj = Inverse(projectionMatrix_);
+
+	frustumData_->left = frustumPlanes_[0];
+	frustumData_->right = frustumPlanes_[1];
+	frustumData_->bottom = frustumPlanes_[2];
+	frustumData_->top = frustumPlanes_[3];
+	frustumData_->nearClip = frustumPlanes_[4];
+	frustumData_->farClip = frustumPlanes_[5];
+
 }
