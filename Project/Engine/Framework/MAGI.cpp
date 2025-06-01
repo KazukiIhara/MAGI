@@ -736,6 +736,9 @@ void MAGISYSTEM::Draw() {
 		cylinderDrawer3D_->Draw(mode);
 	}
 
+	// パーティクルの描画処理
+	particleGroup3DManager_->Draw();
+
 	// ポストエフェクトの影響を受けるスプライトを描画
 	for (uint32_t i = static_cast<uint32_t>(BlendMode::None); i < kBlendModeNum; ++i) {
 		BlendMode mode = static_cast<BlendMode>(i);
@@ -1253,6 +1256,10 @@ void MAGISYSTEM::StopLoopWaveSound(const std::string& fileName) {
 
 void MAGISYSTEM::TransferCamera3D(uint32_t rootParameterIndex) {
 	camera3DManager_->TransferCurrentCamera(rootParameterIndex);
+}
+
+void MAGISYSTEM::ShakeCurrentCamera3D(float duration, float intensity) {
+	camera3DManager_->ShakeCurrentCamera(duration, intensity);
 }
 
 void MAGISYSTEM::ClearCamera3D() {
