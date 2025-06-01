@@ -371,8 +371,8 @@ template<typename Data>
 inline void SampleScene<Data>::Draw() {
 
 	// スプライト描画
-	MAGISYSTEM::DrawSprite(SpriteData{}, SpriteMaterialData{});
-	MAGISYSTEM::DrawSprite(spriteData_, spriteMaterial);
+	//MAGISYSTEM::DrawSprite(SpriteData{}, SpriteMaterialData{});
+	//MAGISYSTEM::DrawSprite(spriteData_, spriteMaterial);
 
 	// 板ポリ描画
 	MAGISYSTEM::DrawPlane3D(worldTransform_[0].worldMatrix_, planeData_, material_);
