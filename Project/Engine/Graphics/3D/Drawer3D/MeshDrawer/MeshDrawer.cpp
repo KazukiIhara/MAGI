@@ -9,7 +9,7 @@
 #include "Framework/MAGI.h"
 #include "Logger/Logger.h"
 #include "MAGIUitility/MAGIUtility.h"
-
+using namespace MAGIMath;
 using namespace MAGIUtility;
 
 // ─────────────────────────────────────────────
@@ -78,6 +78,17 @@ MeshDrawer::MeshDrawer(const MeshData& meshData) {
 	// メシュレットのサイズを取得
 	meshletCount_ = static_cast<uint32_t>(meshlets.size());
 
+	// メシュレットごとのバウンディングスフィア作成
+	cullData_.resize(meshlets.size());
+
+	hr = DirectX::ComputeCullData(positions.data(), positions.size(),
+		meshlets.data(), meshlets.size(),
+		reinterpret_cast<const uint32_t*>(uniqueVertexIB.data()),
+		uniqueVertexIB.size() / sizeof(uint32_t),
+		primitiveIndices.data(), primitiveIndices.size(),
+		cullData_.data());
+
+	assert(SUCCEEDED(hr));
 
 	//=========================================================================
 	//リソースの作成
@@ -150,6 +161,23 @@ MeshDrawer::MeshDrawer(const MeshData& meshData) {
 		meshletPrimIB_->Unmap(0, nullptr);
 	}
 
+	// バウンディングスフィア
+	cullDataBuffer_ = MAGISYSTEM::CreateBufferResource(
+		sizeof(DirectX::CullData) * cullData_.size());
+	cullDataSrvIndex_ = MAGISYSTEM::SrvUavAllocate();
+	MAGISYSTEM::CreateSrvStructuredBuffer(
+		cullDataSrvIndex_, cullDataBuffer_.Get(),
+		static_cast<uint32_t>(cullData_.size()),
+		sizeof(DirectX::CullData)
+	);
+
+	{
+		void* p = nullptr;
+		cullDataBuffer_->Map(0, nullptr, &p);
+		std::memcpy(p, cullData_.data(), sizeof(DirectX::CullData) * cullData_.size());
+		cullDataBuffer_->Unmap(0, nullptr);
+	}
+
 	/*=== マテリアル ===========================================================*/
 	materialBuffer_ = MAGISYSTEM::CreateBufferResource(sizeof(ModelMaterialDataForGPU));
 	materialBuffer_->Map(0, nullptr, reinterpret_cast<void**>(&material_));
@@ -163,7 +191,9 @@ MeshDrawer::MeshDrawer(const MeshData& meshData) {
 }
 
 MeshDrawer::~MeshDrawer() = default;
-void MeshDrawer::Update() {}
+void MeshDrawer::Update() {
+	DrawBoundingSphere();
+}
 
 // -----------------------------------------------------------------------------
 void MeshDrawer::Draw(uint32_t instanceCount) {
@@ -203,4 +233,19 @@ void MeshDrawer::DrawShadow(uint32_t instanceCount) {
 	cmd->SetGraphicsRoot32BitConstants(6, 2, &info, 0);
 
 	cmd->DispatchMesh(DivRoundUp(meshletCount_, AS_GROUP_SIZE), instanceCount, 1);
+}
+
+void MeshDrawer::DrawBoundingSphere() {
+	for (const auto& cd : cullData_) {
+		const DirectX::XMFLOAT3 bs = cd.BoundingSphere.Center;
+		const Vector3 center = { bs.x, bs.y, bs.z };
+		const float   radius = cd.BoundingSphere.Radius;
+
+		Matrix4x4 local = MakeTranslateMatrix(center);
+		SphereData3D sphere{
+			.radius = radius,
+		};
+
+		//MAGISYSTEM::DrawSphere3D(world, sphere, PrimitiveMaterialData3D{});
+	}
 }
