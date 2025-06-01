@@ -21,7 +21,7 @@ LightManager::LightManager(DXGI* dxgi, DirectXCommand* directXCommand) {
 	CreateDirectionalLightCameraResource();
 	MapDirectionalLightCameraData();
 
-	lightProj_ = MakeOrthographicMatrix(40.0f, 40.0f, nearClipRange_, farClipRange_);
+	lightProj_ = MakeOrthographicMatrix(100.0f, 100.0f, nearClipRange_, farClipRange_);
 
 	Logger::Log("LightManager Initialize\n");
 }
