@@ -1362,6 +1362,10 @@ void MAGISYSTEM::SetDirectionalLight(const DirectionalLight& directionalLight) {
 	lightManager_->SetDirectionalLight(directionalLight);
 }
 
+void MAGISYSTEM::SetDirectionalLightCameraTarget(const Vector3& target) {
+	lightManager_->SetDirectionalLightCameraTarget(target);
+}
+
 void MAGISYSTEM::TransferDirectionalLightCamera(uint32_t paramIndex) {
 	lightManager_->TransferDirectionalLightCamera(paramIndex);
 }

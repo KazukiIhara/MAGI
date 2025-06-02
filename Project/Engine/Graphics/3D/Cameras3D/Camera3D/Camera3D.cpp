@@ -34,6 +34,13 @@ void Camera3D::Update() {
 }
 
 void Camera3D::UpdateData() {
+	if (isUseYawPitch_) {
+		// yaw/pitch から target を再生成
+		Vector3 forward = DirectionFromYawPitch(yaw_, pitch_);
+		target_ = eye_ + forward;
+	}
+
+	// ビュー行列作成
 	viewMatrix_ = MakeLookAtMatrix(eye_, target_, up_);
 	viewProjectionMatrix_ = viewMatrix_ * projectionMatrix_;
 
@@ -189,12 +196,28 @@ Vector3 Camera3D::GetEye() const {
 	return eye_;
 }
 
+float Camera3D::GetYaw() const {
+	return yaw_;
+}
+
+float Camera3D::GetPitch() const {
+	return pitch_;
+}
+
 void Camera3D::SetEye(const Vector3& eye) {
 	eye_ = eye;
 }
 
 void Camera3D::SetTarget(const Vector3& target) {
 	target_ = target;
+}
+
+void Camera3D::SetYaw(float yaw) {
+	yaw_ = yaw;
+}
+
+void Camera3D::SetPitch(float pitch) {
+	pitch_ = pitch;
 }
 
 void Camera3D::CreateCameraResource() {
@@ -229,5 +252,4 @@ void Camera3D::UpdateCameraData() {
 	frustumData_->top = frustumPlanes_[3];
 	frustumData_->nearClip = frustumPlanes_[4];
 	frustumData_->farClip = frustumPlanes_[5];
-
 }

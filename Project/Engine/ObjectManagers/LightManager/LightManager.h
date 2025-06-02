@@ -27,6 +27,7 @@ public:
 
 	void TransferDirectionalLight(uint32_t paramIndex);
 	void SetDirectionalLight(const DirectionalLight& directionalLight);
+	void SetDirectionalLightCameraTarget(const Vector3& target);
 
 	void TransferDirectionalLightCamera(uint32_t paramIndex);
 
@@ -56,6 +57,7 @@ private:
 
 	// プロジェクション行列
 	Matrix4x4 lightProj_{};
+	Vector3 target_ = { 0.0f,0.0f,0.0f };
 
 	//========================
 	// DirectionalLight

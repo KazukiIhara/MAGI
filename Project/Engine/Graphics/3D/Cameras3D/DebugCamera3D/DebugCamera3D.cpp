@@ -34,10 +34,6 @@ void DebugCamera3D::UpdateData() {
 	// カメラズーム処理
 	HandleCameraZoom(wheelDelta);
 
-	// yaw/pitch から target を再生成
-	Vector3 forward = DirectionFromYawPitch(yaw_, pitch_);
-	target_ = eye_ + forward;
-
 	lastCursorPos = cursorPos;
 
 	Camera3D::UpdateData();
