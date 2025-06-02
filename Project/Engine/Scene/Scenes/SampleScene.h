@@ -342,8 +342,8 @@ inline void SampleScene<Data>::Update() {
 	ImGui::DragFloat("Pitch", &pitch_, 0.01f);
 	ImGui::End();
 
-	Vector3 cameraTarget = sceneCamera_->GetEye() + DirectionFromYawPitch(yaw_, pitch_);
-	sceneCamera_->SetTarget(cameraTarget);
+	sceneCamera_->SetYaw(yaw_);
+	sceneCamera_->SetPitch(pitch_);
 
 	t_ += MAGISYSTEM::GetDeltaTime();
 

@@ -51,8 +51,13 @@ public:
 	// 視点を送る
 	Vector3 GetEye()const;
 
+	float GetYaw()const;
+	float GetPitch()const;
+
 	void SetEye(const Vector3& eye);
 	void SetTarget(const Vector3& target);
+	void SetYaw(float yaw);
+	void SetPitch(float pitch);
 
 private:
 	// カメラのリソースを作成
@@ -73,6 +78,9 @@ protected:
 	// 上方向
 	Vector3 up_ = { 0.0f,1.0f,0.0f };
 
+	float yaw_ = 0.0f;
+	float pitch_ = 0.0f;
+
 	// ビューマトリックス
 	Matrix4x4 viewMatrix_{};
 	// プロジェクション行列
@@ -80,7 +88,7 @@ protected:
 	// ビュープロジェクションマトリックス
 	Matrix4x4 viewProjectionMatrix_{};
 	// 水平視野角(度数法)
-	float fovYDegrees_ = 90.0f;
+	float fovYDegrees_ = 60.0f;
 	// 水平方向視野角
 	float fovY_ = fovYDegrees_ * (std::numbers::pi_v<float> / 180.0f);
 	// アスペクト比
@@ -95,6 +103,8 @@ protected:
 	Vector4 frustumPlanes_[6];
 	// 有効フラグ
 	bool isActive_ = true;
+	// yawPicthを使うかどうか
+	bool isUseYawPitch_ = true;
 
 	// カメラシェイク用変数
 	float shakeTime_ = 0;

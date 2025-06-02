@@ -503,6 +503,8 @@ public: // エンジンの機能
 #pragma region LightManager
 	// DirectionalLightをセット
 	static void SetDirectionalLight(const DirectionalLight& directionalLight);
+	// DirectionalLightのカメラターゲットをセット
+	static void SetDirectionalLightCameraTarget(const Vector3& target);
 	// ライトカメラを転送
 	static void TransferDirectionalLightCamera(uint32_t paramIndex);
 #pragma endregion
