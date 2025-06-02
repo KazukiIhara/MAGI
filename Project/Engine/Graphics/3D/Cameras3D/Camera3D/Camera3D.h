@@ -54,6 +54,7 @@ public:
 	float GetYaw()const;
 	float GetPitch()const;
 
+	void SetIsUseYawPitch(bool isUseYawPitch);
 	void SetEye(const Vector3& eye);
 	void SetTarget(const Vector3& target);
 	void SetYaw(float yaw);

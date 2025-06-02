@@ -253,3 +253,7 @@ void Camera3D::UpdateCameraData() {
 	frustumData_->nearClip = frustumPlanes_[4];
 	frustumData_->farClip = frustumPlanes_[5];
 }
+
+void Camera3D::SetIsUseYawPitch(bool isUseYawPitch) {
+	isUseYawPitch_ = isUseYawPitch;
+}
