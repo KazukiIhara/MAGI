@@ -66,6 +66,11 @@ struct Camera
     float _pad;
 };
 
+struct CameraFrustum
+{
+    float4 planes[6];
+};
+
 // ライトのカメラ
 struct DirectionalLightCamera
 {
@@ -93,4 +98,11 @@ struct Payload          // AS → MS で渡す最小ペイロード
     uint meshletIndices[32];
     uint instanceID;
     uint _pad[2];
+};
+
+struct CullData          
+{
+    float4 BoundingSphere;
+    uint NormalCone;
+    float ApexOffset;
 };

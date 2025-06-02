@@ -55,6 +55,10 @@ void Camera3DManager::TransferCurrentCameraInverse(uint32_t rootParameterIndex) 
 	currentCamera_->TransferCameraInv(rootParameterIndex);
 }
 
+void Camera3DManager::TransferCurrentCameraFrustum(uint32_t rootParameterIndex) {
+	currentCamera_->TransferCameraFrustum(rootParameterIndex);
+}
+
 void Camera3DManager::DrawCurrentCameraFrustum() {
 	currentCamera_->DrawFrustum();
 }

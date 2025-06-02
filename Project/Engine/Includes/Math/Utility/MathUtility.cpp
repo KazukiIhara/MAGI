@@ -306,6 +306,15 @@ Vector3 MAGIMath::Right(const Quaternion& q) {
 		});
 }
 
+Vector3 MAGIMath::DirectionFromYawPitch(float yaw, float pitch) {
+	float cosPitch = std::cosf(pitch);
+	return Normalize(Vector3{
+		std::sinf(yaw) * cosPitch,
+		std::sinf(pitch),
+		std::cosf(yaw) * cosPitch
+		});
+}
+
 Vector3 MAGIMath::DirectionToEuler(const Vector3& dir) {
 	Vector3 forward = Normalize(dir);
 

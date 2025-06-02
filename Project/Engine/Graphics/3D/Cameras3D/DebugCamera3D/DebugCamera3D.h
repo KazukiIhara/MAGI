@@ -17,4 +17,10 @@ public:
 	void HandleCameraTranslation(const POINT& delta);
 
 	void HandleCameraZoom(int64_t wheelDelta);
+
+private:
+	// 縦軸
+	float yaw_ = 0.0f;
+	// 横軸
+	float pitch_ = 0.0f;
 };

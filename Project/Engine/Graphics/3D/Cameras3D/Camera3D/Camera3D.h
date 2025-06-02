@@ -16,7 +16,7 @@
 /// <summary>
 /// 3D用カメラ
 /// </summary>
-class Camera3D :public WorldEntity {
+class Camera3D:public WorldEntity {
 public:
 	Camera3D(const std::string& cameraName);
 	virtual ~Camera3D()override;
@@ -32,9 +32,6 @@ public:
 	void Shake(float duration, float intensity);
 	void ApplyShake();
 
-	// ヨーとピッチから方向を求める
-	Vector3 DirectionFromYawPitch(float yaw, float pitch);
-
 	// カメラのデバッグ描画
 	void DrawFrustum();
 
@@ -42,6 +39,8 @@ public:
 	void TransferCamera(uint32_t rootParameterIndex);
 
 	void TransferCameraInv(uint32_t rootParameterIndex);
+
+	void TransferCameraFrustum(uint32_t rootParameterIndex);
 
 	// ビュープロジェクションマトリックスを送る
 	Matrix4x4 GetViewProjectionMatrix()const;
@@ -51,6 +50,9 @@ public:
 
 	// 視点を送る
 	Vector3 GetEye()const;
+
+	void SetEye(const Vector3& eye);
+	void SetTarget(const Vector3& target);
 
 private:
 	// カメラのリソースを作成
@@ -63,11 +65,6 @@ private:
 protected:
 	// カメラの初期トランスフォーム
 	const Vector3 kDefaultCameraTranslate_ = { 0.0f,3.0f,-5.0f };
-
-	// 縦軸
-	float yaw_ = 0.0f;
-	// 横軸
-	float pitch_ = 0.0f;
 
 	// カメラの位置
 	Vector3 eye_ = { 0.0f,0.0f,0.0f };
@@ -115,4 +112,8 @@ private:
 	// CameraInv用データ
 	Camera3DInverseForGPU* cameraInvData_ = nullptr;
 
+	// CameraFrustum用リソース
+	ComPtr<ID3D12Resource> frustumResource_ = nullptr;
+	// CameraFrustum用データ
+	Camera3DFrustumForGPU* frustumData_ = nullptr;
 };

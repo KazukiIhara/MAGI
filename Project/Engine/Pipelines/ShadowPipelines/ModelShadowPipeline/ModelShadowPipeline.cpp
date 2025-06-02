@@ -107,7 +107,7 @@ void ModelShadowPipeline::CreateRootSignature() {
 }
 
 void ModelShadowPipeline::CompileShaders() {
-	amplificationShaderBlob_ = shaderCompiler_->CompileShader(L"EngineAssets/Shaders/Graphics/Model3D/Model3D.AS.hlsl", L"as_6_5");
+	amplificationShaderBlob_ = shaderCompiler_->CompileShader(L"EngineAssets/Shaders/Graphics/Model3D/Model3DShadow.AS.hlsl", L"as_6_5");
 	assert(amplificationShaderBlob_);
 
 	meshShaderBlob_ = shaderCompiler_->CompileShader(L"EngineAssets/Shaders/Graphics/Model3D/Model3DShadow.MS.hlsl", L"ms_6_5");

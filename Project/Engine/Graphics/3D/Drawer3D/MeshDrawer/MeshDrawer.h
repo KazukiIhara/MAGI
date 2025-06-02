@@ -20,6 +20,8 @@ public:
 	void Draw(uint32_t instanceCount);
 	void DrawShadow(uint32_t instanceCount);
 
+	void DrawBoundingSphere();
+
 private:
 	// 頂点
 	ComPtr<ID3D12Resource> vertexBuffer_;
@@ -40,6 +42,12 @@ private:
 
 	ComPtr<ID3D12Resource> meshletPrimIB_;              // StructuredBuffer<MeshletTriangle>
 	uint32_t primSrvIdx_ = 0;
+
+	// メシュレットごとのバウンディングスフィアデータ
+	ComPtr<ID3D12Resource> cullDataBuffer_;
+	// メシュレットごとのバウンディングスフィア
+	std::vector<DirectX::CullData> cullData_;
+	uint32_t cullDataSrvIndex_ = 0;
 
 	// マテリアル
 	ComPtr<ID3D12Resource> materialBuffer_;

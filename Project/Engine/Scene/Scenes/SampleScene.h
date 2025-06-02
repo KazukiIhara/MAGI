@@ -14,7 +14,7 @@ using namespace MAGIUtility;
 
 // サンプルシーン
 template <typename Data>
-class SampleScene : public BaseScene<Data> {
+class SampleScene: public BaseScene<Data> {
 public:
 	using BaseScene<Data>::BaseScene; // 親クラスのコンストラクタをそのまま継承
 	~SampleScene()override = default;
@@ -26,7 +26,7 @@ public:
 
 private:
 	// カメラ
-	std::unique_ptr<Camera3D> sceneCamera_ = nullptr;
+	Camera3D* sceneCamera_ = nullptr;
 	std::unique_ptr<Camera2D> sceneCamera2D_ = nullptr;
 
 	// トランスフォーム
@@ -92,6 +92,9 @@ private:
 	std::unique_ptr<SimpleAnimation<Vector3>> simpleAnimation_;
 
 	float t_ = 0.0f;
+
+	float yaw_ = 0.0f;
+	float pitch_ = 0.0f;
 };
 
 template<typename Data>
@@ -120,12 +123,12 @@ inline void SampleScene<Data>::Initialize() {
 	// カメラ
 
 	// シーンカメラ作成
-	sceneCamera_ = std::make_unique<Camera3D>("SceneCamera");
+	std::unique_ptr<Camera3D> sceneCamera = std::make_unique<Camera3D>("SceneCamera");
 	// マネージャに追加
-	MAGISYSTEM::AddCamera3D(std::move(sceneCamera_));
+	MAGISYSTEM::AddCamera3D(std::move(sceneCamera));
 	// カメラを設定
 	MAGISYSTEM::SetCurrentCamera3D("SceneCamera");
-
+	sceneCamera_ = MAGISYSTEM::FindCamera3D("SceneCamera");
 
 	// 2Dカメラ作成
 	sceneCamera2D_ = std::make_unique<Camera2D>("SpriteCamera");
@@ -333,6 +336,14 @@ inline void SampleScene<Data>::Update() {
 	ImGui::Begin("SimpleAnimation");
 	ImGui::DragFloat("t", &t_, 0.01f);
 	ImGui::End();
+
+	ImGui::Begin("SceneCamera");
+	ImGui::DragFloat("Yaw", &yaw_, 0.01f);
+	ImGui::DragFloat("Pitch", &pitch_, 0.01f);
+	ImGui::End();
+
+	Vector3 cameraTarget = sceneCamera_->GetEye() + DirectionFromYawPitch(yaw_, pitch_);
+	sceneCamera_->SetTarget(cameraTarget);
 
 	t_ += MAGISYSTEM::GetDeltaTime();
 
