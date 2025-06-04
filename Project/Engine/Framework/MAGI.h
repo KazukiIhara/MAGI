@@ -60,15 +60,12 @@
 // 
 // ObjectManager
 // 
-#include "ObjectManagers/GameObject3DManager/GameObject3DManager.h"
 #include "ObjectManagers/Camera2DManager/Camera2DManager.h"
 #include "ObjectManagers/Camera3DManager/Camera3DManager.h"
 #include "ObjectManagers/PunctualLightManager/PunctualLightManager.h"
-#include "ObjectManagers/Renderer3DManager/Renderer3DManager.h"
 #include "ObjectManagers/ColliderManager/ColliderManager.h"
 #include "ObjectManagers/Emitter3DManager/Emitter3DManager.h"
 #include "ObjectManagers/ParticleGroup3DManager/ParticleGroup3DManager.h"
-#include "ObjectManagers/GameObject3DGroupManager/GameObject3DGroupManager.h"
 #include "ObjectManagers/LightManager/LightManager.h"
 
 // 
@@ -104,7 +101,6 @@
 // 
 // Data入出力クラス
 // 
-#include "DataIO/DataIO.h"
 #include "GrobalDataManager/GrobalDataManager.h"
 
 // 
@@ -391,22 +387,6 @@ public: // エンジンの機能
 	static void StopLoopWaveSound(const std::string& fileName);
 #pragma endregion
 
-#pragma region GameObject3DManager
-	// 3Dゲームオブジェクトの追加
-	static void AddGameObject3D(std::unique_ptr<GameObject3D> newGameObject3D);
-	// 3Dゲームオブジェクトを取得
-	static GameObject3D* FindGameObject3D(const std::string& objectName);
-	// 全削除
-	static void ClearGameObject3D();
-#pragma endregion
-
-#pragma region GameObject3DGroupManager
-	// 3Dゲームオブジェクトグループを作成
-	static void AddGameObejct3DGroup(std::unique_ptr<GameObject3DGroup> newGameObjectGroup);
-	// 全削除
-	static void ClearGameObject3DGroup();
-#pragma endregion
-
 #pragma region Camera2DManager
 	// 2Dカメラの追加
 	static void AddCamera2D(std::unique_ptr<Camera2D> newCamera2D);
@@ -448,22 +428,6 @@ public: // エンジンの機能
 	static void TransferPunctualLight(uint32_t parmIndex);
 	// 全削除
 	static void ClearPunctualLight();
-#pragma endregion
-
-#pragma region Renderer3DManager
-	// 描画オブジェクトの追加
-	// シンプル形状
-	static std::unique_ptr<PrimitiveRenderer3D> CreatePrimitiveRenderer3D(const std::string& name, Primitive3DType primitiveRenderer, const std::string& textureName = "");
-	// 静的モデル
-	static std::unique_ptr<StaticRenderer3D> CreateStaticRenderer3D(const std::string& name, const std::string& modelName);
-	// スキニングモデル
-	static std::unique_ptr<SkinningRenderer3D> CreateSkinningRenderer3D(const std::string& name, const std::string& modelName);
-	// レンダラーをマネージャに追加
-	static void AddRenderer(std::unique_ptr<BaseRenderable3D> newRederer);
-	// 描画オブジェクトの取得
-	static BaseRenderable3D* FindRenderer3D(const std::string& name);
-	// 全削除
-	static void ClearRenderer3D();
 #pragma endregion
 
 #pragma region ColliderManager
@@ -698,15 +662,12 @@ protected:
 	//
 	// ObjectManager
 	//
-	static std::unique_ptr<GameObject3DManager> gameObject3DManager_;
 	static std::unique_ptr<Camera2DManager> camera2DManager_;
 	static std::unique_ptr<Camera3DManager> camera3DManager_;
-	static std::unique_ptr<Renderer3DManager> renderer3DManager_;
 	static std::unique_ptr<PunctualLightManager> punctualLightManager_;
 	static std::unique_ptr<ColliderManager> colliderManager_;
 	static std::unique_ptr<Emitter3DManager> emitter3DManager_;
 	static std::unique_ptr<ParticleGroup3DManager> particleGroup3DManager_;
-	static std::unique_ptr<GameObject3DGroupManager> gameObject3DGroupManager_;
 	static std::unique_ptr<LightManager> lightManager_;
 
 	// 
@@ -741,7 +702,6 @@ protected:
 	//
 	// Data入出力クラス
 	//
-	static std::unique_ptr<DataIO> dataIO_;
 	static std::unique_ptr<GrobalDataManager> grobalDataManager_;
 
 	//

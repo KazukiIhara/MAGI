@@ -11,8 +11,6 @@
 // MyHedder
 #include "Enums/GraphicsPipelineEnum.h"
 
-#include "GraphicsPipelines/Object2DGraphicsPipeline/Object2DGraphicsPipeline.h"
-
 #include "GraphicsPipelines/SpriteGraphicsPipeline/SpriteGraphicsPipeline.h"
 
 #include "GraphicsPipelines/Line3DGraphicsPipeline/Line3DGraphicsPipeline.h"
@@ -62,8 +60,6 @@ private: // メンバ変数
 	ComPtr<ID3D12PipelineState> graphicsPipelineStates_[kGraphicsPipelineStateNum][kBlendModeNum];
 
 private:
-	// Object2DGraphicsPipeline
-	std::unique_ptr<Object2DGraphicsPipeline> object2DGraphicsPipeline_ = nullptr;
 
 	// SpriteGraphicsPipeline
 	std::unique_ptr<SpriteGraphicsPipeline> spriteGraphicsPipeline_ = nullptr;
