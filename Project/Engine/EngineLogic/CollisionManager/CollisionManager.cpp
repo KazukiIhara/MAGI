@@ -3,7 +3,6 @@
 #include <cassert>
 
 #include "ObjectManagers/ColliderManager/ColliderManager.h"
-#include "3D/GameObject3D/GameObject3D.h"
 #include "Math/Utility/MathUtility.h"
 
 using namespace MAGIMath;
@@ -142,15 +141,10 @@ void CollisionManager::ResolveCollisions(const std::set<std::pair<uint32_t, uint
 			colliderA->GetIsSellingOther() = false;
 			colliderB->GetIsSellingOther() = false;
 
-			GameObject3D* ownerA = colliderA->GetOwner();
-			GameObject3D* ownerB = colliderB->GetOwner();
-			if (!ownerA || !ownerB) {
-				continue;
-			}
+			// オーナーの取得をしたりする
 
-			// 衝突終了
-			ownerA->OnCollisionExit(colliderB);
-			ownerB->OnCollisionExit(colliderA);
+			// 衝突終了処理を呼ぶ
+
 		}
 	}
 
@@ -169,19 +163,14 @@ void CollisionManager::ResolveCollisions(const std::set<std::pair<uint32_t, uint
 		colliderA->GetIsSellingOther() = true;
 		colliderB->GetIsSellingOther() = true;
 
-		GameObject3D* ownerA = colliderA->GetOwner();
-		GameObject3D* ownerB = colliderB->GetOwner();
-		if (!ownerA || !ownerB) {
-			continue;
-		}
+		// オーナーの取得をしたりする
 
 		if (isNew) {
-			ownerA->OnCollisionEnter(colliderB);
-			ownerB->OnCollisionEnter(colliderA);
+			// 衝突開始処理を呼ぶ
+
 		} else {
-			// 衝突継続
-			ownerA->OnCollisionStay(colliderB);
-			ownerB->OnCollisionStay(colliderA);
+			// 衝突継続処理を呼ぶ
+
 		}
 	}
 

@@ -9,8 +9,6 @@
 #include "3D/Base3D/WorldEntity/WorldEntity.h"
 #include "3D/Base3D/WorldTransform/WorldTransform.h"
 
-class GameObject3D;
-
 class BaseCollider3D :public WorldEntity {
 public:
 	BaseCollider3D(const std::string& name, uint32_t id, Collider3DType type);
@@ -21,8 +19,6 @@ public:
 
 	// 識別IDの取得
 	uint32_t GetID()const;
-	// 所属するゲームオブジェクトの取得
-	GameObject3D* GetOwner()const;
 
 	// コライダータイプの取得
 	Collider3DType& GetType();
@@ -35,12 +31,9 @@ public:
 	// 接触フラグの取得
 	bool& GetIsSellingOther();
 
-	// 所属するゲームオブジェクトのセット
-	void SetOwner(GameObject3D* owner);
-
 protected:
 	// 所属するゲームオブジェクトのポインタ
-	GameObject3D* owner_ = nullptr;
+	
 	// 識別ID
 	uint32_t id_ = 0;
 	// コライダーのタイプ

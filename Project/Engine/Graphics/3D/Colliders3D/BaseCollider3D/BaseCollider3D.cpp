@@ -1,7 +1,5 @@
 #include "BaseCollider3D.h"
 
-#include "3D/GameObject3D/GameObject3D.h"
-
 #include "Framework/MAGI.h"
 
 using namespace MAGIMath;
@@ -43,10 +41,6 @@ uint32_t BaseCollider3D::GetID() const {
 	return id_;
 }
 
-GameObject3D* BaseCollider3D::GetOwner() const {
-	return owner_;
-}
-
 Collider3DType& BaseCollider3D::GetType() { 
 	return type_.value();
 }
@@ -65,12 +59,5 @@ bool& BaseCollider3D::GetIsActive() {
 
 bool& BaseCollider3D::GetIsSellingOther() {
 	return isSellingOther_;
-}
-
-void BaseCollider3D::SetOwner(GameObject3D* owner) {
-	// オーナーを登録
-	owner_ = owner;
-	// 親のゲームオブジェクトのトランスフォームを親子付け
-	worldTransform_->parent_ = owner_->GetWorldTransform();
 }
 
