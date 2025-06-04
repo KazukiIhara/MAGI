@@ -20,9 +20,7 @@ enum class GraphicsPipelineStateType {
 	Model3D,
 	SkyBox,
 
-	Object3D,
 	Particle3D,
-	Object3DGroup,
 
 	Num,
 };

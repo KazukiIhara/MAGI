@@ -27,9 +27,7 @@
 
 #include "GraphicsPipelines/SkyBoxGraphicsPipeline/SkyBoxGraphicsPipeline.h"
 
-#include "GraphicsPipelines/Object3DGraphicsPipeline/Object3DGraphicsPipeline.h"
 #include "GraphicsPipelines/Particle3DGraphicsPipeline/Particle3DGraphicsPipeline.h"
-#include "GraphicsPipelines/Object3DGroupGraphicsPipeline/Object3DGroupGraphicsPipeline.h"
 
 // 前方宣言
 class DXGI;
@@ -91,10 +89,6 @@ private:
 	// SkyBoxGraphicsPipeline
 	std::unique_ptr<SkyBoxGraphicsPipeline> skyBoxGraphicsPipeline_ = nullptr;
 
-	// Object3DGraphicsPipeline
-	std::unique_ptr<Object3DGraphicsPipeline> object3DGraphicsPipeline_ = nullptr;
 	// Particle3DGraphicsPipeline
 	std::unique_ptr<Particle3DGraphicsPipeline> particle3DGraphicsPipeline_ = nullptr;
-	// Object3DGroupGraphicsPipeline
-	std::unique_ptr<Object3DGroupGraphicsPipeline> object3DGroupGraphicsPipeline_ = nullptr;
 };
