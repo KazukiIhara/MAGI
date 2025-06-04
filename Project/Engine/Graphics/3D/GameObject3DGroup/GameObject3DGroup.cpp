@@ -53,18 +53,6 @@ std::string& GameObject3DGroup::GetName() {
 }
 
 void GameObject3DGroup::PrepareForRendering() {
-	// コマンドリストを取得
-	ID3D12GraphicsCommandList* commandList = MAGISYSTEM::GetDirectXCommandList();
-	// PSOを設定
-	commandList->SetPipelineState(MAGISYSTEM::GetGraphicsPipelineState(GraphicsPipelineStateType::Object3DGroup, blendMode_));
-	// マテリアルCBufferの場所を設定
-	commandList->SetGraphicsRootConstantBufferView(0, materialResource_->GetGPUVirtualAddress());
-	// StructuredBufferのSRVを設定する
-	commandList->SetGraphicsRootDescriptorTable(1, MAGISYSTEM::GetSrvUavDescriptorHandleGPU(srvIndex_));
-	// カメラを転送
-	MAGISYSTEM::TransferCamera3D(cameraRootParamaterIndex_);
-	// ライトを転送
-	MAGISYSTEM::TransferPunctualLight(lightRootParamaterIndex_);
 }
 
 void GameObject3DGroup::CreateInstancingResource() {

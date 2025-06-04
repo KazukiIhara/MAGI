@@ -134,8 +134,11 @@ void MAGISYSTEM::Initialize() {
 
 	// DXGI
 	dxgi_ = std::make_unique<DXGI>();
+	// デバイスがDX12Ultimateに対応しているかどうかを取得
+	isSupportDX12Ultimate_ = dxgi_->Initialize();
+
 	// DirectXCommand
-	directXCommand_ = std::make_unique<DirectXCommand>(dxgi_.get());
+	directXCommand_ = std::make_unique<DirectXCommand>(dxgi_.get(), isSupportDX12Ultimate_);
 	// Fence
 	fence_ = std::make_unique<Fence>(dxgi_.get(), directXCommand_.get());
 	// ShaderCompiler
@@ -1520,20 +1523,4 @@ Vector3 MAGISYSTEM::GetGrobalDataValueVector3(const std::string& groupName, cons
 
 bool MAGISYSTEM::GetGrobalDataValueBool(const std::string& groupName, const std::string& key) {
 	return grobalDataManager_->GetValueBool(groupName, key);
-}
-
-void MAGISYSTEM::PreDrawObject3D() {
-	ID3D12GraphicsCommandList* commandList = directXCommand_->GetList();
-	// RootSignatureの設定
-	commandList->SetGraphicsRootSignature(graphicsPipelineManager_->GetRootSignature(GraphicsPipelineStateType::Object3D));
-	// 形状を設定
-	commandList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-}
-
-void MAGISYSTEM::PreDrawObject2D() {
-	ID3D12GraphicsCommandList* commandList = directXCommand_->GetList();
-	// RootSignatureの設定
-	commandList->SetGraphicsRootSignature(graphicsPipelineManager_->GetRootSignature(GraphicsPipelineStateType::Object2D));
-	// 形状を設定
-	commandList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 }

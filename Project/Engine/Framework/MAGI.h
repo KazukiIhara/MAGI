@@ -543,7 +543,7 @@ public: // エンジンの機能
 	static void DrawBox3D(
 		const Matrix4x4& worldMatrix,
 		const BoxData3D& boxData,
-		const PrimitiveMaterialData3D& 
+		const PrimitiveMaterialData3D&
 	);
 #pragma endregion
 
@@ -635,20 +635,11 @@ public: // エンジンの機能
 
 #pragma endregion
 
-#pragma region PreRender
-	// Object3Dの描画前処理
-	static void PreDrawObject3D();
-
-	// Object2Dの描画前処理
-	static void PreDrawObject2D();
-
-#pragma endregion
-
 private: // メンバ変数
 	// 終了リクエスト
 	bool endRequest_ = false;
-	// GUI描画フラグ
-	bool isActivateGUI_ = false;
+	// DX12Ultimateに対応したデバイスかどうか(ASやMSを使えるかどうか)
+	bool isSupportDX12Ultimate_ = false;
 
 protected:
 #ifdef _DEBUG

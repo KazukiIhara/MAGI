@@ -85,18 +85,6 @@ void BaseRenderable3D::Initialize(const std::string& objectName) {
 }
 
 void BaseRenderable3D::PrepareForRendering() {
-	// コマンドリストを取得
-	ID3D12GraphicsCommandList* commandList = MAGISYSTEM::GetDirectXCommandList();
-	// PSOを設定
-	commandList->SetPipelineState(MAGISYSTEM::GetGraphicsPipelineState(GraphicsPipelineStateType::Object3D, blendMode_));
-	// マテリアルCBufferの場所を設定
-	commandList->SetGraphicsRootConstantBufferView(0, materialResource_->GetGPUVirtualAddress());
-	// wvp用のCBufferの場所を設定
-	commandList->SetGraphicsRootConstantBufferView(1, transformationResource_->GetGPUVirtualAddress());
-	// カメラ情報を転送
-	MAGISYSTEM::TransferCamera3D(cameraRootParamaterIndex_);
-	// ライトを転送
-	MAGISYSTEM::TransferPunctualLight(lightRootParamaterIndex_);
 }
 
 void BaseRenderable3D::CreateWVPResource() {
