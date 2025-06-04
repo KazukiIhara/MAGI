@@ -65,7 +65,6 @@ std::unique_ptr<SoundDataContainer> MAGISYSTEM::soundDataContainer_ = nullptr;
 //
 std::unique_ptr<Camera2DManager> MAGISYSTEM::camera2DManager_ = nullptr;
 std::unique_ptr<Camera3DManager> MAGISYSTEM::camera3DManager_ = nullptr;
-std::unique_ptr<PunctualLightManager> MAGISYSTEM::punctualLightManager_ = nullptr;
 std::unique_ptr<ColliderManager> MAGISYSTEM::colliderManager_ = nullptr;
 std::unique_ptr<Emitter3DManager> MAGISYSTEM::emitter3DManager_ = nullptr;
 std::unique_ptr<ParticleGroup3DManager> MAGISYSTEM::particleGroup3DManager_ = nullptr;
@@ -174,8 +173,6 @@ void MAGISYSTEM::Initialize() {
 	camera2DManager_ = std::make_unique<Camera2DManager>();
 	// Camera3DManager
 	camera3DManager_ = std::make_unique<Camera3DManager>();
-	// PunctualLightManager
-	punctualLightManager_ = std::make_unique<PunctualLightManager>(dxgi_.get(), directXCommand_.get(), srvuavManager_.get());
 	// ColliderManager
 	colliderManager_ = std::make_unique<ColliderManager>();
 	// Emitter3DManager
@@ -373,11 +370,6 @@ void MAGISYSTEM::Finalize() {
 		colliderManager_.reset();
 	}
 
-	// PunctualLightManager
-	if (punctualLightManager_) {
-		punctualLightManager_.reset();
-	}
-
 	// Camera3DManager
 	if (camera3DManager_) {
 		camera3DManager_.reset();
@@ -543,10 +535,6 @@ void MAGISYSTEM::Update() {
 
 	// 3Dカメラマネージャの更新処理
 	camera3DManager_->Update();
-
-	// ライトマネージャの更新
-	punctualLightManager_->Update();
-
 
 	// コライダーマネージャの更新
 	colliderManager_->Update();
@@ -773,9 +761,6 @@ void MAGISYSTEM::DeleteGarbages() {
 
 	// コライダー3D
 	colliderManager_->DeleteGarbages();
-
-	// ライト
-	punctualLightManager_->DeleteGarbages();
 
 
 }
@@ -1221,22 +1206,6 @@ void MAGISYSTEM::ShakeCurrentCamera3D(float duration, float intensity) {
 
 void MAGISYSTEM::ClearCamera3D() {
 	camera3DManager_->Clear();
-}
-
-void MAGISYSTEM::AddPunctualLight(const std::string& lightName, const PunctualLightData& lightData) {
-	punctualLightManager_->AddNewLight(lightName, lightData);
-}
-
-PunctualLightData& MAGISYSTEM::GetLightData(const std::string& lightName) {
-	return punctualLightManager_->GetPunctualLight(lightName);
-}
-
-void MAGISYSTEM::TransferPunctualLight(uint32_t parmIndex) {
-	punctualLightManager_->TransferLightsData(parmIndex);
-}
-
-void MAGISYSTEM::ClearPunctualLight() {
-	punctualLightManager_->Clear();
 }
 
 std::string MAGISYSTEM::CreateCollider(const std::string& name, Collider3DType colliderType) {

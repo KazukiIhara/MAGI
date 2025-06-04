@@ -138,9 +138,6 @@ inline void SampleScene<Data>::Initialize() {
 	MAGISYSTEM::SetCurrentCamera2D("SpriteCamera");
 
 
-	// ライト
-	MAGISYSTEM::AddPunctualLight("SampleLight");
-
 	// スカイボックスの設定
 	MAGISYSTEM::SetSkyBoxTextureIndex(skyBoxTexutreIndex);
 

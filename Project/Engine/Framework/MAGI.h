@@ -62,7 +62,6 @@
 // 
 #include "ObjectManagers/Camera2DManager/Camera2DManager.h"
 #include "ObjectManagers/Camera3DManager/Camera3DManager.h"
-#include "ObjectManagers/PunctualLightManager/PunctualLightManager.h"
 #include "ObjectManagers/ColliderManager/ColliderManager.h"
 #include "ObjectManagers/Emitter3DManager/Emitter3DManager.h"
 #include "ObjectManagers/ParticleGroup3DManager/ParticleGroup3DManager.h"
@@ -419,17 +418,6 @@ public: // エンジンの機能
 	static void ClearCamera3D();
 #pragma endregion
 
-#pragma region PunctualLightManager
-	// ライトの追加
-	static void AddPunctualLight(const std::string& lightName, const PunctualLightData& lightData = PunctualLightData{});
-	// ライトの取得
-	static PunctualLightData& GetLightData(const std::string& lightName);
-	// ライトの転送
-	static void TransferPunctualLight(uint32_t parmIndex);
-	// 全削除
-	static void ClearPunctualLight();
-#pragma endregion
-
 #pragma region ColliderManager
 	// コライダーの追加
 	static std::string CreateCollider(const std::string& name, Collider3DType colliderType);
@@ -664,7 +652,6 @@ protected:
 	//
 	static std::unique_ptr<Camera2DManager> camera2DManager_;
 	static std::unique_ptr<Camera3DManager> camera3DManager_;
-	static std::unique_ptr<PunctualLightManager> punctualLightManager_;
 	static std::unique_ptr<ColliderManager> colliderManager_;
 	static std::unique_ptr<Emitter3DManager> emitter3DManager_;
 	static std::unique_ptr<ParticleGroup3DManager> particleGroup3DManager_;
