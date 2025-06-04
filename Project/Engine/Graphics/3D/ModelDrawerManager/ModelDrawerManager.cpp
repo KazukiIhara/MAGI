@@ -11,7 +11,7 @@
 #include "ViewManagers/SRVUAVManager/SRVUAVManager.h"
 #include "PipelineManagers/GraphicsPipelineManager/GraphicsPipelineManager.h"
 #include "PipelineManagers/ShadowPipelineManager/ShadowPipelineManager.h"
-#include "ObjectManagers/Camera3DManager/Camera3DManager.h"
+#include "3D/Camera3DManager/Camera3DManager.h"
 
 ModelDrawerManager::ModelDrawerManager(
 	DXGI* dxgi,

@@ -5,8 +5,8 @@
 #include "ViewManagers/SRVUAVManager/SRVUAVManager.h"
 #include "PipelineManagers/GraphicsPipelineManager/GraphicsPipelineManager.h"
 #include "PipelineManagers/ShadowPipelineManager/ShadowPipelineManager.h"
-#include "ObjectManagers/Camera3DManager/Camera3DManager.h"
-#include "ObjectManagers/LightManager/LightManager.h"
+#include "3D/Camera3DManager/Camera3DManager.h"
+#include "3D/LightManager/LightManager.h"
 
 #include "Logger/Logger.h"
 #include "MAGIUitility/MAGIUtility.h"

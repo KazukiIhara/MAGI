@@ -2,7 +2,7 @@
 
 #include <cassert>
 
-#include "ObjectManagers/ColliderManager/ColliderManager.h"
+#include "3D/ColliderManager/ColliderManager.h"
 #include "Math/Utility/MathUtility.h"
 
 using namespace MAGIMath;
