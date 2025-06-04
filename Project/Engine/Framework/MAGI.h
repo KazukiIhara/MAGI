@@ -72,17 +72,17 @@
 // 
 #include "2D/Drawer2D/SpriteDrawer/SpriteDrawer.h"
 
-#include "PrimitiveDrawers/LineDrawer3D/LineDrawer3D.h"
-#include "PrimitiveDrawers/TriangleDrawer3D/TriangleDrawer3D.h"
-#include "PrimitiveDrawers/PlaneDrawer3D/PlaneDrawer3D.h"
-#include "PrimitiveDrawers/BoxDrawer3D/BoxDrawer3D.h"
-#include "PrimitiveDrawers/SphereDrawer3D/SphereDrawer3D.h"
-#include "PrimitiveDrawers/RingDrawer3D/RingDrawer3D.h"
-#include "PrimitiveDrawers/CylinderDrawer3D/CylinderDrawer3D.h"
+#include "3D/Drawer3D/PrimitiveDrawers/LineDrawer3D/LineDrawer3D.h"
+#include "3D/Drawer3D/PrimitiveDrawers/TriangleDrawer3D/TriangleDrawer3D.h"
+#include "3D/Drawer3D/PrimitiveDrawers/PlaneDrawer3D/PlaneDrawer3D.h"
+#include "3D/Drawer3D/PrimitiveDrawers/BoxDrawer3D/BoxDrawer3D.h"
+#include "3D/Drawer3D/PrimitiveDrawers/SphereDrawer3D/SphereDrawer3D.h"
+#include "3D/Drawer3D/PrimitiveDrawers/RingDrawer3D/RingDrawer3D.h"
+#include "3D/Drawer3D/PrimitiveDrawers/CylinderDrawer3D/CylinderDrawer3D.h"
 
-#include "ModelDrawerManager/ModelDrawerManager.h"
+#include "3D/ModelDrawerManager/ModelDrawerManager.h"
 
-#include "SkyBoxDrawer/SkyBoxDrawer.h"
+#include "3D/Drawer3D/SkyBoxDrawer/SkyBoxDrawer.h"
 
 
 // 
