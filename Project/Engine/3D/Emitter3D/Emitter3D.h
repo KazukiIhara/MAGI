@@ -3,19 +3,19 @@
 #include <string>
 #include <vector>
 #include <map>
+#include <memory>
 
 #include "Structs/EmitterStruct.h"
 
-#include "3D/Base3D/WorldEntity/WorldEntity.h"
-#include "3D/Base3D/WorldTransform/WorldTransform.h"
 #include "3D/ParticleGroups3D/BaseParticleGroup3D/BaseParticleGroup3D.h"
+#include "Transform3D/Transform3D.h"
 
 /// <summary>
 /// 3Dパーティクルエミッター
 /// </summary>
-class Emitter3D :public WorldEntity {
+class Emitter3D {
 public:
-	Emitter3D(const std::string& emitterName, const Vector3& position);
+	Emitter3D(const Vector3& position);
 	~Emitter3D();
 
 	// 初期化
@@ -39,8 +39,8 @@ public:
 	std::vector<std::string> GetParticleNames() const;
 
 public:
-	// ワールドトランスフォーム
-	WorldTransform worldTransform_{};
+	// トランスフォーム
+	std::unique_ptr<Transform3D> transform_{};
 private:
 	// エミッターの設定構造体
 	EmitterSetting emitterSetting_{};

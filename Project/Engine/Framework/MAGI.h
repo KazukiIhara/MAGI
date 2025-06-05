@@ -62,7 +62,6 @@
 // 
 #include "Camera2DManager/Camera2DManager.h"
 #include "Camera3DManager/Camera3DManager.h"
-#include "ColliderManager/ColliderManager.h"
 #include "Emitter3DManager/Emitter3DManager.h"
 #include "ParticleGroup3DManager/ParticleGroup3DManager.h"
 #include "LightManager/LightManager.h"
@@ -88,7 +87,6 @@
 // 
 // GameManager
 // 
-#include "CollisionManager/CollisionManager.h"
 #include "SceneManager/SceneManager.h"
 
 
@@ -401,7 +399,7 @@ public: // エンジンの機能
 
 #pragma region Camera3DManager
 	// 3Dカメラの追加
-	static void AddCamera3D(std::unique_ptr<Camera3D> newCamera3D);
+	static void AddCamera3D(const std::string& name, std::unique_ptr<Camera3D> newCamera3D);
 	// 3Dカメラの削除
 	static void RemoveCamera3D(const std::string& cameraName);
 	// 3Dカメラの取得
@@ -416,17 +414,6 @@ public: // エンジンの機能
 	static void ShakeCurrentCamera3D(float duration, float intensity);
 	// 3Dカメラ全削除
 	static void ClearCamera3D();
-#pragma endregion
-
-#pragma region ColliderManager
-	// コライダーの追加
-	static std::string CreateCollider(const std::string& name, Collider3DType colliderType);
-	// コライダーの削除
-	static void RemoveCollider(const std::string& name);
-	// コライダーの取得
-	static BaseCollider3D* FindCollider(const std::string& name);
-	// 全削除
-	static void ClearColliders();
 #pragma endregion
 
 #pragma region Emitter3DManager
@@ -652,7 +639,6 @@ protected:
 	//
 	static std::unique_ptr<Camera2DManager> camera2DManager_;
 	static std::unique_ptr<Camera3DManager> camera3DManager_;
-	static std::unique_ptr<ColliderManager> colliderManager_;
 	static std::unique_ptr<Emitter3DManager> emitter3DManager_;
 	static std::unique_ptr<ParticleGroup3DManager> particleGroup3DManager_;
 	static std::unique_ptr<LightManager> lightManager_;
@@ -682,7 +668,6 @@ protected:
 	// 
 	// GameManager
 	// 
-	static std::unique_ptr<CollisionManager> collisionManager_;
 	static std::unique_ptr<SceneManager<GameData>> sceneManager_;
 
 

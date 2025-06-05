@@ -65,7 +65,6 @@ std::unique_ptr<SoundDataContainer> MAGISYSTEM::soundDataContainer_ = nullptr;
 //
 std::unique_ptr<Camera2DManager> MAGISYSTEM::camera2DManager_ = nullptr;
 std::unique_ptr<Camera3DManager> MAGISYSTEM::camera3DManager_ = nullptr;
-std::unique_ptr<ColliderManager> MAGISYSTEM::colliderManager_ = nullptr;
 std::unique_ptr<Emitter3DManager> MAGISYSTEM::emitter3DManager_ = nullptr;
 std::unique_ptr<ParticleGroup3DManager> MAGISYSTEM::particleGroup3DManager_ = nullptr;
 std::unique_ptr<LightManager> MAGISYSTEM::lightManager_ = nullptr;
@@ -95,7 +94,6 @@ std::unique_ptr<RenderController> MAGISYSTEM::renderController_ = nullptr;
 // 
 // GameManager
 // 
-std::unique_ptr<CollisionManager> MAGISYSTEM::collisionManager_ = nullptr;
 std::unique_ptr<SceneManager<GameData>> MAGISYSTEM::sceneManager_ = nullptr;
 
 //
@@ -173,8 +171,6 @@ void MAGISYSTEM::Initialize() {
 	camera2DManager_ = std::make_unique<Camera2DManager>();
 	// Camera3DManager
 	camera3DManager_ = std::make_unique<Camera3DManager>();
-	// ColliderManager
-	colliderManager_ = std::make_unique<ColliderManager>();
 	// Emitter3DManager
 	emitter3DManager_ = std::make_unique<Emitter3DManager>();
 	// ParticleGroup3DManager
@@ -225,8 +221,6 @@ void MAGISYSTEM::Initialize() {
 		skyBoxDrawer_.get()
 	);
 
-	// CollisionManager
-	collisionManager_ = std::make_unique<CollisionManager>(colliderManager_.get());
 	// SceneManager
 	sceneManager_ = std::make_unique<SceneManager<GameData>>();
 
@@ -263,11 +257,6 @@ void MAGISYSTEM::Finalize() {
 	// SceneManager
 	if (sceneManager_) {
 		sceneManager_.reset();
-	}
-
-	// CollisionManager
-	if (collisionManager_) {
-		collisionManager_.reset();
 	}
 
 	// RenderController
@@ -363,11 +352,6 @@ void MAGISYSTEM::Finalize() {
 	// Emitter3DManager
 	if (emitter3DManager_) {
 		emitter3DManager_.reset();
-	}
-
-	// ColliderManager
-	if (colliderManager_) {
-		colliderManager_.reset();
 	}
 
 	// Camera3DManager
@@ -536,8 +520,6 @@ void MAGISYSTEM::Update() {
 	// 3Dカメラマネージャの更新処理
 	camera3DManager_->Update();
 
-	// コライダーマネージャの更新
-	colliderManager_->Update();
 
 	// 3Dエミッターマネージャの更新処理
 	emitter3DManager_->Update();
@@ -548,9 +530,6 @@ void MAGISYSTEM::Update() {
 	// ライトマネージャ(新)の更新
 	lightManager_->Update();
 
-
-	// コリジョンマネージャの更新処理
-	collisionManager_->Update();
 
 	// グローバルデータ
 	grobalDataManager_->Update();
@@ -759,8 +738,6 @@ void MAGISYSTEM::DeleteGarbages() {
 	// 3Dオブジェクト
 	// 
 
-	// コライダー3D
-	colliderManager_->DeleteGarbages();
 
 
 }
@@ -1208,22 +1185,6 @@ void MAGISYSTEM::ClearCamera3D() {
 	camera3DManager_->Clear();
 }
 
-std::string MAGISYSTEM::CreateCollider(const std::string& name, Collider3DType colliderType) {
-	return colliderManager_->Create(name, colliderType);
-}
-
-void MAGISYSTEM::RemoveCollider(const std::string& name) {
-	colliderManager_->Remove(name);
-}
-
-BaseCollider3D* MAGISYSTEM::FindCollider(const std::string& name) {
-	return colliderManager_->Find(name);
-}
-
-void MAGISYSTEM::ClearColliders() {
-	colliderManager_->Clear();
-}
-
 std::string MAGISYSTEM::CreateEmitter3D(const std::string& emitterName, const Vector3& position) {
 	return emitter3DManager_->CreateEmitter(emitterName, position);
 }
@@ -1293,8 +1254,8 @@ void MAGISYSTEM::ClearCamera2D() {
 	camera2DManager_->Clear();
 }
 
-void MAGISYSTEM::AddCamera3D(std::unique_ptr<Camera3D> newCamera3D) {
-	camera3DManager_->Add(std::move(newCamera3D));
+void MAGISYSTEM::AddCamera3D(const std::string& name, std::unique_ptr<Camera3D> newCamera3D) {
+	camera3DManager_->Add(name, std::move(newCamera3D));
 }
 
 void MAGISYSTEM::RemoveCamera3D(const std::string& cameraName) {

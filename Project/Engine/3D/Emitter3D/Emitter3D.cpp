@@ -9,8 +9,7 @@
 using namespace MAGIMath;
 using namespace MAGIUtility;
 
-Emitter3D::Emitter3D(const std::string& emitterName, const Vector3& position) {
-	name = emitterName;
+Emitter3D::Emitter3D(const Vector3& position) {
 	Initialize(position);
 }
 
@@ -19,16 +18,13 @@ Emitter3D::~Emitter3D() {
 }
 
 void Emitter3D::Initialize(const Vector3& position) {
-	worldTransform_.Initialize();
-	worldTransform_.translate_ = position;
-	worldTransform_.Update();
+	transform_ = std::make_unique<Transform3D>(Vector3(1.0f, 1.0f, 1.0f), Vector3(0.0f, 0.0f, 0.0f), position);
+	transform_->Update();
 }
 
 void Emitter3D::Update() {
 	// ワールドトランスフォームの更新
-	worldTransform_.Update();
-	// ワールド座標の更新
-	worldPosition = ExtractionWorldPos(worldTransform_.worldMatrix_);
+	transform_->Update();
 
 	// 繰り返しフラグがオンなら繰り返し発生
 	if (emitterSetting_.isRepeat) {
@@ -50,70 +46,71 @@ void Emitter3D::EmitAll() {
 	// パーティクル発生パラメータ
 	EmitParamater emitParamater{};
 	// パーティクル発生ポジション
-	emitParamater.position = worldPosition;
+	Vector3	emitterPos = transform_->GetWorldPosition();
+	emitParamater.position = emitterPos;
 	// 発生タイプごとの処理
 	switch (emitterSetting_.emitType) {
 		// デフォルト
-	case EmitType::Default:
-		// パーティクルグループの個数分ループ
-		for (auto particleGroup : particleGroups_) {
-			// 発生個数分ループ
-			for (uint32_t i = 0; i < emitterSetting_.count; i++) {
+		case EmitType::Default:
+			// パーティクルグループの個数分ループ
+			for (auto particleGroup : particleGroups_) {
+				// 発生個数分ループ
+				for (uint32_t i = 0; i < emitterSetting_.count; i++) {
 
-				// サイズ
-				float scale = Random::GenerateFloat(emitterSetting_.minScale, emitterSetting_.maxScale);
-				emitParamater.scale.x = scale;
-				emitParamater.scale.y = scale;
-				emitParamater.scale.z = scale;
+					// サイズ
+					float scale = Random::GenerateFloat(emitterSetting_.minScale, emitterSetting_.maxScale);
+					emitParamater.scale.x = scale;
+					emitParamater.scale.y = scale;
+					emitParamater.scale.z = scale;
 
-				// 発生座標
-				emitParamater.position.x = worldPosition.x + Random::GenerateFloat(emitterSetting_.minTranslate.x, emitterSetting_.maxTranslate.x);
-				emitParamater.position.y = worldPosition.y + Random::GenerateFloat(emitterSetting_.minTranslate.y, emitterSetting_.maxTranslate.y);
-				emitParamater.position.z = worldPosition.z + Random::GenerateFloat(emitterSetting_.minTranslate.z, emitterSetting_.maxTranslate.z);
+					// 発生座標
+					emitParamater.position.x = emitterPos.x + Random::GenerateFloat(emitterSetting_.minTranslate.x, emitterSetting_.maxTranslate.x);
+					emitParamater.position.y = emitterPos.y + Random::GenerateFloat(emitterSetting_.minTranslate.y, emitterSetting_.maxTranslate.y);
+					emitParamater.position.z = emitterPos.z + Random::GenerateFloat(emitterSetting_.minTranslate.z, emitterSetting_.maxTranslate.z);
 
-				// 色
-				emitParamater.color.x = Random::GenerateFloat(emitterSetting_.minColor.x, emitterSetting_.maxColor.x);
-				emitParamater.color.y = Random::GenerateFloat(emitterSetting_.minColor.y, emitterSetting_.maxColor.y);
-				emitParamater.color.z = Random::GenerateFloat(emitterSetting_.minColor.z, emitterSetting_.maxColor.z);
-				emitParamater.color.w = Random::GenerateFloat(emitterSetting_.minColor.w, emitterSetting_.maxColor.w);
+					// 色
+					emitParamater.color.x = Random::GenerateFloat(emitterSetting_.minColor.x, emitterSetting_.maxColor.x);
+					emitParamater.color.y = Random::GenerateFloat(emitterSetting_.minColor.y, emitterSetting_.maxColor.y);
+					emitParamater.color.z = Random::GenerateFloat(emitterSetting_.minColor.z, emitterSetting_.maxColor.z);
+					emitParamater.color.w = Random::GenerateFloat(emitterSetting_.minColor.w, emitterSetting_.maxColor.w);
 
-				// 生存時間
-				emitParamater.lifeTime = Random::GenerateFloat(emitterSetting_.minLifeTime, emitterSetting_.maxLifeTime);
+					// 生存時間
+					emitParamater.lifeTime = Random::GenerateFloat(emitterSetting_.minLifeTime, emitterSetting_.maxLifeTime);
 
-				particleGroup.second->AddNewParticle(emitParamater);
+					particleGroup.second->AddNewParticle(emitParamater);
+				}
 			}
-		}
-		break;
-	case EmitType::Random:
-		// パーティクルグループの個数分ループ
-		for (auto particleGroup : particleGroups_) {
-			// 発生個数分ループ
-			for (uint32_t i = 0; i < emitterSetting_.count; i++) {
-				// 発生座標
-				emitParamater.position.x = worldPosition.x + Random::GenerateFloat(emitterSetting_.minTranslate.x, emitterSetting_.maxTranslate.x);
-				emitParamater.position.y = worldPosition.y + Random::GenerateFloat(emitterSetting_.minTranslate.y, emitterSetting_.maxTranslate.y);
-				emitParamater.position.z = worldPosition.z + Random::GenerateFloat(emitterSetting_.minTranslate.z, emitterSetting_.maxTranslate.z);
-				// サイズ
-				float size = Random::GenerateFloat(emitterSetting_.minScale, emitterSetting_.maxScale);
-				emitParamater.scale.x = size;
-				emitParamater.scale.y = size;
-				emitParamater.scale.z = size;
-				// 移動量
-				emitParamater.velocity.x = Random::GenerateFloat(emitterSetting_.minVelocity.x, emitterSetting_.maxVelocity.x);
-				emitParamater.velocity.y = Random::GenerateFloat(emitterSetting_.minVelocity.y, emitterSetting_.maxVelocity.y);
-				emitParamater.velocity.z = Random::GenerateFloat(emitterSetting_.minVelocity.z, emitterSetting_.maxVelocity.z);
-				// 色
-				emitParamater.color.x = Random::GenerateFloat(emitterSetting_.minColor.x, emitterSetting_.maxColor.x);
-				emitParamater.color.y = Random::GenerateFloat(emitterSetting_.minColor.y, emitterSetting_.maxColor.y);
-				emitParamater.color.z = Random::GenerateFloat(emitterSetting_.minColor.z, emitterSetting_.maxColor.z);
+			break;
+		case EmitType::Random:
+			// パーティクルグループの個数分ループ
+			for (auto particleGroup : particleGroups_) {
+				// 発生個数分ループ
+				for (uint32_t i = 0; i < emitterSetting_.count; i++) {
+					// 発生座標
+					emitParamater.position.x = emitterPos.x + Random::GenerateFloat(emitterSetting_.minTranslate.x, emitterSetting_.maxTranslate.x);
+					emitParamater.position.y = emitterPos.y + Random::GenerateFloat(emitterSetting_.minTranslate.y, emitterSetting_.maxTranslate.y);
+					emitParamater.position.z = emitterPos.z + Random::GenerateFloat(emitterSetting_.minTranslate.z, emitterSetting_.maxTranslate.z);
+					// サイズ
+					float size = Random::GenerateFloat(emitterSetting_.minScale, emitterSetting_.maxScale);
+					emitParamater.scale.x = size;
+					emitParamater.scale.y = size;
+					emitParamater.scale.z = size;
+					// 移動量
+					emitParamater.velocity.x = Random::GenerateFloat(emitterSetting_.minVelocity.x, emitterSetting_.maxVelocity.x);
+					emitParamater.velocity.y = Random::GenerateFloat(emitterSetting_.minVelocity.y, emitterSetting_.maxVelocity.y);
+					emitParamater.velocity.z = Random::GenerateFloat(emitterSetting_.minVelocity.z, emitterSetting_.maxVelocity.z);
+					// 色
+					emitParamater.color.x = Random::GenerateFloat(emitterSetting_.minColor.x, emitterSetting_.maxColor.x);
+					emitParamater.color.y = Random::GenerateFloat(emitterSetting_.minColor.y, emitterSetting_.maxColor.y);
+					emitParamater.color.z = Random::GenerateFloat(emitterSetting_.minColor.z, emitterSetting_.maxColor.z);
 
-				// 生存時間
-				emitParamater.lifeTime = Random::GenerateFloat(emitterSetting_.minLifeTime, emitterSetting_.maxLifeTime);
+					// 生存時間
+					emitParamater.lifeTime = Random::GenerateFloat(emitterSetting_.minLifeTime, emitterSetting_.maxLifeTime);
 
-				particleGroup.second->AddNewParticle(emitParamater);
+					particleGroup.second->AddNewParticle(emitParamater);
+				}
 			}
-		}
-		break;
+			break;
 	}
 
 }

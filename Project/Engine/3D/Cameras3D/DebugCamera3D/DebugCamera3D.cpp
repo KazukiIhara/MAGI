@@ -4,8 +4,8 @@
 
 using namespace MAGIMath;
 
-DebugCamera3D::DebugCamera3D(const std::string& cameraName)
-	:Camera3D(cameraName) {
+DebugCamera3D::DebugCamera3D()
+	:Camera3D() {
 
 }
 
@@ -47,7 +47,7 @@ void DebugCamera3D::HandleCameraRotation(const POINT& delta) {
 		}
 
 		// Yaw（左右）・Pitch（上下）更新
-		yaw_   -= delta.x * rotateSpeed * MAGISYSTEM::GetDeltaTime();
+		yaw_ -= delta.x * rotateSpeed * MAGISYSTEM::GetDeltaTime();
 		pitch_ += delta.y * rotateSpeed * MAGISYSTEM::GetDeltaTime();
 
 		// Pitchを±89°に制限（ジンバルロック対策）
@@ -59,8 +59,8 @@ void DebugCamera3D::HandleCameraRotation(const POINT& delta) {
 void DebugCamera3D::HandleCameraTranslation(const POINT& delta) {
 	if (GetAsyncKeyState(VK_MBUTTON) & 0x8000) {
 		Vector3 forward = DirectionFromYawPitch(yaw_, pitch_);
-		Vector3 right = Normalize(Cross({0, 1, 0}, forward));
-		Vector3 up    = Normalize(Cross(forward, right));
+		Vector3 right = Normalize(Cross({ 0, 1, 0 }, forward));
+		Vector3 up = Normalize(Cross(forward, right));
 
 		float moveSpeed = 1.0f;
 		if (MAGISYSTEM::PushKey(DIK_LSHIFT)) {
@@ -69,7 +69,7 @@ void DebugCamera3D::HandleCameraTranslation(const POINT& delta) {
 
 		Vector3 moveDelta =
 			(right * static_cast<float>(-delta.x) +
-			 up    * static_cast<float>( delta.y)) * moveSpeed * MAGISYSTEM::GetDeltaTime();
+				up * static_cast<float>(delta.y)) * moveSpeed * MAGISYSTEM::GetDeltaTime();
 
 		eye_ += moveDelta;
 	}

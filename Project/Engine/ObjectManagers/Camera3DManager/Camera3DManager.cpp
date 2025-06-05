@@ -14,7 +14,7 @@ Camera3DManager::~Camera3DManager() {
 
 void Camera3DManager::Initialize() {
 #ifdef _DEBUG
-	debugCamera_ = std::make_unique<DebugCamera3D>("DebugCamera");
+	debugCamera_ = std::make_unique<DebugCamera3D>();
 #endif // _DEBUG
 }
 

@@ -5,7 +5,7 @@
 class DebugCamera3D:public Camera3D {
 public:
 
-	DebugCamera3D(const std::string& cameraName);
+	DebugCamera3D();
 	~DebugCamera3D()override = default;
 
 	void Initialize()override;

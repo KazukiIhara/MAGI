@@ -32,9 +32,6 @@ private:
 	// トランスフォーム
 	std::unique_ptr<Transform3D> transform_;
 
-	// ワールドトランスフォーム
-	WorldTransform worldTransform_[5]{};
-
 	// 板ポリ描画用の頂点データ
 	PlaneData3D planeData_{};
 
@@ -80,9 +77,6 @@ private:
 
 	static const uint32_t wtsNum_ = 3;
 
-	std::array<WorldTransform, wtsNum_> wts_;
-
-
 	// DirectionalLight
 	DirectionalLight directionalLight_{};
 
@@ -123,9 +117,9 @@ inline void SampleScene<Data>::Initialize() {
 	// カメラ
 
 	// シーンカメラ作成
-	std::unique_ptr<Camera3D> sceneCamera = std::make_unique<Camera3D>("SceneCamera");
+	std::unique_ptr<Camera3D> sceneCamera = std::make_unique<Camera3D>();
 	// マネージャに追加
-	MAGISYSTEM::AddCamera3D(std::move(sceneCamera));
+	MAGISYSTEM::AddCamera3D("SceneCamera", std::move(sceneCamera));
 	// カメラを設定
 	MAGISYSTEM::SetCurrentCamera3D("SceneCamera");
 	sceneCamera_ = MAGISYSTEM::FindCamera3D("SceneCamera");
@@ -157,37 +151,13 @@ inline void SampleScene<Data>::Initialize() {
 	// ModelDrawer
 	MAGISYSTEM::CreateModelDrawer("test", MAGISYSTEM::FindModel("teapot"));
 
-	// トランスフォーム初期化
-	for (uint32_t i = 0; i < 5; i++) {
-		worldTransform_[i].Initialize();
-	}
-
-	worldTransform_[3].translate_.x = 2.0f;
-	worldTransform_[4].translate_.x = 4.0f;
-
 	// マテリアルを設定
 	material_.blendMode = BlendMode::None;
 
-	for (uint32_t i = 0; i < wtsNum_; i++) {
-		wts_[i].Initialize();
-		wts_[i].translate_.x = -6.0f;
-		wts_[i].translate_.z = float(i) * 2.0f;
-		wts_[i].translate_.y = 2.0f;
-	}
-
-	worldTransform_[0].translate_.x = 0.0f;
-	worldTransform_[0].rotate_.x = std::numbers::pi_v<float> *0.5f;
 	planeData_.verticesOffsets[Plane3DVertices::LeftTop] = { -10.0f,10.0f,0.0f };
 	planeData_.verticesOffsets[Plane3DVertices::RightTop] = { 10.0f,10.0f,0.0f };
 	planeData_.verticesOffsets[Plane3DVertices::LeftBottom] = { -10.0f,-10.0f,0.0f };
 	planeData_.verticesOffsets[Plane3DVertices::RightBottom] = { 10.0f,-10.0f,0.0f };
-
-	worldTransform_[1].translate_.x = 1.5f;
-	worldTransform_[1].translate_.y = 1.0f;
-
-	worldTransform_[2].translate_.x = -2.0f;
-	worldTransform_[2].translate_.y = 1.0f;
-
 
 	transform_ = std::make_unique<Transform3D>();
 
@@ -201,41 +171,19 @@ inline void SampleScene<Data>::Initialize() {
 template<typename Data>
 inline void SampleScene<Data>::Update() {
 
-	ImGui::Begin("NewTranslate");
-	ImGui::DragFloat3("Scale", &transform_->GetScale().x, 0.01f);
-	ImGui::DragFloat3("Rotate", &transform_->GetRotate().x, 0.01f);
-	ImGui::DragFloat3("Translate", &transform_->GetTranslate().x, 0.01f);
-	ImGui::End();
-
-	ImGui::Begin("Translate0");
-	ImGui::DragFloat3("Scale", &worldTransform_[0].scale_.x, 0.01f);
-	ImGui::DragFloat3("Rotate", &worldTransform_[0].rotate_.x, 0.01f);
-	ImGui::DragFloat3("Translate", &worldTransform_[0].translate_.x, 0.01f);
-	ImGui::End();
-
-	ImGui::Begin("Translate1");
-	ImGui::DragFloat3("Scale", &worldTransform_[1].scale_.x, 0.01f);
-	ImGui::DragFloat3("Rotate", &worldTransform_[1].rotate_.x, 0.01f);
-	ImGui::DragFloat3("Translate", &worldTransform_[1].translate_.x, 0.01f);
-	ImGui::End();
-
-	ImGui::Begin("Translate2");
-	ImGui::DragFloat3("Scale", &worldTransform_[2].scale_.x, 0.01f);
-	ImGui::DragFloat3("Rotate", &worldTransform_[2].rotate_.x, 0.01f);
-	ImGui::DragFloat3("Translate", &worldTransform_[2].translate_.x, 0.01f);
-	ImGui::End();
-
-	ImGui::Begin("Translate3");
-	ImGui::DragFloat3("Scale", &worldTransform_[3].scale_.x, 0.01f);
-	ImGui::DragFloat3("Rotate", &worldTransform_[3].rotate_.x, 0.01f);
-	ImGui::DragFloat3("Translate", &worldTransform_[3].translate_.x, 0.01f);
-	ImGui::End();
-
-
-	ImGui::Begin("Translate4");
-	ImGui::DragFloat3("Scale", &worldTransform_[4].scale_.x, 0.01f);
-	ImGui::DragFloat3("Rotate", &worldTransform_[4].rotate_.x, 0.01f);
-	ImGui::DragFloat3("Translate", &worldTransform_[4].translate_.x, 0.01f);
+	ImGui::Begin("Translate");
+	Vector3 tempScale = transform_->GetScale();
+	if (ImGui::DragFloat3("Scale", &tempScale.x, 0.01f)) {
+		transform_->SetScale(tempScale);
+	}
+	Vector3 tempRotate = transform_->GetRotate();
+	if (ImGui::DragFloat3("Rotate", &tempRotate.x, 0.01f)) {
+		transform_->SetRotate(tempRotate);
+	}
+	Vector3 tempTranslate = transform_->GetTranslate();
+	if (ImGui::DragFloat3("Translate", &tempTranslate.x, 0.01f)) {
+		transform_->SetTranslate(tempTranslate);
+	}
 	ImGui::End();
 
 	ImGui::Begin("PlaneData");
@@ -344,16 +292,7 @@ inline void SampleScene<Data>::Update() {
 
 	t_ += MAGISYSTEM::GetDeltaTime();
 
-	// トランスフォーム更新
-	for (uint32_t i = 0; i < 5; i++) {
-		worldTransform_[i].Update();
-	}
-
-	for (uint32_t i = 0; i < wtsNum_; i++) {
-		wts_[i].Update();
-	}
-
-	transform_->GetTranslate() = simpleAnimation_->GetValue(t_);
+	transform_->SetTranslate(simpleAnimation_->GetValue(t_));
 
 	transform_->Update();
 
@@ -377,47 +316,8 @@ inline void SampleScene<Data>::Update() {
 
 template<typename Data>
 inline void SampleScene<Data>::Draw() {
-
-	// スプライト描画
-	//MAGISYSTEM::DrawSprite(SpriteData{}, SpriteMaterialData{});
-	//MAGISYSTEM::DrawSprite(spriteData_, spriteMaterial);
-
-	// 板ポリ描画
-	MAGISYSTEM::DrawPlane3D(worldTransform_[0].worldMatrix_, planeData_, material_);
-
 	// 球体描画
 	MAGISYSTEM::DrawSphere3D(transform_->GetWorldMatrix(), sphereData_, material_);
-
-	// ボックス描画
-	MAGISYSTEM::DrawBox3D(worldTransform_[2].worldMatrix_, boxData_, material_);
-
-	// 三角形描画
-	//MAGISYSTEM::DrawTriangle3D(worldTransform_[2].worldMatrix_, triangleData_, material_);
-
-	// リング描画
-	// MAGISYSTEM::DrawRing3D(worldTransform_[3].worldMatrix_, ringData_, material_);
-
-	// シリンダー描画
-	MAGISYSTEM::DrawCylinder3D(worldTransform_[4].worldMatrix_, cylinderData_, material_);
-
-	// モデル描画
-	// MAGISYSTEM::DrawModel("test", worldTransform_[2].worldMatrix_, modelMatAlpha_);
-
-	// モデル描画
-
-
-	for (uint32_t i = 0; i < wtsNum_; i++) {
-		MAGISYSTEM::DrawModel("test", wts_[i].worldMatrix_, modelMaterial_);
-	}
-
-	//MAGISYSTEM::DrawLine3D(Vector3(0.0f, -2.0f, 0.0f), Vector3(0.0f, 2.0f, 0.0f), Color::Crimson);
-
-
-
-	//for (uint32_t i = 0; i < wtsNum_; i++) {
-	//	MAGISYSTEM::DrawSphere3D(wts_[i].worldMatrix_, sphereData_, material_);
-	//}
-
 
 }
 

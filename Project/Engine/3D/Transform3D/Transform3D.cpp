@@ -106,6 +106,9 @@ void Transform3D::SetParent(Transform3D* parent, bool keepWorld) {
 		return;
 	}
 
+	// 現在のワールド行列を保持
+	Matrix4x4 currentWorld = worldMatrix_;
+
 	// すでに親がいた場合は旧親から自身を削除する
 	if (parent_) {
 		auto& oldChildren = parent_->children_;
@@ -123,29 +126,18 @@ void Transform3D::SetParent(Transform3D* parent, bool keepWorld) {
 		parent_->children_.push_back(this);
 	}
 
-	// 変更前のワールド行列を保存
-	Matrix4x4 worldBefore = worldMatrix_;
-
 	if (keepWorld && parent_) {
-		Matrix4x4 parentWorld = parent_->GetWorldMatrix();
-		Matrix4x4 parentInv = MAGIMath::Inverse(parentWorld);
+		// ワールド行列を親の逆行列でローカルへ変換
+		Matrix4x4 parentInvWorld = MAGIMath::Inverse(parent_->GetWorldMatrix());
+		Matrix4x4 localMatrix = currentWorld * parentInvWorld;
 
-		// 求めたローカル TRS 行列
-		Matrix4x4 local = worldBefore * parentInv;
-
-		// 行列を Scale / Quaternion / Translate に分解
-		MAGIMath::DecomposeAffineMatrix(local, scale_, rotate_, translate_);
+		// 分解してローカルの値に設定
+		MAGIMath::DecomposeAffineMatrix(localMatrix, scale_, rotate_, translate_);
 		inputRadians_ = MAGIMath::QuaternionToEuler(rotate_);
-
-		// 新しいワールドを親に掛けて生成し直し
-		worldMatrix_ = worldBefore;          // ＝親 * local で一致
-		worldPosition_ = MAGIMath::ExtractionWorldPos(worldMatrix_);
-
-		// 子供への Dirty 伝播は不要（見た目は同じ）
-		isChanged_ = false;
-	} else {
-		isChanged_ = true; // 世界を維持しない／親==nullptr の場合は更新させる
 	}
+
+	isChanged_ = true;
+
 
 	if (isChanged_) {
 		// もし子がいる場合
