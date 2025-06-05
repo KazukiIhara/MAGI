@@ -60,12 +60,12 @@
 // 
 // ObjectManager
 // 
-#include "2D/Camera2DManager/Camera2DManager.h"
-#include "3D/Camera3DManager/Camera3DManager.h"
-#include "3D/ColliderManager/ColliderManager.h"
-#include "3D/Emitter3DManager/Emitter3DManager.h"
-#include "3D/ParticleGroup3DManager/ParticleGroup3DManager.h"
-#include "3D/LightManager/LightManager.h"
+#include "Camera2DManager/Camera2DManager.h"
+#include "Camera3DManager/Camera3DManager.h"
+#include "ColliderManager/ColliderManager.h"
+#include "Emitter3DManager/Emitter3DManager.h"
+#include "ParticleGroup3DManager/ParticleGroup3DManager.h"
+#include "LightManager/LightManager.h"
 
 // 
 // Drawer
