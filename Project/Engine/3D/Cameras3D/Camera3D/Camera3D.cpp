@@ -8,8 +8,7 @@
 using namespace MAGIUtility;
 using namespace MAGIMath;
 
-Camera3D::Camera3D(const std::string& cameraName) {
-	name = cameraName;
+Camera3D::Camera3D() {
 	Initialize();
 }
 

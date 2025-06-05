@@ -67,31 +67,11 @@ void Camera3DManager::ShakeCurrentCamera(float duration, float intensity) {
 	currentCamera_->Shake(duration, intensity);
 }
 
-std::string Camera3DManager::Add(std::unique_ptr<Camera3D> newCamera3D) {
-	// 新しいオブジェクト名を決定
-	std::string uniqueName = newCamera3D->name;
-	int suffix = 1;
-
-	// 同じ名前が既に存在する場合、ユニークな名前を生成
-	auto isNameUsed = [&](const std::string& testName) {
-		return std::any_of(cameras3D_.begin(), cameras3D_.end(), [&](const auto& camera3D) {
-			return camera3D.second->name == testName;
-			});
-		};
-
-	while (isNameUsed(uniqueName)) {
-		uniqueName = newCamera3D->name + "_" + std::to_string(suffix);
-		suffix++;
-	}
-
-	// ユニークな名前に変更
-	newCamera3D->name = uniqueName;
-
+Camera3D* Camera3DManager::Add(const std::string& name, std::unique_ptr<Camera3D> newCamera3D) {
 	// コンテナに登録
-	cameras3D_.insert(std::pair(uniqueName, std::move(newCamera3D)));
-
-	// ユニークな名前を返す
-	return uniqueName;
+	cameras3D_.insert(std::pair(name, std::move(newCamera3D)));
+	// 追加したカメラのポインタを返す
+	return Find(name);
 }
 
 void Camera3DManager::Remove(const std::string& cameraName) {

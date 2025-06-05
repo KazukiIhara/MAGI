@@ -25,7 +25,7 @@ public:
 	void DrawCurrentCameraFrustum();
 	void ShakeCurrentCamera(float duration, float intensity);
 
-	std::string Add(std::unique_ptr<Camera3D> newCamera3D);
+	Camera3D* Add(const std::string& name, std::unique_ptr<Camera3D> newCamera3D);
 	void Remove(const std::string& cameraName);
 	Camera3D* Find(const std::string& cameraName);
 

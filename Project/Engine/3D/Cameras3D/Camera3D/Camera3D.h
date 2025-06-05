@@ -8,17 +8,16 @@
 
 // MyHedder
 #include "DirectX/ComPtr/ComPtr.h"
-#include "3D/Base3D/WorldEntity/WorldEntity.h"
+
 #include "Structs/CameraStruct.h"
-#include "EngineLogic/Transform3D/Transform3D.h"
 
 /// <summary>
 /// 3D用カメラ
 /// </summary>
-class Camera3D:public WorldEntity {
+class Camera3D {
 public:
-	Camera3D(const std::string& cameraName);
-	virtual ~Camera3D()override;
+	Camera3D();
+	virtual ~Camera3D();
 
 	// 初期化
 	virtual void Initialize();
