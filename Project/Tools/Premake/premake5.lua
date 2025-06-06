@@ -104,10 +104,11 @@ project "MAGI" -- プロジェクト名
       links { "assimp-vc143-mtd" } -- デバッグ用ライブラリ
 
    filter "configurations:Develop"
-      defines { "NDEBUG", "DEVELOP" }     -- Release 同等のプリプロセッサ。必要なら独自フラグも
-      symbols "On"                        -- デバッグ情報を生成
-      optimize "Debug"                    -- コンパイラ最適化ほぼ無し（/Od）※1
-      staticruntime "On"                  -- /MT と合わせる
+      defines { "DEBUG", "DEVELOP" }     
+      symbols "On"                       
+      optimize "Debug"                   
+      runtime "Release"
+      staticruntime "On"                  
       linkoptions { "/IGNORE:4049", "/IGNORE:4099" }
       libdirs { "../../Externals/assimp/lib/Release" }  -- Release ライブラリを流用
       links { "assimp-vc143-mt" }
