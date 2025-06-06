@@ -14,7 +14,7 @@ using namespace MAGIUtility;
 
 // サンプルシーン
 template <typename Data>
-class SampleScene: public BaseScene<Data> {
+class SampleScene : public BaseScene<Data> {
 public:
 	using BaseScene<Data>::BaseScene; // 親クラスのコンストラクタをそのまま継承
 	~SampleScene()override = default;
@@ -31,6 +31,8 @@ private:
 
 	// トランスフォーム
 	std::unique_ptr<Transform3D> transform_;
+
+	std::array<std::unique_ptr<Transform3D>, 30000> transforms_;
 
 	// 板ポリ描画用の頂点データ
 	PlaneData3D planeData_{};
@@ -160,6 +162,10 @@ inline void SampleScene<Data>::Initialize() {
 	planeData_.verticesOffsets[Plane3DVertices::RightBottom] = { 10.0f,-10.0f,0.0f };
 
 	transform_ = std::make_unique<Transform3D>();
+
+	for (uint32_t i = 0; i < 30000; i++) {
+		transforms_[i] = std::make_unique<Transform3D>(Vector3(0.0f, 0.0f, float(i)));
+	}
 
 	// アニメーション作成
 	simpleAnimation_ = std::make_unique<SimpleAnimation<Vector3>>(
@@ -319,6 +325,9 @@ inline void SampleScene<Data>::Draw() {
 	// 球体描画
 	MAGISYSTEM::DrawSphere3D(transform_->GetWorldMatrix(), sphereData_, material_);
 
+	for (uint32_t i = 0; i < 20000; i++) {
+		MAGISYSTEM::DrawModel("test", transforms_[i]->GetWorldMatrix(), modelMaterial_);
+	}
 }
 
 template<typename Data>

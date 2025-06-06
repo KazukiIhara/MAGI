@@ -9,15 +9,19 @@
 class Transform3D {
 public:
 	Transform3D(
-		const Vector3& scale = { 1.0f,1.0f,1.0f },
-		const Vector3& rotate = { 0.0f,0.0f,0.0f },
-		const Vector3& translate = { 0.0f,0.0f,0.0f }
+		const Vector3& scale,
+		const Vector3& rotate,
+		const Vector3& translate
 	);
 
 	Transform3D(
 		const Vector3& scale,
 		const Quaternion& rotate,
 		const Vector3& translate
+	);
+
+	Transform3D(
+		const Vector3& translate = { 0.0f,0.0f,0.0f }
 	);
 
 	~Transform3D() = default;
@@ -34,7 +38,13 @@ public:
 		const Vector3& translate
 	);
 
+	void Initialize(
+		const Vector3& translate
+	);
+
 	void Update();
+
+	void Finalize();
 
 	//
 	// セッター
@@ -43,7 +53,11 @@ public:
 	// 親をセット
 	void SetParent(Transform3D* parent, bool keepWorld);
 
+	// 親子付けを解除
+	void RemoveParent(bool keepWorld = true);
+
 	void SetIsChange(bool isChange);
+	void SetIsAlive(bool isAlive);
 
 	void SetScale(const Vector3& scale);
 	void SetRotate(const Vector3& scale);
@@ -54,7 +68,10 @@ public:
 	// ゲッター
 	//
 
+	[[nodiscard]] Transform3D* GetParent()const;
+
 	[[nodiscard]] const bool& GetIsChanged()const;
+	[[nodiscard]] const bool& GetisAlive()const;
 
 	[[nodiscard]] const Vector3& GetScale()const;
 	[[nodiscard]] const Vector3& GetRotate()const;
@@ -93,6 +110,9 @@ private:
 
 	// 変更フラグ
 	bool isChanged_ = false;
+
+	// 生存フラグ
+	bool isAlive_ = true;
 
 private:
 	// コピー禁止

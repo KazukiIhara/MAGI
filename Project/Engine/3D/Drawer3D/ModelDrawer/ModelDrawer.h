@@ -25,7 +25,7 @@ public:
 
 private:
 	// インスタンスの最大数
-	static const uint32_t kNumMaxInstance = 262144;
+	static const uint32_t kNumMaxInstance = 65536;
 
 	// メッシュ
 	std::vector<std::unique_ptr<MeshDrawer>> meshes_;

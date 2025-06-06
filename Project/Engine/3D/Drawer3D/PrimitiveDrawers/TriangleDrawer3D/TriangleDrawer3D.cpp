@@ -96,7 +96,7 @@ void TriangleDrawer3D::Draw(BlendMode mode) {
 void TriangleDrawer3D::AddTriangle(const Matrix4x4& worldMatrix, const TriangleData3D& data, const PrimitiveMaterialData3D& material) {
 	const uint32_t blendIndex = static_cast<uint32_t>(material.blendMode);
 
-#ifdef _DEBUG
+#if defined(DEBUG) || defined(DEVELOP)
 	if (currentIndex_[blendIndex] >= PrimitiveCommonConst::NumMaxInstance) {
 		Logger::Log("TriangleDrawer3D: Max instance count exceeded!\n");
 		return;

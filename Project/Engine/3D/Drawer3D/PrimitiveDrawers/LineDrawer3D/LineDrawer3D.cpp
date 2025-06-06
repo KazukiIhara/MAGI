@@ -65,7 +65,7 @@ void LineDrawer3D::Draw() {
 }
 
 void LineDrawer3D::AddLine(const Vector3& start, const Vector3& end, const Vector4& color) {
-#ifdef _DEBUG
+#if defined(DEBUG) || defined(DEVELOP)
 	if (currentIndex_ >= PrimitiveCommonConst::NumMaxInstance) {
 		Logger::Log("LineDrawer3D: Max instance count exceeded!\n");
 		return;

@@ -1,5 +1,5 @@
 workspace "MAGI"
-   configurations { "Debug", "Release" }
+   configurations { "Debug", "Develop","Release" }
    platforms { "x64" }
    startproject "MAGI" -- デフォルトのスタートプロジェクトを指定
    location "../../"
@@ -57,19 +57,22 @@ project "MAGI" -- プロジェクト名
    -- 追加のインクルードパス
    includedirs { 
       "../../Engine",
-      "../../Engine/Core",
-      "../../Engine/Includes",
-      "../../Engine/DebugTools",
       "../../Engine/2D",
       "../../Engine/3D",
-      "../../Engine/Graphics",
-      "../../Engine/Pipelines",
       "../../Engine/AssetDataContainers",
+      "../../Engine/Core",
+      "../../Engine/ComponentManagers",
+      "../../Engine/DebugTools",
       "../../Engine/EngineLogic",
-      "../../Engine/ObjectManagers",
+      "../../Engine/Graphics",
+      "../../Engine/Includes",     
       "../../Engine/Input",
+      "../../Engine/ObjectManagers",
+      "../../Engine/Pipelines",      
       "../../Engine/Scene",
+
       "../../App",
+
       "../../Externals",
       "../../Externals/assimp/include",
       "../../Externals/DirectXMesh/Inc"
@@ -100,6 +103,16 @@ project "MAGI" -- プロジェクト名
       libdirs { "../../Externals/assimp/lib/Debug" } -- デバッグ用追加のライブラリディレクトリ
       links { "assimp-vc143-mtd" } -- デバッグ用ライブラリ
 
+   filter "configurations:Develop"
+      defines { "DEBUG", "DEVELOP" }     
+      symbols "On"                       
+      optimize "Debug"                   
+      runtime "Release"
+      staticruntime "On"                  
+      linkoptions { "/IGNORE:4049", "/IGNORE:4099" }
+      libdirs { "../../Externals/assimp/lib/Release" }  -- Release ライブラリを流用
+      links { "assimp-vc143-mt" }
+
    filter "configurations:Release"
       defines { "NDEBUG" }
       optimize "On"
@@ -107,3 +120,4 @@ project "MAGI" -- プロジェクト名
       linkoptions { "/IGNORE:4049", "/IGNORE:4099" } -- 指定したリンカーの警告を無視
       libdirs { "../../Externals/assimp/lib/Release" } -- リリース用追加のライブラリディレクトリ
       links { "assimp-vc143-mt" } -- リリース用ライブラリ
+ 
