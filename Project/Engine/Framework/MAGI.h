@@ -446,6 +446,8 @@ public: // エンジンの機能
 	static void SetDirectionalLightCameraTarget(const Vector3& target);
 	// ライトカメラを転送
 	static void TransferDirectionalLightCamera(uint32_t paramIndex);
+	// ライトのフラスタムを転送
+	static void TransferDirectionalLightFrustum(uint32_t paramIndex);
 #pragma endregion
 
 #pragma region SpriteDrawer
