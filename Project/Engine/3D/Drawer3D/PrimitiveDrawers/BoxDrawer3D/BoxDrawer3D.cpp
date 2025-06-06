@@ -102,7 +102,7 @@ void BoxDrawer3D::DrawShadow(BlendMode mode) {
 void BoxDrawer3D::AddBox(const Matrix4x4& worldMatrix, const BoxData3D& data, const PrimitiveMaterialData3D& material) {
 	const uint32_t blendIndex = static_cast<uint32_t>(material.blendMode);
 
-#ifdef _DEBUG
+#if defined(DEBUG) || defined(DEVELOP)
 	if (currentIndex_[blendIndex] >= PrimitiveCommonConst::NumMaxInstance) {
 		Logger::Log("BoxDrawer3D: Max instance count exceeded!\n");
 		return;

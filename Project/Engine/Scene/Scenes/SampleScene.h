@@ -14,7 +14,7 @@ using namespace MAGIUtility;
 
 // サンプルシーン
 template <typename Data>
-class SampleScene: public BaseScene<Data> {
+class SampleScene : public BaseScene<Data> {
 public:
 	using BaseScene<Data>::BaseScene; // 親クラスのコンストラクタをそのまま継承
 	~SampleScene()override = default;
@@ -164,9 +164,8 @@ inline void SampleScene<Data>::Initialize() {
 	transform_ = std::make_unique<Transform3D>();
 
 	for (uint32_t i = 0; i < 30000; i++) {
-
+		transforms_[i] = std::make_unique<Transform3D>(Vector3(0.0f, 0.0f, float(i)));
 	}
-
 
 	// アニメーション作成
 	simpleAnimation_ = std::make_unique<SimpleAnimation<Vector3>>(
@@ -326,6 +325,9 @@ inline void SampleScene<Data>::Draw() {
 	// 球体描画
 	MAGISYSTEM::DrawSphere3D(transform_->GetWorldMatrix(), sphereData_, material_);
 
+	for (uint32_t i = 0; i < 20000; i++) {
+		MAGISYSTEM::DrawModel("test", transforms_[i]->GetWorldMatrix(), modelMaterial_);
+	}
 }
 
 template<typename Data>

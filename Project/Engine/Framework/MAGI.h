@@ -3,7 +3,7 @@
 // C++
 #include <memory>
 
-#ifdef _DEBUG
+#if defined(DEBUG) || defined(DEVELOP)
 #include "LeakChecker/D3DResourceLeakChecker.h"
 #endif // _DEBUG
 
@@ -581,7 +581,7 @@ private: // メンバ変数
 	bool isSupportDX12Ultimate_ = false;
 
 protected:
-#ifdef _DEBUG
+#if defined(DEBUG) || defined(DEVELOP)
 	static std::unique_ptr<D3DResourceLeakChecker> leakCheck_;
 #endif // _DEBUG
 

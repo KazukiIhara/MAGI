@@ -7,7 +7,7 @@
 using namespace MAGIUtility;
 
 // Staticメンバ変数の初期化
-#ifdef _DEBUG
+#if defined(DEBUG) || defined(DEVELOP)
 std::unique_ptr<D3DResourceLeakChecker> MAGISYSTEM::leakCheck_ = nullptr;
 #endif // _DEBUG
 
@@ -111,7 +111,7 @@ void MAGISYSTEM::Initialize() {
 	// 開始ログ
 	Logger::Log("MAGISYSTEM Start\n");
 
-#ifdef _DEBUG
+#if defined(DEBUG) || defined(DEVELOP)
 	// リークチェッカ
 	leakCheck_ = std::make_unique<D3DResourceLeakChecker>();
 #endif // _DEBUG

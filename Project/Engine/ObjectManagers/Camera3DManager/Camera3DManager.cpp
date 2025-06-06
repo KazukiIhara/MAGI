@@ -13,9 +13,9 @@ Camera3DManager::~Camera3DManager() {
 }
 
 void Camera3DManager::Initialize() {
-#ifdef _DEBUG
+#if defined(DEBUG) || defined(DEVELOP)
 	debugCamera_ = std::make_unique<DebugCamera3D>();
-#endif // _DEBUG
+#endif
 }
 
 void Camera3DManager::Update() {
@@ -23,28 +23,28 @@ void Camera3DManager::Update() {
 		currentCamera_->Update();
 		currentCamera_->UpdateData();
 	}
-#ifdef _DEBUG
+#if defined(DEBUG)|| defined(DEVELOP)
 	if (isDebugCamera_) {
 		debugCamera_->UpdateData();
 		currentCamera_->DrawFrustum();
 	}
-#endif // _DEBUG
+#endif
 }
 
 void Camera3DManager::TransferCurrentCamera(uint32_t rootParameterIndex) {
-#ifdef _DEBUG
+#if defined(DEBUG)|| defined(DEVELOP)
 	// デバッグカメラフラグがオンの場合デバッグカメラを転送
 	if (isDebugCamera_) {
 		debugCamera_->TransferCamera(rootParameterIndex);
 		return;
 	}
-#endif // _DEBUG
+#endif
 	// 現在選択中のカメラを見つけて転送
 	currentCamera_->TransferCamera(rootParameterIndex);
 }
 
 void Camera3DManager::TransferCurrentCameraInverse(uint32_t rootParameterIndex) {
-#ifdef _DEBUG
+#if defined(DEBUG)|| defined(DEVELOP)
 	// デバッグカメラフラグがオンの場合デバッグカメラを転送
 	if (isDebugCamera_) {
 		debugCamera_->TransferCameraInv(rootParameterIndex);
@@ -103,7 +103,7 @@ void Camera3DManager::SetCurrentCamera(const std::string& cameraName) {
 }
 
 Camera3D* Camera3DManager::GetCurrentCamera() {
-#ifdef _DEBUG
+#if defined(DEBUG) || defined(DEVELOP)
 	if (isDebugCamera_) {
 		return debugCamera_.get();
 	}

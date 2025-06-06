@@ -109,7 +109,7 @@ void SphereDrawer3D::DrawShadow(BlendMode mode) {
 void SphereDrawer3D::AddSphere(const Matrix4x4& worldMatrix, const SphereData3D& data, const PrimitiveMaterialData3D& material) {
 	const uint32_t blendIndex = static_cast<uint32_t>(material.blendMode);
 
-#ifdef _DEBUG
+#if defined(DEBUG) || defined(DEVELOP)
 	if (currentIndex_[blendIndex] >= PrimitiveCommonConst::NumMaxInstance) {
 		Logger::Log("SphereDrawer3D: Max instance count exceeded!\n");
 		return;

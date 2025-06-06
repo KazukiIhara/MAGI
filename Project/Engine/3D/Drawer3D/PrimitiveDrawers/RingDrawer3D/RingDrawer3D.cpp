@@ -83,7 +83,7 @@ void RingDrawer3D::Draw(BlendMode mode) {
 void RingDrawer3D::AddRing(const Matrix4x4& worldMatrix, const RingData3D& data, const PrimitiveMaterialData3D& material) {
 	const uint32_t blendIndex = static_cast<uint32_t>(material.blendMode);
 
-#ifdef _DEBUG
+#if defined(DEBUG) || defined(DEVELOP)
 	if (currentIndex_[blendIndex] >= PrimitiveCommonConst::NumMaxInstance) {
 		Logger::Log("RingDrawer3D: Max instance count exceeded!\n");
 		return;

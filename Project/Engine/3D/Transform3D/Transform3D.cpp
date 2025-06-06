@@ -8,6 +8,10 @@ Transform3D::Transform3D(const Vector3& scale, const Quaternion& rotate, const V
 	Initialize(scale, rotate, translate);
 }
 
+Transform3D::Transform3D(const Vector3& translate) {
+	Initialize(translate);
+}
+
 void Transform3D::Initialize(const Vector3& scale, const Vector3& rotate, const Vector3& translate) {
 	scale_ = scale;
 	inputRadians_ = rotate;
@@ -24,6 +28,18 @@ void Transform3D::Initialize(const Vector3& scale, const Quaternion& rotate, con
 	scale_ = scale;
 	rotate_ = rotate;
 	inputRadians_ = MAGIMath::QuaternionToEuler(rotate_);
+	translate_ = translate;
+
+	// ワールド行列作成
+	worldMatrix_ = MAGIMath::MakeAffineMatrix(scale_, rotate_, translate_);
+	// ワールド座標生成
+	worldPosition_ = MAGIMath::ExtractionWorldPos(worldMatrix_);
+}
+
+void Transform3D::Initialize(const Vector3& translate) {
+	scale_ = { 1.0f,1.0f,1.0f };
+	inputRadians_ = { 0.0f,0.0f,0.0f };
+	rotate_ = MAGIMath::EulerToQuaternionYXZ(inputRadians_);
 	translate_ = translate;
 
 	// ワールド行列作成
@@ -126,6 +142,7 @@ void Transform3D::SetParent(Transform3D* parent, bool keepWorld) {
 		parent_->children_.push_back(this);
 	}
 
+	// ワールド座標をキープする場合
 	if (keepWorld && parent_) {
 		// ワールド行列を親の逆行列でローカルへ変換
 		Matrix4x4 parentInvWorld = MAGIMath::Inverse(parent_->GetWorldMatrix());
@@ -145,6 +162,45 @@ void Transform3D::SetParent(Transform3D* parent, bool keepWorld) {
 				if (child) {
 					child->SetIsChange(true);
 				}
+			}
+		}
+	}
+}
+
+void Transform3D::RemoveParent(bool keepWorld) {
+	// すでに親が無ければ何もしない
+	if (!parent_) {
+		return;
+	}
+
+	// 現在のワールド行列を保持
+	Matrix4x4 currentWorld = worldMatrix_;
+
+	// 親の children_ から自分を削除
+	{
+		auto& siblings = parent_->children_;
+		siblings.erase(
+			std::remove(siblings.begin(), siblings.end(), this),
+			siblings.end()
+		);
+	}
+
+	// 親ポインタを解除
+	parent_ = nullptr;
+
+	// ワールドを維持したい場合は
+	if (keepWorld) {
+		MAGIMath::DecomposeAffineMatrix(currentWorld, scale_, rotate_, translate_);
+		inputRadians_ = MAGIMath::QuaternionToEuler(rotate_);
+	}
+
+	// 変化フラグを立て、子へ伝搬
+	isChanged_ = true;
+
+	if (!children_.empty()) {
+		for (auto& child : children_) {
+			if (child) {
+				child->SetIsChange(true);
 			}
 		}
 	}

@@ -85,7 +85,7 @@ void PlaneDrawer3D::Draw(BlendMode mode) {
 void PlaneDrawer3D::AddPlane(const Matrix4x4& worldMatrix, const PlaneData3D& data, const PrimitiveMaterialData3D& material) {
 	const uint32_t blendIndex = static_cast<uint32_t>(material.blendMode);
 
-#ifdef _DEBUG
+#if defined(DEBUG) || defined(DEVELOP)
 	if (currentIndex_[blendIndex] >= PrimitiveCommonConst::NumMaxInstance) {
 		Logger::Log("PlaneDrawer3D: Max instance count exceeded!\n");
 		return;
