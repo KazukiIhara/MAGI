@@ -52,7 +52,7 @@ private:
 
 private:
 	// インスタンス最大数
-	const uint32_t NumMaxInstance = 262144;
+	const uint32_t NumMaxInstance = 65536;
 
 	//===============================
 	// Front

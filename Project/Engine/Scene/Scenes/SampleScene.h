@@ -32,6 +32,8 @@ private:
 	// トランスフォーム
 	std::unique_ptr<Transform3D> transform_;
 
+	std::array<std::unique_ptr<Transform3D>, 30000> transforms_;
+
 	// 板ポリ描画用の頂点データ
 	PlaneData3D planeData_{};
 
@@ -160,6 +162,11 @@ inline void SampleScene<Data>::Initialize() {
 	planeData_.verticesOffsets[Plane3DVertices::RightBottom] = { 10.0f,-10.0f,0.0f };
 
 	transform_ = std::make_unique<Transform3D>();
+
+	for (uint32_t i = 0; i < 30000; i++) {
+
+	}
+
 
 	// アニメーション作成
 	simpleAnimation_ = std::make_unique<SimpleAnimation<Vector3>>(
