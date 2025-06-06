@@ -88,8 +88,34 @@ void Transform3D::Update() {
 
 }
 
+void Transform3D::Finalize() {
+	// 親を切り離す
+	RemoveParent();
+
+	// もし子がいる場合
+	if (!children_.empty()) {
+		const auto childrenCopy = children_; // raw ポインタの複製
+		for (auto* child : childrenCopy) {
+			if (child) {
+				child->RemoveParent(true);
+				child->SetIsChange(true);
+			}
+		}
+		children_.clear();
+	}
+
+}
+
+Transform3D* Transform3D::GetParent() const {
+	return parent_;
+}
+
 const bool& Transform3D::GetIsChanged() const {
 	return isChanged_;
+}
+
+const bool& Transform3D::GetisAlive() const {
+	return isAlive_;
 }
 
 const Vector3& Transform3D::GetScale()const {
@@ -208,6 +234,10 @@ void Transform3D::RemoveParent(bool keepWorld) {
 
 void Transform3D::SetIsChange(bool isChange) {
 	isChanged_ = isChange;
+}
+
+void Transform3D::SetIsAlive(bool isAlive) {
+	isAlive_ = isAlive;
 }
 
 void Transform3D::SetScale(const Vector3& scale) {

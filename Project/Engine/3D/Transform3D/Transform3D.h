@@ -44,6 +44,8 @@ public:
 
 	void Update();
 
+	void Finalize();
+
 	//
 	// セッター
 	//
@@ -55,6 +57,7 @@ public:
 	void RemoveParent(bool keepWorld = true);
 
 	void SetIsChange(bool isChange);
+	void SetIsAlive(bool isAlive);
 
 	void SetScale(const Vector3& scale);
 	void SetRotate(const Vector3& scale);
@@ -65,7 +68,10 @@ public:
 	// ゲッター
 	//
 
+	[[nodiscard]] Transform3D* GetParent()const;
+
 	[[nodiscard]] const bool& GetIsChanged()const;
+	[[nodiscard]] const bool& GetisAlive()const;
 
 	[[nodiscard]] const Vector3& GetScale()const;
 	[[nodiscard]] const Vector3& GetRotate()const;
@@ -104,6 +110,9 @@ private:
 
 	// 変更フラグ
 	bool isChanged_ = false;
+
+	// 生存フラグ
+	bool isAlive_ = true;
 
 private:
 	// コピー禁止
