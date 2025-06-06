@@ -114,7 +114,7 @@ void Camera3D::ApplyShake() {
 
 void Camera3D::DrawFrustum() {
 	// NDC空間の8頂点（Z: [0=Near, 1=Far]、左手系）
-	static const Vector3 ndcCorners[8] =
+	const Vector3 ndcCorners[8] =
 	{
 		{ -1,  1, 0 }, // 0: Near-Top-Left
 		{  1,  1, 0 }, // 1: Near-Top-Right
@@ -126,7 +126,7 @@ void Camera3D::DrawFrustum() {
 		{  1, -1, 1 }, // 7: Far-Bottom-Right
 	};
 
-	// ビュー・プロジェクション逆行列を個別に取得（安定性重視）
+	// ビュー・プロジェクション逆行列を個別に取得
 	const Matrix4x4 invView = Inverse(viewMatrix_);
 	const Matrix4x4 invProj = Inverse(projectionMatrix_);
 

@@ -8,8 +8,12 @@
 #include "DirectX/DirectXCommand/DirectXCommand.h"
 #include "ViewManagers/SRVUAVManager/SRVUAVManager.h"
 #include "Math/Utility/MathUtility.h"
+#include "MAGIUitility/MAGIUtility.h"
+
+#include "Framework/MAGI.h"
 
 using namespace MAGIMath;
+using namespace MAGIUtility;
 
 LightManager::LightManager(DXGI* dxgi, DirectXCommand* directXCommand) {
 	SetDXGI(dxgi);
@@ -24,7 +28,7 @@ LightManager::LightManager(DXGI* dxgi, DirectXCommand* directXCommand) {
 	CreateDirectionalLightFrustumResource();
 	MapDirectionalLightFrustumData();
 
-	lightProj_ = MakeOrthographicMatrix(100.0f, 100.0f, nearClipRange_, farClipRange_);
+	lightProj_ = MakeOrthographicMatrix(40.0f, 40.0f, nearClipRange_, farClipRange_);
 
 	Logger::Log("LightManager Initialize\n");
 }
@@ -53,10 +57,44 @@ void LightManager::Update() {
 	Vector3 position = target_ - lightDir * lightDistance;
 
 	// ビュー行列（ライト空間ビュー）
-	Matrix4x4 lightView = MakeLookAtMatrix(position, target_, up);
+	lightView_ = MakeLookAtMatrix(position, target_, up);
 
 	// VP 行列を GPU 定数バッファへ書き込み
-	directionalLightCameraData_->viewProjection = lightView * lightProj_;
+	directionalLightCameraData_->viewProjection = lightView_ * lightProj_;
+
+	const Matrix4x4 vp = lightView_ * lightProj_;
+	auto row = [&](int r, int c) { return vp.m[r][c]; };
+
+	frustumPlanes_[0] = NormalizePlane({ row(0,3) + row(0,0),
+										 row(1,3) + row(1,0),
+										 row(2,3) + row(2,0),
+										 row(3,3) + row(3,0) }); // Left
+	frustumPlanes_[1] = NormalizePlane({ row(0,3) - row(0,0),
+										 row(1,3) - row(1,0),
+										 row(2,3) - row(2,0),
+										 row(3,3) - row(3,0) }); // Right
+	frustumPlanes_[2] = NormalizePlane({ row(0,3) + row(0,1),
+										 row(1,3) + row(1,1),
+										 row(2,3) + row(2,1),
+										 row(3,3) + row(3,1) }); // Bottom
+	frustumPlanes_[3] = NormalizePlane({ row(0,3) - row(0,1),
+										 row(1,3) - row(1,1),
+										 row(2,3) - row(2,1),
+										 row(3,3) - row(3,1) }); // Top
+	frustumPlanes_[4] = NormalizePlane({ row(0,2),
+										 row(1,2),
+										 row(2,2),
+										 row(3,2) });          // Near
+	frustumPlanes_[5] = NormalizePlane({ row(0,3) - row(0,2),
+										 row(1,3) - row(1,2),
+										 row(2,3) - row(2,2),
+										 row(3,3) - row(3,2) }); // Far
+
+	for (int i = 0; i < 6; ++i) {
+		directionalLightFrustumData_->planes[i] = frustumPlanes_[i];
+	}
+
+	DrawDirectionalLightFrustum();
 }
 
 void LightManager::SetDirectionalLight(const DirectionalLight& directionalLight) {
@@ -84,7 +122,10 @@ void LightManager::TransferDirectionalLightCamera(uint32_t paramIndex) {
 }
 
 void LightManager::TransferDirectionalLightFrustum(uint32_t paramIndex) {
-
+	// コマンドリストを取得
+	ID3D12GraphicsCommandList* commandList = directXCommand_->GetList();
+	// ライト情報を送る
+	commandList->SetGraphicsRootConstantBufferView(paramIndex, directionalLightFrustumResource_->GetGPUVirtualAddress());
 }
 
 void LightManager::CreateDirectionalLightResource() {
@@ -115,11 +156,70 @@ void LightManager::CreateDirectionalLightFrustumResource() {
 
 void LightManager::MapDirectionalLightFrustumData() {
 	directionalLightFrustumData_ = nullptr;
-	directionalLightFrustumResource_->Map(0, nullptr, reinterpret_cast<void**>(&directionalLightCameraData_));
-
+	directionalLightFrustumResource_->Map(0, nullptr, reinterpret_cast<void**>(&directionalLightFrustumData_));
 	for (uint32_t i = 0; i < 6; i++) {
 		directionalLightFrustumData_->planes[i] = { 0.0f,0.0f,0.0f };
 	}
+}
+
+void LightManager::DrawDirectionalLightFrustum() {
+	// NDC空間の8頂点（Z: [0=Near, 1=Far]、左手系）
+	const Vector3 ndcCorners[8] =
+	{
+		{ -1,  1, 0 }, // 0: Near-Top-Left
+		{  1,  1, 0 }, // 1: Near-Top-Right
+		{ -1, -1, 0 }, // 2: Near-Bottom-Left
+		{  1, -1, 0 }, // 3: Near-Bottom-Right
+		{ -1,  1, 1 }, // 4: Far-Top-Left
+		{  1,  1, 1 }, // 5: Far-Top-Right
+		{ -1, -1, 1 }, // 6: Far-Bottom-Left
+		{  1, -1, 1 }, // 7: Far-Bottom-Right
+	};
+
+	// ビュー・プロジェクション逆行列を個別に取得
+	const Matrix4x4 invView = Inverse(lightView_);
+	const Matrix4x4 invProj = Inverse(lightProj_);
+
+	// ワールド空間のFrustum頂点
+	Vector3 worldCorners[8];
+	for (int i = 0; i < 8; ++i) {
+		Vector3 ndc = ndcCorners[i];
+
+		// Clip空間座標
+		Vector4 clip = Vector4(ndc.x, ndc.y, ndc.z, 1.0f);
+
+		// View空間へ
+		Vector4 view = Transform(clip, invProj);
+		if (abs(view.w) > 1e-5f) {
+			view /= view.w;
+		}
+
+		// ワールド空間へ
+		Vector4 world = Transform(view, invView);
+		worldCorners[i] = Vector3(world.x, world.y, world.z) / world.w;
+	}
+
+	// 色指定
+	const Vector4 color = Color::Red;
+
+	// Near平面
+	MAGISYSTEM::DrawLine3D(worldCorners[0], worldCorners[1], color);
+	MAGISYSTEM::DrawLine3D(worldCorners[1], worldCorners[3], color);
+	MAGISYSTEM::DrawLine3D(worldCorners[3], worldCorners[2], color);
+	MAGISYSTEM::DrawLine3D(worldCorners[2], worldCorners[0], color);
+
+	// Far平面
+	MAGISYSTEM::DrawLine3D(worldCorners[4], worldCorners[5], color);
+	MAGISYSTEM::DrawLine3D(worldCorners[5], worldCorners[7], color);
+	MAGISYSTEM::DrawLine3D(worldCorners[7], worldCorners[6], color);
+	MAGISYSTEM::DrawLine3D(worldCorners[6], worldCorners[4], color);
+
+	// Near↔Farの辺
+	MAGISYSTEM::DrawLine3D(worldCorners[0], worldCorners[4], color);
+	MAGISYSTEM::DrawLine3D(worldCorners[1], worldCorners[5], color);
+	MAGISYSTEM::DrawLine3D(worldCorners[2], worldCorners[6], color);
+	MAGISYSTEM::DrawLine3D(worldCorners[3], worldCorners[7], color);
+
 }
 
 void LightManager::SetDXGI(DXGI* dxgi) {

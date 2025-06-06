@@ -1229,6 +1229,10 @@ void MAGISYSTEM::TransferDirectionalLightCamera(uint32_t paramIndex) {
 	lightManager_->TransferDirectionalLightCamera(paramIndex);
 }
 
+void MAGISYSTEM::TransferDirectionalLightFrustum(uint32_t paramIndex) {
+	lightManager_->TransferDirectionalLightFrustum(paramIndex);
+}
+
 void MAGISYSTEM::DrawSprite(const SpriteData& data, const SpriteMaterialData& material) {
 	spriteDrawer_->AddSprite(data, material);
 }

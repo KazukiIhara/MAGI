@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Math/Types/Vector3.h"
+#include "Math/Types/Vector4.h"
 #include "Math/Types/Matrix4x4.h"
 
 struct DirectionalLightCameraForGPU {

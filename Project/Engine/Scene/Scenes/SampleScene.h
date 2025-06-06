@@ -14,7 +14,7 @@ using namespace MAGIUtility;
 
 // サンプルシーン
 template <typename Data>
-class SampleScene : public BaseScene<Data> {
+class SampleScene: public BaseScene<Data> {
 public:
 	using BaseScene<Data>::BaseScene; // 親クラスのコンストラクタをそのまま継承
 	~SampleScene()override = default;
@@ -31,6 +31,7 @@ private:
 
 	// トランスフォーム
 	std::unique_ptr<Transform3D> transform_;
+	std::unique_ptr<Transform3D> transformPlane_;
 
 	std::array<std::unique_ptr<Transform3D>, 30000> transforms_;
 
@@ -162,6 +163,7 @@ inline void SampleScene<Data>::Initialize() {
 	planeData_.verticesOffsets[Plane3DVertices::RightBottom] = { 10.0f,-10.0f,0.0f };
 
 	transform_ = std::make_unique<Transform3D>();
+	transformPlane_ = std::make_unique<Transform3D>(Vector3(1.0f, 1.0f, 1.0f), Vector3(std::numbers::pi_v<float>*0.5f, 0.0f, 0.0f), Vector3(0.0f, -1.0f, 0.0f));
 
 	for (uint32_t i = 0; i < 30000; i++) {
 		transforms_[i] = std::make_unique<Transform3D>(Vector3(0.0f, 0.0f, float(i)));
@@ -298,9 +300,10 @@ inline void SampleScene<Data>::Update() {
 
 	t_ += MAGISYSTEM::GetDeltaTime();
 
-	transform_->SetTranslate(simpleAnimation_->GetValue(t_));
+	//transform_->SetTranslate(simpleAnimation_->GetValue(t_));
 
 	transform_->Update();
+	transformPlane_->Update();
 
 	MAGISYSTEM::SetDirectionalLight(directionalLight_);
 
@@ -323,11 +326,10 @@ inline void SampleScene<Data>::Update() {
 template<typename Data>
 inline void SampleScene<Data>::Draw() {
 	// 球体描画
-	MAGISYSTEM::DrawSphere3D(transform_->GetWorldMatrix(), sphereData_, material_);
-
-	for (uint32_t i = 0; i < 20000; i++) {
+	for (uint32_t i = 0; i < 10000; i++) {
 		MAGISYSTEM::DrawModel("test", transforms_[i]->GetWorldMatrix(), modelMaterial_);
 	}
+	MAGISYSTEM::DrawPlane3D(transformPlane_->GetWorldMatrix(), planeData_, material_);
 }
 
 template<typename Data>

@@ -40,6 +40,9 @@ private:
 
 	void CreateDirectionalLightFrustumResource();
 	void MapDirectionalLightFrustumData();
+
+	void DrawDirectionalLightFrustum();
+
 private:
 	void SetDXGI(DXGI* dxgi);
 	void SetDirectXCommand(DirectXCommand* directXCommand);
@@ -63,7 +66,7 @@ private:
 	// ファークリップ距離
 	const float farClipRange_ = 500.0f;
 
-	// プロジェクション行列
+	Matrix4x4 lightView_{};
 	Matrix4x4 lightProj_{};
 	Vector3 target_ = { 0.0f,0.0f,0.0f };
 

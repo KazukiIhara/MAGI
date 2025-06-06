@@ -225,12 +225,13 @@ void MeshDrawer::DrawShadow(uint32_t instanceCount) {
 	cmd->SetGraphicsRootDescriptorTable(3, MAGISYSTEM::GetSrvUavDescriptorHandleGPU(meshletSrvIdx_));
 	cmd->SetGraphicsRootShaderResourceView(4, meshletUniqueVertIB_->GetGPUVirtualAddress());
 	cmd->SetGraphicsRootDescriptorTable(5, MAGISYSTEM::GetSrvUavDescriptorHandleGPU(primSrvIdx_));
+	cmd->SetGraphicsRootDescriptorTable(6, MAGISYSTEM::GetSrvUavDescriptorHandleGPU(cullDataSrvIndex_));
 
 	MeshInfo info = {
 		.indexSize = 4,
 		.meshletCount = meshletCount_,
 	};
-	cmd->SetGraphicsRoot32BitConstants(6, 2, &info, 0);
+	cmd->SetGraphicsRoot32BitConstants(7, 2, &info, 0);
 
 	cmd->DispatchMesh(DivRoundUp(meshletCount_, AS_GROUP_SIZE), instanceCount, 1);
 }
