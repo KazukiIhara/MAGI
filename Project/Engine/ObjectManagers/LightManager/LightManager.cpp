@@ -21,6 +21,9 @@ LightManager::LightManager(DXGI* dxgi, DirectXCommand* directXCommand) {
 	CreateDirectionalLightCameraResource();
 	MapDirectionalLightCameraData();
 
+	CreateDirectionalLightFrustumResource();
+	MapDirectionalLightFrustumData();
+
 	lightProj_ = MakeOrthographicMatrix(100.0f, 100.0f, nearClipRange_, farClipRange_);
 
 	Logger::Log("LightManager Initialize\n");
@@ -56,13 +59,6 @@ void LightManager::Update() {
 	directionalLightCameraData_->viewProjection = lightView * lightProj_;
 }
 
-void LightManager::TransferDirectionalLight(uint32_t paramIndex) {
-	// コマンドリストを取得
-	ID3D12GraphicsCommandList* commandList = directXCommand_->GetList();
-	// ライト情報を送る
-	commandList->SetGraphicsRootConstantBufferView(paramIndex, directionalLightResource_->GetGPUVirtualAddress());
-}
-
 void LightManager::SetDirectionalLight(const DirectionalLight& directionalLight) {
 	directionalLight_.direction = Normalize(directionalLight.direction);
 	directionalLight_.intensity = directionalLight.intensity;
@@ -73,11 +69,22 @@ void LightManager::SetDirectionalLightCameraTarget(const Vector3& target) {
 	target_ = target;
 }
 
+void LightManager::TransferDirectionalLight(uint32_t paramIndex) {
+	// コマンドリストを取得
+	ID3D12GraphicsCommandList* commandList = directXCommand_->GetList();
+	// ライト情報を送る
+	commandList->SetGraphicsRootConstantBufferView(paramIndex, directionalLightResource_->GetGPUVirtualAddress());
+}
+
 void LightManager::TransferDirectionalLightCamera(uint32_t paramIndex) {
 	// コマンドリストを取得
 	ID3D12GraphicsCommandList* commandList = directXCommand_->GetList();
 	// ライト情報を送る
 	commandList->SetGraphicsRootConstantBufferView(paramIndex, directionalLightCameraResource_->GetGPUVirtualAddress());
+}
+
+void LightManager::TransferDirectionalLightFrustum(uint32_t paramIndex) {
+
 }
 
 void LightManager::CreateDirectionalLightResource() {
@@ -100,6 +107,19 @@ void LightManager::MapDirectionalLightCameraData() {
 	directionalLightCameraData_ = nullptr;
 	directionalLightCameraResource_->Map(0, nullptr, reinterpret_cast<void**>(&directionalLightCameraData_));
 	directionalLightCameraData_->viewProjection = MakeIdentityMatrix4x4();
+}
+
+void LightManager::CreateDirectionalLightFrustumResource() {
+	directionalLightFrustumResource_ = dxgi_->CreateBufferResource(sizeof(DirectionalLightFrustumForGPU));
+}
+
+void LightManager::MapDirectionalLightFrustumData() {
+	directionalLightFrustumData_ = nullptr;
+	directionalLightFrustumResource_->Map(0, nullptr, reinterpret_cast<void**>(&directionalLightCameraData_));
+
+	for (uint32_t i = 0; i < 6; i++) {
+		directionalLightFrustumData_->planes[i] = { 0.0f,0.0f,0.0f };
+	}
 }
 
 void LightManager::SetDXGI(DXGI* dxgi) {
