@@ -138,7 +138,6 @@ void Transform3D::SetParent(Transform3D* parent, bool keepWorld) {
 
 	isChanged_ = true;
 
-
 	if (isChanged_) {
 		// もし子がいる場合
 		if (!children_.empty()) {
