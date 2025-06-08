@@ -40,7 +40,7 @@ public:
 	void AddBox(
 		const Matrix4x4& worldMatrix,
 		const BoxData3D& data,
-		const PrimitiveMaterialData3D& material
+		const MaterialData3D& material
 	);
 
 private:

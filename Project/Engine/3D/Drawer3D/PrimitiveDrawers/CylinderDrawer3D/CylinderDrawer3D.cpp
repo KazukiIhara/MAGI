@@ -103,7 +103,7 @@ void CylinderDrawer3D::DrawShadow(BlendMode mode) {
 	commandList->DispatchMesh(1, instanceCount_[i], 1);
 }
 
-void CylinderDrawer3D::AddCylinder(const Matrix4x4& worldMatrix, const CylinderData3D& data, const PrimitiveMaterialData3D& material) {
+void CylinderDrawer3D::AddCylinder(const Matrix4x4& worldMatrix, const CylinderData3D& data, const MaterialData3D& material) {
 	const uint32_t blendIndex = static_cast<uint32_t>(material.blendMode);
 
 #if defined(DEBUG) || defined(DEVELOP)

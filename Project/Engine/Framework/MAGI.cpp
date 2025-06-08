@@ -1296,27 +1296,27 @@ void MAGISYSTEM::DrawLine3D(const Vector3& start, const Vector3& end, const Vect
 	lineDrawer3D_->AddLine(start, end, color);
 }
 
-void MAGISYSTEM::DrawTriangle3D(const Matrix4x4& worldMatrix, const TriangleData3D& data, const PrimitiveMaterialData3D& material) {
+void MAGISYSTEM::DrawTriangle3D(const Matrix4x4& worldMatrix, const TriangleData3D& data, const MaterialData3D& material) {
 	triangleDrawer3D_->AddTriangle(worldMatrix, data, material);
 }
 
-void MAGISYSTEM::DrawPlane3D(const Matrix4x4& worldMatrix, const PlaneData3D& planeData, const PrimitiveMaterialData3D& materialData) {
+void MAGISYSTEM::DrawPlane3D(const Matrix4x4& worldMatrix, const PlaneData3D& planeData, const MaterialData3D& materialData) {
 	planeDrawer3D_->AddPlane(worldMatrix, planeData, materialData);
 }
 
-void MAGISYSTEM::DrawBox3D(const Matrix4x4& worldMatrix, const BoxData3D& boxData, const PrimitiveMaterialData3D& material) {
+void MAGISYSTEM::DrawBox3D(const Matrix4x4& worldMatrix, const BoxData3D& boxData, const MaterialData3D& material) {
 	boxDrawer3D_->AddBox(worldMatrix, boxData, material);
 }
 
-void MAGISYSTEM::DrawSphere3D(const Matrix4x4& worldMatrix, const SphereData3D& data, const PrimitiveMaterialData3D& material) {
+void MAGISYSTEM::DrawSphere3D(const Matrix4x4& worldMatrix, const SphereData3D& data, const MaterialData3D& material) {
 	sphereDrawer3D_->AddSphere(worldMatrix, data, material);
 }
 
-void MAGISYSTEM::DrawRing3D(const Matrix4x4& worldMatrix, const RingData3D& data, const PrimitiveMaterialData3D& material) {
+void MAGISYSTEM::DrawRing3D(const Matrix4x4& worldMatrix, const RingData3D& data, const MaterialData3D& material) {
 	ringDrawer3D_->AddRing(worldMatrix, data, material);
 }
 
-void MAGISYSTEM::DrawCylinder3D(const Matrix4x4& worldMatrix, const CylinderData3D& data, const PrimitiveMaterialData3D& material) {
+void MAGISYSTEM::DrawCylinder3D(const Matrix4x4& worldMatrix, const CylinderData3D& data, const MaterialData3D& material) {
 	cylinderDrawer3D_->AddCylinder(worldMatrix, data, material);
 }
 
@@ -1324,7 +1324,7 @@ void MAGISYSTEM::CreateModelDrawer(const std::string& name, const ModelData& mod
 	modelDrawerManager_->CreateModelDrawer(name, modelData);
 }
 
-void MAGISYSTEM::DrawModel(const std::string& name, const Matrix4x4& worldMatrix, const ModelMaterial& material) {
+void MAGISYSTEM::DrawModel(const std::string& name, const Matrix4x4& worldMatrix, const MaterialData3D& material) {
 	modelDrawerManager_->DrawModel(name, worldMatrix, material);
 }
 

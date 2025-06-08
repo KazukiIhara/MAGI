@@ -82,7 +82,7 @@ void PlaneDrawer3D::Draw(BlendMode mode) {
 	commandList->DispatchMesh(1, instanceCount_[i], 1);
 }
 
-void PlaneDrawer3D::AddPlane(const Matrix4x4& worldMatrix, const PlaneData3D& data, const PrimitiveMaterialData3D& material) {
+void PlaneDrawer3D::AddPlane(const Matrix4x4& worldMatrix, const PlaneData3D& data, const MaterialData3D& material) {
 	const uint32_t blendIndex = static_cast<uint32_t>(material.blendMode);
 
 #if defined(DEBUG) || defined(DEVELOP)

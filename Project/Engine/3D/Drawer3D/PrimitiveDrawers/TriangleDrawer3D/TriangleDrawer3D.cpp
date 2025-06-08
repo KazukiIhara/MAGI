@@ -93,7 +93,7 @@ void TriangleDrawer3D::Draw(BlendMode mode) {
 }
 
 
-void TriangleDrawer3D::AddTriangle(const Matrix4x4& worldMatrix, const TriangleData3D& data, const PrimitiveMaterialData3D& material) {
+void TriangleDrawer3D::AddTriangle(const Matrix4x4& worldMatrix, const TriangleData3D& data, const MaterialData3D& material) {
 	const uint32_t blendIndex = static_cast<uint32_t>(material.blendMode);
 
 #if defined(DEBUG) || defined(DEVELOP)

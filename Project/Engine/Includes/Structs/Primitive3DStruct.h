@@ -158,15 +158,16 @@ struct CylinderData3DForGPU {
 };
 
 /// <summary>
-/// Primitiveマテリアルデータ
+/// マテリアルデータ
 /// </summary>
-struct PrimitiveMaterialData3D {
+struct MaterialData3D {
 	std::string textureName = "";
 	Vector4 baseColor = Color::White;
 	Vector2 uvTranslate = { 0.0f,0.0f };
 	Vector2 uvScale = { 1.0f,1.0f };
 	float uvRotate = 0.0f;
 	BlendMode blendMode = BlendMode::None;
+	bool isMakeShadow;
 };
 
 /// <summary>

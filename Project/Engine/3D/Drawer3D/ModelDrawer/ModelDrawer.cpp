@@ -37,7 +37,7 @@ ModelDrawer::~ModelDrawer() {
 
 }
 
-void ModelDrawer::AddDrawCommand(const Matrix4x4& worldMatrix, const ModelMaterial& material) {
+void ModelDrawer::AddDrawCommand(const Matrix4x4& worldMatrix, const MaterialData3D& material) {
 	const uint32_t blendIndex = static_cast<uint32_t>(material.blendMode);
 
 #if defined(DEBUG) || defined(DEVELOP)
@@ -50,7 +50,7 @@ void ModelDrawer::AddDrawCommand(const Matrix4x4& worldMatrix, const ModelMateri
 	ModelDataForGPU newModelData{
 		.worldMatrix = worldMatrix,
 		.WorldInverseTransepose = MakeInverseTransposeMatrix(worldMatrix),
-		.color = material.color,
+		.color = material.baseColor,
 		.isMakeShadow = material.isMakeShadow,
 	};
 

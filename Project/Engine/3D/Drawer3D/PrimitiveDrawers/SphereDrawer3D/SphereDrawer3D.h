@@ -43,7 +43,7 @@ public:
 	void AddSphere(
 		const Matrix4x4& worldMatrix,
 		const SphereData3D& data,
-		const PrimitiveMaterialData3D& material
+		const MaterialData3D& material
 	);
 
 private:

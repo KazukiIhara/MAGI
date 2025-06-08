@@ -62,6 +62,7 @@
 // 
 #include "TransformManager/TransformManager.h"
 
+
 // 
 // ObjectManager
 // 
@@ -475,7 +476,7 @@ public: // エンジンの機能
 	static void DrawTriangle3D(
 		const Matrix4x4& worldMatrix,
 		const TriangleData3D& data,
-		const PrimitiveMaterialData3D& material
+		const MaterialData3D& material
 	);
 #pragma endregion
 
@@ -484,7 +485,7 @@ public: // エンジンの機能
 	static void DrawPlane3D(
 		const Matrix4x4& worldMatrix,
 		const PlaneData3D& planeData,
-		const PrimitiveMaterialData3D& materialData
+		const MaterialData3D& materialData
 	);
 
 #pragma endregion
@@ -494,7 +495,7 @@ public: // エンジンの機能
 	static void DrawBox3D(
 		const Matrix4x4& worldMatrix,
 		const BoxData3D& boxData,
-		const PrimitiveMaterialData3D&
+		const MaterialData3D&
 	);
 #pragma endregion
 
@@ -504,7 +505,7 @@ public: // エンジンの機能
 	static void DrawSphere3D(
 		const Matrix4x4& worldMatrix,
 		const SphereData3D& data = SphereData3D{},
-		const PrimitiveMaterialData3D& material = PrimitiveMaterialData3D{}
+		const MaterialData3D& material = MaterialData3D{}
 	);
 
 #pragma endregion
@@ -514,7 +515,7 @@ public: // エンジンの機能
 	static void DrawRing3D(
 		const Matrix4x4& worldMatrix,
 		const RingData3D& data,
-		const PrimitiveMaterialData3D& material
+		const MaterialData3D& material
 	);
 
 #pragma endregion
@@ -524,7 +525,7 @@ public: // エンジンの機能
 	static void DrawCylinder3D(
 		const Matrix4x4& worldMatrix,
 		const CylinderData3D& data,
-		const PrimitiveMaterialData3D& material
+		const MaterialData3D& material
 	);
 #pragma endregion
 
@@ -539,7 +540,7 @@ public: // エンジンの機能
 	static void DrawModel(
 		const std::string& name,
 		const Matrix4x4& worldMatrix,
-		const ModelMaterial& material
+		const MaterialData3D& material
 	);
 #pragma endregion
 

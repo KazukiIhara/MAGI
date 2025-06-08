@@ -43,7 +43,7 @@ void ModelDrawerManager::CreateModelDrawer(const std::string& modelDrawerName, c
 	modelDrawers_.insert(std::make_pair(modelDrawerName, std::move(newModelDrawer)));
 }
 
-void ModelDrawerManager::DrawModel(const std::string& modelDrawerName, const Matrix4x4& worldMatrix, const ModelMaterial& material) {
+void ModelDrawerManager::DrawModel(const std::string& modelDrawerName, const Matrix4x4& worldMatrix, const MaterialData3D& material) {
 	auto it = modelDrawers_.find(modelDrawerName);
 	if (it != modelDrawers_.end()) {
 		it->second->AddDrawCommand(worldMatrix, material);

@@ -18,7 +18,7 @@ public:
 	ModelDrawer(const ModelData& modelData);
 	~ModelDrawer();
 
-	void AddDrawCommand(const Matrix4x4& worldMatrix, const ModelMaterial& material);
+	void AddDrawCommand(const Matrix4x4& worldMatrix, const MaterialData3D& material);
 	void Update();
 	void Draw(BlendMode mode);
 	void DrawShadow(BlendMode mode);
