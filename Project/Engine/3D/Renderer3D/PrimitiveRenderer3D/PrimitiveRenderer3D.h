@@ -1,10 +1,11 @@
 #pragma once
 
-// C++
-#include <string>
+// MyHedder
+#include "Framework/MAGI.h"
 
-#include "framework/MAGI.h"
-
+/// <summary>
+/// 3Dプリミティブの種類
+/// </summary>
 enum class Prim3DType {
 	Triangle,
 	Plane,
@@ -13,7 +14,7 @@ enum class Prim3DType {
 };
 
 /// <summary>
-/// 3D描画
+/// 3Dプリミティブ描画
 /// </summary>
 template<typename T>
 class PrimitiveRenderer3D {
@@ -34,7 +35,9 @@ public:
 
 	}
 
-	Transform3D* GetTransform();
+	Transform3D* GetTransform() {
+		return transform_;
+	}
 
 private:
 	// 名前

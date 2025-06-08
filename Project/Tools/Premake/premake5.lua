@@ -64,6 +64,7 @@ project "MAGI" -- プロジェクト名
       "../../Engine/ComponentManagers",
       "../../Engine/DebugTools",
       "../../Engine/EngineLogic",
+      "../../Engine/Framework",
       "../../Engine/Graphics",
       "../../Engine/Includes",     
       "../../Engine/Input",
