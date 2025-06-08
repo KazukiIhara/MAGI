@@ -58,6 +58,11 @@
 #include "PipelineManagers/ShadowPipelineManager/ShadowPipelineManager.h"
 
 // 
+// ComponentManagers
+// 
+#include "TransformManager/TransformManager.h"
+
+// 
 // ObjectManager
 // 
 #include "Camera2DManager/Camera2DManager.h"
@@ -384,6 +389,11 @@ public: // エンジンの機能
 	static void StopLoopWaveSound(const std::string& fileName);
 #pragma endregion
 
+#pragma region TransformComponent
+	// トランスフォームマネージャ
+	static Transform3D* AddTransform3D(std::unique_ptr<Transform3D> transform);
+#pragma endregion
+
 #pragma region Camera2DManager
 	// 2Dカメラの追加
 	static void AddCamera2D(std::unique_ptr<Camera2D> newCamera2D);
@@ -493,8 +503,8 @@ public: // エンジンの機能
 	// 球体描画
 	static void DrawSphere3D(
 		const Matrix4x4& worldMatrix,
-		const SphereData3D& data,
-		const PrimitiveMaterialData3D& material
+		const SphereData3D& data = SphereData3D{},
+		const PrimitiveMaterialData3D& material = PrimitiveMaterialData3D{}
 	);
 
 #pragma endregion
@@ -635,6 +645,11 @@ protected:
 	static std::unique_ptr<ModelDataContainer> modelDataContainer_;
 	static std::unique_ptr<AnimationDataContainer> animationDataContainer_;
 	static std::unique_ptr<SoundDataContainer> soundDataContainer_;
+
+	//
+	// ComponentManagers
+	//
+	static std::unique_ptr<TransformManager> transformManager_;
 
 	//
 	// ObjectManager

@@ -51,7 +51,7 @@ public:
 	//
 
 	// 親をセット
-	void SetParent(Transform3D* parent, bool keepWorld);
+	void SetParent(Transform3D* parent, bool keepWorld = true);
 
 	// 親子付けを解除
 	void RemoveParent(bool keepWorld = true);

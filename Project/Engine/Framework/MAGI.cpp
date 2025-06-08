@@ -60,6 +60,11 @@ std::unique_ptr<ModelDataContainer> MAGISYSTEM::modelDataContainer_ = nullptr;
 std::unique_ptr<AnimationDataContainer> MAGISYSTEM::animationDataContainer_ = nullptr;
 std::unique_ptr<SoundDataContainer> MAGISYSTEM::soundDataContainer_ = nullptr;
 
+// 
+// ComponentManager
+// 
+std::unique_ptr<TransformManager> MAGISYSTEM::transformManager_ = nullptr;
+
 //
 // ObjectManager
 //
@@ -163,9 +168,11 @@ void MAGISYSTEM::Initialize() {
 	modelDataContainer_ = std::make_unique<ModelDataContainer>(textureDataCantainer_.get());
 	// AnimationDataContainer
 	animationDataContainer_ = std::make_unique<AnimationDataContainer>();
-	// SoundDataCOntainer
+	// SoundDataContainer
 	soundDataContainer_ = std::make_unique<SoundDataContainer>();
 
+	// TransformManager
+	transformManager_ = std::make_unique<TransformManager>();
 
 	// Camera2DManager
 	camera2DManager_ = std::make_unique<Camera2DManager>();
@@ -364,6 +371,10 @@ void MAGISYSTEM::Finalize() {
 		camera2DManager_.reset();
 	}
 
+	// TransformManager
+	if (transformManager_) {
+		transformManager_.reset();
+	}
 
 	// SoundDataContainer
 	if (soundDataContainer_) {
@@ -513,6 +524,9 @@ void MAGISYSTEM::Update() {
 
 	// シーンの更新処理
 	sceneManager_->Update();
+
+	// トランスフォームコンポーネントの更新
+	transformManager_->Update();
 
 	// 2Dカメラマネージャの更新処理
 	camera2DManager_->Update();
@@ -1167,6 +1181,10 @@ void MAGISYSTEM::StopWaveSound(const std::string& fileName) {
 
 void MAGISYSTEM::StopLoopWaveSound(const std::string& fileName) {
 	soundDataContainer_->StopWaveLoop(fileName);
+}
+
+Transform3D* MAGISYSTEM::AddTransform3D(std::unique_ptr<Transform3D> transform) {
+	return transformManager_->Add(std::move(transform));
 }
 
 void MAGISYSTEM::TransferCamera3D(uint32_t rootParameterIndex) {

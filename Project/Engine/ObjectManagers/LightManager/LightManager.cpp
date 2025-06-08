@@ -28,7 +28,7 @@ LightManager::LightManager(DXGI* dxgi, DirectXCommand* directXCommand) {
 	CreateDirectionalLightFrustumResource();
 	MapDirectionalLightFrustumData();
 
-	lightProj_ = MakeOrthographicMatrix(40.0f, 40.0f, nearClipRange_, farClipRange_);
+	lightProj_ = MakeOrthographicMatrix(100.0f, 100.0f, nearClipRange_, farClipRange_);
 
 	Logger::Log("LightManager Initialize\n");
 }
@@ -94,7 +94,6 @@ void LightManager::Update() {
 		directionalLightFrustumData_->planes[i] = frustumPlanes_[i];
 	}
 
-	DrawDirectionalLightFrustum();
 }
 
 void LightManager::SetDirectionalLight(const DirectionalLight& directionalLight) {
