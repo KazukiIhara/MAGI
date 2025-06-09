@@ -66,6 +66,7 @@
 // 
 // ObjectManager
 // 
+#include "GameObject3DManager/GameObject3DManager.h"
 #include "Camera2DManager/Camera2DManager.h"
 #include "Camera3DManager/Camera3DManager.h"
 #include "Emitter3DManager/Emitter3DManager.h"
@@ -401,6 +402,10 @@ public: // エンジンの機能
 
 #pragma endregion
 
+#pragma region GameObject3DManager
+
+
+#pragma endregion
 
 #pragma region Camera2DManager
 	// 2Dカメラの追加
@@ -450,7 +455,6 @@ public: // エンジンの機能
 	static std::string CreatePrimitiveParticleGroup3D(const std::string& particleGroupName, const Primitive3DType& primitiveType, const std::string& textureName = "");
 	// モデルのパーティクルグループの追加
 	static std::string CreateStaticParticleGroup3D(const std::string& particleGroupName, const std::string& modelName);
-
 	// パーティクルグループの取得
 	static BaseParticleGroup3D* FindParticleGroup3D(const std::string& particleGraoupName);
 	// パーティクルリストを取得
@@ -663,6 +667,7 @@ protected:
 	//
 	// ObjectManager
 	//
+	static std::unique_ptr<GameObject3DManager> gameObject3DManager_;
 	static std::unique_ptr<Camera2DManager> camera2DManager_;
 	static std::unique_ptr<Camera3DManager> camera3DManager_;
 	static std::unique_ptr<Emitter3DManager> emitter3DManager_;

@@ -29,20 +29,17 @@ void Renderer3DManager::Draw() {
 
 void Renderer3DManager::DeleteGarbage() {
 	for (auto& modelRenderer : modelRenderers_) {
-		if (modelRenderer && !modelRenderer->GetisAlive()) {
+		if (modelRenderer && !modelRenderer->GetIsAlive()) {
 			modelRenderer->Finalize();
 		}
 	}
 	std::erase_if(modelRenderers_, [](const std::unique_ptr<ModelRenderer>& modelRenderer) {
-		return modelRenderer && !modelRenderer->GetisAlive();
+		return modelRenderer && !modelRenderer->GetIsAlive();
 		});
-
-
 
 }
 
 void Renderer3DManager::Clear() {
 	modelRenderers_.clear();
-
 
 }

@@ -1,7 +1,7 @@
 #include "ModelRenderer.h"
 
 // MyHedder
-#include "Framework/MAGI.h"
+#include "MAGI.h"
 
 ModelRenderer::ModelRenderer(const std::string& name, const std::string& modelName, const ModelMaterial& material) {
 	name_ = name;
@@ -25,8 +25,7 @@ void ModelRenderer::Draw() {
 }
 
 void ModelRenderer::Finalize() {
-
-
+	transform_->SetIsAlive(false);
 }
 
 void ModelRenderer::SetIsAlive(bool isAlive) {
@@ -41,6 +40,14 @@ void ModelRenderer::SetIsRender(bool isRender) {
 	isRender_ = isRender;
 }
 
-const bool& ModelRenderer::GetisAlive() const {
+const std::string& ModelRenderer::GetName() const {
+	return name_;
+}
+
+const bool& ModelRenderer::GetIsAlive() const {
 	return isAlive_;
+}
+
+Transform3D* ModelRenderer::GetTransform() {
+	return transform_;
 }

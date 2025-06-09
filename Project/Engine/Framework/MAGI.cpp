@@ -69,6 +69,7 @@ std::unique_ptr<Renderer3DManager> MAGISYSTEM::renderer3DManager_ = nullptr;
 //
 // ObjectManager
 //
+std::unique_ptr<GameObject3DManager> MAGISYSTEM::gameObject3DManager_ = nullptr;
 std::unique_ptr<Camera2DManager> MAGISYSTEM::camera2DManager_ = nullptr;
 std::unique_ptr<Camera3DManager> MAGISYSTEM::camera3DManager_ = nullptr;
 std::unique_ptr<Emitter3DManager> MAGISYSTEM::emitter3DManager_ = nullptr;
@@ -176,6 +177,9 @@ void MAGISYSTEM::Initialize() {
 	transformManager_ = std::make_unique<TransformManager>();
 	// Renderr3DManager
 	renderer3DManager_ = std::make_unique<Renderer3DManager>();
+
+	// GameObject3DManager
+	gameObject3DManager_ = std::make_unique<GameObject3DManager>();
 
 	// Camera2DManager
 	camera2DManager_ = std::make_unique<Camera2DManager>();
@@ -374,6 +378,11 @@ void MAGISYSTEM::Finalize() {
 		camera2DManager_.reset();
 	}
 
+	// GameObject3DManager
+	if (gameObject3DManager_) {
+		gameObject3DManager_.reset();
+	}
+
 	// TransformManager
 	if (transformManager_) {
 		transformManager_.reset();
@@ -533,6 +542,9 @@ void MAGISYSTEM::Update() {
 	// シーンの更新処理
 	sceneManager_->Update();
 
+	// オブジェクト3Dマネージャーの更新
+	gameObject3DManager_->Update();
+
 	// トランスフォームコンポーネントの更新
 	transformManager_->Update();
 
@@ -580,6 +592,9 @@ void MAGISYSTEM::Draw() {
 	//
 	sceneManager_->Draw();
 
+	// 3D描画オブジェクトマネージャー
+	renderer3DManager_->Draw();
+
 	//==============================================
 	// 描画クラスの更新
 	//==============================================
@@ -607,9 +622,6 @@ void MAGISYSTEM::Draw() {
 
 	// 背景ボックス描画クラスの更新
 	skyBoxDrawer_->Update();
-
-	// 3D描画オブジェクトマネージャー
-	renderer3DManager_->Draw();
 
 
 	//==============================================

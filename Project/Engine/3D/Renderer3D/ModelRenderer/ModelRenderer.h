@@ -14,7 +14,7 @@ class Transform3D;
 /// </summary>
 class ModelRenderer {
 public:
-	ModelRenderer(const std::string& name, const std::string& modelName, const ModelMaterial& material);
+	ModelRenderer(const std::string& name, const std::string& modelName, const ModelMaterial& material = ModelMaterial{});
 	~ModelRenderer();
 
 	void Draw();
@@ -26,7 +26,9 @@ public:
 	void SetMaterial(const ModelMaterial& material);
 	void SetIsRender(bool isRender);
 
-	[[nodiscard]] const bool& GetisAlive()const;
+	[[nodiscard]] const std::string& GetName()const;
+	[[nodiscard]] const bool& GetIsAlive()const;
+	[[nodiscard]] Transform3D* GetTransform();
 
 private:
 	// 名前

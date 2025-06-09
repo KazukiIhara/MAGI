@@ -6,11 +6,9 @@
 #include "Framework/MAGI.h"
 #include "MAGIUitility/MAGIUtility.h"
 
-using namespace MAGIUtility;
-
-#include "Transform3D/Transform3D.h"
-
 #include "SimpleAnimation/SimpleAnimation.h"
+
+using namespace MAGIUtility;
 
 // サンプルシーン
 template <typename Data>
@@ -54,6 +52,8 @@ private:
 
 	Transform3D* transform0_;
 	Transform3D* transform1_;
+
+	std::unique_ptr<GameObject3D> teapot_;
 
 };
 
