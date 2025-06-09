@@ -34,6 +34,7 @@ void GameObject3DManager::DeleteGarbage() {
 			gameobject->Finalize();
 		}
 	}
+
 	std::erase_if(gameObjects_, [](const std::unique_ptr<GameObject3D>& gameObject) {
 		return gameObject && !gameObject->GetIsAlive();
 		});

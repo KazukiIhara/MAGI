@@ -29,8 +29,9 @@ public:
 
 	[[nodiscard]] const bool& GetIsAlive()const;
 	[[nodiscard]] const bool& GetIsActive()const;
-	[[nodiscard]] Transform3D* GetTransform();
 
+	Transform3D* GetTransform();
+	ModelRenderer* GetModelRenderer(const std::string& rendererName);
 private:
 	// 名前
 	std::string name_ = "";

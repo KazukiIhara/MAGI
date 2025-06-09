@@ -49,12 +49,7 @@ private:
 	// DirectionalLight
 	DirectionalLight directionalLight_{};
 
-
-	Transform3D* transform0_;
-	Transform3D* transform1_;
-
-	std::unique_ptr<GameObject3D> teapot_;
-
+	GameObject3D* teapot_;
 };
 
 template<typename Data>
@@ -101,34 +96,24 @@ inline void SampleScene<Data>::Initialize() {
 	MAGISYSTEM::SetSkyBoxTextureIndex(skyBoxTexutreIndex);
 
 	// ModelDrawer
-	MAGISYSTEM::CreateModelDrawer("test", MAGISYSTEM::FindModel("teapot"));
+	MAGISYSTEM::CreateModelDrawer("Teapot", MAGISYSTEM::FindModel("teapot"));
 
-	std::unique_ptr<Transform3D> transform0 = std::make_unique<Transform3D>();
-	transform0_ = MAGISYSTEM::AddTransform3D(std::move(transform0));
+	std::unique_ptr<ModelRenderer> teapot = std::make_unique<ModelRenderer>("teapot", "Teapot");
 
-	std::unique_ptr<Transform3D> transform1 = std::make_unique<Transform3D>(Vector3(2.0f, 0.0f, 0.0f));
-	transform1_ = MAGISYSTEM::AddTransform3D(std::move(transform1));
+	std::unique_ptr<GameObject3D> object = std::make_unique<GameObject3D>("teapot");
+	object->AddModelRenderer(std::move(teapot));
 
-	transform1_->SetParent(transform0_);
+	teapot_ = MAGISYSTEM::AddGameObject3D(std::move(object));
 
 }
 
 template<typename Data>
 inline void SampleScene<Data>::Update() {
 
-	ImGui::Begin("ParentTest");
+	ImGui::Begin("ObjectManagerTest");
 
-	Vector3 tempTranslate = transform0_->GetTranslate();
-	if (ImGui::DragFloat3("Translate0", &tempTranslate.x, 0.01f)) {
-		transform0_->SetTranslate(tempTranslate);
-	}
-
-	if (ImGui::Button("ParentKeepWorld")) {
-		transform1_->SetParent(transform0_, true);
-	}
-
-	if (ImGui::Button("RemoveKeepWorld")) {
-		transform1_->RemoveParent(true);
+	if (ImGui::Button("DeleteTeapot")) {
+		teapot_->SetIsAlive(false);
 	}
 
 	ImGui::End();
@@ -189,8 +174,7 @@ inline void SampleScene<Data>::Update() {
 
 template<typename Data>
 inline void SampleScene<Data>::Draw() {
-	MAGISYSTEM::DrawSphere3D(transform0_->GetWorldMatrix());
-	MAGISYSTEM::DrawSphere3D(transform1_->GetWorldMatrix());
+	
 }
 
 template<typename Data>

@@ -772,11 +772,16 @@ void MAGISYSTEM::Draw() {
 }
 
 void MAGISYSTEM::DeleteGarbages() {
-	// 
-	// 3Dオブジェクト
-	// 
 
+	//
+	// 削除順に気を付けて実装する(基本外側から消していくイメージ) 
+	//
+	
+	gameObject3DManager_->DeleteGarbage();
 
+	renderer3DManager_->DeleteGarbage();
+
+	transformManager_->DeleteGarbage();
 
 }
 
@@ -1213,6 +1218,10 @@ Transform3D* MAGISYSTEM::AddTransform3D(std::unique_ptr<Transform3D> transform) 
 
 ModelRenderer* MAGISYSTEM::AddRenderer3D(std::unique_ptr<ModelRenderer> modelRenderer) {
 	return renderer3DManager_->Add(std::move(modelRenderer));
+}
+
+GameObject3D* MAGISYSTEM::AddGameObject3D(std::unique_ptr<GameObject3D> gameObjec3D) {
+	return gameObject3DManager_->Add(std::move(gameObjec3D));
 }
 
 void MAGISYSTEM::TransferCamera3D(uint32_t rootParameterIndex) {

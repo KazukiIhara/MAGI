@@ -29,7 +29,7 @@ void ModelRenderer::Finalize() {
 }
 
 void ModelRenderer::SetIsAlive(bool isAlive) {
-	isAlive = isAlive;
+	isAlive_ = isAlive;
 }
 
 void ModelRenderer::SetMaterial(const ModelMaterial& material) {

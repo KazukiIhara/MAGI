@@ -19,7 +19,14 @@ void GameObject3D::Update() {
 }
 
 void GameObject3D::Finalize() {
+
 	transformComponent_->SetIsAlive(false);
+
+	if (!modelRendererComponents_.empty()) {
+		for (auto& modelRenderer : modelRendererComponents_) {
+			modelRenderer.second->SetIsAlive(false);
+		}
+	}
 }
 
 void GameObject3D::AddModelRenderer(std::unique_ptr<ModelRenderer> modelRenderer) {
@@ -45,4 +52,12 @@ const bool& GameObject3D::GetIsActive() const {
 
 Transform3D* GameObject3D::GetTransform() {
 	return transformComponent_;
+}
+
+ModelRenderer* GameObject3D::GetModelRenderer(const std::string& rendererName) {
+	const auto it = modelRendererComponents_.find(rendererName);
+	if (it != modelRendererComponents_.end()) {
+		return it->second;
+	}
+	return nullptr;
 }

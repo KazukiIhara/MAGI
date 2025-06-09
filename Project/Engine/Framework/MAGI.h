@@ -403,7 +403,8 @@ public: // エンジンの機能
 #pragma endregion
 
 #pragma region GameObject3DManager
-
+	// ゲームオブジェクト3Dを追加
+	static GameObject3D* AddGameObject3D(std::unique_ptr<GameObject3D> gameObjec3D);
 
 #pragma endregion
 
