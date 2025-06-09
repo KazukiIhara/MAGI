@@ -64,6 +64,7 @@ std::unique_ptr<SoundDataContainer> MAGISYSTEM::soundDataContainer_ = nullptr;
 // ComponentManager
 // 
 std::unique_ptr<TransformManager> MAGISYSTEM::transformManager_ = nullptr;
+std::unique_ptr<Renderer3DManager> MAGISYSTEM::renderer3DManager_ = nullptr;
 
 //
 // ObjectManager
@@ -173,6 +174,8 @@ void MAGISYSTEM::Initialize() {
 
 	// TransformManager
 	transformManager_ = std::make_unique<TransformManager>();
+	// Renderr3DManager
+	renderer3DManager_ = std::make_unique<Renderer3DManager>();
 
 	// Camera2DManager
 	camera2DManager_ = std::make_unique<Camera2DManager>();
@@ -374,6 +377,11 @@ void MAGISYSTEM::Finalize() {
 	// TransformManager
 	if (transformManager_) {
 		transformManager_.reset();
+	}
+
+	// Renderer3DManager
+	if (renderer3DManager_) {
+		renderer3DManager_.reset();
 	}
 
 	// SoundDataContainer
@@ -599,6 +607,10 @@ void MAGISYSTEM::Draw() {
 
 	// 背景ボックス描画クラスの更新
 	skyBoxDrawer_->Update();
+
+	// 3D描画オブジェクトマネージャー
+	renderer3DManager_->Draw();
+
 
 	//==============================================
 	// ShadowMap用のDepthのみの描画
@@ -1185,6 +1197,10 @@ void MAGISYSTEM::StopLoopWaveSound(const std::string& fileName) {
 
 Transform3D* MAGISYSTEM::AddTransform3D(std::unique_ptr<Transform3D> transform) {
 	return transformManager_->Add(std::move(transform));
+}
+
+ModelRenderer* MAGISYSTEM::AddRenderer3D(std::unique_ptr<ModelRenderer> modelRenderer) {
+	return renderer3DManager_->Add(std::move(modelRenderer));
 }
 
 void MAGISYSTEM::TransferCamera3D(uint32_t rootParameterIndex) {

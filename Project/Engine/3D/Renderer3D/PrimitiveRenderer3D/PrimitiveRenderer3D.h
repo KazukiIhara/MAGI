@@ -1,7 +1,11 @@
 #pragma once
 
-// MyHedder
-#include "Framework/MAGI.h"
+// C++
+#include <string>
+#include "Structs/Primitive3DStruct.h"
+
+// 前方宣言
+class Transform3D;
 
 /// <summary>
 /// 3Dプリミティブの種類
@@ -16,32 +20,14 @@ enum class Prim3DType {
 /// <summary>
 /// 3Dプリミティブ描画
 /// </summary>
-template<typename T>
 class PrimitiveRenderer3D {
 public:
-	PrimitiveRenderer3D(const std::string& name, const Prim3DType& type) {
-		// 名前を設定
-		name_ = name;
-		// タイプをセット
-		type_ = type;
-		// トランスフォームコンポーネントを作成
-		std::unique_ptr<Transform3D> transform = std::make_unique<Transform3D>();
-		transform_ = MAGISYSTEM::AddTransform3D(std::move(transform));
-	}
+	PrimitiveRenderer3D(const std::string& name, const Prim3DType& type);
+	~PrimitiveRenderer3D();
 
-	~PrimitiveRenderer3D() = default;
+	void Draw();
 
-	void Draw() {
-
-	}
-
-	void SetShapeData(const T& data) {
-
-	}
-
-	Transform3D* GetTransform() {
-		return transform_; 
-	}
+	Transform3D* GetTransform();
 
 private:
 	// 名前
@@ -50,8 +36,15 @@ private:
 	Prim3DType type_ = Prim3DType::Triangle;
 	// トランスフォーム
 	Transform3D* transform_ = nullptr;
-	// 形状データ
-	T shapeData_;
+	// マテリアル
+	MaterialData3D material_{};
 	// 描画フラグ
 	bool isRender_ = true;
+
+	// 各形状のデータ
+	TriangleData3D triangleData_{};
+	PlaneData3D planeData_{};
+	BoxData3D boxData_{};
+	SphereData3D sphereData_{};
+
 };

@@ -37,6 +37,8 @@ void Renderer3DManager::DeleteGarbage() {
 		return modelRenderer && !modelRenderer->GetisAlive();
 		});
 
+
+
 }
 
 void Renderer3DManager::Clear() {

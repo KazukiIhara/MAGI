@@ -61,7 +61,7 @@
 // ComponentManagers
 // 
 #include "TransformManager/TransformManager.h"
-
+#include "Renderer3DManager/Renderer3DManager.h"
 
 // 
 // ObjectManager
@@ -391,9 +391,16 @@ public: // エンジンの機能
 #pragma endregion
 
 #pragma region TransformComponent
-	// トランスフォームマネージャ
+	// トランスフォーム追加
 	static Transform3D* AddTransform3D(std::unique_ptr<Transform3D> transform);
 #pragma endregion
+
+#pragma region Renderer3DComponent
+	// モデルのレンダラー追加
+	static ModelRenderer* AddRenderer3D(std::unique_ptr<ModelRenderer> modelRenderer);
+
+#pragma endregion
+
 
 #pragma region Camera2DManager
 	// 2Dカメラの追加
@@ -651,6 +658,7 @@ protected:
 	// ComponentManagers
 	//
 	static std::unique_ptr<TransformManager> transformManager_;
+	static std::unique_ptr<Renderer3DManager> renderer3DManager_;
 
 	//
 	// ObjectManager
