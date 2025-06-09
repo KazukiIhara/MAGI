@@ -35,8 +35,12 @@ public:
 
 	}
 
+	void SetShapeData(const T& data) {
+
+	}
+
 	Transform3D* GetTransform() {
-		return transform_;
+		return transform_; 
 	}
 
 private:
@@ -44,8 +48,10 @@ private:
 	std::string name_ = "";
 	// プリミティブタイプ
 	Prim3DType type_ = Prim3DType::Triangle;
-	// 描画フラグ
-	bool isRender_ = true;
 	// トランスフォーム
 	Transform3D* transform_ = nullptr;
+	// 形状データ
+	T shapeData_;
+	// 描画フラグ
+	bool isRender_ = true;
 };

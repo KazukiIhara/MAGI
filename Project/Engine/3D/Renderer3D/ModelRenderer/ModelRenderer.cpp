@@ -24,10 +24,23 @@ void ModelRenderer::Draw() {
 	}
 }
 
+void ModelRenderer::Finalize() {
+
+
+}
+
+void ModelRenderer::SetIsAlive(bool isAlive) {
+	isAlive = isAlive;
+}
+
 void ModelRenderer::SetMaterial(const ModelMaterial& material) {
 	material_ = material;
 }
 
 void ModelRenderer::SetIsRender(bool isRender) {
 	isRender_ = isRender;
+}
+
+const bool& ModelRenderer::GetisAlive() const {
+	return isAlive_;
 }

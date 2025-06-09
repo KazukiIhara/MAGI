@@ -1,18 +1,28 @@
 #pragma once
 
+// C++
+#include <vector>
+#include <memory>
+
 // MyHedder
 #include "Renderer3D/ModelRenderer/ModelRenderer.h"
 #include "Renderer3D/PrimitiveRenderer3D/PrimitiveRenderer3D.h"
 
 /// <summary>
-/// 3D描画オブジェクトマネージャ
+/// 3D描画オブジェクト管理クラス
 /// </summary>
 class Renderer3DManager {
 public:
 	Renderer3DManager();
 	~Renderer3DManager();
 
-private:
+	ModelRenderer* Add(std::unique_ptr<ModelRenderer> modelRenderer);
+	void Draw();
+	void DeleteGarbage();
+	void Clear();
 
+private:
+	// モデル描画オブジェクトコンテナ
+	std::vector<std::unique_ptr<ModelRenderer>> modelRenderers_;
 
 };
