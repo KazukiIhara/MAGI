@@ -15,11 +15,11 @@ public:
 	GameObject3DManager();
 	~GameObject3DManager();
 
-	GameObject3D* Add(std::unique_ptr<GameObject3D> gameObject3D);
+	std::weak_ptr<GameObject3D> Add(std::shared_ptr<GameObject3D> gameObject3D);
 	void Update();
 	void DeleteGarbage();
 	void Clear();
 
 private:
-	std::vector<std::unique_ptr<GameObject3D>> gameObjects_;
+	std::vector<std::shared_ptr<GameObject3D>> gameObjects_;
 };

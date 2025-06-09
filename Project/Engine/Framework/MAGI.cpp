@@ -776,7 +776,7 @@ void MAGISYSTEM::DeleteGarbages() {
 	//
 	// 削除順に気を付けて実装する(基本外側から消していくイメージ) 
 	//
-	
+
 	gameObject3DManager_->DeleteGarbage();
 
 	renderer3DManager_->DeleteGarbage();
@@ -1212,15 +1212,15 @@ void MAGISYSTEM::StopLoopWaveSound(const std::string& fileName) {
 	soundDataContainer_->StopWaveLoop(fileName);
 }
 
-Transform3D* MAGISYSTEM::AddTransform3D(std::unique_ptr<Transform3D> transform) {
+std::weak_ptr<Transform3D> MAGISYSTEM::AddTransform3D(std::shared_ptr<Transform3D> transform) {
 	return transformManager_->Add(std::move(transform));
 }
 
-ModelRenderer* MAGISYSTEM::AddRenderer3D(std::unique_ptr<ModelRenderer> modelRenderer) {
+std::weak_ptr<ModelRenderer> MAGISYSTEM::AddRenderer3D(std::shared_ptr<ModelRenderer> modelRenderer) {
 	return renderer3DManager_->Add(std::move(modelRenderer));
 }
 
-GameObject3D* MAGISYSTEM::AddGameObject3D(std::unique_ptr<GameObject3D> gameObjec3D) {
+std::weak_ptr<GameObject3D> MAGISYSTEM::AddGameObject3D(std::shared_ptr<GameObject3D> gameObjec3D) {
 	return gameObject3DManager_->Add(std::move(gameObjec3D));
 }
 

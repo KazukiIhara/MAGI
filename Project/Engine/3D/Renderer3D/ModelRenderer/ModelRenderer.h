@@ -2,6 +2,7 @@
 
 // C++
 #include <string>
+#include <memory>
 
 // MyHedder
 #include "Structs/ModelStruct.h"
@@ -28,7 +29,7 @@ public:
 
 	[[nodiscard]] const std::string& GetName()const;
 	[[nodiscard]] const bool& GetIsAlive()const;
-	[[nodiscard]] Transform3D* GetTransform();
+	[[nodiscard]] std::weak_ptr<Transform3D> GetTransform();
 
 private:
 	// 名前
@@ -38,7 +39,7 @@ private:
 	// マテリアル
 	ModelMaterial material_{};
 	// トランスフォーム
-	Transform3D* transform_ = nullptr;
+	std::weak_ptr<Transform3D> transform_;
 	// 描画フラグ
 	bool isRender_ = true;
 	// 生存フラグ

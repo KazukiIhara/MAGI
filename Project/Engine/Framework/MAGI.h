@@ -393,18 +393,18 @@ public: // エンジンの機能
 
 #pragma region TransformComponent
 	// トランスフォーム追加
-	static Transform3D* AddTransform3D(std::unique_ptr<Transform3D> transform);
+	static std::weak_ptr<Transform3D> AddTransform3D(std::shared_ptr<Transform3D> transform);
 #pragma endregion
 
 #pragma region Renderer3DComponent
 	// モデルのレンダラー追加
-	static ModelRenderer* AddRenderer3D(std::unique_ptr<ModelRenderer> modelRenderer);
+	static std::weak_ptr<ModelRenderer> AddRenderer3D(std::shared_ptr<ModelRenderer> modelRenderer);
 
 #pragma endregion
 
 #pragma region GameObject3DManager
 	// ゲームオブジェクト3Dを追加
-	static GameObject3D* AddGameObject3D(std::unique_ptr<GameObject3D> gameObjec3D);
+	static std::weak_ptr<GameObject3D> AddGameObject3D(std::shared_ptr<GameObject3D> gameObjec3D);
 
 #pragma endregion
 

@@ -12,7 +12,7 @@ using namespace MAGIUtility;
 
 // サンプルシーン
 template <typename Data>
-class SampleScene : public BaseScene<Data> {
+class SampleScene: public BaseScene<Data> {
 public:
 	using BaseScene<Data>::BaseScene; // 親クラスのコンストラクタをそのまま継承
 	~SampleScene()override = default;
@@ -49,7 +49,7 @@ private:
 	// DirectionalLight
 	DirectionalLight directionalLight_{};
 
-	GameObject3D* teapot_;
+	std::weak_ptr<GameObject3D> teapot_;
 };
 
 template<typename Data>
@@ -96,9 +96,9 @@ inline void SampleScene<Data>::Initialize() {
 	MAGISYSTEM::SetSkyBoxTextureIndex(skyBoxTexutreIndex);
 
 	// ModelDrawer
-	MAGISYSTEM::CreateModelDrawer("Teapot", MAGISYSTEM::FindModel("teapot"));
+	MAGISYSTEM::CreateModelDrawer("teapot", MAGISYSTEM::FindModel("teapot"));
 
-	std::unique_ptr<ModelRenderer> teapot = std::make_unique<ModelRenderer>("teapot", "Teapot");
+	std::shared_ptr<ModelRenderer> teapot = std::make_shared<ModelRenderer>("teapot", "teapot");
 
 	std::unique_ptr<GameObject3D> object = std::make_unique<GameObject3D>("teapot");
 	object->AddModelRenderer(std::move(teapot));
@@ -113,8 +113,9 @@ inline void SampleScene<Data>::Update() {
 	ImGui::Begin("ObjectManagerTest");
 
 	if (ImGui::Button("DeleteTeapot")) {
-		teapot_->SetIsAlive(false);
+		teapot_.lock()->SetIsAlive(false);
 	}
+
 
 	ImGui::End();
 
@@ -174,7 +175,7 @@ inline void SampleScene<Data>::Update() {
 
 template<typename Data>
 inline void SampleScene<Data>::Draw() {
-	
+
 }
 
 template<typename Data>

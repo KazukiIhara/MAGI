@@ -20,12 +20,12 @@ ModelRenderer::~ModelRenderer() {
 
 void ModelRenderer::Draw() {
 	if (isRender_) {
-		MAGISYSTEM::DrawModel(modelName_, transform_->GetWorldMatrix(), material_);
+		MAGISYSTEM::DrawModel(modelName_, transform_.lock()->GetWorldMatrix(), material_);
 	}
 }
 
 void ModelRenderer::Finalize() {
-	transform_->SetIsAlive(false);
+	transform_.lock()->SetIsAlive(false);
 }
 
 void ModelRenderer::SetIsAlive(bool isAlive) {
@@ -48,6 +48,6 @@ const bool& ModelRenderer::GetIsAlive() const {
 	return isAlive_;
 }
 
-Transform3D* ModelRenderer::GetTransform() {
+std::weak_ptr<Transform3D> ModelRenderer::GetTransform() {
 	return transform_;
 }

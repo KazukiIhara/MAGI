@@ -15,11 +15,10 @@ GameObject3DManager::~GameObject3DManager() {
 	Logger::Log("GameObject3DManager Finalize\n");
 }
 
-GameObject3D* GameObject3DManager::Add(std::unique_ptr<GameObject3D> gameObject3D) {
+std::weak_ptr<GameObject3D> GameObject3DManager::Add(std::shared_ptr<GameObject3D> gameObject3D) {
 	assert(gameObject3D && "GameObject3D must not be null");
-	GameObject3D* ptr = gameObject3D.get();
 	gameObjects_.push_back(std::move(gameObject3D));
-	return ptr;
+	return gameObjects_.back();
 }
 
 void GameObject3DManager::Update() {
@@ -35,7 +34,7 @@ void GameObject3DManager::DeleteGarbage() {
 		}
 	}
 
-	std::erase_if(gameObjects_, [](const std::unique_ptr<GameObject3D>& gameObject) {
+	std::erase_if(gameObjects_, [](const std::shared_ptr<GameObject3D>& gameObject) {
 		return gameObject && !gameObject->GetIsAlive();
 		});
 

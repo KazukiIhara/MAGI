@@ -30,8 +30,8 @@ public:
 	[[nodiscard]] const bool& GetIsAlive()const;
 	[[nodiscard]] const bool& GetIsActive()const;
 
-	Transform3D* GetTransform();
-	ModelRenderer* GetModelRenderer(const std::string& rendererName);
+	std::weak_ptr<Transform3D> GetTransform();
+	std::weak_ptr<ModelRenderer> GetModelRenderer(const std::string& rendererName);
 private:
 	// 名前
 	std::string name_ = "";
@@ -45,8 +45,8 @@ private:
 	//=======================
 
 	// トランスフォーム
-	Transform3D* transformComponent_ = nullptr;
+	std::weak_ptr<Transform3D> transformComponent_;
 	// モデル描画コンポーネント
-	std::unordered_map<std::string, ModelRenderer*> modelRendererComponents_;
+	std::unordered_map<std::string, std::weak_ptr<ModelRenderer>> modelRendererComponents_;
 
 };

@@ -14,11 +14,10 @@ Renderer3DManager::~Renderer3DManager() {
 	Logger::Log("Renderer3DManager Finalize\n");
 }
 
-ModelRenderer* Renderer3DManager::Add(std::unique_ptr<ModelRenderer> modelRenderer) {
+std::weak_ptr<ModelRenderer> Renderer3DManager::Add(std::shared_ptr<ModelRenderer> modelRenderer) {
 	assert(modelRenderer && "ModelRenderer must not be null");
-	ModelRenderer* ptr = modelRenderer.get();
 	modelRenderers_.push_back(std::move(modelRenderer));
-	return ptr;
+	return modelRenderers_.back();
 }
 
 void Renderer3DManager::Draw() {
@@ -33,7 +32,7 @@ void Renderer3DManager::DeleteGarbage() {
 			modelRenderer->Finalize();
 		}
 	}
-	std::erase_if(modelRenderers_, [](const std::unique_ptr<ModelRenderer>& modelRenderer) {
+	std::erase_if(modelRenderers_, [](const std::shared_ptr<ModelRenderer>& modelRenderer) {
 		return modelRenderer && !modelRenderer->GetIsAlive();
 		});
 

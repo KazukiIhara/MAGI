@@ -50,14 +50,14 @@ const bool& GameObject3D::GetIsActive() const {
 	return isActive_;
 }
 
-Transform3D* GameObject3D::GetTransform() {
+std::weak_ptr<Transform3D> GameObject3D::GetTransform() {
 	return transformComponent_;
 }
 
-ModelRenderer* GameObject3D::GetModelRenderer(const std::string& rendererName) {
+std::weak_ptr<ModelRenderer> GameObject3D::GetModelRenderer(const std::string& rendererName) {
 	const auto it = modelRendererComponents_.find(rendererName);
 	if (it != modelRendererComponents_.end()) {
 		return it->second;
 	}
-	return nullptr;
+	return {};
 }
