@@ -1324,7 +1324,7 @@ void MAGISYSTEM::CreateModelDrawer(const std::string& name, const ModelData& mod
 	modelDrawerManager_->CreateModelDrawer(name, modelData);
 }
 
-void MAGISYSTEM::DrawModel(const std::string& name, const Matrix4x4& worldMatrix, const MaterialData3D& material) {
+void MAGISYSTEM::DrawModel(const std::string& name, const Matrix4x4& worldMatrix, const ModelMaterial& material) {
 	modelDrawerManager_->DrawModel(name, worldMatrix, material);
 }
 

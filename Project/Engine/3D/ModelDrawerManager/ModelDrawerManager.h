@@ -35,7 +35,7 @@ public:
 	~ModelDrawerManager();
 
 	void CreateModelDrawer(const std::string& modelDrawerName, const ModelData& modelData);
-	void DrawModel(const std::string& modelDrawerName, const Matrix4x4& worldMatrix, const MaterialData3D& material);
+	void DrawModel(const std::string& modelDrawerName, const Matrix4x4& worldMatrix, const ModelMaterial& material);
 	void UpdateAll();
 	void DrawAll(BlendMode mode);
 

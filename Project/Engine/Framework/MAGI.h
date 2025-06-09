@@ -540,7 +540,7 @@ public: // エンジンの機能
 	static void DrawModel(
 		const std::string& name,
 		const Matrix4x4& worldMatrix,
-		const MaterialData3D& material
+		const ModelMaterial& material
 	);
 #pragma endregion
 
