@@ -44,8 +44,12 @@ const std::string& ModelRenderer::GetName() const {
 	return name_;
 }
 
-const bool& ModelRenderer::GetIsAlive() const {
+bool ModelRenderer::GetIsAlive() const {
 	return isAlive_;
+}
+
+bool ModelRenderer::GetIsRender() const {
+	return isRender_;
 }
 
 std::weak_ptr<Transform3D> ModelRenderer::GetTransform() {

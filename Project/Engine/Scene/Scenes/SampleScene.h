@@ -113,8 +113,10 @@ inline void SampleScene<Data>::Update() {
 	ImGui::Begin("ObjectManagerTest");
 
 	if (ImGui::Button("DeleteTeapot")) {
-		if (auto it = teapot_.lock()) {
-			it->SetIsAlive(false);
+		if (auto obj = teapot_.lock()) {
+			if (auto rdr = obj->GetModelRenderer("a").lock()) {
+				rdr->SetIsRender(rdr->GetIsRender());
+			}
 		}
 	}
 

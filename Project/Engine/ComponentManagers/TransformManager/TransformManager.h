@@ -15,7 +15,7 @@ public:
 	TransformManager();
 	~TransformManager();
 
-	std::weak_ptr<Transform3D> Add(std::shared_ptr<Transform3D> transform);
+	[[nodiscard]] std::weak_ptr<Transform3D> Add(std::shared_ptr<Transform3D> transform);
 	void Update();
 	void DeleteGarbage();
 	void Clear();

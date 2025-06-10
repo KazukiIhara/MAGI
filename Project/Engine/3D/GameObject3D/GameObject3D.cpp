@@ -3,6 +3,7 @@
 #include <memory>
 
 #include "framework/MAGI.h"
+#include "MAGIAssert/MAGIAssert.h"
 
 GameObject3D::GameObject3D(const std::string& name) {
 	name_ = name;
@@ -28,8 +29,9 @@ void GameObject3D::Finalize() {
 	{
 		if (!modelRendererComponents_.empty()) {
 			for (auto& modelRenderer : modelRendererComponents_) {
-				if (auto it = modelRenderer.second.lock())
+				if (auto it = modelRenderer.second.lock()) {
 					it->SetIsAlive(false);
+				}
 			}
 		}
 	}
@@ -50,11 +52,11 @@ void GameObject3D::SetIsActive(bool isActive) {
 	isActive_ = isActive;
 }
 
-const bool& GameObject3D::GetIsAlive()const {
+bool GameObject3D::GetIsAlive()const {
 	return isAlive_;
 }
 
-const bool& GameObject3D::GetIsActive() const {
+bool GameObject3D::GetIsActive() const {
 	return isActive_;
 }
 
@@ -67,5 +69,8 @@ std::weak_ptr<ModelRenderer> GameObject3D::GetModelRenderer(const std::string& r
 	if (it != modelRendererComponents_.end()) {
 		return it->second;
 	}
+
+	MAGIAssert::Assert(false, "GameObject3D " + name_ + ": Not found renderer [ " + rendererName + " ]\n");
+
 	return {};
 }

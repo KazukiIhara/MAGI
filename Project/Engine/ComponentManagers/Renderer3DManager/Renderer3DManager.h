@@ -15,7 +15,7 @@ public:
 	Renderer3DManager();
 	~Renderer3DManager();
 
-	std::weak_ptr<ModelRenderer> Add(std::shared_ptr<ModelRenderer> modelRenderer);
+	[[nodiscard]] std::weak_ptr<ModelRenderer> Add(std::shared_ptr<ModelRenderer> modelRenderer);
 	void Draw();
 	void DeleteGarbage();
 	void Clear();

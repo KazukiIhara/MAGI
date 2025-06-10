@@ -27,11 +27,11 @@ public:
 	void SetIsAlive(bool isAlive);
 	void SetIsActive(bool isActive);
 
-	[[nodiscard]] const bool& GetIsAlive()const;
-	[[nodiscard]] const bool& GetIsActive()const;
+	[[nodiscard]] bool GetIsAlive()const;
+	[[nodiscard]] bool GetIsActive()const;
 
-	std::weak_ptr<Transform3D> GetTransform();
-	std::weak_ptr<ModelRenderer> GetModelRenderer(const std::string& rendererName);
+	[[nodiscard]] std::weak_ptr<Transform3D> GetTransform();
+	[[nodiscard]] std::weak_ptr<ModelRenderer> GetModelRenderer(const std::string& rendererName);
 private:
 	// 名前
 	std::string name_ = "";

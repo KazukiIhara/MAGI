@@ -28,7 +28,8 @@ public:
 	void SetIsRender(bool isRender);
 
 	[[nodiscard]] const std::string& GetName()const;
-	[[nodiscard]] const bool& GetIsAlive()const;
+	[[nodiscard]] bool GetIsAlive()const;
+	[[nodiscard]] bool GetIsRender()const;
 	[[nodiscard]] std::weak_ptr<Transform3D> GetTransform();
 
 private:
