@@ -80,7 +80,7 @@ void RingDrawer3D::Draw(BlendMode mode) {
 	commandList->DispatchMesh(1, instanceCount_[i], 1);
 }
 
-void RingDrawer3D::AddRing(const Matrix4x4& worldMatrix, const RingData3D& data, const PrimitiveMaterialData3D& material) {
+void RingDrawer3D::AddRing(const Matrix4x4& worldMatrix, const RingData3D& data, const MaterialData3D& material) {
 	const uint32_t blendIndex = static_cast<uint32_t>(material.blendMode);
 
 #if defined(DEBUG) || defined(DEVELOP)

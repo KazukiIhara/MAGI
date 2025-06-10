@@ -39,7 +39,7 @@ public:
 	void AddRing(
 		const Matrix4x4& worldMatrix,
 		const RingData3D& data,
-		const PrimitiveMaterialData3D& material
+		const MaterialData3D& material
 	);
 
 private:

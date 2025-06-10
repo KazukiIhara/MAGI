@@ -58,8 +58,15 @@
 #include "PipelineManagers/ShadowPipelineManager/ShadowPipelineManager.h"
 
 // 
+// ComponentManagers
+// 
+#include "TransformManager/TransformManager.h"
+#include "Renderer3DManager/Renderer3DManager.h"
+
+// 
 // ObjectManager
 // 
+#include "GameObject3DManager/GameObject3DManager.h"
 #include "Camera2DManager/Camera2DManager.h"
 #include "Camera3DManager/Camera3DManager.h"
 #include "Emitter3DManager/Emitter3DManager.h"
@@ -384,6 +391,23 @@ public: // エンジンの機能
 	static void StopLoopWaveSound(const std::string& fileName);
 #pragma endregion
 
+#pragma region TransformComponent
+	// トランスフォーム追加
+	static std::weak_ptr<Transform3D> AddTransform3D(std::shared_ptr<Transform3D> transform);
+#pragma endregion
+
+#pragma region Renderer3DComponent
+	// モデルのレンダラー追加
+	static std::weak_ptr<ModelRenderer> AddRenderer3D(std::shared_ptr<ModelRenderer> modelRenderer);
+
+#pragma endregion
+
+#pragma region GameObject3DManager
+	// ゲームオブジェクト3Dを追加
+	static std::weak_ptr<GameObject3D> AddGameObject3D(std::shared_ptr<GameObject3D> gameObjec3D);
+
+#pragma endregion
+
 #pragma region Camera2DManager
 	// 2Dカメラの追加
 	static void AddCamera2D(std::unique_ptr<Camera2D> newCamera2D);
@@ -432,7 +456,6 @@ public: // エンジンの機能
 	static std::string CreatePrimitiveParticleGroup3D(const std::string& particleGroupName, const Primitive3DType& primitiveType, const std::string& textureName = "");
 	// モデルのパーティクルグループの追加
 	static std::string CreateStaticParticleGroup3D(const std::string& particleGroupName, const std::string& modelName);
-
 	// パーティクルグループの取得
 	static BaseParticleGroup3D* FindParticleGroup3D(const std::string& particleGraoupName);
 	// パーティクルリストを取得
@@ -465,7 +488,7 @@ public: // エンジンの機能
 	static void DrawTriangle3D(
 		const Matrix4x4& worldMatrix,
 		const TriangleData3D& data,
-		const PrimitiveMaterialData3D& material
+		const MaterialData3D& material
 	);
 #pragma endregion
 
@@ -474,7 +497,7 @@ public: // エンジンの機能
 	static void DrawPlane3D(
 		const Matrix4x4& worldMatrix,
 		const PlaneData3D& planeData,
-		const PrimitiveMaterialData3D& materialData
+		const MaterialData3D& materialData
 	);
 
 #pragma endregion
@@ -484,7 +507,7 @@ public: // エンジンの機能
 	static void DrawBox3D(
 		const Matrix4x4& worldMatrix,
 		const BoxData3D& boxData,
-		const PrimitiveMaterialData3D&
+		const MaterialData3D&
 	);
 #pragma endregion
 
@@ -493,8 +516,8 @@ public: // エンジンの機能
 	// 球体描画
 	static void DrawSphere3D(
 		const Matrix4x4& worldMatrix,
-		const SphereData3D& data,
-		const PrimitiveMaterialData3D& material
+		const SphereData3D& data = SphereData3D{},
+		const MaterialData3D& material = MaterialData3D{}
 	);
 
 #pragma endregion
@@ -504,7 +527,7 @@ public: // エンジンの機能
 	static void DrawRing3D(
 		const Matrix4x4& worldMatrix,
 		const RingData3D& data,
-		const PrimitiveMaterialData3D& material
+		const MaterialData3D& material
 	);
 
 #pragma endregion
@@ -514,7 +537,7 @@ public: // エンジンの機能
 	static void DrawCylinder3D(
 		const Matrix4x4& worldMatrix,
 		const CylinderData3D& data,
-		const PrimitiveMaterialData3D& material
+		const MaterialData3D& material
 	);
 #pragma endregion
 
@@ -637,8 +660,15 @@ protected:
 	static std::unique_ptr<SoundDataContainer> soundDataContainer_;
 
 	//
+	// ComponentManagers
+	//
+	static std::unique_ptr<TransformManager> transformManager_;
+	static std::unique_ptr<Renderer3DManager> renderer3DManager_;
+
+	//
 	// ObjectManager
 	//
+	static std::unique_ptr<GameObject3DManager> gameObject3DManager_;
 	static std::unique_ptr<Camera2DManager> camera2DManager_;
 	static std::unique_ptr<Camera3DManager> camera3DManager_;
 	static std::unique_ptr<Emitter3DManager> emitter3DManager_;

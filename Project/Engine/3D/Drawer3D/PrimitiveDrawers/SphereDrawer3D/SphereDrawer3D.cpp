@@ -106,7 +106,7 @@ void SphereDrawer3D::DrawShadow(BlendMode mode) {
 	commandList->DispatchMesh(1, instanceCount_[i], 1);
 }
 
-void SphereDrawer3D::AddSphere(const Matrix4x4& worldMatrix, const SphereData3D& data, const PrimitiveMaterialData3D& material) {
+void SphereDrawer3D::AddSphere(const Matrix4x4& worldMatrix, const SphereData3D& data, const MaterialData3D& material) {
 	const uint32_t blendIndex = static_cast<uint32_t>(material.blendMode);
 
 #if defined(DEBUG) || defined(DEVELOP)

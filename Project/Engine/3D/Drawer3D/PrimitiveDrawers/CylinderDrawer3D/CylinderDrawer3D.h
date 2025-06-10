@@ -43,7 +43,7 @@ public:
 	void AddCylinder(
 		const Matrix4x4& worldMatrix,
 		const CylinderData3D& data,
-		const PrimitiveMaterialData3D& material
+		const MaterialData3D& material
 	);
 
 private:

@@ -60,9 +60,16 @@ std::unique_ptr<ModelDataContainer> MAGISYSTEM::modelDataContainer_ = nullptr;
 std::unique_ptr<AnimationDataContainer> MAGISYSTEM::animationDataContainer_ = nullptr;
 std::unique_ptr<SoundDataContainer> MAGISYSTEM::soundDataContainer_ = nullptr;
 
+// 
+// ComponentManager
+// 
+std::unique_ptr<TransformManager> MAGISYSTEM::transformManager_ = nullptr;
+std::unique_ptr<Renderer3DManager> MAGISYSTEM::renderer3DManager_ = nullptr;
+
 //
 // ObjectManager
 //
+std::unique_ptr<GameObject3DManager> MAGISYSTEM::gameObject3DManager_ = nullptr;
 std::unique_ptr<Camera2DManager> MAGISYSTEM::camera2DManager_ = nullptr;
 std::unique_ptr<Camera3DManager> MAGISYSTEM::camera3DManager_ = nullptr;
 std::unique_ptr<Emitter3DManager> MAGISYSTEM::emitter3DManager_ = nullptr;
@@ -163,9 +170,16 @@ void MAGISYSTEM::Initialize() {
 	modelDataContainer_ = std::make_unique<ModelDataContainer>(textureDataCantainer_.get());
 	// AnimationDataContainer
 	animationDataContainer_ = std::make_unique<AnimationDataContainer>();
-	// SoundDataCOntainer
+	// SoundDataContainer
 	soundDataContainer_ = std::make_unique<SoundDataContainer>();
 
+	// TransformManager
+	transformManager_ = std::make_unique<TransformManager>();
+	// Renderr3DManager
+	renderer3DManager_ = std::make_unique<Renderer3DManager>();
+
+	// GameObject3DManager
+	gameObject3DManager_ = std::make_unique<GameObject3DManager>();
 
 	// Camera2DManager
 	camera2DManager_ = std::make_unique<Camera2DManager>();
@@ -364,6 +378,20 @@ void MAGISYSTEM::Finalize() {
 		camera2DManager_.reset();
 	}
 
+	// GameObject3DManager
+	if (gameObject3DManager_) {
+		gameObject3DManager_.reset();
+	}
+
+	// TransformManager
+	if (transformManager_) {
+		transformManager_.reset();
+	}
+
+	// Renderer3DManager
+	if (renderer3DManager_) {
+		renderer3DManager_.reset();
+	}
 
 	// SoundDataContainer
 	if (soundDataContainer_) {
@@ -514,6 +542,12 @@ void MAGISYSTEM::Update() {
 	// シーンの更新処理
 	sceneManager_->Update();
 
+	// オブジェクト3Dマネージャーの更新
+	gameObject3DManager_->Update();
+
+	// トランスフォームコンポーネントの更新
+	transformManager_->Update();
+
 	// 2Dカメラマネージャの更新処理
 	camera2DManager_->Update();
 
@@ -558,6 +592,9 @@ void MAGISYSTEM::Draw() {
 	//
 	sceneManager_->Draw();
 
+	// 3D描画オブジェクトマネージャー
+	renderer3DManager_->Draw();
+
 	//==============================================
 	// 描画クラスの更新
 	//==============================================
@@ -585,6 +622,7 @@ void MAGISYSTEM::Draw() {
 
 	// 背景ボックス描画クラスの更新
 	skyBoxDrawer_->Update();
+
 
 	//==============================================
 	// ShadowMap用のDepthのみの描画
@@ -734,11 +772,16 @@ void MAGISYSTEM::Draw() {
 }
 
 void MAGISYSTEM::DeleteGarbages() {
-	// 
-	// 3Dオブジェクト
-	// 
 
+	//
+	// 削除順に気を付けて実装する(基本外側から消していくイメージ) 
+	//
 
+	gameObject3DManager_->DeleteGarbage();
+
+	renderer3DManager_->DeleteGarbage();
+
+	transformManager_->DeleteGarbage();
 
 }
 
@@ -1169,6 +1212,18 @@ void MAGISYSTEM::StopLoopWaveSound(const std::string& fileName) {
 	soundDataContainer_->StopWaveLoop(fileName);
 }
 
+std::weak_ptr<Transform3D> MAGISYSTEM::AddTransform3D(std::shared_ptr<Transform3D> transform) {
+	return transformManager_->Add(std::move(transform));
+}
+
+std::weak_ptr<ModelRenderer> MAGISYSTEM::AddRenderer3D(std::shared_ptr<ModelRenderer> modelRenderer) {
+	return renderer3DManager_->Add(std::move(modelRenderer));
+}
+
+std::weak_ptr<GameObject3D> MAGISYSTEM::AddGameObject3D(std::shared_ptr<GameObject3D> gameObjec3D) {
+	return gameObject3DManager_->Add(std::move(gameObjec3D));
+}
+
 void MAGISYSTEM::TransferCamera3D(uint32_t rootParameterIndex) {
 	camera3DManager_->TransferCurrentCamera(rootParameterIndex);
 }
@@ -1278,27 +1333,27 @@ void MAGISYSTEM::DrawLine3D(const Vector3& start, const Vector3& end, const Vect
 	lineDrawer3D_->AddLine(start, end, color);
 }
 
-void MAGISYSTEM::DrawTriangle3D(const Matrix4x4& worldMatrix, const TriangleData3D& data, const PrimitiveMaterialData3D& material) {
+void MAGISYSTEM::DrawTriangle3D(const Matrix4x4& worldMatrix, const TriangleData3D& data, const MaterialData3D& material) {
 	triangleDrawer3D_->AddTriangle(worldMatrix, data, material);
 }
 
-void MAGISYSTEM::DrawPlane3D(const Matrix4x4& worldMatrix, const PlaneData3D& planeData, const PrimitiveMaterialData3D& materialData) {
+void MAGISYSTEM::DrawPlane3D(const Matrix4x4& worldMatrix, const PlaneData3D& planeData, const MaterialData3D& materialData) {
 	planeDrawer3D_->AddPlane(worldMatrix, planeData, materialData);
 }
 
-void MAGISYSTEM::DrawBox3D(const Matrix4x4& worldMatrix, const BoxData3D& boxData, const PrimitiveMaterialData3D& material) {
+void MAGISYSTEM::DrawBox3D(const Matrix4x4& worldMatrix, const BoxData3D& boxData, const MaterialData3D& material) {
 	boxDrawer3D_->AddBox(worldMatrix, boxData, material);
 }
 
-void MAGISYSTEM::DrawSphere3D(const Matrix4x4& worldMatrix, const SphereData3D& data, const PrimitiveMaterialData3D& material) {
+void MAGISYSTEM::DrawSphere3D(const Matrix4x4& worldMatrix, const SphereData3D& data, const MaterialData3D& material) {
 	sphereDrawer3D_->AddSphere(worldMatrix, data, material);
 }
 
-void MAGISYSTEM::DrawRing3D(const Matrix4x4& worldMatrix, const RingData3D& data, const PrimitiveMaterialData3D& material) {
+void MAGISYSTEM::DrawRing3D(const Matrix4x4& worldMatrix, const RingData3D& data, const MaterialData3D& material) {
 	ringDrawer3D_->AddRing(worldMatrix, data, material);
 }
 
-void MAGISYSTEM::DrawCylinder3D(const Matrix4x4& worldMatrix, const CylinderData3D& data, const PrimitiveMaterialData3D& material) {
+void MAGISYSTEM::DrawCylinder3D(const Matrix4x4& worldMatrix, const CylinderData3D& data, const MaterialData3D& material) {
 	cylinderDrawer3D_->AddCylinder(worldMatrix, data, material);
 }
 

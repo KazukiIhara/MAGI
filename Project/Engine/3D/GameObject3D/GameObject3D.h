@@ -1,17 +1,52 @@
 #pragma once
 
+// C++
+#include <string>
+#include <unordered_map>
+#include <memory>
+
+// 前方宣言
+class Transform3D;
+class ModelRenderer;
+
 /// <summary>
 /// シーン上のオブジェクト
 /// </summary>
 class GameObject3D {
 public:
-	GameObject3D();
+	GameObject3D(const std::string& name);
 	~GameObject3D();
 
+	// 更新
+	void Update();
+
+	void Finalize();
+
+	void AddModelRenderer(std::shared_ptr<ModelRenderer> modelRenderer);
+
+	void SetIsAlive(bool isAlive);
+	void SetIsActive(bool isActive);
+
+	[[nodiscard]] bool GetIsAlive()const;
+	[[nodiscard]] bool GetIsActive()const;
+
+	[[nodiscard]] std::weak_ptr<Transform3D> GetTransform();
+	[[nodiscard]] std::weak_ptr<ModelRenderer> GetModelRenderer(const std::string& rendererName);
 private:
+	// 名前
+	std::string name_ = "";
+	// 生存フラグ
+	bool isAlive_ = true;
+	// 有効フラグ
+	bool isActive_ = true;
+
+	//=======================
+	// コンポーネント
+	//=======================
+
+	// トランスフォーム
+	std::weak_ptr<Transform3D> transformComponent_;
+	// モデル描画コンポーネント
+	std::unordered_map<std::string, std::weak_ptr<ModelRenderer>> modelRendererComponents_;
 
 };
-
-GameObject3D::GameObject3D() {}
-
-GameObject3D::~GameObject3D() {}

@@ -38,7 +38,7 @@ public:
 	void AddPlane(
 		const Matrix4x4& worldMatrix,
 		const PlaneData3D& data,
-		const PrimitiveMaterialData3D& material
+		const MaterialData3D& material
 	);
 
 private:
