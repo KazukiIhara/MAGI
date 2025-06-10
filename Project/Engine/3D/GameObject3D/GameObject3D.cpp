@@ -6,7 +6,7 @@
 
 GameObject3D::GameObject3D(const std::string& name) {
 	name_ = name;
-	std::unique_ptr<Transform3D> transform = std::make_unique<Transform3D>();
+	std::shared_ptr<Transform3D> transform = std::make_shared<Transform3D>();
 	transformComponent_ = MAGISYSTEM::AddTransform3D(std::move(transform));
 }
 
@@ -19,19 +19,27 @@ void GameObject3D::Update() {
 }
 
 void GameObject3D::Finalize() {
+	{
+		if (auto it = transformComponent_.lock()) {
+			it->SetIsAlive(false);
+		}
+	}
 
-	transformComponent_->SetIsAlive(false);
-
-	if (!modelRendererComponents_.empty()) {
-		for (auto& modelRenderer : modelRendererComponents_) {
-			modelRenderer.second->SetIsAlive(false);
+	{
+		if (!modelRendererComponents_.empty()) {
+			for (auto& modelRenderer : modelRendererComponents_) {
+				if (auto it = modelRenderer.second.lock())
+					it->SetIsAlive(false);
+			}
 		}
 	}
 }
 
-void GameObject3D::AddModelRenderer(std::unique_ptr<ModelRenderer> modelRenderer) {
-	ModelRenderer* ptr = MAGISYSTEM::AddRenderer3D(std::move(modelRenderer));
-	modelRendererComponents_.insert(std::make_pair(ptr->GetName(), ptr));
+void GameObject3D::AddModelRenderer(std::shared_ptr<ModelRenderer> modelRenderer) {
+	std::weak_ptr<ModelRenderer> ptr = MAGISYSTEM::AddRenderer3D(std::move(modelRenderer));
+	if (auto p = ptr.lock()) {
+		modelRendererComponents_.insert(std::make_pair(p->GetName(), p));
+	}
 }
 
 void GameObject3D::SetIsAlive(bool isAlive) {

@@ -22,7 +22,7 @@ public:
 
 	void Finalize();
 
-	void AddModelRenderer(std::unique_ptr<ModelRenderer> modelRenderer);
+	void AddModelRenderer(std::shared_ptr<ModelRenderer> modelRenderer);
 
 	void SetIsAlive(bool isAlive);
 	void SetIsActive(bool isActive);

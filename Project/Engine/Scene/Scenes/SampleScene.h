@@ -12,7 +12,7 @@ using namespace MAGIUtility;
 
 // サンプルシーン
 template <typename Data>
-class SampleScene: public BaseScene<Data> {
+class SampleScene : public BaseScene<Data> {
 public:
 	using BaseScene<Data>::BaseScene; // 親クラスのコンストラクタをそのまま継承
 	~SampleScene()override = default;
@@ -100,7 +100,7 @@ inline void SampleScene<Data>::Initialize() {
 
 	std::shared_ptr<ModelRenderer> teapot = std::make_shared<ModelRenderer>("teapot", "teapot");
 
-	std::unique_ptr<GameObject3D> object = std::make_unique<GameObject3D>("teapot");
+	std::shared_ptr<GameObject3D> object = std::make_shared<GameObject3D>("teapot");
 	object->AddModelRenderer(std::move(teapot));
 
 	teapot_ = MAGISYSTEM::AddGameObject3D(std::move(object));
@@ -113,7 +113,9 @@ inline void SampleScene<Data>::Update() {
 	ImGui::Begin("ObjectManagerTest");
 
 	if (ImGui::Button("DeleteTeapot")) {
-		teapot_.lock()->SetIsAlive(false);
+		if (auto it = teapot_.lock()) {
+			it->SetIsAlive(false);
+		}
 	}
 
 
