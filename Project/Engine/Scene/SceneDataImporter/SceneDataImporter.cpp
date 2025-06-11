@@ -36,12 +36,12 @@ void SceneDataImporter::Import(const std::string& scaneDataName, bool isSceneCle
 
 	SceneData sceneData = sceneDataContainer_->GetData(scaneDataName);
 
-	for (auto &object3d : sceneData.objects) {
+	for (const auto& object3d : sceneData.objects) {
 		std::shared_ptr<ModelRenderer> newModelRenderer = std::make_shared<ModelRenderer>(object3d.modelName, object3d.modelName);
 
 		std::shared_ptr<GameObject3D> newGameObject = std::make_shared<GameObject3D>(object3d.objectName, object3d.scale, object3d.rotate, object3d.translate);
 		newGameObject->AddModelRenderer(std::move(newModelRenderer));
-		
+
 		gameObject3DManager_->Add(std::move(newGameObject), true);
 	}
 
