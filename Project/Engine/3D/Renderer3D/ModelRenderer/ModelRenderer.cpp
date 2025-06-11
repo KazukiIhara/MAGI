@@ -25,7 +25,9 @@ void ModelRenderer::Draw() {
 }
 
 void ModelRenderer::Finalize() {
-	transform_.lock()->SetIsAlive(false);
+	if (auto transform = transform_.lock()) {
+		transform->SetIsAlive(false);
+	}
 }
 
 void ModelRenderer::SetIsAlive(bool isAlive) {

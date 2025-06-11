@@ -4,8 +4,7 @@
 
 #include "Logger/Logger.h"
 
-DXGI::DXGI() {
-}
+DXGI::DXGI() {}
 
 DXGI::~DXGI() {
 	Logger::Log("DXGI Finalize\n");
@@ -76,6 +75,7 @@ bool DXGI::Initialize() {
 				Logger::Log("DirectX12 Ultimate (MeshShaderTier1以上) に対応しています。\n");
 			} else {
 				Logger::Log("MeshShaderTierが非対応、DirectX12 Ultimate 非対応です。\n");
+
 			}
 		} else {
 			Logger::Log("D3D12_OPTIONS7の取得に失敗しました。\n");
@@ -93,9 +93,31 @@ bool DXGI::Initialize() {
 			device10_ = nullptr;
 			isSupportDirectX12Ultimate = false;
 			Logger::Log("Device10の取得に失敗しました。MeshShaderはサポートされていますが、ドライバまたはOSが古い可能性があります。\n");
+
+			MessageBox(
+				nullptr,
+				L"DirectX12 Ultimate 非対応です。\nお使いのハードウェアは本アプリケーションの動作要件を満たしていません。\n"
+				L"アプリケーションを終了します。",
+				L"サポート外のデバイス",
+				MB_OK | MB_ICONERROR
+			);
+			CoUninitialize();
+			Logger::Finalize();
+			ExitProcess(EXIT_FAILURE);
 		}
 	} else {
 		Logger::Log("MeshShader未対応GPUです。Device10の取得をスキップしました。\n");
+
+		MessageBox(
+			nullptr,
+			L"DirectX12 Ultimate 非対応です。\nお使いのハードウェアは本アプリケーションの動作要件を満たしていません。\n"
+			L"アプリケーションを終了します。",
+			L"サポート外のデバイス",
+			MB_OK | MB_ICONERROR
+		);
+		CoUninitialize();
+		Logger::Finalize();
+		ExitProcess(EXIT_FAILURE);
 	}
 
 	// 初期化完了ログ

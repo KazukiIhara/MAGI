@@ -42,11 +42,12 @@
 // 
 // AssetContainer
 // 
-#include "AssetContainers/TextureDataContainer/TextureDataContainer.h"
-#include "AssetContainers/PrimitiveShapeDataContainer/PrimitiveShapeDataContainer.h"
-#include "AssetContainers/ModelDataContainer/ModelDataContainer.h"
-#include "AssetContainers/AnimationDataContainer/AnimationDataContainer.h"
-#include "AssetContainers/SoundDataContainer/SoundDataContainer.h"
+#include "TextureDataContainer/TextureDataContainer.h"
+#include "PrimitiveShapeDataContainer/PrimitiveShapeDataContainer.h"
+#include "SceneDataContainer/SceneDataContainer.h"
+#include "ModelDataContainer/ModelDataContainer.h"
+#include "AnimationDataContainer/AnimationDataContainer.h"
+#include "SoundDataContainer/SoundDataContainer.h"
 
 // 
 // PipelineManager
@@ -391,6 +392,14 @@ public: // エンジンの機能
 	static void StopLoopWaveSound(const std::string& fileName);
 #pragma endregion
 
+#pragma region SceneDataContainer
+	// シーンデータの読み込み
+	static void LoadSceneDataFromJson(const std::string& fileName);
+	// シーンデータの取得
+	static SceneData GetSceneData(const std::string& sceneDataName);
+#pragma endregion
+
+
 #pragma region TransformComponent
 	// トランスフォーム追加
 	static std::weak_ptr<Transform3D> AddTransform3D(std::shared_ptr<Transform3D> transform);
@@ -658,6 +667,7 @@ protected:
 	static std::unique_ptr<ModelDataContainer> modelDataContainer_;
 	static std::unique_ptr<AnimationDataContainer> animationDataContainer_;
 	static std::unique_ptr<SoundDataContainer> soundDataContainer_;
+	static std::unique_ptr<SceneDataContainer> sceneDataContainer_;
 
 	//
 	// ComponentManagers

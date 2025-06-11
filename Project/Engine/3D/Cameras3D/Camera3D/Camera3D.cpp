@@ -22,6 +22,8 @@ void Camera3D::Initialize() {
 	viewMatrix_ = MakeLookAtMatrix(eye_, target_, up_);
 	projectionMatrix_ = MakePerspectiveFovMatrix(fovY_, aspectRaito_, nearClipRange_, farClipRange_);
 	viewProjectionMatrix_ = viewMatrix_ * projectionMatrix_;
+	
+	pitch_ = kDefaultPitch_;
 
 	CreateCameraResource();
 	MapCameraData();

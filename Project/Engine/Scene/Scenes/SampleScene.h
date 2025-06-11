@@ -27,7 +27,7 @@ private:
 	Camera3D* sceneCamera_ = nullptr;
 	std::unique_ptr<Camera2D> sceneCamera2D_ = nullptr;
 	float yaw_ = 0.0f;
-	float pitch_ = 0.0f;
+	float pitch_ = -0.5f;
 
 	// 
 	// ポストエフェクト用変数
@@ -105,6 +105,8 @@ inline void SampleScene<Data>::Initialize() {
 
 	teapot_ = MAGISYSTEM::AddGameObject3D(std::move(object));
 
+	MAGISYSTEM::LoadSceneDataFromJson("SceneData");
+
 }
 
 template<typename Data>
@@ -114,8 +116,8 @@ inline void SampleScene<Data>::Update() {
 
 	if (ImGui::Button("DeleteTeapot")) {
 		if (auto obj = teapot_.lock()) {
-			if (auto rdr = obj->GetModelRenderer("a").lock()) {
-				rdr->SetIsRender(rdr->GetIsRender());
+			if (auto rdr = obj->GetModelRenderer("teapot").lock()) {
+				rdr->SetIsRender(!rdr->GetIsRender());
 			}
 		}
 	}

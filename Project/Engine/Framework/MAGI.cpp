@@ -59,6 +59,7 @@ std::unique_ptr<PrimitiveShapeDataContainer> MAGISYSTEM::primitiveDataContainer_
 std::unique_ptr<ModelDataContainer> MAGISYSTEM::modelDataContainer_ = nullptr;
 std::unique_ptr<AnimationDataContainer> MAGISYSTEM::animationDataContainer_ = nullptr;
 std::unique_ptr<SoundDataContainer> MAGISYSTEM::soundDataContainer_ = nullptr;
+std::unique_ptr<SceneDataContainer> MAGISYSTEM::sceneDataContainer_ = nullptr;
 
 // 
 // ComponentManager
@@ -144,7 +145,6 @@ void MAGISYSTEM::Initialize() {
 	// ShaderCompiler
 	shaderCompiler_ = std::make_unique<ShaderCompiler>();
 
-
 	// RTVManager
 	rtvManager_ = std::make_unique<RTVManager>(dxgi_.get());
 	// DSVManager
@@ -161,7 +161,6 @@ void MAGISYSTEM::Initialize() {
 	// SwapChain
 	swapChain_ = std::make_unique<SwapChain>(windowApp_.get(), dxgi_.get(), viewport_.get(), scissorRect_.get(), directXCommand_.get(), rtvManager_.get());
 
-
 	// TextureDataContainer
 	textureDataCantainer_ = std::make_unique<TextureDataContainer>(dxgi_.get(), directXCommand_.get(), fence_.get(), srvuavManager_.get());
 	// PrimitiveDataContainer
@@ -172,14 +171,18 @@ void MAGISYSTEM::Initialize() {
 	animationDataContainer_ = std::make_unique<AnimationDataContainer>();
 	// SoundDataContainer
 	soundDataContainer_ = std::make_unique<SoundDataContainer>();
+	// SceneDataContainer
+	sceneDataContainer_ = std::make_unique<SceneDataContainer>();
 
 	// TransformManager
 	transformManager_ = std::make_unique<TransformManager>();
 	// Renderr3DManager
 	renderer3DManager_ = std::make_unique<Renderer3DManager>();
 
+
 	// GameObject3DManager
 	gameObject3DManager_ = std::make_unique<GameObject3DManager>();
+
 
 	// Camera2DManager
 	camera2DManager_ = std::make_unique<Camera2DManager>();
@@ -203,6 +206,7 @@ void MAGISYSTEM::Initialize() {
 	postEffectPipelineManager_ = std::make_unique<PostEffectPipelineManager>(dxgi_.get(), shaderCompiler_.get());
 	// ShadowPipelineManager
 	shadowPipelineManager_ = std::make_unique<ShadowPipelineManager>(dxgi_.get(), shaderCompiler_.get());
+
 
 	// SpriteDrawer
 	spriteDrawer_ = std::make_unique<SpriteDrawer>(dxgi_.get(), directXCommand_.get(), srvuavManager_.get(), graphicsPipelineManager_.get(), camera2DManager_.get());
@@ -240,7 +244,6 @@ void MAGISYSTEM::Initialize() {
 
 	// GrobalDataManager
 	grobalDataManager_ = std::make_unique<GrobalDataManager>();
-
 
 	// ImGuiController
 	imguiController_ = std::make_unique<ImGuiController>(windowApp_.get(), dxgi_.get(), directXCommand_.get(), srvuavManager_.get());
@@ -391,6 +394,11 @@ void MAGISYSTEM::Finalize() {
 	// Renderer3DManager
 	if (renderer3DManager_) {
 		renderer3DManager_.reset();
+	}
+
+	// SceneDataContainer
+	if (sceneDataContainer_) {
+		sceneDataContainer_.reset();
 	}
 
 	// SoundDataContainer
@@ -1210,6 +1218,14 @@ void MAGISYSTEM::StopWaveSound(const std::string& fileName) {
 
 void MAGISYSTEM::StopLoopWaveSound(const std::string& fileName) {
 	soundDataContainer_->StopWaveLoop(fileName);
+}
+
+void MAGISYSTEM::LoadSceneDataFromJson(const std::string& fileName) {
+	sceneDataContainer_->LoadFromJson(fileName);
+}
+
+SceneData MAGISYSTEM::GetSceneData(const std::string& sceneDataName) {
+	return sceneDataContainer_->GetData(sceneDataName);
 }
 
 std::weak_ptr<Transform3D> MAGISYSTEM::AddTransform3D(std::shared_ptr<Transform3D> transform) {
