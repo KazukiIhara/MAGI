@@ -1224,10 +1224,6 @@ void MAGISYSTEM::LoadSceneDataFromJson(const std::string& fileName) {
 	sceneDataContainer_->LoadFromJson(fileName);
 }
 
-SceneData MAGISYSTEM::GetSceneData(const std::string& sceneDataName) {
-	return sceneDataContainer_->GetData(sceneDataName);
-}
-
 std::weak_ptr<Transform3D> MAGISYSTEM::AddTransform3D(std::shared_ptr<Transform3D> transform) {
 	return transformManager_->Add(std::move(transform));
 }

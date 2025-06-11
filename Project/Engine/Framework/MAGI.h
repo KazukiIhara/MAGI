@@ -395,8 +395,6 @@ public: // エンジンの機能
 #pragma region SceneDataContainer
 	// シーンデータの読み込み
 	static void LoadSceneDataFromJson(const std::string& fileName);
-	// シーンデータの取得
-	static SceneData GetSceneData(const std::string& sceneDataName);
 #pragma endregion
 
 
