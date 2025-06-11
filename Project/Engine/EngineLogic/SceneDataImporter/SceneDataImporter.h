@@ -19,5 +19,6 @@ public:
 	void Import(const std::string& scaneDataName, bool isSceneClear = true);
 
 private:
+	SceneDataContainer* sceneDataContainer_ = nullptr;
 	GameObject3DManager* gameObject3DManager_ = nullptr;
 };
