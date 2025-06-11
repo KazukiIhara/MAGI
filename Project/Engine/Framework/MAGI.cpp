@@ -108,6 +108,7 @@ std::unique_ptr<SceneManager<GameData>> MAGISYSTEM::sceneManager_ = nullptr;
 // Data入出力クラス
 //
 std::unique_ptr<GrobalDataManager> MAGISYSTEM::grobalDataManager_ = nullptr;
+std::unique_ptr<SceneDataImporter> MAGISYSTEM::sceneDataImporter_ = nullptr;
 
 //
 // UIクラス
@@ -244,6 +245,8 @@ void MAGISYSTEM::Initialize() {
 
 	// GrobalDataManager
 	grobalDataManager_ = std::make_unique<GrobalDataManager>();
+	// SceneDataImporter
+	sceneDataImporter_ = std::make_unique<SceneDataImporter>(sceneDataContainer_.get(), gameObject3DManager_.get());
 
 	// ImGuiController
 	imguiController_ = std::make_unique<ImGuiController>(windowApp_.get(), dxgi_.get(), directXCommand_.get(), srvuavManager_.get());
@@ -264,6 +267,11 @@ void MAGISYSTEM::Finalize() {
 	// ImGuiController
 	if (imguiController_) {
 		imguiController_.reset();
+	}
+
+	// SceneDataImporter
+	if (sceneDataImporter_) {
+		sceneDataImporter_.reset();
 	}
 
 	// GrobalDataManager
@@ -1431,4 +1439,8 @@ Vector3 MAGISYSTEM::GetGrobalDataValueVector3(const std::string& groupName, cons
 
 bool MAGISYSTEM::GetGrobalDataValueBool(const std::string& groupName, const std::string& key) {
 	return grobalDataManager_->GetValueBool(groupName, key);
+}
+
+void MAGISYSTEM::SceneDataImport(const std::string& sceneDataName, bool isSceneClear) {
+	sceneDataImporter_->Import(sceneDataName, isSceneClear);
 }

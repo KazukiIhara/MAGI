@@ -16,7 +16,7 @@ public:
 	~SceneDataImporter();
 
 	// シーンデータインポート
-	void Import(const std::string& scaneDataName, bool isSceneClear = true);
+	void Import(const std::string& scaneDataName, bool isSceneClear);
 
 private:
 	SceneDataContainer* sceneDataContainer_ = nullptr;
