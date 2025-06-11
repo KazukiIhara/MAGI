@@ -42,12 +42,12 @@
 // 
 // AssetContainer
 // 
-#include "AssetContainers/TextureDataContainer/TextureDataContainer.h"
-#include "AssetContainers/PrimitiveShapeDataContainer/PrimitiveShapeDataContainer.h"
-#include "AssetContainers/SceneDataContainer/SceneDataContainer.h"
-#include "AssetContainers/ModelDataContainer/ModelDataContainer.h"
-#include "AssetContainers/AnimationDataContainer/AnimationDataContainer.h"
-#include "AssetContainers/SoundDataContainer/SoundDataContainer.h"
+#include "TextureDataContainer/TextureDataContainer.h"
+#include "PrimitiveShapeDataContainer/PrimitiveShapeDataContainer.h"
+#include "SceneDataContainer/SceneDataContainer.h"
+#include "ModelDataContainer/ModelDataContainer.h"
+#include "AnimationDataContainer/AnimationDataContainer.h"
+#include "SoundDataContainer/SoundDataContainer.h"
 
 // 
 // PipelineManager

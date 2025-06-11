@@ -3,9 +3,10 @@
 #include <cassert>
 #include "Logger/Logger.h"
 
+#include "SceneDataContainer/SceneDataContainer.h"
 #include "GameObject3DManager/GameObject3DManager.h"
 
-SceneDataImporter::SceneDataImporter(GameObject3DManager* gameObject3DManager) {
+SceneDataImporter::SceneDataImporter(SceneDataContainer* sceneDataContainer, GameObject3DManager* gameObject3DManager) {
 	assert(gameObject3DManager);
 	gameObject3DManager_ = gameObject3DManager;
 	Logger::Log("SceneDataImporter Initialize\n");
@@ -21,7 +22,7 @@ void SceneDataImporter::Import(const std::string& scaneDataName, bool isSceneCle
 	if (isSceneClear) {
 		gameObject3DManager_->Clear();
 	}
-	
+
 
 
 }

@@ -71,18 +71,18 @@ void SceneDataContainer::LoadFromJson(const std::string& fileName) {
 			newObject.objectName = object["name"];
 			newObject.modelName = object["model_name"];
 
-			newObject.scale.x = static_cast<float>(transform["scaling"][0]);
-			newObject.scale.y = static_cast<float>(transform["scaling"][1]);
-			newObject.scale.z = static_cast<float>(transform["scaling"][2]);
+			newObject.scale.x = static_cast<float>(transform["scale"][0]);
+			newObject.scale.y = static_cast<float>(transform["scale"][1]);
+			newObject.scale.z = static_cast<float>(transform["scale"][2]);
 
-			newObject.rotate.x = static_cast<float>(transform["rotation"][0]);
-			newObject.rotate.y = static_cast<float>(transform["rotation"][1]);
-			newObject.rotate.z = static_cast<float>(transform["rotation"][2]);
-			newObject.rotate.w = static_cast<float>(transform["rotation"][3]);
+			newObject.rotate.x = static_cast<float>(transform["rotate"][0]);
+			newObject.rotate.y = static_cast<float>(transform["rotate"][1]);
+			newObject.rotate.z = static_cast<float>(transform["rotate"][2]);
+			newObject.rotate.w = static_cast<float>(transform["rotate"][3]);
 
-			newObject.translate.x = static_cast<float>(transform["translation"][0]);
-			newObject.translate.y = static_cast<float>(transform["translation"][1]);
-			newObject.translate.z = static_cast<float>(transform["translation"][2]);
+			newObject.translate.x = static_cast<float>(transform["translate"][0]);
+			newObject.translate.y = static_cast<float>(transform["translate"][1]);
+			newObject.translate.z = static_cast<float>(transform["translate"][2]);
 
 			newSceneData.objects.push_back(newObject);
 		}

@@ -4,6 +4,7 @@
 #include <string>
 
 // 前方宣言
+class SceneDataContainer;
 class GameObject3DManager;
 
 /// <summary>
@@ -11,7 +12,7 @@ class GameObject3DManager;
 /// </summary>
 class SceneDataImporter {
 public:
-	SceneDataImporter(GameObject3DManager* gameObject3DManager);
+	SceneDataImporter(SceneDataContainer* sceneDataContainer, GameObject3DManager* gameObject3DManager);
 	~SceneDataImporter();
 
 	// シーンデータインポート

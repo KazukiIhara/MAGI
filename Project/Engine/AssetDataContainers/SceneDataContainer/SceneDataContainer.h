@@ -7,7 +7,7 @@
 
 // MyHedder
 #include "Math/Types/Vector3.h"
-#include "Math/Types/Quaternion.h";
+#include "Math/Types/Quaternion.h"
 
 struct SceneObjectData {
 	std::string objectName;
