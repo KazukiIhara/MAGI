@@ -246,7 +246,7 @@ void MAGISYSTEM::Initialize() {
 	// GrobalDataManager
 	grobalDataManager_ = std::make_unique<GrobalDataManager>();
 	// SceneDataImporter
-	sceneDataImporter_ = std::make_unique<SceneDataImporter>(sceneDataContainer_.get(), gameObject3DManager_.get(),renderer3DManager_.get(),transformManager_.get());
+	sceneDataImporter_ = std::make_unique<SceneDataImporter>(sceneDataContainer_.get(), gameObject3DManager_.get(), renderer3DManager_.get(), transformManager_.get());
 
 	// ImGuiController
 	imguiController_ = std::make_unique<ImGuiController>(windowApp_.get(), dxgi_.get(), directXCommand_.get(), srvuavManager_.get());
@@ -557,9 +557,6 @@ void MAGISYSTEM::Update() {
 
 	// シーンの更新処理
 	sceneManager_->Update();
-
-	// オブジェクト3Dマネージャーの更新
-	gameObject3DManager_->Update();
 
 	// トランスフォームコンポーネントの更新
 	transformManager_->Update();
@@ -1232,7 +1229,7 @@ void MAGISYSTEM::LoadSceneDataFromJson(const std::string& fileName) {
 	sceneDataContainer_->LoadFromJson(fileName);
 }
 
-std::weak_ptr<Transform3D> MAGISYSTEM::AddTransform3D(std::shared_ptr<Transform3D> transform) {
+Transform3D* MAGISYSTEM::AddTransform3D(std::unique_ptr<Transform3D> transform) {
 	return transformManager_->Add(std::move(transform));
 }
 

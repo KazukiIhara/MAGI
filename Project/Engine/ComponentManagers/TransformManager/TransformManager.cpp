@@ -14,10 +14,10 @@ TransformManager::~TransformManager() {
 	Logger::Log("TransformManager Finalized\n");
 }
 
-std::weak_ptr<Transform3D> TransformManager::Add(std::shared_ptr<Transform3D> transform) {
+Transform3D* TransformManager::Add(std::unique_ptr<Transform3D> transform) {
 	assert(transform && "Transform must not be null");
 	transforms_.push_back(std::move(transform));
-	return transforms_.back();
+	return transforms_.back().get();
 }
 
 void TransformManager::Update() {
@@ -36,16 +36,11 @@ void TransformManager::DeleteGarbage() {
 		}
 	}
 	// 生存フラグが消えているトランスフォームを削除
-	std::erase_if(transforms_, [](const std::shared_ptr<Transform3D>& transform) {
+	std::erase_if(transforms_, [](const std::unique_ptr<Transform3D>& transform) {
 		return transform && !transform->GetisAlive();
 		});
 }
 
 void TransformManager::Clear() {
-	for (auto& transform : transforms_) {
-		if (transform) {
-			transform->Finalize();
-		}
-	}
 	transforms_.clear();
 }

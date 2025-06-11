@@ -26,7 +26,7 @@ SceneDataImporter::~SceneDataImporter() {
 }
 
 void SceneDataImporter::Import(const std::string& scaneDataName, bool isSceneClear) {
-	Logger::Log("Begin Import SceneData: " + scaneDataName + "\n");
+	Logger::Log("Begin import sceneData: " + scaneDataName + "\n");
 
 	if (isSceneClear) {
 		gameObject3DManager_->Clear();
@@ -45,5 +45,5 @@ void SceneDataImporter::Import(const std::string& scaneDataName, bool isSceneCle
 		gameObject3DManager_->Add(std::move(newGameObject), true);
 	}
 
-	Logger::Log("Complete　Import SceneData: " + scaneDataName + "\n");
+	Logger::Log("Complete import sceneData: " + scaneDataName + "\n");
 }

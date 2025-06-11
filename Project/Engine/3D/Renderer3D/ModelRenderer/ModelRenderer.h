@@ -30,7 +30,7 @@ public:
 	[[nodiscard]] const std::string& GetName()const;
 	[[nodiscard]] bool GetIsAlive()const;
 	[[nodiscard]] bool GetIsRender()const;
-	[[nodiscard]] std::weak_ptr<Transform3D> GetTransform();
+	[[nodiscard]] Transform3D* GetTransform();
 
 private:
 	// 名前
@@ -40,7 +40,7 @@ private:
 	// マテリアル
 	ModelMaterial material_{};
 	// トランスフォーム
-	std::weak_ptr<Transform3D> transform_;
+	Transform3D* transform_;
 	// 描画フラグ
 	bool isRender_ = true;
 	// 生存フラグ

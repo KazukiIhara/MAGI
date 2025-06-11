@@ -48,12 +48,6 @@ std::weak_ptr<GameObject3D> GameObject3DManager::Find(const std::string& objectN
 	}
 }
 
-void GameObject3DManager::Update() {
-	for (auto& gameobject : gameObjects_) {
-		gameobject->Update();
-	}
-}
-
 void GameObject3DManager::DeleteGarbage() {
 	for (auto& gameobject : gameObjects_) {
 		if (gameobject && !gameobject->GetIsAlive()) {
@@ -74,10 +68,5 @@ void GameObject3DManager::DeleteGarbage() {
 }
 
 void GameObject3DManager::Clear() {
-	for (auto& gameobject : gameObjects_) {
-		if (gameobject) {
-			gameobject->Finalize();
-		}
-	}
 	gameObjects_.clear();
 }

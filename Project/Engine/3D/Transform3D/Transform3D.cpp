@@ -84,8 +84,17 @@ void Transform3D::Update() {
 				}
 			}
 		}
-	}
 
+	} else {
+		// もし子がいる場合
+		if (!children_.empty()) {
+			for (auto& child : children_) {
+				if (child) {
+					child->Update();
+				}
+			}
+		}
+	}
 }
 
 void Transform3D::Finalize() {
@@ -94,7 +103,7 @@ void Transform3D::Finalize() {
 
 	// もし子がいる場合
 	if (!children_.empty()) {
-		const auto childrenCopy = children_; // raw ポインタの複製
+		const auto childrenCopy = children_;
 		for (auto* child : childrenCopy) {
 			if (child) {
 				child->RemoveParent(true);

@@ -401,7 +401,7 @@ public: // エンジンの機能
 
 #pragma region TransformComponent
 	// トランスフォーム追加
-	static std::weak_ptr<Transform3D> AddTransform3D(std::shared_ptr<Transform3D> transform);
+	static Transform3D* AddTransform3D(std::unique_ptr<Transform3D> transform);
 #pragma endregion
 
 #pragma region Renderer3DComponent

@@ -39,11 +39,5 @@ void Renderer3DManager::DeleteGarbage() {
 }
 
 void Renderer3DManager::Clear() {
-	for (auto& modelRenderer : modelRenderers_) {
-		if (modelRenderer) {
-			modelRenderer->Finalize();
-		}
-	}
 	modelRenderers_.clear();
-
 }

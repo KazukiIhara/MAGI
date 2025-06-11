@@ -15,12 +15,12 @@ public:
 	TransformManager();
 	~TransformManager();
 
-	[[nodiscard]] std::weak_ptr<Transform3D> Add(std::shared_ptr<Transform3D> transform);
+	[[nodiscard]] Transform3D* Add(std::unique_ptr<Transform3D> transform);
 	void Update();
 	void DeleteGarbage();
 	void Clear();
 
 private:
 	// トランスフォームコンテナ
-	std::vector<std::shared_ptr<Transform3D>> transforms_;
+	std::vector<std::unique_ptr<Transform3D>> transforms_;
 };

@@ -18,7 +18,6 @@ public:
 
 	std::weak_ptr<GameObject3D> Add(std::shared_ptr<GameObject3D> gameObject3D, bool insertMap);
 	std::weak_ptr<GameObject3D> Find(const std::string& objectName);
-	void Update();
 	void DeleteGarbage();
 	void Clear();
 
