@@ -106,6 +106,7 @@ inline void SampleScene<Data>::Initialize() {
 	teapot_ = MAGISYSTEM::AddGameObject3D(std::move(object));
 
 	MAGISYSTEM::LoadSceneDataFromJson("SceneData");
+	MAGISYSTEM::ImportSceneData("SceneData");
 
 }
 

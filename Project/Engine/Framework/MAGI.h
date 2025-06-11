@@ -602,7 +602,7 @@ public: // エンジンの機能
 
 #pragma region SceneDataImporter
 	// シーンデータをインポート
-	static void SceneDataImport(const std::string& sceneDataName, bool isSceneClear = true);
+	static void ImportSceneData(const std::string& sceneDataName, bool isSceneClear = true);
 
 #pragma endregion
 

@@ -1441,6 +1441,6 @@ bool MAGISYSTEM::GetGrobalDataValueBool(const std::string& groupName, const std:
 	return grobalDataManager_->GetValueBool(groupName, key);
 }
 
-void MAGISYSTEM::SceneDataImport(const std::string& sceneDataName, bool isSceneClear) {
+void MAGISYSTEM::ImportSceneData(const std::string& sceneDataName, bool isSceneClear) {
 	sceneDataImporter_->Import(sceneDataName, isSceneClear);
 }
