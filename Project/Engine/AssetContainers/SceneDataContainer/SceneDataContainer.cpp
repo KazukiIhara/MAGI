@@ -7,21 +7,26 @@
 // Json
 #include <nlohmann/json.hpp>
 
-SceneDataContainer::SceneDataContainer() {
+// MyHedder
+#include "MAGIAssert/MAGIAssert.h"
 
+SceneDataContainer::SceneDataContainer() {
+	sceneDatas_.clear();
+	Logger::Log("SceneDataContainer Initialize\n");
 }
 
 SceneDataContainer::~SceneDataContainer() {
-
+	sceneDatas_.clear();
+	Logger::Log("SceneDataContainer Finalize\n");
 }
 
-void SceneDataContainer::Load(const std::string& fileName) {
+void SceneDataContainer::LoadFromJson(const std::string& fileName) {
 	// 今回ぶち込むシーンデータ
 	SceneData newSceneData;
 	newSceneData.name = fileName;
 
 	// フルパス作成
-	const std::string fullPath = kDirectoryPath_ + fileName;
+	const std::string fullPath = kDirectoryPath_ + fileName + ".json";
 
 	// ファイルストリーム
 	std::ifstream file;
@@ -29,9 +34,7 @@ void SceneDataContainer::Load(const std::string& fileName) {
 	// ファイルを開く
 	file.open(fullPath);
 	// ファイルオープン失敗をチェック
-	if (file.fail()) {
-		assert(0);
-	}
+	MAGIAssert::Assert(!file.fail(), "Json SceneData not found! FileName: " + fileName);
 
 	// JSON文字列から解凍したデータ
 	nlohmann::json deserialized;
@@ -88,4 +91,10 @@ void SceneDataContainer::Load(const std::string& fileName) {
 
 	// コンテナに登録
 	sceneDatas_.insert(std::make_pair(newSceneData.name, newSceneData));
+}
+
+const SceneData& SceneDataContainer::GetData(const std::string& dataName) {
+	auto it = sceneDatas_.find(dataName);
+	MAGIAssert::Assert(it != sceneDatas_.end(), "SceneData not found! DataName: " + dataName);
+	return it->second;
 }

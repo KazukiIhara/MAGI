@@ -392,6 +392,14 @@ public: // エンジンの機能
 	static void StopLoopWaveSound(const std::string& fileName);
 #pragma endregion
 
+#pragma region SceneDataContainer
+	// シーンデータの読み込み
+	static void LoadSceneDataFromJson(const std::string& fileName);
+	// シーンデータの取得
+	static SceneData GetSceneData(const std::string& sceneDataName);
+#pragma endregion
+
+
 #pragma region TransformComponent
 	// トランスフォーム追加
 	static std::weak_ptr<Transform3D> AddTransform3D(std::shared_ptr<Transform3D> transform);

@@ -21,5 +21,7 @@ void SceneDataImporter::Import(const std::string& scaneDataName, bool isSceneCle
 	if (isSceneClear) {
 		gameObject3DManager_->Clear();
 	}
+	
+
 
 }

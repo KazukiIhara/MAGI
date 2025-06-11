@@ -31,7 +31,10 @@ public:
 	~SceneDataContainer();
 
 	// シーンデータをロード
-	void Load(const std::string& fileName);
+	void LoadFromJson(const std::string& fileName);
+
+	// シーンデータを取得
+	const SceneData& GetData(const std::string& dataName);
 
 private:
 	// シーンデータコンテナ
