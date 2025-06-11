@@ -5,6 +5,9 @@
 #include <unordered_map>
 #include <memory>
 
+#include "Math/Types/Vector3.h"
+#include "Math/Types/Quaternion.h"
+
 // 前方宣言
 class Transform3D;
 class ModelRenderer;
@@ -14,7 +17,10 @@ class ModelRenderer;
 /// </summary>
 class GameObject3D {
 public:
-	GameObject3D(const std::string& name);
+	GameObject3D(const std::string& name, const Vector3& scale, const Vector3& rotate, const Vector3& translate);
+	GameObject3D(const std::string& name, const Vector3& scale, const Quaternion& rotate, const Vector3& translate);
+	GameObject3D(const std::string& name, const Vector3& translate = Vector3(0.0f, 0.0f, 0.0f));
+
 	~GameObject3D();
 
 	// 更新
@@ -26,6 +32,8 @@ public:
 
 	void SetIsAlive(bool isAlive);
 	void SetIsActive(bool isActive);
+
+	[[nodiscard]] const std::string& GetName()const;
 
 	[[nodiscard]] bool GetIsAlive()const;
 	[[nodiscard]] bool GetIsActive()const;

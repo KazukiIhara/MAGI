@@ -412,7 +412,7 @@ public: // エンジンの機能
 
 #pragma region GameObject3DManager
 	// ゲームオブジェクト3Dを追加
-	static std::weak_ptr<GameObject3D> AddGameObject3D(std::shared_ptr<GameObject3D> gameObjec3D);
+	static std::weak_ptr<GameObject3D> AddGameObject3D(std::shared_ptr<GameObject3D> gameObjec3D, bool insertMap = true);
 
 #pragma endregion
 

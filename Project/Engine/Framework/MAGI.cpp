@@ -246,7 +246,7 @@ void MAGISYSTEM::Initialize() {
 	// GrobalDataManager
 	grobalDataManager_ = std::make_unique<GrobalDataManager>();
 	// SceneDataImporter
-	sceneDataImporter_ = std::make_unique<SceneDataImporter>(sceneDataContainer_.get(), gameObject3DManager_.get());
+	sceneDataImporter_ = std::make_unique<SceneDataImporter>(sceneDataContainer_.get(), gameObject3DManager_.get(),renderer3DManager_.get(),transformManager_.get());
 
 	// ImGuiController
 	imguiController_ = std::make_unique<ImGuiController>(windowApp_.get(), dxgi_.get(), directXCommand_.get(), srvuavManager_.get());
@@ -1240,8 +1240,8 @@ std::weak_ptr<ModelRenderer> MAGISYSTEM::AddRenderer3D(std::shared_ptr<ModelRend
 	return renderer3DManager_->Add(std::move(modelRenderer));
 }
 
-std::weak_ptr<GameObject3D> MAGISYSTEM::AddGameObject3D(std::shared_ptr<GameObject3D> gameObjec3D) {
-	return gameObject3DManager_->Add(std::move(gameObjec3D));
+std::weak_ptr<GameObject3D> MAGISYSTEM::AddGameObject3D(std::shared_ptr<GameObject3D> gameObjec3D, bool insertMap) {
+	return gameObject3DManager_->Add(std::move(gameObjec3D), insertMap);
 }
 
 void MAGISYSTEM::TransferCamera3D(uint32_t rootParameterIndex) {

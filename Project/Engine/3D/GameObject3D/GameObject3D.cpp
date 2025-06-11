@@ -5,9 +5,21 @@
 #include "framework/MAGI.h"
 #include "MAGIAssert/MAGIAssert.h"
 
-GameObject3D::GameObject3D(const std::string& name) {
+GameObject3D::GameObject3D(const std::string& name, const Vector3& scale, const Vector3& rotate, const Vector3& translate) {
 	name_ = name;
-	std::shared_ptr<Transform3D> transform = std::make_shared<Transform3D>();
+	std::shared_ptr<Transform3D> transform = std::make_shared<Transform3D>(scale, rotate, translate);
+	transformComponent_ = MAGISYSTEM::AddTransform3D(std::move(transform));
+}
+
+GameObject3D::GameObject3D(const std::string& name, const Vector3& scale, const Quaternion& rotate, const Vector3& translate) {
+	name_ = name;
+	std::shared_ptr<Transform3D> transform = std::make_shared<Transform3D>(scale, rotate, translate);
+	transformComponent_ = MAGISYSTEM::AddTransform3D(std::move(transform));
+}
+
+GameObject3D::GameObject3D(const std::string& name, const Vector3& translate) {
+	name_ = name;
+	std::shared_ptr<Transform3D> transform = std::make_shared<Transform3D>(translate);
 	transformComponent_ = MAGISYSTEM::AddTransform3D(std::move(transform));
 }
 
@@ -50,6 +62,10 @@ void GameObject3D::SetIsAlive(bool isAlive) {
 
 void GameObject3D::SetIsActive(bool isActive) {
 	isActive_ = isActive;
+}
+
+const std::string& GameObject3D::GetName()const {
+	return name_;
 }
 
 bool GameObject3D::GetIsAlive()const {

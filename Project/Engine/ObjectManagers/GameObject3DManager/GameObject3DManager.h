@@ -2,6 +2,7 @@
 
 // C++
 #include <vector>
+#include <unordered_map>
 #include <memory>
 
 // MyHedder
@@ -15,11 +16,13 @@ public:
 	GameObject3DManager();
 	~GameObject3DManager();
 
-	std::weak_ptr<GameObject3D> Add(std::shared_ptr<GameObject3D> gameObject3D);
+	std::weak_ptr<GameObject3D> Add(std::shared_ptr<GameObject3D> gameObject3D, bool insertMap);
+	std::weak_ptr<GameObject3D> Find(const std::string& objectName);
 	void Update();
 	void DeleteGarbage();
 	void Clear();
 
 private:
 	std::vector<std::shared_ptr<GameObject3D>> gameObjects_;
+	std::unordered_map<std::string, std::weak_ptr<GameObject3D>> gameObjectList_;
 };

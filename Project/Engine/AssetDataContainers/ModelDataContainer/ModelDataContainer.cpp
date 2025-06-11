@@ -6,7 +6,7 @@
 
 #include "Logger/Logger.h"
 
-#include "AssetContainers/TextureDataContainer/TextureDataContainer.h"
+#include "TextureDataContainer/TextureDataContainer.h"
 
 using namespace MAGIMath;
 

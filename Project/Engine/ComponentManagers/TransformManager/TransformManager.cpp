@@ -42,5 +42,10 @@ void TransformManager::DeleteGarbage() {
 }
 
 void TransformManager::Clear() {
+	for (auto& transform : transforms_) {
+		if (transform) {
+			transform->Finalize();
+		}
+	}
 	transforms_.clear();
 }
