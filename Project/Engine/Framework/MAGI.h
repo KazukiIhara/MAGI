@@ -44,6 +44,7 @@
 // 
 #include "AssetContainers/TextureDataContainer/TextureDataContainer.h"
 #include "AssetContainers/PrimitiveShapeDataContainer/PrimitiveShapeDataContainer.h"
+#include "AssetContainers/SceneDataContainer/SceneDataContainer.h"
 #include "AssetContainers/ModelDataContainer/ModelDataContainer.h"
 #include "AssetContainers/AnimationDataContainer/AnimationDataContainer.h"
 #include "AssetContainers/SoundDataContainer/SoundDataContainer.h"
@@ -658,6 +659,7 @@ protected:
 	static std::unique_ptr<ModelDataContainer> modelDataContainer_;
 	static std::unique_ptr<AnimationDataContainer> animationDataContainer_;
 	static std::unique_ptr<SoundDataContainer> soundDataContainer_;
+	static std::unique_ptr<SceneDataContainer> sceneDataContainer_;
 
 	//
 	// ComponentManagers

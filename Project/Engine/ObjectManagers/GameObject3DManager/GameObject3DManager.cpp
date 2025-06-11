@@ -41,5 +41,10 @@ void GameObject3DManager::DeleteGarbage() {
 }
 
 void GameObject3DManager::Clear() {
+	for (auto& gameobject : gameObjects_) {
+		if (gameobject) {
+			gameobject->Finalize();
+		}
+	}
 	gameObjects_.clear();
 }

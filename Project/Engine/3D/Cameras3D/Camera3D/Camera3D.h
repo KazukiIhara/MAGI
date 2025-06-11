@@ -69,11 +69,12 @@ private:
 protected:
 	// カメラの初期トランスフォーム
 	const Vector3 kDefaultCameraTranslate_ = { 0.0f,3.0f,-5.0f };
+	const float kDefaultPitch_ = -0.5f;
 
 	// カメラの位置
 	Vector3 eye_ = { 0.0f,0.0f,0.0f };
 	// カメラのターゲット
-	Vector3 target_ = { 0.0f,0.0f,1.0f };
+	Vector3 target_ = { 0.0f,0.0f,0.0f };
 	// 上方向
 	Vector3 up_ = { 0.0f,1.0f,0.0f };
 

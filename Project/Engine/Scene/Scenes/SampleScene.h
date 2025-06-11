@@ -27,7 +27,7 @@ private:
 	Camera3D* sceneCamera_ = nullptr;
 	std::unique_ptr<Camera2D> sceneCamera2D_ = nullptr;
 	float yaw_ = 0.0f;
-	float pitch_ = 0.0f;
+	float pitch_ = -0.5f;
 
 	// 
 	// ポストエフェクト用変数

@@ -16,5 +16,76 @@ SceneDataContainer::~SceneDataContainer() {
 }
 
 void SceneDataContainer::Load(const std::string& fileName) {
+	// 今回ぶち込むシーンデータ
+	SceneData newSceneData;
+	newSceneData.name = fileName;
 
+	// フルパス作成
+	const std::string fullPath = kDirectoryPath_ + fileName;
+
+	// ファイルストリーム
+	std::ifstream file;
+
+	// ファイルを開く
+	file.open(fullPath);
+	// ファイルオープン失敗をチェック
+	if (file.fail()) {
+		assert(0);
+	}
+
+	// JSON文字列から解凍したデータ
+	nlohmann::json deserialized;
+
+	// 解凍
+	file >> deserialized;
+
+	// 正しいレベルデータファイルかチェック
+	assert(deserialized.is_object());
+	assert(deserialized.contains("name"));
+	assert(deserialized["name"].is_string());
+
+	// "name"を文字列として登録
+	std::string name =
+		deserialized["name"].get<std::string>();
+	// 正しいレベルデータファイルかチェック
+	assert(name.compare("scene") == 0);
+
+	// "objects"の全オブジェクトを走査
+	for (nlohmann::json& object : deserialized["objects"]) {
+		assert(object.contains("type"));
+
+		// 種別を取得
+		std::string type = object["type"].get<std::string>();
+
+		// MESHの読み込み
+		if (type.compare("MESH") == 0) {
+
+			SceneObjectData newObject;
+
+			// トランスフォームのパラメータ読み込み
+			nlohmann::json& transform = object["transform"];
+
+			newObject.objectName = object["name"];
+			newObject.modelName = object["model_name"];
+
+			newObject.scale.x = static_cast<float>(transform["scaling"][0]);
+			newObject.scale.y = static_cast<float>(transform["scaling"][1]);
+			newObject.scale.z = static_cast<float>(transform["scaling"][2]);
+
+			newObject.rotate.x = static_cast<float>(transform["rotation"][0]);
+			newObject.rotate.y = static_cast<float>(transform["rotation"][1]);
+			newObject.rotate.z = static_cast<float>(transform["rotation"][2]);
+			newObject.rotate.w = static_cast<float>(transform["rotation"][3]);
+
+			newObject.translate.x = static_cast<float>(transform["translation"][0]);
+			newObject.translate.y = static_cast<float>(transform["translation"][1]);
+			newObject.translate.z = static_cast<float>(transform["translation"][2]);
+
+			newSceneData.objects.push_back(newObject);
+		}
+
+	}
+
+	// コンテナに登録
+	sceneDatas_.insert(std::make_pair(newSceneData.name, newSceneData));
 }
