@@ -40,5 +40,4 @@ void Renderer3DManager::DeleteGarbage() {
 
 void Renderer3DManager::Clear() {
 	modelRenderers_.clear();
-
 }

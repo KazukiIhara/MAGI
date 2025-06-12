@@ -107,6 +107,7 @@
 // Data入出力クラス
 // 
 #include "GrobalDataManager/GrobalDataManager.h"
+#include "SceneDataImporter/SceneDataImporter.h"
 
 // 
 // UIクラス
@@ -395,14 +396,12 @@ public: // エンジンの機能
 #pragma region SceneDataContainer
 	// シーンデータの読み込み
 	static void LoadSceneDataFromJson(const std::string& fileName);
-	// シーンデータの取得
-	static SceneData GetSceneData(const std::string& sceneDataName);
 #pragma endregion
 
 
 #pragma region TransformComponent
 	// トランスフォーム追加
-	static std::weak_ptr<Transform3D> AddTransform3D(std::shared_ptr<Transform3D> transform);
+	static Transform3D* AddTransform3D(std::unique_ptr<Transform3D> transform);
 #pragma endregion
 
 #pragma region Renderer3DComponent
@@ -413,7 +412,7 @@ public: // エンジンの機能
 
 #pragma region GameObject3DManager
 	// ゲームオブジェクト3Dを追加
-	static std::weak_ptr<GameObject3D> AddGameObject3D(std::shared_ptr<GameObject3D> gameObjec3D);
+	static std::weak_ptr<GameObject3D> AddGameObject3D(std::shared_ptr<GameObject3D> gameObjec3D, bool insertMap = true);
 
 #pragma endregion
 
@@ -528,7 +527,6 @@ public: // エンジンの機能
 		const SphereData3D& data = SphereData3D{},
 		const MaterialData3D& material = MaterialData3D{}
 	);
-
 #pragma endregion
 
 #pragma region RingDrawer3D
@@ -538,7 +536,6 @@ public: // エンジンの機能
 		const RingData3D& data,
 		const MaterialData3D& material
 	);
-
 #pragma endregion
 
 #pragma region CylinderDrawer3D
@@ -602,6 +599,13 @@ public: // エンジンの機能
 	static Vector3 GetGrobalDataValueVector3(const std::string& groupName, const std::string& key);
 	static bool GetGrobalDataValueBool(const std::string& groupName, const std::string& key);
 #pragma endregion
+
+#pragma region SceneDataImporter
+	// シーンデータをインポート
+	static void ImportSceneData(const std::string& sceneDataName, bool isSceneClear = true);
+
+#pragma endregion
+
 
 #pragma region GUI
 
@@ -717,6 +721,7 @@ protected:
 	// Data入出力クラス
 	//
 	static std::unique_ptr<GrobalDataManager> grobalDataManager_;
+	static std::unique_ptr<SceneDataImporter> sceneDataImporter_;
 
 	//
 	// UIクラス

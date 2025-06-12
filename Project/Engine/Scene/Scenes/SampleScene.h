@@ -12,7 +12,7 @@ using namespace MAGIUtility;
 
 // サンプルシーン
 template <typename Data>
-class SampleScene : public BaseScene<Data> {
+class SampleScene: public BaseScene<Data> {
 public:
 	using BaseScene<Data>::BaseScene; // 親クラスのコンストラクタをそのまま継承
 	~SampleScene()override = default;
@@ -100,20 +100,16 @@ inline void SampleScene<Data>::Initialize() {
 
 	std::shared_ptr<ModelRenderer> teapot = std::make_shared<ModelRenderer>("teapot", "teapot");
 
-	std::shared_ptr<GameObject3D> object = std::make_shared<GameObject3D>("teapot");
+	std::shared_ptr<GameObject3D> object = std::make_shared<GameObject3D>("teapot", Vector3(1.0f, 0.0f, 0.0f));
 	object->AddModelRenderer(std::move(teapot));
 
 	teapot_ = MAGISYSTEM::AddGameObject3D(std::move(object));
-
-	MAGISYSTEM::LoadSceneDataFromJson("SceneData");
-
 }
 
 template<typename Data>
 inline void SampleScene<Data>::Update() {
 
 	ImGui::Begin("ObjectManagerTest");
-
 	if (ImGui::Button("DeleteTeapot")) {
 		if (auto obj = teapot_.lock()) {
 			if (auto rdr = obj->GetModelRenderer("teapot").lock()) {
@@ -121,8 +117,13 @@ inline void SampleScene<Data>::Update() {
 			}
 		}
 	}
+	ImGui::End();
 
-
+	ImGui::Begin("SceneImport");
+	if (ImGui::Button("Import")) {
+		MAGISYSTEM::LoadSceneDataFromJson("SceneData");
+		MAGISYSTEM::ImportSceneData("SceneData");
+	}
 	ImGui::End();
 
 	ImGui::Begin("GrayscaleParamater");

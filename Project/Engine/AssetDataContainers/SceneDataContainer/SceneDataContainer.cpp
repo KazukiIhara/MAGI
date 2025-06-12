@@ -90,7 +90,7 @@ void SceneDataContainer::LoadFromJson(const std::string& fileName) {
 	}
 
 	// コンテナに登録
-	sceneDatas_.insert(std::make_pair(newSceneData.name, newSceneData));
+	sceneDatas_.insert_or_assign(newSceneData.name, newSceneData);
 }
 
 const SceneData& SceneDataContainer::GetData(const std::string& dataName) {

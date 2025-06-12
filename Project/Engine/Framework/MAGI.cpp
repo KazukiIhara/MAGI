@@ -108,6 +108,7 @@ std::unique_ptr<SceneManager<GameData>> MAGISYSTEM::sceneManager_ = nullptr;
 // Data入出力クラス
 //
 std::unique_ptr<GrobalDataManager> MAGISYSTEM::grobalDataManager_ = nullptr;
+std::unique_ptr<SceneDataImporter> MAGISYSTEM::sceneDataImporter_ = nullptr;
 
 //
 // UIクラス
@@ -244,6 +245,8 @@ void MAGISYSTEM::Initialize() {
 
 	// GrobalDataManager
 	grobalDataManager_ = std::make_unique<GrobalDataManager>();
+	// SceneDataImporter
+	sceneDataImporter_ = std::make_unique<SceneDataImporter>(sceneDataContainer_.get(), gameObject3DManager_.get(), renderer3DManager_.get(), transformManager_.get());
 
 	// ImGuiController
 	imguiController_ = std::make_unique<ImGuiController>(windowApp_.get(), dxgi_.get(), directXCommand_.get(), srvuavManager_.get());
@@ -264,6 +267,11 @@ void MAGISYSTEM::Finalize() {
 	// ImGuiController
 	if (imguiController_) {
 		imguiController_.reset();
+	}
+
+	// SceneDataImporter
+	if (sceneDataImporter_) {
+		sceneDataImporter_.reset();
 	}
 
 	// GrobalDataManager
@@ -549,9 +557,6 @@ void MAGISYSTEM::Update() {
 
 	// シーンの更新処理
 	sceneManager_->Update();
-
-	// オブジェクト3Dマネージャーの更新
-	gameObject3DManager_->Update();
 
 	// トランスフォームコンポーネントの更新
 	transformManager_->Update();
@@ -1224,11 +1229,7 @@ void MAGISYSTEM::LoadSceneDataFromJson(const std::string& fileName) {
 	sceneDataContainer_->LoadFromJson(fileName);
 }
 
-SceneData MAGISYSTEM::GetSceneData(const std::string& sceneDataName) {
-	return sceneDataContainer_->GetData(sceneDataName);
-}
-
-std::weak_ptr<Transform3D> MAGISYSTEM::AddTransform3D(std::shared_ptr<Transform3D> transform) {
+Transform3D* MAGISYSTEM::AddTransform3D(std::unique_ptr<Transform3D> transform) {
 	return transformManager_->Add(std::move(transform));
 }
 
@@ -1236,8 +1237,8 @@ std::weak_ptr<ModelRenderer> MAGISYSTEM::AddRenderer3D(std::shared_ptr<ModelRend
 	return renderer3DManager_->Add(std::move(modelRenderer));
 }
 
-std::weak_ptr<GameObject3D> MAGISYSTEM::AddGameObject3D(std::shared_ptr<GameObject3D> gameObjec3D) {
-	return gameObject3DManager_->Add(std::move(gameObjec3D));
+std::weak_ptr<GameObject3D> MAGISYSTEM::AddGameObject3D(std::shared_ptr<GameObject3D> gameObjec3D, bool insertMap) {
+	return gameObject3DManager_->Add(std::move(gameObjec3D), insertMap);
 }
 
 void MAGISYSTEM::TransferCamera3D(uint32_t rootParameterIndex) {
@@ -1435,4 +1436,8 @@ Vector3 MAGISYSTEM::GetGrobalDataValueVector3(const std::string& groupName, cons
 
 bool MAGISYSTEM::GetGrobalDataValueBool(const std::string& groupName, const std::string& key) {
 	return grobalDataManager_->GetValueBool(groupName, key);
+}
+
+void MAGISYSTEM::ImportSceneData(const std::string& sceneDataName, bool isSceneClear) {
+	sceneDataImporter_->Import(sceneDataName, isSceneClear);
 }

@@ -5,24 +5,29 @@
 #include "framework/MAGI.h"
 #include "MAGIAssert/MAGIAssert.h"
 
-GameObject3D::GameObject3D(const std::string& name) {
+GameObject3D::GameObject3D(const std::string& name, const Vector3& scale, const Vector3& rotate, const Vector3& translate) {
 	name_ = name;
-	std::shared_ptr<Transform3D> transform = std::make_shared<Transform3D>();
+	std::unique_ptr<Transform3D> transform = std::make_unique<Transform3D>(scale, rotate, translate);
 	transformComponent_ = MAGISYSTEM::AddTransform3D(std::move(transform));
 }
 
-GameObject3D::~GameObject3D() {
-
+GameObject3D::GameObject3D(const std::string& name, const Vector3& scale, const Quaternion& rotate, const Vector3& translate) {
+	name_ = name;
+	std::unique_ptr<Transform3D> transform = std::make_unique<Transform3D>(scale, rotate, translate);
+	transformComponent_ = MAGISYSTEM::AddTransform3D(std::move(transform));
 }
 
-void GameObject3D::Update() {
-
+GameObject3D::GameObject3D(const std::string& name, const Vector3& translate) {
+	name_ = name;
+	std::unique_ptr<Transform3D> transform = std::make_unique<Transform3D>(translate);
+	transformComponent_ = MAGISYSTEM::AddTransform3D(std::move(transform));
 }
+
 
 void GameObject3D::Finalize() {
 	{
-		if (auto it = transformComponent_.lock()) {
-			it->SetIsAlive(false);
+		if (transformComponent_) {
+			transformComponent_->SetIsAlive(false);
 		}
 	}
 
@@ -38,6 +43,7 @@ void GameObject3D::Finalize() {
 }
 
 void GameObject3D::AddModelRenderer(std::shared_ptr<ModelRenderer> modelRenderer) {
+	modelRenderer->GetTransform()->SetParent(transformComponent_, false);
 	std::weak_ptr<ModelRenderer> ptr = MAGISYSTEM::AddRenderer3D(std::move(modelRenderer));
 	if (auto p = ptr.lock()) {
 		modelRendererComponents_.insert(std::make_pair(p->GetName(), p));
@@ -52,6 +58,10 @@ void GameObject3D::SetIsActive(bool isActive) {
 	isActive_ = isActive;
 }
 
+const std::string& GameObject3D::GetName()const {
+	return name_;
+}
+
 bool GameObject3D::GetIsAlive()const {
 	return isAlive_;
 }
@@ -60,7 +70,7 @@ bool GameObject3D::GetIsActive() const {
 	return isActive_;
 }
 
-std::weak_ptr<Transform3D> GameObject3D::GetTransform() {
+Transform3D* GameObject3D::GetTransform() {
 	return transformComponent_;
 }
 
